@@ -58,3 +58,5 @@ cc.sh
 
 config.js
 knexfile.js
+build/
+public/build
