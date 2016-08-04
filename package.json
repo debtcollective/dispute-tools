@@ -1,0 +1,53 @@
+{
+  "name": "debtcollective",
+  "description": "",
+  "repository": "",
+  "version": "0.0.1",
+  "keywords": [],
+  "engines": {
+    "node": ">=0.10.33"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bin/server.js"
+  },
+  "dependencies": {
+    "autoprefixer-loader": "^3.2.0",
+    "body-parser": "^1.15.2",
+    "colors": "^1.1.2",
+    "compression-webpack-plugin": "^0.3.1",
+    "connect-redis": "^3.1.0",
+    "cookie-parser": "^1.4.3",
+    "css-loader": "^0.23.1",
+    "csurf": "^1.9.0",
+    "express": "^4.14.0",
+    "express-session": "^1.14.0",
+    "file-loader": "^0.9.0",
+    "glob": "^7.0.5",
+    "imports-loader": "^0.6.5",
+    "knex": "^0.11.9",
+    "krypton-orm": "0.0.16",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "lodash": "^4.14.1",
+    "lodash-inflection": "^1.4.0",
+    "method-override": "^2.3.6",
+    "mkdirp": "^0.5.1",
+    "morgan": "^1.7.0",
+    "mysql": "^2.11.1",
+    "neon": "^2.0.0",
+    "path": "^0.12.7",
+    "pg": "^6.0.3",
+    "pluralize": "^3.0.0",
+    "redis": "^2.6.2",
+    "req-flash": "0.0.3",
+    "rimraf": "^2.5.4",
+    "route-mappings": "^0.3.1",
+    "style-loader": "^0.13.1",
+    "thulium": "^2.0.0",
+    "thulium-express": "^1.1.5",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.13.1",
+    "winston": "^2.2.0"
+  }
+}

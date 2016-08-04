@@ -1,0 +1,27 @@
+<style type="text/css">
+  body {
+    font-size: 13px;
+    margin: 0;
+    color: #4c4c4c;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-align: center;
+  }
+
+  .view {
+    padding: 5em 0;
+  }
+</style>
+
+<div class="view">
+  <h1>403</h1>
+
+  <h2>Not Authorized!</h2>
+
+  <p>Looks like you followed a bad link or something went wrong.</p>
+
+  <p><%= message %></p>
+
+  <p>
+    Go back to the <a href="<%= CONFIG[CONFIG.environment].siteURL %>/">Homepage</a>.
+  </p>
+</div>
