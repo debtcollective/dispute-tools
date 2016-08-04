@@ -4,22 +4,22 @@
 
 Create `config.js` and `knexfile.js`, edit them as needed.
 
-``sh
+```sh
 cp config/config.sample.js config/config.js
 cp knexfile.sample.js knexfile.js
-``
+```
 
 Build the application assets before starting.
 
-``sh
+```sh
 npm run build
-``
+```
 
 Run the server
 
-``sh
+```sh
 npm start
-``
+```
 
 ## Credits
 
