@@ -1,0 +1,32 @@
+:root {
+  --main-bg-color: #fafafa;
+  --main-color: #323232;
+  --link-color: #7ec5ed;
+  --font-stack: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  font-family: var(--font-stack);
+  font-size: 14px;
+  line-height: 1.618;
+}
+
+* {margin: 0}
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--main-bg-color);
+  color: var(--main-color);
+}
+
+a {
+  color: color(var(--link-color) shade(10%));
+}
+
+.test-code-block {
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+  background-color: color(var(--main-bg-color) shade(5%));
+  border-radius: 3px;
+}
