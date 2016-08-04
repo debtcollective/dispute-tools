@@ -1,25 +1,28 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Neonode</title>
-    <link rel="icon" type="image/gif" href="/img/favicon.gif" />
-
-    <!-- webpack -d -->
-    <script src="/dist/bundle.js"></script>
+  <meta charset="UTF-8">
+  <title>Neonode</title>
+  <link rel="icon" type="image/gif" href="/images/favicon.gif" />
+  <link rel="stylesheet" href="/build/stylesheets/style.css">
 </head>
-
 <body>
-    <header>
-        <h1><img src="/img/neon-logo.png" width="80" /><span>It works!</span></h1>
+  <div style="padding: 2rem;">
+    <header style="margin: 0 0 1rem; text-align: center;">
+      <div>
+        <img src="/images/neonode-logo.svg" alt="Neonode logo" width="300" style="max-width: 100%;" />
+      </div>
+      <p>It Works!</p>
     </header>
     <div class="yield">
-        <%= yield %>
+      <%= yield %>
     </div>
-    <footer>
-        <p><a href="http://github.com/sgarza/generator-neonode" target="_blank"><span>Neonode</span></a></p>
+    <footer style="text-align: center;">
+      <p>
+        <a href="https://empathia.github.io/neonode/" target="_blank">https://empathia.github.io/neonode/</a>
+      </p>
     </footer>
+  </div>
+  <script src="/build/javascripts/application.js"></script>
 </body>
-
 </html>
