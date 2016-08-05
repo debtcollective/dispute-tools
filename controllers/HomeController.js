@@ -11,8 +11,8 @@ var HomeController = Class('HomeController').inherits(BaseController)({
       next();
     },
 
-    index : function(req, res, next) {
-      res.render('home/index.html', {layout : 'application', posts : ["1", "2", "3", "4", "5"]});
+    index : function(req, res) {
+      res.render('home/index.html', {layout: 'application'});
     },
 
     noLayout : function(req, res) {

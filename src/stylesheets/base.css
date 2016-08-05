@@ -1,0 +1,38 @@
+/* BASSCSS */
+/* @import 'basscss-align'; */
+@import 'basscss-border';
+@import 'basscss-flexbox';
+@import 'basscss-grid';
+/* @import 'basscss-hide'; */
+@import 'basscss-layout';
+@import 'basscss-margin';
+@import 'basscss-padding';
+@import 'basscss-position';
+/* @import 'basscss-type-scale'; */
+@import 'basscss-typography';
+
+
+
+/* KABINETT */
+@import './lib/kabinett/core/base';
+@import './lib/kabinett/utilities/layout';
+
+/* KABINETT CONFIGURATION */
+:root {
+  --root-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --color-primary: #d11a20;
+}
+
+
+
+/* CUSTOM STYLES */
+* {margin: 0}
+
+a {
+  color: var(--color-primary);
+
+  &:not([href]) {
+    text-decoration: line-through;
+    opacity: .5;
+  }
+}

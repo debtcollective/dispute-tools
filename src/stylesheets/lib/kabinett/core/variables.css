@@ -1,0 +1,20 @@
+:root {
+  /* ROOT */
+  --root-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Helvetica, sans-serif;
+  --root-font-monospace-family: "Ubuntu Mono", "Source Code Pro", Consolas, monospace;
+  --root-font-size: 14px;
+  --root-line-height: 1.618;
+  --root-text-color: #111;
+  --root-background-color: #fff;
+
+  --root-heading-color: inherit;
+
+  /* COLORS */
+  /* colors:brand */
+  --color-primary: rebeccapurple;
+  /* colors:ui */
+  --color-danger: #e74c3c;
+  --color-info: #3498db;
+  --color-success: #2ecc71;
+  --color-warning: #f1c40f;
+}
