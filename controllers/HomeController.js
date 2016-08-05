@@ -15,9 +15,10 @@ var HomeController = Class('HomeController').inherits(BaseController)({
       res.render('home/index.html', {layout: 'application'});
     },
 
-    noLayout : function(req, res) {
-      res.render('home/index.html', {layout : false, posts : ["1", "2", "3", "4", "5"]});
-    },
+    // @TODO: remove once Users#new is implemented
+    usersNew: function(req, res) {
+      res.render('users/new.html', {layout: 'signup'});
+    }
   }
 });
 
