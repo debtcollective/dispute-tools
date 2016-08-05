@@ -14,5 +14,10 @@
   },
   "parserOptions": {
     "sourceType": "module"
+  },
+  "globals": {
+    "logger": false,
+    "Class": false,
+    "BaseController": false
   }
 }
