@@ -66,12 +66,11 @@
     "path": "^0.12.7",
     "pg": "^6.0.3",
     "pluralize": "^3.0.0",
+    "pug": "^2.0.0-beta4",
     "redis": "^2.6.2",
     "req-flash": "0.0.3",
     "rimraf": "^2.5.4",
     "route-mappings": "^0.3.1",
-    "thulium": "^2.0.0",
-    "thulium-express": "^1.1.5",
     "winston": "^2.2.0"
   },
   "devDependencies": {
