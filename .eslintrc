@@ -16,6 +16,7 @@
     "sourceType": "module"
   },
   "globals": {
+    "CONFIG": false,
     "logger": false,
     "Class": false,
     "BaseController": false
