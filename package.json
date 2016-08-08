@@ -73,6 +73,7 @@
     "route-mappings": "^0.3.1",
     "thulium": "^2.0.0",
     "thulium-express": "^1.1.5",
+    "uuid": "^2.0.2",
     "winston": "^2.2.0"
   },
   "devDependencies": {
