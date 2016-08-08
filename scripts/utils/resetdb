@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+psql -c 'DROP DATABASE IF EXISTS "debtcollective_test"'
