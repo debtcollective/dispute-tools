@@ -16,11 +16,13 @@
 /* KABINETT */
 @import './lib/kabinett/core/base';
 @import './lib/kabinett/utilities/layout';
+@import './lib/kabinett/utilities/typography';
 
 /* KABINETT CONFIGURATION */
 :root {
   --root-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --color-primary: #d11a20;
+  --root-background-color: #ebebeb;
+  --color-primary: #f04c34;
 }
 
 
@@ -36,3 +38,6 @@ a {
     opacity: .5;
   }
 }
+
+.-bg-black {background-color: black}
+.-white {color: white}

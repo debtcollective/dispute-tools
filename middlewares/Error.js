@@ -1,4 +1,4 @@
-module.exports = function(err, req, res, next) {
+module.exports = function(err, req, res) {
   logger.error(err);
   logger.error(err.stack);
 
@@ -9,14 +9,12 @@ module.exports = function(err, req, res, next) {
   if (err.name) {
     switch (err.name) {
       case 'NotFoundError':
-        return res.status(404).render('shared/404.html', {
-          message: err.message,
-          layout: false
+        return res.status(404).render('shared/404.pug', {
+          message: err.message
         });
         break;
       case 'ForbiddenError':
-        return res.status(403).render('shared/500.html', {
-          layout: false,
+        return res.status(403).render('shared/500.pug', {
           error: err.stack
         });
         break;
@@ -28,8 +26,7 @@ module.exports = function(err, req, res, next) {
   res.status(500);
   res.format({
     html: function () {
-      res.render('shared/500.html', {
-        layout: false,
+      res.render('shared/500.pug', {
         error: 'Error:\n\n' + JSON.stringify(err) + '\n\nStack:\n\n' + err.stack
       });
     },
@@ -37,4 +34,4 @@ module.exports = function(err, req, res, next) {
       res.json(err);
     }
   });
-}
+};

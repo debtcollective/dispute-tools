@@ -12,12 +12,12 @@ var HomeController = Class('HomeController').inherits(BaseController)({
     },
 
     index : function(req, res) {
-      res.render('home/index.html', {layout: 'application'});
+      res.render('home/index.pug');
     },
 
     // @TODO: remove once Users#new is implemented
     usersNew: function(req, res) {
-      res.render('users/new.html', {layout: 'signup'});
+      res.render('users/new.pug');
     }
   }
 });
