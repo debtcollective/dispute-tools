@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+tarima -wdVP localhost:3000

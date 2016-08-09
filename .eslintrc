@@ -1,23 +1,28 @@
 {
   "env": {
-    "browser": true,
     "es6": true,
+    "node": true,
     "mocha": true,
-    "node": true
+    "browser": true
   },
-  "rules": {
-    "quotes": [2, "single", "avoid-escape"],
-    "semi": [2, "always"],
-    "no-unused-vars": 2,
-    "no-extra-semi": 2,
-    "no-undef": 2
-  },
+  "plugins" : [
+    "mocha"
+  ],
+  "extends": "airbnb-base",
   "parserOptions": {
     "sourceType": "module"
   },
-  "globals": {
-    "logger": false,
-    "Class": false,
-    "BaseController": false
+  "rules" : {
+    "new-cap": [
+      1,
+      {
+        "capIsNewExceptions": [
+          "Class",
+          "Module",
+          "Interfase"
+        ]
+      }
+    ],
+    "mocha/no-exclusive-tests": "error"
   }
 }
