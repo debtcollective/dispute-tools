@@ -1,4 +1,4 @@
-'use strict';
+const expect = require('chai').expect;
 
 let path = require('path');
 let _ = require('lodash');

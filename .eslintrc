@@ -5,6 +5,9 @@
     "mocha": true,
     "browser": true
   },
+  "plugins" : [
+    "mocha"
+  ],
   "extends": "airbnb-base",
   "parserOptions": {
     "sourceType": "module"
@@ -20,5 +23,6 @@
         ]
       }
     ],
+    "mocha/no-exclusive-tests": "error"
   }
 }

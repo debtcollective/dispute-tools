@@ -1,40 +1,33 @@
-global.expect = require('chai').expect;
-global.sa = require('superagent');
-global.Promise = require('bluebird');
+/* globals logger */
 
-var glob = require('glob');
-var Mocha = require('mocha');
-var path = require('path');
+const glob = require('glob');
+const Mocha = require('mocha');
+const path = require('path');
 
-var mocha = new Mocha();
+const mocha = new Mocha();
 mocha.reporter('spec');
 
 require(path.join(process.cwd(), '/bin/server.js'));
 
-Promise.resolve()
-  .then(function () {
-    glob.sync('tests/unit/**/*.js')
-      .filter(function (filePath) {
-        var fileName = path.parse(filePath).base;
+glob.sync('tests/unit/**/*.js')
+  .filter((filePath) => {
+    const fileName = path.parse(filePath).base;
 
-        return (fileName.indexOf(process.argv[2]) !== -1)
-      })
-      .forEach(function (file) {
-        mocha.addFile(path.join(process.cwd(), file));
-      });
-
-    return Promise.resolve();
+    return (fileName.indexOf(process.argv[2]) !== -1);
   })
-  .then(function () {
-    // run Mocha
-    mocha.run(function (failures) {
-      process.on('exit', function () {
-        process.exit(failures);
-      });
-      process.exit();
-    });
-  })
-  .catch(function (err) {
-    logger.error(err, err.stack);
-    process.exit(1);
+  .forEach((file) => {
+    mocha.addFile(path.join(process.cwd(), file));
   });
+
+// run Mocha
+mocha.run((failures) => {
+  process.on('exit', () => {
+    process.exit(failures);
+  });
+  process.exit();
+});
+
+process.on('error', (err) => {
+  logger.error(err, err.stack);
+  process.exit(1);
+});
