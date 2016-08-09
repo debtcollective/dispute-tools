@@ -19,10 +19,15 @@
         "capIsNewExceptions": [
           "Class",
           "Module",
-          "Interfase"
+          "Interfase",
+          "RouteMappings",
         ]
       }
     ],
-    "mocha/no-exclusive-tests": "error"
+    "mocha/no-exclusive-tests": "error",
+    "no-param-reassign": [
+      0,
+      {}
+    ]
   }
 }

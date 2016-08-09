@@ -1,9 +1,17 @@
-var RouteMappings = require('route-mappings');
+const RouteMappings = require('route-mappings');
 
-var routeMappings = RouteMappings()
-  .get('/', 'Home#index')
+const routeMappings = RouteMappings()
+  .get('/', { to: 'Home#index', as: 'root' })
 
   // @TODO: update once Users#new is implemented
-  .get('/signup', 'Home#usersNew');
+  .get('/signup', {
+    to: 'Users#new',
+    as: 'signup',
+  })
+
+  .resources('/Users', (mappings) =>
+    mappings()
+      .get('/activation', { as: 'activation' })
+  );
 
 module.exports = routeMappings;
