@@ -14,7 +14,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
         .where('id', req.params.id)
         .then((result) => {
           if (result.length === 0) {
-            throw new NotFoundError(`User ${req.params.id}  not found)`);
+            return next(new NotFoundError(`User ${req.params.id}  not found)`));
           }
 
           res.locals.user = result[0];
@@ -42,6 +42,8 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
           res.redirect(CONFIG.router.helpers.Users.activation.url())
         )
         .catch((err) => {
+          res.status(400);
+
           res.locals.errors = err.errors;
 
           res.render('users/new.pug');
@@ -64,6 +66,8 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
           res.redirect(CONFIG.router.helpers.Users.show.url(req.params.id));
         })
         .catch((err) => {
+          res.status(400);
+
           res.locals.errors = err.errors;
 
           res.render('users/edit.pug');
