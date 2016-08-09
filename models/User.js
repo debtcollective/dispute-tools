@@ -1,19 +1,21 @@
-var bcrypt = require('bcrypt-node');
+/* global Krypton, Class, CONFIG, UserMailer */
 
-var User = Class('User').inherits(Krypton.Model)({
-  tableName : 'Users',
-  validations : {
-    email : [
+const bcrypt = require('bcrypt-node');
+
+const User = Class('User').inherits(Krypton.Model)({
+  tableName: 'Users',
+  validations: {
+    email: [
       'required',
       'email',
       'maxLength:255',
       {
-        rule : function(val) {
-          let target = this.target;
+        rule(val) {
+          const target = this.target;
 
-          let query = User.query()
+          const query = User.query()
             .where({
-              email : val
+              email: val,
             });
 
           if (target.id) {
@@ -26,49 +28,47 @@ var User = Class('User').inherits(Krypton.Model)({
             }
           });
         },
-        message : 'The User\'s email already exists.'
+        message: 'The User\'s email already exists.',
       },
     ],
-    password : ['minLength:8'],
-    role : [
+    password: ['minLength:8'],
+    role: [
       'required',
       {
-        rule : function(val) {
-          var target = this.target;
-
+        rule(val) {
           if (User.roles.indexOf(val) === -1) {
             throw new Error('The User\'s role is invalid.');
           }
         },
-        message : 'The User\'s role is invalid.'
-      }
-    ]
+        message: 'The User\'s role is invalid.',
+      },
+    ],
   },
 
-  attributes : [
+  attributes: [
     'id',
     'email',
     'encryptedPassword',
     'activationToken',
     'role',
     'createdAt',
-    'updatedAt'
+    'updatedAt',
   ],
 
-  roles : ['Admin', 'CollectiveManager', 'User'],
+  roles: ['Admin', 'CollectiveManager', 'User'],
 
-  prototype : {
-    email : null,
-    password : null,
+  prototype: {
+    email: null,
+    password: null,
 
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
 
-      var model = this;
+      const model = this;
 
       // Start Model Hooks:
 
-      var oldEmail = model.email;
+      let oldEmail = model.email;
 
       // If password is present hash password and set it as encryptedPassword
       model.on('beforeSave', (done) => {
@@ -79,7 +79,7 @@ var User = Class('User').inherits(Krypton.Model)({
             }
 
             model.encryptedPassword = hash;
-            done();
+            return done();
           });
         }
 
@@ -93,16 +93,17 @@ var User = Class('User').inherits(Krypton.Model)({
       });
 
       // setActivationToken helper function
-      let setActivationToken = (done) => {
-        bcrypt.hash(CONFIG.env().sessions.secret + Date.now(), bcrypt.genSaltSync(10), null, (err, hash) => {
-          if (err) {
-            return done(err);
-          }
+      const setActivationToken = (done) => {
+        bcrypt.hash(CONFIG.env().sessions.secret + Date.now(),
+          bcrypt.genSaltSync(10), null, (err, hash) => {
+            if (err) {
+              return done(err);
+            }
 
-          model.activationToken =  hash;
-          return done();
-        });
-      }
+            model.activationToken = hash;
+            return done();
+          });
+      };
 
       // Create a hash and set it as activationToken
       model.on('beforeCreate', (done) => {
@@ -110,13 +111,13 @@ var User = Class('User').inherits(Krypton.Model)({
       });
 
       // sendActivation helper function
-      let sendActivation = (done) => {
-        UserMailer.sendActivation(model.email, {user : model})
-          .then(function() {
+      const sendActivation = (done) => {
+        UserMailer.sendActivation(model.email, { user: model })
+          .then(() => {
             done();
           })
           .catch(done);
-      }
+      };
 
       // Send activation email
       model.on('afterCreate', (done) => {
@@ -129,7 +130,7 @@ var User = Class('User').inherits(Krypton.Model)({
           return done();
         }
 
-        setActivationToken(done);
+        return setActivationToken(done);
       });
 
       // If email changed, send activation email
@@ -138,7 +139,7 @@ var User = Class('User').inherits(Krypton.Model)({
           return done();
         }
 
-        sendActivation(done);
+        return sendActivation(done);
       });
     },
 
@@ -146,8 +147,8 @@ var User = Class('User').inherits(Krypton.Model)({
       this.activationToken = null;
 
       return this;
-    }
-  }
+    },
+  },
 });
 
 module.exports = User;
