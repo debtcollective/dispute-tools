@@ -1,0 +1,41 @@
+doctype html
+html(lang="en")
+
+  head
+    title 500
+
+    style.
+      body {
+        font-size: 13px;
+        margin: 0;
+        color: #4c4c4c;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        text-align: center;
+      }
+
+      .view {
+        padding: 5em 0;
+      }
+
+      .tracelog {
+        padding: 2em 0;
+      }
+
+      .tracelog pre {
+        padding: 1em 2em 0;
+        margin: 0;
+        background-color: #4c4c4c;
+        color: #90EE90;
+        text-align: left;
+      }
+
+  body
+    .view
+      h1 500
+      h2 Something went wrong.
+      p The administrator has been notified.
+
+      if error
+        .tracelog
+          pre
+            code= error
