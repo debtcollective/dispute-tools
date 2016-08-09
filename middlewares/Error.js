@@ -1,7 +1,7 @@
 module.exports = function(err, req, res) {
   logger.error(err);
   logger.error(err.stack);
-  console.log('NOTFOUND')
+
   if (req.knex) {
     req.knex.destroy(function () {});
   }

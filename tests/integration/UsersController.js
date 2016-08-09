@@ -22,6 +22,7 @@ global.UserMailer = {
 
 describe('UsersController', () => {
   let user;
+  let _csrf;
 
   before(() => {
     user = new User({
@@ -33,14 +34,16 @@ describe('UsersController', () => {
     return user.save();
   });
 
-  // after(() =>
-  //   truncate(User)
-  // );
+  after(() =>
+    truncate(User)
+  );
 
   it(`Should render index ${urls.Users.url()}`, (done) => {
     agent.get(`${url}${urls.Users.url()}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
+        _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
+
         expect(err.toString()).to.be.equal('Error: Not Implemented');
         expect(res.status).to.equal(501);
         done();
@@ -57,7 +60,7 @@ describe('UsersController', () => {
       });
   });
 
-  it(`Should render show ${urls.Users.show.url(uuid.v4())}`, (done) => {
+  it(`Should render show ${urls.Users.show.url(':id')}`, (done) => {
     agent.get(`${url}${urls.Users.show.url(user.id)}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
@@ -67,7 +70,7 @@ describe('UsersController', () => {
       });
   });
 
-  it(`Should render show 404 ${urls.Users.show.url(uuid.v4())}`, (done) => {
+  it(`Should render show 404 ${urls.Users.show.url(':id')}`, (done) => {
     agent.get(`${url}${urls.Users.show.url(uuid.v4())}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
@@ -75,5 +78,99 @@ describe('UsersController', () => {
         expect(res.status).to.equal(404);
         done();
       });
+  });
+
+  it(`Should render edit ${urls.Users.edit.url(':id')}`, (done) => {
+    agent.get(`${url}${urls.Users.edit.url(user.id)}`)
+      .set('Accept', 'text/html')
+      .end((err, res) => {
+        expect(err).to.be.equal(null);
+        expect(res.status).to.equal(200);
+        done();
+      });
+  });
+
+  it(`Should render show 404 ${urls.Users.edit.url(':id')}`, (done) => {
+    agent.get(`${url}${urls.Users.edit.url(uuid.v4())}`)
+      .set('Accept', 'text/html')
+      .end((err, res) => {
+        expect(err.toString()).to.be.equal('Error: Not Found');
+        expect(res.status).to.equal(404);
+        done();
+      });
+  });
+
+  it(`Should render activaton ${urls.Users.activation.url()}`, (done) => {
+    agent.get(`${url}${urls.Users.activation.url()}`)
+      .set('Accept', 'text/html')
+      .end((err, res) => {
+        expect(err).to.be.equal(null);
+        expect(res.status).to.equal(200);
+        done();
+      });
+  });
+
+  describe('#create', () => {
+    it('Should create a user', (done) => {
+      agent.post(`${url}${urls.Users.create.url()}`)
+        .set('Accept', 'text/html')
+        .send({
+          email: 'test@example.com',
+          password: '12345678',
+          _csrf,
+        })
+        .end((err, res) => {
+          expect(err).to.be.equal(null);
+          expect(res.status).to.be.equal(200);
+          done();
+        });
+    });
+
+    it('Should not validate when creating a user', (done) => {
+      agent.post(`${url}${urls.Users.create.url()}`)
+        .set('Accept', 'text/html')
+        .send({
+          email: 'test@example.com',
+          password: '12345678',
+          _csrf,
+        })
+        .end((err, res) => {
+          expect(err.toString()).to.be.equal('Error: Bad Request');
+          expect(res.status).to.be.equal(400);
+          done();
+        });
+    });
+  });
+
+  describe('#update', () => {
+    it('Should update a user', (done) => {
+      agent.post(`${url}${urls.Users.update.url(user.id)}`)
+        .set('Accept', 'text/html')
+        .send({
+          _method : 'PUT',
+          password: '123456789',
+          _csrf,
+        })
+        .end((err, res) => {
+          expect(err).to.be.equal(null);
+          expect(res.status).to.be.equal(200);
+          done();
+        });
+    });
+
+    it('Should not validate when updating a user', (done) => {
+      agent.post(`${url}${urls.Users.update.url(user.id)}`)
+        .set('Accept', 'text/html')
+        .send({
+          _method : 'PUT',
+          password: '1234567',
+          _csrf,
+        })
+        .end((err, res) => {
+          expect(err.toString()).to.be.equal('Error: Bad Request');
+          expect(res.status).to.be.equal(400);
+          done();
+        });
+    });
   });
 });

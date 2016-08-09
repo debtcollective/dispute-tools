@@ -1,6 +1,6 @@
 /* globals Class, RestfulController, User, NotFoundError, CONFIG */
 
-const UsersController = Class('UsersController').inherits(BaseController)({
+const UsersController = Class('UsersController').inherits(RestfulController)({
   beforeActions: [
     {
       before: '_loadUser',
@@ -59,7 +59,7 @@ const UsersController = Class('UsersController').inherits(BaseController)({
     },
 
     update(req, res) {
-      const user = req.locals.user;
+      const user = res.locals.user;
 
       user.updateAttributes(req.body);
 
