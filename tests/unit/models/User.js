@@ -1,25 +1,28 @@
-const expect = require('chai').expect;
+/* globals User */
 
-let path = require('path');
-let _ = require('lodash');
-let truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
+const expect = require('chai').expect;
+const Promise = require('bluebird');
+
+const path = require('path');
+const _ = require('lodash');
+
+const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 
 global.UserMailer = {
-  sendActivation : function() {
+  sendActivation() {
     return Promise.resolve();
-  }
-}
-
+  },
+};
 
 
 describe('User', () => {
   describe('Validations', () => {
     beforeEach(() => {
-      return truncate(User);
+      truncate(User);
     });
 
     after(() => {
-      return truncate(User);
+      truncate(User);
     });
 
     describe('email', () => {
@@ -44,7 +47,7 @@ describe('User', () => {
           })
           .catch((err) => {
             expect(err.message).to.be.equal('1 invalid values');
-            expect(err.errors.email.message).to.be.equal('The User\'s email already exists.')
+            expect(err.errors.email.message).to.be.equal('The User\'s email already exists.');
           });
       });
 
@@ -52,8 +55,8 @@ describe('User', () => {
         return Promise.resolve()
           .then(() => {
             return new User({
-              password : '12345678',
-              role : 'User'
+              password: '12345678',
+              role: 'User',
             }).save();
           })
           .then(() => {
@@ -61,7 +64,7 @@ describe('User', () => {
           })
           .catch((err) => {
             expect(err.message).to.be.equal('1 invalid values');
-            expect(err.errors.email.message).to.be.equal('The email is required')
+            expect(err.errors.email.message).to.be.equal('The email is required');
           });
       });
 
@@ -79,7 +82,7 @@ describe('User', () => {
           })
           .catch((err) => {
             expect(err.message).to.be.equal('1 invalid values');
-            expect(err.errors.email.message).to.be.equal('The email must be a valid email address')
+            expect(err.errors.email.message).to.be.equal('The email must be a valid email address');
           });
       });
 
@@ -97,13 +100,13 @@ describe('User', () => {
           })
           .catch((err) => {
             expect(err.message).to.be.equal('1 invalid values');
-            expect(err.errors.email.message).to.be.equal('The email must not exceed 255 characters long');
+            expect(err.errors.email.message)
+              .to.be.equal('The email must not exceed 255 characters long');
           });
       });
     });
 
     describe('password', () => {
-
       it('Should fail if the password is shorter than 8 characters', () => {
         return Promise.resolve()
           .then(() => {
@@ -118,14 +121,13 @@ describe('User', () => {
           })
           .catch((err) => {
             expect(err.message).to.be.equal('1 invalid values');
-            expect(err.errors.password.message).to.be.equal('The password must be at least 8 characters long');
+            expect(err.errors.password.message)
+              .to.be.equal('The password must be at least 8 characters long');
           });
       });
-
     });
 
     describe('role', () => {
-
       it('Should fail if the role is invalid', () => {
         return Promise.resolve()
           .then(() => {
@@ -143,20 +145,17 @@ describe('User', () => {
             expect(err.errors.role.message).to.be.equal('The User\'s role is invalid.');
           });
       });
-
     });
   });
 
   describe('Methods', () => {
-
     describe('activate()', () => {
-
-      it('Should set this.activationToken to null',() => {
-        let user = new User({
-          email : 'user@example.com',
-          password : '12345678',
-          role : 'User',
-          activationToken : _.repeat('a', 128)
+      it('Should set this.activationToken to null', () => {
+        const user = new User({
+          email: 'user@example.com',
+          password: '12345678',
+          role: 'User',
+          activationToken: _.repeat('a', 128),
         });
 
         expect(user.activationToken).to.equal(_.repeat('a', 128));
