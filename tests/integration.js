@@ -12,7 +12,7 @@ require(path.join(process.cwd(), '/bin/server.js'));
 
 Promise.resolve()
   .then(function () {
-    glob.sync('test/integration/**/*.js')
+    glob.sync('tests/integration/**/*.js')
       .filter(function (filePath) {
         var fileName = path.parse(filePath).base;
 

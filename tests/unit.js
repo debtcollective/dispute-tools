@@ -4,6 +4,7 @@ global.Promise = require('bluebird');
 
 var glob = require('glob');
 var Mocha = require('mocha');
+var path = require('path');
 
 var mocha = new Mocha();
 mocha.reporter('spec');
@@ -12,7 +13,7 @@ require(path.join(process.cwd(), '/bin/server.js'));
 
 Promise.resolve()
   .then(function () {
-    glob.sync('test/unit/**/*.js')
+    glob.sync('tests/unit/**/*.js')
       .filter(function (filePath) {
         var fileName = path.parse(filePath).base;
 

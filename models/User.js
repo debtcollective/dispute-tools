@@ -1,15 +1,17 @@
 var bcrypt = require('bcrypt-node');
 
 Class('User').inherits(Krypton.Model)({
-  _tableName : 'Users',
+  tableName : 'Users',
   validations : {
     email : [
       'required',
+      'email',
+      'maxLength:255',
       {
-        rule(val) => {
+        rule : function(val) {
           let target = this.target;
 
-          let query = target.query('User')
+          let query = User.query()
             .where({
               email : val
             });
@@ -31,10 +33,10 @@ Class('User').inherits(Krypton.Model)({
     role : [
       'required',
       {
-        rule(val) => {
+        rule : function(val) {
           var target = this.target;
 
-          if (target.roles.indexOf(val) === -1) {
+          if (User.roles.indexOf(val) === -1) {
             throw new Error('The User\'s role is invalid.');
           }
         },
@@ -43,13 +45,23 @@ Class('User').inherits(Krypton.Model)({
     ]
   },
 
+  attributes : [
+    'id',
+    'email',
+    'encryptedPassword',
+    'activationToken',
+    'role',
+    'createdAt',
+    'updatedAt'
+  ],
+
   roles : ['Admin', 'CollectiveManager', 'User'],
 
   prototype : {
     email : null,
     password : null,
 
-    init(config) => {
+    init(config) {
       Krypton.Model.prototype.init.call(this, config);
 
       var model = this;
@@ -61,7 +73,7 @@ Class('User').inherits(Krypton.Model)({
       // If password is present hash password and set it as encryptedPassword
       model.on('beforeSave', (done) => {
         if (model.password) {
-          bcrypt.hash(model.password, bcrtpt.genSaltSync(10), (err, hash) => {
+          bcrypt.hash(model.password, bcrypt.genSaltSync(10), null, (err, hash) => {
             if (err) {
               return done(err);
             }
@@ -81,8 +93,8 @@ Class('User').inherits(Krypton.Model)({
       });
 
       // setActivationToken helper function
-      let setActivationToken = (done) = {
-        bcrypt.hash(CONFIG.env().sessions.secret + Date.now(), bcrtpt.genSaltSync(10), (err, hash) => {
+      let setActivationToken = (done) => {
+        bcrypt.hash(CONFIG.env().sessions.secret + Date.now(), bcrypt.genSaltSync(10), null, (err, hash) => {
           if (err) {
             return done(err);
           }
@@ -99,7 +111,7 @@ Class('User').inherits(Krypton.Model)({
 
       // sendActivation helper function
       let sendActivation = (done) => {
-        UserMailer.sendActivation(user.email, {user : model})
+        UserMailer.sendActivation(model.email, {user : model})
           .then(function() {
             done();
           })
@@ -114,7 +126,7 @@ Class('User').inherits(Krypton.Model)({
       // If email changes, set activationToken again
       model.on('beforeUpdate', (done) => {
         if (oldEmail === model.email) {
-          return next();
+          return done();
         }
 
         setActivationToken(done);
@@ -123,14 +135,14 @@ Class('User').inherits(Krypton.Model)({
       // If email changed, send activation email
       model.on('afterUpdate', (done) => {
         if (oldEmail === model.email) {
-          return next();
+          return done();
         }
 
         sendActivation(done);
       });
     },
 
-    activate() => {
+    activate() {
       this.activationToken = null;
 
       return this;
