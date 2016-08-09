@@ -1,6 +1,6 @@
 var bcrypt = require('bcrypt-node');
 
-Class('User').inherits(Krypton.Model)({
+var User = Class('User').inherits(Krypton.Model)({
   tableName : 'Users',
   validations : {
     email : [
@@ -148,4 +148,6 @@ Class('User').inherits(Krypton.Model)({
       return this;
     }
   }
-})
+});
+
+module.exports = User;
