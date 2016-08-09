@@ -1,9 +1,9 @@
 /* globals Class, RestfulController, User, NotFoundError, CONFIG */
 
-const UsersController = Class('UsersController').inherits(RestfulController)({
+const UsersController = Class('UsersController').inherits(BaseController)({
   beforeActions: [
     {
-      before: ['_loadUser'],
+      before: '_loadUser',
       actions: ['show', 'edit', 'update', 'destroy'],
     },
   ],
@@ -26,6 +26,10 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
     index(req, res) {
       res.status(501).send('Not implemented');
+    },
+
+    show(req, res) {
+      res.render('users/show.pug');
     },
 
     new(req, res) {
