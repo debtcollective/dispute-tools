@@ -1,20 +1,22 @@
-var HomeController = Class('HomeController').inherits(BaseController)({
-  beforeActions : [
+/* globals Class, BaseController, logger */
+
+const HomeController = Class('HomeController').inherits(BaseController)({
+  beforeActions: [
     {
-      before : ['_beforeIndex'],
-      actions : ['index']
-    }
+      before: ['_beforeIndex'],
+      actions: ['index'],
+    },
   ],
-  prototype : {
-    _beforeIndex : function(req, res, next) {
+  prototype: {
+    _beforeIndex(req, res, next) {
       logger.info('Before Index');
       next();
     },
 
-    index : function(req, res) {
+    indexfunction(req, res) {
       res.render('home/index.pug');
     },
-  }
+  },
 });
 
 module.exports = new HomeController();
