@@ -16,7 +16,7 @@ var config = {
       key: 'session',
       secret: 'EDIT ME ctYArFqrrXy4snywpApkTcfootxsz9Ko',
     },
-    siteURL: `http://localhost:3000${process.env.PORT || 3000}`,
+    siteURL: `http://localhost${process.env.PORT || 3000}`,
     enableLithium: false,
 
     // Mailer
@@ -38,7 +38,7 @@ var config = {
       key: 'session',
       secret: 'EDIT ME ctYArFqrrXy4snywpApkTcfootxsz9Ko',
     },
-    siteURL: `http://localhost:3000${process.env.PORT || 3000}`,
+    siteURL: `http://localhost${process.env.PORT || 3000}`,
     enableLithium: false,
 
     // Mailer
