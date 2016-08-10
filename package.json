@@ -52,6 +52,7 @@
     }
   },
   "dependencies": {
+    "aws-sdk": "^2.4.14",
     "basscss": "^8.0.2",
     "bcrypt-node": "^0.1.0",
     "bluebird": "^3.4.1",
@@ -73,7 +74,7 @@
     "mysql": "^2.11.1",
     "neon": "^2.0.0",
     "nodemailer": "^2.5.0",
-    "nodemailer-mailgun-transport": "^1.2.1",
+    "nodemailer-ses-transport": "^1.4.0",
     "path": "^0.12.7",
     "pg": "^6.0.3",
     "pluralize": "^3.0.0",
