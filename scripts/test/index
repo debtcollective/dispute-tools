@@ -5,4 +5,4 @@ export NODE_ENV=test
 set -e
 
 npm run test:unit "$1"
-# npm run test:integration "$1"
+npm run test:integration "$1"

@@ -6,32 +6,50 @@ module.exports = function(err, req, res) {
     req.knex.destroy(function () {});
   }
 
-  if (err.name) {
-    switch (err.name) {
-      case 'NotFoundError':
-        return res.status(404).render('shared/404.pug', {
-          message: err.message
-        });
-        break;
-      case 'ForbiddenError':
-        return res.status(403).render('shared/500.pug', {
-          error: err.stack
-        });
-        break;
-      default:
-        break;
-    }
-  }
 
-  res.status(500);
   res.format({
-    html: function () {
-      res.render('shared/500.pug', {
-        error: 'Error:\n\n' + JSON.stringify(err) + '\n\nStack:\n\n' + err.stack
-      });
+    html() {
+      if (err.name) {
+        switch (err.name) {
+          case 'NotFoundError':
+
+            return res.status(404).render('shared/404.pug', {
+              message: err.message,
+            });
+            break;
+          case 'ForbiddenError':
+            return res.status(403).render('shared/500.pug', {
+              error: err.stack
+            });
+            break;
+          default:
+            return res.status(500).render('shared/500.pug', {
+              error: 'Error:\n\n' + JSON.stringify(err) + '\n\nStack:\n\n' + err.stack
+            });
+            break;
+        }
+      }
     },
-    json: function () {
-      res.json(err);
+    json() {
+      if (err.name) {
+        switch (err.name) {
+          case 'NotFoundError':
+            return res.status(404).json({
+              error: err.message,
+            });
+            break;
+          case 'ForbiddenError':
+            return res.status(403).json({
+              error: err.message
+            });
+            break;
+          default:
+            return res.status(500).json({
+              error: err.message
+            });
+            break;
+        }
+      }
     }
   });
 };
