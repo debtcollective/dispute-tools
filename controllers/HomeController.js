@@ -13,7 +13,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       next();
     },
 
-    indexfunction(req, res) {
+    index(req, res) {
       res.render('home/index.pug');
     },
   },
