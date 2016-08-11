@@ -1,0 +1,22 @@
+.Dropdown {
+  position: relative;
+  &.active {z-index: 1}
+  &.-has-dropdown:hover > .Dropdown__body {display: block}
+}
+
+.Dropdown__body {
+  position: absolute;
+  min-width: 100%;
+  white-space: nowrap;
+}
+
+.Dropdown__backdrop {
+  display: none;
+  user-select: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  &.active {display: block}
+}
