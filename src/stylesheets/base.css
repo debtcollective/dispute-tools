@@ -1,5 +1,5 @@
 /* BASSCSS */
-/* @import 'basscss-align'; */
+@import 'basscss-align';
 @import 'basscss-border';
 @import 'basscss-flexbox';
 @import 'basscss-grid';
@@ -16,13 +16,25 @@
 /* KABINETT */
 @import './lib/kabinett/core/base';
 @import './lib/kabinett/utilities/layout';
-@import './lib/kabinett/utilities/typography';
+@import './lib/kabinett/utilities/type-font-weight';
+@import './lib/kabinett/utilities/type-font-scale';
+@import './lib/kabinett/utilities/aria';
+
+@import './utils';
 
 /* KABINETT CONFIGURATION */
 :root {
-  --root-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --root-background-color: #ebebeb;
-  --color-primary: #f04c34;
+  --k-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --k-background-color: #000;
+  --k-color: #fff;
+
+  --k-color-palette-primary: #f04c34;
+
+  --k-h1: 119px;
+  --k-h2: 67px;
+  --k-h3: 37px;
+  --k-h4: 21px;
+  --k-font-caption-size: 12px;
 }
 
 
@@ -30,14 +42,15 @@
 /* CUSTOM STYLES */
 * {margin: 0}
 
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
 a {
-  color: var(--color-primary);
+  color: var(--k-color-palette-primary);
 
   &:not([href]) {
     text-decoration: line-through;
     opacity: .5;
   }
 }
-
-.-bg-black {background-color: black}
-.-white {color: white}
