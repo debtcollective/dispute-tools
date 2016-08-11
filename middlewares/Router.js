@@ -24,8 +24,8 @@ routeMapper.routes.forEach((route) => {
   const controller = route._resourceName || _handler.pop();
 
   verbs.forEach((verb) => {
-    logger.info(`${(verb.toUpperCase()      ).substr(0, 7)}\
-      ${route.path}   ${controller}#${action}`);
+    const padded = (`${verb.toUpperCase()}      `).substr(0, 7);
+    logger.info(`${padded} ${route.path}   ${controller}#${action}`);
 
     const controllerObject = neonode.controllers[controller];
     const controllerMethod = controllerObject && controllerObject[action];
