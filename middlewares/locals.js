@@ -11,7 +11,7 @@ module.exports = function(req, res, next) {
   }
 
   res.locals.routeMappings = CONFIG.router.mappings;
-  res.locals.currentUser = req.user;
+  res.locals.currentUser = req.user || null;
   res.locals.currentURL = req.url;
 
   next();
