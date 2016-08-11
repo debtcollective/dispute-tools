@@ -1,0 +1,29 @@
+.Modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  user-select: none;
+  background-color: var(--k-background-color);
+}
+
+.Modal__close {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  border: none;
+  padding: 0.5rem;
+  background-color: transparent;
+
+  & > svg {
+    display: inline-block;
+    vertical-align: top;
+    fill: #fff;
+  }
+}
+
+.Modal__body {
+  padding: 5rem 0;
+}
