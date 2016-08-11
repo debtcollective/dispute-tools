@@ -16,10 +16,14 @@ html(lang="en")
       link(rel="stylesheet" href="/build/stylesheets/style.css")
 
   body
+    include ../includes/svg/sprite.svg
+
     header(class="Header flex items-center")
       div(class="wrapper flex flex-auto")
-        h1(class="flex-auto")
-          a(href="/" title="The Debt Collective") LOGO
+        h1.Header__logo.flex-auto
+          a.inline-block(href="/" title="The Debt Collective")
+            svg.Header__logo-svg.block
+              use(xlink:href="#svg-logo-light")
         nav
           ul(class="list-reset flex items-center -fh")
             li(class="px2")
