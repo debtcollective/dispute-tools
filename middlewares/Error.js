@@ -1,4 +1,4 @@
-module.exports = function(err, req, res) {
+module.exports = function(err, req, res, next) {
   logger.error(err);
   logger.error(err.stack);
 

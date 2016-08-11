@@ -44,10 +44,6 @@ const middlewares = [
     path: 'middlewares/Router.js',
   },
   {
-    name: 'Error Not Found',
-    path: 'middlewares/NotFound.js',
-  },
-  {
     name: 'Error',
     path: 'middlewares/Error.js',
   },
