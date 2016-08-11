@@ -60,3 +60,4 @@ config.js
 knexfile.js
 build/
 public/build
+views/includes/svg/sprite.symbol.html
