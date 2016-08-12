@@ -58,6 +58,7 @@
     "bcrypt-node": "^0.1.0",
     "bluebird": "^3.4.1",
     "body-parser": "^1.15.2",
+    "cli-table": "^0.3.1",
     "colors": "^1.1.2",
     "connect-redis": "^3.1.0",
     "cookie-parser": "^1.4.3",
@@ -84,6 +85,7 @@
     "req-flash": "0.0.3",
     "rimraf": "^2.5.4",
     "route-mappings": "^0.3.1",
+    "scandium-express": "0.0.3",
     "scripty": "^1.6.0",
     "uuid": "^2.0.2",
     "winston": "^2.2.0"

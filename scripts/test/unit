@@ -5,4 +5,4 @@ export NODE_ENV=test
 npm run utils:resetdb
 npm run utils:knexreset
 
-istanbul cover tests/unit.js --dir coverage/unit/ -- "$1"
+istanbul cover tests/unit.js --dir coverage/unit/  -- "$1"
