@@ -8,9 +8,16 @@ const routeMappings = RouteMappings()
     as: 'signup',
   })
 
-  .resources('/Users', (mappings) =>
-    mappings()
-      .get('/activation', { as: 'activation' })
-  );
+  .get('/acl', {
+    to: 'ACL#index',
+    as: 'acl',
+  })
+
+  .resources('/Users', (mappings) => {
+    return mappings()
+      .get('/activation', {
+        as: 'activation',
+      });
+  });
 
 module.exports = routeMappings;

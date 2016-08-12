@@ -1,6 +1,7 @@
 /* globals logger, CONFIG, neonode, ACL */
 
 const _ = require('lodash');
+const Table = require('cli-table');
 _.mixin(require('lodash-inflection'));
 
 const routeMapper = CONFIG.router;
@@ -9,9 +10,12 @@ const router = global.neonode.express.Router();
 
 logger.info('Loading routes...');
 
-logger.info('Routes');
-
 const _helpers = [];
+
+const table = new Table({
+  head: ['Path', 'Method', 'Controller', 'Action'],
+  // colWidths: [40, 7, ],
+});
 
 routeMapper.routes.forEach((route) => {
   const _handler = route.handler.slice();
@@ -24,8 +28,14 @@ routeMapper.routes.forEach((route) => {
   const controller = route._resourceName || _handler.pop();
 
   verbs.forEach((verb) => {
-    const padded = (`${verb.toUpperCase()}      `).substr(0, 7);
-    logger.info(`${padded} ${route.path}   ${controller}#${action}`);
+    table.push(
+      [
+        route.path,
+        verb.toUpperCase(),
+        controller,
+        action,
+      ]
+    );
 
     const controllerObject = neonode.controllers[controller];
     const controllerMethod = controllerObject && controllerObject[action];
@@ -82,6 +92,8 @@ routeMapper.routes.forEach((route) => {
     router.route(route.path)[verb](args);
   });
 });
+
+logger.info(`Routes: \n${table.toString()}\n`);
 
 logger.info('---------------------------------\n');
 

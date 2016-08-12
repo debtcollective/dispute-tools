@@ -3,6 +3,7 @@ module.exports = {
     [false],
     ['activation', true],
     ['create', true],
+    ['new', true],
   ],
   User: [
     [false],
