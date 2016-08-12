@@ -9,12 +9,8 @@ const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'))
 describe('RESTfulACL', () => {
   let usersResult;
   let req;
-  //
-  // before(function() {
-  //
-  // });
 
-  beforeEach(function() {
+  beforeEach(function beforeEach() {
     this.timeout(10000);
 
     req = {
@@ -32,61 +28,59 @@ describe('RESTfulACL', () => {
       ))(req);
 
       // Mock ACL object;
-      const getHandler = ACL.getHandler;
+    const getHandler = ACL.getHandler;
 
-      global.ACL = {
-        getHandler,
-        middlewares: {},
-        resources: {
-          Users: {
-            Visitor: [
-              [false],
-              ['activation', true],
-            ],
-            User: [
-              ['show', (req) => {
-                if (req.params.id === req.user.id) {
-                  return true;
-                }
+    global.ACL = {
+      getHandler,
+      middlewares: {},
+      resources: {
+        Users: {
+          Visitor: [
+            [false],
+            ['activation', true],
+          ],
+          User: [
+            ['show', (request) => {
+              if (request.params.id === request.user.id) {
+                return true;
+              }
 
-                return false;
-              }],
-            ],
-            Admin: [true],
-          },
+              return false;
+            }],
+          ],
+          Admin: [true],
         },
-      };
+      },
+    };
 
-      // Create users;
-      const users = [
-        new User({
-          email: 'user1@example.com',
-          password: '12345678',
-          role: 'User',
-        }).save(),
-        new User({
-          email: 'user2@example.com',
-          password: '12345678',
-          role: 'User',
-        }).save(),
-        new User({
-          email: 'user3@example.com',
-          password: '12345678',
-          role: 'Admin',
-        }).save(),
-      ];
+    // Create users;
+    const users = [
+      new User({
+        email: 'user1@example.com',
+        password: '12345678',
+        role: 'User',
+      }).save(),
+      new User({
+        email: 'user2@example.com',
+        password: '12345678',
+        role: 'User',
+      }).save(),
+      new User({
+        email: 'user3@example.com',
+        password: '12345678',
+        role: 'Admin',
+      }).save(),
+    ];
 
-      return Promise.all(users).then((ids) => {
-        ids = ids.map((id) => {
-          return id[0];
-        });
-
-        return User.query().whereIn('id', ids).then((result) => {
-          usersResult = result;
-        });
-      }).catch((err) => {
-        console.log(err)
+    return Promise.all(users).then((ids) => {
+      ids = ids.map((id) => {
+        return id[0];
       });
+
+      return User.query().whereIn('id', ids).then((result) => {
+        usersResult = result;
+      });
+    });
   });
 
   afterEach(() => {

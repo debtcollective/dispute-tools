@@ -1,66 +1,41 @@
-/* globals logger */
+/* globals logger, CONFIG */
 
 module.exports = (err, req, res, next) => {
   logger.error(err);
-  logger.error(err.stack);
+
+  let status;
+
+  if (err.name) {
+    switch (err.name) {
+      case 'NotFoundError':
+        status = 404;
+        break;
+      case 'ForbiddenError':
+        status = 403;
+        break;
+      default:
+        status = 500;
+        break;
+    }
+  }
+
+  res.status(status);
+
+  const options = {
+    message: err.message || '',
+    error: `Error\n\n${JSON.stringify(err)}`,
+  };
+
+  if (['development', 'test'].indexOf(CONFIG.environment) !== -1) {
+    options.error = `Error\n\n${JSON.stringify(err)} \n\nStack: ${err.stack}`;
+  }
 
   res.format({
     html() {
-      if (err.name) {
-        switch (err.name) {
-          case 'NotFoundError':
-
-            res.status(404).render('shared/404.pug', {
-              message: err.message,
-            });
-
-            break;
-          case 'ForbiddenError':
-            res.status(403).render('shared/500.pug', {
-              error: err.stack,
-            });
-
-            break;
-          default:
-            res.status(500).render('shared/500.pug', {
-              error: `Error\n\n${JSON.stringify(err)} \n\nStack: ${err.stack}`,
-            });
-
-            break;
-        }
-      }
-
-      return res.status(500).render('shared/500.pug', {
-        error: `Error\n\n${JSON.stringify(err)} \n\nStack: ${err.stack}`,
-      });
+      res.render(`shared/${status}.pug`, options);
     },
     json() {
-      if (err.name) {
-        switch (err.name) {
-          case 'NotFoundError':
-            res.status(404).json({
-              error: err.message,
-            });
-
-            break;
-          case 'ForbiddenError':
-            res.status(403).json({
-              error: err.message,
-            });
-
-            break;
-          default:
-            res.status(500).json({
-              error: err.message,
-            });
-
-            break;
-        }
-      }
-
-      return res.status(500).json({
-        error: err.message,
-      });
+      res.json(options);
     },
   });
 };
