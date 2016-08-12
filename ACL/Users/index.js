@@ -1,12 +1,12 @@
 module.exports = {
   Visitor: [
-    // [false],
-    // ['new', true],
-    // ['create', true],
-    // ['activation', true],
-    true,
+    [false],
+    ['activation', true],
+    ['create', true],
   ],
   User: [
+    [false],
+    // ['activation', false]
     ['edit', 'update', 'show', (req) => {
       if (req.params.id === req.user.id) {
         return true;
@@ -16,5 +16,7 @@ module.exports = {
     }],
   ],
   // CollectiveManager: [],
-  // Admin: [],
+  Admin: [
+    [true],
+  ],
 };

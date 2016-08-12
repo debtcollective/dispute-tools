@@ -25,7 +25,15 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
     },
 
     index(req, res) {
-      res.status(501).send('Not implemented');
+      User.query().then((users) => {
+        req.restifyACL(users).then((result) => {
+          res.json(result);
+        }).catch((err) => {
+          console.log(err)
+        })
+      });
+
+      // res.status(501).send('Not implemented');
     },
 
     show(req, res) {
@@ -42,9 +50,9 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       user.role = 'User';
 
       user.save()
-        .then(() =>
-          res.redirect(CONFIG.router.helpers.Users.activation.url())
-        )
+        .then(() => {
+          res.redirect(CONFIG.router.helpers.Users.activation.url());
+        })
         .catch((err) => {
           res.status(400);
 
