@@ -17,23 +17,17 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             return next(new NotFoundError(`User ${req.params.id}  not found)`));
           }
 
-          res.locals.user = result[0];
-
-          return next();
+          return req.restifyACL(result)
+            .then((_result) => {
+              res.locals.user = _result[0];
+              return next();
+            });
         })
         .catch(next);
     },
 
     index(req, res) {
-      User.query().then((users) => {
-        req.restifyACL(users).then((result) => {
-          res.json(result);
-        }).catch((err) => {
-          console.log(err)
-        })
-      });
-
-      // res.status(501).send('Not implemented');
+      res.status(501).send('Not implemented');
     },
 
     show(req, res) {
