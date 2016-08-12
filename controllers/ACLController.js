@@ -6,7 +6,7 @@ const filterRoutes = () => {
   const result = [];
 
   CONFIG.router.routes.forEach((route) => {
-    const action = route._actionName ? route.handler[1] : route._actionName;
+    const action = route._actionName || route.handler[1];
 
     if (['index', 'new', 'create'].indexOf(action) !== -1 || (route.verb === 'get'
       && route.path.search(':id') === -1)) {
@@ -32,8 +32,8 @@ const ACLController = Class('ACLController').inherits(RestfulController)({
           return handler.assert(req)
             .then((handlerResult) => {
               if (handlerResult === true) {
-                const resource = route.handler[0] ? route.handler[0] : route._resourceName;
-                const action = route._actionName ? route._actionName : route.handler[1];
+                const resource = route.handler[0] || route._resourceName;
+                const action = route._actionName || route.handler[1];
 
                 response[resource] = response[resource] || {};
 

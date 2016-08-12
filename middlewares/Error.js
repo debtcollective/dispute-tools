@@ -32,7 +32,7 @@ module.exports = (err, req, res, next) => {
 
   res.format({
     html() {
-      res.render(`shared/${status}.pug`, options);
+      res.render(`shared/${status}`, options);
     },
     json() {
       res.json(options);

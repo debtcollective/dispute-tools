@@ -43,7 +43,7 @@ routeMapper.routes.forEach((route) => {
       && controllerObject.constructor.beforeActions) || [];
 
     if (!controllerObject) {
-      throw new Error(`Controller ${controller} is missing`);
+      throw new Error(`Controller '${controller}' is missing`);
     }
 
     if (!controllerMethod) {
@@ -64,7 +64,6 @@ routeMapper.routes.forEach((route) => {
       }).map((item) => {
         return item.before;
       }));
-
 
       filters.forEach((filter) => {
         if (_.isString(filter)) { // if is string look for the method in the same controller

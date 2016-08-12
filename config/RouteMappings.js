@@ -1,7 +1,10 @@
 const RouteMappings = require('route-mappings');
 
 const routeMappings = RouteMappings()
-  .get('/', { to: 'Home#index', as: 'root' })
+  .get('/', {
+    to: 'Home#index',
+    as: 'root',
+  })
 
   .get('/signup', {
     to: 'Users#new',
@@ -17,6 +20,7 @@ const routeMappings = RouteMappings()
     return mappings()
       .get('/activation', {
         as: 'activation',
+        to: 'Users#activation',
       });
   });
 
