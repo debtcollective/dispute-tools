@@ -85,7 +85,7 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
           if (result !== 1) {
             req.flash('error', 'Invalid reset password token');
 
-            return res.redirect(CONFIG.router.helpers.resetPassword.ulr());
+            return res.redirect(CONFIG.router.helpers.resetPassword.url());
           }
 
           res.render('sessions/showPasswordForm');
@@ -100,7 +100,7 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
           if (result !== 1) {
             req.flash('error', 'Invalid reset password token');
 
-            return res.redirect(CONFIG.router.helpers.resetPassword.ulr());
+            return res.redirect(CONFIG.router.helpers.resetPassword.url());
           }
 
           return result[0];
@@ -110,7 +110,7 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
             req.flash('error', 'Passwords mismatch');
 
             return res.redirect(CONFIG.router.helpers
-              .resetPasswordWithToken(user.resetPasswordToken));
+              .resetPasswordWithToken.url(user.resetPasswordToken));
           }
 
           user.password = req.body.password;
