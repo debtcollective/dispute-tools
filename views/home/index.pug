@@ -1,5 +1,16 @@
 extends ../layouts/application.pug
 
+block styles
+  link(rel="stylesheet" href="/build/stylesheets/home.css")
+
 block content
   .wrapper
     | home#index
+
+block scripts
+  script(src="/build/javascripts/home.js")
+  script.
+    var options = {
+      currentUser: !{JSON.stringify(currentUser)}
+    };
+    new HomeView(options);
