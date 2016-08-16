@@ -9,6 +9,10 @@ const UserMailer = Class('UserMailer').inherits(BaseMailer)({
   sendActivation: function sendActivation(...args) {
     return this._send('sendActivation', ...args);
   },
+
+  sendResetPasswordLink: function sendResetPasswordLink(...args) {
+    return this._send('sendResetPasswordLink', ...args);
+  },
 });
 
 module.exports = UserMailer;

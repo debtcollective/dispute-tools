@@ -50,6 +50,7 @@ const User = Class('User').inherits(Krypton.Model)({
     'email',
     'encryptedPassword',
     'activationToken',
+    'resetPasswordToken',
     'role',
     'createdAt',
     'updatedAt',
