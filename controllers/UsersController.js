@@ -43,7 +43,9 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
       user.save()
         .then(() =>
-          res.redirect(CONFIG.router.helpers.Users.activation.url())
+          res.render('users/activation.pug', {
+            email: user.email
+          })
         )
         .catch((err) => {
           res.status(400);

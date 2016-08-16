@@ -7,4 +7,9 @@ block content
   .wrapper.py4
     div(class="max-width-1 mx-auto")
       h3 Verify email
+
       p.-fw-500.pt2 Before you can continue on The Debt Collective page, we need you to verify your email address.
+
+      if email
+        p.-fw-500.pt4.pb1 An email containing verification instructions was sent to:
+        p.-primary= email
