@@ -1,0 +1,41 @@
+.Alert {
+  position: relative;
+  padding: .75rem 50px;
+
+  &.-success {
+    background-color: #bae88b;
+    color: #2c5200;
+  }
+
+  &.-error {
+    background-color: #f99;
+    color: #7a0000;
+  }
+
+  &.-warning {
+    background-color: #f0e990;
+    color: #784e00;
+  }
+
+  &.-info {
+    background-color: #96c5fa;
+    color: #00499c;
+  }
+}
+
+.Alert__close {
+  position: absolute;
+  right: .55rem;
+  top: .55rem;
+  padding: .5rem;
+  background: none;
+  border: none;
+
+  & > svg {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    vertical-align: top;
+    fill: rgba(0,0,0,.5);
+  }
+}
