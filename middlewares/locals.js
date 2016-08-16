@@ -1,3 +1,5 @@
+var stateNames = require('datasets-us-states-names');
+
 module.exports = function(req, res, next) {
   if (CONFIG.env().sessions !== false) {
     const token = req.csrfToken();
@@ -13,6 +15,7 @@ module.exports = function(req, res, next) {
   res.locals.routeMappings = CONFIG.router.mappings;
   res.locals.currentUser = req.user || null;
   res.locals.currentURL = req.url;
+  res.locals.stateNames = stateNames;
 
   next();
 }
