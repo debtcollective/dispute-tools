@@ -17,5 +17,7 @@ module.exports = function(req, res, next) {
   res.locals.currentURL = req.url;
   res.locals.stateNames = stateNames;
 
+  req.role = req.user && req.user.role || 'Visitor';
+
   next();
 }

@@ -40,6 +40,10 @@ const middlewares = [
     path: 'middlewares/flashMessages.js',
   },
   {
+    name: 'RestifyACL',
+    path: 'middlewares/RestifyACL.js',
+  },
+  {
     name: 'Router',
     path: 'middlewares/Router.js',
   },

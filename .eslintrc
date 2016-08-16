@@ -3,14 +3,18 @@
     "es6": true,
     "node": true,
     "mocha": true,
-    "browser": true
+    "browser": true,
   },
   "plugins" : [
     "mocha"
   ],
   "extends": "airbnb-base",
   "parserOptions": {
-    "sourceType": "module"
+    "ecmaVersion": 7,
+    "sourceType": "module",
+    # "ecmaFeatures": {
+    #   "modules": true,
+    # }
   },
   "rules" : {
     "new-cap": [

@@ -17,9 +17,11 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             return next(new NotFoundError(`User ${req.params.id}  not found)`));
           }
 
-          res.locals.user = result[0];
-
-          return next();
+          return req.restifyACL(result)
+            .then((_result) => {
+              res.locals.user = _result[0];
+              return next();
+            });
         })
         .catch(next);
     },
