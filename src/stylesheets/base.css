@@ -135,6 +135,10 @@ a {
   color: color(var(--k-color-palette-danger) tint(40));
 }
 
+.-primary {
+  color: var(--k-color-palette-primary);
+}
+
 .-danger {
   color: var(--k-color-palette-danger);
 }
