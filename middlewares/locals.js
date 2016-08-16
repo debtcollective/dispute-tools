@@ -12,10 +12,13 @@ module.exports = function(req, res, next) {
 
   }
 
+  if (!req.user) {
+    res.locals.stateNames = stateNames;
+  }
+
   res.locals.routeMappings = CONFIG.router.mappings;
   res.locals.currentUser = req.user || null;
   res.locals.currentURL = req.url;
-  res.locals.stateNames = stateNames;
 
   req.role = req.user && req.user.role || 'Visitor';
 
