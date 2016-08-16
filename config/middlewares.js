@@ -32,6 +32,14 @@ const middlewares = [
     path: 'middlewares/CSRFError.js',
   },
   {
+    name: 'Passport Initialize',
+    path: 'middlewares/PassportInit.js',
+  },
+  {
+    name: 'Passport Session',
+    path: 'middlewares/PassportSession.js',
+  },
+  {
     name: 'Locals',
     path: 'middlewares/locals.js',
   },
