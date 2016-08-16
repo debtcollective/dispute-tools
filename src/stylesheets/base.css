@@ -20,7 +20,14 @@
 @import './lib/kabinett/utilities/type-font-scale';
 @import './lib/kabinett/utilities/aria';
 
+
+
 @import './utils';
+@import './components/Header';
+@import './components/Modal';
+@import './components/Dropdown';
+@import './components/Alert';
+
 
 /* KABINETT CONFIGURATION */
 :root {
@@ -29,6 +36,7 @@
   --k-color: #fff;
 
   --k-color-palette-primary: #f04c34;
+  --k-color-palette-danger: #d0021b;
 
   --k-h1: 119px;
   --k-h2: 67px;
@@ -54,4 +62,79 @@ a {
     text-decoration: line-through;
     opacity: .5;
   }
+}
+
+.wrapper {
+  max-width: 980px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* @TODO: move to kabinett */
+.-k-input {
+  height: 45px;
+  font-size: 16px;
+  padding: 0 1rem;
+  border: none;
+  border-radius: 2px;
+}
+
+.-k-button {
+  height: 45px;
+  font-size: 16px;
+  padding: 0 1rem;
+  border: none;
+  border-radius: 2px;
+
+  background-color: var(--k-color-palette-primary);
+  color: white;
+}
+
+.-k-select {
+  position: relative;
+  height: 45px;
+  border: none;
+  border-radius: 2px;
+  background-color: #fff;
+  color: inherit;
+
+  &::after {
+    content: "▾";
+    position: absolute;
+    top: 0;
+    right: 1rem;
+    line-height: 45px;
+    pointer-events: none;
+    color: currentColor;
+  }
+
+  & > select {
+    font-size: 16px;
+    padding: 0 1rem;
+    height: 100%;
+    appearance: none;
+    border-radius: inherit;
+    background-color: transparent;
+  }
+}
+
+.-on-error {display: none}
+.error .-on-error,
+.error + .-on-error {display: block}
+
+.error > input,
+.error.-k-select {
+  color: var(--k-color-palette-danger);
+  background-color: color(var(--k-color-palette-danger) tint(80))
+}
+.error > select {
+  color: var(--k-color-palette-danger);
+}
+
+.error ::placeholder {
+  color: color(var(--k-color-palette-danger) tint(40));
+}
+
+.-danger {
+  color: var(--k-color-palette-danger);
 }
