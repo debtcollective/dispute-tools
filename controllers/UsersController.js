@@ -95,7 +95,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
         const users = yield User.query().where('activation_token', req.params.token);
 
         if (users.length !== 1) {
-          return res.render('users/activate');
+          return res.status(400).render('users/activate');
         }
 
         users[0].activationToken = null;
