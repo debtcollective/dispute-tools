@@ -26,14 +26,19 @@ html(lang="en")
               use(xlink:href="#svg-logo-light")
         nav
           ul(class="list-reset flex items-center -fh")
-            li(class="px2")
-              a(class="-font-bold" title="Browse Collectives") Collectives
-            li(class="px2")
-              a(class="-font-bold" title="Browse Tools and Services") Tools and Services
-            li(class="px2")
-              a(class="js-header-signup-link -font-bold" href=CONFIG.router.helpers.signup.url() title="Sign up") Sign up
-            li(class="pl2")
-              a(class="-font-bold" title="Log in") Log in
+            li.px2
+              a.Header__link.-fw-700(title="Browse Collectives") Collectives
+            li.px2
+              a.Header__link.-fw-700(title="Browse Tools and Services") Tools and Services
+            li.px2.pr3
+              a.Header__link.-fw-700(title="Donate") Donate
+            li.px2.pl4
+              a.js-header-signup-link.Header__link.-fw-700.-primary(
+                class=currentURL === CONFIG.router.helpers.signup.url() ? 'active' : ''
+                href=CONFIG.router.helpers.signup.url()
+                title="Join us") Join us
+            li.pl2
+              a.Header__link.-fw-700(title="Log in") Log in
 
     if errors
       .Alert.wrapper.center.-fw-500.-error

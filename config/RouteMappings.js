@@ -6,6 +6,11 @@ const routeMappings = RouteMappings()
     as: 'root',
   })
 
+  .get('/terms', {
+    to: 'Home#tos',
+    as: 'tos',
+  })
+
   .get('/signup', {
     to: 'Users#new',
     as: 'signup',
