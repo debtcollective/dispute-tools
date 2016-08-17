@@ -1,5 +1,5 @@
 extends ../layouts/UserMailer.pug
 
 block content
-  p= a(href=`${CONFIG.env().siteURL}${CONFIG.router.helpers.resetPasswordWithToken.url(user.resetPasswordToken)}`).
-    Click here to reset your password
+  p= a(href=`${CONFIG.env().siteURL}${CONFIG.router.helpers.activate.url(encodeURIComponent(user.activationToken))}`).
+    Click here to activate your account
