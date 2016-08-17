@@ -21,4 +21,20 @@ describe('UserMailer', () => {
       expect(response.envelope.to[0]).to.be.equal('success@simulator.amazonses.com');
     });
   });
+
+  it('Should execute a sendResetPasswordLink method', () => {
+    UserMailer.transport(CONFIG.env().mailers.transport);
+
+    return UserMailer.sendResetPasswordLink('success@simulator.amazonses.com', {
+      user: {
+        email: 'user@example.com',
+      },
+      _options: {
+        subject: 'Reset your password - The Debt Collective',
+      },
+    })
+    .then((response) => {
+      expect(response.envelope.to[0]).to.be.equal('success@simulator.amazonses.com');
+    });
+  });
 });

@@ -53,6 +53,10 @@ const routeMappings = RouteMappings()
       .get('/activation', {
         to: 'Users#activation',
         as: 'activation',
+      })
+      .get('/:token/activate', {
+        to: 'Users#activate',
+        as: 'activate'
       });
   });
 

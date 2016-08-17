@@ -2,6 +2,7 @@
 
 const path = require('path');
 const bcrypt = require('bcrypt-node');
+const Promise = require('bluebird');
 
 const passport = require(path.join(process.cwd(), 'lib', 'passport', 'local_strategy'));
 
@@ -20,9 +21,9 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
 
       passport.authenticate('local', (err, user, info) => {
         if (err) {
-          req.flash('error', err.message);
-
-          return res.redirect(CONFIG.router.helpers.login.url());
+          return res.status(400).render('sessions/new', {
+            error: err.message,
+          });
         }
 
         req.login(user, (err) => {
@@ -50,37 +51,37 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
     },
 
     sendResetEmail(req, res, next) {
-      User.query()
-        .where('email', req.body.email)
-        .then((result) => {
-          if (result.length !== 1) {
-            req.flash('error', 'Invalid email');
+      Promise.coroutine(function* sendResetEmailCoroutine() {
+        const user = yield User.query().where('email', req.body.email);
 
-            return res.redirect(CONFIG.router.helpers.resetPassword.url());
-          }
+        if (user.length !== 1) {
+          return res.status(400).render('sessions/showEmailForm', {
+            error: 'Invalid email',
+          });
+        }
 
-          return result[0];
-        })
-        .then((user) => {
-          user.resetPasswordToken = bcrypt.hashSync(CONFIG.env()
-            .sessions.secret + Date.now(), bcrypt.genSaltSync(12), null);
+        user[0].resetPasswordToken = bcrypt.hashSync(CONFIG.env()
+          .sessions.secret + Date.now(), bcrypt.genSaltSync(12), null);
 
-          return UserMailer.sendResetPasswordLink(user.email, {
-            user,
+        return user[0].save().then(() => {
+          return UserMailer.sendResetPasswordLink(user[0].email, {
+            user: user[0],
             _options: {
               subject: 'Reset your password - The Debt Collective',
             },
+          })
+          .then(() => {
+            req.flash('success', 'Check your email to reset your password');
+            return res.redirect(CONFIG.router.helpers.login.url());
           });
-        })
-        .then(() => {
-          req.flash('success', 'Check your email to reset your password');
-        })
-        .catch(next);
+        });
+      })()
+      .catch(next);
     },
 
     showPasswordForm(req, res, next) {
       User.query()
-        .where('resetPasswordToken', req.params.token)
+        .where('reset_password_token', req.params.token)
         .then((result) => {
           if (result !== 1) {
             req.flash('error', 'Invalid reset password token');
@@ -94,49 +95,43 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
     },
 
     resetPassword(req, res, next) {
-      User.query()
-        .where('resetPasswordToken', req.params.token)
-        .then((result) => {
-          if (result !== 1) {
-            req.flash('error', 'Invalid reset password token');
+      Promise.coroutine(function* resetPasswordCoroutine() {
+        const user = yield User.query().where('reset_password_token', req.params.token);
 
-            return res.redirect(CONFIG.router.helpers.resetPassword.url());
-          }
+        if (user.length !== 1) {
+          return res.status(400).render('sessions/showPasswordForm', {
+            error: 'Invalid reset password token',
+          });
+        }
 
-          return result[0];
-        })
-        .then((user) => {
-          if (req.body.password !== req.body.confirmPassword) {
-            req.flash('error', 'Passwords mismatch');
+        if (req.body.password !== req.body.confirmPassword) {
+          return res.status(400).render('sessions/showPasswordForm', {
+            error: 'Passwords mismatch',
+          });
+        }
 
-            return res.redirect(CONFIG.router.helpers
-              .resetPasswordWithToken.url(user.resetPasswordToken));
-          }
+        user[0].password = req.body.password;
+        user[0].resetPasswordToken = 'a';
 
-          user.password = req.body.password;
-          user.resetPasswordToken = null;
 
-          return user;
-        })
-        .then((user) => {
-          user.save()
-            .then(() => {
-              req.flash('success', 'Your password has been reset successfully.');
-              res.redirect(CONFIG.router.helpers.login.url());
-            })
-            .catch((err) => {
-              if (err.errors) {
-                res.locals.errors = err.errors;
+        return user[0].save()
+          .then(() => {
+            req.flash('success', 'Your password has been reset successfully.');
+            return res.redirect(CONFIG.router.helpers.login.url());
+          })
+          .catch((err) => {
+            if (err.errors) {
+              res.locals.errors = err.errors;
 
-                res.status(400);
+              res.status(400);
 
-                return res.render('sessions/showPasswordForm');
-              }
+              return res.render('sessions/showPasswordForm');
+            }
 
-              return next(err);
-            });
-        })
-        .catch(next);
+            return next(err);
+          });
+
+      })().catch(next)
     },
   },
 });

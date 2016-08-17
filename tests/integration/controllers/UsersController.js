@@ -14,17 +14,23 @@ const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'))
 const url = CONFIG.env().siteURL;
 const urls = CONFIG.router.helpers;
 
-global.UserMailer = {
-  sendActivation() {
-    return Promise.resolve();
-  },
-};
-
 describe('UsersController', () => {
   let user;
   let _csrf;
+  let _UserMailer;
 
   before(() => {
+    _UserMailer = global.UserMailer;
+
+    global.UserMailer = {
+      sendActivation() {
+        return Promise.resolve();
+      },
+      sendResetPasswordLink() {
+        return Promise.resolve();
+      },
+    };
+
     user = new User({
       email: 'user@example.com',
       password: '12345678',
@@ -35,7 +41,9 @@ describe('UsersController', () => {
   });
 
   after(() => {
-    truncate(User);
+    global.UserMailer = _UserMailer;
+
+    return truncate(User);
   });
 
   it(`As a Visitor, should 403 index ${urls.Users.url()}`, (done) => {
@@ -105,6 +113,16 @@ describe('UsersController', () => {
       .end((err, res) => {
         expect(err).to.be.equal(null);
         expect(res.status).to.equal(200);
+        done();
+      });
+  });
+
+  it('As A Visitor it Should activate a user with a valid token', (done) => {
+    agent.get(`${url}${urls.Users.activate.url(encodeURIComponent(user.activationToken))}`)
+      .set('Accept', 'text/html')
+      .end((err, res) => {
+        expect(err).to.be.equal(null);
+        expect(res.status).to.be.equal(200);
         done();
       });
   });

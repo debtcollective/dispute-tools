@@ -1,4 +1,5 @@
 extends ../layouts/UserMailer.pug
 
 block content
-  p= user.email
+  p= a(href=`${CONFIG.env().siteURL}${CONFIG.router.helpers.resetPasswordWithToken.url(user.resetPasswordToken)}`).
+    Click here to reset your password
