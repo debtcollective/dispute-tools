@@ -1,4 +1,6 @@
-import { mix } from './Utils';
+/* eslint no-console: ["error", { allow: ["warn"] }] */
+
+import mix from './Utils';
 import CustomEventSupport from './CustomEventSupport';
 import NodeSupport from './NodeSupport';
 
@@ -107,7 +109,7 @@ export default class Widget extends mix(NodeSupport, CustomEventSupport) {
   }
 
   _destroy() {
-    var childrenLength;
+    let childrenLength;
 
     if (this.element) {
       if (this.element.parentNode) {
@@ -117,7 +119,7 @@ export default class Widget extends mix(NodeSupport, CustomEventSupport) {
 
     if (this.children) {
       childrenLength = this.children.length;
-      while(childrenLength > 0) {
+      while (childrenLength > 0) {
         this.children[0].destroy();
         if (this.children.length === childrenLength) {
           this.children.shift();
@@ -138,10 +140,7 @@ export default class Widget extends mix(NodeSupport, CustomEventSupport) {
     if (this.__destroyed === true) {
       console.warn('calling on destroyed object');
     }
-    this.dispatch('beforeRender', {
-      element: element,
-      beforeElement: beforeElement
-    });
+    this.dispatch('beforeRender', { element, beforeElement });
     this._render(element, beforeElement);
     this.dispatch('render');
     return this;

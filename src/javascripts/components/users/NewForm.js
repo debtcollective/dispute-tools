@@ -2,6 +2,16 @@ import Checkit from 'checkit';
 import Widget from '../../lib/widget';
 
 export default class UserNewForm extends Widget {
+  static get constraints() {
+    return {
+      name: ['required'],
+      state: ['required'],
+      zip: ['required'],
+      email: ['required', 'email'],
+      password: ['required', 'minLength:8'],
+    };
+  }
+
   constructor(config) {
     super(config);
 
@@ -28,6 +38,8 @@ export default class UserNewForm extends Widget {
       ev.preventDefault();
       return this._displayFieldErrors(err.errors);
     }
+
+    return undefined;
   }
 
   _displayFieldErrors(errors) {
@@ -43,18 +55,10 @@ export default class UserNewForm extends Widget {
   }
 
   _getFieldsData() {
-    let data = {};
+    const data = {};
     Object.keys(UserNewForm.constraints).forEach(key => {
       data[key] = this[key].value;
     });
     return data;
   }
-};
-
-UserNewForm.constraints = {
-  'name': ['required'],
-  'state': ['required'],
-  'zip': ['required'],
-  'email': ['required', 'email'],
-  'password': ['required', 'minLength:8']
-};
+}

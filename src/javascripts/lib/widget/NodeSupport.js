@@ -1,10 +1,10 @@
 export default class NodeSupport {
-  appendChild (child) {
+  appendChild(child) {
     if (child.parent) {
       child.parent.removeChild(child);
     }
 
-    if (!this.hasOwnProperty('children')) {
+    if (Object.prototype.hasOwnProperty.call(this, 'children') === false) {
       this.children = [];
     }
 
@@ -17,7 +17,7 @@ export default class NodeSupport {
   }
 
   removeChild(child) {
-    let position = this.children.indexOf(child);
+    const position = this.children.indexOf(child);
 
     if (position !== -1) {
       this.children.splice(position, 1);

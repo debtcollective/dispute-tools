@@ -44,11 +44,11 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       user.role = 'User';
 
       user.save()
-        .then(() =>
+        .then(() => {
           res.render('users/activation.pug', {
-            email: user.email
-          })
-        )
+            email: user.email,
+          });
+        })
         .catch((err) => {
           res.status(400);
 

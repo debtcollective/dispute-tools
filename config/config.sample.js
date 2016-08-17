@@ -1,9 +1,9 @@
-var env = process.env.NODE_ENV || 'development';
-var path = require('path');
+const env = process.env.NODE_ENV || 'development';
+const path = require('path');
 
-var config = {
-  appName : 'TDC',
-  environment : env,
+const config = {
+  appName: 'TDC',
+  environment: env,
 
   env() {
     return config[config.environment];

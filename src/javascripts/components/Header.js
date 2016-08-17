@@ -6,8 +6,9 @@ export default class Header extends Widget {
   constructor(config) {
     super(config);
 
-    [].slice.call(document.querySelectorAll('[data-component-dropdown]'), 0)
-      .forEach(d => new Dropdown({element: d}));
+    [].slice.call(document.querySelectorAll('[data-component-dropdown]'), 0).forEach(d => {
+      return new Dropdown({ element: d });
+    });
 
     if (config.currentUser) return this._handleLoggedUser();
     return this._handleVisitorUser();
@@ -15,7 +16,7 @@ export default class Header extends Widget {
 
   _handleLoggedUser() {
     // register dropdown
-    console.error('_handleLoggedUser not implemented');
+    throw new Error('_handleLoggedUser not implemented');
   }
 
   _handleVisitorUser() {
@@ -27,7 +28,7 @@ export default class Header extends Widget {
     const signupModalElement = document.querySelector('[data-component-modal="signup"]');
 
     if (signupModalElement) {
-      this.signupModalInstance = new Modal({element: signupModalElement});
+      this.signupModalInstance = new Modal({ element: signupModalElement });
       signupLink.addEventListener('click', this._handleSignupClick.bind(this));
     }
   }
@@ -36,4 +37,4 @@ export default class Header extends Widget {
     ev.preventDefault();
     this.signupModalInstance.activate();
   }
-};
+}
