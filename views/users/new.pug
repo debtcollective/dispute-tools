@@ -3,7 +3,17 @@ extends ../layouts/application.pug
 block title
   | Sign up — The Debt Collective
 
+block styles
+  link(rel="stylesheet" href="/build/stylesheets/users/new.css")
+
 block content
-  .wrapper
-    | users#new
+  .wrapper.py4
     include ../includes/users/new-form.pug
+
+block scripts
+  script(src="/build/javascripts/users/new.js")
+  script.
+    var options = {
+      currentUser: !{JSON.stringify(currentUser)}
+    };
+    new ViewUsersNew(options);

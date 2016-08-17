@@ -18,7 +18,7 @@ html(lang="en")
   body
     include ../includes/svg/sprite.svg
 
-    header(class="Header flex items-center")
+    header(data-component-header class="Header flex items-center")
       div(class="wrapper flex flex-auto")
         h1.Header__logo.flex-auto
           a.inline-block(href="/" title="The Debt Collective")
@@ -31,11 +31,25 @@ html(lang="en")
             li(class="px2")
               a(class="-font-bold" title="Browse Tools and Services") Tools and Services
             li(class="px2")
-              a(class="-font-bold" href="/signup" title="Sign up") Sign up
+              a(class="js-header-signup-link -font-bold" href=CONFIG.router.helpers.signup.url() title="Sign up") Sign up
             li(class="pl2")
               a(class="-font-bold" title="Log in") Log in
 
+    if errors
+      .Alert.wrapper.center.-fw-500.-error
+        button.Alert__close
+          svg: use(xlink:href="#svg-close")
+        each val in errors
+          p= val
+
     block content
+
+    if !currentUser && currentURL !== CONFIG.router.helpers.signup.url()
+      .Modal(data-component-modal="signup" aria-hidden="true" role="dialog" aria-labelledby="modal-title")
+        button(class="Modal__close" aria-label="close")
+          svg(class="-s18"): use(xlink:href="#svg-close")
+        .Modal__body(role="document" tabindex="0")
+          include ../includes/users/new-form.pug
 
     block scripts
       script(src="/build/javascripts/application.js")

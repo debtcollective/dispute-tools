@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import foo from '../modules/foo';
 import { bar, baz } from '../modules/bar';
 

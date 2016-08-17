@@ -1,5 +1,5 @@
 export default class CustomEvent {
-  constructor (type, data) {
+  constructor(type, data) {
     this.bubbles = true;
     this.cancelable = true;
     this.currentTarget = null;
@@ -17,20 +17,20 @@ export default class CustomEvent {
     }
   }
 
-  stopPropagation () {
+  stopPropagation() {
     this.isPropagationStopped = true;
   }
 
-  preventDefault () {
+  preventDefault() {
     this.isDefaultPrevented = true;
   }
 
-  stopImmediatePropagation () {
+  stopImmediatePropagation() {
     this.preventImmediateHandlers();
     this.stopPropagation();
   }
 
-  preventImmediateHandlers () {
+  preventImmediateHandlers() {
     this.areImmediateHandlersPrevented = true;
   }
 }

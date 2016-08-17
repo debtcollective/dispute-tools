@@ -2,7 +2,7 @@ import CustomEvent from './CustomEvent';
 
 export default class CustomEventSupport {
   bind(type, eventHandler) {
-    let found, listeners;
+    let found;
 
     if (!this._eventListeners) {
       this._eventListeners = {};
@@ -14,7 +14,8 @@ export default class CustomEventSupport {
 
     found = false;
 
-    listeners = this._eventListeners[type];
+    const listeners = this._eventListeners[type];
+
     for (let i = 0; i < listeners.length; i++) {
       if (listeners[i] === eventHandler) {
         found = true;
@@ -30,7 +31,8 @@ export default class CustomEventSupport {
   }
 
   unbind(type, eventHandler) {
-    let i, found, listeners;
+    let i;
+    let found;
 
     found = false;
     i = 0;
@@ -39,13 +41,14 @@ export default class CustomEventSupport {
       this._eventListeners = {};
     }
 
-    if (typeof eventHandler == 'undefined') {
+    if (typeof eventHandler === 'undefined') {
       this._eventListeners[type] = [];
     }
 
-    listeners = this._eventListeners[type] || [];
+    const listeners = this._eventListeners[type] || [];
+
     for (i = 0; i < listeners.length; i++) {
-      if(listeners[i] == eventHandler) {
+      if (listeners[i] === eventHandler) {
         found = true;
         break;
       }
@@ -59,8 +62,6 @@ export default class CustomEventSupport {
   }
 
   dispatch(type, data) {
-    let event, listeners, instance, i;
-
     if (!this._eventListeners) {
       this._eventListeners = {};
     }
@@ -69,15 +70,15 @@ export default class CustomEventSupport {
       data = {};
     }
 
-    if (data.hasOwnProperty('target') === false) {
+    if (Object.prototype.hasOwnProperty.call(data, 'target') === false) {
       data.target = this;
     }
 
-    event = new CustomEvent(type, data);
-    listeners = this._eventListeners[type] || [];
-    instance = this;
+    const event = new CustomEvent(type, data);
+    const listeners = this._eventListeners[type] || [];
+    const instance = this;
 
-    for (i = 0; i < listeners.length; i = i + 1) {
+    for (let i = 0; i < listeners.length; i++) {
       listeners[i].call(instance, event);
       if (event.areImmediateHandlersPrevented === true) {
         break;
