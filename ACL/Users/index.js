@@ -2,6 +2,7 @@ module.exports = {
   Visitor: [
     [false],
     ['activation', true],
+    ['activate', true],
     ['create', true],
     ['new', true],
   ],

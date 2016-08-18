@@ -87,6 +87,8 @@
     "neon": "^2.0.0",
     "nodemailer": "^2.5.0",
     "nodemailer-ses-transport": "^1.4.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "pg": "^6.0.3",
     "pluralize": "^3.0.0",

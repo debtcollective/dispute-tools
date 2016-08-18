@@ -1,5 +1,7 @@
 /* globals Class, RestfulController, User, NotFoundError, CONFIG */
 
+const Promise = require('bluebird');
+
 const UsersController = Class('UsersController').inherits(RestfulController)({
   beforeActions: [
     {
@@ -88,6 +90,23 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
     activation(req, res) {
       res.render('users/activation.pug');
+    },
+
+    activate(req, res, next) {
+      Promise.coroutine(function* activateCoroutine() {
+        const users = yield User.query().where('activation_token', req.params.token);
+
+        if (users.length !== 1) {
+          return res.status(400).render('users/activate');
+        }
+
+        users[0].activationToken = null;
+
+        return users[0].save().then(() => {
+          res.redirect(CONFIG.router.helpers.login.url());
+        });
+      })()
+      .catch(next);
     },
   },
 });

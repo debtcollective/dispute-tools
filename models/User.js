@@ -50,6 +50,7 @@ const User = Class('User').inherits(Krypton.Model)({
     'email',
     'encryptedPassword',
     'activationToken',
+    'resetPasswordToken',
     'role',
     'createdAt',
     'updatedAt',
@@ -72,18 +73,20 @@ const User = Class('User').inherits(Krypton.Model)({
 
       // If password is present hash password and set it as encryptedPassword
       model.on('beforeSave', (done) => {
-        if (model.password) {
-          bcrypt.hash(model.password, bcrypt.genSaltSync(10), null, (err, hash) => {
-            if (err) {
-              return done(err);
-            }
-
-            model.encryptedPassword = hash;
-            return done();
-          });
+        if (!model.password) {
+          return done();
         }
 
-        done();
+        bcrypt.hash(model.password, bcrypt.genSaltSync(10), null, (err, hash) => {
+          if (err) {
+            return done(err);
+          }
+
+          model.encryptedPassword = hash;
+
+          model.password = null;
+          return done();
+        });
       });
 
       // Updates old email when record saves
