@@ -18,27 +18,7 @@ html(lang="en")
   body
     include ../includes/svg/sprite.svg
 
-    header(data-component-header class="Header flex items-center")
-      div(class="wrapper flex flex-auto")
-        h1.Header__logo.flex-auto
-          a.inline-block(href="/" title="The Debt Collective")
-            svg.Header__logo-svg.block
-              use(xlink:href="#svg-logo-light")
-        nav
-          ul(class="list-reset flex items-center -fh")
-            li.px2
-              a.Header__link.-fw-700(title="Browse Collectives") Collectives
-            li.px2
-              a.Header__link.-fw-700(title="Browse Tools and Services") Tools and Services
-            li.px2.pr3
-              a.Header__link.-fw-700(title="Donate") Donate
-            li.px2.pl4
-              a.js-header-signup-link.Header__link.-fw-700.-primary(
-                class=currentURL === CONFIG.router.helpers.signup.url() ? 'active' : ''
-                href=CONFIG.router.helpers.signup.url()
-                title="Join us") Join us
-            li.pl2
-              a.Header__link.-fw-700(title="Log in") Log in
+    include ../includes/header
 
     if errors
       .Alert.wrapper.center.-fw-500.-error
