@@ -29,7 +29,7 @@ html(lang="en")
 
     block content
 
-    if !currentUser && currentURL !== CONFIG.router.helpers.signup.url()
+    if !currentUser && currentURL !== routeMappings.signup.url()
       .Modal(data-component-modal="signup" aria-hidden="true" role="dialog" aria-labelledby="modal-title")
         button(class="Modal__close" aria-label="close")
           svg(class="-s18"): use(xlink:href="#svg-close")

@@ -31,7 +31,7 @@
       bottom: 0;
       height: 3px;
       width: 100%;
-      background-color: red;
+      background-color: var(--k-color-palette-primary);
       transform: translateY(10px);
     }
   }

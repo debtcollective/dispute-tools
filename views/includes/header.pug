@@ -19,6 +19,6 @@ header(data-component-header class="Header flex items-center")
         li.px2.pr3
           +headerLink(null, 'Donate')(title="Support Us")
         li.px2.pl4
-          +headerLink(CONFIG.router.helpers.signup.url(), 'Join us')(class='js-header-signup-link -primary')
+          +headerLink(routeMappings.signup.url(), 'Join us')(class='js-header-signup-link -primary')
         li.pl2
-          +headerLink(CONFIG.router.helpers.login.url(), 'Log in')
+          +headerLink(routeMappings.login.url(), 'Log in')
