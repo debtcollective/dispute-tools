@@ -1,0 +1,22 @@
+:root {
+  --k-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Helvetica, sans-serif;
+  --k-monospace-font-family: "Ubuntu Mono", "Source Code Pro", Consolas, monospace;
+  --k-font-size: 16px;
+  --k-line-height: 1.618;
+  --k-background-color: #fff;
+  --k-color: #111;
+
+  --k-h1: 2.3125rem;
+  --k-h2: 1.75rem;
+  --k-h3: 1.3125rem;
+  --k-h4: 1rem;
+  --k-h5: .75rem;
+  --k-h6: .5625rem;
+  --k-font-caption-size: var(--k-h5);
+
+  --k-color-palette-primary: rebeccapurple;
+  --k-color-palette-danger: #e74c3c;
+  --k-color-palette-info: #3498db;
+  --k-color-palette-success: #2ecc71;
+  --k-color-palette-warning: #f1c40f;
+}

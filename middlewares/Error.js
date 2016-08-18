@@ -1,40 +1,41 @@
-module.exports = function(err, req, res, next) {
-  logger.error(err);
-  logger.error(err.stack);
+/* globals logger, CONFIG */
 
-  if (req.knex) {
-    req.knex.destroy(function () {});
-  }
+module.exports = (err, req, res, next) => {
+  logger.error(err);
+
+  let status;
 
   if (err.name) {
     switch (err.name) {
       case 'NotFoundError':
-        return res.status(404).render('shared/404.html', {
-          message: err.message,
-          layout: false
-        });
+        status = 404;
         break;
       case 'ForbiddenError':
-        return res.status(403).render('shared/500.html', {
-          layout: false,
-          error: err.stack
-        });
+        status = 403;
         break;
       default:
+        status = 500;
         break;
     }
   }
 
-  res.status(500);
+  res.status(status);
+
+  const options = {
+    message: err.message || '',
+    error: `Error\n\n${JSON.stringify(err)}`,
+  };
+
+  if (['development', 'test'].indexOf(CONFIG.environment) !== -1) {
+    options.error = `Error\n\n${JSON.stringify(err)} \n\nStack: ${err.stack}`;
+  }
+
   res.format({
-    html: function () {
-      res.render('shared/500.html', {
-        layout: false,
-        error: 'Error:\n\n' + JSON.stringify(err) + '\n\nStack:\n\n' + err.stack
-      });
+    html() {
+      res.render(`shared/${status}`, options);
     },
-    json: function () {
-      res.json(err);
-    }
+    json() {
+      res.json(options);
+    },
   });
-}
+};

@@ -1,56 +1,64 @@
-var middlewares = [
+const middlewares = [
   {
-    name : 'CORS',
-    path : 'middlewares/cors.js'
+    name: 'CORS',
+    path: 'middlewares/cors.js',
   },
   {
-    name : 'Cookie Parser',
-    path : 'middlewares/cookieParser.js'
+    name: 'Cookie Parser',
+    path: 'middlewares/cookieParser.js',
   },
   {
-    name : 'Body Parser URL',
-    path : 'middlewares/bodyParserURL.js'
+    name: 'Body Parser URL',
+    path: 'middlewares/bodyParserURL.js',
   },
   {
-    name : 'Body Parser JSON',
-    path : 'middlewares/bodyParserJSON.js'
+    name: 'Body Parser JSON',
+    path: 'middlewares/bodyParserJSON.js',
   },
   {
-    name : 'Method Override',
-    path : 'middlewares/MethodOverride.js'
+    name: 'Method Override',
+    path: 'middlewares/MethodOverride.js',
   },
   {
-    name : 'Redis',
-    path : 'middlewares/redis.js'
+    name: 'Redis',
+    path: 'middlewares/redis.js',
   },
   {
-    name : 'CSRF',
-    path : 'middlewares/CSRF.js'
+    name: 'CSRF',
+    path: 'middlewares/CSRF.js',
   },
   {
-    name : 'CSRF Error',
-    path : 'middlewares/CSRFError.js'
+    name: 'CSRF Error',
+    path: 'middlewares/CSRFError.js',
   },
   {
-    name : 'Locals',
-    path : 'middlewares/locals.js'
+    name: 'Passport Initialize',
+    path: 'middlewares/PassportInit.js',
   },
   {
-    name : 'Flash Messages',
-    path : 'middlewares/flashMessages.js'
+    name: 'Passport Session',
+    path: 'middlewares/PassportSession.js',
   },
   {
-    name : 'Router',
-    path : 'middlewares/Router.js'
+    name: 'Locals',
+    path: 'middlewares/locals.js',
   },
   {
-    name : 'Error Not Found',
-    path : 'middlewares/NotFound.js'
+    name: 'Flash Messages',
+    path: 'middlewares/flashMessages.js',
   },
   {
-    name : 'Error',
-    path : 'middlewares/Error.js'
-  }
+    name: 'RestifyACL',
+    path: 'middlewares/RestifyACL.js',
+  },
+  {
+    name: 'Router',
+    path: 'middlewares/Router.js',
+  },
+  {
+    name: 'Error',
+    path: 'middlewares/Error.js',
+  },
 ];
 
 module.exports = middlewares;

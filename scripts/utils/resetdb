@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+psql -c 'DROP DATABASE IF EXISTS "debtcollective_test"'
+
+psql -c 'CREATE DATABASE "debtcollective_test"'

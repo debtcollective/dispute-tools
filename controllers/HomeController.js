@@ -1,24 +1,26 @@
-var HomeController = Class('HomeController').inherits(BaseController)({
-  beforeActions : [
+/* globals Class, BaseController, logger */
+
+const HomeController = Class('HomeController').inherits(BaseController)({
+  beforeActions: [
     {
-      before : ['_beforeIndex'],
-      actions : ['index']
-    }
+      before: ['_beforeIndex'],
+      actions: ['index'],
+    },
   ],
-  prototype : {
-    _beforeIndex : function(req, res, next) {
+  prototype: {
+    _beforeIndex(req, res, next) {
       logger.info('Before Index');
       next();
     },
 
-    index : function(req, res, next) {
-      res.render('home/index.html', {layout : 'application', posts : ["1", "2", "3", "4", "5"]});
+    index(req, res) {
+      res.render('home/index.pug');
     },
 
-    noLayout : function(req, res) {
-      res.render('home/index.html', {layout : false, posts : ["1", "2", "3", "4", "5"]});
+    tos(req, res) {
+      res.render('home/tos.pug');
     },
-  }
+  },
 });
 
 module.exports = new HomeController();

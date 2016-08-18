@@ -1,0 +1,21 @@
+@import './variables';
+
+:root {
+  font-family: var(--k-font-family);
+  font-size: var(--k-font-size);
+  line-height: var(--k-line-height);
+  background-color: var(--k-background-color);
+  color: var(--k-color);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+svg {
+  fill: currentColor;
+}
+
+code, kbd, pre, samp {
+  font-family: var(--k-monospace-font-family);
+}

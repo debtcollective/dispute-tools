@@ -1,0 +1,35 @@
+/*
+ * Kabinett — Utilities Typography
+ */
+.-fw-100,
+.-font-thin {font-weight: 100}
+
+.-fw-200,
+.-font-extra-light,
+.-font-ultra-light {font-weight: 200}
+
+.-fw-300,
+.-font-light {font-weight: 300}
+
+.-fw-400,
+.-font-normal,
+.-font-book,
+.-font-regular {font-weight: 400}
+
+.-fw-500,
+.-font-medium {font-weight: 500}
+
+.-fw-600,
+.-font-semi-bold,
+.-font-demi-bold {font-weight: 600}
+
+.-fw-700,
+.-font-bold {font-weight: 700}
+
+.-fw-800,
+.-font-extra-bold,
+.-font-ultra-bold {font-weight: 800}
+
+.-fw-900,
+.-font-black,
+.-font-heavy {font-weight: 900}
