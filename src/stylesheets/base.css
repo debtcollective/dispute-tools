@@ -29,8 +29,8 @@
 @import './components/Alert';
 
 
-/* KABINETT CONFIGURATION */
 :root {
+  /* KABINETT CONFIGURATION */
   --k-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   --k-background-color: #000;
   --k-color: #fff;
@@ -43,6 +43,11 @@
   --k-h3: 37px;
   --k-h4: 21px;
   --k-font-caption-size: 12px;
+
+  /* BASSCSS CONFIGURATION */
+  /* bascss-layout */
+  --width-1: 23rem;
+  --width-2: 36rem;
 }
 
 
@@ -51,12 +56,14 @@
 * {margin: 0}
 
 body {
+  min-width: 1020px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 a {
   color: var(--k-color-palette-primary);
+  text-decoration: none;
 
   &:not([href]) {
     text-decoration: line-through;
