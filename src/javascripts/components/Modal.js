@@ -4,31 +4,51 @@ export default class Modal extends Widget {
   constructor(config) {
     super(config);
     this.closeButton = this.element.querySelector('.Modal__close');
-    this.bodyElement = this.element.querySelector('.Modal__body');
   }
 
+  /**
+  * @override
+  */
   activate() {
-    super.activate();
+    this.active = true;
+
     Modal._lastActiveElement = document.activeElement;
-    document.body.style.overflow = 'hidden';
+
+    Modal._scrollableElement.style.overflow = 'hidden';
+    Modal._mainElement.setAttribute('aria-hidden', this.active);
+
+    this.element.setAttribute('aria-hidden', !this.active);
+    this.element.classList.add('active');
+
     this._clickHandler = this.deactivate.bind(this);
     this.closeButton.addEventListener('click', this._clickHandler);
-    this.element.setAttribute('aria-hidden', !this.active);
-    this.bodyElement.setAttribute('tabindex', 0);
-    this.element.focus();
+
     return this;
   }
 
+  /**
+  * @override
+  */
   deactivate() {
-    super.deactivate();
-    document.body.style.overflow = 'auto';
+    this.active = false;
+
+    Modal._scrollableElement.style.overflow = 'auto';
+    Modal._mainElement.setAttribute('aria-hidden', this.active);
+
+    this.element.setAttribute('aria-hidden', !this.active);
+    this.element.classList.remove('active');
+
     this.closeButton.removeEventListener('click', this._clickHandler);
     this._clickHandler = null;
-    this.element.setAttribute('aria-hidden', !this.active);
-    this.bodyElement.setAttribute('tabindex', -1);
-    Modal._lastActiveElement.focus();
+
+    requestAnimationFrame(() => {
+      Modal._lastActiveElement.focus();
+    });
+
     return this;
   }
 }
 
+Modal._mainElement = document.getElementsByTagName('main')[0];
+Modal._scrollableElement = document.body;
 Modal._lastActiveElement = null;
