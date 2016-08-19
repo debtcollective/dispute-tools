@@ -48,6 +48,9 @@
   /* bascss-layout */
   --width-1: 23rem;
   --width-2: 36rem;
+
+  /* Platform Variables */
+  --header-height: 60px;
 }
 
 
@@ -74,6 +77,10 @@ a {
     text-decoration: line-through;
     opacity: .5;
   }
+}
+
+main {
+  padding-top: var(--header-height);
 }
 
 .wrapper {

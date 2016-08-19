@@ -1,5 +1,9 @@
 .Header {
-  height: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
 }
 
 .Header__logo {
