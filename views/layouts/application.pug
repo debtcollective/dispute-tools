@@ -21,11 +21,18 @@ html(lang="en")
     main(aria-hidden="false")
       include ../includes/header
 
-      if errors
+      if errors || error
         .Alert.wrapper.center.-fw-500.-error
-          button.Alert__close
-            svg: use(xlink:href="#svg-close")
-          each val in errors
+          button.Alert__close: svg: use(xlink:href="#svg-close")
+          p= error
+          if errors
+            each val in errors
+              p= val
+
+      if flash
+        each val, key in flash
+          .Alert.wrapper.center.-fw-500(class=`-${key}`)
+            button.Alert__close: svg: use(xlink:href="#svg-close")
             p= val
 
       block content

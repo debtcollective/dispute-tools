@@ -6,3 +6,14 @@ block title
 block content
   .wrapper.py4
     include ../includes/sessions/new-form.pug
+
+block scripts
+  script(src="/build/javascripts/sessions/new.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new ViewSessionsNew(options);
+    }, true);
