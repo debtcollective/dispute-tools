@@ -61,6 +61,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+::selection {
+  background-color: var(--k-color-palette-primary);
+  color: var(--k-background-color);
+}
+
 a {
   color: var(--k-color-palette-primary);
   text-decoration: none;

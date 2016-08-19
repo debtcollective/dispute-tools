@@ -1,40 +1,67 @@
 import Widget from '../lib/widget';
-import Modal from '../components/Modal';
-import Dropdown from '../components/Dropdown';
+import Modal from './Modal';
+import Dropdown from './Dropdown';
+import UsersNewForm from './users/NewForm';
 
 export default class Header extends Widget {
   constructor(config) {
     super(config);
 
-    [].slice.call(document.querySelectorAll('[data-component-dropdown]'), 0).forEach(d => {
-      return new Dropdown({ element: d });
-    });
+    if (config.currentUser) {
+      return this._handleLoggedUser();
+    }
 
-    if (config.currentUser) return this._handleLoggedUser();
-    return this._handleVisitorUser();
+    if (config.currentURL !== '/login' && config.currentURL !== '/signup') {
+      return this._handleVisitorUser();
+    }
+
+    return this;
   }
 
   _handleLoggedUser() {
-    // register dropdown
-    throw new Error('_handleLoggedUser not implemented');
+    [].slice.call(this.element.querySelectorAll('[data-component-dropdown]'), 0).forEach(d => {
+      return new Dropdown({ element: d });
+    });
   }
 
   _handleVisitorUser() {
-    this._hijackSignupLink();
-  }
-
-  _hijackSignupLink() {
-    const signupLink = this.element.querySelector('.js-header-signup-link');
     const signupModalElement = document.querySelector('[data-component-modal="signup"]');
+    const loginModalElement = document.querySelector('[data-component-modal="login"]');
+    const signupLink = this.element.querySelector('.js-header-signup-link');
+    const loginLink = this.element.querySelector('.js-header-login-link');
 
-    if (signupModalElement) {
-      this.signupModalInstance = new Modal({ element: signupModalElement });
-      signupLink.addEventListener('click', this._handleSignupClick.bind(this));
+    if (signupModalElement && signupLink) {
+      this.appendChild(new Modal({
+        name: 'signupModal',
+        element: signupModalElement,
+      }));
+
+      this.signupModal.appendChild(new UsersNewForm({
+        name: 'userNewForm',
+        element: signupModalElement.querySelector('[data-component-usernewform]'),
+      }));
+
+      signupLink.addEventListener('click',
+        this._handleClickHijacking.bind(this, this.signupModal));
+    } else {
+      throw new Error('Header: signupModalElement || signupLink not found.');
+    }
+
+    if (loginModalElement && loginLink) {
+      this.appendChild(new Modal({
+        name: 'loginModal',
+        element: loginModalElement,
+      }));
+
+      loginLink.addEventListener('click',
+        this._handleClickHijacking.bind(this, this.loginModal));
+    } else {
+      throw new Error('Header: loginModalElement || loginLink not found.');
     }
   }
 
-  _handleSignupClick(ev) {
+  _handleClickHijacking(instance, ev) {
     ev.preventDefault();
-    this.signupModalInstance.activate();
+    instance.activate();
   }
 }
