@@ -5,8 +5,19 @@
   width: 100vw;
   height: 100vh;
   overflow: auto;
-  user-select: none;
-  background-color: var(--k-background-color);
+  background-color: color(var(--k-background-color) alpha(.5));
+
+  opacity: 0;
+  transform: translate3d(0,150px,0);
+  transition: visibility 0ms linear 300ms,
+    opacity 160ms linear, transform 300ms ease-in;
+
+  &.active {
+    opacity: 1;
+    transform: translate3d(0,0,0);
+    transition-delay: 0ms;
+    transition: opacity 200ms linear, transform 300ms cubic-bezier(0.17, 0.84, 0.44, 1);
+  }
 }
 
 .Modal__close {
