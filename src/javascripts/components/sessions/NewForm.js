@@ -1,12 +1,9 @@
 import Checkit from 'checkit';
 import Widget from '../../lib/widget';
 
-export default class UsersNewForm extends Widget {
+export default class SessionsNewForm extends Widget {
   static get constraints() {
     return {
-      name: ['required'],
-      state: ['required'],
-      zip: ['required'],
       email: ['required', 'email'],
       password: ['required', 'minLength:8'],
     };
@@ -16,11 +13,11 @@ export default class UsersNewForm extends Widget {
     super(config);
 
     this.ui = {};
-    Object.keys(UsersNewForm.constraints).forEach(key => {
+    Object.keys(SessionsNewForm.constraints).forEach(key => {
       const query = `[name="${key}"]`;
       this.ui[key] = this.element.querySelector(query);
     });
-    this._checkit = new Checkit(UsersNewForm.constraints);
+    this._checkit = new Checkit(SessionsNewForm.constraints);
 
     this._bindEvents();
   }
@@ -50,14 +47,14 @@ export default class UsersNewForm extends Widget {
   }
 
   _clearFieldErrors() {
-    Object.keys(UsersNewForm.constraints).forEach(key => {
+    Object.keys(SessionsNewForm.constraints).forEach(key => {
       this.ui[key].parentNode.classList.remove('error');
     });
   }
 
   _getFieldsData() {
     const data = {};
-    Object.keys(UsersNewForm.constraints).forEach(key => {
+    Object.keys(SessionsNewForm.constraints).forEach(key => {
       data[key] = this.ui[key].value;
     });
     return data;

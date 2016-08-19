@@ -2,6 +2,7 @@ import Widget from '../lib/widget';
 import Modal from './Modal';
 import Dropdown from './Dropdown';
 import UsersNewForm from './users/NewForm';
+import SessionsNewForm from './sessions/NewForm';
 
 export default class Header extends Widget {
   constructor(config) {
@@ -34,9 +35,7 @@ export default class Header extends Widget {
       this.appendChild(new Modal({
         name: 'signupModal',
         element: signupModalElement,
-      }));
-
-      this.signupModal.appendChild(new UsersNewForm({
+      })).appendChild(new UsersNewForm({
         name: 'userNewForm',
         element: signupModalElement.querySelector('[data-component-usernewform]'),
       }));
@@ -51,6 +50,9 @@ export default class Header extends Widget {
       this.appendChild(new Modal({
         name: 'loginModal',
         element: loginModalElement,
+      })).appendChild(new SessionsNewForm({
+        name: 'sessionsNewForm',
+        element: loginModalElement.querySelector('[data-component-sessionsnewform]'),
       }));
 
       loginLink.addEventListener('click',
