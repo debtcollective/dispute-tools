@@ -16,9 +16,7 @@ export default class Modal extends Widget {
 
     Modal._scrollableElement.style.overflow = 'hidden';
     Modal._mainElement.setAttribute('aria-hidden', this.active);
-
     this.element.setAttribute('aria-hidden', !this.active);
-    this.element.classList.add('active');
 
     this._clickHandler = this.deactivate.bind(this);
     this.closeButton.addEventListener('click', this._clickHandler);
@@ -34,9 +32,7 @@ export default class Modal extends Widget {
 
     Modal._scrollableElement.style.overflow = 'auto';
     Modal._mainElement.setAttribute('aria-hidden', this.active);
-
     this.element.setAttribute('aria-hidden', !this.active);
-    this.element.classList.remove('active');
 
     this.closeButton.removeEventListener('click', this._clickHandler);
     this._clickHandler = null;

@@ -12,7 +12,7 @@
   transition: visibility 0ms linear 300ms,
     opacity 160ms linear, transform 300ms ease-in;
 
-  &.active {
+  &[aria-hidden="false"] {
     opacity: 1;
     transform: translate3d(0,0,0);
     transition-delay: 0ms;
