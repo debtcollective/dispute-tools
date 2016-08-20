@@ -5,7 +5,6 @@ export default class Dropdown extends Widget {
     Dropdown.backdrop = document.createElement('div');
     Dropdown.backdrop.className = 'Dropdown__backdrop';
     Dropdown.backdrop.addEventListener('click', Dropdown._handleBackdropClick);
-    document.body.appendChild(Dropdown.backdrop);
   }
 
   static _handleBackdropClick() {
@@ -32,7 +31,8 @@ export default class Dropdown extends Widget {
   activate() {
     super.activate();
     this.bodyElement.setAttribute('aria-hidden', !this.active);
-    Dropdown.backdrop.classList.add('active');
+    this.element.appendChild(Dropdown.backdrop);
+    Dropdown._scrollableElement.style.overflow = 'hidden';
     Dropdown._activeDropdown = this;
     return null;
   }
@@ -40,11 +40,13 @@ export default class Dropdown extends Widget {
   deactivate() {
     super.deactivate();
     this.bodyElement.setAttribute('aria-hidden', !this.active);
-    Dropdown.backdrop.classList.remove('active');
+    this.element.removeChild(Dropdown.backdrop);
+    Dropdown._scrollableElement.style.overflow = 'auto';
     Dropdown._activeDropdown = null;
     return null;
   }
 }
 
 Dropdown._backdrop = null;
+Dropdown._scrollableElement = document.body;
 Dropdown._activeDropdown = null;
