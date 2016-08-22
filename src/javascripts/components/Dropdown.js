@@ -1,4 +1,5 @@
 import Widget from '../lib/widget';
+import { APP } from '../lib/constants';
 
 export default class Dropdown extends Widget {
   static _createBackdrop() {
@@ -29,24 +30,23 @@ export default class Dropdown extends Widget {
   }
 
   activate() {
-    super.activate();
+    this.active = true;
+    APP.SCROLLING_BOX.style.overflow = 'hidden';
     this.bodyElement.setAttribute('aria-hidden', !this.active);
     this.element.appendChild(Dropdown.backdrop);
-    Dropdown._scrollableElement.style.overflow = 'hidden';
     Dropdown._activeDropdown = this;
     return null;
   }
 
   deactivate() {
-    super.deactivate();
+    this.active = false;
+    APP.SCROLLING_BOX.style.overflow = 'auto';
     this.bodyElement.setAttribute('aria-hidden', !this.active);
     this.element.removeChild(Dropdown.backdrop);
-    Dropdown._scrollableElement.style.overflow = 'auto';
     Dropdown._activeDropdown = null;
     return null;
   }
 }
 
 Dropdown._backdrop = null;
-Dropdown._scrollableElement = document.body;
 Dropdown._activeDropdown = null;
