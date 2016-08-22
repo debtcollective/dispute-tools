@@ -1,3 +1,10 @@
+.AlertWrapper {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+}
+
 .Alert {
   position: relative;
   padding: .75rem 50px;

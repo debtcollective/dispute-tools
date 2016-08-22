@@ -1,8 +1,8 @@
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Header from '../../components/Header';
-import UsersNewForm from '../../components/users/NewForm';
+import SessionsNewForm from '../../components/sessions/NewForm';
 
-class ViewUsersNew extends NodeSupport {
+class ViewSessionsNew extends NodeSupport {
   constructor(config) {
     super();
 
@@ -13,11 +13,11 @@ class ViewUsersNew extends NodeSupport {
       element: document.querySelector('[data-component-header]'),
     }));
 
-    this.appendChild(new UsersNewForm({
-      name: 'UsersNewForm',
-      element: document.querySelector('[data-component-usernewform]'),
+    this.appendChild(new SessionsNewForm({
+      name: 'SessionsNewForm',
+      element: document.querySelector('[data-component-sessionsnewform]'),
     }));
   }
 }
 
-window.ViewUsersNew = ViewUsersNew;
+window.ViewSessionsNew = ViewSessionsNew;

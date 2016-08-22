@@ -1,8 +1,7 @@
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Header from '../../components/Header';
-import UsersNewForm from '../../components/users/NewForm';
 
-class ViewUsersNew extends NodeSupport {
+class ViewHomeIndex extends NodeSupport {
   constructor(config) {
     super();
 
@@ -12,12 +11,7 @@ class ViewUsersNew extends NodeSupport {
       currentURL: config.currentURL,
       element: document.querySelector('[data-component-header]'),
     }));
-
-    this.appendChild(new UsersNewForm({
-      name: 'UsersNewForm',
-      element: document.querySelector('[data-component-usernewform]'),
-    }));
   }
 }
 
-window.ViewUsersNew = ViewUsersNew;
+window.ViewHomeIndex = ViewHomeIndex;

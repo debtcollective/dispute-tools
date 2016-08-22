@@ -8,9 +8,12 @@ block content
     | home#index
 
 block scripts
-  script(src="/build/javascripts/home.js")
+  script(src="/build/javascripts/home/index.js" async)
   script.
-    var options = {
-      currentUser: !{JSON.stringify(currentUser)}
-    };
-    new HomeView(options);
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new ViewHomeIndex(options);
+    }, true);

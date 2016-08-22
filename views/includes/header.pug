@@ -1,0 +1,37 @@
+mixin headerLink(href, name)
+  - className = 'Header__link -fw-700'
+  if href === currentURL
+    - className += ' active'
+  a(href!=href, class=className, title=name)&attributes(attributes)= name
+
+header(data-component-header class="Header flex items-center")
+  div(class="wrapper flex flex-auto")
+    h1.Header__logo.flex-auto
+      a.inline-block(href="/" title="The Debt Collective")
+        svg.Header__logo-svg.block
+          use(xlink:href="#svg-logo-light")
+    nav
+      ul(class="list-reset flex items-center -fh")
+        li.px2
+          +headerLink(null, 'Collectives')(title="Browse The Collectives")
+        li.px2
+          +headerLink(null, 'Tools and Services')(title="Browse Our Tools and Services")
+        li.px2.pr3
+          +headerLink(null, 'Donate')(title="Support Us")
+
+        unless currentUser
+          li.px2.pl4
+            +headerLink(routeMappings.signup.url(), 'Join us')(class='js-header-signup-link -primary')
+          li.pl2
+            +headerLink(routeMappings.login.url(), 'Log in')(class='js-header-login-link')
+        else
+          li.px2.pl4
+            .Dropdown.-has-dropdown(data-component-dropdown)
+              button.Dropdown__head.-fw-700
+                span.Dropdown__label #{currentUser.email}
+              ul.Dropdown__body(aria-hidden="true" aria-label="submenu")
+                li
+                  form(method="post" action=routeMappings.logout.url())
+                    input(type="hidden" name="_csrf" value=csrfToken)
+                    input(type="hidden" name="_method" value="DELETE")
+                    button(type="submit") Logout

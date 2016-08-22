@@ -6,7 +6,7 @@ html(lang="en")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     meta(name="keywords" content="Debt,Student loans,Everest,Corinthian,Student Debt,Medical Debt,Credit Card Debt,Mortgage Debt,Bankruptcy,Debt discharge,Debt cancellation,Erase my debt,Jubilee,Strike Debt,Confused about debt,Rolling Jubilee,Interest rates,Principle reduction,What happens if I don’t pay my debt?,Judgement Debt,Bad Credit,Credit Score,Credit Report,Credit Reporting Agencies,Can’t Pay My Debt,Debt strike,Debt union,Credit cards,Fair credit,Wages garnished,Consumer rights,Strike creditors,Debt refusal,Debt resistance,Debt Help")
     meta(name="description" content="We are debtors and allies organizing to renegotiate and resist our debts. Alone, our debts are a burden. Together, they make us powerful.")
-    link(rel="icon" type="image/gif" href="/images/favicon.gif")
+    link(rel="icon" type="image/png" href="/images/favicon.png")
 
     title
       block title
@@ -18,43 +18,39 @@ html(lang="en")
   body
     include ../includes/svg/sprite.svg
 
-    header(data-component-header class="Header flex items-center")
-      div(class="wrapper flex flex-auto")
-        h1.Header__logo.flex-auto
-          a.inline-block(href="/" title="The Debt Collective")
-            svg.Header__logo-svg.block
-              use(xlink:href="#svg-logo-light")
-        nav
-          ul(class="list-reset flex items-center -fh")
-            li.px2
-              a.Header__link.-fw-700(title="Browse Collectives") Collectives
-            li.px2
-              a.Header__link.-fw-700(title="Browse Tools and Services") Tools and Services
-            li.px2.pr3
-              a.Header__link.-fw-700(title="Donate") Donate
-            li.px2.pl4
-              a.js-header-signup-link.Header__link.-fw-700.-primary(
-                class=currentURL === CONFIG.router.helpers.signup.url() ? 'active' : ''
-                href=CONFIG.router.helpers.signup.url()
-                title="Join us") Join us
-            li.pl2
-              a.Header__link.-fw-700(title="Log in") Log in
+    main(aria-hidden="false")
+      include ../includes/header
 
-    if errors
-      .Alert.wrapper.center.-fw-500.-error
-        button.Alert__close
-          svg: use(xlink:href="#svg-close")
-        each val in errors
-          p= val
+      if errors || error || flash
+        .AlertWrapper
+          if errors || error
+            .Alert.wrapper.center.-fw-500.-error
+              button.Alert__close: svg: use(xlink:href="#svg-close")
+              p= error
+              if errors
+                each val in errors
+                  p= val
+          if flash
+            each val, key in flash
+              .Alert.wrapper.center.-fw-500(class=`-${key}`)
+                button.Alert__close: svg: use(xlink:href="#svg-close")
+                p= val
 
-    block content
+      block content
 
-    if !currentUser && currentURL !== CONFIG.router.helpers.signup.url()
-      .Modal(data-component-modal="signup" aria-hidden="true" role="dialog" aria-labelledby="modal-title")
-        button(class="Modal__close" aria-label="close")
-          svg(class="-s18"): use(xlink:href="#svg-close")
-        .Modal__body(role="document" tabindex="0")
-          include ../includes/users/new-form.pug
+    if !currentUser
+      if currentURL !== routeMappings.signup.url() && currentURL !== routeMappings.login.url()
+        .Modal(data-component-modal="signup" aria-hidden="true" role="dialog" aria-labelledby="modal-title")
+          button(class="Modal__close" aria-label="close")
+            svg(class="-s18"): use(xlink:href="#svg-close")
+          .Modal__body(role="document")
+            include ../includes/users/new-form.pug
+
+        .Modal(data-component-modal="login" aria-hidden="true" role="dialog" aria-labelledby="modal-title")
+          button(class="Modal__close" aria-label="close")
+            svg(class="-s18"): use(xlink:href="#svg-close")
+          .Modal__body(role="document")
+            include ../includes/sessions/new-form.pug
 
     block scripts
       script(src="/build/javascripts/application.js")
