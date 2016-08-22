@@ -4,9 +4,17 @@ import Dropdown from './Dropdown';
 import UsersNewForm from './users/NewForm';
 import SessionsNewForm from './sessions/NewForm';
 
+function normalize(value, minx, maxx, min, max) {
+  const a = (maxx - minx) / (max - min);
+  const b = maxx - (a * max);
+  return (a * value) + b;
+}
+
 export default class Header extends Widget {
   constructor(config) {
     super(config);
+
+    this._bindEvents();
 
     if (config.currentUser) {
       return this._handleLoggedUser();
@@ -17,6 +25,17 @@ export default class Header extends Widget {
     }
 
     return this;
+  }
+
+  _bindEvents() {
+    this._handleScrollRef = this._handleScroll.bind(this);
+    window.addEventListener('scroll', this._handleScrollRef);
+  }
+
+  _handleScroll(ev) {
+    const t = ev.target.body.getBoundingClientRect().top * -1;
+    const value = normalize(t, 0, 1, 0, 100);
+    this.element.style.backgroundColor = `rgba(0,0,0,${value})`;
   }
 
   _handleLoggedUser() {
