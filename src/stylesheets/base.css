@@ -51,18 +51,24 @@
 
   /* Platform Variables */
   --header-height: 60px;
+  --primary-lighter: color(var(--k-color-palette-primary) tint(10%));
+  --primary-darker: color(var(--k-color-palette-primary) shade(10%));
+
+  height: 100%;
 }
 
 
 
 /* CUSTOM STYLES */
-* {margin: 0}
-
 body {
   min-width: 1020px;
+  min-height: 100%;
+  background-image: url('/images/global/bg-black-pattern.gif');
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+* {margin: 0}
 
 ::selection {
   background-color: var(--k-color-palette-primary);
@@ -72,6 +78,10 @@ body {
 a {
   color: var(--k-color-palette-primary);
   text-decoration: none;
+
+  &:hover {
+    color: var(--primary-lighter);
+  }
 
   &:not([href]) {
     text-decoration: line-through;
@@ -107,6 +117,14 @@ main {
 
   background-color: var(--k-color-palette-primary);
   color: white;
+
+  &:hover {
+    background-color: var(--primary-lighter);
+  }
+
+  &:active {
+    background-color: var(--primary-darker);
+  }
 }
 
 .-k-select {
