@@ -2,11 +2,11 @@ import Checkit from 'checkit';
 import Widget from '../../lib/widget';
 import Button from '../../components/Button';
 
-export default class SessionsNewForm extends Widget {
+export default class SessionsChangePasswordForm extends Widget {
   static get constraints() {
     return {
-      email: ['required', 'email'],
       password: ['required', 'minLength:8'],
+      confirmPassword: ['required', 'minLength:8', 'matchesField:password'],
     };
   }
 
@@ -14,11 +14,11 @@ export default class SessionsNewForm extends Widget {
     super(config);
 
     this.ui = {};
-    Object.keys(SessionsNewForm.constraints).forEach(key => {
+    Object.keys(SessionsChangePasswordForm.constraints).forEach(key => {
       const query = `[name="${key}"]`;
       this.ui[key] = this.element.querySelector(query);
     });
-    this._checkit = new Checkit(SessionsNewForm.constraints);
+    this._checkit = new Checkit(SessionsChangePasswordForm.constraints);
 
     this.appendChild(new Button({
       name: 'Button',
@@ -57,14 +57,14 @@ export default class SessionsNewForm extends Widget {
   }
 
   _clearFieldErrors() {
-    Object.keys(SessionsNewForm.constraints).forEach(key => {
+    Object.keys(SessionsChangePasswordForm.constraints).forEach(key => {
       this.ui[key].parentNode.classList.remove('error');
     });
   }
 
   _getFieldsData() {
     const data = {};
-    Object.keys(SessionsNewForm.constraints).forEach(key => {
+    Object.keys(SessionsChangePasswordForm.constraints).forEach(key => {
       data[key] = this.ui[key].value;
     });
     return data;
