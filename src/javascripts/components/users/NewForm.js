@@ -1,5 +1,6 @@
 import Checkit from 'checkit';
 import Widget from '../../lib/widget';
+import Button from '../../components/Button';
 
 export default class UsersNewForm extends Widget {
   static get constraints() {
@@ -22,6 +23,11 @@ export default class UsersNewForm extends Widget {
     });
     this._checkit = new Checkit(UsersNewForm.constraints);
 
+    this.appendChild(new Button({
+      name: 'Button',
+      element: this.element.querySelector('button'),
+    }));
+
     this._bindEvents();
   }
 
@@ -31,14 +37,18 @@ export default class UsersNewForm extends Widget {
   }
 
   _handleFormSubmit(ev) {
+    this.Button.disable();
     this._clearFieldErrors();
 
     const [err] = this._checkit.validateSync(this._getFieldsData());
 
     if (err) {
       ev.preventDefault();
+      this.Button.enable();
       return this._displayFieldErrors(err.errors);
     }
+
+    this.Button.updateText();
 
     return undefined;
   }
