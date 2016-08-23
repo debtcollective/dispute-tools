@@ -56,7 +56,7 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
 
         if (user.length !== 1) {
           return res.status(400).render('sessions/showEmailForm', {
-            error: 'Invalid email',
+            error: 'No account was found with that email address.',
           });
         }
 
