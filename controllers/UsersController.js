@@ -98,10 +98,10 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
         if (users.length !== 1) {
           req.flash('error', 'Invalid activation token');
-          return res.status(400).render('users/activate');
+          return res.redirect(CONFIG.router.helpers.login.url());
         }
 
-        users[0].activationToken = '';
+        users[0].activationToken = null;
 
         return users[0].save().then(() => {
           req.flash('success', 'Your account was succesfully activated');
