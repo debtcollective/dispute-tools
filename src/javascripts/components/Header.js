@@ -4,6 +4,8 @@ import Dropdown from './Dropdown';
 import UsersNewForm from './users/NewForm';
 import SessionsNewForm from './sessions/NewForm';
 
+const SCROLL_MAX = 100;
+
 function normalize(value, minx, maxx, min, max) {
   const a = (maxx - minx) / (max - min);
   const b = maxx - (a * max);
@@ -14,6 +16,7 @@ export default class Header extends Widget {
   constructor(config) {
     super(config);
 
+    this.bg = this.element.querySelector('.Header__bg');
     this._bindEvents();
 
     if (config.currentUser) {
@@ -33,9 +36,9 @@ export default class Header extends Widget {
   }
 
   _handleScroll(ev) {
-    const t = ev.target.body.getBoundingClientRect().top * -1;
-    const value = normalize(t, 0, 1, 0, 100);
-    this.element.style.backgroundColor = `rgba(0,0,0,${value})`;
+    let p = ev.target.defaultView.scrollY;
+    if (p > SCROLL_MAX) p = SCROLL_MAX;
+    this.bg.style.opacity = normalize(p, 0, 1, 0, SCROLL_MAX);
   }
 
   _handleLoggedUser() {

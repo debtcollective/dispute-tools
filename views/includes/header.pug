@@ -5,8 +5,9 @@ mixin headerLink(href, name)
   a(href!=href, class=className, title=name)&attributes(attributes)= name
 
 header(data-component-header class="Header flex items-center")
+  .Header__bg.absolute.top-0.right-0.bottom-0.left-0
   div(class="wrapper flex flex-auto")
-    h1.Header__logo.flex-auto
+    h1.Header__logo.flex-auto.relative
       a.inline-block(href="/" title="The Debt Collective")
         svg.Header__logo-svg.block
           use(xlink:href="#svg-logo-light")
