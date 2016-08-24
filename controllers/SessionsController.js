@@ -19,7 +19,7 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
         return res.redirect(CONFIG.router.helpers.login.url());
       }
 
-      passport.authenticate('local', (err, user, info) => {
+      passport.authenticate('local', (err, user) => {
         if (err) {
           return res.status(400).render('sessions/new', {
             error: err.message,
@@ -85,12 +85,11 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
         .then((result) => {
           if (result.length !== 1) {
             req.flash('error', 'Invalid reset password token');
-
             return res.redirect(CONFIG.router.helpers.resetPassword.url());
           }
 
-          res.render('sessions/showPasswordForm', {
-            token: req.params.token
+          return res.render('sessions/showPasswordForm', {
+            token: req.params.token,
           });
         })
         .catch(next);
@@ -136,8 +135,7 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
 
             return next(err);
           });
-
-      })().catch(next)
+      })().catch(next);
     },
   },
 });
