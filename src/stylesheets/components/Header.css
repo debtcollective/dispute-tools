@@ -1,10 +1,17 @@
 .Header {
+  z-index: 1;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   height: var(--header-height);
-  transform: translate3d(0,0,0);
+
+  &__bg {
+    z-index: -1;
+    transform: translate3d(0,0,0);
+    background-color: var(--k-background-color);
+    opacity: 0;
+  }
 }
 
 .Header__logo {

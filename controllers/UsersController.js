@@ -97,12 +97,14 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
         const users = yield User.query().where('activation_token', req.params.token);
 
         if (users.length !== 1) {
-          return res.status(400).render('users/activate');
+          req.flash('error', 'Invalid activation token');
+          return res.redirect(CONFIG.router.helpers.login.url());
         }
 
         users[0].activationToken = null;
 
         return users[0].save().then(() => {
+          req.flash('success', 'Your account was succesfully activated');
           res.redirect(CONFIG.router.helpers.login.url());
         });
       })()

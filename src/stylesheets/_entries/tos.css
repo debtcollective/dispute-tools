@@ -3,15 +3,3 @@
 .-ff-sec {
   font-family: 'Space Mono', monospace;
 }
-
-.-h-sec {
-  line-height: 1.45em;
-
-  & > span {
-    white-space: pre-wrap;
-    box-decoration-break: clone;
-    padding: 0 1rem .75rem;
-    background-color: var(--k-color);
-    color: var(--k-background-color);
-  }
-}
