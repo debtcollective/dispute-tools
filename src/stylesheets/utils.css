@@ -1,1 +1,14 @@
 .-s18 {width: 18px; height: 18px}
+
+.-h-sec {
+  line-height: 1.5em;
+
+  & > span {
+    white-space: pre-wrap;
+    box-decoration-break: clone;
+    padding: 0 1rem .25rem;
+    background-color: var(--k-color);
+    color: var(--k-background-color);
+    mix-blend-mode: screen;
+  }
+}
