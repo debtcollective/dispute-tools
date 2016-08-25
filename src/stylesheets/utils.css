@@ -12,3 +12,22 @@
     mix-blend-mode: screen;
   }
 }
+
+/* secondary font */
+.-ff-sec {
+  font-family: monospace;
+
+  &.-h4 {
+    font-size: 24px;
+    line-height: 1.5;
+  }
+}
+
+.wf-spacemono-n4-active .-ff-sec {
+  font-family: 'Space Mono', monospace;
+
+  .-h4 {
+    font-size: 21px;
+    line-height: 1.618;
+  }
+}
