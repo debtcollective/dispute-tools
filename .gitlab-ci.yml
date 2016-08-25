@@ -20,3 +20,8 @@ test_async:
   script:
    - npm install
    - npm test
+
+job1:
+    stage: build
+    script:
+    - cp config/config.sample.js config/config.js
