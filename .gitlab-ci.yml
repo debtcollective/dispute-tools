@@ -25,3 +25,4 @@ job1:
     stage: build
     script:
     - cp config/config.sample.js config/config.js
+    - cp config/knexfile.sample.js knexfile.js
