@@ -11,6 +11,11 @@ const routeMappings = RouteMappings()
     as: 'tos',
   })
 
+  .get('/about', {
+    to: 'Home#about',
+    as: 'about',
+  })
+
   .get('/signup', {
     to: 'Users#new',
     as: 'signup',
@@ -61,7 +66,7 @@ const routeMappings = RouteMappings()
       })
       .get('/:token/activate', {
         to: 'Users#activate',
-        as: 'activate'
+        as: 'activate',
       });
   });
 

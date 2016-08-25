@@ -2,7 +2,7 @@ import WebFont from 'webfontloader';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Header from '../../components/Header';
 
-class ViewHomeTos extends NodeSupport {
+class ViewHomeAbout extends NodeSupport {
   constructor(config) {
     super();
 
@@ -21,5 +21,4 @@ class ViewHomeTos extends NodeSupport {
   }
 }
 
-window.ViewHomeTos = ViewHomeTos;
-
+window.ViewHomeAbout = ViewHomeAbout;

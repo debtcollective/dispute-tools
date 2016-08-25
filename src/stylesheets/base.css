@@ -37,6 +37,9 @@
 
   --k-color-palette-primary: #f04c34;
   --k-color-palette-danger: #d0021b;
+  --k-color-palette-accent: #FEFAC0;
+  --k-color-palette-neutral-light: #ebebeb;
+  --k-color-palette-neutral-dark: #242424;
 
   --k-h1: 119px;
   --k-h2: 67px;
@@ -48,6 +51,10 @@
   /* bascss-layout */
   --width-1: 23rem;
   --width-2: 36rem;
+  --width-3: 48rem;
+  --width-4: 60.625rem;
+  /* basscss-border */
+  --border-radius: 2px;
 
   /* Platform Variables */
   --header-height: 60px;
@@ -61,9 +68,8 @@
 
 /* CUSTOM STYLES */
 body {
-  min-width: 1020px;
   min-height: 100%;
-  background-image: url('/images/global/bg-black-pattern.gif');
+  background: var(--k-background-color) url('/images/global/bg-black-pattern.gif') 50% 0 repeat;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -94,7 +100,7 @@ main {
 }
 
 .wrapper {
-  max-width: 980px;
+  max-width: 1200px;
   margin-right: auto;
   margin-left: auto;
 }

@@ -20,6 +20,10 @@ const HomeController = Class('HomeController').inherits(BaseController)({
     tos(req, res) {
       res.render('home/tos.pug');
     },
+
+    about(req, res) {
+      res.render('home/about');
+    },
   },
 });
 
