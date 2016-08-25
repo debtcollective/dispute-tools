@@ -13,9 +13,10 @@ block content
       .flex.absolute.top-0.left-0.right-0.bottom-0.items-center.justify-center
         .max-width-2.center
           h2.-accent About us
-          h4.pb4 The Debt Collective leverages collective power by offering debtors a shared platform for direct action.
-          div.flex.items-center.justify-center.mx-auto(style="background-color: #F04C34; width: 69px; height: 69px;")
-            svg(fill="#fff" width="30" height="25"): use(xlink:href="#svg-play")
+          h4.pb3 The Debt Collective leverages collective power by offering debtors a shared platform for direct action.
+          .PlayButton.mx-auto
+            .PlayButton__btn: svg: use(xlink:href="#svg-play")
+            div.center.pt1.-caption 1:20
 
     .px2
       .max-width-3.mx-auto.py4
