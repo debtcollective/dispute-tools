@@ -70,7 +70,7 @@
 body {
   min-width: 1020px;
   min-height: 100%;
-  background-image: url('/images/global/bg-black-pattern.gif');
+  background: var(--k-background-color) url('/images/global/bg-black-pattern.gif') 50% 0 repeat;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
