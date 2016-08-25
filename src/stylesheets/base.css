@@ -37,6 +37,9 @@
 
   --k-color-palette-primary: #f04c34;
   --k-color-palette-danger: #d0021b;
+  --k-color-palette-accent: #FEFAC0;
+  --k-color-palette-neutral-light: #ebebeb;
+  --k-color-palette-neutral-dark: #242424;
 
   --k-h1: 119px;
   --k-h2: 67px;
