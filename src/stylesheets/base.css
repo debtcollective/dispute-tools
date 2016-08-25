@@ -51,6 +51,10 @@
   /* bascss-layout */
   --width-1: 23rem;
   --width-2: 36rem;
+  --width-3: 48rem;
+  --width-4: 60.625rem;
+  /* basscss-border */
+  --border-radius: 2px;
 
   /* Platform Variables */
   --header-height: 60px;
