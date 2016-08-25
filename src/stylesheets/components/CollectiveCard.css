@@ -1,0 +1,50 @@
+.CollectiveCard {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  background-color: var(--k-color-palette-neutral-dark);
+
+  &__icon {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+  }
+
+  &__content {
+    padding-left: 72px;
+  }
+
+  &__title {
+    padding-bottom: 1rem;
+    color: var(--k-color-palette-accent);
+  }
+
+  &__desc {
+    padding-bottom: 1rem;
+  }
+
+  &__people-list {
+    padding: 0;
+    margin: 0 -.5rem 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    mix-blend-mode: luminosity;
+
+    & > li {
+      display: inline-block;
+      vertical-align: top;
+      margin: 0 .25rem;
+    }
+
+    & img {display: block}
+  }
+}
+
+.CollectiveCard.-is-light {
+  background-color: #fff;
+  color: #000;
+
+  & .CollectiveCard__title {color: inherit}
+
+  & .CollectiveCard__people-list {mix-blend-mode: initial}
+}
