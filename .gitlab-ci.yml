@@ -16,6 +16,7 @@ services:
 variables:
   REDIS_HOST: "redis"
   POSTGRES_HOST: "postgres"
+  POSTGRES_USER: "postgres"
 
 stages:
   - test
