@@ -14,15 +14,12 @@ services:
 stages:
   - test
 
-db: &db
+test:
+  stage: test
   image: postgres
   script:
     - psql -h "postgres" -U "postgres" -c 'DROP DATABASE IF EXISTS "debtcollective_test;"'
     - psql -h "postgres" -U "postgres" -c 'CREATE DATABASE "debtcollective_test"'
-
-test:
-  stage: test
-  <<: *db
   image: node
   script:
    - npm install
