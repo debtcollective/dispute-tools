@@ -11,6 +11,9 @@ services:
   - redis:latest
   - postgres:latest
 
+stages:
+  - test
+
 db: &db
   image: postgres
   script:
@@ -18,7 +21,9 @@ db: &db
     - psql -h "postgres" -U "postgres" -c 'CREATE DATABASE "debtcollective_test"'
 
 test:
+  stage: test
   <<: *db
+  image: node
   script:
    - npm install
    - npm test
