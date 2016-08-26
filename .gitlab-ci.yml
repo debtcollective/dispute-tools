@@ -15,6 +15,7 @@ services:
 
 variables:
   REDIS_HOST: "redis"
+  POSTGRES_HOST: "postgres"
 
 stages:
   - test
@@ -22,8 +23,6 @@ stages:
 test:
   stage: test
   script:
-    - psql -h "postgres" -U "postgres" -c 'DROP DATABASE IF EXISTS "debtcollective_test;"'
-    - psql -h "postgres" -U "postgres" -c 'CREATE DATABASE "debtcollective_test"'
     - npm install
     - npm test
     - npm run report
