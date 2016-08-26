@@ -39,7 +39,7 @@ html(lang="en")
       block content
 
     if !currentUser
-      if currentURL !== routeMappings.signup.url() && currentURL !== routeMappings.login.url()
+      if (currentURL !== routeMappings.signup.url()) && (currentURL !== routeMappings.login.url()) && (currentURL !== routeMappings.Users.create.url())
         .Modal(data-component-modal="signup" aria-hidden="true" role="dialog" aria-labelledby="modal-title")
           button(class="Modal__close" aria-label="close")
             svg(class="-s18"): use(xlink:href="#svg-close")
