@@ -6,7 +6,8 @@ image: node:latest
 before_script:
   - cp config/config.sample.js config/config.js
   - cp config/knexfile.sample.js knexfile.js
-  - apt-get install postgresql
+  - apt-get update
+  - apt-get install -y postgresql-client
 
 services:
   - redis:latest
