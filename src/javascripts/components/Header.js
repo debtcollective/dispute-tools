@@ -23,7 +23,7 @@ export default class Header extends Widget {
       return this._handleLoggedUser();
     }
 
-    if (config.currentURL !== '/login' && config.currentURL !== '/signup') {
+    if (['/login', '/signup', '/users'].indexOf(config.currentURL) === -1) {
       return this._handleVisitorUser();
     }
 
@@ -50,8 +50,8 @@ export default class Header extends Widget {
   _handleVisitorUser() {
     const signupModalElement = document.querySelector('[data-component-modal="signup"]');
     const loginModalElement = document.querySelector('[data-component-modal="login"]');
-    const signupLinks = [].slice.call(document.querySelectorAll('[href="/signup"]'));
-    const loginLinks = [].slice.call(document.querySelectorAll('[href="/login"]'));
+    const signupLinks = [].slice.call(document.querySelectorAll('.js-signup-link'));
+    const loginLinks = [].slice.call(document.querySelectorAll('.js-login-link'));
 
     if (signupModalElement && signupLinks.length) {
       this.appendChild(new Modal({

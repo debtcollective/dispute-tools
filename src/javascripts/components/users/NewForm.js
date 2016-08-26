@@ -5,7 +5,7 @@ import Button from '../../components/Button';
 export default class UsersNewForm extends Widget {
   static get constraints() {
     return {
-      name: ['required'],
+      fullname: ['required'],
       state: ['required'],
       zip: ['required'],
       email: ['required', 'email'],

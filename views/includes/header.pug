@@ -21,9 +21,9 @@ header.Header.flex.items-center(data-component-header)
 
         unless currentUser
           li.px2.pl4
-            +headerLink(routeMappings.signup.url(), 'Join us')(class='js-header-signup-link -primary')
+            +headerLink(routeMappings.signup.url(), 'Join us')(class='js-signup-link -primary')
           li.pl2
-            +headerLink(routeMappings.login.url(), 'Log in')(class='js-header-login-link')
+            +headerLink(routeMappings.login.url(), 'Log in')(class='js-login-link')
         else
           li.px2.pl4
             .Dropdown.-has-dropdown(data-component-dropdown)
