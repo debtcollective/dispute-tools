@@ -6,7 +6,6 @@ image: node:latest
 before_script:
   - cp config/config.sample.js config/config.js
   - cp config/knexfile.sample.js knexfile.js
-  - npm install
 
 stages:
   - db
@@ -28,5 +27,6 @@ test:
     - redis:latest
     - postgres:latest
   script:
+   - npm install
    - npm test
    - npm run report
