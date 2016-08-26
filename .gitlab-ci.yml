@@ -17,9 +17,9 @@ db:
     - postgres:latest
   stage: db
   image: postgres
-    script:
-      - psql -h "postgres" -U "postgres" -c 'DROP DATABASE IF EXISTS "debtcollective_test;"'
-      - psql -h "postgres" -U "postgres" -c 'CREATE DATABASE "debtcollective_test"'
+  script:
+    - psql -h "postgres" -U "postgres" -c 'DROP DATABASE IF EXISTS "debtcollective_test;"'
+    - psql -h "postgres" -U "postgres" -c 'CREATE DATABASE "debtcollective_test"'
 
 
 test:
