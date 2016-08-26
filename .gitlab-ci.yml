@@ -3,40 +3,30 @@
 # https://hub.docker.com/r/library/node/tags/
 image: node:latest
 
-# Pick zero or more services to be used on all builds.
-# Only needed when using a docker container to run your tests in.
-# Check out: http://docs.gitlab.com/ce/ci/docker/using_docker_images.html#what-is-service
-services:
-  - redis:latest
-  - postgres:latest
-
-# This folder is cached between builds
-# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
-cache:
-  paths:
-  - node_modules/
+before_script:
+  - cp config/config.sample.js config/config.js
+  - cp config/knexfile.sample.js knexfile.js
+  - npm install
 
 stages:
   - db
-  - setup
   - test
 
 db:
+  services:
+    - postgres:latest
   stage: db
   image: postgres
-  script:
-   - psql -h "postgres" -U "postgres" -c 'DROP DATABASE IF EXISTS "debtcollective_test;"'
-   - psql -h "postgres" -U "postgres" -c 'CREATE DATABASE "debtcollective_test"'
+    script:
+      - psql -h "postgres" -U "postgres" -c 'DROP DATABASE IF EXISTS "debtcollective_test;"'
+      - psql -h "postgres" -U "postgres" -c 'CREATE DATABASE "debtcollective_test"'
 
-setup:
-  stage: setup
-  script:
-   - cp config/config.sample.js config/config.js
-   - cp config/knexfile.sample.js knexfile.js
 
 test:
   stage: test
+  services:
+    - redis:latest
+    - postgres:latest
   script:
-   - npm install
    - npm test
    - npm run report
