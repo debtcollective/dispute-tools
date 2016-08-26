@@ -9,7 +9,8 @@ module.exports = {
     client: 'postgresql',
     connection: {
       host: 'postgres',
-      user: 'postgres'
+      user: 'postgres',
+      database: 'debtcollective_test'
     },
     pool: pool,
     migrations: {}
