@@ -16,10 +16,11 @@ cache:
   paths:
   - node_modules/
 
-test_async:
+test:
   script:
+   - sudo apt-get install -y postgresql-client
    - npm install
    - cp config/config.sample.js config/config.js
    - cp config/knexfile.sample.js knexfile.js
    - npm test
-   
+   - npm run report
