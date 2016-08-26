@@ -19,8 +19,8 @@ cache:
 connect:
   image: postgres
   script:
-   - psql -h "postgres" -U "runner" -c 'DROP DATABASE IF EXISTS "debtcollective_test;"'
-   - psql -h "postgres" -U "runner" -c 'CREATE DATABASE "debtcollective_test"'
+   - psql -h "postgres" -U "postgres" -c 'DROP DATABASE IF EXISTS "debtcollective_test;"'
+   - psql -h "postgres" -U "postgres" -c 'CREATE DATABASE "debtcollective_test"'
 
 test:
   script:
