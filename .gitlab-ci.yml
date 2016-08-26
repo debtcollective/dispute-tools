@@ -22,18 +22,21 @@ stages:
   - test
 
 db:
+  stage: db
   image: postgres
   script:
    - psql -h "postgres" -U "postgres" -c 'DROP DATABASE IF EXISTS "debtcollective_test;"'
    - psql -h "postgres" -U "postgres" -c 'CREATE DATABASE "debtcollective_test"'
 
 setup:
+  stage: setup
   script:
    - npm install
    - cp config/config.sample.js config/config.js
    - cp config/knexfile.sample.js knexfile.js
 
 test:
+  stage: test
   script:
    - npm test
    - npm run report
