@@ -12,7 +12,7 @@ div(data-component-usernewform)
           input.-k-input.-fw(
             name="fullname"
             type="text"
-            value=(_formData && _formData.fullname ? _formData.fullname : '')
+            value=(_formData && _formData.fullname) || ''
           )
           p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid name
 
@@ -36,7 +36,7 @@ div(data-component-usernewform)
               input.-k-input.-fw(
                 type="text"
                 name="zip"
-                value=(_formData && _formData.zip ? _formData.zip : '')
+                value=(_formData && _formData.zip) || ''
                 placeholder="ZIP"
               )
               p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid ZIP
@@ -47,7 +47,7 @@ div(data-component-usernewform)
           input.-k-input.-fw(
             type="tel"
             name="phone"
-            value=(_formData && _formData.phone ? _formData.phone : '')
+            value=(_formData && _formData.phone) || ''
             placeholder="Optional"
           )
           p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid phone
@@ -58,7 +58,7 @@ div(data-component-usernewform)
           input.-k-input.-fw(
             type="email"
             name="email"
-            value=(_formData && _formData.email ? _formData.email : '')
+            value=(_formData && _formData.email) || ''
           )
           p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid email
 

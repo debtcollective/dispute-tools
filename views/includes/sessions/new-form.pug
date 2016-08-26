@@ -12,7 +12,7 @@ div(data-component-sessionsnewform)
           input.-k-input.-fw(
             type="email"
             name="email",
-            value=(_formData && _formData.email ? _formData.email : '')
+            value=(_formData && _formData.email) || ''
           )
           p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid email
 
