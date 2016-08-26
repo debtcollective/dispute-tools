@@ -1,54 +1,78 @@
 div(data-component-usernewform)
-  div(class="max-width-1 mx-auto")
+  .max-width-1.mx-auto
     h3 Join us
     p.-fw-500.mb3 Alone, our debts are a burden; together, they make us powerful.
 
     form(method="post" action=routeMappings.Users.create.url())
       input(type="hidden" name="_csrf" value=csrfToken)
 
-      div.clearfix.mb2
+      .clearfix.mb2
         .col.col-3.pt1.pr1.right-align.-fw-500 Your name
-        div.col.col-9(class=errors && errors.name ? 'error' : '')
-          input(name="name" class="-k-input -fw" type="text")
+        .col.col-9(class=errors && errors.name ? 'error' : '')
+          input.-k-input.-fw(
+            name="fullname"
+            type="text"
+            value=(_formData && _formData.fullname) || ''
+          )
           p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid name
 
-      div.clearfix.mb2
+      .clearfix.mb2
         .col.col-3.pt1.pr1.right-align.-fw-500 Location
-        div.col.col-9
-          div(class="col col-6")
-            div.-k-select(class=errors && errors.state ? 'error' : '')
-              select(name="state" class="-fw")
+        .col.col-9
+          .col.col-6
+            .-k-select(class=errors && errors.state ? 'error' : '')
+              select.-fw(name="state")
                 option(value="") State
                 each state in stateNames
-                  option(value=state)= state
+                  option(
+                    value= state
+                    selected!= _formData && _formData.state === state
+                  )= state
 
             p(class="-on-error -danger -caption -fw-500 mt1") ▲ Select a state
 
-          div(class="col col-6 pl1")
+          .col.col-6.pl1
             div(class=errors && errors.zip ? 'error' : '')
-              input(name="zip" class="-k-input -fw" type="text" placeholder="ZIP")
+              input.-k-input.-fw(
+                type="text"
+                name="zip"
+                value=(_formData && _formData.zip) || ''
+                placeholder="ZIP"
+              )
               p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid ZIP
 
-      div.clearfix.mb2
+      .clearfix.mb2
         .col.col-3.pt1.pr1.right-align.-fw-500 Phone
-        div.col.col-9(class=errors && errors.phone ? 'error' : '')
-          input(name="name" class="-k-input -fw" type="text" placeholder="Optional")
+        .col.col-9(class=errors && errors.phone ? 'error' : '')
+          input.-k-input.-fw(
+            type="tel"
+            name="phone"
+            value=(_formData && _formData.phone) || ''
+            placeholder="Optional"
+          )
           p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid phone
 
-      div.clearfix.mb2
+      .clearfix.mb2
         .col.col-3.pt1.pr1.right-align.-fw-500 Email
-        div.col.col-9(class=errors && errors.email ? 'error' : '')
-          input(name="email" class="-k-input -fw" type="email")
+        .col.col-9(class=errors && errors.email ? 'error' : '')
+          input.-k-input.-fw(
+            type="email"
+            name="email"
+            value=(_formData && _formData.email) || ''
+          )
           p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid email
 
-      div.clearfix.mb2
+      .clearfix.mb2
         .col.col-3.pt1.pr1.right-align.-fw-500 Password
-        div.col.col-9(class=errors && errors.password ? 'error' : '')
-          input(name="password" class="-k-input -fw" type="password")
+        .col.col-9(class=errors && errors.password ? 'error' : '')
+          input.-k-input.-fw(
+            type="password"
+            name="password"
+          )
           p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid password
 
-      p.mb3.-fw-500.-caption By clicking Sign up, you agree to our #[a(href=CONFIG.router.helpers.tos.url()) Terms &amp; Conditions], including our Cookie Use.
+      p.mb3.-fw-500.-caption By clicking Sign up, you agree to our #[a(href=routeMappings.tos.url()) Community Agreement], including our Cookie Use.
       button(type="submit" class="-k-button -fw -fw-700") Sign up
 
-    p(class="pt3 center")
-      span.-fw-500 I’m already a member #[a() Log in]
+    p.pt3.center
+      span.-fw-500 I’m already a member #[a(href=routeMappings.login.url()) Log in]

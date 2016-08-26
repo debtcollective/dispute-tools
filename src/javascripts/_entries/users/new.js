@@ -1,18 +1,22 @@
-/* eslint-disable no-new */
-
+import NodeSupport from '../../lib/widget/NodeSupport';
 import Header from '../../components/Header';
-import NewForm from '../../components/users/NewForm';
+import UsersNewForm from '../../components/users/NewForm';
 
-class ViewUsersNew {
+class ViewUsersNew extends NodeSupport {
   constructor(config) {
-    new Header({
-      currentUser: config.currentUser,
-      element: document.querySelector('[data-component-header]'),
-    });
+    super();
 
-    new NewForm({
+    this.appendChild(new Header({
+      name: 'Header',
+      currentUser: config.currentUser,
+      currentURL: config.currentURL,
+      element: document.querySelector('[data-component-header]'),
+    }));
+
+    this.appendChild(new UsersNewForm({
+      name: 'UsersNewForm',
       element: document.querySelector('[data-component-usernewform]'),
-    });
+    }));
   }
 }
 

@@ -102,6 +102,7 @@
     "scandium-express": "0.0.3",
     "scripty": "^1.6.0",
     "uuid": "^2.0.2",
+    "webfontloader": "^1.6.26",
     "winston": "^2.2.0"
   },
   "devDependencies": {

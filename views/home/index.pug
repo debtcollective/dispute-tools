@@ -1,16 +1,125 @@
 extends ../layouts/application.pug
 
 block styles
-  link(href="/build/stylesheets/home.css" rel="stylesheet")
+  link(href="/build/stylesheets/home/index.css" rel="stylesheet")
 
 block content
-  .wrapper
-    | home#index
+
+  mixin Card(collective)
+    .col.md-col-6.col-12.p2
+      .CollectiveCard.rounded(class= (collective.id===2) ? '-is-light' : '')
+        svg.CollectiveCard__icon: use(xlink:href=`#svg-col-${collective.id}`)
+        .CollectiveCard__content
+          h4.CollectiveCard__title= collective.name
+          p.CollectiveCard__desc.-fw-500= collective.desc
+          ul.CollectiveCard__people-list
+            li: img(src="/images/temp/avatars/01.jpg" width="50" height="50")
+            li: img(src="/images/temp/avatars/02.jpg" width="50" height="50")
+            li: img(src="/images/temp/avatars/03.jpg" width="50" height="50")
+            li: img(src="/images/temp/avatars/04.jpg" width="50" height="50")
+            li: img(src="/images/temp/avatars/05.jpg" width="50" height="50")
+            li: img(src="/images/temp/avatars/06.jpg" width="50" height="50")
+          if collective.isActive
+            .clearfix
+              .col.col-6
+                p.-ff-sec #[strong= collective.total] People joined
+              .col.col-6.right-align
+                p.-caption.-primary.-fw-700(style="padding-top: 4px;") ◼ ACTIVE CAMPAIGN
+          else
+            p.-ff-sec #[strong= collective.total] People joined
+
+  -
+    var collectives = [
+      {
+        id: 1,
+        name: 'For-profit college collective',
+        desc: 'For anyone who is in debt after attending a for-profit college.',
+        total: 434,
+        isActive: true
+      },
+      {
+        id: 2,
+        name: 'Solidarity Bloc',
+        desc: 'For people who have no personal debt but want to support debtors.',
+        total: 153,
+      },
+      {
+        id: 3,
+        name: 'Student Debt Collective',
+        desc: 'This is the collective for anyone who has student loans.',
+        total: 927,
+        isActive: true
+      },
+      {
+        id: 4,
+        name: 'Payday Loans Collective',
+        desc: 'For anyone who has credit card debt.',
+        total: 135
+      },
+      {
+        id: 5,
+        name: 'Mortgage Debt Collective',
+        desc: 'For anyone who went into debt to buy a home.',
+        total: 928
+      },
+      {
+        id: 6,
+        name: 'Court Fines and Fees Collective',
+        desc: 'For anyone in debt to a local court system or probation company.',
+        total: 274
+      },
+      {
+        id: 7,
+        name: 'Auto Loans Collective',
+        desc: 'For anyone who took out a loan to buy a car.',
+        total: 725
+      },
+      {
+        id: 8,
+        name: 'Medical Debt Collective',
+        desc: 'For anyone who went into debt for health care.',
+        total: 527
+      },
+      {
+        id: 9,
+        name: 'Credit Card Debt Collective',
+        desc: 'For anyone who has credit card debt.',
+        total: 826
+      }
+    ]
+
+  .wrapper.py4.px2
+    .clearfix.mxn2
+      .max-width-4.mx-auto.py4.md-flex
+        .col.md-col-6.col-12.md-flex.items-center.pb3.px2
+          .PlayButton.mx-auto
+            .PlayButton__btn: svg: use(xlink:href="#svg-play")
+            div.center.pt1.-caption 1:20
+
+        .col.md-col-6.col-12.px2
+          h3.-h-sec.mb2: span Millions of people are struggling to get by.
+          h4 We can't find decent jobs or we are working harder for longer hours but still can't pay for basics like food, housing, education and healthcare without being buried in #[a(href=routeMappings.about.url() title="About The Collective") debt.]
+
+    .max-width-4.mx-auto.relative.py4
+      img.fit(src="/images/home/you-are-not-a-loan.jpg" style="opacity: .5")
+      .flex.absolute.top-0.left-0.right-0.bottom-0.items-center.justify-center.px2
+        .py4
+          .max-width-2.mx-auto
+            h4.center Together we are creating an organization to fight back and challenge the people and institutions that are squeezing us dry. #[a.js-signup-link(href=routeMappings.signup.url() title="Join us") Join us.]
+
+    .max-width-4.mx-auto.relative
+      h3.pb2 The Collectives
+      .clearfix.mxn2.md-flex.flex-wrap
+        each collective in collectives
+          +Card(collective)
 
 block scripts
-  script(src="/build/javascripts/home.js")
+  script(src="/build/javascripts/home/index.js" async)
   script.
-    var options = {
-      currentUser: !{JSON.stringify(currentUser)}
-    };
-    new HomeView(options);
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new ViewHomeIndex(options);
+    }, true);

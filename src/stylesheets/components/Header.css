@@ -1,5 +1,17 @@
 .Header {
-  height: 60px;
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+
+  &__bg {
+    z-index: -1;
+    transform: translate3d(0,0,0);
+    background-color: var(--k-background-color);
+    opacity: 0;
+  }
 }
 
 .Header__logo {
@@ -13,14 +25,8 @@
 
 .Header__link {
   color: var(--k-color);
-  opacity: .5;
-
-  &:hover {
-    opacity: 1;
-  }
 
   &.active {
-    opacity: 1;
     position: relative;
     color: var(--k-color);
 
@@ -31,7 +37,7 @@
       bottom: 0;
       height: 3px;
       width: 100%;
-      background-color: red;
+      background-color: var(--k-color-palette-primary);
       transform: translateY(10px);
     }
   }
