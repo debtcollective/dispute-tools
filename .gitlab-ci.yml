@@ -7,25 +7,18 @@ before_script:
   - cp config/config.sample.js config/config.js
   - cp config/knexfile.sample.js knexfile.js
 
-stages:
-  - db
-  - test
+services:
+  - redis:latest
+  - postgres:latest
 
-db:
-  services:
-    - postgres:latest
-  stage: db
+db: &db
   image: postgres
   script:
     - psql -h "postgres" -U "postgres" -c 'DROP DATABASE IF EXISTS "debtcollective_test;"'
     - psql -h "postgres" -U "postgres" -c 'CREATE DATABASE "debtcollective_test"'
 
-
 test:
-  stage: test
-  services:
-    - redis:latest
-    - postgres:latest
+  <<: *use-db
   script:
    - npm install
    - npm test
