@@ -13,6 +13,9 @@ services:
   - redis:latest
   - postgres:latest
 
+variables:
+  REDIS_HOST: "redis"
+
 stages:
   - test
 

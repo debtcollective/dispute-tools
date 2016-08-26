@@ -1,20 +1,24 @@
-if (CONFIG[CONFIG.environment].sessions !== false) {
-  var redis = require('redis');
+/* globals CONFIG */
+if (CONFIG.env().sessions !== false) {
+  const redis = require('redis');
 
-  var redisClient = redis.createClient();
+  const redisClient = redis.createClient({
+    host: process.env.REDIS_HOST || 'localhost',
+  });
 
-  var session = require('express-session');
+  const session = require('express-session');
 
-  var RedisStore = require('connect-redis')(session);
+  const RedisStore = require('connect-redis')(session);
 
-  var redisStoreInstance = new RedisStore();
+  const redisStoreInstance = new RedisStore();
 
-  var sessionMiddleWare = session({
-    resave : false,
-    saveUninitialized : true,
-    key : CONFIG[CONFIG.environment].sessions.key,
+  const sessionMiddleWare = session({
+    resave: false,
+    saveUninitialized: true,
+    key: CONFIG.env().sessions.key,
     store: redisStoreInstance,
-    secret: CONFIG[CONFIG.environment].sessions.secret
+    secret: CONFIG.env().sessions.secret,
+    client: redisClient
   });
 
   module.exports = sessionMiddleWare;
