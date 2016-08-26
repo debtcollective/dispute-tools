@@ -18,7 +18,7 @@ db: &db
     - psql -h "postgres" -U "postgres" -c 'CREATE DATABASE "debtcollective_test"'
 
 test:
-  <<: *use-db
+  <<: *db
   script:
    - npm install
    - npm test
