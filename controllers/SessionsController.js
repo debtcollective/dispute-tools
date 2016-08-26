@@ -23,6 +23,7 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
         if (err) {
           return res.status(400).render('sessions/new', {
             error: err.message,
+            _formData: req.body,
           });
         }
 

@@ -131,6 +131,10 @@ main {
   &:active {
     background-color: var(--primary-darker);
   }
+
+  &[disabled] {
+    opacity: .5;
+  }
 }
 
 .-k-select {
