@@ -16,9 +16,14 @@ cache:
   paths:
   - node_modules/
 
+connect:
+  image: postgres
+  script:
+   - psql -h "postgres" -c 'DROP DATABASE IF EXISTS "debtcollective_test;"'
+   - psql -h "postgres" -c 'CREATE DATABASE "debtcollective_test"'
+
 test:
   script:
-   - apt-get install -y postgresql-client
    - npm install
    - cp config/config.sample.js config/config.js
    - cp config/knexfile.sample.js knexfile.js
