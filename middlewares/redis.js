@@ -17,8 +17,7 @@ if (CONFIG.env().sessions !== false) {
     saveUninitialized: true,
     key: CONFIG.env().sessions.key,
     store: redisStoreInstance,
-    secret: CONFIG.env().sessions.secret,
-    client: redisClient
+    secret: CONFIG.env().sessions.secret
   });
 
   module.exports = sessionMiddleWare;
