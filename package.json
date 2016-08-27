@@ -85,6 +85,7 @@
     "morgan": "^1.7.0",
     "mysql": "^2.11.1",
     "neon": "^2.0.0",
+    "node-attachments-processor": "github:empathia/node-attachments-processor",
     "nodemailer": "^2.5.0",
     "nodemailer-ses-transport": "^1.4.0",
     "passport": "^0.3.2",
@@ -97,9 +98,11 @@
     "req-flash": "0.0.3",
     "rimraf": "^2.5.4",
     "route-mappings": "^0.3.1",
+    "s3-uploader": "github:empathia/node-s3-uploader",
     "scandium-express": "0.0.3",
     "scripty": "^1.6.0",
     "uuid": "^2.0.2",
+    "webfontloader": "^1.6.26",
     "winston": "^2.2.0"
   },
   "devDependencies": {

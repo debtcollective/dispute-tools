@@ -1,3 +1,4 @@
+import WebFont from 'webfontloader';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Header from '../../components/Header';
 
@@ -11,6 +12,12 @@ class ViewHomeTos extends NodeSupport {
       currentURL: config.currentURL,
       element: document.querySelector('[data-component-header]'),
     }));
+
+    WebFont.load({
+      google: {
+        families: ['Space Mono'],
+      },
+    });
   }
 }
 

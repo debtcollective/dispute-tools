@@ -56,7 +56,9 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
           res.locals.errors = err.errors;
 
-          res.render('users/new.pug');
+          res.render('users/new.pug', {
+            _formData: req.body,
+          });
         });
     },
 

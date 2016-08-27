@@ -12,6 +12,7 @@ describe('ACLController', () => {
     agent.get(`${url}${urls.acl.url()}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
+        console.log(err, res)
         expect(res.status).to.equal(200);
         expect(res.body.root).to.be.instanceof(Object);
         expect(res.body.root.index).to.be.instanceof(Object);

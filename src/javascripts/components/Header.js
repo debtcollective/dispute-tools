@@ -4,7 +4,7 @@ import Dropdown from './Dropdown';
 import UsersNewForm from './users/NewForm';
 import SessionsNewForm from './sessions/NewForm';
 
-const SCROLL_MAX = 100;
+const SCROLL_MAX = 200;
 
 function normalize(value, minx, maxx, min, max) {
   const a = (maxx - minx) / (max - min);
@@ -23,7 +23,7 @@ export default class Header extends Widget {
       return this._handleLoggedUser();
     }
 
-    if (config.currentURL !== '/login' && config.currentURL !== '/signup') {
+    if (['/login', '/signup', '/users'].indexOf(config.currentURL) === -1) {
       return this._handleVisitorUser();
     }
 
@@ -50,10 +50,10 @@ export default class Header extends Widget {
   _handleVisitorUser() {
     const signupModalElement = document.querySelector('[data-component-modal="signup"]');
     const loginModalElement = document.querySelector('[data-component-modal="login"]');
-    const signupLink = this.element.querySelector('.js-header-signup-link');
-    const loginLink = this.element.querySelector('.js-header-login-link');
+    const signupLinks = [].slice.call(document.querySelectorAll('.js-signup-link'));
+    const loginLinks = [].slice.call(document.querySelectorAll('.js-login-link'));
 
-    if (signupModalElement && signupLink) {
+    if (signupModalElement && signupLinks.length) {
       this.appendChild(new Modal({
         name: 'signupModal',
         element: signupModalElement,
@@ -62,13 +62,14 @@ export default class Header extends Widget {
         element: signupModalElement.querySelector('[data-component-usernewform]'),
       }));
 
-      signupLink.addEventListener('click',
-        this._handleClickHijacking.bind(this, this.signupModal));
+      signupLinks.forEach(link => {
+        link.addEventListener('click', this._handleClickHijacking.bind(this, this.signupModal));
+      });
     } else {
-      throw new Error('Header: signupModalElement || signupLink not found.');
+      throw new Error('Header: signupModalElement || signupLinks not found.');
     }
 
-    if (loginModalElement && loginLink) {
+    if (loginModalElement && loginLinks.length) {
       this.appendChild(new Modal({
         name: 'loginModal',
         element: loginModalElement,
@@ -77,10 +78,11 @@ export default class Header extends Widget {
         element: loginModalElement.querySelector('[data-component-sessionsnewform]'),
       }));
 
-      loginLink.addEventListener('click',
-        this._handleClickHijacking.bind(this, this.loginModal));
+      loginLinks.forEach(link => {
+        link.addEventListener('click', this._handleClickHijacking.bind(this, this.loginModal));
+      });
     } else {
-      throw new Error('Header: loginModalElement || loginLink not found.');
+      throw new Error('Header: loginModalElement || loginLinks not found.');
     }
   }
 

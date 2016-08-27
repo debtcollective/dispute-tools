@@ -50,7 +50,9 @@ const ACLController = Class('ACLController').inherits(RestfulController)({
       .then(() => {
         res.json(response);
       })
-      .catch(next);
+      .catch(function(err) {
+        console.log('ERROR:', err)
+      });
     },
   },
 });

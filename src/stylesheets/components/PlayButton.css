@@ -1,0 +1,15 @@
+.PlayButton {
+  width: 70px;
+
+  &__btn {
+    height: 70px;
+    padding-top: 20px; text-align: center;
+    background-color: var(--k-color-palette-primary);
+
+    & > svg {
+      width: 25px;
+      height: 30px;
+      fill: #fff;
+    }
+  }
+}
