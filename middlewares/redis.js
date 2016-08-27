@@ -10,7 +10,9 @@ if (CONFIG.env().sessions !== false) {
 
   const RedisStore = require('connect-redis')(session);
 
-  const redisStoreInstance = new RedisStore();
+  const redisStoreInstance = new RedisStore({
+    client: redisClient
+  });
 
   const sessionMiddleWare = session({
     resave: false,
