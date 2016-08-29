@@ -181,6 +181,48 @@ describe('Account', () => {
     });
   });
 
+  describe('Instance Methods', () => {
+    describe('processFile', () => {
+      it('Should create an account with an attachment', function() {
+        this.timeout(30000);
+
+        let account;
+
+        return Account.processFile({
+          path: path.join(process.cwd(), 'tests', 'assets', 'hubble.jpg'),
+        })
+          .then((model) => {
+            account = model;
+
+            const user = new User({
+              email: 'user-1@example.com',
+              password: '12345678',
+              role: 'Admin',
+            });
+
+            return user.save()
+              .then(() => {
+                model.userId = user.id;
+                model.collectiveId = uuid.v4();
+                model.fullname = 'Example Account Name';
+                model.state = 'Texas';
+                model.zip = '73301';
+
+                return model.uploadProcessedFiles();
+              });
+          })
+          .then((model) => {
+            const paths = account.parsePaths();
+
+            expect(account).is.an.instanceof(Account);
+            expect(paths.tiny).is.not.undefined;
+            expect(paths.small).is.not.undefined;
+            expect(paths.medium).is.not.undefined;
+          });
+      });
+    });
+  });
+
   describe('Relations', () => {
     describe('user', () => {
       it('Should return a valid User model', () => {

@@ -9,16 +9,16 @@ const LocalFS = require(path.join(process.cwd(), 'lib', 'node-attachment-process
 
 let uploader;
 
-if (['production', 'staging'].indexOf(CONFIG.environment) !== -1) {
+// if (['production', 'staging'].indexOf(CONFIG.environment) !== -1) {
   uploader = new S3Uploader(AWS, {
-    bucket: `thedebtcollective-${CONFIG.environment}`,
+    bucket: `thedebtcollective`,
     pathPrefix: 'accounts',
   });
-} else {
-  uploader = new LocalFS({
-    pathPrefix: 'accounts',
-  });
-}
+// } else {
+//   uploader = new LocalFS({
+//     pathPrefix: 'accounts',
+//   });
+// }
 
 const Account = Class('Account').inherits(Krypton.Model).includes(AttachmentsProcessor)({
   tableName: 'Accounts',
