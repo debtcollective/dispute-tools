@@ -5,11 +5,20 @@ const path = require('path');
 require('s3-uploader');
 
 const imageProcessor = require(path.join(process.cwd(), 'lib', 'image-processor'));
+const LocalFS = require(path.join(process.cwd(), 'lib', 'node-attachment-processor-local-fs'));
 
-const uploader = new S3Uploader(AWS, {
-  bucket: `thedebtcollective-${CONFIG.environment}`,
-  pathPrefix: 'accounts',
-});
+let uploader;
+
+if (['production', 'staging'].indexOf(CONFIG.environment) !== -1) {
+  uploader = new S3Uploader(AWS, {
+    bucket: `thedebtcollective-${CONFIG.environment}`,
+    pathPrefix: 'accounts',
+  });
+} else {
+  uploader = new LocalFS({
+    pathPrefix: 'accounts',
+  });
+}
 
 const Account = Class('Account').inherits(Krypton.Model).includes(AttachmentsProcessor)({
   tableName: 'Accounts',
