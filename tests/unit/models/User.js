@@ -1,10 +1,10 @@
-/* globals User */
+/* globals User, Account */
 
 const expect = require('chai').expect;
 const Promise = require('bluebird');
-
 const path = require('path');
 const _ = require('lodash');
+const uuid = require('uuid');
 
 const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 
@@ -163,6 +163,36 @@ describe('User', () => {
         user.activate();
 
         expect(user.activationToken).to.equal(null);
+      });
+    });
+  });
+
+  describe('Relations', () => {
+    describe('account', () => {
+      it('Should return a valid Account model', () => {
+        const user = new User({
+          email: 'user@example.com',
+          password: '12345678',
+          role: 'Admin',
+        });
+
+        return user.save().then(() => {
+          const account = new Account({
+            userId: user.id,
+            collectiveId: uuid.v4(),
+            fullname: 'Example Account Name',
+            bio: '',
+            state: 'Texas',
+            zip: '73301',
+          });
+
+          return account.save().then(() => {
+            return User.query().include('account');
+          });
+        })
+        .then((result) => {
+          expect(result[0].account).to.be.instanceof(Account);
+        });
       });
     });
   });

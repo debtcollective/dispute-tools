@@ -25,12 +25,13 @@ const Account = Class('Account').inherits(Krypton.Model).includes(AttachmentsPro
   states: US_STATES,
   validations: {
     userId: ['required'],
+    collectiveId: ['required'],
     fullname: ['required'],
     state: [
       'required',
       {
         rule(val) {
-          if (this.states.indexOf(val) === -1) {
+          if (Account.states.indexOf(val) === -1) {
             throw new Error('The Account\'s state is invalid.');
           }
         },
