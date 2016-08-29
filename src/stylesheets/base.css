@@ -81,6 +81,8 @@ body {
   color: var(--k-background-color);
 }
 
+h2 {line-height: 80px}
+
 a {
   color: var(--k-color-palette-primary);
   text-decoration: none;

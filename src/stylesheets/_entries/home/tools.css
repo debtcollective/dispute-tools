@@ -1,0 +1,45 @@
+@import '../../base';
+@import '../../components/PlayButton';
+
+.Tools__intro {
+  margin-top: 0;
+
+  &-image {
+    display: none;
+  }
+}
+
+.Tools__title {
+  text-align: center;
+  z-index: 1;
+
+  & br {display: none}
+}
+
+.Tools__offset-text {
+  padding: 1rem 1rem 0;
+}
+
+@media (--breakpoint-md) {
+  .Tools__intro {
+    margin-top: -120px;
+
+    &-image {
+      display: block;
+      transform: translate3d(-40px, 0, 0);
+    }
+  }
+
+  .Tools__title {
+    padding-left: 18rem;
+    text-align: left;
+
+    & br {
+      display: initial;
+    }
+  }
+
+  .Tools__offset-text {
+    padding: 4rem 0 0 4rem;
+  }
+}
