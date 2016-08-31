@@ -1,7 +1,15 @@
+/* sizes */
 .-s18 {width: 18px; height: 18px}
 
+/* colors */
+.-primary {color: var(--k-color-palette-primary)}
 .-accent {color: var(--k-color-palette-accent)}
+.-danger {color: var(--k-color-palette-danger)}
+.-success {color: var(--k-color-palette-success)}
+.-white {color: #fff}
+.-neutral-mid {color: var(--k-color-palette-neutral-mid)}
 
+/* text */
 .-ttu {text-transform: uppercase}
 
 /* knockout text */
