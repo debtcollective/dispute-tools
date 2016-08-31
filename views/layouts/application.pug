@@ -38,19 +38,20 @@ html(lang="en")
 
       block content
 
-    if !currentUser
-      if (currentURL !== routeMappings.signup.url()) && (currentURL !== routeMappings.login.url()) && (currentURL !== routeMappings.Users.create.url())
-        .Modal(data-component-modal="signup" aria-hidden="true" role="dialog" aria-labelledby="modal-title")
-          button(class="Modal__close" aria-label="close")
-            svg(class="-s18"): use(xlink:href="#svg-close")
-          .Modal__body(role="document")
-            include ../includes/users/new-form.pug
+    block body
+      if !currentUser
+        if (currentURL !== routeMappings.signup.url()) && (currentURL !== routeMappings.login.url()) && (currentURL !== routeMappings.Users.create.url())
+          .Modal(data-component-modal="signup" aria-hidden="true" role="dialog" aria-labelledby="modal-title")
+            button(class="Modal__close" aria-label="close")
+              svg(class="-s18"): use(xlink:href="#svg-close")
+            .Modal__body(role="document")
+              include ../includes/users/new-form.pug
 
-        .Modal(data-component-modal="login" aria-hidden="true" role="dialog" aria-labelledby="modal-title")
-          button(class="Modal__close" aria-label="close")
-            svg(class="-s18"): use(xlink:href="#svg-close")
-          .Modal__body(role="document")
-            include ../includes/sessions/new-form.pug
+          .Modal(data-component-modal="login" aria-hidden="true" role="dialog" aria-labelledby="modal-title")
+            button(class="Modal__close" aria-label="close")
+              svg(class="-s18"): use(xlink:href="#svg-close")
+            .Modal__body(role="document")
+              include ../includes/sessions/new-form.pug
 
     block scripts
       script(src="/build/javascripts/application.js")
