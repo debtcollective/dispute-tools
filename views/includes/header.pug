@@ -1,6 +1,6 @@
 mixin headerLink(href, name)
   - className = 'Header__link -fw-700'
-  if href === currentURL
+  if (href === currentURL) || (currentURL.startsWith(href))
     - className += ' active'
   a(href!=href, class=className, title=name)&attributes(attributes)= name
 
