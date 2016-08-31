@@ -3,6 +3,7 @@
 
 .Tools__intro {
   margin-top: 0;
+  border-bottom: 3px solid color(var(--k-color-palette-neutral-light) alpha(20%));
 
   &-image {
     display: none;
