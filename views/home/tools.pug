@@ -1,10 +1,10 @@
 extends ../layouts/application.pug
 
-block styles
-  link(href="/build/stylesheets/home/tools.css" rel="stylesheet")
-
 block title
   | Tools and Services — The Debt Collective
+
+block styles
+  link(href="/build/stylesheets/home/tools.css" rel="stylesheet")
 
 block content
   -
@@ -41,23 +41,24 @@ block content
         h4.pt2= tool.name
         p.py2: a() About
       p.pb2 #[b= tool.totalPeople] People filled
-      button.-k-button.-fw.-fw-700 Get started
+      a(href=routeMappings.tool.url()).-k-btn.btn-primary.-fw.-fw-700 Get started
 
   .wrapper.px2
-    .Tools__intro.max-width-4.mx-auto
-      .clearfix.mxn2.md-flex.items-center
-        .col.md-col-5.col-12.px2
-          img.Tools__intro-image(src="/images/tools/intro.jpg")
+    .Tools__intro
+      .max-width-4.mx-auto
+        .clearfix.mxn2.md-flex.items-center
+          .col.md-col-5.col-12.px2
+            img.Tools__intro-image(src="/images/tools/intro.jpg" width="499" height="829")
 
-        .relative.col.md-col-7.col-12.px2
-          h2.pb3 Together, we own the bank.
-          h4.pb3 Welcome to The Debt Collective dispute tools page
-          .-fw-500
-            p.pb2 For decades, vulture collectors and the federal government have been garnishing our wages and seizing our tax returns, suing us, and ruining our credit.
-            p We made these free tools to help us fight back.
-            p We all have the right to dispute unfair debts.
+          .relative.col.md-col-7.col-12.px2.pb3
+            h2.pb3 Together, we own the bank.
+            h4.pb3 Welcome to The Debt Collective dispute tools page
+            .-fw-500
+              p.pb2 For decades, vulture collectors and the federal government have been garnishing our wages and seizing our tax returns, suing us, and ruining our credit.
+              p We made these free tools to help us fight back.
+              p We all have the right to dispute unfair debts.
 
-    .max-width-4.mx-auto.pb4
+    .max-width-4.mx-auto.py4
       .clearfix.mxn2
         .col.md-col-1.px2 &nbsp;
         .col.md-col-11.col-12.px2
