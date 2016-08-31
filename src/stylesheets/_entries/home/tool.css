@@ -1,0 +1,94 @@
+@import '../../base';
+@import '../../components/AvatarList';
+
+.-bg-neutral-dark {
+  background-color: var(--k-color-palette-neutral-dark);
+}
+
+hr {
+  height: 3px;
+  background-color: rgba(235, 235, 235, 0.2);
+  border: none;
+}
+
+/* 1 */
+.Tool__DisputeCard {
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  background-color: #fff;
+  color: #000;
+}
+
+/* 2 */
+.Tool__Info {
+  padding: var(--space-3) var(--space-3) 40px;
+  background-color: #333;
+  border-radius: var(--border-radius);
+
+  &.-upload {
+    border: 2px dashed rgba(255,255,255,.3);
+    background-color: rgba(0,0,0,.3);
+  }
+
+  &.-completed {
+    position: relative;
+    border: none;
+    background-color: #fff;
+    color: #000;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 4px;
+      right: 4px;
+      height: 5px;
+      background-color: var(--k-color-palette-neutral-mid);
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
+    }
+  }
+
+  &__footer-caption {
+    padding-top: 5px;
+    margin-bottom: -26px;
+  }
+}
+
+/* 3 */
+.Tool__process-option {
+  height: 100%;
+  cursor: pointer;
+
+  & > input[type="radio"] {display: none}
+
+  &-inner {
+    padding: var(--space-3);
+    border-radius: var(--border-radius);
+    background-color: #4a4a4a;
+  }
+
+  &-icon {
+    height: 60px;
+    margin-bottom: var(--space-1);
+    opacity: .6;
+  }
+
+  & .css-btn-selected {display: none}
+
+  & > input[type="radio"]:checked {
+    & + .Tool__process-option-inner {
+      background-color: #fff;
+      color: #000;
+
+      & .Tool__process-option-icon {opacity: 1}
+      & .-k-btn {display: none}
+      & .css-btn-selected {display: block}
+    }
+  }
+}
+
+@media (--breakpoint-lg) {
+  .Tool__sidebar {
+    position: fixed;
+    width: 270px;
+  }
+}

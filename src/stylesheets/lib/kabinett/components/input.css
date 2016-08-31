@@ -1,0 +1,9 @@
+.-k-input {
+  font-size: var(--k-font-size);
+  height: calc(calc(var(--k-font-size) - 1px) + var(--k-font-size) + calc(var(--k-font-size) - 2px));
+  padding: calc(var(--k-font-size) - 1px) 1em calc(var(--k-font-size) - 2px);
+  border-width: 0;
+  border-radius: var(--border-radius);
+
+  &[disabled] {opacity: .5}
+}

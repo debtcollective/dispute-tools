@@ -22,22 +22,6 @@
   &__desc {
     padding-bottom: 1rem;
   }
-
-  &__people-list {
-    padding: 0;
-    margin: 0 -.5rem 1rem;
-    white-space: nowrap;
-    overflow: hidden;
-    mix-blend-mode: luminosity;
-
-    & > li {
-      display: inline-block;
-      vertical-align: top;
-      margin: 0 .25rem;
-    }
-
-    & img {display: block}
-  }
 }
 
 .CollectiveCard.-is-light {
@@ -46,5 +30,5 @@
 
   & .CollectiveCard__title {color: inherit}
 
-  & .CollectiveCard__people-list {mix-blend-mode: initial}
+  & .AvatarList {mix-blend-mode: initial}
 }

@@ -21,6 +21,11 @@ const routeMappings = RouteMappings()
     as: 'tools',
   })
 
+  .get('/tools-and-services/tool', {
+    to: 'Home#tool',
+    as: 'tool',
+  })
+
   .get('/signup', {
     to: 'Users#new',
     as: 'signup',

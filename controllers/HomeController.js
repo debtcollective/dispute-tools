@@ -28,6 +28,10 @@ const HomeController = Class('HomeController').inherits(BaseController)({
     tools(req, res) {
       res.render('home/tools');
     },
+
+    tool(req, res) {
+      res.render('home/tool');
+    },
   },
 });
 
