@@ -15,10 +15,13 @@
 
 /* KABINETT */
 @import './lib/kabinett/core/base';
+@import './lib/kabinett/components/button';
+@import './lib/kabinett/components/input';
 @import './lib/kabinett/utilities/layout';
 @import './lib/kabinett/utilities/type-font-weight';
 @import './lib/kabinett/utilities/type-font-scale';
 @import './lib/kabinett/utilities/aria';
+@import './lib/kabinett/utilities/sizes';
 
 
 
@@ -27,6 +30,7 @@
 @import './components/Modal';
 @import './components/Dropdown';
 @import './components/Alert';
+@import './components/Button';
 
 
 :root {
@@ -119,37 +123,6 @@ main {
 }
 
 /* @TODO: move to kabinett */
-.-k-input {
-  height: 45px;
-  font-size: 16px;
-  padding: 0 1rem;
-  border: none;
-  border-radius: 2px;
-}
-
-.-k-button {
-  height: 45px;
-  font-size: 16px;
-  padding: 0 1rem;
-  border: none;
-  border-radius: 2px;
-
-  background-color: var(--k-color-palette-primary);
-  color: white;
-
-  &:hover {
-    background-color: var(--primary-lighter);
-  }
-
-  &:active {
-    background-color: var(--primary-darker);
-  }
-
-  &[disabled] {
-    opacity: .5;
-  }
-}
-
 .-k-select {
   position: relative;
   height: 45px;

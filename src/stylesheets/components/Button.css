@@ -1,0 +1,37 @@
+.btn-link {
+  background-color: transparent;
+  &:hover {opacity: .8}
+}
+
+.btn-primary {
+  background-color: var(--k-color-palette-primary);
+  color: white;
+
+  &:hover {
+    background-color: var(--primary-lighter);
+    color: white;
+  }
+
+  &:active {
+    background-color: var(--primary-darker);
+  }
+}
+
+.btn-dark {
+  background-color: #000;
+  color: var(--k-color-palette-accent);
+}
+
+.btn-outline {
+  box-shadow: 0 0 0 2px #979797;
+  background-color: transparent;
+
+  &:hover {opacity: .8}
+
+  &.-sm {box-shadow: 0 0 0 1px #979797}
+
+  &.-primary {
+    box-shadow: 0 0 0 2px var(--k-color-palette-primary);
+    &.-sm {box-shadow: 0 0 0 1px var(--k-color-palette-primary)}
+  }
+}
