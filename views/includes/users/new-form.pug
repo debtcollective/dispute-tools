@@ -22,7 +22,7 @@ div(data-component-usernewform)
           .-k-select(class=errors && errors.collectiveId ? 'error' : '')
             select.-fw(name="collectiveId")
               option(value="") Choose an option
-              each collective in collectives
+              each collective in COLLECTIVES
                 option(
                   value= collective.id
                   selected!= _formData && _formData.collectiveId === collective.id
@@ -36,7 +36,7 @@ div(data-component-usernewform)
             .-k-select(class=errors && errors.state ? 'error' : '')
               select.-fw(name="state")
                 option(value="") State
-                each state in stateNames
+                each state in US_STATES
                   option(
                     value= state
                     selected!= _formData && _formData.state === state

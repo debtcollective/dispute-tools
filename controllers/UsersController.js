@@ -7,15 +7,6 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       before: '_loadUser',
       actions: ['show', 'edit', 'update', 'destroy'],
     },
-    {
-      before(req, res, next) {
-        Collective.query().then((collectives) => {
-          res.locals.collectives = collectives;
-          next();
-        });
-      },
-      actions: ['new', 'create'],
-    },
   ],
 
   prototype: {
@@ -49,9 +40,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
     },
 
     new(req, res) {
-      res.render('users/new.pug', {
-        collectives: res.locals.collectives,
-      });
+      res.render('users/new.pug');
     },
 
     create(req, res) {
@@ -80,7 +69,6 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
         res.render('users/new.pug', {
           _formData: req.body,
-          collectives: res.locals.collectives,
         });
       });
     },
