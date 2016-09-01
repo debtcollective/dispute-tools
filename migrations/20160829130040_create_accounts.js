@@ -1,5 +1,5 @@
 
-exports.up = function (knex, Promise) {
+exports.up = (knex) => {
   return knex.schema.createTable('Accounts', (t) => {
     t.uuid('id').primary();
     t.uuid('user_id')
@@ -25,6 +25,6 @@ exports.up = function (knex, Promise) {
   });
 };
 
-exports.down = function (knex, Promise) {
+exports.down = (knex) => {
   return knex.schema.dropTable('Accounts');
 };

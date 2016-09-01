@@ -1,4 +1,4 @@
-exports.seed = (knex, Promise) => {
+exports.seed = (knex) => {
   const uuid = require('uuid');
 
   return knex('Collectives').del()
