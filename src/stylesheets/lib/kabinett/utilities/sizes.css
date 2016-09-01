@@ -1,0 +1,27 @@
+/*
+ * Kabinett — Utilities Sizes
+ */
+
+.-xs {
+  font-size: var(--k-xs-fs);
+  height: var(--k-xs-h);
+  padding: var(--k-xs-p);
+}
+
+.-sm {
+  font-size: var(--k-sm-fs);
+  height: var(--k-sm-h);
+  padding: var(--k-sm-p);
+}
+
+.-lg {
+  font-size: var(--k-lg-fs);
+  height: var(--k-lg-h);
+  padding: var(--k-lg-p);
+}
+
+.-xl {
+  font-size: var(--k-xl-fs);
+  height: var(--k-xl-h);
+  padding: var(--k-xl-p);
+}

@@ -1,1 +1,46 @@
+/* sizes */
 .-s18 {width: 18px; height: 18px}
+
+/* colors */
+.-primary {color: var(--k-color-palette-primary)}
+.-accent {color: var(--k-color-palette-accent)}
+.-danger {color: var(--k-color-palette-danger)}
+.-success {color: var(--k-color-palette-success)}
+.-white {color: #fff}
+.-neutral-mid {color: var(--k-color-palette-neutral-mid)}
+
+/* text */
+.-ttu {text-transform: uppercase}
+
+/* knockout text */
+.-h-sec {
+  line-height: 1.5em;
+
+  & > span {
+    white-space: pre-wrap;
+    box-decoration-break: clone;
+    padding: 0 1rem .25rem;
+    background-color: var(--k-color);
+    color: var(--k-background-color);
+    mix-blend-mode: screen;
+  }
+}
+
+/* secondary font */
+.-ff-sec {
+  font-family: monospace;
+
+  &.-h4 {
+    font-size: 22px;
+    line-height: 1.5;
+  }
+}
+
+.wf-spacemono-n4-active .-ff-sec {
+  font-family: 'Space Mono', monospace;
+
+  &.-h4 {
+    font-size: 21px;
+    line-height: 1.618;
+  }
+}

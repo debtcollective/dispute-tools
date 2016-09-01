@@ -11,6 +11,21 @@ const routeMappings = RouteMappings()
     as: 'tos',
   })
 
+  .get('/about', {
+    to: 'Home#about',
+    as: 'about',
+  })
+
+  .get('/tools-and-services', {
+    to: 'Home#tools',
+    as: 'tools',
+  })
+
+  .get('/tools-and-services/tool', {
+    to: 'Home#tool',
+    as: 'tool',
+  })
+
   .get('/signup', {
     to: 'Users#new',
     as: 'signup',
@@ -61,7 +76,7 @@ const routeMappings = RouteMappings()
       })
       .get('/:token/activate', {
         to: 'Users#activate',
-        as: 'activate'
+        as: 'activate',
       });
   });
 

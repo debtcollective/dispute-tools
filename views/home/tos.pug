@@ -1,14 +1,25 @@
 extends ../layouts/application.pug
 
+block title
+  | Community Agreement — The Debt Collective
+
 block styles
-  link(rel="dns-prefetch" href="//fonts.googleapis.com")
-  link(href="/build/stylesheets/tos.css" rel="stylesheet")
-  link(href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet")
+  link(href="/build/stylesheets/home/tos.css" rel="stylesheet")
 
 block content
   .wrapper.py4
     .max-width-2.mx-auto
-      h2.-h-sec.mb3: span Rules of Engagement
+      h2.-h-sec.mb3: span Community Agreement
       p.-ff-sec.-h4.mb3 The Debt Collective is an organization by debtors and for debtors. This platform is for people from all walks of life. We are working in solidarity with one another to get our debts cancelled and to demand a better future for all. Members who engage in racist, sexist, anti-immigrant or other degrading or dehumanizing behavior will be removed.
       p.-ff-sec.-h4 We care about your privacy. We will not share any of your personal information outside the Debt Collective organizing team or with experts with whom we are consulting without your permission.
 
+block scripts
+  script(src="/build/javascripts/home/tos.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new ViewHomeTos(options);
+    }, true);

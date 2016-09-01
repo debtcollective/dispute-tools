@@ -19,10 +19,11 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
         return res.redirect(CONFIG.router.helpers.login.url());
       }
 
-      passport.authenticate('local', (err, user, info) => {
+      passport.authenticate('local', (err, user) => {
         if (err) {
           return res.status(400).render('sessions/new', {
             error: err.message,
+            _formData: req.body,
           });
         }
 
@@ -56,7 +57,7 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
 
         if (user.length !== 1) {
           return res.status(400).render('sessions/showEmailForm', {
-            error: 'Invalid email',
+            error: 'No account was found with that email address.',
           });
         }
 
@@ -83,13 +84,14 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
       User.query()
         .where('reset_password_token', req.params.token)
         .then((result) => {
-          if (result !== 1) {
+          if (result.length !== 1) {
             req.flash('error', 'Invalid reset password token');
-
             return res.redirect(CONFIG.router.helpers.resetPassword.url());
           }
 
-          res.render('sessions/showPasswordForm');
+          return res.render('sessions/showPasswordForm', {
+            token: req.params.token,
+          });
         })
         .catch(next);
     },
@@ -100,12 +102,14 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
 
         if (user.length !== 1) {
           return res.status(400).render('sessions/showPasswordForm', {
+            token: req.params.token,
             error: 'Invalid reset password token',
           });
         }
 
         if (req.body.password !== req.body.confirmPassword) {
           return res.status(400).render('sessions/showPasswordForm', {
+            token: req.params.token,
             error: 'Passwords mismatch',
           });
         }
@@ -125,13 +129,14 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
 
               res.status(400);
 
-              return res.render('sessions/showPasswordForm');
+              return res.render('sessions/showPasswordForm', {
+                token: req.params.token,
+              });
             }
 
             return next(err);
           });
-
-      })().catch(next)
+      })().catch(next);
     },
   },
 });

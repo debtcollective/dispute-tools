@@ -115,7 +115,12 @@ const User = Class('User').inherits(Krypton.Model)({
 
       // sendActivation helper function
       const sendActivation = (done) => {
-        UserMailer.sendActivation(model.email, { user: model })
+        UserMailer.sendActivation(model.email, {
+          user: model,
+          _options: {
+            subject: 'Activate your account - The Debt Collective',
+          },
+        })
           .then(() => {
             done();
           })

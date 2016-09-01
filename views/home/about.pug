@@ -1,0 +1,86 @@
+extends ../layouts/application.pug
+
+block title
+  | About — The Debt Collective
+
+block styles
+  link(href="/build/stylesheets/home/about.css" rel="stylesheet")
+
+block content
+  .wrapper
+    .About__cover.relative
+      img.-fw.inline-block.align-top(src="/images/about/cover.jpg")
+      .flex.absolute.top-0.left-0.right-0.bottom-0.items-center.justify-center
+        .max-width-2.center
+          h2.-accent About us
+          h4.pb3 The Debt Collective leverages collective power by offering debtors a shared platform for direct action.
+          .PlayButton.mx-auto
+            .PlayButton__btn: svg: use(xlink:href="#svg-play")
+            div.center.pt1.-caption 1:20
+
+    .px2
+      .max-width-3.mx-auto.py4
+        h2.pt3.-h-sec: span What is<br/>The Debt Collective?
+        img.relative.fit(src="/images/about/team.png" style="margin-top: -5rem;")
+        p.mt2.-ff-sec In 2012, we launched the Rolling Jubilee as a public education campaign about the injustice of requiring public goods, such as education and healthcare, to be personally debt-financed. Our long-term aim is to transform personal grievances into collective political action by helping people realize that they are not “a loan.”
+
+      .max-width-3.mx-auto.py4
+        h2.pt4.pb3.-h-sec: span The<br/>Founders
+        ul.list-reset.clearfix.center.mxn2.md-flex.flex-wrap
+          li.About__founder-item.col.md-col-3.sm-col-6.col-12.px2.mb3: div
+          li.About__founder-item.col.md-col-3.sm-col-6.col-12.px2.mb3: div
+          li.About__founder-item.col.md-col-3.sm-col-6.col-12.px2.mb3: div
+          li.About__founder-item.col.md-col-3.sm-col-6.col-12.px2.mb3: div
+          li.About__founder-item.col.md-col-3.sm-col-6.col-12.px2.mb3: div
+          li.About__founder-item.col.md-col-3.sm-col-6.col-12.px2.mb3: div
+          li.About__founder-item.col.md-col-3.sm-col-6.col-12.px2.mb3: div
+          li.About__founder-item.col.md-col-3.sm-col-6.col-12.px2.mb3: div
+
+      .max-width-4.mx-auto.py4
+        h2.pt4.-h-sec.center: span The Red Square
+        .About__red-square-content.clearfix.mxn2
+          .col.md-col-6.col-12.px2.right-align
+            img(src="/images/about/the-red-square.jpg")
+            .relative
+              .About__red-square-square.absolute.left-0
+          .col.md-col-6.col-12.pt4.px2
+            .mb2.-h4.-fw-500 The red square was first used as a symbol in the student strikes in 2005 and again in 2012 in Quebec.
+            p.-ff-sec The students wore red felt squares as a symbol of debt: it means carrément dans le rouge, or squarely in the red.
+
+      .max-width-4.mx-auto.pt4
+        h3.py3 Press
+        ul.list-reset.clearfix.center.mxn2.md-flex.flex-wrap
+          .col.md-col-6.col-12.px2.mb3
+            .About__press-item.p4.-fw.rounded.-fh
+              .About__press-item-logo.mb3.circle.flex.items-center.justify-center.mx-auto.overflow-hidden
+                img(src="/images/about/press/fusion.jpg")
+              .-ff-sec These students were ruined by predatory colleges. Now they’re getting even.
+
+          .col.md-col-6.col-12.px2.mb3
+            .About__press-item.p4.-fw.rounded.-fh
+              .About__press-item-logo.mb3.circle.flex.items-center.justify-center.mx-auto.overflow-hidden(style="background-color: #004889;")
+                img(src="/images/about/press/the-guardian.jpg")
+              .-ff-sec Occupy activists abolish $3.85m in Corinthian Colleges students' loan debt.
+
+          .col.md-col-6.col-12.px2.mb3
+            .About__press-item.p4.-fw.rounded.-fh
+              .About__press-item-logo.mb3.circle.flex.items-center.justify-center.mx-auto.overflow-hidden
+                img(src="/images/about/press/wp.jpg")
+              .-ff-sec How one student got burned by a for-profit college and bailed out by Occupy Wall Street.
+
+          .col.md-col-6.col-12.px2.mb3
+            .About__press-item.p4.-fw.rounded.-fh
+              .About__press-item-logo.mb3.circle.flex.items-center.justify-center.mx-auto.overflow-hidden
+                img(src="/images/about/press/aljazeera.jpg")
+              .-ff-sec Strike student debt!
+
+block scripts
+  script(src="/build/javascripts/home/about.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new ViewHomeAbout(options);
+    }, true);

@@ -1,11 +1,11 @@
 import Widget from '../lib/widget';
+import { APP } from '../lib/constants';
 
 export default class Dropdown extends Widget {
   static _createBackdrop() {
     Dropdown.backdrop = document.createElement('div');
     Dropdown.backdrop.className = 'Dropdown__backdrop';
     Dropdown.backdrop.addEventListener('click', Dropdown._handleBackdropClick);
-    document.body.appendChild(Dropdown.backdrop);
   }
 
   static _handleBackdropClick() {
@@ -30,17 +30,19 @@ export default class Dropdown extends Widget {
   }
 
   activate() {
-    super.activate();
+    this.active = true;
+    APP.SCROLLING_BOX.style.overflow = 'hidden';
     this.bodyElement.setAttribute('aria-hidden', !this.active);
-    Dropdown.backdrop.classList.add('active');
+    this.element.appendChild(Dropdown.backdrop);
     Dropdown._activeDropdown = this;
     return null;
   }
 
   deactivate() {
-    super.deactivate();
+    this.active = false;
+    APP.SCROLLING_BOX.style.overflow = 'auto';
     this.bodyElement.setAttribute('aria-hidden', !this.active);
-    Dropdown.backdrop.classList.remove('active');
+    this.element.removeChild(Dropdown.backdrop);
     Dropdown._activeDropdown = null;
     return null;
   }

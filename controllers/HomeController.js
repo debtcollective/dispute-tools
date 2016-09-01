@@ -17,8 +17,20 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       res.render('home/index.pug');
     },
 
+    about(req, res) {
+      res.render('home/about');
+    },
+
     tos(req, res) {
       res.render('home/tos.pug');
+    },
+
+    tools(req, res) {
+      res.render('home/tools');
+    },
+
+    tool(req, res) {
+      res.render('home/tool');
     },
   },
 });

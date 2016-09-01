@@ -1,0 +1,33 @@
+div(data-component-sessionsnewform)
+  .max-width-1.mx-auto
+    h3 Welcome back
+    p.-fw-500.mb3 Enter to your account
+
+    form(method="post" action=routeMappings.login.url())
+      input(type="hidden" name="_csrf" value=csrfToken)
+
+      .clearfix.mb2
+        .col.col-3.pt1.pr1.right-align.-fw-500 Email
+        .col.col-9(class=errors && errors.email ? 'error' : '')
+          input.-k-input.-fw(
+            type="email"
+            name="email",
+            value=(_formData && _formData.email) || ''
+          )
+          p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid email
+
+      .clearfix.mb2
+        .col.col-3.pt1.pr1.right-align.-fw-500 Password
+        .col.col-9(class=errors && errors.password ? 'error' : '')
+          input(name="password" class="-k-input -fw" type="password")
+          p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid password
+
+      .clearfix.mb3
+        .col.col-3.pt1.pr1
+        .col.col-9
+          a.-fw-500.-caption(href=routeMappings.resetPassword.url()) Forgot your password?
+
+      button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Log in
+
+    p(class="pt3 center")
+      span.-fw-500 New on The Debt Collective? #[a(href=routeMappings.signup.url()) Sign up]

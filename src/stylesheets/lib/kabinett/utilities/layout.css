@@ -4,3 +4,9 @@
 
 .-fh {height: 100%}
 .-fw {width: 100%}
+
+.-ell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

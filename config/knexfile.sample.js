@@ -7,7 +7,11 @@ var pool = {
 module.exports = {
   test : {
     client: 'postgresql',
-    connection: {},
+    connection: {
+      host: 'postgres',
+      user: 'postgres',
+      database: 'debtcollective_test'
+    },
     pool: pool,
     migrations: {}
   },

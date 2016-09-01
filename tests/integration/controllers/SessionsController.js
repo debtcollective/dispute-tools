@@ -1,4 +1,4 @@
-/* globals User, CONFIG */
+/* globals User, CONFIG, Collective */
 const sa = require('superagent');
 const bcrypt = require('bcrypt-node');
 const path = require('path');
@@ -34,11 +34,28 @@ describe('SessionsController', () => {
     user = new User({
       email: 'user@example.com',
       password: '12345678',
-      role: 'User'
+      role: 'User',
     });
 
-    return user.save().then(() => {
-      return user.activate().save();
+    const account = new Account({
+      fullname: 'Example Account Name',
+      bio: '',
+      state: 'Texas',
+      zip: '73301',
+    });
+
+    return Collective.first().then((res) => {
+      return User.transaction((trx) => {
+        return user.transacting(trx).save()
+          .then(() => {
+            return user.transacting(trx).activate().save()
+          })
+          .then(() => {
+            account.userId = user.id;
+            account.collectiveId = res.id;
+            return account.transacting(trx).save();
+          });
+      });
     });
   });
 

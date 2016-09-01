@@ -1,0 +1,75 @@
+.max-width-3.mx-auto
+  form.px2
+    h3.pb3.-accent Personal information form
+
+    .pt2.pr3.pl3.pb2.mb2.-bg-neutral-dark
+      h4 About you
+      p.-ff-sec Let’s get started
+      hr.my2
+      .clearfix.mxn2
+        .col.md-col-8.col-12.p2
+          label.inline-block.pb1.-fw-500 Your name
+          input.-k-input.-fw(type="text")
+        .col.md-col-4.col-12.p2
+          label.inline-block.pb1.-fw-500 Social Security # (Last 4)
+          input.-k-input.-fw(type="number")
+      .clearfix.mxn2
+        .col.md-col-8.col-12.p2
+          label.inline-block.pb1.-fw-500 Your address
+          input.-k-input.-fw(type="text")
+        .col.md-col-4.col-12.p2
+          label.inline-block.pb1.-fw-500 Your state
+          input.-k-input.-fw(type="text")
+      .clearfix.mxn2
+        .col.md-col-6.col-12.p2
+          label.inline-block.pb1.-fw-500 Your email
+          input.-k-input.-fw(type="email")
+        .col.md-col-6.col-12.p2
+          label.inline-block.pb1.-fw-500 Your phone
+          input.-k-input.-fw(type="tel")
+
+    .pt2.pr3.pl3.pb2.mb2.-bg-neutral-dark
+      h4 Your school
+      hr.my2
+      .clearfix.mxn2
+        .col.md-col-8.col-12.p2
+          label.inline-block.pb1.-fw-500 Name of school where you incurred the debt
+          input.-k-input.-fw(type="text")
+      .clearfix.mxn2
+        .col.md-col-6.col-12.p2
+          label.inline-block.pb1.-fw-500 Name of Guaranty Agency
+          input.-k-input.-fw(type="text")
+          p.pt1.-caption.-fw-700.-neutral-mid Required for FFEL loan holders
+        .col.md-col-6.col-12.p2
+          label.inline-block.pb1.-fw-500 Guaranty Agency mailing address
+          input.-k-input.-fw(type="text")
+          p.pt1.-caption.-fw-500.-neutral-mid Required for FFEL loan holders
+
+    .pt2.pr3.pl3.pb2.-bg-neutral-dark
+      h4 Employment
+      div.-ff-sec
+        span.pr3.-accent.-fw-700 Are you currently employed?
+        label.mr3
+          input.mr1(type="radio" name="employed" value="1" checked)
+          | Yes
+        label
+          input.mr1(type="radio" name="employed" value="0")
+          | No
+      hr.my2
+      .clearfix.mxn2
+        .col.md-col-8.col-12.p2
+          label.inline-block.pb1.-fw-500 Current employer
+          input.-k-input.-fw(type="text")
+        .col.md-col-4.col-12.p2
+          label.inline-block.pb1.-fw-500 Beginning date
+          input.-k-input.-fw(type="date")
+      .clearfix.mxn2
+        .col.md-col-8.col-12.p2
+          label.inline-block.pb1.-fw-500 Employer address
+          input.-k-input.-fw(type="text")
+        .col.md-col-4.col-12.p2
+          label.inline-block.pb1.-fw-500 Employer phone
+          input.-k-input.-fw(type="tel")
+
+    .py3
+      button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Save form

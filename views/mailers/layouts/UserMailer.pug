@@ -1,1 +1,47 @@
-block content
+- var supportEmail = 'support@debtcollective.org'
+- var websiteURL = 'https://debtcollective.org'
+- var assetsPath = `${CONFIG.env().siteURL}/images/email`
+
+center(style="width: 100%; background-color: #ebebeb;")
+  table(width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;")
+    tbody
+      tr
+        td(valing="top") &nbsp;
+
+        td(align="center" valign="top")
+          table(width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 680px;")
+            tbody
+              tr
+                td(valign="top")
+                  div
+                    div &nbsp;
+                    div &nbsp;
+                    div
+                      img(src=`${assetsPath}/im-logo-light.png`
+                        width="191" height="20" alt="The Collective"
+                        srcset=`${assetsPath}/im-logo-light@2x.png 2x, ${assetsPath}/im-logo-light@3x.png 3x`)
+                    div &nbsp;
+                    div &nbsp;
+
+                  div(style="background-color: #ffffff; padding-top: 30px; padding-bottom: 40px; padding-left: 30px; padding-right: 30px;")
+                    div(style="font-size: 28px; line-height: 142%; font-weight: bold; color: #000000;")
+                      block title
+
+                    div &nbsp;
+                    div(style="font-size: 0; height: 5px; background-color: #ebebeb;") &nbsp;
+                    div &nbsp;
+
+                    block content
+
+                    div(style="color: #4a4a4a; text-align: center;") If this wasn’t you, ignore this message or contact us at #[a(href=`mailto:${supportEmail}` style="color: #f04c34;")= supportEmail]
+
+                  div(style="font-size: 12px; line-height: 142%; color: #4a4a4a; text-align: center;")
+                    div &nbsp;
+                    div &nbsp;
+                    div You are receiving this email because of an action you took on #[a(href=websiteURL style="color: inherit;")= websiteURL]
+                    div To report abuse, please email us at #[a(href=`mailto:${supportEmail}` style="color: inherit;")= supportEmail]
+                    div &nbsp;
+                    div &nbsp;
+                    div &nbsp;
+
+        td(valing="top") &nbsp;

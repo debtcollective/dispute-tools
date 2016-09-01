@@ -1,10 +1,11 @@
 import Checkit from 'checkit';
 import Widget from '../../lib/widget';
+import Button from '../../components/Button';
 
-export default class UserNewForm extends Widget {
+export default class UsersNewForm extends Widget {
   static get constraints() {
     return {
-      name: ['required'],
+      fullname: ['required'],
       state: ['required'],
       zip: ['required'],
       email: ['required', 'email'],
@@ -15,11 +16,17 @@ export default class UserNewForm extends Widget {
   constructor(config) {
     super(config);
 
-    Object.keys(UserNewForm.constraints).forEach(key => {
+    this.ui = {};
+    Object.keys(UsersNewForm.constraints).forEach(key => {
       const query = `[name="${key}"]`;
-      this[key] = this.element.querySelector(query);
+      this.ui[key] = this.element.querySelector(query);
     });
-    this._checkit = new Checkit(UserNewForm.constraints);
+    this._checkit = new Checkit(UsersNewForm.constraints);
+
+    this.appendChild(new Button({
+      name: 'Button',
+      element: this.element.querySelector('button'),
+    }));
 
     this._bindEvents();
   }
@@ -30,34 +37,38 @@ export default class UserNewForm extends Widget {
   }
 
   _handleFormSubmit(ev) {
+    this.Button.disable();
     this._clearFieldErrors();
 
     const [err] = this._checkit.validateSync(this._getFieldsData());
 
     if (err) {
       ev.preventDefault();
+      this.Button.enable();
       return this._displayFieldErrors(err.errors);
     }
+
+    this.Button.updateText();
 
     return undefined;
   }
 
   _displayFieldErrors(errors) {
     Object.keys(errors).forEach(key => {
-      this[key].parentNode.classList.add('error');
+      this.ui[key].parentNode.classList.add('error');
     });
   }
 
   _clearFieldErrors() {
-    Object.keys(UserNewForm.constraints).forEach(key => {
-      this[key].parentNode.classList.remove('error');
+    Object.keys(UsersNewForm.constraints).forEach(key => {
+      this.ui[key].parentNode.classList.remove('error');
     });
   }
 
   _getFieldsData() {
     const data = {};
-    Object.keys(UserNewForm.constraints).forEach(key => {
-      data[key] = this[key].value;
+    Object.keys(UsersNewForm.constraints).forEach(key => {
+      data[key] = this.ui[key].value;
     });
     return data;
   }

@@ -1,0 +1,34 @@
+.CollectiveCard {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  background-color: var(--k-color-palette-neutral-dark);
+
+  &__icon {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+  }
+
+  &__content {
+    padding-left: 72px;
+  }
+
+  &__title {
+    padding-bottom: 1rem;
+    color: var(--k-color-palette-accent);
+  }
+
+  &__desc {
+    padding-bottom: 1rem;
+  }
+}
+
+.CollectiveCard.-is-light {
+  background-color: #fff;
+  color: #000;
+
+  & .CollectiveCard__title {color: inherit}
+
+  & .AvatarList {mix-blend-mode: initial}
+}

@@ -1,0 +1,57 @@
+div
+  .pt2.pr3.pl3.pb2.-bg-neutral-dark
+    h2.-accent C
+    h4.pb1 I did not have a high school diploma or GED when I enrolled at the school.
+    p.-ff-sec Attach and  complete all the required files.
+    .right-align
+      a.-k-btn.btn-link.-primary.-fw-700(href=routeMappings.tools.url()) ← This is not my case
+    hr.my2
+    .clearfix.mxn2.flex.flex-wrap
+      .col.md-col-4.col-12.p2
+        .Tool__Info.flex.flex-column.-fh
+          .flex-auto.pb3
+            .pb1.-fw-500.-ttu Personal <br/>information form
+            .-caption Here we need some personal, school and employment information.
+          button.-k-btn.-sm.btn-outline.-white.-fw-500 Fill the form
+
+      .col.md-col-4.col-12.p2
+        .Tool__Info.-fh
+          .pb1.-fw-500.-ttu Ability to benefit / ATB form
+          .-caption.-neutral-mid With your previous information we will complete #[a() The ATB form] for you, you will receive copies at the end.
+
+      .col.md-col-4.col-12.p2
+        .Tool__Info.-upload.flex.flex-column.-fh
+          .flex-auto.pb3
+            .pb1.-fw-500.-ttu Personal <br/>statement
+            .-caption In addition to providing evidence against the school, you can write a personal statement describing how your school lied to and defrauded you and upload it here.
+          button.-k-btn.-sm.btn-outline.-white.-fw-500 Upload files
+          .Tool__Info__footer-caption.center.-caption .PDF format
+
+      .col.md-col-4.col-12.p2
+        .Tool__Info.-upload.flex.flex-column.-fh
+          .flex-auto.pb3
+            .pb1.-fw-500.-ttu Evidence
+            .-caption.-ttu Optional
+            .-caption Complement your case by attaching any #[a() supporting documents].
+          button.-k-btn.-sm.btn-outline.-white.-fw-500 Upload files
+          .Tool__Info__footer-caption.center.-caption
+            | .JPG, .PNG, .PDF format
+
+      .col.md-col-4.col-12.p2
+        .Tool__Info.-completed.flex.flex-column.-fh
+          .flex-auto.pb3
+            .pb1.-fw-700.-ttu Personal <br/>information form
+            .-caption.-success
+              svg.mr1(width="11" height="8"): use(xlink:href="#svg-checkmark")
+              | This form is completed now.
+          button.-k-btn.-sm.btn-outline.-primary.-fw-500 Fill the form
+
+      .col.md-col-4.col-12.p2
+        .Tool__Info.-completed.-upload.flex.flex-column.-fh
+          .flex-auto.pb3
+            .pb1.-fw-700.-ttu Personal <br/>statement
+            .-caption In addition to providing evidence against the school, you can write a personal statement describing how your school lied to and defrauded you and upload it here.
+          button.-k-btn.-sm.btn-outline.-primary.-fw-500 Upload files
+          .Tool__Info__footer-caption.center.-caption .PDF format
+  .py3
+    button.-k-btn.btn-primary.-fw.-fw-700 Continue to finalize your dispute&hellip;

@@ -1,10 +1,10 @@
-/* globals User */
+/* globals User, Account, Collective */
 
 const expect = require('chai').expect;
 const Promise = require('bluebird');
-
 const path = require('path');
 const _ = require('lodash');
+const uuid = require('uuid');
 
 const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 
@@ -16,6 +16,14 @@ global.UserMailer = {
 
 
 describe('User', () => {
+  let collective;
+
+  before(() => {
+    return Collective.first().then((res) => {
+      collective = res;
+    });
+  });
+
   describe('Validations', () => {
     beforeEach(() => {
       truncate(User);
@@ -163,6 +171,41 @@ describe('User', () => {
         user.activate();
 
         expect(user.activationToken).to.equal(null);
+      });
+    });
+  });
+
+  describe('Relations', () => {
+    describe('account', () => {
+      it('Should return a valid Account model', () => {
+        const user = new User({
+          email: 'user@example.com',
+          password: '12345678',
+          role: 'Admin',
+        });
+
+        const account = new Account({
+          fullname: 'Example Account Name',
+          bio: '',
+          state: 'Texas',
+          zip: '73301',
+        });
+
+        return User.transaction((trx) => {
+          return user.transacting(trx).save()
+            .then(() => {
+              account.userId = user.id;
+              account.collectiveId = collective.id;
+
+              return account.transacting(trx).save();
+            });
+        }).then(() => {
+          return User.query().include('[account.debtType]');
+        })
+        .then((result) => {
+          expect(result[0].account).to.be.instanceof(Account);
+          expect(result[0].account.debtType).to.be.instanceof(Collective);
+        });
       });
     });
   });

@@ -76,8 +76,10 @@
     "express": "^4.14.0",
     "express-session": "^1.14.0",
     "glob": "^7.0.5",
+    "im-metadata": "^3.0.0",
+    "imagemagick-stream": "^4.1.1",
     "knex": "^0.11.9",
-    "krypton-orm": "0.0.16",
+    "krypton-orm": "git://github.com/sgarza/krypton.git#dev",
     "lodash": "^4.14.2",
     "lodash-inflection": "^1.4.0",
     "method-override": "^2.3.6",
@@ -100,6 +102,7 @@
     "scandium-express": "0.0.3",
     "scripty": "^1.6.0",
     "uuid": "^2.0.2",
+    "webfontloader": "^1.6.26",
     "winston": "^2.2.0"
   },
   "devDependencies": {

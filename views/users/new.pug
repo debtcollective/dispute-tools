@@ -11,9 +11,12 @@ block content
     include ../includes/users/new-form.pug
 
 block scripts
-  script(src="/build/javascripts/users/new.js")
+  script(src="/build/javascripts/users/new.js" async)
   script.
-    var options = {
-      currentUser: !{JSON.stringify(currentUser)}
-    };
-    new ViewUsersNew(options);
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new ViewUsersNew(options);
+    }, true);
