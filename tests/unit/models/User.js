@@ -1,4 +1,4 @@
-/* globals User, Account */
+/* globals User, Account, Collective */
 
 const expect = require('chai').expect;
 const Promise = require('bluebird');
@@ -16,6 +16,14 @@ global.UserMailer = {
 
 
 describe('User', () => {
+  let collective;
+
+  before(() => {
+    return Collective.first().then((res) => {
+      collective = res;
+    });
+  });
+
   describe('Validations', () => {
     beforeEach(() => {
       truncate(User);
@@ -176,22 +184,27 @@ describe('User', () => {
           role: 'Admin',
         });
 
-        return user.save().then(() => {
-          const account = new Account({
-            userId: user.id,
-            collectiveId: uuid.v4(),
-            fullname: 'Example Account Name',
-            bio: '',
-            state: 'Texas',
-            zip: '73301',
-          });
+        const account = new Account({
+          fullname: 'Example Account Name',
+          bio: '',
+          state: 'Texas',
+          zip: '73301',
+        });
 
-          return account.save().then(() => {
-            return User.query().include('account');
-          });
+        return User.transaction((trx) => {
+          return user.transacting(trx).save()
+            .then(() => {
+              account.userId = user.id;
+              account.collectiveId = collective.id;
+
+              return account.transacting(trx).save();
+            });
+        }).then(() => {
+          return User.query().include('[account.debtType]');
         })
         .then((result) => {
           expect(result[0].account).to.be.instanceof(Account);
+          expect(result[0].account.debtType).to.be.instanceof(Collective);
         });
       });
     });

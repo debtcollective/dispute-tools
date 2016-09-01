@@ -47,6 +47,9 @@
     "arrow-body-style": [
       1,
       "always"
-    ]
+    ],
+    "no-global-assign": [
+      0,
+    ],
   }
 }

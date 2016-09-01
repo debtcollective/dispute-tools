@@ -1,4 +1,4 @@
-/* globals User, Account, CONFIG */
+/* globals User, Account, CONFIG, Collective */
 
 const expect = require('chai').expect;
 const uuid = require('uuid');
@@ -7,6 +7,14 @@ const path = require('path');
 const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 
 describe('Account', () => {
+  let collective;
+
+  before(() => {
+    return Collective.first().then((res) => {
+      collective = res;
+    });
+  });
+
   after(() => {
     truncate([Account, User]);
   });
@@ -190,22 +198,27 @@ describe('Account', () => {
           role: 'Admin',
         });
 
-        return user.save().then(() => {
-          const account = new Account({
-            userId: user.id,
-            collectiveId: uuid.v4(),
-            fullname: 'Example Account Name',
-            bio: '',
-            state: 'Texas',
-            zip: '73301',
-          });
+        const account = new Account({
+          fullname: 'Example Account Name',
+          bio: '',
+          state: 'Texas',
+          zip: '73301',
+        });
 
-          return account.save().then(() => {
-            return Account.query().include('user');
-          });
+        return User.transaction((trx) => {
+          return user.transacting(trx).save()
+            .then(() => {
+              account.userId = user.id;
+              account.collectiveId = collective.id;
+
+              return account.transacting(trx).save();
+            });
         })
-        .then((result) => {
+        .then(() => {
+          return Account.query().include('[user, debtType]');
+        }).then((result) => {
           expect(result[0].user).to.be.instanceof(User);
+          expect(result[0].debtType).to.be.instanceof(Collective);
         });
       });
     });

@@ -2,7 +2,7 @@
 
 const US_STATES = require('datasets-us-states-names');
 
-const Account = Class('Account').inherits(Krypton.Model).includes(AttachmentsProcessor)({
+const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attachment)({
   tableName: 'Accounts',
   states: US_STATES,
   validations: {
@@ -31,6 +31,7 @@ const Account = Class('Account').inherits(Krypton.Model).includes(AttachmentsPro
         message: 'The Account\'s zip code is invalid.',
       },
     ],
+    phone: ['alphaDash'],
   },
   attributes: [
     'id',
@@ -46,6 +47,19 @@ const Account = Class('Account').inherits(Krypton.Model).includes(AttachmentsPro
     'createdAt',
     'updatedAt',
   ],
+  attachmentStorage: new Krypton.AttachmentStorage.Local(),
+
+  prototype: {
+    init(config) {
+      Krypton.Model.prototype.init.call(this, config);
+
+      this.hasAttachment({
+        name: 'image',
+      });
+
+      return this;
+    },
+  },
 });
 
 module.exports = Account;

@@ -1,4 +1,4 @@
-/* globals Account, User */
+/* globals Account, User, Collective */
 
 User.relations = {
   account: {
