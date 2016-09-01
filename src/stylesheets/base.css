@@ -25,12 +25,12 @@
 
 
 
-@import './utils';
 @import './components/Header';
 @import './components/Modal';
 @import './components/Dropdown';
 @import './components/Alert';
 @import './components/Button';
+@import './utils';
 
 
 :root {
@@ -126,10 +126,9 @@ main {
 .-k-select {
   position: relative;
   height: 45px;
-  border: none;
   border-radius: 2px;
   background-color: #fff;
-  color: inherit;
+  color: initial;
 
   &::after {
     content: "▾";
@@ -145,6 +144,7 @@ main {
     font-size: 16px;
     padding: 0 1rem;
     height: 100%;
+    border: none;
     appearance: none;
     border-radius: inherit;
     background-color: transparent;
