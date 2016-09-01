@@ -1,4 +1,4 @@
-/* globals User, CONFIG */
+/* globals User, CONFIG, Collective, Account */
 
 const sa = require('superagent');
 const agent = sa.agent();
@@ -16,8 +16,10 @@ const urls = CONFIG.router.helpers;
 
 describe('UsersController', () => {
   let user;
+  let account;
   let _csrf;
   let _UserMailer;
+  let collective;
 
   before(() => {
     _UserMailer = global.UserMailer;
@@ -37,7 +39,26 @@ describe('UsersController', () => {
       role: 'User',
     });
 
-    return user.save();
+    account = new Account({
+      fullname: 'Users Fullname',
+      state: 'Texas',
+      zip: '90210',
+      phone: '123456-789',
+    });
+
+    return Collective.first().then((res) => {
+      collective = res;
+
+      return User.transaction((trx) => {
+        return user.transacting(trx).save()
+          .then(() => {
+            account.userId = user.id;
+            account.collectiveId = collective.id;
+
+            return account.transacting(trx).save();
+          });
+      });
+    });
   });
 
   after(() => {
@@ -134,6 +155,12 @@ describe('UsersController', () => {
         .send({
           email: 'test@example.com',
           password: '12345678',
+
+          fullname: 'Users Fullname',
+          state: 'Texas',
+          zip: '90210',
+          phone: '123456789',
+          collectiveId: collective.id,
           _csrf,
         })
         .end((err, res) => {

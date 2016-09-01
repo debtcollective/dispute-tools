@@ -1,5 +1,4 @@
-/* globals Class, RestfulController, User, NotFoundError, CONFIG */
-
+/* globals Class, RestfulController, User, NotFoundError, CONFIG, Collective, Account */
 const Promise = require('bluebird');
 
 const UsersController = Class('UsersController').inherits(RestfulController)({
@@ -13,6 +12,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
   prototype: {
     _loadUser(req, res, next) {
       User.query()
+        .include('[account.debtType]')
         .where('id', req.params.id)
         .then((result) => {
           if (result.length === 0) {
@@ -25,7 +25,10 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
               return next();
             });
         })
-        .catch(next);
+        .catch((err) => {
+          console.log(err)
+          next(err)
+        });
     },
 
     index(req, res) {
@@ -37,29 +40,40 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
     },
 
     new(req, res) {
-      res.render('users/new.pug');
+      Collective.query()
+        .then((collectives) => {
+          res.render('users/new.pug', {
+            collectives,
+          });
+        });
     },
 
     create(req, res) {
       const user = new User(req.body);
+      const account = new Account(req.body);
 
       user.role = 'User';
 
-      user.save()
-        .then(() => {
-          res.render('users/activation.pug', {
-            email: user.email,
+      User.transaction((trx) => {
+        return user.transacting(trx).save()
+          .then(() => {
+            account.userId = user.id;
+            return account.transacting(trx).save();
           });
-        })
-        .catch((err) => {
-          res.status(400);
-
-          res.locals.errors = err.errors;
-
-          res.render('users/new.pug', {
-            _formData: req.body,
-          });
+      }).then(() => {
+        res.render('users/activation.pug', {
+          email: user.email,
         });
+      })
+      .catch((err) => {
+        res.status(400);
+
+        res.locals.errors = err.errors;
+
+        res.render('users/new.pug', {
+          _formData: req.body,
+        });
+      });
     },
 
     edit(req, res) {
