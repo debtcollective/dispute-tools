@@ -13,10 +13,10 @@ class ViewUsersNew extends NodeSupport {
       element: document.querySelector('[data-component-header]'),
     }));
 
-    this.appendChild(new UsersNewForm({
-      name: 'UsersNewForm',
-      element: document.querySelector('[data-component-usernewform]'),
-    }));
+    // this.appendChild(new UsersNewForm({
+    //   name: 'UsersNewForm',
+    //   element: document.querySelector('[data-component-usernewform]'),
+    // }));
   }
 }
 

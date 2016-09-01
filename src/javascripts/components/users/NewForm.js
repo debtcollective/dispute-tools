@@ -6,6 +6,7 @@ export default class UsersNewForm extends Widget {
   static get constraints() {
     return {
       fullname: ['required'],
+      collectiveId: ['required'],
       state: ['required'],
       zip: ['required'],
       email: ['required', 'email'],

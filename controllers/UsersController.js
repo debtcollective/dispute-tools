@@ -7,6 +7,15 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       before: '_loadUser',
       actions: ['show', 'edit', 'update', 'destroy'],
     },
+    {
+      before(req, res, next) {
+        Collective.query().then((collectives) => {
+          res.locals.collectives = collectives;
+          next();
+        });
+      },
+      actions: ['new', 'create'],
+    },
   ],
 
   prototype: {
@@ -26,8 +35,8 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             });
         })
         .catch((err) => {
-          console.log(err)
-          next(err)
+          console.log(err);
+          next(err);
         });
     },
 
@@ -40,12 +49,9 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
     },
 
     new(req, res) {
-      Collective.query()
-        .then((collectives) => {
-          res.render('users/new.pug', {
-            collectives,
-          });
-        });
+      res.render('users/new.pug', {
+        collectives: res.locals.collectives,
+      });
     },
 
     create(req, res) {
@@ -58,7 +64,9 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
         return user.transacting(trx).save()
           .then(() => {
             account.userId = user.id;
-            return account.transacting(trx).save();
+            return account.transacting(trx).save()
+              .then(trx.commit)
+              .catch(trx.rollback);
           });
       }).then(() => {
         res.render('users/activation.pug', {
@@ -72,6 +80,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
         res.render('users/new.pug', {
           _formData: req.body,
+          collectives: res.locals.collectives,
         });
       });
     },

@@ -1,14 +1,14 @@
 div(data-component-usernewform)
   .max-width-1.mx-auto
-    h3 Join us
-    p.-fw-500.mb3 Alone, our debts are a burden; together, they make us powerful.
+    h3#modalSignupTitle.pb2 Join us
+    p#modalSignupDesc.-fw-500.mb3 Alone, our debts are a burden; together, they make us powerful.
 
     form(method="post" action=routeMappings.Users.create.url())
       input(type="hidden" name="_csrf" value=csrfToken)
 
-      .clearfix.mb2
-        .col.col-3.pt1.pr1.right-align.-fw-500 Your name
-        .col.col-9(class=errors && errors.name ? 'error' : '')
+      .clearfix.pb2.mxn1
+        .col.col-4.pt1.px1.right-align.-fw-500 Your name
+        .col.col-8.px1(class=errors && errors.fullname ? 'error' : '')
           input.-k-input.-fw(
             name="fullname"
             type="text"
@@ -16,9 +16,22 @@ div(data-component-usernewform)
           )
           p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid name
 
-      .clearfix.mb2
-        .col.col-3.pt1.pr1.right-align.-fw-500 Location
-        .col.col-9
+      .clearfix.pb2.mxn1
+        .col.col-4.pt1.px1.right-align.-fw-500 Type of debt
+        .col.col-8.px1
+          .-k-select(class=errors && errors.collectiveId ? 'error' : '')
+            select.-fw(name="collectiveId")
+              option(value="") Choose an option
+              each collective in collectives
+                option(
+                  value= collective.id
+                  selected!= _formData && _formData.collectiveId === collective.id
+                )= collective.name
+          p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid debt type
+
+      .clearfix.pb2.mxn1
+        .col.col-4.pt1.px1.right-align.-fw-500 Location
+        .col.col-8.px1
           .col.col-6
             .-k-select(class=errors && errors.state ? 'error' : '')
               select.-fw(name="state")
@@ -41,9 +54,9 @@ div(data-component-usernewform)
               )
               p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid ZIP
 
-      .clearfix.mb2
-        .col.col-3.pt1.pr1.right-align.-fw-500 Phone
-        .col.col-9(class=errors && errors.phone ? 'error' : '')
+      .clearfix.pb2.mxn1
+        .col.col-4.pt1.px1.right-align.-fw-500 Phone
+        .col.col-8.px1(class=errors && errors.phone ? 'error' : '')
           input.-k-input.-fw(
             type="tel"
             name="phone"
@@ -52,9 +65,9 @@ div(data-component-usernewform)
           )
           p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid phone
 
-      .clearfix.mb2
-        .col.col-3.pt1.pr1.right-align.-fw-500 Email
-        .col.col-9(class=errors && errors.email ? 'error' : '')
+      .clearfix.pb2.mxn1
+        .col.col-4.pt1.px1.right-align.-fw-500 Email
+        .col.col-8.px1(class=errors && errors.email ? 'error' : '')
           input.-k-input.-fw(
             type="email"
             name="email"
@@ -62,9 +75,9 @@ div(data-component-usernewform)
           )
           p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid email
 
-      .clearfix.mb2
-        .col.col-3.pt1.pr1.right-align.-fw-500 Password
-        .col.col-9(class=errors && errors.password ? 'error' : '')
+      .clearfix.pb2.mxn1
+        .col.col-4.pt1.px1.right-align.-fw-500 Password
+        .col.col-8.px1(class=errors && errors.password ? 'error' : '')
           input.-k-input.-fw(
             type="password"
             name="password"
