@@ -26,8 +26,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             });
         })
         .catch((err) => {
-          console.log(err)
-          next(err)
+          next(err);
         });
     },
 
@@ -40,12 +39,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
     },
 
     new(req, res) {
-      Collective.query()
-        .then((collectives) => {
-          res.render('users/new.pug', {
-            collectives,
-          });
-        });
+      res.render('users/new.pug');
     },
 
     create(req, res) {
@@ -59,8 +53,13 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
           .then(() => {
             account.userId = user.id;
             return account.transacting(trx).save();
-          });
+          })
+          .then(trx.commit)
+          .catch(trx.rollback);
       }).then(() => {
+        return user.sendActivation();
+      })
+      .then(() => {
         res.render('users/activation.pug', {
           email: user.email,
         });
@@ -68,7 +67,13 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       .catch((err) => {
         res.status(400);
 
-        res.locals.errors = err.errors;
+        if (err.message === 'Must provide a password') {
+          err.errors = err.errors || {
+            password: `password: ${err.message}`,
+          };
+        }
+
+        res.locals.errors = err.errors || err;
 
         res.render('users/new.pug', {
           _formData: req.body,
@@ -89,12 +94,21 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
       user.save()
         .then(() => {
-          res.redirect(CONFIG.router.helpers.Users.show.url(req.params.id));
+          if (user._oldEmail === user.email) {
+            return res.redirect(CONFIG.router.helpers.Users.show.url(req.params.id));
+          }
+
+          return user.sendActivation()
+            .then(() => {
+              res.render('users/activation.pug', {
+                email: user.email,
+              });
+            });
         })
         .catch((err) => {
           res.status(400);
 
-          res.locals.errors = err.errors;
+          res.locals.errors = err.errors || err;
 
           res.render('users/edit.pug');
         });

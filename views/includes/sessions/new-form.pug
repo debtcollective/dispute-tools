@@ -1,7 +1,7 @@
 div(data-component-sessionsnewform)
   .max-width-1.mx-auto
-    h3 Welcome back
-    p.-fw-500.mb3 Enter to your account
+    h3#modalLoginTitle.pb2 Welcome back
+    p#modalLoginDesc.-fw-500.mb3 Enter to your account
 
     form(method="post" action=routeMappings.login.url())
       input(type="hidden" name="_csrf" value=csrfToken)

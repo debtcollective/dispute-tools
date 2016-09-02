@@ -31,7 +31,9 @@ const User = Class('User').inherits(Krypton.Model)({
         message: 'The User\'s email already exists.',
       },
     ],
-    password: ['minLength:8'],
+    password: [
+      'minLength:8',
+    ],
     role: [
       'required',
       {
@@ -69,7 +71,15 @@ const User = Class('User').inherits(Krypton.Model)({
 
       // Start Model Hooks:
 
-      let oldEmail = model.email;
+      this.oldEmail = model.email;
+
+      model.on('beforeValidation', (done) => {
+        if (!model.id && (!model.password || model.password.length === 0)) {
+          return done(new Error('Must provide a password'));
+        }
+
+        done();
+      });
 
       // If password is present hash password and set it as encryptedPassword
       model.on('beforeSave', (done) => {
@@ -91,7 +101,7 @@ const User = Class('User').inherits(Krypton.Model)({
 
       // Updates old email when record saves
       model.on('afterSave', (done) => {
-        oldEmail = model.email;
+        this.oldEmail = model.email;
         done();
       });
 
@@ -113,28 +123,9 @@ const User = Class('User').inherits(Krypton.Model)({
         setActivationToken(done);
       });
 
-      // sendActivation helper function
-      const sendActivation = (done) => {
-        UserMailer.sendActivation(model.email, {
-          user: model,
-          _options: {
-            subject: 'Activate your account - The Debt Collective',
-          },
-        })
-          .then(() => {
-            done();
-          })
-          .catch(done);
-      };
-
-      // Send activation email
-      model.on('afterCreate', (done) => {
-        sendActivation(done);
-      });
-
       // If email changes, set activationToken again
       model.on('beforeUpdate', (done) => {
-        if (oldEmail === model.email) {
+        if (this.oldEmail === model.email) {
           return done();
         }
 
@@ -143,11 +134,9 @@ const User = Class('User').inherits(Krypton.Model)({
 
       // If email changed, send activation email
       model.on('afterUpdate', (done) => {
-        if (oldEmail === model.email) {
+        if (this.oldEmail === model.email) {
           return done();
         }
-
-        return sendActivation(done);
       });
     },
 
@@ -155,6 +144,17 @@ const User = Class('User').inherits(Krypton.Model)({
       this.activationToken = null;
 
       return this;
+    },
+
+    sendActivation() {
+      const model = this;
+
+      UserMailer.sendActivation(this.email, {
+        user: model,
+        _options: {
+          subject: 'Activate your account - The Debt Collective',
+        },
+      });
     },
   },
 });
