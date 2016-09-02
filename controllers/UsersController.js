@@ -26,7 +26,6 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             });
         })
         .catch((err) => {
-          console.log(err);
           next(err);
         });
     },
@@ -56,7 +55,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             return account.transacting(trx).save();
           })
           .then(trx.commit)
-          .catch(trx.rollback);;
+          .catch(trx.rollback);
       }).then(() => {
         return user.sendActivation();
       })
@@ -105,7 +104,6 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
                 email: user.email,
               });
             });
-
         })
         .catch((err) => {
           res.status(400);
