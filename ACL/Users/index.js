@@ -8,7 +8,7 @@ module.exports = {
   ],
   User: [
     [false],
-    // ['activation', false]
+    ['activation', true],
     ['edit', 'update', 'show', (req) => {
       if (req.params.id === req.user.id) {
         return true;

@@ -26,8 +26,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             });
         })
         .catch((err) => {
-          console.log(err)
-          next(err)
+          next(err);
         });
     },
 

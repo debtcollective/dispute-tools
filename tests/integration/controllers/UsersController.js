@@ -2,13 +2,9 @@
 
 const sa = require('superagent');
 const agent = sa.agent();
-const uuid = require('uuid');
-
 const expect = require('chai').expect;
 const Promise = require('bluebird');
-
 const path = require('path');
-const _ = require('lodash');
 
 const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 const url = CONFIG.env().siteURL;
