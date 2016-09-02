@@ -30,7 +30,7 @@ div
           .flex.items-center.pb1
             div: svg.-primary(width="46" height="56"): use(xlink:href="#svg-fingerprint")
             .pl2.-ff-sec
-              .-fw-700 ${#{currentUser && currentUser.email || 'Zachary Gibson'}}
+              .-fw-700 #{currentUser && currentUser.account.fullname || 'Zachary Gibson'}
               .-caption.-fw-700(style="color: #4A4A4A;") ${Corintian College}
 
       .col.md-col-8.col-12.p2
