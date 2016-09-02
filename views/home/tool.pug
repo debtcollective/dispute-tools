@@ -42,7 +42,13 @@ block content
         include ../includes/tool/step-5
 
 block append body
-  .Modal(data-component-modal="tool-personal-information-form" aria-hidden="true" role="dialog" aria-labelledby="modal-title")
+  .Modal(data-component-modal="tool-common-causes-of-fraud" aria-hidden="true" role="dialog" aria-labelledby="modalToolCausesOfFraudTitle")
+    button(class="Modal__close" aria-label="close")
+      svg(class="-s18"): use(xlink:href="#svg-close")
+    .Modal__body(role="document")
+      include ../includes/tool/step-1-causes-of-fraud
+
+  .Modal(data-component-modal="tool-personal-information-form" aria-hidden="true" role="dialog" aria-labelledby="modalToolPersonalInfoFormTitle")
     button(class="Modal__close" aria-label="close")
       svg(class="-s18"): use(xlink:href="#svg-close")
     .Modal__body(role="document")
