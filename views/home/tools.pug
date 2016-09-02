@@ -36,7 +36,7 @@ block content
     ]
 
   mixin ToolCard(tool)
-    .flex.flex-column.p2.rounded.-fh(style="background-color: #fff; color: #000;")
+    .flex.flex-column.p2.rounded.-fh.-bg-white.-dark
       div.flex-auto.pb4
         h4.pt2= tool.name
         p.py2: a() About
@@ -101,8 +101,7 @@ block content
 
       .clearfix.mxn2(style="margin-top: -40px;")
         .col.md-col-6.col-12.px2
-          .center
-            img.fit.block(src="/images/tools/file.jpg")
+          .center: img.fit.block(src="/images/tools/file.jpg")
         .col.Tools__offset-text.md-col-5.col-12
           h4.pb3.-neutral-mid The Debt Collective will send hard copies of your dispute to all relevant parties, including the Department of Education, loan services, collectors, and the credit reporting agencies. You will also receive a copy by email.
           h4.-neutral-mid You will receive notifications asking you to provide information about any response you receive from the collector.

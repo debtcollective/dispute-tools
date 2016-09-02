@@ -7,7 +7,9 @@
 .-danger {color: var(--k-color-palette-danger)}
 .-success {color: var(--k-color-palette-success)}
 .-white {color: #fff}
+.-dark {color: #000}
 .-neutral-mid {color: var(--k-color-palette-neutral-mid)}
+.-bg-white {background-color: #fff}
 
 /* text */
 .-ttu {text-transform: uppercase}
