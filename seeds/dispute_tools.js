@@ -241,7 +241,8 @@ exports.seed = (knex) => {
       return knex('DisputeTools').insert(tools.map((tool) => {
         return {
           id: uuid.v4(),
-          name: collective,
+          name: tool.name,
+          data: tool.data,
           created_at: new Date(),
           updated_at: new Date(),
         };
