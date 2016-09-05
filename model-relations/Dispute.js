@@ -1,4 +1,4 @@
-/* globals User, DisputeTool, Dispute, DisputeAttachment*/
+/* globals User, DisputeTool, Dispute, DisputeAttachment, DisputeStatus*/
 
 Dispute.relations = {
   user: {
@@ -18,6 +18,13 @@ Dispute.relations = {
   attachments: {
     type: 'HasMany',
     relatedModel: DisputeAttachment,
+    ownerCol: 'id',
+    relatedCol: 'dispute_id',
+  },
+
+  statuses: {
+    type: 'HasMany',
+    relatedModel: DisputeStatus,
     ownerCol: 'id',
     relatedCol: 'dispute_id',
   },
