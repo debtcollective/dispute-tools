@@ -1,7 +1,6 @@
 /* globals User, Account, CONFIG, Collective, Dispute, DisputeTool, DisputeAttachment */
 
 const expect = require('chai').expect;
-const uuid = require('uuid');
 const path = require('path');
 
 const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
@@ -40,6 +39,10 @@ describe('Dispute', () => {
         });
       });
     });
+  });
+
+  after(() => {
+    return truncate(User, Account);
   });
 
   it('Should create a valid dispute', () => {
