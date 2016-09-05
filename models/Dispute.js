@@ -20,13 +20,13 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
     },
 
     setOption(option) {
-      this.data['option'] = option;
+      this.data.option = option;
 
       return this;
     },
 
     setSignature(signature) {
-      this.data['signature'] = signature;
+      this.data.signature = signature;
 
       return this;
     },
@@ -38,7 +38,7 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
     },
 
     setDisputeProcess(process) {
-      this.data['disputeProcess'] = process;
+      this.data.disputeProcess = process;
 
       return this;
     },
@@ -46,7 +46,7 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
     addAttachment(name, filePath) {
       const dispute = this;
 
-      this.data['attachments'] = this.data['attachments'] || [];
+      this.data.attachments = this.data.attachments || [];
 
       const da = new DisputeAttachment();
 
