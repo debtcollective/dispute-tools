@@ -15,6 +15,7 @@ exports.seed = (knex) => {
               steps: [
                 {
                   type: 'form',
+                  name: 'personal-information-form',
                   title: 'Personal Information',
                   description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                   fieldSets: [
@@ -163,12 +164,14 @@ exports.seed = (knex) => {
                 },
                 {
                   type: 'information',
+                  name: 'atb-form',
                   title: 'Ability to benefit / ATB Form',
                   description: 'With your previous information we already complete The [ATB form](custom link) for you, you will receive copies at the end.',
                   footer: 'This is an auto-generated form, you need to fill the {link to open the previous form} first.',
                 },
                 {
                   type: 'upload',
+                  name: 'personal-statement-uploader',
                   multiple: false,
                   optional: false,
                   mimeTypes: [/image/, 'application/pdf'],
