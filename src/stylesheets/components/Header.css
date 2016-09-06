@@ -38,7 +38,22 @@
       height: 3px;
       width: 100%;
       background-color: var(--k-color-palette-primary);
-      transform: translateY(10px);
+      transform: translateY(-10px);
     }
   }
+}
+
+.Header__dropdown-item {
+  display: block;
+  width: 100%;
+  padding: .25em 1.75em;
+  border: none;
+  font: inherit;
+  font-weight: 500;
+  text-align: left;
+  color: var(--k-background-color);
+  background-color: inherit;
+  cursor: pointer;
+
+  &:hover {color: var(--k-color-palette-primary)}
 }

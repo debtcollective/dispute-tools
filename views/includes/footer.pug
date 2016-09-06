@@ -1,0 +1,36 @@
+-
+  var wikiURL = "http://wiki.debtcollective.org"
+  var repoURL = "https://github.com/debtcollective/debtcollective-web"
+  var twitterAccountURL = "https://twitter.com/0debtzone"
+  var facebookAccountURL = "https://www.facebook.com/DebtCollective"
+
+footer.wrapper.mx-auto.px2
+  .max-width-3.mx-auto.clearfix.py4
+    ul.list-reset.left
+      li.inline-block.pr3
+        a(href=routeMappings.about.url() class="-white -fw-500") About
+      li.inline-block.pr3
+        a(class="-white -fw-500") Donate
+      li.inline-block.pr3
+        a(href=wikiURL class="-white -fw-500" rel="noopener noreferrer" target="_blank") Community Wiki
+      li.inline-block.pr3
+        a(href=repoURL class="-white -fw-500" rel="noopener noreferrer" target="_blank") Open Source
+      li.inline-block.pr3
+        a(class="-white -fw-500") Contact
+
+    ul.list-reset.right
+      li.inline-block.pr3
+        a(href=twitterAccountURL class="-white" rel="noopener noreferrer" target="_blank")
+          svg(width="13" height="11"): use(xlink:href="#svg-twitter")
+          .sr-only Twitter
+      li.inline-block
+        a(href=facebookAccountURL class="-white" rel="noopener noreferrer" target="_blank")
+          svg(width="6" height="13"): use(xlink:href="#svg-facebook")
+          .sr-only Facebook
+
+  .max-width-3.mx-auto.clearfix.pb4
+    .left.-caption.-fw-500
+      svg(width="64" height="31" class="mr2"): use(xlink:href="#svg-logo")
+      span.-neutral-mid The Debt Collective. Copyright 2016
+      span.px2 •
+      a(href=routeMappings.tos.url() class="-white") Terms and Conditions

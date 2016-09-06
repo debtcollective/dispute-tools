@@ -41,6 +41,7 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
     'bio',
     'state',
     'zip',
+    'phone',
     'socialLinks',
     'imagePath',
     'imageMeta',

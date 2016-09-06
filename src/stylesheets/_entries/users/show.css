@@ -1,0 +1,19 @@
+@import '../../base';
+
+.ProfileWrapper {
+  min-height: calc(100vh - 305px);
+}
+
+.Profile__map {
+  top: -60px;
+  background: transparent url('/images/profile/bg-map.jpg') 50%;
+  background-size: cover;
+}
+
+.Profile__image-wrapper {
+  order: 1;
+}
+
+.Profile__info-wrapper {
+  background-color: var(--k-background-color);
+}
