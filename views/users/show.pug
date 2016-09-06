@@ -19,7 +19,7 @@ block content
             p.pb2.-caption.-fw-700.-accent= user.account.state
             p.-fw-700= user.account.bio
           .flex.pt4
-            if currentUser.id === user.id
+            if currentUser && currentUser.id === user.id
               a(href=routeMappings.Users.edit.url(currentUser.id) class="-caption -fw-700") Edit profile
             ul.list-reset.center.flex-auto
               li.inline-block.align-top.mx2: a.block(rel="noopener noreferrer" target="_blank").-white: svg(width="19" height="15"): use(xlink:href="#svg-twitter")
