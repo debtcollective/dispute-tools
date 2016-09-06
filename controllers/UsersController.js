@@ -9,7 +9,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       actions: ['show', 'edit', 'update', 'destroy'],
     },
     {
-      before: multer.single('image'),
+      before: multer().single('image'),
       actions: ['update'],
     },
   ],
