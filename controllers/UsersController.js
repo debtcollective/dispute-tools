@@ -1,5 +1,6 @@
 /* globals Class, RestfulController, User, NotFoundError, CONFIG, Collective, Account */
 const Promise = require('bluebird');
+const fs = require('fs-extra');
 
 const UsersController = Class('UsersController').inherits(RestfulController)({
   beforeActions: [
@@ -94,13 +95,21 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
       user.save()
         .then(() => {
-          return user.attach('image', req.file.path, {
-            fileSize: req.file.size,
-            mimeType: req.file.mimeType,
-          });
-        })
-        .then(() => {
-          return user.save();
+          if (req.files.image && req.files.image.length > 0) {
+            const image = req.files.image[0];
+
+            return user.account.attach('image', image.path, {
+              fileSize: image.size,
+              mimeType: image.mimeType,
+            })
+            .then(() => {
+              fs.unlinkSync(image.path);
+
+              return user.save();
+            });
+          }
+
+          return Promise.resolve(true);
         })
         .then(() => {
           if (user._oldEmail === user.email) {
@@ -115,6 +124,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             });
         })
         .catch((err) => {
+          console.log(err)
           res.status(400);
 
           res.locals.errors = err.errors || err;
