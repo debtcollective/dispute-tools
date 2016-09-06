@@ -2,7 +2,7 @@ const multer = require('multer');
 
 module.exports = multer().fields([
   {
-    name: 'avatar',
+    name: 'image',
     maxCount: 1,
   },
 ]);

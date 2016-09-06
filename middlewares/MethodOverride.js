@@ -14,8 +14,7 @@ var methodOverride = require('method-override');
 //   }
 // })];
 
-module.exports = methodOverride((req, res) => {
-  console.log('body', req)
+module.exports = methodOverride((req) => {
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
     // look in urlencoded POST bodies and delete it
     const method = req.body._method;
