@@ -1,9 +1,17 @@
+@import './components/Header';
+@import './components/Footer';
+@import './components/Modal';
+@import './components/Dropdown';
+@import './components/Alert';
+@import './components/Button';
+@import './utils';
+
 /* BASSCSS */
 @import 'basscss-align';
 @import 'basscss-border';
 @import 'basscss-flexbox';
 @import 'basscss-grid';
-/* @import 'basscss-hide'; */
+@import 'basscss-hide';
 @import 'basscss-layout';
 @import 'basscss-margin';
 @import 'basscss-padding';
@@ -22,15 +30,6 @@
 @import './lib/kabinett/utilities/type-font-scale';
 @import './lib/kabinett/utilities/aria';
 @import './lib/kabinett/utilities/sizes';
-
-
-
-@import './components/Header';
-@import './components/Modal';
-@import './components/Dropdown';
-@import './components/Alert';
-@import './components/Button';
-@import './utils';
 
 
 :root {
