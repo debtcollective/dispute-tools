@@ -24,20 +24,27 @@ block content
         img.relative.fit(src="/images/about/team.png" style="margin-top: -5rem;")
         p.mt2.-ff-sec In 2012, we launched the Rolling Jubilee as a public education campaign about the injustice of requiring public goods, such as education and healthcare, to be personally debt-financed. Our long-term aim is to transform personal grievances into collective political action by helping people realize that they are not “a loan.”
 
-      .max-width-3.mx-auto.py4
-        h2.pt4.pb3.-h-sec: span The<br/>Founders
-        ul.list-reset.clearfix.center.mxn2.md-flex.flex-wrap
-          li.About__founder-item.col.md-col-3.sm-col-6.col-12.px2.mb3: div
-          li.About__founder-item.col.md-col-3.sm-col-6.col-12.px2.mb3: div
-          li.About__founder-item.col.md-col-3.sm-col-6.col-12.px2.mb3: div
-          li.About__founder-item.col.md-col-3.sm-col-6.col-12.px2.mb3: div
-          li.About__founder-item.col.md-col-3.sm-col-6.col-12.px2.mb3: div
-          li.About__founder-item.col.md-col-3.sm-col-6.col-12.px2.mb3: div
-          li.About__founder-item.col.md-col-3.sm-col-6.col-12.px2.mb3: div
-          li.About__founder-item.col.md-col-3.sm-col-6.col-12.px2.mb3: div
+      -
+        var founders = [
+          'Hannah Appel',
+          'Thomas Gokey',
+          'Laura Hanna',
+          'Luke Herrine',
+          'Ann Larson',
+          'Astra Taylor'
+        ]
+
+      .py4
+        .max-width-3.mx-auto.pt4.pb3: h3.-accent The Founders
+        ul.list-reset.clearfix.mxn2.md-flex.flex-wrap
+          each founder in founders
+            - var photo_path = `/images/about/founders/${founder.toLowerCase().replace(/\s/, '-')}`
+            li.About__founder-item.inline-block.align-top.col.md-col-2.sm-col-3.col-4.px2.mb3
+              img.fit(src=`${photo_path}.jpg` title=founder width="170" srcset=`${photo_path}@2x.jpg 2x`)
+              h4= founder
 
       .max-width-4.mx-auto.py4
-        h2.pt4.-h-sec.center: span The Red Square
+        h2.-h-sec.center: span The Red Square
         .About__red-square-content.clearfix.mxn2
           .col.md-col-6.col-12.px2.right-align
             img(src="/images/about/the-red-square.jpg")
