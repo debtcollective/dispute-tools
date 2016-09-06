@@ -1,4 +1,5 @@
 /* global Krypton, Class, CONFIG, AttachmentsProcessor, AWS, S3Uploader */
+const gm = require('gm').subClass({ imageMagick: true });
 
 const US_STATES = require('datasets-us-states-names');
 
@@ -56,6 +57,20 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
 
       this.hasAttachment({
         name: 'image',
+        version: {
+          small(readStream) {
+            return gm(readStream)
+              .resize(64, 64)
+              .setFormat('jpg')
+              .stream();
+          },
+          medium(readStream) {
+            return gm(readStream)
+              .resize(256, 256)
+              .setFormat('jpg')
+              .stream();
+          },
+        },
       });
 
       return this;
