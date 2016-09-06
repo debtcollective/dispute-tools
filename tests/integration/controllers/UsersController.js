@@ -84,12 +84,12 @@ describe('UsersController', () => {
       });
   });
 
-  it(`As a Visitor, should render 403 on show ${urls.Users.show.url(':id')}`, (done) => {
+  it(`As a Visitor, should render 200 on show ${urls.Users.show.url(':id')}`, (done) => {
     agent.get(`${url}${urls.Users.show.url(user.id)}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
-        expect(err.toString()).to.be.equal('Error: Forbidden');
-        expect(res.status).to.equal(403);
+        expect(err).to.not.exists;
+        expect(res.status).to.equal(200);
         done();
       });
   });
