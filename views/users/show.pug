@@ -25,3 +25,14 @@ block content
               li.inline-block.align-top.mx2: a.block(rel="noopener noreferrer" target="_blank").-white: svg(width="19" height="15"): use(xlink:href="#svg-twitter")
               li.inline-block.align-top.mx2: a.block(rel="noopener noreferrer" target="_blank").-white: svg(width="8" height="17"): use(xlink:href="#svg-facebook")
               li.inline-block.align-top.mx2: a.block(rel="noopener noreferrer" target="_blank").-white: svg(width="16" height="16"): use(xlink:href="#svg-web")
+
+block scripts
+  script(src="/build/javascripts/users/show.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new ViewUsersShow(options);
+    }, true);
