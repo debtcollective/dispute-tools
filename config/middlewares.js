@@ -16,6 +16,10 @@ const middlewares = [
     path: 'middlewares/bodyParserJSON.js',
   },
   {
+    name: 'Multipart Body Parser',
+    path: 'middlewares/multer.js',
+  },
+  {
     name: 'Method Override',
     path: 'middlewares/MethodOverride.js',
   },

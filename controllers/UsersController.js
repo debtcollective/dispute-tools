@@ -1,16 +1,11 @@
 /* globals Class, RestfulController, User, NotFoundError, CONFIG, Collective, Account */
 const Promise = require('bluebird');
-const multer = require('multer');
 
 const UsersController = Class('UsersController').inherits(RestfulController)({
   beforeActions: [
     {
       before: '_loadUser',
       actions: ['show', 'edit', 'update', 'destroy'],
-    },
-    {
-      before: multer().single('image'),
-      actions: ['update'],
     },
   ],
 
