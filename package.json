@@ -98,6 +98,7 @@
     "pug": "^2.0.0-beta4",
     "redis": "^2.6.2",
     "req-flash": "0.0.3",
+    "response-time": "^2.3.1",
     "rimraf": "^2.5.4",
     "route-mappings": "^0.3.1",
     "scandium-express": "0.0.3",

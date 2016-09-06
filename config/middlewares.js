@@ -52,6 +52,10 @@ const middlewares = [
     path: 'middlewares/RestifyACL.js',
   },
   {
+    name: 'ResponseTime',
+    path: 'middlewares/ResponseTime.js',
+  },
+  {
     name: 'Router',
     path: 'middlewares/Router.js',
   },
