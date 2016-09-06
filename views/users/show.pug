@@ -1,1 +1,27 @@
-| users#show
+extends ../layouts/application.pug
+
+block title
+  | #{user.account.fullname} — The Debt Collective
+
+block styles
+  link(href="/build/stylesheets/users/show.css" rel="stylesheet")
+
+block content
+  .ProfileWrapper.wrapper.py4.px2.flex.items-center.relative
+    .Profile__map.absolute.left-0.right-0.bottom-0
+    .max-width-3.mx-auto.relative.-fw
+      .clearfix.md-flex
+        .Profile__image-wrapper.right.sm-col-4.col-12
+          img.block.-fw(src="/images/about/founders/ann-larson.jpg" alt=user.account.fullname)
+        .Profile__info-wrapper.left.flex.flex-column.pt3.pr3.pb2.pl3.sm-col-8.col-12
+          .flex-auto
+            h3.pb2= user.account.fullname
+            p.pb2.-caption.-fw-700.-accent= user.account.state
+            p.-fw-700= user.account.bio
+          .flex.pt4
+            if currentUser.id === user.id
+              a(href=routeMappings.Users.edit.url(currentUser.id) class="-caption -fw-700") Edit profile
+            ul.list-reset.center.flex-auto
+              li.inline-block.align-top.mx2: a.block(rel="noopener noreferrer" target="_blank").-white: svg(width="19" height="15"): use(xlink:href="#svg-twitter")
+              li.inline-block.align-top.mx2: a.block(rel="noopener noreferrer" target="_blank").-white: svg(width="8" height="17"): use(xlink:href="#svg-facebook")
+              li.inline-block.align-top.mx2: a.block(rel="noopener noreferrer" target="_blank").-white: svg(width="16" height="16"): use(xlink:href="#svg-web")
