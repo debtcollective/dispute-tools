@@ -90,47 +90,53 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       const user = res.locals.user;
 
       user.updateAttributes(req.body);
+      user.account.updateAttributes(req.body);
 
       user.role = 'User';
 
-      user.save()
-        .then(() => {
-          if (req.files.image && req.files.image.length > 0) {
-            const image = req.files.image[0];
+      User.transaction((trx) => {
+        return user.transacting(trx).save()
+          .then(() => {
+            if (req.files.image && req.files.image.length > 0) {
+              const image = req.files.image[0];
 
-            return user.account.attach('image', image.path, {
-              fileSize: image.size,
-              mimeType: image.mimeType,
-            })
-            .then(() => {
-              fs.unlinkSync(image.path);
+              return user.account.attach('image', image.path, {
+                fileSize: image.size,
+                mimeType: image.mimeType,
+              })
+              .then(() => {
+                fs.unlinkSync(image.path);
 
-              return user.save();
-            });
-          }
-
-          return Promise.resolve(true);
-        })
-        .then(() => {
-          if (user._oldEmail === user.email) {
-            return res.redirect(CONFIG.router.helpers.Users.show.url(req.params.id));
-          }
-
-          return user.sendActivation()
-            .then(() => {
-              res.render('users/activation.pug', {
-                email: user.email,
+                return user.account.transacting(trx).save();
               });
+
+            }
+
+            return user.account.transacting(trx).save();
+          });
+      })
+      .then(() => {
+        if (user._oldEmail === user.email) {
+          return res.redirect(CONFIG.router.helpers.Users.show.url(req.params.id));
+        }
+
+        return user.sendActivation()
+          .then(() => {
+
+            req.logout();
+
+            res.render('users/activation.pug', {
+              email: user.email,
             });
-        })
-        .catch((err) => {
-          console.log(err)
-          res.status(400);
+          });
+      })
+      .catch((err) => {
+        res.status(400);
 
-          res.locals.errors = err.errors || err;
+        res.locals.errors = err.errors || err;
 
-          res.render('users/edit.pug');
-        });
+        res.render('users/edit.pug');
+      });
     },
 
     destroy(req, res) {
