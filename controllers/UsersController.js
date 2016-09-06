@@ -1,11 +1,16 @@
 /* globals Class, RestfulController, User, NotFoundError, CONFIG, Collective, Account */
 const Promise = require('bluebird');
+const multer = require('multer');
 
 const UsersController = Class('UsersController').inherits(RestfulController)({
   beforeActions: [
     {
       before: '_loadUser',
       actions: ['show', 'edit', 'update', 'destroy'],
+    },
+    {
+      before: multer.single('image'),
+      actions: ['update'],
     },
   ],
 
@@ -93,6 +98,15 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       user.role = 'User';
 
       user.save()
+        .then(() => {
+          return user.attach('image', req.file.path, {
+            fileSize: req.file.size,
+            mimeType: req.file.mimeType,
+          });
+        })
+        .then(() => {
+          return user.save();
+        })
         .then(() => {
           if (user._oldEmail === user.email) {
             return res.redirect(CONFIG.router.helpers.Users.show.url(req.params.id));

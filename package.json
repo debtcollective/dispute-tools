@@ -86,6 +86,7 @@
     "method-override": "^2.3.6",
     "mkdirp": "^0.5.1",
     "morgan": "^1.7.0",
+    "multer": "^1.2.0",
     "mysql": "^2.11.1",
     "neon": "^2.0.0",
     "nodemailer": "^2.5.0",
