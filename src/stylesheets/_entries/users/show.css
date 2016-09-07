@@ -8,6 +8,8 @@
   top: -60px;
   background: transparent url('/images/profile/bg-map.jpg') 50%;
   background-size: cover;
+  opacity: .7;
+  mix-blend-mode: lighten;
 }
 
 .Profile__image-wrapper {
@@ -16,4 +18,9 @@
 
 .Profile__info-wrapper {
   background-color: var(--k-background-color);
+}
+
+.Profile__image-placeholder {
+  padding-top: 100%;
+  background-color: var(--k-color-palette-neutral-light);
 }
