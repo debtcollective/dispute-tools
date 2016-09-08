@@ -89,27 +89,27 @@ describe('Dispute', () => {
     });
 
     it('Should set a dispute process id', () => {
-      dispute.setDisputeProcess(1);
+      dispute.setDisputeProcess({ process: 1 });
 
       expect(dispute.data.disputeProcess).to.be.equal(1);
     });
 
     it('Should set a signature', () => {
-      dispute.setSignature('Example Signature');
+      dispute.setSignature({ signature: 'Example Signature' });
 
       expect(dispute.data.signature).to.be.equal('Example Signature');
     });
 
     it('Should set a form', () => {
-      const fields = {
+      const fieldValues = {
         name: 'Example Name',
         address1: 'Address 1',
         address2: 'Address 2',
       };
 
-      dispute.setForm('form-name', fields);
+      dispute.setForm({ name: 'form-name', fieldValues });
 
-      expect(dispute.data['form-name']).to.be.equal(fields);
+      expect(dispute.data.forms['form-name']).to.be.equal(fieldValues);
     });
 
     it('Should add an attachment', () => {

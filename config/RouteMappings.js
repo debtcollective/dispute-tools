@@ -78,6 +78,20 @@ const routeMappings = RouteMappings()
         to: 'Users#activate',
         as: 'activate',
       });
+  })
+
+  .resources('/DisputeTools')
+
+  .resources('/Disputes', (mappings) => {
+    return mappings()
+      .post('/:id/update-dispute-data', {
+        to: 'Disputes#updateDisputeData',
+        as: 'updateDisputeData'
+      })
+      .post('/:id/add-attachment', {
+        to: 'Disputes#addAttachment',
+        as: 'addAttachment'
+      })
   });
 
 module.exports = routeMappings;

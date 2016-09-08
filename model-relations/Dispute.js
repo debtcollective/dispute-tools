@@ -20,6 +20,7 @@ Dispute.relations = {
     relatedModel: DisputeAttachment,
     ownerCol: 'id',
     relatedCol: 'dispute_id',
+    orderBy: ['created_at', 'ASC'],
   },
 
   statuses: {
@@ -27,5 +28,6 @@ Dispute.relations = {
     relatedModel: DisputeStatus,
     ownerCol: 'id',
     relatedCol: 'dispute_id',
+    orderBy: ['created_at', 'DESC'],
   },
 };
