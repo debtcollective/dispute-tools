@@ -14,13 +14,19 @@
 
 .Profile__image-wrapper {
   order: 1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    right: 25%;
+    bottom: 25%;
+    background-color: var(--k-color-palette-primary);
+    mix-blend-mode: multiply;
+  }
 }
 
 .Profile__info-wrapper {
   background-color: var(--k-background-color);
-}
-
-.Profile__image-placeholder {
-  padding-top: 100%;
-  background-color: var(--k-color-palette-neutral-light);
 }

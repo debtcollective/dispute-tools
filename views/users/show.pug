@@ -11,8 +11,11 @@ block content
     .Profile__map.absolute.left-0.right-0.bottom-0
     .max-width-3.mx-auto.relative.-fw
       .clearfix.md-flex
-        .Profile__image-wrapper.right.sm-col-4.col-12
-          img.block.-fw(src="/images/about/founders/ann-larson.jpg" alt=user.account.fullname)
+        .Profile__image-wrapper.relative.right.sm-col-4.col-12
+          if (user.account.image.exists('small'))
+            img.block.-fw(src=user.account.image.url('medium') alt=user.account.fullname)
+          else
+            img.block.-fw(src='/images/profile/placeholder.png')
         .Profile__info-wrapper.left.flex.flex-column.pt3.pr3.pb2.pl3.sm-col-8.col-12
           .flex-auto
             h3.pb2= user.account.fullname
@@ -20,11 +23,23 @@ block content
             p.-fw-700= user.account.bio
           .flex.pt4
             if currentUser && currentUser.id === user.id
-              a(href=routeMappings.Users.edit.url(currentUser.id) class="-caption -fw-700") Edit profile
-            ul.list-reset.center.flex-auto
-              li.inline-block.align-top.mx2: a.block(rel="noopener noreferrer" target="_blank").-white: svg(width="19" height="15"): use(xlink:href="#svg-twitter")
-              li.inline-block.align-top.mx2: a.block(rel="noopener noreferrer" target="_blank").-white: svg(width="8" height="17"): use(xlink:href="#svg-facebook")
-              li.inline-block.align-top.mx2: a.block(rel="noopener noreferrer" target="_blank").-white: svg(width="16" height="16"): use(xlink:href="#svg-web")
+              a(href=routeMappings.Users.edit.url(currentUser.id) class="-caption -fw-700" role="button" tabindex="0")
+                svg.mr1(width="11" height="11"): use(xlink:href="#svg-pencil")
+                | Edit profile
+            if user.account.socialLinks
+              ul.list-reset.center.flex-auto
+                each val, index in user.account.socialLinks
+                  li.inline-block.align-top.mx2
+                    a.block.-white(
+                      href=val
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      role="button"
+                      tabindex="0"
+                      title=`${user.account.fullname}’s ${index}`
+                    )
+                      svg(width="18" height="18"): use(xlink:href=`#svg-${index}`)
+                      .sr-only=`${user.account.fullname}’s ${index}`
 
 block scripts
   script(src="/build/javascripts/users/show.js" async)
