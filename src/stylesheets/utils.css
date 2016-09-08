@@ -46,3 +46,8 @@
     line-height: 1.618;
   }
 }
+
+
+@media (--breakpoint-xs) {
+  .xs-left-align { text-align: left !important }
+}

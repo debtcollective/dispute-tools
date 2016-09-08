@@ -1,1 +1,90 @@
-| users#edit
+extends ../layouts/application.pug
+
+block title
+  | Edit Profile — The Debt Collective
+
+block styles
+  link(href="/build/stylesheets/users/edit.css" rel="stylesheet")
+
+block content
+  .max-width-1.mx-auto.py4.px2
+    h2.pb3.-fw-500 Edit Profile
+    form(action=routeMappings.Users.update.url(user.id) method="post" enctype="multipart/form-data" data-component-usereditform)
+      input(name="_csrf" type="hidden" value=csrfToken)
+      input(name="_method" type="hidden" value="PUT")
+
+      .clearfix.mxn1.pb3
+        .col.col-8.px1
+          if (user.account.image.exists('medium'))
+            .EditProfile__image-wrapper.relative.block.-fw(style=`background-image: url(${user.account.image.url('medium')});`)
+          else
+            .EditProfile__image-wrapper.relative.block.-fw(style='background-image: url(/images/profile/placeholder.png);')
+        .col.col-4.px1
+          button.relative.-k-btn.btn-link(type="button")
+            input.absolute.top-0.left-0.-fh.-fw(name="image" type="file" accept="image/*" style="opacity: 0;")
+            span.-fw-500.-primary Upload
+
+      div
+        .pb1.-fw-500 Fullname
+        input.-k-input.-fw.-ff-sec(name="fullname" type="text" value=user.account.fullname)
+        p(class="-on-error -danger -caption -fw-500 mt1")
+
+      div
+        .pt2.pb1.-fw-500 Email (not public)
+        input.-k-input.-fw.-ff-sec(name="email" type="email" value=user.email)
+        p(class="-on-error -danger -caption -fw-500 mt1")
+
+      div
+        .pt2.pb1.-fw-500 Phone (not public)
+        input.-k-input.-fw.-ff-sec(name="phone" type="tel" value=user.account.phone placeholder="Optional")
+        p(class="-on-error -danger -caption -fw-500 mt1")
+
+      .clearfix.mxn1
+        .col.col-6.px1
+          .pt2.pb1.-fw-500 State
+          .-k-select
+            select.-fw(name="state")
+              option(value="") State
+              each state in US_STATES
+                option(
+                  value= state
+                  selected!= user.account.state === state
+                )= state
+          p(class="-on-error -danger -caption -fw-500 mt1")
+        .col.col-6.px1
+          .pt2.pb1.-fw-500 ZIP
+          input.-k-input.-fw(name="zip" type="text" value=user.account.zip)
+          p(class="-on-error -danger -caption -fw-500 mt1")
+
+      div
+        .pt2.pb1.-fw-500 Bio
+        textarea.-k-input.-fw.-ff-sec(name="bio" rows="4") #{user.account.bio}
+
+      div
+        input.-k-input.-fw(name="socialLinks" type="hidden" value=user.account.socialLinks)
+        div
+          .pt2.pb1.-fw-500 Twitter link
+          input.-k-input.-fw.-ff-sec(name="twitter-url" value=user.account.socialLinks.twitter placeholder="https://twitter.com/username")
+          p(class="-on-error -danger -caption -fw-500 mt1")
+        div
+          .pt2.pb1.-fw-500 Facebook link
+          input.-k-input.-fw.-ff-sec(name="facebook-url" value=user.account.socialLinks.facebook placeholder="https://facebook.com/username")
+          p(class="-on-error -danger -caption -fw-500 mt1")
+        div
+          .pt2.pb1.-fw-500 Website
+          input.-k-input.-fw.-ff-sec(name="website-url" value=user.account.socialLinks.website placeholder="http://website.com")
+          p(class="-on-error -danger -caption -fw-500 mt1")
+
+      .pt3
+        button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Save changes
+
+block scripts
+  script(src="/build/javascripts/users/edit.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new ViewUsersEdit(options);
+    }, true);

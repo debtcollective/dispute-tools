@@ -63,6 +63,7 @@ const User = Class('User').inherits(Krypton.Model)({
   prototype: {
     email: null,
     password: null,
+    _oldEmail: null,
 
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
@@ -71,7 +72,7 @@ const User = Class('User').inherits(Krypton.Model)({
 
       // Start Model Hooks:
 
-      this.oldEmail = model.email;
+      this._oldEmail = model.email;
 
       model.on('beforeValidation', (done) => {
         if (!model.id && (!model.password || model.password.length === 0)) {
@@ -101,7 +102,7 @@ const User = Class('User').inherits(Krypton.Model)({
 
       // Updates old email when record saves
       model.on('afterSave', (done) => {
-        this.oldEmail = model.email;
+        this._oldEmail = model.email;
         done();
       });
 
@@ -125,7 +126,7 @@ const User = Class('User').inherits(Krypton.Model)({
 
       // If email changes, set activationToken again
       model.on('beforeUpdate', (done) => {
-        if (this.oldEmail === model.email) {
+        if (this._oldEmail === model.email) {
           return done();
         }
 
@@ -134,7 +135,7 @@ const User = Class('User').inherits(Krypton.Model)({
 
       // If email changed, send activation email
       model.on('afterUpdate', (done) => {
-        if (this.oldEmail === model.email) {
+        if (this._oldEmail === model.email) {
           return done();
         }
       });

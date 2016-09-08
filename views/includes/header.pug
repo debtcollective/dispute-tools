@@ -8,8 +8,9 @@ header.Header(data-component-header)
   .Header__bg.absolute.top-0.right-0.bottom-0.left-0
   .wrapper.clearfix.px2.-fh
     h1.Header__logo.left.-fh
-      a.block(style="padding: 18px 0 22px;" href="/" title="The Debt Collective")
+      a.block(style="padding: 18px 0 22px;" href=routeMappings.root.url())
         svg.Header__logo-svg.block: use(xlink:href="#svg-logo-light")
+        .sr-only The Collective Homepage
     nav.right.-fh
       ul.list-reset.flex.items-center.-fh.sm-hide.xs-hide
         li.px2.-fh
@@ -31,7 +32,7 @@ header.Header(data-component-header)
                 span.Dropdown__label #{currentUser.account.fullname}
               ul.Dropdown__body(aria-hidden="true" aria-label="submenu")
                 li
-                  a.Header__dropdown-item(href=routeMappings.Users.show.url(currentUser.id)) Profile
+                  a.Header__dropdown-item(href=routeMappings.Users.show.url(currentUser.id) role="button" tabindex="0") Profile
                 li
                   form(method="post" action=routeMappings.logout.url())
                     input(type="hidden" name="_csrf" value=csrfToken)

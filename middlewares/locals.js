@@ -18,10 +18,9 @@ module.exports = function locals(req, res, next) {
   res.locals.currentURL = req.url;
 
   req.role = (req.user && req.user.role) || 'Visitor';
+  res.locals.US_STATES = US_STATES;
 
   if (!req.user) {
-    res.locals.US_STATES = US_STATES;
-
     return Collective.query().then((collectives) => {
       res.locals.COLLECTIVES = collectives;
       next();
