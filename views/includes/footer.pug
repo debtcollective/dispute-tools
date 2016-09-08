@@ -30,7 +30,9 @@ footer.wrapper.mx-auto.px2
 
   .max-width-3.mx-auto.clearfix.pb4
     .left.-caption.-fw-500
-      svg(width="64" height="31" class="mr2"): use(xlink:href="#svg-logo")
+      a.inline-block.mr2(href=routeMappings.root.url())
+        svg(width="64" height="31"): use(xlink:href="#svg-logo")
+        .sr-only The Collective Homepage
       span.-neutral-mid The Debt Collective. Copyright 2016
       span.px2 •
       a(href=routeMappings.tos.url() class="-white") Terms and Conditions

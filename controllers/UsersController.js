@@ -116,6 +116,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       })
       .then(() => {
         if (user._oldEmail === user.email) {
+          req.flash('success', 'Profile updated succesfully');
           return res.redirect(CONFIG.router.helpers.Users.show.url(req.params.id));
         }
 

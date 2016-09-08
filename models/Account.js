@@ -58,18 +58,26 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
 
+      // temporal fix to set defaults
+      this.imageMeta = this.imageMeta || {};
+      this.socialLinks = this.socialLinks || {};
+
       this.hasAttachment({
         name: 'image',
         versions: {
           small(readStream) {
             return gm(readStream)
-              .resize(64, 64)
+              .resize('64x64^')
+              .gravity('Center')
+              .crop(64, 64, 0, 0)
               .setFormat('jpg')
               .stream();
           },
           medium(readStream) {
             return gm(readStream)
-              .resize(256, 256)
+              .resize('256x256^')
+              .gravity('Center')
+              .crop(256, 256, 0, 0)
               .setFormat('jpg')
               .stream();
           },

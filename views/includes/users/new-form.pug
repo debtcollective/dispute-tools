@@ -1,5 +1,5 @@
 div(data-component-usernewform)
-  .max-width-1.mx-auto
+  .max-width-1.mx-auto.px2
     h3#modalSignupTitle.pb2 Join us
     p#modalSignupDesc.-fw-500.mb3 Alone, our debts are a burden; together, they make us powerful.
 
@@ -7,8 +7,8 @@ div(data-component-usernewform)
       input(type="hidden" name="_csrf" value=csrfToken)
 
       .clearfix.pb2.mxn1
-        .col.col-4.pt1.px1.right-align.-fw-500 Your name
-        .col.col-8.px1(class=errors && errors.fullname ? 'error' : '')
+        .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Your name
+        .col.sm-col-8.col-12.px1(class=errors && errors.fullname ? 'error' : '')
           input.-k-input.-fw(
             name="fullname"
             type="text"
@@ -17,8 +17,8 @@ div(data-component-usernewform)
           p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid name
 
       .clearfix.pb2.mxn1
-        .col.col-4.pt1.px1.right-align.-fw-500 Type of debt
-        .col.col-8.px1
+        .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Type of debt
+        .col.sm-col-8.col-12.px1
           .-k-select(class=errors && errors.collectiveId ? 'error' : '')
             select.-fw(name="collectiveId")
               option(value="") Choose an option
@@ -30,8 +30,8 @@ div(data-component-usernewform)
           p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid debt type
 
       .clearfix.pb2.mxn1
-        .col.col-4.pt1.px1.right-align.-fw-500 Location
-        .col.col-8.px1
+        .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Location
+        .col.sm-col-8.col-12.px1
           .col.col-6
             .-k-select(class=errors && errors.state ? 'error' : '')
               select.-fw(name="state")
@@ -55,8 +55,8 @@ div(data-component-usernewform)
               p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid ZIP
 
       .clearfix.pb2.mxn1
-        .col.col-4.pt1.px1.right-align.-fw-500 Phone
-        .col.col-8.px1(class=errors && errors.phone ? 'error' : '')
+        .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Phone
+        .col.sm-col-8.col-12.px1(class=errors && errors.phone ? 'error' : '')
           input.-k-input.-fw(
             type="tel"
             name="phone"
@@ -66,8 +66,8 @@ div(data-component-usernewform)
           p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid phone
 
       .clearfix.pb2.mxn1
-        .col.col-4.pt1.px1.right-align.-fw-500 Email
-        .col.col-8.px1(class=errors && errors.email ? 'error' : '')
+        .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Email
+        .col.sm-col-8.col-12.px1(class=errors && errors.email ? 'error' : '')
           input.-k-input.-fw(
             type="email"
             name="email"
@@ -76,8 +76,8 @@ div(data-component-usernewform)
           p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid email
 
       .clearfix.pb2.mxn1
-        .col.col-4.pt1.px1.right-align.-fw-500 Password
-        .col.col-8.px1(class=errors && errors.password ? 'error' : '')
+        .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Password
+        .col.sm-col-8.col-12.px1(class=errors && errors.password ? 'error' : '')
           input.-k-input.-fw(
             type="password"
             name="password"

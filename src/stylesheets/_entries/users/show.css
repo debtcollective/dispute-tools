@@ -8,10 +8,23 @@
   top: -60px;
   background: transparent url('/images/profile/bg-map.jpg') 50%;
   background-size: cover;
+  opacity: .7;
+  mix-blend-mode: lighten;
 }
 
 .Profile__image-wrapper {
   order: 1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    right: 25%;
+    bottom: 25%;
+    background-color: var(--k-color-palette-primary);
+    mix-blend-mode: multiply;
+  }
 }
 
 .Profile__info-wrapper {
