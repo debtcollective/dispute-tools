@@ -6,13 +6,11 @@ const DisputeMailer = Class('DisputeMailer').inherits(BaseMailer)({
     subject: 'The Debt Collective',
   },
 
-  sendToAdmins: function sendToAdmins(locals) {
+  sendToAdmins(locals) {
     return User.query()
       .where('role', 'Admin')
       .then((admins) => {
-        const emails = admins.map((admin) => {
-          return admin.email;
-        });
+        const emails = admins.map((admin) => admin.email);
 
         return this._send('sendToAdmins', emails, locals);
       });

@@ -42,7 +42,6 @@ routeMapper.routes.forEach((route) => {
     const beforeActions = (controllerObject
       && controllerObject.constructor.beforeActions) || [];
 
-
     if (!controllerObject) {
       throw new Error(`Controller '${controller}' is missing`);
     }

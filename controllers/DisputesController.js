@@ -14,8 +14,8 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       before(req, res, next) {
         // Load the dispute tool record to use its #createDispute method
         DisputeTool.query()
-          .where('id', req.body.disputeToolId)
-          .then(([disputeTool]) => {
+          .first(req.body.disputeToolId)
+          .then((disputeTool) => {
             res.locals.disputeTool = disputeTool;
 
             next();
@@ -41,9 +41,9 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
   prototype: {
     _loadDispute(req, res, next) {
       Dispute.query()
-        .where('id', req.params.id)
+        .first(req.params.id)
         .include('[statuses, attachments]')
-        .then(([dispute]) => {
+        .then((dispute) => {
           res.locals.dispute = dispute;
           req.dispute = dispute;
           next();
@@ -87,9 +87,9 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       const { comment } = req.body;
 
       const ds = new DisputeStatus({
+        comment,
         disputeId: dispute.id,
         status: 'Update',
-        comment,
       });
 
       ds.save()
@@ -137,11 +137,10 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       .then(() => {
         return dispute.save();
       })
-      .then(() => {
-        return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
-      })
       .catch(() => {
         req.flash('error', 'A problem occurred trying to process the attachments');
+      })
+      .finally(() => {
         return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
       });
     },
