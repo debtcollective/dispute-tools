@@ -55,6 +55,10 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
 
+      // temporal fix to set defaults
+      this.imageMeta = this.imageMeta || {};
+      this.socialLinks = this.socialLinks || {};
+
       this.hasAttachment({
         name: 'image',
         versions: {
