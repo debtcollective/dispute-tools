@@ -109,7 +109,6 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
                 return user.account.transacting(trx).save();
               });
-
             }
 
             return user.account.transacting(trx).save();
@@ -117,12 +116,12 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       })
       .then(() => {
         if (user._oldEmail === user.email) {
+          req.flash('success', 'Profile updated succesfully');
           return res.redirect(CONFIG.router.helpers.Users.show.url(req.params.id));
         }
 
         return user.sendActivation()
           .then(() => {
-
             req.logout();
 
             res.render('users/activation.pug', {
