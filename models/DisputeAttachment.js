@@ -17,6 +17,8 @@ const DisputeAttachment = Class('DisputeAttachment').inherits(Krypton.Model)
       init(config) {
         Krypton.Model.prototype.init.call(this, config);
 
+        this.fileMeta = this.fileMeta || {};
+
         this.hasAttachment({
           name: 'file',
           versions: {
