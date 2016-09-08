@@ -84,7 +84,7 @@ const routeMappings = RouteMappings()
 
   .resources('/Disputes', (mappings) => {
     return mappings()
-      .post('/:id/update-dispute-data', {
+      .put('/:id/update-dispute-data', {
         to: 'Disputes#updateDisputeData',
         as: 'updateDisputeData'
       })

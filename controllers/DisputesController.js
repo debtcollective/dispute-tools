@@ -1,6 +1,7 @@
 /* globals Dispute, RestfulController, Class, DisputeTool, CONFIG, DisputeStatus, DisputeMailer */
 
 const path = require('path');
+const Promise = require('bluebird');
 
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 
@@ -13,12 +14,16 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     {
       before(req, res, next) {
         // Load the dispute tool record to use its #createDispute method
-        DisputeTool.query()
-          .first(req.body.disputeToolId)
+        if (!req.body.disputeToolId) {
+          return next(new Error('Invalid parameters'));
+        }
+
+        return DisputeTool
+          .first({ id: req.body.disputeToolId })
           .then((disputeTool) => {
             res.locals.disputeTool = disputeTool;
 
-            next();
+            return next();
           })
           .catch(next);
       },
@@ -41,9 +46,9 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
   prototype: {
     _loadDispute(req, res, next) {
       Dispute.query()
-        .first(req.params.id)
+        .where({ id: req.params.id })
         .include('[statuses, attachments]')
-        .then((dispute) => {
+        .then(([dispute]) => {
           res.locals.dispute = dispute;
           req.dispute = dispute;
           next();
@@ -130,6 +135,11 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
     addAttachment(req, res) {
       const dispute = res.locals.dispute;
+
+      if (!req.files.attachment) {
+        req.flash('error', 'There is no file to process');
+        return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+      }
 
       Promise.each(req.files.attachment, (attachment) => {
         return dispute.addAttachment(req.body.name, attachment.path);

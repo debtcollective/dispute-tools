@@ -4,18 +4,14 @@ module.exports = {
     ['updateDisputeData', 'addAttachment', false],
   ],
   User: [
-    [false],
+    ['index', true],
     ['create', true],
     ['show', 'edit', 'update', 'destroy', 'updateDisputeData', 'addAttachment', (req) => {
-      if (req.dispute.userId === req.user.id) {
-        return true;
-      }
-
-      return false;
+      return (req.dispute.userId === req.user.id);
     }],
   ],
   Admin: [
     [true],
-    ['updateDisputeData', 'addAttachment', false],
+    // ['updateDisputeData', 'addAttachment', false],
   ],
 };
