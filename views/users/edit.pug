@@ -1,1 +1,30 @@
-| users#edit
+extends ../layouts/application.pug
+
+block content
+  .max-width-1.mx-auto
+    h2.-fw-500 Edit Profile
+    form(action=routeMappings.Users.update.url(user.id) method="post" enctype="multipart/form-data")
+      input(name="_csrf" type="hidden" value=csrfToken)
+      input(name="_method" type="hidden" value="PUT")
+
+      .clearfix.mxn2
+        .col.col-6.px2
+          | image
+        .col.col-6.px2
+          input(name="image" type="file")
+      .pb1.-fw-500 Fullname
+      input.-k-input.-fw(name="fullname" type="text" value=user.account.fullname)
+      .pt2.pb1.-fw-500 Email (not visible)
+      input.-k-input.-fw(name="email" type="email" value=user.email)
+      .pt2.pb1.-fw-500 Bio
+      textarea.-k-input.-fw(name="bio" rows="4") #{user.account.bio}
+      .pt2.pb1.-fw-500 Twitter handler
+      input.-k-input.-fw(name="twitter")
+      .pt2.pb1.-fw-500 Facebook handler
+      input.-k-input.-fw(name="facebook")
+      .pt2.pb1.-fw-500 Website
+      input.-k-input.-fw(name="website")
+      .pt2.pb1.-fw-500 Phone
+      input.-k-input.-fw(name="phone" type="tel")
+      .pt2
+        button.-k-btn.btn-primary.-fw(type="submit") Save changes

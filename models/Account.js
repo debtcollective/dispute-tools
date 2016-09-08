@@ -42,6 +42,7 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
     'bio',
     'state',
     'zip',
+    'phone',
     'socialLinks',
     'imagePath',
     'imageMeta',
@@ -59,7 +60,7 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
 
       this.hasAttachment({
         name: 'image',
-        version: {
+        versions: {
           small(readStream) {
             return gm(readStream)
               .resize(64, 64)

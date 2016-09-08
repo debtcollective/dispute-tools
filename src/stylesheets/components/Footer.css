@@ -1,0 +1,5 @@
+footer {
+  height: 245px;
+  background-color: var(--k-background-color);
+  border-top: 3px solid var(--k-color-palette-neutral-dark);
+}

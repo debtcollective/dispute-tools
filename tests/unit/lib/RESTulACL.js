@@ -103,29 +103,12 @@ describe('RESTfulACL', () => {
     });
   });
 
-  it('Should load self if User', () => {
-    const user = usersResult.filter((item) => {
-      if (item.role === 'User') {
-        return true;
-      }
-
-      return false;
-    })[0];
-
-    req.role = 'User';
-    req.user.id = user.id;
-
-    return req.restifyACL(usersResult).then((result) => {
-      expect(result.length).to.be.equal(1);
-    });
-  });
-
-  it('Should load empty if Visitor', () => {
+  it('Should load all if Visitor', () => {
     req.role = 'Visitor';
     // req.user.id = user.id;
 
     return req.restifyACL(usersResult).then((result) => {
-      expect(result.length).to.be.equal(0);
+      expect(result.length).to.be.equal(3);
     });
   });
 });

@@ -2,6 +2,7 @@
 
 const expect = require('chai').expect;
 const path = require('path');
+const fs = require('fs');
 
 const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 
@@ -112,7 +113,7 @@ describe('Dispute', () => {
       expect(dispute.data.forms['form-name']).to.be.equal(fieldValues);
     });
 
-    it('Should add an attachment', () => {
+    it('Should add an attachment with file path', () => {
       dispute.userId = user.id;
       dispute.disputeToolId = tool.id;
 

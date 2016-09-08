@@ -1,1 +1,1 @@
-module.exports = require('body-parser').urlencoded({extended: true});
+module.exports = require('body-parser').urlencoded({ extended: true });
