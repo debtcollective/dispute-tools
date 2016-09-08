@@ -12,7 +12,7 @@ block content
     .max-width-3.mx-auto.relative.-fw
       .clearfix.md-flex
         .Profile__image-wrapper.relative.right.sm-col-4.col-12
-          if (user.account.image.exists('small'))
+          if (user.account.image.exists('medium'))
             img.block.-fw(src=user.account.image.url('medium') alt=user.account.fullname)
           else
             img.block.-fw(src='/images/profile/placeholder.png')
