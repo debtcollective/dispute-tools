@@ -1,4 +1,4 @@
-/* globals Class, Krypton, DisputeAttachment */
+/* globals Class, Krypton, DisputeAttachment, DisputeTool, DisputeStatus */
 
 const _ = require('lodash');
 
@@ -28,14 +28,37 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
       return this;
     },
 
-    setSignature({ signature }) {
-      if (!signature) {
-        throw new Error('The signature is required');
-      }
+    setSignature(signature) {
+      const dispute = this;
 
-      this.data.signature = signature;
+      return new Promise((resolve, reject) => {
+        if (!signature) {
+          throw new Error('The signature is required');
+        }
 
-      return this;
+        dispute.data.signature = signature;
+
+        const disputeStatus = new DisputeStatus({
+          status: 'Completed',
+        });
+
+        return DisputeTool.query()
+          .where('id', dispute.disputeToolId)
+          .then(([tool]) => {
+            return DisputeTool.transaction((trx) => {
+              return dispute.transacting(trx).save()
+                .then(() => {
+                  tool.completed++;
+                  return tool.transacting(trx).save();
+                })
+                .then(() => {
+                  return disputeStatus.transacting(trx).save();
+                });
+            });
+          })
+          .then(resolve)
+          .catch(reject);
+      });
     },
 
     setForm({ name, fieldValues }) {

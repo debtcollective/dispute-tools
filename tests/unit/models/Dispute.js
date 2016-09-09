@@ -96,7 +96,7 @@ describe('Dispute', () => {
     });
 
     it('Should set a signature', () => {
-      dispute.setSignature({ signature: 'Example Signature' });
+      dispute.setSignature('Example Signature');
 
       expect(dispute.data.signature).to.be.equal('Example Signature');
     });

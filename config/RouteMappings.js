@@ -88,6 +88,10 @@ const routeMappings = RouteMappings()
         to: 'Disputes#updateDisputeData',
         as: 'updateDisputeData'
       })
+      .put('/:id/set-signature', {
+        to: 'Disputes#setSignature',
+        as: 'setSignature',
+      })
       .post('/:id/add-attachment', {
         to: 'Disputes#addAttachment',
         as: 'addAttachment'

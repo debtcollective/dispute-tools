@@ -317,11 +317,10 @@ describe('DisputesController', () => {
   });
 
   it('Should allow a User set the signature to its dispute', (done) => {
-    agent.put(`${url}${urls.Disputes.updateDisputeData.url(data.disputeId)}`)
+    agent.put(`${url}${urls.Disputes.setSignature.url(data.disputeId)}`)
       .set('Accept', 'text/html')
       .send({
         _csrf,
-        command: 'setSignature',
         signature: 'User Full Name',
       })
       .end((err, res) => {
@@ -332,11 +331,10 @@ describe('DisputesController', () => {
   });
 
   it('Should fail if a User set the signature to its dispute with invalid data', (done) => {
-    agent.put(`${url}${urls.Disputes.updateDisputeData.url(data.disputeId)}`)
+    agent.put(`${url}${urls.Disputes.setSignature.url(data.disputeId)}`)
       .set('Accept', 'text/html')
       .send({
         _csrf,
-        command: 'setSignature',
         // signature: 'User Full Name',
       })
       .end((err, res) => {
