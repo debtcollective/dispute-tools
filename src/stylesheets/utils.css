@@ -10,6 +10,7 @@
 .-dark {color: #000}
 .-neutral-mid {color: var(--k-color-palette-neutral-mid)}
 .-bg-white {background-color: #fff}
+.-bg-neutral-dark {background-color: var(--k-color-palette-neutral-dark)}
 
 /* text */
 .-ttu {text-transform: uppercase}
@@ -48,6 +49,11 @@
 }
 
 
-@media (--breakpoint-xs) {
-  .xs-left-align { text-align: left !important }
+@media (max-width: 52em) {
+  .md-left-align {text-align: left}
+  .md-center-align {text-align: center}
+}
+
+@media (max-width: 40em) {
+  .xs-left-align {text-align: left}
 }

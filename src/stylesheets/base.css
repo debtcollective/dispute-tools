@@ -4,7 +4,6 @@
 @import './components/Dropdown';
 @import './components/Alert';
 @import './components/Button';
-@import './utils';
 
 /* BASSCSS */
 @import 'basscss-align';
@@ -19,8 +18,6 @@
 /* @import 'basscss-type-scale'; */
 @import 'basscss-typography';
 
-
-
 /* KABINETT */
 @import './lib/kabinett/core/base';
 @import './lib/kabinett/components/button';
@@ -31,6 +28,7 @@
 @import './lib/kabinett/utilities/aria';
 @import './lib/kabinett/utilities/sizes';
 
+@import './utils';
 
 :root {
   /* KABINETT CONFIGURATION */
@@ -71,6 +69,7 @@
 
   /* Platform Variables */
   --header-height: 60px;
+  --footer-height: 187px;
   --primary-lighter: color(var(--k-color-palette-primary) tint(10%));
   --primary-darker: color(var(--k-color-palette-primary) shade(10%));
 
