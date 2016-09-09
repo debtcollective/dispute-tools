@@ -9,7 +9,15 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
   beforeActions: [
     {
       before: '_loadDispute',
-      actions: ['show', 'edit', 'update', 'updateDisputeData', 'addAttachment', 'destroy'],
+      actions: [
+        'show',
+        'edit',
+        'update',
+        'updateDisputeData',
+        'setSignature',
+        'addAttachment',
+        'destroy',
+      ],
     },
     {
       before(req, res, next) {
@@ -113,7 +121,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     updateDisputeData(req, res, next) {
       const dispute = res.locals.dispute;
 
-      const commands = ['setForm', 'setDisputeProcess', 'setSignature'];
+      const commands = ['setForm', 'setDisputeProcess'];
 
       if (!commands.includes(req.body.command)) {
         return next(new Error('Invalid command'));
@@ -133,6 +141,19 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         .catch(next);
     },
 
+    setSignature(req, res) {
+      const dispute = res.locals.dispute;
+
+      dispute.setSignature(req.body.signature)
+        .then(() => {
+          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+        })
+        .catch((e) => {
+          req.flash('error', e.toString());
+          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+        });
+    },
+
     addAttachment(req, res) {
       const dispute = res.locals.dispute;
 
@@ -141,7 +162,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
       }
 
-      Promise.each(req.files.attachment, (attachment) => {
+      return Promise.each(req.files.attachment, (attachment) => {
         return dispute.addAttachment(req.body.name, attachment.path);
       })
       .then(() => {
