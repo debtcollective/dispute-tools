@@ -15,6 +15,7 @@ exports.up = (knex) => {
       .onDelete('CASCADE')
       .index();
     t.jsonb('data').defaultTo('{}');
+    t.boolean('deleted').defaultTo(false);
     t.timestamps();
   });
 };

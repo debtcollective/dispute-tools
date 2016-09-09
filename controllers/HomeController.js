@@ -1,16 +1,21 @@
-/* globals Class, BaseController, logger */
+/* globals Class, BaseController, logger, CONFIG */
 
 const HomeController = Class('HomeController').inherits(BaseController)({
-  beforeActions: [
-    {
-      before: ['_beforeIndex'],
-      actions: ['index'],
-    },
-  ],
   prototype: {
-    _beforeIndex(req, res, next) {
-      logger.info('Before Index');
-      next();
+    _authenticate(req, res, next) {
+      if (!req.user) {
+        return res.format({
+          html() {
+            req.flash('info', 'You have to login first.');
+            return res.redirect(CONFIG.router.helpers.login.url());
+          },
+          json() {
+            return res.status(403).end();
+          },
+        });
+      }
+
+      return next();
     },
 
     index(req, res) {

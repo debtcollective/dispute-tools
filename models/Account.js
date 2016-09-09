@@ -49,7 +49,10 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
     'createdAt',
     'updatedAt',
   ],
-  attachmentStorage: new Krypton.AttachmentStorage.Local(),
+  attachmentStorage: new Krypton.AttachmentStorage.Local({
+    maxFileSize: 5242880,
+    acceptedMimeTypes: [/image/],
+  }),
 
   prototype: {
     init(config) {

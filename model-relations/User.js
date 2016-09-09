@@ -12,5 +12,7 @@ User.relations = {
     relatedModel: Dispute,
     ownerCol: 'id',
     relatedCol: 'user_id',
+    orderBy: ['created_at', 'DESC'],
+    scope: ['deleted', false],
   },
 };
