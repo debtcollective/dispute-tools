@@ -2,10 +2,9 @@ import WebFont from 'webfontloader';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Header from '../../components/Header';
 
-class ViewHomeTools extends NodeSupport {
+class ViewDisputeToolsIndex extends NodeSupport {
   constructor(config) {
     super();
-
     this.appendChild(new Header({
       name: 'Header',
       currentUser: config.currentUser,
@@ -21,4 +20,4 @@ class ViewHomeTools extends NodeSupport {
   }
 }
 
-window.ViewHomeTools = ViewHomeTools;
+window.ViewDisputeToolsIndex = ViewDisputeToolsIndex;

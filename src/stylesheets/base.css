@@ -71,6 +71,7 @@
 
   /* Platform Variables */
   --header-height: 60px;
+  --footer-height: 187px;
   --primary-lighter: color(var(--k-color-palette-primary) tint(10%));
   --primary-darker: color(var(--k-color-palette-primary) shade(10%));
 
