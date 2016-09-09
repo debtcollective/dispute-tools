@@ -4,7 +4,6 @@
 @import './components/Dropdown';
 @import './components/Alert';
 @import './components/Button';
-@import './utils';
 
 /* BASSCSS */
 @import 'basscss-align';
@@ -19,8 +18,6 @@
 /* @import 'basscss-type-scale'; */
 @import 'basscss-typography';
 
-
-
 /* KABINETT */
 @import './lib/kabinett/core/base';
 @import './lib/kabinett/components/button';
@@ -31,6 +28,7 @@
 @import './lib/kabinett/utilities/aria';
 @import './lib/kabinett/utilities/sizes';
 
+@import './utils';
 
 :root {
   /* KABINETT CONFIGURATION */

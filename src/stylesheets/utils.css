@@ -50,10 +50,10 @@
 
 
 @media (max-width: 52em) {
-  .md-left-align { text-align: left !important }
-  .md-center-align { text-align: center !important }
+  .md-left-align {text-align: left}
+  .md-center-align {text-align: center}
 }
 
 @media (max-width: 40em) {
-  .xs-left-align { text-align: left !important }
+  .xs-left-align {text-align: left}
 }
