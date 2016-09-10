@@ -35,7 +35,7 @@ class ViewDisputeToolsIndex extends NodeSupport {
       }));
 
       this.handlers[id] = this._aboutClickHandler.bind(this, this[`modal-${id}`]);
-      document.querySelector(`#tool-modal-toggler-${id}`)
+      document.getElementById(`tool-modal-toggler-${id}`)
         .addEventListener('click', this.handlers[id]);
     });
   }

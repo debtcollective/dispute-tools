@@ -45,8 +45,6 @@
     padding-top: var(--space-2);
     font-weight: 500;
   }
-
-  & strong {}
 }
 
 @media (--breakpoint-md) {
