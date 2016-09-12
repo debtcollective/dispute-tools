@@ -1,5 +1,5 @@
 footer {
-  height: 245px;
+  min-height: var(--footer-height);
   background-color: var(--k-background-color);
   border-top: 3px solid var(--k-color-palette-neutral-dark);
 }

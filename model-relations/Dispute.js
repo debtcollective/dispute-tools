@@ -8,7 +8,7 @@ Dispute.relations = {
     relatedCol: 'id',
   },
 
-  tool: {
+  disputeTool: {
     type: 'HasOne',
     relatedModel: DisputeTool,
     ownerCol: 'dispute_tool_id',

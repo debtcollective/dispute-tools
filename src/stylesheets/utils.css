@@ -27,6 +27,10 @@
     color: var(--k-background-color);
     mix-blend-mode: screen;
   }
+
+  &.-accent > span {
+    background-color: var(--k-color-palette-accent);
+  }
 }
 
 /* secondary font */
