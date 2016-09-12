@@ -8,10 +8,13 @@ block styles
 
 block content
   mixin ToolCard(tool)
-    .flex.flex-column.p2.rounded.-fh.-bg-white.-dark
+    .ToolCard.flex.flex-column.p2.rounded.-fh.-bg-white.-dark
       div.flex-auto.pb4
         h4.pt2= tool.name
-        p.py2: a() About
+        p.pt1.pb2
+          button.ToolCard__about-trigger.-k-btn.btn-link(
+            id=`tool-modal-toggler-${tool.id}`
+          ) Why is this important?
       p.pb2 #[b= tool.completed] People filled
       a.-k-btn.btn-primary.-fw.-fw-700(
         href=routeMappings.DisputeTools.show.url(tool.id)
@@ -93,13 +96,28 @@ block content
           p.pb3.-fw-500 We won't share your information with anyone outside the Debt Collective organizing team or with experts with whom we are consulting. We will only use your data to see who is using our tools and to contact you about opportunities to join debt resistance campaigns in your area. If we decide to use the data you provide here for some other purpose, we will contact you to explain and make sure it is okay with you.
           p If you have questions about how to use one of these tools, please email: #[a(href="mailto:support@debtcollective.org") support@debtcollective.org].
 
+block append body
+  each tool in disputeTools
+    .Modal(
+      data-component-modal=`tool-modal-${tool.id}`
+      aria-hidden="true" role="dialog"
+    )
+      button(class="Modal__close" aria-label="close")
+        svg(class="-s18"): use(xlink:href="#svg-close")
+      .Modal__body(role="document")
+        .px2
+          .max-width-1.mx-auto
+            .Tools__Modal!= tool.about
+
 block scripts
   script(src="/build/javascripts/dispute-tools/index.js" async)
+  - var disputeIds = disputeTools.map(dispute => dispute.id);
   script.
     window.addEventListener('load', function() {
       var options = {
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
+        disputeIds: !{JSON.stringify(disputeIds)}
       };
       new ViewDisputeToolsIndex(options);
     }, true);

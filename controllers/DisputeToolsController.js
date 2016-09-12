@@ -1,4 +1,6 @@
 /* globals RestfulController, DisputeTool, neonode, Class, CONFIG, Dispute */
+const marked = require('marked');
+
 const DisputeToolsController = Class('DisputeToolsController')
   .inherits(RestfulController)({
     beforeActions: [
@@ -24,8 +26,15 @@ const DisputeToolsController = Class('DisputeToolsController')
       index(req, res, next) {
         DisputeTool.query()
           .then((disputeTools) => {
-            res.locals.disputeTools = disputeTools;
-
+            res.locals.disputeTools = disputeTools.map(dispute => {
+              return {
+                id: dispute.id,
+                name: dispute.name,
+                about: marked(dispute.about),
+                completed: dispute.completed,
+                data: dispute.data,
+              };
+            });
             res.render('dispute-tools/index');
           })
           .catch(next);

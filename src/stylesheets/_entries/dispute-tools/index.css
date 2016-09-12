@@ -10,6 +10,16 @@
   }
 }
 
+.ToolCard {
+  & h4 {line-height: 1.19em; /* 25px */}
+
+  &__about-trigger {
+    padding: 0;
+    color: var(--k-color-palette-neutral-dark);
+    text-decoration: underline;
+  }
+}
+
 .Tools__title {
   text-align: center;
   z-index: 1;
@@ -19,6 +29,22 @@
 
 .Tools__offset-text {
   padding: 1rem 1rem 0;
+}
+
+.Tools__Modal {
+  & h3,
+  & strong {
+    color: var(--k-color-palette-accent);
+  }
+
+  & h3 {
+    padding-bottom: var(--space-2);
+  }
+
+  & p {
+    padding-top: var(--space-2);
+    font-weight: 500;
+  }
 }
 
 @media (--breakpoint-md) {
