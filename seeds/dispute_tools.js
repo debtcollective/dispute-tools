@@ -1,5 +1,9 @@
 /* eslint-disable max-len */
 
+const US_STATES = require('datasets-us-states-names').map((state) => {
+  return { state };
+});
+
 const personalInformationFieldSets = [
   {
     title: 'About You',
@@ -372,9 +376,82 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
 **If you don't have the name and address of the collection agency, you will not be able to file this dispute.**`,
           completed: 0,
           data: {
+            disputeProcess: 1,
             options: {
               none: {
-
+                title: 'Gather Materials',
+                description: 'A little known fact of the debt collections industry is that the vast majority of collectors can\'t prove they own our debts. If they can\'t prove it, then why should we pay? Demanding proof of ownership is the first step to getting debt collectors off our backs.',
+                steps: [
+                  {
+                    type: 'form',
+                    name: 'personal-information-form',
+                    title: 'Personal Information',
+                    description: 'Here we need some personal, school and employment information.',
+                    fieldSets: [
+                      {
+                        title: 'About You',
+                        fields: [
+                          {
+                            name: 'name',
+                            label: 'Your Full Name',
+                            validations: [
+                              'required',
+                              'alpha',
+                              'maxLength:128',
+                            ],
+                          },
+                          {
+                            name: 'address1',
+                            label: 'Your Address',
+                            validations: [
+                              'required',
+                              'maxLength:128',
+                            ],
+                          },
+                          [
+                            {
+                              name: 'address2',
+                              label: 'Your Address 2',
+                              validations: [
+                                'maxLength:128',
+                              ],
+                            },
+                            {
+                              name: 'state',
+                              label: 'Your State',
+                              type: 'dropdown',
+                              options: US_STATES,
+                              validations: [
+                                'required',
+                              ],
+                            },
+                          ],
+                          {
+                            name: 'letter-or-phonecall',
+                            label: 'You received a letter or a phone call?',
+                            type: 'dropdown',
+                            options: [
+                              {
+                                letter: 'letter',
+                                phone: 'phone',
+                              },
+                            ],
+                            validations: [
+                              'required',
+                            ],
+                          },
+                          {
+                            name: 'agency-address',
+                            label: 'Collection agency\'s or law firm\'s address',
+                            validations: [
+                              'required',
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
               },
             },
           },
