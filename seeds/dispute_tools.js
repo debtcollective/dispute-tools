@@ -287,15 +287,74 @@ The Department of Education usually sends offset notices once per year in the su
           data: {
             options: {
               A: {
-                title: 'My school closed before I could complete my degree.',
-                description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                steps: [],
+                title: 'I do not owe the full amount shown because I repaid some or all of this debt.',
+                description: 'Please attach any supporting documents proving that you paid, including checks or receipts.',
+                steps: [
+                  personalInformation,
+                  evidenceUploader,
+                ],
               },
 
               B: {
-                title: 'My school closed before I could complete my degree.',
-                description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                steps: [],
+                title: 'I believe that this loan is not collectable because I was lied to or defrauded by my school.',
+                description: 'Attach a statement describing how you were lied to or defrauded and any documents that support your case, including news articles or a copy of your Defence to Repayment form',
+                steps: [
+                  personalInformation,
+                  personalStatement,
+                  {
+                    type: 'upload',
+                    name: 'dtr-uploader',
+                    multiple: false,
+                    optional: true,
+                    mimeTypes: ['application/pdf'],
+                    maxFileSize: 5242880,
+                    title: 'Defence to Repayment (Optional)',
+                    description: 'Attach your DTR If you have previously filed.',
+                    uploadButtonText: 'Upload files',
+                  },
+                  evidenceUploader,
+                ],
+              },
+              C: {
+                title: 'I did not have a high school diploma or GED when I enrolled at the school.',
+                description: 'Attach any supporting documents.',
+                steps: [
+                  personalInformation,
+                  {
+                    type: 'information',
+                    name: 'atb-form',
+                    title: 'Ability to benefit / ATB Form',
+                    description: 'With your previous information we already complete The ATB form for you, you will receive copies at the end.',
+                    footer: 'This is an auto-generated form, you need to fill the {link to open the previous form} first.',
+                  },
+                  personalStatement,
+                  evidenceUploader,
+                ],
+              },
+              D: {
+                title: 'When I borrowed to attend my college I had a condition (physical, mental, age, criminal record) that prevented me from using my degree.',
+                description: 'Write a statement explaining more about the <a href="http://www.studentloanborrowerassistance.org/loan-cancellation/school-related/false-certification/disqualifying-status/" target="_blank">condition</a> that prevented you from using your degree. And attach any supporting documents.',
+                steps: [
+                  personalInformation,
+                  {
+                    type: 'information',
+                    name: 'signature-form',
+                    title: 'Unauthorized Signature form',
+                    description: 'With your previous information we will complete the Unauthorized Signature form for you, you will receive copies at the end.',
+                    footer: 'This is an auto-generated form, you need to fill the {link to open the previous form} first.',
+                  },
+                  personalStatement,
+                  evidenceUploader,
+                ],
+              },
+              E: {
+                title: 'I believe that an official at the school without my permission signed my name or used my personal identification data to obtain this loan illegally in my name.',
+                description: 'Provide as much information as you can about why you believe the loan was issued fraudulently.',
+                steps: [
+                  personalInformation,
+                  personalStatement,
+                  evidenceUploader,
+                ],
               },
             },
           },
