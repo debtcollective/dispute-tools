@@ -1,0 +1,14 @@
+@import '../../base';
+
+.Tool__DisputeCard {
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  background-color: #fff;
+  color: #000;
+}
+
+@media (--breakpoint-lg) {
+  .Tool__sidebar {
+    position: fixed;
+    width: 270px;
+  }
+}
