@@ -209,7 +209,7 @@ The number is: 1-800-304-3107.`,
               B: {
                 title: 'I should not have to pay this debt because I was lied to or defrauded by my school.',
                 description: 'See the [[common cases]] of fraud.',
-                more: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                more: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
                 steps: [
                   personalInformation,
                   personalStatement,
@@ -262,18 +262,10 @@ The number is: 1-800-304-3107.`,
                 title: 'I believe that an official at the school without my permission signed my name or used my personal identification data to obtain this loan illegally in my name. ',
                 description: 'Provide as much information as you can about why you believe the loan was issued fraudulently.',
                 steps: [
-
+                  personalInformation,
+                  personalStatement,
+                  evidenceUploader,
                 ],
-              },
-              F: {
-                title: 'I never received the loan funds that are now attached to my name. The school owes me money.',
-                description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                steps: [],
-              },
-              G: {
-                title: 'My school closed before I could complete my degree.',
-                description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                steps: [],
               },
             },
           },
