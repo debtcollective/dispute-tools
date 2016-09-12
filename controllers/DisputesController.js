@@ -34,7 +34,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         RESTfulAPI.createMiddleware({
           queryBuilder: Dispute.query()
             .where('deleted', false)
-            .include('[statuses, attachments]'),
+            .include('[statuses, attachments, disputeTool]'),
           filters: {
             allowedFields: [],
           },

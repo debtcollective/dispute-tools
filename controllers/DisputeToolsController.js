@@ -25,6 +25,7 @@ const DisputeToolsController = Class('DisputeToolsController')
     prototype: {
       index(req, res, next) {
         DisputeTool.query()
+          .orderBy('created_at', 'ASC')
           .then((disputeTools) => {
             res.locals.disputeTools = disputeTools.map(dispute => {
               return {
