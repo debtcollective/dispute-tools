@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+npm install --silent
+cp ./../shared/knexfile.js ./
+cp ./../shared/config.js ./config/
+knex migrate:latest
+npm run build
+pm2 startOrRestart ecosystem.json --env staging
