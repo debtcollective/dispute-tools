@@ -21,7 +21,7 @@
     "iron-node": "scripty",
     "watch": "scripty",
     "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
-    "post_install_staging": "scripty"
+    "post_deploy_staging": "scripty"
   },
   "tarima": {
     "bundle": true,

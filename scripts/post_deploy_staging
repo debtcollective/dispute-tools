@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+set -e
+
 npm install --silent
 cp ./../shared/knexfile.js ./
 cp ./../shared/config.js ./config/
