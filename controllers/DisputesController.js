@@ -181,7 +181,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         .destroy()
         .then(() => {
           req.flash('The Dispute you started has been deleted.');
-          return res.redirect(CONFIG.router.helpers.DisputeTools.index.url());
+          return res.redirect(CONFIG.router.helpers.DisputeTools.url());
         })
         .catch(next);
     },

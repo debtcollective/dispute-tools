@@ -40,6 +40,7 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
 
         const disputeStatus = new DisputeStatus({
           status: 'Completed',
+          disputeId: dispute.id,
         });
 
         return DisputeTool.query()
@@ -61,18 +62,18 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
       });
     },
 
-    setForm({ name, fieldValues }) {
+    setForm({ formName, fieldValues }) {
       this.data.forms = this.data.forms = {};
 
-      if (!name) {
-        throw new Error('The form name is required');
+      if (!formName) {
+        throw new Error('The formName is required');
       }
 
       if (!_.isObjectLike(fieldValues)) {
         throw new Error('The form fieldValues are invalid');
       }
 
-      this.data.forms[name] = fieldValues;
+      this.data.forms[formName] = fieldValues;
 
       return this;
     },
