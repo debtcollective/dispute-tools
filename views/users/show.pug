@@ -42,20 +42,21 @@ block content
                         svg(width="18" height="18"): use(xlink:href=`#svg-${index}`)
                         .sr-only=`${user.account.fullname}’s ${index}`
 
-          if user.disputes
-            .-bg-neutral-dark.px3.pb3
-              hr.mb3
-              h4.-accent My tools
-              each dispute in user.disputes
-                .clearfix.pt2.mxn1
-                  .col.col-9.px1
-                    .-fw-700
-                      a(href=routeMappings.Disputes.show.url(dispute.id))
-                        | #{dispute.disputeTool.name}
-                        if dispute.data.option !== 'none'
-                          |  / #{dispute.data.option}
-                  .col.col-3.px1.right-align
-                    .pt1.-caption.-ttu.-fw-700= dispute.statuses[0].status
+          if currentUser && currentUser.id === user.id
+            if user.disputes
+              .-bg-neutral-dark.px3.pb3
+                hr.mb3
+                h4.-accent My tools
+                each dispute in user.disputes
+                  .clearfix.pt2.mxn1
+                    .col.col-9.px1
+                      .-fw-700
+                        a(href=routeMappings.Disputes.show.url(dispute.id))
+                          | #{dispute.disputeTool.name}
+                          if dispute.data.option !== 'none'
+                            |  / #{dispute.data.option}
+                    .col.col-3.px1.right-align
+                      .pt1.-caption.-ttu.-fw-700= dispute.statuses[0].status
 
 block scripts
   script(src="/build/javascripts/users/show.js" async)
