@@ -23,7 +23,7 @@
       ref  : "origin/master",
       repo : "git@gitlab.com:empathia/debtcollective.git",
       path : "/home/deploy/apps/tdc",
-      "post-deploy" : "npm install && knex migrate:latest && npm run build && pm2 startOrRestart ecosystem.json --env staging"
+      "post-deploy" : "npm install --silent && knex migrate:latest && npm run build && pm2 startOrRestart ecosystem.json --env staging"
     },
   }
 }
