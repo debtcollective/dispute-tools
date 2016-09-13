@@ -30,3 +30,10 @@
 .Profile__info-wrapper {
   background-color: var(--k-background-color);
 }
+
+hr {
+  height: 5px;
+  background-color: var(--k-color-palette-accent);
+  border: none;
+}
+
