@@ -108,7 +108,7 @@ describe('Dispute', () => {
         address2: 'Address 2',
       };
 
-      dispute.setForm({ name: 'form-name', fieldValues });
+      dispute.setForm({ formName: 'form-name', fieldValues });
 
       expect(dispute.data.forms['form-name']).to.be.equal(fieldValues);
     });
