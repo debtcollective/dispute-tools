@@ -13,7 +13,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
   prototype: {
     _loadUser(req, res, next) {
       User.query()
-        .include('[account.debtType]')
+        .include('[account.debtType, disputes]')
         .where('id', req.params.id)
         .then((result) => {
           if (result.length === 0) {
