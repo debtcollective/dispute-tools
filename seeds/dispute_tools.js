@@ -162,21 +162,25 @@ const personalInformationFieldSets = [
           ],
         },
       ],
-      {
-        name: 'address1',
-        label: 'Your Address',
-        validations: [
-          'required',
-          'maxLength:128',
-        ],
-      },
-      {
-        name: 'address2',
-        label: 'Your Address 2',
-        validations: [
-          'maxLength:128',
-        ],
-      },
+      [
+        {
+          name: 'address1',
+          label: 'Your Address',
+          validations: [
+            'required',
+            'maxLength:128',
+          ],
+        },
+      ],
+      [
+        {
+          name: 'address2',
+          label: 'Your Address 2',
+          validations: [
+            'maxLength:128',
+          ],
+        },
+      ],
       [
         {
           name: 'email',
@@ -206,14 +210,16 @@ const personalInformationFieldSets = [
   {
     title: 'Your School',
     fields: [
-      {
-        name: 'schoolName',
-        label: 'Name of the school where you incurred the debt',
-        validations: [
-          'required',
-          'maxLength:128',
-        ],
-      },
+      [
+        {
+          name: 'schoolName',
+          label: 'Name of the school where you incurred the debt',
+          validations: [
+            'required',
+            'maxLength:128',
+          ],
+        },
+      ],
       [
         {
           name: 'guarrantyAgency',
@@ -261,21 +267,25 @@ const personalInformationFieldSets = [
           ],
         },
       ],
-      {
-        name: 'employerAddress',
-        label: 'Employer Address',
-        validations: [
-          'maxLength:128',
-        ],
-      },
-      {
-        name: 'employerPhone',
-        label: 'Employer Phone',
-        columnClassName: '.one-third',
-        validations: [
-          'maxLength:23',
-        ],
-      },
+      [
+        {
+          name: 'employerAddress',
+          label: 'Employer Address',
+          validations: [
+            'maxLength:128',
+          ],
+        },
+      ],
+      [
+        {
+          name: 'employerPhone',
+          label: 'Employer Phone',
+          columnClassName: '.one-third',
+          validations: [
+            'maxLength:23',
+          ],
+        },
+      ],
     ],
   },
 ];
@@ -357,7 +367,7 @@ The number is: 1-800-304-3107.`,
                     mimeTypes: ['application/pdf'],
                     maxFileSize: 5242880,
                     title: 'Defence to Repayment (Optional)',
-                    description: 'Attach your <a href="/dispute-tools/defence-to-repayment" target="_blank">DTR</a> If you have previously filed.',
+                    description: 'Attach your <a href="/dispute-tools/defence-to-repayment" target="_blank" rel="noopener noreferrer">DTR</a> If you have previously filed.',
                     uploadButtonText: 'Upload files',
                   },
                   evidenceUploader,
@@ -381,7 +391,7 @@ The number is: 1-800-304-3107.`,
               },
               D: {
                 title: 'When I borrowed to attend I had a condition (physical, mental, age, criminal record) that prevented me from meeting State requirements. ',
-                description: 'Write a statement explaining more about the <a href="http://www.studentloanborrowerassistance.org/loan-cancellation/school-related/false-certification/disqualifying-status/" target="_blank">condition</a> that prevented you from using your degree. And attach any supporting documents.',
+                description: 'Write a statement explaining more about the <a href="http://www.studentloanborrowerassistance.org/loan-cancellation/school-related/false-certification/disqualifying-status/" target="_blank" rel="noopener noreferrer">condition</a> that prevented you from using your degree. And attach any supporting documents.',
                 steps: [
                   personalInformation,
                   {
@@ -469,7 +479,7 @@ The Department of Education usually sends offset notices once per year in the su
               },
               D: {
                 title: 'When I borrowed to attend my college I had a condition (physical, mental, age, criminal record) that prevented me from using my degree.',
-                description: 'Write a statement explaining more about the <a href="http://www.studentloanborrowerassistance.org/loan-cancellation/school-related/false-certification/disqualifying-status/" target="_blank">condition</a> that prevented you from using your degree. And attach any supporting documents.',
+                description: 'Write a statement explaining more about the <a href="http://www.studentloanborrowerassistance.org/loan-cancellation/school-related/false-certification/disqualifying-status/" target="_blank"  rel="noopener noreferrer">condition</a> that prevented you from using your degree. And attach any supporting documents.',
                 steps: [
                   personalInformation,
                   {
@@ -523,23 +533,27 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
                       {
                         title: 'About You',
                         fields: [
-                          {
-                            name: 'name',
-                            label: 'Your Full Name',
-                            validations: [
-                              'required',
-                              'alpha',
-                              'maxLength:128',
-                            ],
-                          },
-                          {
-                            name: 'address1',
-                            label: 'Your Address',
-                            validations: [
-                              'required',
-                              'maxLength:128',
-                            ],
-                          },
+                          [
+                            {
+                              name: 'name',
+                              label: 'Your Full Name',
+                              validations: [
+                                'required',
+                                'alpha',
+                                'maxLength:128',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'address1',
+                              label: 'Your Address',
+                              validations: [
+                                'required',
+                                'maxLength:128',
+                              ],
+                            },
+                          ],
                           [
                             {
                               name: 'address2',
@@ -558,25 +572,29 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
                               ],
                             },
                           ],
-                          {
-                            name: 'letter-or-phonecall',
-                            label: 'You received a letter or a phone call?',
-                            type: 'dropdown',
-                            options: [
-                              'letter',
-                              'phone',
-                            ],
-                            validations: [
-                              'required',
-                            ],
-                          },
-                          {
-                            name: 'agency-address',
-                            label: 'Collection agency\'s or law firm\'s address',
-                            validations: [
-                              'required',
-                            ],
-                          },
+                          [
+                            {
+                              name: 'letter-or-phonecall',
+                              label: 'You received a letter or a phone call?',
+                              type: 'dropdown',
+                              options: [
+                                'letter',
+                                'phone',
+                              ],
+                              validations: [
+                                'required',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'agency-address',
+                              label: 'Collection agency\'s or law firm\'s address',
+                              validations: [
+                                'required',
+                              ],
+                            },
+                          ],
                         ],
                       },
                     ],
@@ -633,23 +651,27 @@ Once you have determined that there are errors on your report, you can use this 
                       {
                         title: 'About You',
                         fields: [
-                          {
-                            name: 'name',
-                            label: 'Your Full Name',
-                            validations: [
-                              'required',
-                              'alpha',
-                              'maxLength:128',
-                            ],
-                          },
-                          {
-                            name: 'address1',
-                            label: 'Your Address',
-                            validations: [
-                              'required',
-                              'maxLength:128',
-                            ],
-                          },
+                          [
+                            {
+                              name: 'name',
+                              label: 'Your Full Name',
+                              validations: [
+                                'required',
+                                'alpha',
+                                'maxLength:128',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'address1',
+                              label: 'Your Address',
+                              validations: [
+                                'required',
+                                'maxLength:128',
+                              ],
+                            },
+                          ],
                           [
                             {
                               name: 'address2',
@@ -692,35 +714,41 @@ Once you have determined that there are errors on your report, you can use this 
                               ],
                             },
                           ],
-                          {
-                            name: 'dob',
-                            type: 'date',
-                            label: 'Date of Birth',
-                            validations: [
-                              'date',
-                            ],
-                          },
-                          {
-                            name: 'ssn',
-                            label: 'Social Security #',
-                            validations: [
-                              'required',
-                            ],
-                          },
-                          {
-                            name: 'agencies',
-                            label: 'Please select which credit reporting agency or agencies you would like your dispute to go to',
-                            type: 'dropdown',
-                            multiple: true,
-                            options: [
-                              'Experian',
-                              'Equifax',
-                              'TransUnion',
-                            ],
-                            validations: [
-                              'required',
-                            ],
-                          },
+                          [
+                            {
+                              name: 'dob',
+                              type: 'date',
+                              label: 'Date of Birth',
+                              validations: [
+                                'date',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'ssn',
+                              label: 'Social Security #',
+                              validations: [
+                                'required',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'agencies',
+                              label: 'Please select which credit reporting agency or agencies you would like your dispute to go to',
+                              type: 'dropdown',
+                              multiple: true,
+                              options: [
+                                'Experian',
+                                'Equifax',
+                                'TransUnion',
+                              ],
+                              validations: [
+                                'required',
+                              ],
+                            },
+                          ],
                         ],
                       },
                     ],
@@ -797,23 +825,27 @@ I certify that, if my defense is successful, upon request I will provide assista
                       {
                         title: 'About You',
                         fields: [
-                          {
-                            name: 'name',
-                            label: 'Your Full Name',
-                            validations: [
-                              'required',
-                              'alpha',
-                              'maxLength:128',
-                            ],
-                          },
-                          {
-                            name: 'address1',
-                            label: 'Your Address',
-                            validations: [
-                              'required',
-                              'maxLength:128',
-                            ],
-                          },
+                          [
+                            {
+                              name: 'name',
+                              label: 'Your Full Name',
+                              validations: [
+                                'required',
+                                'alpha',
+                                'maxLength:128',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'address1',
+                              label: 'Your Address',
+                              validations: [
+                                'required',
+                                'maxLength:128',
+                              ],
+                            },
+                          ],
                           [
                             {
                               name: 'city',
@@ -863,15 +895,17 @@ I certify that, if my defense is successful, upon request I will provide assista
                               ],
                             },
                           ],
-                          {
-                            name: 'ssn',
-                            label: 'Social Security # (Last 4)',
-                            validations: [
-                              'required',
-                              'numeric',
-                              'maxLength:4',
-                            ],
-                          },
+                          [
+                            {
+                              name: 'ssn',
+                              label: 'Social Security # (Last 4)',
+                              validations: [
+                                'required',
+                                'numeric',
+                                'maxLength:4',
+                              ],
+                            },
+                          ],
                         ],
                       },
                       {
@@ -879,84 +913,102 @@ I certify that, if my defense is successful, upon request I will provide assista
                         yesno: true,
                         label: 'Are you currently employed?',
                         fields: [
-                          {
-                            name: 'field-of-study',
-                            label: 'Is your job in your field of study?',
-                            type: 'yesno',
-                            default: 'no',
-                          },
+                          [
+                            {
+                              name: 'field-of-study',
+                              label: 'Is your job in your field of study?',
+                              type: 'yesno',
+                              default: 'no',
+                            },
+                          ],
                         ],
                       },
                       {
                         title: 'Your loan',
                         fields: [
-                          {
-                            name: 'loan-servicer',
-                            label: 'Who is your loan servicer?',
-                            type: 'dropdown',
-                            options: LOAN_SERVICERS,
-                          },
-                          {
-                            name: 'servicer-choosen',
-                            label: 'Did you choose the lender of your federal student loans?',
-                            subLabel: 'Most students did not choose their own federal student loan lender. You should only choose "yes" if you took out some or all of your loans before 2010, and you had the option to take out federal student loans from different lenders.',
-                            type: 'yesno',
-                            default: 'no',
-                          },
+                          [
+                            {
+                              name: 'loan-servicer',
+                              label: 'Who is your loan servicer?',
+                              type: 'dropdown',
+                              options: LOAN_SERVICERS,
+                            },
+                          ],
+                          [
+                            {
+                              name: 'servicer-choosen',
+                              label: 'Did you choose the lender of your federal student loans?',
+                              subLabel: 'Most students did not choose their own federal student loan lender. You should only choose "yes" if you took out some or all of your loans before 2010, and you had the option to take out federal student loans from different lenders.',
+                              type: 'yesno',
+                              default: 'no',
+                            },
+                          ],
                         ],
                       },
                       {
                         title: 'Your school',
                         fields: [
-                          {
-                            name: 'is-corinthian',
-                            label: 'Did you attended a Corinthian campus? (Everest, WyoTech, Heald)',
-                            type: 'yesno',
-                            default: 'no',
-                            toggle: [
-                              'school-name-list',
-                              'school-name',
-                              'school-address',
-                              'school-city',
-                              'school-state',
-                            ],
-                          },
-                          {
-                            name: 'school-name-list',
-                            label: 'Which campus did you attend',
-                            hidden: true,
-                            type: 'dropdown',
-                            options: CORINTHIAN_SCHOOLS,
-                          },
-                          {
-                            name: 'school-name',
-                            label: 'School Name',
-                            hidden: false,
-                            validations: [
-                              'maxLength:128',
-                            ],
-                          },
-                          {
-                            name: 'school-address',
-                            label: 'School Address',
-                            subLabel: 'If you can\'t remember your campus\'s address and don\'t have any records stating it, entering the name of your school into a search engine may turn up its address. If you can\'t find the address, you can enter just your school campus\'s state.',
-                            hidden: false,
-                            validations: [
-                              'maxLength:256',
-                            ],
-                          },
-                          {
-                            name: 'school-city',
-                            label: 'School City',
-                            hidden: false,
-                          },
-                          {
-                            name: 'school-state',
-                            label: 'School State',
-                            hidden: false,
-                            type: 'dropdown',
-                            options: US_STATES,
-                          },
+                          [
+                            {
+                              name: 'is-corinthian',
+                              label: 'Did you attended a Corinthian campus? (Everest, WyoTech, Heald)',
+                              type: 'yesno',
+                              default: 'no',
+                              toggle: [
+                                'school-name-list',
+                                'school-name',
+                                'school-address',
+                                'school-city',
+                                'school-state',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'school-name-list',
+                              label: 'Which campus did you attend',
+                              hidden: true,
+                              type: 'dropdown',
+                              options: CORINTHIAN_SCHOOLS,
+                            },
+                          ],
+                          [
+                            {
+                              name: 'school-name',
+                              label: 'School Name',
+                              hidden: false,
+                              validations: [
+                                'maxLength:128',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'school-address',
+                              label: 'School Address',
+                              subLabel: 'If you can\'t remember your campus\'s address and don\'t have any records stating it, entering the name of your school into a search engine may turn up its address. If you can\'t find the address, you can enter just your school campus\'s state.',
+                              hidden: false,
+                              validations: [
+                                'maxLength:256',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'school-city',
+                              label: 'School City',
+                              hidden: false,
+                            },
+                          ],
+                          [
+                            {
+                              name: 'school-state',
+                              label: 'School State',
+                              hidden: false,
+                              type: 'dropdown',
+                              options: US_STATES,
+                            },
+                          ],
                           [
                             {
                               name: 'school-attendance[from]',
@@ -969,28 +1021,34 @@ I certify that, if my defense is successful, upon request I will provide assista
                               placeholder: 'month, year',
                             },
                           ],
-                          {
-                            name: 'school-program-name',
-                            label: 'What was the name of your program?',
-                            placeholder: 'e.g. Medical Assisting, Business Management',
-                          },
-                          {
-                            name: 'school-degree',
-                            label: 'What type of degree were you working on? (Select your highest degree.)',
-                            type: 'dropdown',
-                            options: [
-                              'Associates',
-                              'Certificate',
-                              'Bachelors',
-                              'Masters',
-                            ],
-                          },
-                          {
-                            name: 'school-program-completed',
-                            label: 'Did you complete the program?',
-                            type: 'yesno',
-                            default: 'no',
-                          },
+                          [
+                            {
+                              name: 'school-program-name',
+                              label: 'What was the name of your program?',
+                              placeholder: 'e.g. Medical Assisting, Business Management',
+                            },
+                          ],
+                          [
+                            {
+                              name: 'school-degree',
+                              label: 'What type of degree were you working on? (Select your highest degree.)',
+                              type: 'dropdown',
+                              options: [
+                                'Associates',
+                                'Certificate',
+                                'Bachelors',
+                                'Masters',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'school-program-completed',
+                              label: 'Did you complete the program?',
+                              type: 'yesno',
+                              default: 'no',
+                            },
+                          ],
                         ],
                       },
 
@@ -998,150 +1056,181 @@ I certify that, if my defense is successful, upon request I will provide assista
                         title: 'Your experience',
                         subtitle: 'Now we’ll prompt you to describe different aspects of your experience with your school.',
                         fields: [
-                          {
-                            title: 'Job placement',
-                            subtitle: 'Did your school lie to you or mislead you about your job prospects? This could include:',
-                            text: `
-<ul>
-  <li>Citing false or misleading statistics about job placement rates</li>
-  <li>Promising inflated salaries</li>
-  <li>Promising but failing to provide support in finding and landing a job.</li>
-</ul>
-                            `,
-                            yesno: true,
-                            fields: [
-                              {
-                                name: 'job-placement-detail',
-                                label: 'Please explain in detail.',
-                                type: 'text',
-                              },
-                            ],
-                          },
-                          {
-                            title: 'Accreditation',
-                            subtitle: 'Did your school mislead you about the quality of the education you would receive? This could include:',
-                            text: `
-<ul>
-  <li>Falsely claiming that the school had the proper accreditation to allow its graduates to take a particular licensing exam</li>
-  <li>Falsely claiming that it offered the classes necessary to achieve employment and/or certification in a particular field</li>
-  <li>Citing misleading statistics about the pass rate of students on required licensing or certification exams.</li>
-</ul>
-                            `,
-                            yesno: true,
-                            fields: [
-                              {
-                                name: 'accreditation-detail',
-                                label: 'Please explain in detail.',
-                                type: 'text',
-                              },
-                            ],
-                          },
-
-                          {
-                            title: 'Eligibility',
-                            subtitle: 'Did your school mislead you about whether you were eligible to benefit from the program? This could include:',
-                            text: `
-<ul>
-  <li>Enrolling you even though you did not have a high school diploma or GED</li>
-  <li>Claiming that a felony record or disability would not stand in the way of employment in a particular field.</li>
-</ul>
-                            `,
-                            yesno: true,
-                            fields: [
-                              {
-                                name: 'eligibility-detail',
-                                label: 'What did your school do? If any of the listed behaviours apply, please state which.',
-                                type: 'text',
-                              },
-                            ],
-                          },
-
-                          {
-                            title: 'Cost/payment',
-                            subtitle: 'Did your school mislead you about how you would pay for the program? This could include:',
-                            text: `
-<ul>
-  <li>Understating the total cost of the program</li>
-  <li>Signing loan paperwork without your permission</li>
-  <li>Understating the amount of loans necessary</li>
-  <li>Treating grants and loans as if they were the same thing</li>
-  <li>Treating federal and private loans as if they were the same thing</li>
-  <li>Refusing to disclose loan terms or allow review of loan documents</li>
-</ul>
-                            `,
-                            yesno: true,
-                            fields: [
-                              {
-                                name: 'cost-payment-detail',
-                                label: 'What did your school do? If any of the listed behaviours apply, please state which.',
-                                type: 'text',
-                              },
-                            ],
-                          },
-
-                          {
-                            title: 'Illegal activity',
-                            subtitle: 'Did your school mislead you about the extent of the illegal activities there, and the effect those activities would have on your school’s reputation and continued existence? This could include:',
-                            text: `
-<ul>
-  <li>The school shutting down in light of lawsuits or financial mismanagement</li>
-  <li>Finding that having your school on a resume repels employers who have heard about its illegal practices</li>
-</ul>
-                            `,
-                            yesno: true,
-                            fields: [
-                              {
-                                name: 'illegal-activity-detail',
-                                label: 'What did your school do? If any of the listed behaviours apply, please state which.',
-                                type: 'text',
-                              },
-                            ],
-                          },
-
-                          {
-                            title: 'Other',
-                            subtitle: 'Did your school mislead you in other ways that you didn\'t already describe?',
-                            yesno: true,
-                            fields: [
-                              {
-                                name: 'other-detail',
-                                label: 'What did your school do? ',
-                                type: 'text',
-                              },
-                            ],
-                          },
-
-                          {
-                            title: 'Measure of injury',
-                            subtitle: 'Now we\'ll ask you to explain how the conduct you’ve already described here by your school caused you harm and put you in debt. Because of this conduct, I\'ve suffered the following harm:',
-                            fields: [
-                              {
-                                name: 'student-loan-checkbox',
-                                label: 'Student loan debt',
-                                type: 'checkbox',
-                              },
-                              {
-                                name: 'credits-wont-transfer-checkbox',
-                                label: 'I couldn\'t enroll in another school because my credits wouldn\'t transfer.',
-                                type: 'checkbox',
-                              },
-                              {
-                                name: 'more-student-loan-checkbox',
-                                label: 'I couldn\'t enroll in another school because I couldn\'t take out more student loan debt.',
-                                type: 'checkbox',
-                              },
-                              {
-                                name: 'name-on-resume-checkbox',
-                                label: 'I had a hard time finding a job in my field because my school was on my resume',
-                                type: 'checkbox',
-                              },
-                              {
-                                name: 'stress-checkbox',
-                                label: 'Other injury, including stress or emotional pain',
-                                type: 'checkbox',
-                              },
-                            ],
-                          },
+                          [
+                            {
+                              title: 'Job placement',
+                              subtitle: 'Did your school lie to you or mislead you about your job prospects? This could include:',
+                              text: `
+  <ul>
+    <li>Citing false or misleading statistics about job placement rates</li>
+    <li>Promising inflated salaries</li>
+    <li>Promising but failing to provide support in finding and landing a job.</li>
+  </ul>
+                              `,
+                              yesno: true,
+                              fields: [
+                                [
+                                  {
+                                    name: 'job-placement-detail',
+                                    label: 'Please explain in detail.',
+                                    type: 'text',
+                                  },
+                                ],
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              title: 'Accreditation',
+                              subtitle: 'Did your school mislead you about the quality of the education you would receive? This could include:',
+                              text: `
+  <ul>
+    <li>Falsely claiming that the school had the proper accreditation to allow its graduates to take a particular licensing exam</li>
+    <li>Falsely claiming that it offered the classes necessary to achieve employment and/or certification in a particular field</li>
+    <li>Citing misleading statistics about the pass rate of students on required licensing or certification exams.</li>
+  </ul>
+                              `,
+                              yesno: true,
+                              fields: [
+                                [
+                                  {
+                                    name: 'accreditation-detail',
+                                    label: 'Please explain in detail.',
+                                    type: 'text',
+                                  },
+                                ],
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              title: 'Eligibility',
+                              subtitle: 'Did your school mislead you about whether you were eligible to benefit from the program? This could include:',
+                              text: `
+  <ul>
+    <li>Enrolling you even though you did not have a high school diploma or GED</li>
+    <li>Claiming that a felony record or disability would not stand in the way of employment in a particular field.</li>
+  </ul>
+                              `,
+                              yesno: true,
+                              fields: [
+                                [
+                                  {
+                                    name: 'eligibility-detail',
+                                    label: 'What did your school do? If any of the listed behaviours apply, please state which.',
+                                    type: 'text',
+                                  },
+                                ],
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              title: 'Cost/payment',
+                              subtitle: 'Did your school mislead you about how you would pay for the program? This could include:',
+                              text: `
+  <ul>
+    <li>Understating the total cost of the program</li>
+    <li>Signing loan paperwork without your permission</li>
+    <li>Understating the amount of loans necessary</li>
+    <li>Treating grants and loans as if they were the same thing</li>
+    <li>Treating federal and private loans as if they were the same thing</li>
+    <li>Refusing to disclose loan terms or allow review of loan documents</li>
+  </ul>
+                              `,
+                              yesno: true,
+                              fields: [
+                                [
+                                  {
+                                    name: 'cost-payment-detail',
+                                    label: 'What did your school do? If any of the listed behaviours apply, please state which.',
+                                    type: 'text',
+                                  },
+                                ],
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              title: 'Illegal activity',
+                              subtitle: 'Did your school mislead you about the extent of the illegal activities there, and the effect those activities would have on your school’s reputation and continued existence? This could include:',
+                              text: `
+  <ul>
+    <li>The school shutting down in light of lawsuits or financial mismanagement</li>
+    <li>Finding that having your school on a resume repels employers who have heard about its illegal practices</li>
+  </ul>
+                              `,
+                              yesno: true,
+                              fields: [
+                                [
+                                  {
+                                    name: 'illegal-activity-detail',
+                                    label: 'What did your school do? If any of the listed behaviours apply, please state which.',
+                                    type: 'text',
+                                  },
+                                ],
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              title: 'Other',
+                              subtitle: 'Did your school mislead you in other ways that you didn\'t already describe?',
+                              yesno: true,
+                              fields: [
+                                [
+                                  {
+                                    name: 'other-detail',
+                                    label: 'What did your school do? ',
+                                    type: 'text',
+                                  },
+                                ],
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              title: 'Measure of injury',
+                              subtitle: 'Now we\'ll ask you to explain how the conduct you’ve already described here by your school caused you harm and put you in debt. Because of this conduct, I\'ve suffered the following harm:',
+                              fields: [
+                                [
+                                  {
+                                    name: 'student-loan-checkbox',
+                                    label: 'Student loan debt',
+                                    type: 'checkbox',
+                                  },
+                                ],
+                                [
+                                  {
+                                    name: 'credits-wont-transfer-checkbox',
+                                    label: 'I couldn\'t enroll in another school because my credits wouldn\'t transfer.',
+                                    type: 'checkbox',
+                                  },
+                                ],
+                                [
+                                  {
+                                    name: 'more-student-loan-checkbox',
+                                    label: 'I couldn\'t enroll in another school because I couldn\'t take out more student loan debt.',
+                                    type: 'checkbox',
+                                  },
+                                ],
+                                [
+                                  {
+                                    name: 'name-on-resume-checkbox',
+                                    label: 'I had a hard time finding a job in my field because my school was on my resume',
+                                    type: 'checkbox',
+                                  },
+                                ],
+                                [
+                                  {
+                                    name: 'stress-checkbox',
+                                    label: 'Other injury, including stress or emotional pain',
+                                    type: 'checkbox',
+                                  },
+                                ],
+                              ],
+                            },
+                          ],
                         ],
                       },
                     ],
