@@ -20,7 +20,7 @@ variables:
 
 stages:
   - test
-  - staging
+  - deploy to staging
 
 test:
   stage: test
@@ -31,7 +31,7 @@ test:
     - npm run report
 
 staging:
-  stage: deploy
+  stage: deploy to staging
   script: pm2 deploy ecosystem.json staging
   environment: staging
   except:
