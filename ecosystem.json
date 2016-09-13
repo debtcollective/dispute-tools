@@ -22,7 +22,7 @@
       host : "54.162.119.96",
       ref  : "origin/master",
       repo : "git@gitlab.com:empathia/debtcollective.git",
-      path : "/deploy/apps/tdc",
+      path : "/home/deploy/apps/tdc",
       "post-deploy" : "npm install; knex migrate:latest; npm run build; pm2 startOrRestart ecosystem.json --env staging"
     },
   }
