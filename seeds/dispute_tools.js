@@ -303,7 +303,7 @@ const personalStatement = {
   name: 'personal-statement-uploader',
   multiple: false,
   optional: false,
-  mimeTypes: [/image/, 'application/pdf'],
+  mimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
   maxFileSize: 5242880,
   title: 'Personal Statement',
   description: 'In addition to providing evidence against the school, you can write a personal statement describing how your school lied to and defrauded you and upload it here.',
@@ -315,7 +315,7 @@ const evidenceUploader = {
   name: 'evidence-uploader',
   multiple: true,
   optional: true,
-  mimeTypes: [/image/, 'application/pdf'],
+  mimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
   maxFileSize: 5242880,
   title: 'Evidence (Optional)',
   description: 'Complement your case by attaching any supporting documents.',
@@ -415,8 +415,6 @@ The number is: 1-800-304-3107.`,
               },
             },
           },
-          created_at: new Date(),
-          updated_at: new Date(),
         },
         {
           name: 'Tax Offset Dispute',
@@ -504,8 +502,6 @@ The Department of Education usually sends offset notices once per year in the su
               },
             },
           },
-          created_at: new Date(),
-          updated_at: new Date(),
         },
         {
           name: 'General Debt Dispute Letter',
@@ -611,7 +607,7 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
                     name: 'collection-notice-uploader',
                     multiple: false,
                     optional: false,
-                    mimeTypes: [/image/, 'application/pdf'],
+                    mimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
                     maxFileSize: 5242880,
                     title: 'Collection notice',
                     description: 'Attach a digital copy of the collection notice you received in the mail. You can take a photo of the notice with your phone or scan it into your computer.',
@@ -621,8 +617,6 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
               },
             },
           },
-          created_at: new Date(),
-          updated_at: new Date(),
         },
 
         {
@@ -765,7 +759,7 @@ Once you have determined that there are errors on your report, you can use this 
                     name: 'picture-id-uploader',
                     multiple: false,
                     optional: false,
-                    mimeTypes: [/image/],
+                    mimeTypes: ['image/jpeg', 'image/png'],
                     maxFileSize: 5242880,
                     title: 'Picture ID',
                     description: 'Please attach a photo of your picture ID. ',
@@ -776,7 +770,7 @@ Once you have determined that there are errors on your report, you can use this 
                     name: 'credit-errors-uploader',
                     multiple: true,
                     optional: true,
-                    mimeTypes: [/image/, 'application/pdf'],
+                    mimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
                     maxFileSize: 5242880,
                     title: 'Credit report errors (optional)',
                     description: 'lease attach a document highlighting credit report errors.',
@@ -786,8 +780,6 @@ Once you have determined that there are errors on your report, you can use this 
               },
             },
           },
-          created_at: new Date(),
-          updated_at: new Date(),
         },
 
         {
@@ -796,7 +788,12 @@ Once you have determined that there are errors on your report, you can use this 
 
 If your taxes are being seized ("offset") or if you have been threatened with offset, you have a lot in common with thousands of other people whose taxes are offset each year. This is wrong, since no one should have to go into debt for education!
 
-You can use this form to submit a dispute to the Department of Education. The Department's form is unnecessarily complicated. We have streamlined the process for our members. You can make sure your offset is placed on hold if you file this dispute by 65 days after the date you received the offset notice. You can also stop an offset that has already begun if you receive a favorable decision from the Department.`,
+You can use this form to submit a dispute to the Department of Education. The Department's form is unnecessarily complicated. We have streamlined the process for our members. You can make sure your offset is placed on hold if you file this dispute by 65 days after the date you received the offset notice. You can also stop an offset that has already begun if you receive a favorable decision from the Department.
+
+What if I suspect that my taxes will be offset but I haven't received a notice?
+
+The Department of Education usually sends offset notices once per year in the summer. If you want to know whether your taxes will be offset as a result of a federal student loan, you can call the Bureau of the Fiscal Service at 1-800-304-3107. Making this call does not make it more likely that your taxes will be offset.
+`,
           completed: 0,
           data: {
             disputeProcess: 1,
@@ -804,17 +801,6 @@ You can use this form to submit a dispute to the Department of Education. The De
               none: {
                 title: 'Gather Materials',
                 description: 'A little known fact of the debt collections industry is that the vast majority of collectors can\'t prove they own our debts. If they can\'t prove it, then why should we pay? Demanding proof of ownership is the first step to getting debt collectors off our backs.',
-                signature: `
-I have read and understand all of the information in this form.
-I agree to provide, upon request, testimony, a sworn statement, or other documentation reasonably available to me that demonstrates to the satisfaction of the Department of Education or its designee that I meet the qualifications for borrower defense to repayment loan discharge.
-
-All of the information I provided is true and complete to the best of my knowledge and I agree, if asked, to provide information reasonably available to me to the Department of Education that will verify the accuracy of my completed attestation.
-I understand that the Department of Education has the authority to verify information reported on this application with other federal or state agencies or other entities. I authorize the Department of Education, along with its agents and contractors, to contact me regarding this request at the phone number above using automated dialing equipment or artificial or prerecorded voice or text messages.
-
-I understand that if I purposely provided false or misleading information on this application, I may be subject to the penalties specified in 18 U.S. Code § 1001.
-I certify that, if my defense is successful, upon request I will provide assistance and cooperation to the U.S. Department of Education (the Department) in any proceedings or enforcement actions against the school related to my defense or the conduct asserted herein.
-
-                `,
                 steps: [
                   {
                     type: 'form',
@@ -1240,8 +1226,122 @@ I certify that, if my defense is successful, upon request I will provide assista
               },
             },
           },
-          created_at: new Date(),
-          updated_at: new Date(),
+        },
+        {
+          name: 'Private Student Loan Dispute Letter',
+          about: `### Private Student Loan Dispute Letter
+
+#### for any defaulted personal debt
+
+This tool is for anyone who is in default on a debt. If you have been contacted by a collector who bought your loan from the original lender, you can fill out this form. Most of the time, collectors can't prove they own your debt, so by disputing the loan you may be able to stop collections. Before you begin to use this tool, you should make sure you have the name and address of the collections agency that is attempting to collect from you.
+
+If you don't have the name and address of the collection agency, you will not be able to file this dispute.
+
+`,
+          completed: 0,
+          data: {
+            disputeProcess: 1,
+            options: {
+              none: {
+                title: 'Gather Materials',
+                description: 'Before you begin, please have on hand a digital copy of letter you received in the mail from the collection agency or law firm.',
+                steps: [
+                  {
+                    type: 'form',
+                    name: 'personal-information-form',
+                    title: 'Personal Information Form',
+                    description: 'Here we need some personal information.',
+                    fieldSets: [
+                      {
+                        title: 'About You',
+                        fields: [
+                          [
+                            {
+                              name: 'name',
+                              label: 'Your Full Name',
+                              validations: [
+                                'required',
+                                'alpha',
+                                'maxLength:128',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'address1',
+                              label: 'Your Address',
+                              validations: [
+                                'required',
+                                'maxLength:128',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'address2',
+                              label: 'Your Address 2',
+                              validations: [
+                                'required',
+                                'maxLength:128',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'firm-address',
+                              label: 'Collection agency\'s or law firm\'s address',
+                              validations: [
+                                'maxLength:256',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'firm-name',
+                              label: 'Name of the collection agency or law firm that last contacted you about your debt',
+                              validations: [
+                                'maxLength:256',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'account-number',
+                              label: 'Account Number',
+                              validations: [
+                                'maxLength:128',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'last-correspondence-date',
+                              label: 'Your email',
+                              type: 'date',
+                              validations: [
+                                'required',
+                              ],
+                            },
+                          ],
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    type: 'upload',
+                    name: 'evidence-uploader',
+                    multiple: true,
+                    optional: false,
+                    mimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
+                    maxFileSize: 5242880,
+                    title: 'Evidence (Optional)',
+                    description: 'Digital copy of letter you received in the mail from the collection agency or law firm',
+                    uploadButtonText: 'Upload files',
+                  },
+                ],
+              },
+            },
+          },
         },
       ];
 
@@ -1252,8 +1352,8 @@ I certify that, if my defense is successful, upon request I will provide assista
           about: tool.about,
           completed: tool.completed,
           data: tool.data,
-          created_at: tool.created_at,
-          updated_at: tool.updated_at,
+          created_at: new Date(),
+          updated_at: new Date(),
         };
       }));
     });
