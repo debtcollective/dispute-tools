@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+export NODE_ENV=staging
+
 set -e
 
 npm install --silent
