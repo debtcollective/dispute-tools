@@ -1,4 +1,5 @@
-/* globals Class, RestfulController, User, NotFoundError, CONFIG, Collective, Account */
+/* globals Class, RestfulController, User, NotFoundError,
+CONFIG, Collective, Account, DisputeTool */
 const Promise = require('bluebird');
 const fs = require('fs-extra');
 
@@ -13,7 +14,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
   prototype: {
     _loadUser(req, res, next) {
       User.query()
-        .include('[account.debtType, disputes]')
+        .include('[account.debtType, disputes.statuses]')
         .where('id', req.params.id)
         .then((result) => {
           if (result.length === 0) {
@@ -23,6 +24,16 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
           return req.restifyACL(result)
             .then((_result) => {
               res.locals.user = _result[0];
+
+              return Promise.each(res.locals.user.disputes, (dispute) => {
+                return DisputeTool.first({ id: dispute.disputeToolId })
+                  .then((disputeTool) => {
+                    dispute.disputeTool = disputeTool;
+                    return true;
+                  });
+              });
+            })
+            .finally(() => {
               return next();
             });
         })
