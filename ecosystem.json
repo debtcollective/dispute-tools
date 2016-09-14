@@ -19,7 +19,7 @@
   deploy: {
     staging : {
       user : "deploy",
-      host : "54.160.57.68",
+      host : "staging.debtcollective.org",
       ref  : "origin/33",
       repo : "git@gitlab.com:empathia/debtcollective.git",
       path : "/home/deploy/apps/tdc",

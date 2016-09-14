@@ -41,7 +41,7 @@ staging:
   script:
     - npm install pm2 -g
     - chmod 700 $HOME/.ssh
-    - ssh-keyscan -H '54.160.57.68' >> $HOME/.ssh/known_hosts
+    - ssh-keyscan -H 'staging.debtcollective.org' >> $HOME/.ssh/known_hosts
     - ssh-keyscan -H 'gitlab.com' >> $HOME/.ssh/known_hosts
     - pm2 deploy ecosystem.json staging
   environment: staging
