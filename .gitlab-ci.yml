@@ -1,17 +1,4 @@
-# This file is a template, and might need editing before it works on your project.
-# Official framework image. Look for the different tagged releases at:
-# https://hub.docker.com/r/library/node/tags/
 image: node:latest
-
-before_script:
-  - cp config/config.sample.js config/config.js
-  - cp config/knexfile.sample.js knexfile.js
-  - apt-get update
-  - apt-get install -y postgresql-client
-
-services:
-  - redis:latest
-  - postgres:latest
 
 variables:
   REDIS_HOST: "redis"
@@ -24,6 +11,14 @@ stages:
 
 test:
   stage: test
+  services:
+    - redis:latest
+    - postgres:latest
+  before_script:
+    - cp config/config.sample.js config/config.js
+    - cp config/knexfile.sample.js knexfile.js
+    - apt-get update
+    - apt-get install -y postgresql-client
   script:
     - npm install --silent
     - npm run build
@@ -32,10 +27,7 @@ test:
 
 staging:
   stage: deploy to staging
-  script:
-    - npm install -g pm2
-    - ssh-keyscan -H '54.160.57.68' >> $HOME/.ssh/known_hosts
-    - pm2 deploy ecosystem.json staging
+  script: pm2 deploy ecosystem.json staging
   environment: staging
   except:
     - master
