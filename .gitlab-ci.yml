@@ -31,7 +31,7 @@ staging:
     - npm install pm2 -g
     - mkdir $HOME/.ssh
     - chmod 700 $HOME/.ssh
-    - ssh-keyscan -H '54.160.57.68' >> $HOME/.ssh/known_hosts
+    - alias ssh='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
     - pm2 deploy ecosystem.json staging
   environment: staging
   except:
