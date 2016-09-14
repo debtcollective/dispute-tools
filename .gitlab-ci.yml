@@ -34,6 +34,7 @@ staging:
   stage: deploy to staging
   script:
     - npm install -g pm2
+    - ssh-keyscan -H '54.160.57.68' >> $HOME/.ssh/known_hosts
     - pm2 deploy ecosystem.json staging
   environment: staging
   except:
