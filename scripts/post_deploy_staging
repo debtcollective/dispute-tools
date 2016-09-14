@@ -5,6 +5,7 @@ export NODE_ENV=staging
 set -e
 
 source ~/.profile
+ssh-keyscan -H '54.160.57.68' >> $HOME/.ssh/known_hosts
 npm install --silent
 cp ./../shared/knexfile.js ./
 cp ./../shared/config.js ./config/
