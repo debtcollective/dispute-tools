@@ -27,7 +27,9 @@ test:
 
 staging:
   stage: deploy to staging
-  script: pm2 deploy ecosystem.json staging
+  script:
+    - npm install pm2 -g
+    - pm2 deploy ecosystem.json staging
   environment: staging
   except:
     - master
