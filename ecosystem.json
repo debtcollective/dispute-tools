@@ -8,7 +8,7 @@
       name: 'TDC',
       script: 'bin/server.js',
       watch: true,
-      instances: 2,
+      instances: 1,
       exec_mode: 'fork',
       env_staging: {
         NODE_ENV: 'staging'
