@@ -4,6 +4,7 @@ export NODE_ENV=staging
 
 set -e
 
+source ~/.profile
 npm install --silent
 cp ./../shared/knexfile.js ./
 cp ./../shared/config.js ./config/
