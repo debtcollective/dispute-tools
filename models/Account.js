@@ -32,7 +32,7 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
         message: 'The Account\'s zip code is invalid.',
       },
     ],
-    phone: ['alphaDash'],
+    phone: ['maxLength:20'],
   },
   attributes: [
     'id',
