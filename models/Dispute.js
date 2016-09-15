@@ -102,6 +102,9 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
         return da.attach('file', filePath);
       })
       .then(() => {
+        return da.save();
+      })
+      .then(() => {
         const attachment = {
           id: da.id,
           name,
