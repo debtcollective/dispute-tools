@@ -1,0 +1,124 @@
+mixin _toolsYesNoMixin(field)
+  p.-ff-sec.-accent.-fw-700= field.label
+  input(
+    type="radio"
+    name=`fieldValues[${field.name}]`
+    id=`${field.name}-yes`
+    value="yes"
+    checked=field.default === 'yes'
+    data-name= field.name
+    data-hidden= field.hidden && field.hidden.toString()
+    data-toogle-radio= field.toggle
+  )
+  label.pl1.mr3.-ff-sec(for=`${field.name}-yes`) Yes
+  input(
+    type="radio"
+    name=`fieldValues[${field.name}]`
+    id=`${field.name}-no`
+    value="no"
+    checked=field.default === 'no'
+    data-name= field.name
+    data-hidden= field.hidden && field.hidden.toString()
+    data-toogle-radio= field.toggle
+  )
+  label.pl1.-ff-sec(for=`${field.name}-no`) No
+
+
+mixin toolsFormElementMixin(field, index)
+  .col.col-12.p2(class=field.columnClassName)
+    case field.type
+      when 'dropdown'
+        label.inline-block.pb1.-fw-500= field.label
+        .-k-select
+          select.-fw(
+            name=`fieldValues[${field.name}]`
+            multiple= field.multiple
+            data-name= field.name
+            data-hidden= field.hidden && field.hidden.toString()
+          )
+            option(value="") Choose an option
+            each option in field.options
+              option(
+                value= option
+                selected!= _formData[field.name] === option
+              )= option
+        p.-on-error.-danger.-caption.-fw-500.mt1
+        p(style="color: deeppink; font-weight: bold;") dropdown
+
+      when 'date'
+        label.inline-block.pb1.-fw-500= field.label
+        input.-k-input.-fw(
+          type="date"
+          name=`fieldValues[${field.name}]`
+          value=_formData[field.name]
+          placeholder=field.placeholder
+          data-name=field.name
+          data-hidden= field.hidden && field.hidden.toString()
+        )
+        p.-on-error.-danger.-caption.-fw-500.mt1
+        p(style="color: blueviolet; font-weight: bold;") date
+
+      when 'yesno'
+        +_toolsYesNoMixin(field)
+        p.-on-error.-danger.-caption.-fw-500.mt1
+        p(style="color: aqua; font-weight: bold;") yesno
+
+      when 'text'
+        label.inline-block.pb1.-fw-500= field.label
+        textarea.block.-k-input.-fw(
+          name=`fieldValues[${field.name}]`
+          value=_formData[field.name]
+          placeholder=field.placeholder
+          data-name=field.name
+          data-hidden= field.hidden && field.hidden.toString()
+        )
+        p.-on-error.-danger.-caption.-fw-500.mt1
+        p(style="color: orange; font-weight: bold;") textarea
+
+      when 'checkbox'
+        .-ff-sec
+          label.mr3
+            input.mr1(
+              type="checkbox"
+              name=`fieldValues[${field.name}]`
+              data-name=field.name
+              data-hidden= field.hidden && field.hidden.toString()
+            )
+            | #{field.label}
+        p.-on-error.-danger.-caption.-fw-500.mt1
+        p(style="color: lightgreen; font-weight: bold;") checkbox
+
+      when 'group'
+        fieldset
+          h4= field.title
+          p.pb2.-ff-sec= field.subtitle
+          div.pb2!= field.text
+
+          if field.yesno
+            +_toolsYesNoMixin({name: `__toggle-radio-${index}__`, default: 'no'})
+
+          fieldset
+            each row2 in field.fields
+              .clearfix.mxn2
+                each field2 in row2
+                  +toolsFormElementMixin(field2)
+
+          p(style="color: yellow; font-weight: bold;") group
+
+      default
+        label.inline-block.pb1.-fw-500= field.label
+        input.-k-input.-fw(
+          type="text"
+          name=`fieldValues[${field.name}]`
+          value=_formData[field.name]
+          placeholder=field.placeholder
+          data-name=field.name
+          data-hidden= field.hidden && field.hidden.toString()
+        )
+        p.-on-error.-danger.-caption.-fw-500.mt1
+        p(style="color: skyblue; font-weight: bold;") input
+
+    if field.subLabel
+      p.pt1.-caption.-fw-700.-neutral-mid= field.subLabel
+
+    // pre= JSON.stringify(field)

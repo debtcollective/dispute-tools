@@ -1,0 +1,56 @@
+div(
+  data-dispute-follow-up
+  class= currentSection !== 'follow-up' && 'hide'
+)
+  .p3
+    h4.pb1 Thank you for disputing #{dispute.disputeTool.name}
+    ul.AvatarList
+      li: img(src="/images/temp/avatars/01.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/02.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/03.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/04.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/05.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/06.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/07.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/08.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/09.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/10.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/01.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/02.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/03.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/04.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/05.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/06.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/07.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/08.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/09.jpg" width="50" height="50")
+      li: img(src="/images/temp/avatars/10.jpg" width="50" height="50")
+    hr.mb3
+    .clearfix.mxn2
+      .col.md-col-4.col-12.p2
+        .rounded.pt2.pr2.pb3.pl2.-bg-white.-dark
+          h3.pb4= dispute.disputeTool.name
+          .flex.items-center.pb1
+            div: svg.-primary(width="46" height="56"): use(xlink:href="#svg-fingerprint")
+            .pl2.-ff-sec
+              .-fw-700 #{currentUser && currentUser.account.fullname || 'Zachary Gibson'}
+              .-caption.-fw-700(style="color: #4A4A4A;") ${Corintian College}
+
+      .col.md-col-8.col-12.p2
+        .flex
+          svg(width="40" height="40"): use(xlink:href="#svg-clock")
+          .pl2
+            .-caption.-ttu Status
+            h4.-primary.-ttu= dispute.statuses[0].status
+        hr.my2
+        h2.pb3 Now what?
+        p.pb3.-fw-500 Once you submit your dispute, the Debt Collective will mail it on your behalf as soon as possible. It could take as long as 5 days for the dispute to be mailed. If the Department of Education receives this form within 15 days of the date of your garnishment notice, your garnishment will not begin until after the Department has ruled on your dispute. If you are already being garnished, collections will continue until your dispute is reviewed.
+        p.pb4.-fw-500 We do not have much more information about how long the dispute process takes because online dispute tools are a new invention. By making the dispute form easier to fill out, we are helping more people dispute their debts. This is a good thing! But it could affect the time that it takes for the Department or the guaranty agency to review each case. If you don't hear a response in a timely manner, this may be cause for legal action.
+        hr
+        .clearfix.mxn2
+          .col.col-6
+            a.-k-btn.btn-link.-primary.-fw-700()
+              svg.mr1(width="14" height="14"): use(xlink:href="#svg-arrow-forward")
+              | Visit the collective
+          .col.col-6.right-align
+            a.-k-btn.btn-link.-fw-700.-white() Contact us

@@ -7,7 +7,7 @@
     'Follow up'
   ]
 
-mixin toolsSidebarMixin(disputeTool, currentStep = 1)
+mixin toolsSidebarMixin(disputeTool, currentStep = 1, steps = _toolSteps)
   .Tool__sidebar
     h4.pb1.-ttu.-h-sec.-accent
       span
@@ -15,7 +15,7 @@ mixin toolsSidebarMixin(disputeTool, currentStep = 1)
     p.pb4.-caption.-ttu.-fw-500
       | #{disputeTool.completed} People Filled
     ul.list-reset.Tool__sidebar-steps
-      each step, index in _toolSteps
+      each step, index in steps
         - var _index = index + 1
         li.relative.pb2.-fw-700(
           class=currentStep === _index && '-accent'

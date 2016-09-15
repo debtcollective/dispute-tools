@@ -8,6 +8,16 @@ hr {
   border: none;
 }
 
+fieldset {
+  padding: 0;
+  border: none;
+  /* box-shadow: 0 0 0 1px dodgerblue; */
+}
+
+input[name^='fieldValues[__toggle-radio'][value="no"]:checked ~ fieldset {
+  display: none;
+}
+
 /* 2 */
 .Tool__Info {
   padding: var(--space-3) var(--space-3) 40px;
@@ -34,6 +44,10 @@ hr {
       height: 5px;
       background-color: var(--k-color-palette-neutral-mid);
       border-radius: 0 0 var(--border-radius) var(--border-radius);
+    }
+
+    & .Tool__Info__footer-caption {
+      color: var(--k-color-palette-neutral-mid);
     }
   }
 

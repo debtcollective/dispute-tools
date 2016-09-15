@@ -144,21 +144,20 @@ const personalInformationFieldSets = [
         {
           name: 'name',
           label: 'Your Name',
-          columnClassName: '.two-thirds',
+          columnClassName: 'md-col-8',
           validations: [
             'required',
-            'alpha',
             'maxLength:128',
           ],
         },
         {
           name: 'ssn',
           label: 'Social Security # (Last 4)',
-          columnClassName: '.one-thirds',
+          columnClassName: 'md-col-4',
           validations: [
             'required',
-            'number',
-            'maxLength:4',
+            'numeric',
+            'exactLength:4',
           ],
         },
       ],
@@ -177,6 +176,7 @@ const personalInformationFieldSets = [
           name: 'address2',
           label: 'Your Address 2',
           validations: [
+            'required',
             'maxLength:128',
           ],
         },
@@ -186,7 +186,7 @@ const personalInformationFieldSets = [
           name: 'email',
           label: 'Your email',
           placeholder: 'you@example.com',
-          columnClassName: '.one-half',
+          columnClassName: 'md-col-6',
           validations: [
             'required',
             'email',
@@ -196,12 +196,11 @@ const personalInformationFieldSets = [
         {
           name: 'phone',
           label: 'Your telephone',
-          placeholder: '(55) 555-5555-5555',
-          columnClassName: '.one-half',
+          placeholder: '(555) 555-5555',
+          columnClassName: 'md-col-6',
           validations: [
             'required',
-            'alphaNumeric',
-            'maxLength:16',
+            'maxLength:20',
           ],
         },
       ],
@@ -214,6 +213,7 @@ const personalInformationFieldSets = [
         {
           name: 'schoolName',
           label: 'Name of the school where you incurred the debt',
+          columnClassName: 'md-col-8',
           validations: [
             'required',
             'maxLength:128',
@@ -225,8 +225,9 @@ const personalInformationFieldSets = [
           name: 'guarrantyAgency',
           label: 'Name of Guarranty Agency',
           subLabel: 'Required for FFEL loan holders',
-          columnClassName: '.one-half',
+          columnClassName: 'md-col-6',
           validations: [
+            'required',
             'maxLength:128',
           ],
         },
@@ -234,8 +235,9 @@ const personalInformationFieldSets = [
           name: 'guarrantyAgencyEmail',
           label: 'Guarranty Agency mailing address',
           subLabel: 'Required for FFEL loan holders',
-          columnClassName: '.one-half',
+          columnClassName: 'md-col-6',
           validations: [
+            'required',
             'email',
             'maxLength:128',
           ],
@@ -252,8 +254,9 @@ const personalInformationFieldSets = [
         {
           name: 'employer',
           label: 'Current Employer',
-          columnClassName: '.two-thirds',
+          columnClassName: 'md-col-8',
           validations: [
+            'required',
             'maxLength:128',
           ],
         },
@@ -261,9 +264,11 @@ const personalInformationFieldSets = [
           name: 'employmentDate',
           type: 'date',
           label: 'Beggining Date',
-          columnClassName: '.one-thirds',
+          placeholder: 'mm-dd-yyyy',
+          columnClassName: 'md-col-4',
           validations: [
-            'date',
+            'required',
+            'maxLength:20',
           ],
         },
       ],
@@ -271,18 +276,20 @@ const personalInformationFieldSets = [
         {
           name: 'employerAddress',
           label: 'Employer Address',
+          columnClassName: 'md-col-8',
           validations: [
+            'required',
             'maxLength:128',
           ],
         },
-      ],
-      [
         {
           name: 'employerPhone',
           label: 'Employer Phone',
-          columnClassName: '.one-third',
+          placeholder: '(555) 555-5555',
+          columnClassName: 'md-col-4',
           validations: [
-            'maxLength:23',
+            'required',
+            'maxLength:20',
           ],
         },
       ],
@@ -307,7 +314,8 @@ const personalStatement = {
   maxFileSize: 5242880,
   title: 'Personal Statement',
   description: 'In addition to providing evidence against the school, you can write a personal statement describing how your school lied to and defrauded you and upload it here.',
-  uploadButtonText: 'Upload files',
+  uploadButtonText: 'Upload file',
+  footerNotes: 'JPEG, PNG, PDF format',
 };
 
 const evidenceUploader = {
@@ -320,6 +328,7 @@ const evidenceUploader = {
   title: 'Evidence (Optional)',
   description: 'Complement your case by attaching any supporting documents.',
   uploadButtonText: 'Upload files',
+  footerNotes: 'JPEG, PNG, PDF format',
 };
 
 exports.seed = (knex) => {
@@ -367,7 +376,8 @@ The number is: 1-800-304-3107.`,
                     maxFileSize: 5242880,
                     title: 'Defence to Repayment (Optional)',
                     description: 'Attach your <a href="/dispute-tools/defence-to-repayment" target="_blank" rel="noopener noreferrer">DTR</a> If you have previously filed.',
-                    uploadButtonText: 'Upload files',
+                    uploadButtonText: 'Upload file',
+                    footerNotes: 'PDF format',
                   },
                   evidenceUploader,
                 ],
@@ -454,7 +464,8 @@ The Department of Education usually sends offset notices once per year in the su
                     maxFileSize: 5242880,
                     title: 'Defence to Repayment (Optional)',
                     description: 'Attach your DTR If you have previously filed.',
-                    uploadButtonText: 'Upload files',
+                    uploadButtonText: 'Upload file',
+                    footerNotes: 'PDF format',
                   },
                   evidenceUploader,
                 ],
@@ -536,7 +547,6 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
                               label: 'Your Full Name',
                               validations: [
                                 'required',
-                                'alpha',
                                 'maxLength:128',
                               ],
                             },
@@ -556,6 +566,7 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
                               name: 'address2',
                               label: 'Your Address 2',
                               validations: [
+                                'required',
                                 'maxLength:128',
                               ],
                             },
@@ -612,7 +623,8 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
                     maxFileSize: 5242880,
                     title: 'Collection notice',
                     description: 'Attach a digital copy of the collection notice you received in the mail. You can take a photo of the notice with your phone or scan it into your computer.',
-                    uploadButtonText: 'Upload files',
+                    uploadButtonText: 'Upload file',
+                    footerNotes: 'JPEG, PNG, PDF format',
                   },
                 ],
               },
@@ -626,9 +638,9 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
           about: `### Credit Report Dispute Letter
 
 Before using this tool, you should get a copy of your credit report and review it for errors. Millions of us have errors on our credit reports, which make it harder to do basic things like get a job or rent an apartment. This is totally unfair and unacceptable!
-Fight back! You can get a free copy of your credit report once per year at [annualcreditreport.com](http://annualcreditreport.com) or call 1-877-322-8228. For a list of common errors to look for, go [here](http://google.com).
+Fight back! You can get a free copy of your credit report once per year at [annualcreditreport.com](http://annualcreditreport.com) or call 1-877-322-8228. For a list of common errors to look for, go <a href="http://www.consumerfinance.gov/askcfpb/1339/if-credit-reporting-error-corrected-how-long-will-it-take-i-find-out-results.html" target="_blank" rel="noopener noreferrer">here</a>.
 
-Once you have determined that there are errors on your report, you can use this tool to ask for a correction. This tool will help you write a dispute letter to the three main credit reporting agencies. The Debt Collective will submit the letters your behalf. Consumer reporting agencies have 5 business days after completing an investigation to notify you of the results. Generally, they must investigate the dispute within 30 days of receiving it. For more information about the process, go [here](http://google.com).
+Once you have determined that there are errors on your report, you can use this tool to ask for a correction. This tool will help you write a dispute letter to the three main credit reporting agencies. The Debt Collective will submit the letters your behalf. Consumer reporting agencies have 5 business days after completing an investigation to notify you of the results. Generally, they must investigate the dispute within 30 days of receiving it. For more information about the process, go <a href="http://www.consumerfinance.gov/askcfpb/1261/what-are-errors-show-credit-reports-out-having-creditors-report-your-accounts-credit-bureaus.html" target="_blank" rel="noopener noreferrer">here</a>.
 `,
           completed: 0,
           data: {
@@ -651,9 +663,9 @@ Once you have determined that there are errors on your report, you can use this 
                             {
                               name: 'name',
                               label: 'Your Full Name',
+                              columnClassName: 'md-col-8',
                               validations: [
                                 'required',
-                                'alpha',
                                 'maxLength:128',
                               ],
                             },
@@ -672,7 +684,9 @@ Once you have determined that there are errors on your report, you can use this 
                             {
                               name: 'address2',
                               label: 'Your Address 2',
+                              columnClassName: 'md-col-8',
                               validations: [
+                                'required',
                                 'maxLength:128',
                               ],
                             },
@@ -681,6 +695,7 @@ Once you have determined that there are errors on your report, you can use this 
                               label: 'Your State',
                               type: 'dropdown',
                               options: US_STATES,
+                              columnClassName: 'md-col4',
                               validations: [
                                 'required',
                               ],
@@ -691,7 +706,7 @@ Once you have determined that there are errors on your report, you can use this 
                               name: 'email',
                               label: 'Your email',
                               placeholder: 'you@example.com',
-                              columnClassName: '.one-half',
+                              columnClassName: 'md-col-6',
                               validations: [
                                 'required',
                                 'email',
@@ -701,12 +716,11 @@ Once you have determined that there are errors on your report, you can use this 
                             {
                               name: 'phone',
                               label: 'Your telephone',
-                              placeholder: '(55) 555-5555-5555',
-                              columnClassName: '.one-half',
+                              placeholder: '(555) 555-5555',
+                              columnClassName: 'md-col-6',
                               validations: [
                                 'required',
-                                'alphaNumeric',
-                                'maxLength:16',
+                                'maxLength:20',
                               ],
                             },
                           ],
@@ -715,15 +729,17 @@ Once you have determined that there are errors on your report, you can use this 
                               name: 'dob',
                               type: 'date',
                               label: 'Date of Birth',
+                              placeholder: 'mm-dd-yyyy',
+                              columnClassName: 'md-col-6',
                               validations: [
-                                'date',
+                                'required',
+                                'maxLength:20',
                               ],
                             },
-                          ],
-                          [
                             {
                               name: 'ssn',
                               label: 'Social Security #',
+                              columnClassName: 'md-col-6',
                               validations: [
                                 'required',
                               ],
@@ -765,7 +781,8 @@ Once you have determined that there are errors on your report, you can use this 
                     maxFileSize: 5242880,
                     title: 'Picture ID',
                     description: 'Please attach a photo of your picture ID. ',
-                    uploadButtonText: 'Upload files',
+                    uploadButtonText: 'Upload file',
+                    footerNotes: 'JPEG, PNG format',
                   },
                   {
                     type: 'upload',
@@ -777,6 +794,7 @@ Once you have determined that there are errors on your report, you can use this 
                     title: 'Credit report errors (optional)',
                     description: 'lease attach a document highlighting credit report errors.',
                     uploadButtonText: 'Upload files',
+                    footerNotes: 'JPEG, PNG, PDF format',
                   },
                 ],
               },
@@ -820,7 +838,6 @@ The Department of Education usually sends offset notices once per year in the su
                               label: 'Your Full Name',
                               validations: [
                                 'required',
-                                'alpha',
                                 'maxLength:128',
                               ],
                             },
@@ -839,7 +856,9 @@ The Department of Education usually sends offset notices once per year in the su
                             {
                               name: 'city',
                               label: 'Your City',
+                              columnClassName: 'md-col-4',
                               validations: [
+                                'required',
                                 'maxLength:128',
                               ],
                             },
@@ -848,6 +867,7 @@ The Department of Education usually sends offset notices once per year in the su
                               label: 'Your State',
                               type: 'dropdown',
                               options: US_STATES,
+                              columnClassName: 'md-col-4',
                               validations: [
                                 'required',
                               ],
@@ -855,7 +875,9 @@ The Department of Education usually sends offset notices once per year in the su
                             {
                               name: 'zip',
                               label: 'Your Zip',
+                              columnClassName: 'md-col-4',
                               validations: [
+                                'required',
                                 'alphaDash',
                               ],
                             },
@@ -865,7 +887,7 @@ The Department of Education usually sends offset notices once per year in the su
                               name: 'email',
                               label: 'Your email',
                               placeholder: 'you@example.com',
-                              columnClassName: '.one-half',
+                              columnClassName: 'md-col-4',
                               validations: [
                                 'required',
                                 'email',
@@ -875,23 +897,21 @@ The Department of Education usually sends offset notices once per year in the su
                             {
                               name: 'phone',
                               label: 'Your telephone',
-                              placeholder: '(55) 555-5555-5555',
-                              columnClassName: '.one-half',
+                              placeholder: '(555) 555-5555',
+                              columnClassName: 'md-col-4',
                               validations: [
                                 'required',
-                                'alphaNumeric',
-                                'maxLength:16',
+                                'maxLength:20',
                               ],
                             },
-                          ],
-                          [
                             {
                               name: 'ssn',
                               label: 'Social Security # (Last 4)',
+                              columnClassName: 'md-col-4',
                               validations: [
                                 'required',
                                 'numeric',
-                                'maxLength:4',
+                                'exactLength:4',
                               ],
                             },
                           ],
@@ -899,6 +919,7 @@ The Department of Education usually sends offset notices once per year in the su
                       },
                       {
                         title: 'Your Employment',
+                        type: 'group',
                         yesno: true,
                         label: 'Are you currently employed?',
                         fields: [
@@ -914,6 +935,7 @@ The Department of Education usually sends offset notices once per year in the su
                       },
                       {
                         title: 'Your loan',
+                        type: 'group',
                         fields: [
                           [
                             {
@@ -921,6 +943,9 @@ The Department of Education usually sends offset notices once per year in the su
                               label: 'Who is your loan servicer?',
                               type: 'dropdown',
                               options: LOAN_SERVICERS,
+                              validations: [
+                                'required',
+                              ],
                             },
                           ],
                           [
@@ -936,6 +961,7 @@ The Department of Education usually sends offset notices once per year in the su
                       },
                       {
                         title: 'Your school',
+                        type: 'group',
                         fields: [
                           [
                             {
@@ -959,6 +985,9 @@ The Department of Education usually sends offset notices once per year in the su
                               hidden: true,
                               type: 'dropdown',
                               options: CORINTHIAN_SCHOOLS,
+                              validations: [
+                                'required',
+                              ],
                             },
                           ],
                           [
@@ -967,6 +996,7 @@ The Department of Education usually sends offset notices once per year in the su
                               label: 'School Name',
                               hidden: false,
                               validations: [
+                                'required',
                                 'maxLength:128',
                               ],
                             },
@@ -978,6 +1008,7 @@ The Department of Education usually sends offset notices once per year in the su
                               subLabel: 'If you can\'t remember your campus\'s address and don\'t have any records stating it, entering the name of your school into a search engine may turn up its address. If you can\'t find the address, you can enter just your school campus\'s state.',
                               hidden: false,
                               validations: [
+                                'required',
                                 'maxLength:256',
                               ],
                             },
@@ -987,6 +1018,10 @@ The Department of Education usually sends offset notices once per year in the su
                               name: 'school-city',
                               label: 'School City',
                               hidden: false,
+                              validations: [
+                                'required',
+                                'maxLength:128',
+                              ],
                             },
                           ],
                           [
@@ -996,6 +1031,9 @@ The Department of Education usually sends offset notices once per year in the su
                               hidden: false,
                               type: 'dropdown',
                               options: US_STATES,
+                              validations: [
+                                'required',
+                              ],
                             },
                           ],
                           [
@@ -1003,11 +1041,21 @@ The Department of Education usually sends offset notices once per year in the su
                               name: 'school-attendance[from]',
                               label: 'When did you attend school?: From',
                               placeholder: 'month, year',
+                              columnClassName: 'md-col-6',
+                              validations: [
+                                'required',
+                                'maxLength:20',
+                              ],
                             },
                             {
                               name: 'school-attendance[to]',
                               label: 'To',
                               placeholder: 'month, year',
+                              columnClassName: 'md-col-6',
+                              validations: [
+                                'required',
+                                'maxLength:20',
+                              ],
                             },
                           ],
                           [
@@ -1015,6 +1063,10 @@ The Department of Education usually sends offset notices once per year in the su
                               name: 'school-program-name',
                               label: 'What was the name of your program?',
                               placeholder: 'e.g. Medical Assisting, Business Management',
+                              validations: [
+                                'required',
+                                'maxLength:128',
+                              ],
                             },
                           ],
                           [
@@ -1027,6 +1079,9 @@ The Department of Education usually sends offset notices once per year in the su
                                 'Certificate',
                                 'Bachelors',
                                 'Masters',
+                              ],
+                              validations: [
+                                'required',
                               ],
                             },
                           ],
@@ -1044,11 +1099,13 @@ The Department of Education usually sends offset notices once per year in the su
                       {
                         title: 'Your experience',
                         subtitle: 'Now we’ll prompt you to describe different aspects of your experience with your school.',
+                        type: 'group',
                         fields: [
                           [
                             {
                               title: 'Job placement',
                               subtitle: 'Did your school lie to you or mislead you about your job prospects? This could include:',
+                              type: 'group',
                               text: `
   <ul>
     <li>Citing false or misleading statistics about job placement rates</li>
@@ -1063,6 +1120,9 @@ The Department of Education usually sends offset notices once per year in the su
                                     name: 'job-placement-detail',
                                     label: 'Please explain in detail.',
                                     type: 'text',
+                                    validations: [
+                                      'required',
+                                    ],
                                   },
                                 ],
                               ],
@@ -1072,6 +1132,7 @@ The Department of Education usually sends offset notices once per year in the su
                             {
                               title: 'Accreditation',
                               subtitle: 'Did your school mislead you about the quality of the education you would receive? This could include:',
+                              type: 'group',
                               text: `
   <ul>
     <li>Falsely claiming that the school had the proper accreditation to allow its graduates to take a particular licensing exam</li>
@@ -1086,6 +1147,9 @@ The Department of Education usually sends offset notices once per year in the su
                                     name: 'accreditation-detail',
                                     label: 'Please explain in detail.',
                                     type: 'text',
+                                    validations: [
+                                      'required',
+                                    ],
                                   },
                                 ],
                               ],
@@ -1095,6 +1159,7 @@ The Department of Education usually sends offset notices once per year in the su
                             {
                               title: 'Eligibility',
                               subtitle: 'Did your school mislead you about whether you were eligible to benefit from the program? This could include:',
+                              type: 'group',
                               text: `
   <ul>
     <li>Enrolling you even though you did not have a high school diploma or GED</li>
@@ -1108,6 +1173,9 @@ The Department of Education usually sends offset notices once per year in the su
                                     name: 'eligibility-detail',
                                     label: 'What did your school do? If any of the listed behaviours apply, please state which.',
                                     type: 'text',
+                                    validations: [
+                                      'required',
+                                    ],
                                   },
                                 ],
                               ],
@@ -1117,6 +1185,7 @@ The Department of Education usually sends offset notices once per year in the su
                             {
                               title: 'Cost/payment',
                               subtitle: 'Did your school mislead you about how you would pay for the program? This could include:',
+                              type: 'group',
                               text: `
   <ul>
     <li>Understating the total cost of the program</li>
@@ -1134,6 +1203,9 @@ The Department of Education usually sends offset notices once per year in the su
                                     name: 'cost-payment-detail',
                                     label: 'What did your school do? If any of the listed behaviours apply, please state which.',
                                     type: 'text',
+                                    validations: [
+                                      'required',
+                                    ],
                                   },
                                 ],
                               ],
@@ -1143,6 +1215,7 @@ The Department of Education usually sends offset notices once per year in the su
                             {
                               title: 'Illegal activity',
                               subtitle: 'Did your school mislead you about the extent of the illegal activities there, and the effect those activities would have on your school’s reputation and continued existence? This could include:',
+                              type: 'group',
                               text: `
   <ul>
     <li>The school shutting down in light of lawsuits or financial mismanagement</li>
@@ -1156,6 +1229,9 @@ The Department of Education usually sends offset notices once per year in the su
                                     name: 'illegal-activity-detail',
                                     label: 'What did your school do? If any of the listed behaviours apply, please state which.',
                                     type: 'text',
+                                    validations: [
+                                      'required',
+                                    ],
                                   },
                                 ],
                               ],
@@ -1165,6 +1241,7 @@ The Department of Education usually sends offset notices once per year in the su
                             {
                               title: 'Other',
                               subtitle: 'Did your school mislead you in other ways that you didn\'t already describe?',
+                              type: 'group',
                               yesno: true,
                               fields: [
                                 [
@@ -1172,6 +1249,9 @@ The Department of Education usually sends offset notices once per year in the su
                                     name: 'other-detail',
                                     label: 'What did your school do? ',
                                     type: 'text',
+                                    validations: [
+                                      'required',
+                                    ],
                                   },
                                 ],
                               ],
@@ -1181,6 +1261,7 @@ The Department of Education usually sends offset notices once per year in the su
                             {
                               title: 'Measure of injury',
                               subtitle: 'Now we\'ll ask you to explain how the conduct you’ve already described here by your school caused you harm and put you in debt. Because of this conduct, I\'ve suffered the following harm:',
+                              type: 'group',
                               fields: [
                                 [
                                   {
@@ -1265,7 +1346,6 @@ If you don't have the name and address of the collection agency, you will not be
                               label: 'Your Full Name',
                               validations: [
                                 'required',
-                                'alpha',
                                 'maxLength:128',
                               ],
                             },
@@ -1295,6 +1375,7 @@ If you don't have the name and address of the collection agency, you will not be
                               name: 'firm-address',
                               label: 'Collection agency\'s or law firm\'s address',
                               validations: [
+                                'required',
                                 'maxLength:256',
                               ],
                             },
@@ -1304,6 +1385,7 @@ If you don't have the name and address of the collection agency, you will not be
                               name: 'firm-name',
                               label: 'Name of the collection agency or law firm that last contacted you about your debt',
                               validations: [
+                                'required',
                                 'maxLength:256',
                               ],
                             },
@@ -1313,6 +1395,7 @@ If you don't have the name and address of the collection agency, you will not be
                               name: 'account-number',
                               label: 'Account Number',
                               validations: [
+                                'required',
                                 'maxLength:128',
                               ],
                             },
@@ -1320,10 +1403,12 @@ If you don't have the name and address of the collection agency, you will not be
                           [
                             {
                               name: 'last-correspondence-date',
-                              label: 'Your email',
+                              label: 'Date of Last Correspondence',
                               type: 'date',
+                              placeholder: 'mm-dd-yyyy',
                               validations: [
                                 'required',
+                                'maxLength:20',
                               ],
                             },
                           ],
@@ -1338,9 +1423,10 @@ If you don't have the name and address of the collection agency, you will not be
                     optional: false,
                     mimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
                     maxFileSize: 5242880,
-                    title: 'Evidence (Optional)',
+                    title: 'Evidence',
                     description: 'Digital copy of letter you received in the mail from the collection agency or law firm',
                     uploadButtonText: 'Upload files',
+                    footerNotes: 'JPEG, PNG, PDF format',
                   },
                 ],
               },
