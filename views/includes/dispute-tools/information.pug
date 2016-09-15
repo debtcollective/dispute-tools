@@ -5,9 +5,9 @@ mixin _formCard(step, _completed)
     .flex-auto.pb3
       .pb1.-fw-700.-ttu= step.title
       if _completed
-        .pb1.-caption.-success
-          svg.mr1(width="11" height="8"): use(xlink:href="#svg-checkmark")
-          | This form is completed now.
+        .pb1.-caption.-success.flex
+          div: svg.mr1(width="11" height="8"): use(xlink:href="#svg-checkmark")
+          .flex-auto This form is completed now.
       else
         .-caption= step.description
     button.-k-btn.-sm.btn-outline.-fw-500.js-trigger-personal-modal(
@@ -20,7 +20,12 @@ mixin _informationCard(step, _completed)
   )
     .flex-auto.pb3
       .pb1.-fw-700.-ttu= step.title
-      .-caption.-neutral-mid= step.description
+      if _completed
+        .pb1.-caption.-success.flex
+          div: svg.mr1(width="11" height="8"): use(xlink:href="#svg-checkmark")
+          .flex-auto Using information you already entered, we will complete this form for you.
+      else
+        .-caption.-neutral-mid= step.description
 
 mixin _uploadCard(step, _completed)
   .Tool__Info.flex.flex-column.-fh(
@@ -104,7 +109,7 @@ div(
               - _completed = dispute.data.forms && dispute.data.forms[step.name] ? true : false
               +_formCard(step, _completed)
             when 'information'
-              - _completed = dispute.data.forms && dispute.data.forms[step.name] ? true : false
+              - _completed = dispute.data.forms && dispute.data.forms['personal-information-form'] ? true : false
               +_informationCard(step, _completed)
             when 'upload'
               - _completed = dispute.data.attachments && dispute.data.attachments.filter(a => a.name === step.name)[0]
