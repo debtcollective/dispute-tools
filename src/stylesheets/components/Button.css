@@ -1,3 +1,11 @@
+.btn-clear {
+  background: none;
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+}
+
 .btn-link {
   background-color: transparent;
   &:hover {opacity: .8}
