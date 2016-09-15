@@ -8,7 +8,7 @@ source ~/.profile
 npm install --silent
 cp ./../shared/knexfile.js ./
 cp ./../shared/config.js ./config/
-ln -s /home/deploy/apps/tdc/shared/uploads /home/deploy/apps/tdc/current/public/uploads
+ln -s /home/deploy/apps/tdc/shared/uploads /home/deploy/apps/tdc/current/public/
 knex migrate:latest
 rm -f build/index.json
 npm run build
