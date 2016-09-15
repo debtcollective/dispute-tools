@@ -1,4 +1,8 @@
 @import '../../base';
 @import '../../components/PlayButton';
-@import '../../components/CollectiveCard';
-@import '../../components/AvatarList';
+/* @import '../../components/CollectiveCard'; */
+/* @import '../../components/AvatarList'; */
+
+.underlined-link {
+  border-bottom: .25em solid;
+}
