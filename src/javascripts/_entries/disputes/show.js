@@ -55,8 +55,15 @@ class ViewDisputesShow extends NodeSupport {
   }
 
   _displayNextStep() {
+    const current = document.querySelector('.Tool__sidebar-steps > .-current');
+
     this.informationSection.classList.add('hide');
     this.informationSection.nextElementSibling.classList.remove('hide');
+
+    current.classList.remove('-current');
+    current.classList.add('-done');
+
+    current.nextElementSibling.classList.add('-current');
   }
 }
 

@@ -16,14 +16,14 @@ mixin toolsSidebarMixin(disputeTool, currentStep = 1, steps = _toolSteps)
       | #{disputeTool.completed} People Filled
     ul.list-reset.Tool__sidebar-steps
       each step, index in steps
-        - var _index = index + 1
-        li.relative.pb2.-fw-700(
-          class=currentStep === _index && '-accent'
-          class=currentStep < _index && '-neutral-mid'
-        )
-          if currentStep === _index
-            svg(width="14" height="14"): use(xlink:href="#svg-arrow-forward")
-          if currentStep > _index
-            svg(width="14" height="10"): use(xlink:href="#svg-checkmark")
+        -
+          var _index = index + 1
+          var _className = ''
+          if (currentStep === _index) _className = '-current';
+            else if (currentStep > _index) _className = '-done';
+
+        li.relative.pb2.-fw-700(class= _className)
+          svg.svg-done(width="14" height="14"): use(xlink:href="#svg-arrow-forward")
+          svg.svg-current(width="14" height="10"): use(xlink:href="#svg-checkmark")
           | #{step}
   | &nbsp;
