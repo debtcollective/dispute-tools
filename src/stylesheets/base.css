@@ -93,8 +93,8 @@ body {
   color: var(--k-background-color);
 }
 
-h2 {line-height: 80px}
-h3 {line-height: 40px}
+h2 {line-height: 1.194em; /* 80px */}
+h3 {line-height: 1.081em; /* 40px */}
 
 a {
   color: var(--k-color-palette-primary);
