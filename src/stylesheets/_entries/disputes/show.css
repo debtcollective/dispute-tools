@@ -56,6 +56,10 @@ input[name^='fieldValues[__toggle-radio'][value="no"]:checked ~ fieldset {
     margin-bottom: -26px;
   }
 
+  &-optional-badge {
+    background-color: color(var(--k-color-palette-accent) alpha(25%));
+  }
+
   &-badge {
     width: 40px;
     color: #fff;
