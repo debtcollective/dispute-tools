@@ -81,7 +81,7 @@ const routeMappings = RouteMappings()
     return mappings()
       .put('/:id/update-dispute-data', {
         to: 'Disputes#updateDisputeData',
-        as: 'updateDisputeData'
+        as: 'updateDisputeData',
       })
       .put('/:id/set-signature', {
         to: 'Disputes#setSignature',
@@ -89,8 +89,12 @@ const routeMappings = RouteMappings()
       })
       .post('/:id/add-attachment', {
         to: 'Disputes#addAttachment',
-        as: 'addAttachment'
+        as: 'addAttachment',
       })
+      .put('/:id/remove-attachment/:attachment_id', {
+        to: 'Disputes#removeAttachment',
+        as: 'removeAttachment',
+      });
   });
 
 module.exports = routeMappings;

@@ -1,4 +1,5 @@
 /* globals Class, Krypton, DisputeAttachment, DisputeTool, DisputeStatus */
+/* eslint arrow-body-style: 0 */
 
 const _ = require('lodash');
 
@@ -112,7 +113,36 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
         }
 
         dispute.data.attachments.push(attachment);
+
+        return dispute.save();
       });
+    },
+
+    removeAttachment(id) {
+      const dispute = this;
+
+      if (!dispute.attachments) {
+        throw new Error('Dispute doesn\'t have any attachments');
+      }
+
+      const attachments = dispute.attachments
+        .filter((attachment) => attachment.id === id);
+
+      if (attachments.length === 0) {
+        throw new Error('Attachment not found');
+      }
+
+      return attachments[0].destroy()
+        .then(() => {
+          const dataAttachment = dispute.data.attachments
+            .filter((attachment) => attachment.id === id)[0];
+
+          const index = dispute.data.attachments.indexOf(dataAttachment);
+
+          dispute.data.attachments.splice(index, 1);
+
+          return dispute.save();
+        });
     },
 
     destroy() {

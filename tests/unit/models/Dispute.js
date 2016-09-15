@@ -2,7 +2,6 @@
 
 const expect = require('chai').expect;
 const path = require('path');
-const fs = require('fs');
 
 const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 
@@ -10,6 +9,7 @@ describe('Dispute', () => {
   let user;
   let collective;
   let tool;
+  let attachmentId;
 
   before(function before(){
     this.timeout(5000);
@@ -80,7 +80,7 @@ describe('Dispute', () => {
   });
 
   describe('Instance Methods', () => {
-    const dispute = new Dispute();
+    let dispute = new Dispute();
 
 
     it('Should set an option', () => {
@@ -124,11 +124,31 @@ describe('Dispute', () => {
           .then(() => {
             expect(dispute.data.attachments.length).to.be.equal(1);
             expect(dispute.data.attachments[0].id).to.exists;
+
+            attachmentId = dispute.data.attachments[0].id;
+
             expect(dispute.data.attachments[0].path).to.exists;
             expect(dispute.data.attachments[0].thumb).to.exists;
             expect(dispute.data.attachments[0].name).to.be.equal('single-uploader');
           });
       });
+    });
+
+    it('Should remove an attachment', () => {
+      dispute.userId = user.id;
+      dispute.disputeToolId = tool.id;
+
+      return Dispute.query()
+        .where('id', dispute.id)
+        .include('attachments')
+        .then((disputes) => {
+          dispute = disputes[0];
+
+          return dispute.removeAttachment(attachmentId)
+            .then(() => {
+              expect(dispute.data.attachments.length).to.be.equal(0);
+            });
+        });
     });
   });
 });
