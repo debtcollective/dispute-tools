@@ -2,6 +2,8 @@ mixin headerLink(href, name)
   - className = 'Header__link -fw-700 flex items-center -fh'
   if (href === currentURL) || (currentURL.startsWith(href))
     - className += ' active'
+  if href === '/dispute-tools' && currentURL.startsWith('/disputes')
+    - className += ' active'
   a(href!=href, class=className, title=name)&attributes(attributes)= name
 
 header.Header(data-component-header)

@@ -153,7 +153,7 @@ main {
 .error .-on-error,
 .error + .-on-error {display: block}
 
-.error > input,
+.error > .-k-input,
 .error.-k-select {
   color: var(--k-color-palette-danger);
   background-color: color(var(--k-color-palette-danger) tint(80))

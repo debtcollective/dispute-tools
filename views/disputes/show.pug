@@ -7,298 +7,66 @@ block styles
   link(href="/build/stylesheets/disputes/show.css" rel="stylesheet")
 
 block content
-  - var optionData = dispute.disputeTool.data.options[dispute.data.option]
+  -
+    var optionData = dispute.disputeTool.data.options[dispute.data.option];
+    var currentStep = 2;
+    var currentSection = 'information'
+    var step2require = 0;
+    var step2value = 0;
+
+  each step in optionData.steps
+    case step.type
+      when 'form'
+        - step2require++;
+        if dispute.data.forms && dispute.data.forms[step.name]
+          - step2value++;
+      when 'upload'
+        if step.optional === false
+          - step2require++;
+          if dispute.data.attachments && dispute.data.attachments.filter(a => a.name === step.name).length
+            - step2value++;
+
+  if dispute.disputeTool.data.disputeProcess && (step2require === step2value)
+    - currentStep++;
+    - currentSection = 'signature'
+  else
+    if dispute.data.disputeProcess && (step2require === step2value)
+      - currentStep+=2;
+      - currentSection = 'signature'
+
+  if dispute.data.signature
+    - currentStep++
+    - currentSection = 'follow-up'
 
   .wrapper.px2.py3
     .clearfix.mxn2
       .col.lg-col-3.col-12.px2
         include ../mixins/dispute-tools/sidebar
-        +toolsSidebarMixin(dispute.disputeTool, 2)
+        if dispute.disputeTool.data.disputeProcess
+          +toolsSidebarMixin(dispute.disputeTool, currentStep, [
+            'Let’s get this dispute started!',
+            'Gather information',
+            'Signature',
+            'Follow up'
+          ])
+        else
+          +toolsSidebarMixin(dispute.disputeTool, currentStep)
 
       .col.lg-col-9.col-12.px2
-        // 2) gather information
-        div
-          .pt3.pr3.pl3.pb2.-bg-neutral-dark
-            h2.-accent= dispute.data.option
-            h4.pb1= optionData.title
-            p.-ff-sec= optionData.description
-            .right-align
-              form(
-                action=routeMappings.Disputes.destroy.url(dispute.id)
-                method="post"
-              )
-                input(name="_csrf" type="hidden" value=csrfToken)
-                input(type="hidden" name="_method" value="DELETE")
-                button.-k-btn.btn-link.-primary.-fw-700(type="submit") ← This is not my case
-            hr.my2
+        include ../includes/dispute-tools/information
+        include ../includes/dispute-tools/process
+        include ../includes/dispute-tools/signature
+        include ../includes/dispute-tools/follow-up
 
-            if optionData.steps
-            .clearfix.mxn2.flex.flex-wrap
-              each step in optionData.steps
-
-                - var _completed = dispute.data.forms && dispute.data.forms[step.name] ? true : false
-                .col.md-col-4.col-12.p2
-                  .Tool__Info.flex.flex-column.-fh(
-                    class= `-${step.type} ${_completed && '-completed'}`
-                  )
-                    .flex-auto.pb3
-                      .pb1.-fw-700.-ttu= step.title
-                      if step.type === 'information'
-                        .-caption.-neutral-mid= step.description
-                      else
-                        .-caption= step.description
-
-                    - var _buttonClassName = _completed ? '-primary' : '-white'
-                    if step.type === 'form'
-                      button.-k-btn.-sm.btn-outline.-fw-500(class=_buttonClassName)
-                        | Fill the form
-                    else if step.type === 'upload'
-                      button.-k-btn.-sm.btn-outline.-fw-500(class=_buttonClassName)
-                        | #{step.uploadButtonText}
-                      .Tool__Info__footer-caption.center.-caption
-                        | #{step.mimeTypes}
-
-            if optionData.steps.length
-              pre= JSON.stringify(optionData.steps[0].fieldSets)
-
-          if optionData.steps
-            each step in optionData.steps
-              if step.type === 'form' && step.fieldSets
-
-                .max-width-3.mx-auto
-                  form.px2(
-                    action=routeMappings.Disputes.updateDisputeData.url(dispute.id)
-                    method="post"
-                  )
-                    input(type="hidden" name="_csrf" value=csrfToken)
-                    input(name="_method" type="hidden" value="PUT")
-                    input(type="hidden" name="command" value="setForm")
-                    input(type="hidden" name="formName" value=step.name)
-
-                    - var _formData = dispute.data.forms && dispute.data.forms[step.name] || {}
-
-                    h3#modalToolPersonalInfoFormTitle.pb3.-accent= step.title
-
-                    each sets in step.fieldSets
-                      .pt2.pr3.pl3.pb2.mb2.-bg-neutral-dark
-                        h4= sets.title
-                        p.-ff-sec= sets.subtitle
-                        hr.my2
-
-                        if sets.fields
-                          each row in sets.fields
-                            .clearfix.mxn2
-
-                                if row.length
-                                  each field in row
-                                    .col.md-col-8.col-12.p2(class=field.columnClassName)
-                                      label.inline-block.pb1.-fw-500= field.label
-                                      if field.type === 'dropdown'
-                                        .-k-select
-                                          select.-fw(name=`fieldValues[${field.name}]`)
-                                            option(value="") Choose an option
-                                            each option, val in field.options
-                                              option(
-                                                value= val
-                                              )= option
-                                      else
-                                        input.-k-input.-fw(
-                                          type="text"
-                                          name=`fieldValues[${field.name}]`
-                                          value=_formData[field.name]
-                                          placeholder=field.placeholder
-                                        )
-                                      if field.subLabel
-                                        p.pt1.-caption.-fw-700.-neutral-mid= field.subLabel
-                                      pre= JSON.stringify(field)
-                                else
-                                  .col.md-col-8.col-12.p2(class=row.columnClassName)
-                                    label.inline-block.pb1.-fw-500= row.label
-                                    if row.type === 'dropdown'
-                                      .-k-select
-                                        select.-fw(name=`fieldValues[${row.name}]`)
-                                          option(value="") Choose an option
-                                          each option, val in row.options
-                                            option(
-                                              value= val
-                                            )= option
-                                    else
-                                      input.-k-input.-fw(
-                                        type="text"
-                                        name=`fieldValues[${row.name}]`
-                                        value=_formData[row.name]
-                                        placeholder=field.placeholder
-                                      )
-                                    if row.subLabel
-                                      p.pt1.-caption.-fw-700.-neutral-mid= row.subLabel
-                                    pre= JSON.stringify(row)
-
-                    .py3
-                      button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Save form
-
-          .py3
-            button.-k-btn.btn-primary.-fw.-fw-700 Continue to finalize your dispute&hellip;
-
-        // 3) dispute process
-        -
-          var disputeProcesses = [
-            {
-              value: "1",
-              icon: {
-                name: 'assignment',
-                width: 50,
-                height: 56
-              },
-              title: 'Written records',
-              description: 'Selecting this option means that you are asking the Department of Education to review your dispute and the evidence you provide on this form and provide you with a written decision.'
-            },
-            {
-              value: "2",
-              icon: {
-                name: 'walking',
-                width: 30,
-                height: 51
-              },
-              title: 'In-person hearing',
-              description: 'Selecting this option means that you want to meet with a Department official in person to present your evidence. You can only attend in person if you can travel to Atlanta, Chicago, or San Francisco.'
-            },
-            {
-              value: "3",
-              icon: {
-                name: 'phone',
-                width: 38,
-                height: 38
-              },
-              title: 'Telephone hearing',
-              description: 'Selecting this option means that you will provide a telephone number so that a Department official can call you to discuss your dispute. The Department requires that you be available during business hours on weekdays.'
-            }
-          ]
-
-        form.px2(
-          action=routeMappings.Disputes.updateDisputeData.url(dispute.id)
-          method="post"
-        )
-          input(type="hidden" name="_csrf" value=csrfToken)
-          input(name="_method" type="hidden" value="PUT")
-          input(type="hidden" name="command" value="setDisputeProcess")
-
-          .pt3.pr3.pl3.pb2.-bg-neutral-dark
-            h4.pb1 You’re on your way to disputing #{dispute.disputeTool.name}.
-            p.-ff-sec Before moving to the next section, we want to give you three options for having your claim reviewed.
-            hr.my2
-            .clearfix.mxn2.md-flex.flex-wrap
-
-              each process, index in disputeProcesses
-                .col.md-col-4.col-12.p2
-                  label.Tool__process-option
-                    input(
-                      type="radio"
-                      name="process"
-                      value=process.value
-                      checked=(process.value === dispute.data.disputeProcess)
-                    )
-                    .Tool__process-option-inner.flex.flex-column.-fh
-                      .flex-auto.pb3
-                        .Tool__process-option-icon
-                          svg(width=process.icon.width height=process.icon.height)
-                            use(xlink:href=`#svg-${process.icon.name}`)
-                        h4.pb2= process.title
-                        p.-caption= process.description
-                      .-fw-700(role="button" tabindex="0")
-                        .-k-btn.btn-dark.-fw.-fw-700.css-btn-selected
-                          svg.mr1(width="14" height="10"): use(xlink:href="#svg-checkmark")
-                          | Selected
-                        .-k-btn.btn-outline.-fw.-white.-fw-700 Choose this process
-
-          .py3
-            button.-k-btn.btn-primary.-fw.-fw-700 Continue to sign your dispute&hellip;
-
-        // 4) Signature
-        div
-          .pt3.pr3.pl3.pb2.-bg-neutral-dark
-            h4.pb1 You’re amazing. Time to finalize your dispute.
-            p.pb1.-ff-sec You are ready to dispute your #{dispute.disputeTool.name} with the Department of Education.
-            hr.my2
-            .relative.pl1.mt4
-              svg.absolute.top-0.left-0(width="46" height="56"): use(xlink:href="#svg-fingerprint")
-              .px4
-                .-caption.-ttu.-fw-500(style="opacity: .5;") Signature
-                h4.pb3.-fw-500 #[span.-accent Written records] hearing dispute.
-                .-h4.-ff-sec.
-                  As further evidence for my claim I request the recipient read this
-                  application in light of past and future applications concerning behavior at
-                  #[span.-accent ${Corintian College}], including the #[span.-accent= dispute.disputeTool.completed] of others who have submitted this form from the same school.
-                  I state under penalty of law that the statements made on this request are true and accurate to the best of my knowledge.
-
-                form(
-                  action=routeMappings.Disputes.setSignature.url(dispute.id)
-                  method="post"
-                )
-                  input(type="hidden" name="_csrf" value=csrfToken)
-                  input(name="_method" type="hidden" value="PUT")
-
-                  .clearfix.mxn2.pt4.pb2.sm-flex.items-center
-                    .col.sm-col-2.col-12.pb1.px2: p.-fw-500 Full name
-                    .col.sm-col-10.col-12.pb1.px2: input.-k-input.-fw(type="text" name="signature" value=dispute.data.signature)
-
-                  button.-k-btn.btn-primary.-fw.-fw-700.-ttu(type="submit") Submit my dispute
-
-                .pt2.pb3.center.-caption By clicking Submit my dispute, you agree to our #[a(href=routeMappings.tos.url() target="_blank") Disclaimer action].
-
-        // 5) follow up
-        div
-          .p3
-            h4.pb1 Thank you for disputing #{dispute.disputeTool.name}
-            ul.AvatarList
-              li: img(src="/images/temp/avatars/01.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/02.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/03.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/04.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/05.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/06.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/07.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/08.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/09.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/10.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/01.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/02.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/03.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/04.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/05.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/06.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/07.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/08.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/09.jpg" width="50" height="50")
-              li: img(src="/images/temp/avatars/10.jpg" width="50" height="50")
-            hr.mb3
-            .clearfix.mxn2
-              .col.md-col-4.col-12.p2
-                .rounded.pt2.pr2.pb3.pl2.-bg-white.-dark
-                  h3.pb4= dispute.disputeTool.name
-                  .flex.items-center.pb1
-                    div: svg.-primary(width="46" height="56"): use(xlink:href="#svg-fingerprint")
-                    .pl2.-ff-sec
-                      .-fw-700 #{currentUser && currentUser.account.fullname || 'Zachary Gibson'}
-                      .-caption.-fw-700(style="color: #4A4A4A;") ${Corintian College}
-
-              .col.md-col-8.col-12.p2
-                .flex
-                  svg(width="40" height="40"): use(xlink:href="#svg-clock")
-                  .pl2
-                    .-caption.-ttu Status
-                    h4.-primary.-ttu= dispute.statuses[0].status
-                hr.my2
-                h2.pb3 Now what?
-                p.pb3.-fw-500 Once you submit your dispute, the Debt Collective will mail it on your behalf as soon as possible. It could take as long as 5 days for the dispute to be mailed. If the Department of Education receives this form within 15 days of the date of your garnishment notice, your garnishment will not begin until after the Department has ruled on your dispute. If you are already being garnished, collections will continue until your dispute is reviewed.
-                p.pb4.-fw-500 We do not have much more information about how long the dispute process takes because online dispute tools are a new invention. By making the dispute form easier to fill out, we are helping more people dispute their debts. This is a good thing! But it could affect the time that it takes for the Department or the guaranty agency to review each case. If you don't hear a response in a timely manner, this may be cause for legal action.
-                hr
-                .clearfix.mxn2
-                  .col.col-6
-                    a.-k-btn.btn-link.-primary.-fw-700()
-                      svg.mr1(width="14" height="14"): use(xlink:href="#svg-arrow-forward")
-                      | Visit the collective
-                  .col.col-6.right-align
-                    a.-k-btn.btn-link.-fw-700.-white() Contact us
+block append body
+  if optionData.steps
+    each step in optionData.steps
+      if step.type === 'form' && step.name === 'personal-information-form' && step.fieldSets
+        .Modal(data-component-modal="personal-information-form" aria-hidden="true" role="dialog" aria-labelledby="modalToolPersonalInfoFormTitle")
+          button(class="Modal__close" aria-label="close")
+            svg(class="-s18"): use(xlink:href="#svg-close")
+          .Modal__body(role="document")
+            include ../includes/dispute-tools/information-form
 
 block scripts
   script(src="/build/javascripts/disputes/show.js" async)
@@ -307,6 +75,7 @@ block scripts
       var options = {
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
+        dispute: !{JSON.stringify(dispute)}
       };
       new ViewDisputesShow(options);
     }, true);
