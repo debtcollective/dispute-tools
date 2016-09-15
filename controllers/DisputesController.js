@@ -181,12 +181,12 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     removeAttachment(req, res) {
       const dispute = res.locals.dispute;
 
-      if (!req.params.attachmentId) {
+      if (!req.params.attachment_id) {
         req.flash('error', 'Missing attachment id');
         return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
       }
 
-      return dispute.removeAttachment(req.params.attachmentId)
+      return dispute.removeAttachment(req.params.attachment_id)
         .then(() => {
           req.flash('success', 'Attachment removed');
           return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
