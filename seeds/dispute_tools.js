@@ -332,12 +332,11 @@ const evidenceUploader = {
 };
 
 exports.seed = (knex) => {
-  const uuid = require('uuid');
-
   return knex('DisputeTools').del()
     .then(() => {
       const tools = [
         {
+          id: '11111111-1111-1111-1111-111111111111',
           name: 'Wage Garnishment Dispute',
           about: `### Wage Garnishment for Federal Student Loans Dispute
 
@@ -427,6 +426,7 @@ The number is: 1-800-304-3107.`,
           },
         },
         {
+          id: '11111111-1111-2222-1111-111111111111',
           name: 'Tax Offset Dispute',
           about: `### Tax Offset for Federal Student Loans
 
@@ -515,6 +515,7 @@ The Department of Education usually sends offset notices once per year in the su
           },
         },
         {
+          id: '11111111-1111-3333-1111-111111111111',
           name: 'General Debt Dispute Letter',
           about: `### General Debt Dispute Letter
 
@@ -632,6 +633,7 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
         },
 
         {
+          id: '11111111-1111-4444-1111-111111111111',
           name: 'Credit Report Dispute Letter',
           about: `### Credit Report Dispute Letter
 
@@ -801,6 +803,7 @@ Once you have determined that there are errors on your report, you can use this 
         },
 
         {
+          id: '11111111-1111-5555-1111-111111111111',
           name: 'Defence to Repayment application',
           about: `### Defence to Repayment application
 
@@ -1309,6 +1312,7 @@ The Department of Education usually sends offset notices once per year in the su
           },
         },
         {
+          id: '11111111-1111-6666-1111-111111111111',
           name: 'Private Student Loan Dispute Letter',
           about: `### Private Student Loan Dispute Letter
 
@@ -1433,7 +1437,7 @@ If you don't have the name and address of the collection agency, you will not be
 
       return knex('DisputeTools').insert(tools.map((tool) => {
         return {
-          id: uuid.v4(),
+          id: tool.id,
           name: tool.name,
           about: tool.about,
           completed: tool.completed,

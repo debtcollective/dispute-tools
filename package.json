@@ -20,7 +20,8 @@
     "start": "scripty",
     "iron-node": "scripty",
     "watch": "scripty",
-    "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg"
+    "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
+    "post_deploy_staging": "scripty"
   },
   "tarima": {
     "bundle": true,
@@ -89,7 +90,6 @@
     "mkdirp": "^0.5.1",
     "morgan": "^1.7.0",
     "multer": "^1.2.0",
-    "mysql": "^2.11.1",
     "neon": "^2.0.0",
     "nodemailer": "^2.5.0",
     "nodemailer-ses-transport": "^1.4.0",
@@ -131,7 +131,7 @@
     "superagent": "^2.1.0",
     "svg-sprite": "^1.3.3",
     "tarima-browser-sync": "^0.1.3",
-    "tarima-cli": "^0.2.2",
+    "tarima-cli": "^0.2.3",
     "testdouble": "^1.6.0"
   }
 }

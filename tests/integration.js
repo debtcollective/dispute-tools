@@ -6,6 +6,7 @@ const path = require('path');
 
 const mocha = new Mocha();
 mocha.reporter('spec');
+mocha.timeout(5000);
 
 require(path.join(process.cwd(), '/bin/server.js'));
 
