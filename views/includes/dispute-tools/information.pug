@@ -117,8 +117,19 @@ div(
               +_uploadCard(step, _completed)
 
   .py3
-    button.-k-btn.btn-primary.-fw.-fw-700(
-      id='js-information-next-step'
-      disabled= step2require !== step2value
-    )
-      | Continue to finalize your dispute&hellip;
+    if dispute.disputeTool.data.disputeProcess && !dispute.disputeTool.data.signature
+        form(
+          action=routeMappings.Disputes.setSignature.url(dispute.id)
+          method="post"
+        )
+          input(type="hidden" name="_csrf" value=csrfToken)
+          input(type="hidden" name="_method" value="PUT")
+          input(type="hidden" name="signature" value="TDC")
+          button.-k-btn.btn-primary.-fw.-fw-700(
+            disabled= step2require !== step2value
+          ) Continue to finalize your dispute&hellip;
+    else
+      button.-k-btn.btn-primary.-fw.-fw-700(
+        id='js-information-next-step'
+        disabled= step2require !== step2value
+      ) Continue to finalize your dispute&hellip;

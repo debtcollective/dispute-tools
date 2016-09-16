@@ -26,17 +26,17 @@ block content
           if dispute.data.attachments && dispute.data.attachments.filter(a => a.name === step.name).length
             - step2value++;
 
-  if dispute.disputeTool.data.disputeProcess && (step2require === step2value)
+  if dispute.disputeTool.data.disputeProcess && (step2require === step2value) && dispute.data.signature
     - currentStep++;
-    - currentSection = 'signature'
+    - currentSection = 'follow-up'
   else
     if dispute.data.disputeProcess && (step2require === step2value)
       - currentStep+=2;
       - currentSection = 'signature'
 
-  if dispute.data.signature
-    - currentStep++
-    - currentSection = 'follow-up'
+    if dispute.data.signature
+      - currentStep++
+      - currentSection = 'follow-up'
 
   .wrapper.px2.py3
     .clearfix.mxn2
@@ -46,7 +46,6 @@ block content
           +toolsSidebarMixin(dispute.disputeTool, currentStep, [
             'Let’s get this dispute started!',
             'Gather information',
-            'Signature',
             'Follow up'
           ])
         else

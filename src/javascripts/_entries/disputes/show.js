@@ -30,8 +30,10 @@ class ViewDisputesShow extends NodeSupport {
 
     this.informationSection = document.querySelector('[data-dispute-information]');
     this.informationSubmitButton = document.getElementById('js-information-next-step');
-    this._displayNextStepRef = this._displayNextStep.bind(this);
-    this.informationSubmitButton.addEventListener('click', this._displayNextStepRef);
+    if (this.informationSubmitButton) {
+      this._displayNextStepRef = this._displayNextStep.bind(this);
+      this.informationSubmitButton.addEventListener('click', this._displayNextStepRef);
+    }
     // TODO:
     // - / pass dispute data on config
     // - current state controller
