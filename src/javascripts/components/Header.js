@@ -19,6 +19,9 @@ export default class Header extends Widget {
     this.bg = this.element.querySelector('.Header__bg');
     this._bindEvents();
 
+    const _scrollPosition = APP.SCROLLING_BOX.scrollTop;
+    APP.SCROLLING_BOX.scrollTop = (_scrollPosition - 1);
+
     if (config.currentUser) {
       return this._handleLoggedUser();
     }
