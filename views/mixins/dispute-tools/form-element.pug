@@ -29,19 +29,31 @@ mixin toolsFormElementMixin(field, index)
     case field.type
       when 'dropdown'
         label.inline-block.pb1.-fw-500= field.label
-        .-k-select
-          select.-fw(
+        if field.multiple
+          select.-k-select-multiple.-fw(
             name=`fieldValues[${field.name}]`
             multiple= field.multiple
             data-name= field.name
             data-hidden= field.hidden && field.hidden.toString()
           )
-            option(value="") Choose an option
             each option in field.options
               option(
                 value= option
-                selected!= _formData[field.name] === option
+                selected!= _formData[field.name].includes(option)
               )= option
+        else
+          .-k-select
+            select.-fw(
+              name=`fieldValues[${field.name}]`
+              data-name= field.name
+              data-hidden= field.hidden && field.hidden.toString()
+            )
+              option(value="") Choose an option
+              each option in field.options
+                option(
+                  value= option
+                  selected!= _formData[field.name] === option
+                )= option
         p.-on-error.-danger.-caption.-fw-500.mt1
 
       when 'date'

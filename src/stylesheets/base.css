@@ -162,6 +162,12 @@ main {
     background-color: transparent;
   }
 }
+.-k-select-multiple {
+  font-size: var(--k-font-size);
+  padding: calc(var(--k-font-size) - 1px) 1em calc(var(--k-font-size) - 2px);
+  border-width: 0;
+  border-radius: var(--border-radius);
+}
 
 .-on-error {display: none}
 .error .-on-error,
