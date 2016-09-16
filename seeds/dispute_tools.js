@@ -17,7 +17,7 @@ const LOAN_SERVICERS = [
   'ECMC',
   'AES',
   'Other',
-  'I don\'t know',
+  'I don’t know',
 ];
 
 const CORINTHIAN_SCHOOLS = [
@@ -138,7 +138,7 @@ const CORINTHIAN_SCHOOLS = [
 const personalInformationFieldSets = [
   {
     title: 'About You',
-    subtitle: 'Let\'s get stated',
+    subtitle: 'Let’s get stated',
     fields: [
       [
         {
@@ -541,7 +541,7 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
             options: {
               none: {
                 title: 'Gather Materials',
-                description: 'A little known fact of the debt collections industry is that the vast majority of collectors can\'t prove they own our debts. If they can\'t prove it, then why should we pay? Demanding proof of ownership is the first step to getting debt collectors off our backs.',
+                description: 'A little known fact of the debt collections industry is that the vast majority of collectors can’t prove they own our debts. If they can’t prove it, then why should we pay? Demanding proof of ownership is the first step to getting debt collectors off our backs.',
                 steps: [
                   {
                     type: 'form',
@@ -608,7 +608,7 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
                           [
                             {
                               name: 'agency-address',
-                              label: 'Collection agency\'s or law firm\'s address',
+                              label: 'Collection agency’s or law firm’s address',
                               validations: [
                                 'required',
                               ],
@@ -664,7 +664,7 @@ Once you have determined that there are errors on your report, you can use this 
             options: {
               none: {
                 title: 'Gather Materials',
-                description: 'A little known fact of the debt collections industry is that the vast majority of collectors can\'t prove they own our debts. If they can\'t prove it, then why should we pay? Demanding proof of ownership is the first step to getting debt collectors off our backs.',
+                description: 'A little known fact of the debt collections industry is that the vast majority of collectors can’t prove they own our debts. If they can’t prove it, then why should we pay? Demanding proof of ownership is the first step to getting debt collectors off our backs.',
                 steps: [
                   {
                     type: 'form',
@@ -844,7 +844,7 @@ The Department of Education usually sends offset notices once per year in the su
             options: {
               none: {
                 title: 'Gather Materials',
-                description: 'A little known fact of the debt collections industry is that the vast majority of collectors can\'t prove they own our debts. If they can\'t prove it, then why should we pay? Demanding proof of ownership is the first step to getting debt collectors off our backs.',
+                description: 'A little known fact of the debt collections industry is that the vast majority of collectors can’t prove they own our debts. If they can’t prove it, then why should we pay? Demanding proof of ownership is the first step to getting debt collectors off our backs.',
                 steps: [
                   {
                     type: 'form',
@@ -1028,7 +1028,7 @@ The Department of Education usually sends offset notices once per year in the su
                             {
                               name: 'school-address',
                               label: 'School Address',
-                              subLabel: 'If you can\'t remember your campus\'s address and don\'t have any records stating it, entering the name of your school into a search engine may turn up its address. If you can\'t find the address, you can enter just your school campus\'s state.',
+                              subLabel: 'If you can’t remember your campus’s address and don’t have any records stating it, entering the name of your school into a search engine may turn up its address. If you can’t find the address, you can enter just your school campus’s state.',
                               hidden: false,
                               validations: [
                                 'required',
@@ -1061,7 +1061,7 @@ The Department of Education usually sends offset notices once per year in the su
                           ],
                           [
                             {
-                              name: 'school-attendance[from]',
+                              name: 'school-attendance_from',
                               label: 'When did you attend school?: From',
                               placeholder: 'month, year',
                               columnClassName: 'md-col-6',
@@ -1071,7 +1071,7 @@ The Department of Education usually sends offset notices once per year in the su
                               ],
                             },
                             {
-                              name: 'school-attendance[to]',
+                              name: 'school-attendance_to',
                               label: 'To',
                               placeholder: 'month, year',
                               columnClassName: 'md-col-6',
@@ -1263,7 +1263,7 @@ The Department of Education usually sends offset notices once per year in the su
                           [
                             {
                               title: 'Other',
-                              subtitle: 'Did your school mislead you in other ways that you didn\'t already describe?',
+                              subtitle: 'Did your school mislead you in other ways that you didn’t already describe?',
                               type: 'group',
                               yesno: true,
                               fields: [
@@ -1283,7 +1283,7 @@ The Department of Education usually sends offset notices once per year in the su
                           [
                             {
                               title: 'Measure of injury',
-                              subtitle: 'Now we\'ll ask you to explain how the conduct you’ve already described here by your school caused you harm and put you in debt. Because of this conduct, I\'ve suffered the following harm:',
+                              subtitle: 'Now we’ll ask you to explain how the conduct you’ve already described here by your school caused you harm and put you in debt. Because of this conduct, I’ve suffered the following harm:',
                               type: 'group',
                               fields: [
                                 [
@@ -1296,14 +1296,14 @@ The Department of Education usually sends offset notices once per year in the su
                                 [
                                   {
                                     name: 'credits-wont-transfer-checkbox',
-                                    label: 'I couldn\'t enroll in another school because my credits wouldn\'t transfer.',
+                                    label: 'I couldn’t enroll in another school because my credits wouldn’t transfer.',
                                     type: 'checkbox',
                                   },
                                 ],
                                 [
                                   {
                                     name: 'more-student-loan-checkbox',
-                                    label: 'I couldn\'t enroll in another school because I couldn\'t take out more student loan debt.',
+                                    label: 'I couldn’t enroll in another school because I couldn’t take out more student loan debt.',
                                     type: 'checkbox',
                                   },
                                 ],
@@ -1399,7 +1399,7 @@ If you don't have the name and address of the collection agency, you will not be
                           [
                             {
                               name: 'firm-address',
-                              label: 'Collection agency\'s or law firm\'s address',
+                              label: 'Collection agency’s or law firm’s address',
                               validations: [
                                 'required',
                                 'maxLength:256',
