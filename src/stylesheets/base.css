@@ -89,7 +89,7 @@ body {
 
 ::selection {
   background-color: var(--k-color-palette-primary);
-  color: var(--k-background-color);
+  color: #fff;
 }
 
 h2 {line-height: 1.194em; /* 80px */}
