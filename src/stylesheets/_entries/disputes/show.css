@@ -49,6 +49,12 @@ input[name^='fieldValues[__toggle-radio'][value="no"]:checked ~ fieldset {
     & .Tool__Info__footer-caption {
       color: var(--k-color-palette-neutral-mid);
     }
+
+
+    & .Tool__Info-optional-badge {
+      background-color: color(var(--k-color-palette-neutral-mid) alpha(25%));
+      color: var(--k-color-palette-neutral-mid);
+    }
   }
 
   &__footer-caption {
@@ -58,6 +64,7 @@ input[name^='fieldValues[__toggle-radio'][value="no"]:checked ~ fieldset {
 
   &-optional-badge {
     background-color: color(var(--k-color-palette-accent) alpha(25%));
+    color: var(--k-color-palette-accent);
   }
 
   &-badge {

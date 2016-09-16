@@ -36,7 +36,7 @@ mixin _uploadCard(step, _completed)
     .flex-auto.pb3
       .pb1.-fw-700.-ttu= step.title
       if step.optional
-        span.Tool__Info-optional-badge.inline-block.rounded.px1.mb2.-caption.-accent.-fw-700 OPTIONAL
+        span.Tool__Info-optional-badge.inline-block.rounded.px1.mb2.-caption.-fw-700 OPTIONAL
       - var _attachments = dispute.data.attachments && dispute.data.attachments.filter(a => a.name === step.name)
 
       if !_attachments || !_attachments.length
