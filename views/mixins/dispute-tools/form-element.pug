@@ -45,7 +45,7 @@ mixin toolsFormElementMixin(field, index)
             each option in field.options
               option(
                 value= option
-                selected!= _formData[field.name].includes(option)
+                selected!= _formData[field.name] && _formData[field.name].includes(option)
               )= option
         else
           .-k-select
