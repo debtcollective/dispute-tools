@@ -350,6 +350,10 @@ If you have Direct loans, we will send your dispute to the Department of Educati
 The number is: 1-800-304-3107.`,
           completed: 0,
           data: {
+            nowWhat: `
+              We do not have much more information about how long the dispute process takes because online dispute tools have not been used before. By making the dispute form easier to fill out, we are helping more people dispute their debts. This is a good thing! But it could affect the time that it takes for the Department to review each case. If you don't hear a response in a timely manner, this may be cause for legal action. We are watching what happens to these disputes very closely. And will we will prompt you to let us know what happens in your case so we can work together to develop collective strategies to fight back.
+            `,
+            signature: 'I state under penalty of law that the statements made on this request are true and accurate to the best of my knowledge.',
             options: {
               A: {
                 title: 'I do not owe the full amount I am being billed for because I repaid some or all of this debt.',
@@ -439,6 +443,10 @@ You can use this form to submit a dispute to the Department of Education. The De
 The Department of Education usually sends offset notices once per year in the summer. If you want to know whether your taxes will be offset as a result of a federal student loan, you can call the Bureau of the Fiscal Service at 1-800-304-3107. Making this call does not make it more likely that your taxes will be offset.`,
           completed: 0,
           data: {
+            nowWhat: `
+              We do not have much more information about how long the dispute process takes because online dispute tools have not been used before. By making the dispute form easier to fill out, we are helping more people dispute their debts. This is a good thing! But it could affect the time that it takes for the Department to review each case. If you don't hear a response in a timely manner, this may be cause for legal action. We are watching what happens to these disputes very closely. And will we will prompt you to let us know what happens in your case so we can work together to develop collective strategies to fight back.
+            `,
+            signature: 'I state under penalty of law that the statements made on this request are true and accurate to the best of my knowledge.',
             options: {
               A: {
                 title: 'I do not owe the full amount shown because I repaid some or all of this debt.',
@@ -527,6 +535,9 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
           completed: 0,
           data: {
             disputeProcess: 1,
+            nowWhat: `
+            Thank for your disputing your debt! We can't tell you how long it will take for you to hear a response from the debt collector, since each collector handles disputes differently. We will prompt you to notify us when you get a reply. We are watching what happens with these disputes very closely so that we can find out which creditors are breaking the law and so we can find ways to work collectively to challenge them.
+            `,
             options: {
               none: {
                 title: 'Gather Materials',
@@ -645,6 +656,11 @@ Once you have determined that there are errors on your report, you can use this 
           completed: 0,
           data: {
             disputeProcess: 1,
+            nowWhat: `
+              Thank you for disputing your credit report. Your dispute will be sent to the agencies you specified. The dispute process can take up to 30 days. You should hear a response directly from each of the agencies.
+
+              We will prompt you to report the results of your dispute so we can make sure Debt Collective member's rights are respected and that errors are promptly removed.
+            `,
             options: {
               none: {
                 title: 'Gather Materials',
@@ -818,6 +834,13 @@ The Department of Education usually sends offset notices once per year in the su
           completed: 0,
           data: {
             disputeProcess: 1,
+            nowWhat: `
+            Thank you for disputing your Federal student loans. We don’t know how long the Department of Education will take to review your claim.
+
+            We are watching the situation very closely to make sure that everyone gets a fair hearing and that the Department is following the law. We have ongoing campaigns to pressure the Department to cancel all defrauded borrowers’ debt.
+
+            To learn how to participate, log in to the platform and join the conversation. You are not a loan.
+            `,
             options: {
               none: {
                 title: 'Gather Materials',
@@ -1107,11 +1130,11 @@ The Department of Education usually sends offset notices once per year in the su
                               subtitle: 'Did your school lie to you or mislead you about your job prospects? This could include:',
                               type: 'group',
                               text: `
-  <ul>
-    <li>Citing false or misleading statistics about job placement rates</li>
-    <li>Promising inflated salaries</li>
-    <li>Promising but failing to provide support in finding and landing a job.</li>
-  </ul>
+                                <ul>
+                                  <li>Citing false or misleading statistics about job placement rates</li>
+                                  <li>Promising inflated salaries</li>
+                                  <li>Promising but failing to provide support in finding and landing a job.</li>
+                                </ul>
                               `,
                               yesno: true,
                               fields: [
@@ -1134,11 +1157,11 @@ The Department of Education usually sends offset notices once per year in the su
                               subtitle: 'Did your school mislead you about the quality of the education you would receive? This could include:',
                               type: 'group',
                               text: `
-  <ul>
-    <li>Falsely claiming that the school had the proper accreditation to allow its graduates to take a particular licensing exam</li>
-    <li>Falsely claiming that it offered the classes necessary to achieve employment and/or certification in a particular field</li>
-    <li>Citing misleading statistics about the pass rate of students on required licensing or certification exams.</li>
-  </ul>
+                                <ul>
+                                  <li>Falsely claiming that the school had the proper accreditation to allow its graduates to take a particular licensing exam</li>
+                                  <li>Falsely claiming that it offered the classes necessary to achieve employment and/or certification in a particular field</li>
+                                  <li>Citing misleading statistics about the pass rate of students on required licensing or certification exams.</li>
+                                </ul>
                               `,
                               yesno: true,
                               fields: [
@@ -1161,10 +1184,10 @@ The Department of Education usually sends offset notices once per year in the su
                               subtitle: 'Did your school mislead you about whether you were eligible to benefit from the program? This could include:',
                               type: 'group',
                               text: `
-  <ul>
-    <li>Enrolling you even though you did not have a high school diploma or GED</li>
-    <li>Claiming that a felony record or disability would not stand in the way of employment in a particular field.</li>
-  </ul>
+                              <ul>
+                                <li>Enrolling you even though you did not have a high school diploma or GED</li>
+                                <li>Claiming that a felony record or disability would not stand in the way of employment in a particular field.</li>
+                              </ul>
                               `,
                               yesno: true,
                               fields: [
@@ -1187,14 +1210,14 @@ The Department of Education usually sends offset notices once per year in the su
                               subtitle: 'Did your school mislead you about how you would pay for the program? This could include:',
                               type: 'group',
                               text: `
-  <ul>
-    <li>Understating the total cost of the program</li>
-    <li>Signing loan paperwork without your permission</li>
-    <li>Understating the amount of loans necessary</li>
-    <li>Treating grants and loans as if they were the same thing</li>
-    <li>Treating federal and private loans as if they were the same thing</li>
-    <li>Refusing to disclose loan terms or allow review of loan documents</li>
-  </ul>
+                                <ul>
+                                  <li>Understating the total cost of the program</li>
+                                  <li>Signing loan paperwork without your permission</li>
+                                  <li>Understating the amount of loans necessary</li>
+                                  <li>Treating grants and loans as if they were the same thing</li>
+                                  <li>Treating federal and private loans as if they were the same thing</li>
+                                  <li>Refusing to disclose loan terms or allow review of loan documents</li>
+                                </ul>
                               `,
                               yesno: true,
                               fields: [
@@ -1217,10 +1240,10 @@ The Department of Education usually sends offset notices once per year in the su
                               subtitle: 'Did your school mislead you about the extent of the illegal activities there, and the effect those activities would have on your school’s reputation and continued existence? This could include:',
                               type: 'group',
                               text: `
-  <ul>
-    <li>The school shutting down in light of lawsuits or financial mismanagement</li>
-    <li>Finding that having your school on a resume repels employers who have heard about its illegal practices</li>
-  </ul>
+                              <ul>
+                                <li>The school shutting down in light of lawsuits or financial mismanagement</li>
+                                <li>Finding that having your school on a resume repels employers who have heard about its illegal practices</li>
+                              </ul>
                               `,
                               yesno: true,
                               fields: [
@@ -1326,6 +1349,9 @@ If you don't have the name and address of the collection agency, you will not be
           completed: 0,
           data: {
             disputeProcess: 1,
+            nowWhat: `
+              Thank for your disputing your debt! We can't tell you how long it will take for you to hear a response from the debt collector, since each collector handles disputes differently. We will prompt you to notify us when you get a reply. We are watching what happens with these disputes very closely so that we can find out which creditors are breaking the law and so we can find ways to work collectively to challenge them.
+            `,
             options: {
               none: {
                 title: 'Gather Materials',
