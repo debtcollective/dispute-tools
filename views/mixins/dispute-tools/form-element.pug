@@ -1,24 +1,30 @@
 mixin _toolsYesNoMixin(field)
   p.-ff-sec.-accent.-fw-700= field.label
+  - var _checked = field.default
+  if _formData[field.name]
+    - _checked = _formData[field.name]
   input(
     type="radio"
     name=`fieldValues[${field.name}]`
     id=`${field.name}-yes`
     value="yes"
-    checked=field.default === 'yes'
+    checked= _checked === 'yes'
     data-name= field.name
     data-hidden= field.hidden && field.hidden.toString()
+    data-default= field.default
     data-toogle-radio= field.toggle
   )
   label.pl1.mr3.-ff-sec(for=`${field.name}-yes`) Yes
+
   input(
     type="radio"
     name=`fieldValues[${field.name}]`
     id=`${field.name}-no`
     value="no"
-    checked=field.default === 'no'
+    checked= _checked === 'no'
     data-name= field.name
     data-hidden= field.hidden && field.hidden.toString()
+    data-default= field.default
     data-toogle-radio= field.toggle
   )
   label.pl1.-ff-sec(for=`${field.name}-no`) No
@@ -80,7 +86,7 @@ mixin toolsFormElementMixin(field, index)
           placeholder=field.placeholder
           data-name=field.name
           data-hidden= field.hidden && field.hidden.toString()
-        )
+        )= _formData[field.name]
         p.-on-error.-danger.-caption.-fw-500.mt1
 
       when 'checkbox'
@@ -89,6 +95,7 @@ mixin toolsFormElementMixin(field, index)
             input.mr1(
               type="checkbox"
               name=`fieldValues[${field.name}]`
+              checked= _formData[field.name]
               data-name=field.name
               data-hidden= field.hidden && field.hidden.toString()
             )

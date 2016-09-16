@@ -84,8 +84,10 @@ export default class DisputeToolsPersonalInformationForm extends Widget {
       t.addEventListener('change', this._handlePartialTogglerRef);
       if (t.checked) {
         this.initHiddenElements.call(this, t);
-        // t.checked = false;
-        // t.click();
+        if (t.value !== t.dataset.default) {
+          t.checked = false;
+          t.click();
+        }
       }
     });
   }
