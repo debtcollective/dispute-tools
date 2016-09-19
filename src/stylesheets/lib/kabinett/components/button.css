@@ -3,7 +3,7 @@
  */
 
 .-k-btn {
-  font-size: var(--k-font-size);
+  font-size: 1rem;
   line-height: 1;
   display: inline-block;
   vertical-align: middle;

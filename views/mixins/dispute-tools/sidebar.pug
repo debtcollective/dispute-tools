@@ -1,0 +1,29 @@
+-
+  var _toolSteps = [
+    'Let’s get this dispute started!',
+    'Gather information',
+    'Dispute process',
+    'Signature',
+    'Follow up'
+  ]
+
+mixin toolsSidebarMixin(disputeTool, currentStep = 1, steps = _toolSteps)
+  .Tool__sidebar
+    h4.pb1.-ttu.-h-sec.-accent
+      span
+        | #{disputeTool.name}
+    p.pb4.-caption.-ttu.-fw-500
+      | #{disputeTool.completed} People Filled
+    ul.list-reset.Tool__sidebar-steps
+      each step, index in steps
+        -
+          var _index = index + 1
+          var _className = ''
+          if (currentStep === _index) _className = '-current';
+            else if (currentStep > _index) _className = '-done';
+
+        li.relative.pb2.-fw-700(class= _className)
+          svg.svg-done(width="14" height="14"): use(xlink:href="#svg-arrow-forward")
+          svg.svg-current(width="14" height="10"): use(xlink:href="#svg-checkmark")
+          | #{step}
+  | &nbsp;

@@ -12,6 +12,8 @@
     background-color: var(--k-background-color);
     opacity: 0;
   }
+
+  & .Dropdown__label {max-width: 110px}
 }
 
 .Header__logo {

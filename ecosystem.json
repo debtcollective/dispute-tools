@@ -1,0 +1,29 @@
+{
+  /**
+   * Application configuration section
+   * http://pm2.keymetrics.io/docs/usage/application-declaration/
+   */
+  apps : [
+    {
+      name: 'TDC',
+      script: 'bin/server.js',
+      watch: false,
+      instances: 1,
+      exec_mode: 'fork',
+      env_staging: {
+        NODE_ENV: 'staging'
+      }
+    },
+  ],
+
+  deploy: {
+    staging : {
+      user : "deploy",
+      host : "staging.debtcollective.org",
+      ref  : "origin/33",
+      repo : "git@gitlab.com:empathia/debtcollective.git",
+      path : "/home/deploy/apps/tdc",
+      "post-deploy" : "npm run post_deploy_staging"
+    },
+  }
+}

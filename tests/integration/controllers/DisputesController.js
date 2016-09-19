@@ -26,11 +26,13 @@ describe('DisputesController', () => {
         });
     })
     .then(() => {
-      return DisputeTool.first()
+      return DisputeTool.first({
+        id: '11111111-1111-1111-1111-111111111111'
+      })
         .then((tool) => {
           return tool.createDispute({
             user: data.User,
-            option: tool.data.options.A || tool.data.options.none,
+            option: tool.data.options.A ? 'A' : 'none',
           })
           .then((disputeId) => {
             data.disputeTool = tool;
@@ -219,7 +221,7 @@ describe('DisputesController', () => {
       .send({
         _csrf,
         disputeToolId: data.disputeTool.id,
-        option: data.disputeTool.data.options.A || data.disputeTool.data.options.none,
+        option: data.disputeTool.data.options.A ? 'A' : 'none',
       })
       .end((err, res) => {
         _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);

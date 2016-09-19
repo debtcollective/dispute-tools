@@ -32,6 +32,7 @@
     background-color: var(--k-color-palette-accent);
   }
 }
+h4.-h-sec > span {padding-bottom: 0}
 
 /* secondary font */
 .-ff-sec {

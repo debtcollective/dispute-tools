@@ -1,4 +1,5 @@
 /* globals Dispute, RestfulController, Class, DisputeTool, CONFIG, DisputeStatus, DisputeMailer */
+/* eslint arrow-body-style: 0 */
 
 const path = require('path');
 const Promise = require('bluebird');
@@ -16,6 +17,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         'updateDisputeData',
         'setSignature',
         'addAttachment',
+        'removeAttachment',
         'destroy',
       ],
     },
@@ -176,12 +178,31 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       });
     },
 
+    removeAttachment(req, res) {
+      const dispute = res.locals.dispute;
+
+      if (!req.params.attachment_id) {
+        req.flash('error', 'Missing attachment id');
+        return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+      }
+
+      return dispute.removeAttachment(req.params.attachment_id)
+        .then(() => {
+          req.flash('success', 'Attachment removed');
+          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+        })
+        .catch((err) => {
+          req.flash('error', err.message);
+          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+        });
+    },
+
     destroy(req, res, next) {
       res.locals.dispute
         .destroy()
         .then(() => {
           req.flash('The Dispute you started has been deleted.');
-          return res.redirect(CONFIG.router.helpers.DisputeTools.index.url());
+          return res.redirect(CONFIG.router.helpers.DisputeTools.url());
         })
         .catch(next);
     },

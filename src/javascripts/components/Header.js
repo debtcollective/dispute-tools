@@ -1,6 +1,8 @@
 import Widget from '../lib/widget';
+import ResponsiveMenu from './ResponsiveMenu';
 import Modal from './Modal';
 import Dropdown from './Dropdown';
+import { APP } from '../lib/constants';
 import UsersNewForm from './users/NewForm';
 import SessionsNewForm from './sessions/NewForm';
 
@@ -17,7 +19,17 @@ export default class Header extends Widget {
     super(config);
 
     this.bg = this.element.querySelector('.Header__bg');
+    this.hamburgerMenuElement = this.element.querySelector('.js-hamburger-menu');
+
+    this.appendChild(new ResponsiveMenu({
+      name: 'ResponsiveMenu',
+      element: document.querySelector('.ResponsiveMenu'),
+    }));
+
     this._bindEvents();
+
+    const _scrollPosition = APP.SCROLLING_BOX.scrollTop;
+    APP.SCROLLING_BOX.scrollTop = (_scrollPosition - 1);
 
     if (config.currentUser) {
       return this._handleLoggedUser();
@@ -33,12 +45,19 @@ export default class Header extends Widget {
   _bindEvents() {
     this._handleScrollRef = this._handleScroll.bind(this);
     window.addEventListener('scroll', this._handleScrollRef);
+
+    this._handleHamburgerMenuClickRef = this._handleHamburgerMenuClick.bind(this);
+    this.hamburgerMenuElement.addEventListener('click', this._handleHamburgerMenuClickRef);
   }
 
   _handleScroll(ev) {
     let p = ev.target.defaultView.scrollY;
     if (p > SCROLL_MAX) p = SCROLL_MAX;
     this.bg.style.opacity = normalize(p, 0, 1, 0, SCROLL_MAX);
+  }
+
+  _handleHamburgerMenuClick() {
+    this.ResponsiveMenu.activate();
   }
 
   _handleLoggedUser() {

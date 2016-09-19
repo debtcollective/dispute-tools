@@ -20,27 +20,20 @@ block content
         .flex-auto.pb3
           h2= key
           p.pb2.-fw-700= dispute.title
-          p.pb2= dispute.description
+          p.pb2!= dispute.description
 
         button.-k-btn.btn-primary.-fw.-fw-700(type="submit") This is my situation
 
   .wrapper.px2.py3
     .clearfix.mxn2
       .col.lg-col-3.col-12.px2
-        .Tool__sidebar
-          h4.pb1.-ttu.-h-sec.-accent
-            span
-              | #{disputeTool.name}
-          p.pb4.-caption.-ttu.-fw-500
-            | #{disputeTool.completed} People Filled
-        | &nbsp;
+        include ../mixins/dispute-tools/sidebar
+        +toolsSidebarMixin(disputeTool, 1)
 
       .col.lg-col-9.col-12.px2
         .pt3.pr3.pl3.pb2.-bg-neutral-dark
           h4.pb1 We #[span.-accent ❤] debt resisters. Let's get this dispute started!
-          p.pb1.-ff-sec This is the part of the dispute where you will explain why you are disputing your federal student debt. Choose the option that best applies to you.
-          .right-align
-            button.-k-btn.btn-link.-primary I’m a Parent Plus borrower
+          p.pb2.-ff-sec This is the part of the dispute where you will explain why you are disputing your federal student debt. Choose the option that best applies to you.
 
           .clearfix.mxn2.md-flex.flex-wrap
             each val, key in disputeTool.data.options

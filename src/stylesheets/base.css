@@ -4,6 +4,7 @@
 @import './components/Dropdown';
 @import './components/Alert';
 @import './components/Button';
+@import './components/ResponsiveMenu';
 
 /* BASSCSS */
 @import 'basscss-align';
@@ -38,16 +39,17 @@
 
   --k-color-palette-primary: #f04c34;
   --k-color-palette-danger: #d0021b;
+  --k-color-palette-success: #417505;
   --k-color-palette-accent: #FEFAC0;
   --k-color-palette-neutral-dark: #242424;
   --k-color-palette-neutral-mid: #9b9b9b;
   --k-color-palette-neutral-light: #ebebeb;
 
-  --k-h1: 119px;
-  --k-h2: 67px;
-  --k-h3: 37px;
-  --k-h4: 21px;
-  --k-font-caption-size: 12px;
+  --k-h1: 7.4375rem; /* 119px */
+  --k-h2: 4.1875rem; /* 67px */
+  --k-h3: 2.3125rem; /* 37px; */
+  --k-h4: 1.3125rem; /* 21px; */
+  --k-font-caption-size: .75rem; /* 12px; */
 
   --k-sm-fs: calc(var(--k-font-size) * 1);
   --k-sm-p: 9px 1em 10px;
@@ -72,16 +74,13 @@
   --footer-height: 187px;
   --primary-lighter: color(var(--k-color-palette-primary) tint(10%));
   --primary-darker: color(var(--k-color-palette-primary) shade(10%));
-
-  height: 100%;
 }
 
 
 
 /* CUSTOM STYLES */
 body {
-  min-height: 100%;
-  background: var(--k-background-color) url('/images/global/bg-black-pattern.gif') 50% 0 repeat;
+  background: var(--k-background-color) url('/images/global/bg-black-pattern.gif') 50% 0 repeat fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -90,11 +89,11 @@ body {
 
 ::selection {
   background-color: var(--k-color-palette-primary);
-  color: var(--k-background-color);
+  color: #fff;
 }
 
-h2 {line-height: 80px}
-h3 {line-height: 40px}
+h2 {line-height: 1.194em; /* 80px */}
+h3 {line-height: 1.081em; /* 40px */}
 
 a {
   color: var(--k-color-palette-primary);
@@ -108,6 +107,21 @@ a {
     text-decoration: line-through;
     opacity: .5;
   }
+
+  &[href*="//"]:not([rel*="noopener"]),
+  &[href*="//"]:not([rel*="noreferrer"]) {
+    outline: 6px solid red;
+    background-color: yellow;
+  }
+}
+
+
+@media (max-width: 52em) {
+  :root {font-size: 14px}
+}
+
+@media (max-width: 40em) {
+  :root {font-size: 12px}
 }
 
 main {
@@ -148,12 +162,18 @@ main {
     background-color: transparent;
   }
 }
+.-k-select-multiple {
+  font-size: var(--k-font-size);
+  padding: calc(var(--k-font-size) - 1px) 1em calc(var(--k-font-size) - 2px);
+  border-width: 0;
+  border-radius: var(--border-radius);
+}
 
 .-on-error {display: none}
 .error .-on-error,
 .error + .-on-error {display: block}
 
-.error > input,
+.error > .-k-input,
 .error.-k-select {
   color: var(--k-color-palette-danger);
   background-color: color(var(--k-color-palette-danger) tint(80))

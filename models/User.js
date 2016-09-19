@@ -114,7 +114,7 @@ const User = Class('User').inherits(Krypton.Model)({
               return done(err);
             }
 
-            model.activationToken = hash;
+            model.activationToken = hash.replace('/', '');
             return done();
           });
       };

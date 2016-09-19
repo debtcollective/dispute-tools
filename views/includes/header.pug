@@ -1,9 +1,3 @@
-mixin headerLink(href, name)
-  - className = 'Header__link -fw-700 flex items-center -fh'
-  if (href === currentURL) || (currentURL.startsWith(href))
-    - className += ' active'
-  a(href!=href, class=className, title=name)&attributes(attributes)= name
-
 header.Header(data-component-header)
   .Header__bg.absolute.top-0.right-0.bottom-0.left-0
   .wrapper.clearfix.px2.-fh
@@ -12,34 +6,4 @@ header.Header(data-component-header)
         svg.Header__logo-svg.block: use(xlink:href="#svg-logo-light")
         .sr-only The Collective Homepage
     nav.right.-fh
-      ul.list-reset.flex.items-center.-fh.sm-hide.xs-hide
-        li.px2.-fh
-          +headerLink(null, 'Collectives')(title="Browse The Collectives")
-        li.px2.-fh
-          +headerLink(routeMappings.DisputeTools.url(), 'Tools and Services')(title="Browse Our Tools and Services")
-        li.px2.pr3.-fh
-          +headerLink(null, 'Donate')(title="Support Us")
-
-        unless currentUser
-          li.px2.pl4.-fh
-            +headerLink(routeMappings.signup.url(), 'Join us')(class='js-signup-link -primary')
-          li.pl2.-fh
-            +headerLink(routeMappings.login.url(), 'Log in')(class='js-login-link')
-        else
-          li.px2.pl4.-fh
-            .Dropdown.-has-dropdown.-fh(data-component-dropdown)
-              button.Dropdown__head.-fw-700.-fh.flex.items-center
-                span.Dropdown__label #{currentUser.account.fullname}
-              ul.Dropdown__body(aria-hidden="true" aria-label="submenu")
-                li
-                  a.Header__dropdown-item(href=routeMappings.Users.show.url(currentUser.id) role="button" tabindex="0") Profile
-                li
-                  form(method="post" action=routeMappings.logout.url())
-                    input(type="hidden" name="_csrf" value=csrfToken)
-                    input(type="hidden" name="_method" value="DELETE")
-                    button.Header__dropdown-item(type="submit") Logout
-
-      ul.list-reset.flex.items-center.-fh.md-hide.lg-hide
-        li: button.-white.-k-btn.btn-link(style="padding: 13px 16px 13px;")
-          svg(viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%")
-            path(d="M4 8 L28 8 M4 16 L28 16 M4 24 L28 24")/
+      +mixinHeaderNav()

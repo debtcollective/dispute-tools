@@ -21,13 +21,3 @@
    background-color: var(--k-color-palette-primary);
  }
 }
-
-.About__press-item {
-  background-color: var(--k-color-palette-neutral-dark);
-
-  &-logo {
-    width: 150px;
-    height: 150px;
-    background-color: #fff;
-  }
-}
