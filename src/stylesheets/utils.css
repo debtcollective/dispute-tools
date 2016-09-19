@@ -15,6 +15,24 @@
 /* text */
 .-ttu {text-transform: uppercase}
 
+/* form errors */
+.-on-error {display: none}
+.error .-on-error,
+.error + .-on-error {display: block}
+
+.error > .-k-input,
+.error.-k-select {
+  color: var(--k-color-palette-danger);
+  background-color: color(var(--k-color-palette-danger) tint(80))
+}
+.error > select {
+  color: var(--k-color-palette-danger);
+}
+
+.error ::placeholder {
+  color: color(var(--k-color-palette-danger) tint(40));
+}
+
 /* knockout text */
 .-h-sec {
   line-height: 1.5em;
