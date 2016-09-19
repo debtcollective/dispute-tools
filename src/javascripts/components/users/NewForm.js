@@ -11,7 +11,7 @@ export default class UsersNewForm extends Widget {
       zip: ['required', {
         rule(val) {
           if (/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(val) === false) {
-            throw new Error('The Account\'s zip code is invalid.');
+            throw new Error('Invalid zip code.');
           }
         },
       }],
@@ -62,7 +62,20 @@ export default class UsersNewForm extends Widget {
 
   _displayFieldErrors(errors) {
     Object.keys(errors).forEach(key => {
-      this.ui[key].parentNode.classList.add('error');
+      const parent = this.ui[key].parentNode;
+      let errorLabel = parent.querySelector('.-on-error');
+
+      parent.classList.add('error');
+
+      if (errorLabel) {
+        errorLabel.innerText = `▲ ${errors[key].message}`;
+        return;
+      }
+
+      errorLabel = parent.nextSibling;
+      if (errorLabel && errorLabel.classList.contains('-on-error')) {
+        errorLabel.innerText = `▲ ${errors[key].message}`;
+      }
     });
   }
 

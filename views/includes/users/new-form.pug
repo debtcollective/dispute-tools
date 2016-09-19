@@ -14,7 +14,7 @@ div(data-component-usernewform)
             type="text"
             value=(_formData && _formData.fullname) || ''
           )
-          p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid name
+          p(class="-on-error -danger -caption -fw-500 mt1")
 
       .clearfix.pb2.mxn1
         .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Type of debt
@@ -27,7 +27,7 @@ div(data-component-usernewform)
                   value= collective.id
                   selected!= _formData && _formData.collectiveId === collective.id
                 )= collective.name
-          p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid debt type
+          p(class="-on-error -danger -caption -fw-500 mt1")
 
       .clearfix.pb2.mxn1
         .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Location
@@ -42,7 +42,7 @@ div(data-component-usernewform)
                     selected!= _formData && _formData.state === state
                   )= state
 
-            p(class="-on-error -danger -caption -fw-500 mt1") ▲ Select a state
+            p(class="-on-error -danger -caption -fw-500 mt1")
 
           .col.col-5.pl1
             div(class=errors && errors.zip ? 'error' : '')
@@ -52,7 +52,7 @@ div(data-component-usernewform)
                 value=(_formData && _formData.zip) || ''
                 placeholder="ZIP"
               )
-              p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid ZIP
+              p(class="-on-error -danger -caption -fw-500 mt1")
 
       .clearfix.pb2.mxn1
         .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Phone
@@ -63,7 +63,7 @@ div(data-component-usernewform)
             value=(_formData && _formData.phone) || ''
             placeholder="Optional"
           )
-          p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid phone
+          p(class="-on-error -danger -caption -fw-500 mt1")
 
       .clearfix.pb2.mxn1
         .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Email
@@ -73,7 +73,7 @@ div(data-component-usernewform)
             name="email"
             value=(_formData && _formData.email) || ''
           )
-          p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid email
+          p(class="-on-error -danger -caption -fw-500 mt1")
 
       .clearfix.pb2.mxn1
         .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Password
@@ -82,7 +82,7 @@ div(data-component-usernewform)
             type="password"
             name="password"
           )
-          p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid password
+          p(class="-on-error -danger -caption -fw-500 mt1")
 
       p.mb3.-fw-500.-caption By clicking Sign up, you agree to our #[a(href=routeMappings.tos.url()) Community Agreement], including our Cookie Use.
       button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Sign up

@@ -6,7 +6,6 @@ export default class DisputeToolsPersonalInformationForm extends Widget {
   constructor(config) {
     super(config);
 
-    // console.log(this.dispute);
     this.appendChild(new Button({
       name: 'Button',
       element: this.element.querySelector('button'),
@@ -17,9 +16,6 @@ export default class DisputeToolsPersonalInformationForm extends Widget {
     const formData = data.steps.filter(step => {
       return step.type === 'form';
     })[0];
-
-    // console.log(data);
-    // console.log(formData);
 
     window.x = formData.fieldSets;
 
@@ -56,8 +52,6 @@ export default class DisputeToolsPersonalInformationForm extends Widget {
       this.ui[key] = this.element.querySelector(query);
     });
     this._checkit = new Checkit(this.constraints);
-    // console.log(this.ui);
-
 
     this.form = this.element.querySelector('form');
     this._handleFormSubmitRef = this._handleFormSubmit.bind(this);
@@ -210,9 +204,6 @@ export default class DisputeToolsPersonalInformationForm extends Widget {
   }
 
   _displayFieldErrors(errors) {
-    // Object.keys(errors).forEach(key => {
-    //   this.ui[key].parentNode.classList.add('error');
-    // });
     Object.keys(errors).forEach(key => {
       const parent = this.ui[key].parentNode;
       let errorLabel = parent.querySelector('.-on-error');
@@ -244,5 +235,4 @@ export default class DisputeToolsPersonalInformationForm extends Widget {
     });
     return data;
   }
-
 }
