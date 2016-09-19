@@ -55,7 +55,8 @@ mixin mixinHeaderNav(responsive)
         each item in _menuItems.loggedOut
           li: +headerLink(item.url, item.text, true)(class='px2 py1')
       else
-        li.mt2: +headerLink(routeMappings.Users.show.url(currentUser.id), 'Profile', true)(class='px2 py1')
+        li.mt3: +headerLink(routeMappings.Users.show.url(currentUser.id), 'Profile and tools', true)(class='px2 py1')
+        li: +headerLink(routeMappings.Users.edit.url(currentUser.id), 'Edit profile', true)(class='px2 py1')
         li
           form(method="post" action=routeMappings.logout.url())
             input(type="hidden" name="_csrf" value=csrfToken)
@@ -75,8 +76,8 @@ mixin mixinHeaderNav(responsive)
             button.Dropdown__head.-fw-700
               span.Dropdown__label.inline-block.align-middle.-ell #{currentUser.account.fullname}
             ul.Dropdown__body(aria-hidden="true" aria-label="submenu")
-              li
-                a.Header__dropdown-item(href=routeMappings.Users.show.url(currentUser.id) role="button" tabindex="0") Profile
+              li: a.Header__dropdown-item(href=routeMappings.Users.show.url(currentUser.id) role="button" tabindex="0") Profile and tools
+              li: a.Header__dropdown-item(href=routeMappings.Users.edit.url(currentUser.id) role="button" tabindex="0") Edit profile
               li
                 form(method="post" action=routeMappings.logout.url())
                   input(type="hidden" name="_csrf" value=csrfToken)
