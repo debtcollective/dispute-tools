@@ -4,7 +4,6 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  overflow: auto;
   background-color: var(--k-background-color);
 
   opacity: 0;
@@ -36,5 +35,7 @@
 }
 
 .Modal__body {
+  overflow: auto;
   padding: 5rem 0;
+  height: 100%;
 }
