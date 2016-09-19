@@ -176,7 +176,6 @@ const personalInformationFieldSets = [
           name: 'address2',
           label: 'Your Address 2',
           validations: [
-            'required',
             'maxLength:128',
           ],
         },
@@ -577,7 +576,6 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
                               name: 'address2',
                               label: 'Your Address 2',
                               validations: [
-                                'required',
                                 'maxLength:128',
                               ],
                             },
@@ -702,7 +700,6 @@ Once you have determined that there are errors on your report, you can use this 
                               label: 'Your Address 2',
                               columnClassName: 'md-col-8',
                               validations: [
-                                'required',
                                 'maxLength:128',
                               ],
                             },
@@ -1391,7 +1388,6 @@ If you don't have the name and address of the collection agency, you will not be
                               name: 'address2',
                               label: 'Your Address 2',
                               validations: [
-                                'required',
                                 'maxLength:128',
                               ],
                             },
