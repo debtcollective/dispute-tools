@@ -138,7 +138,7 @@ const CORINTHIAN_SCHOOLS = [
 const personalInformationFieldSets = [
   {
     title: 'About You',
-    subtitle: 'Let’s get stated',
+    subtitle: 'Let’s get started',
     fields: [
       [
         {
