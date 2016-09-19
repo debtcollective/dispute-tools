@@ -366,7 +366,12 @@ The number is: 1-800-304-3107.`,
               B: {
                 title: 'I should not have to pay this debt because I was lied to or defrauded by my school.',
                 description: 'See the [[common cases]] of fraud.',
-                more: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                more: `### Common causes of fraud include:
+
+- Aggressive recruiting practices by the school
+- False graduation or job placement statistics given by the school
+- Overcharges
+- Poor quality teaching/lack of supplies`,
                 steps: [
                   personalInformation,
                   personalStatement,

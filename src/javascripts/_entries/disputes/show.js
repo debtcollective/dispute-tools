@@ -14,6 +14,8 @@ class ViewDisputesShow extends NodeSupport {
       currentURL: config.currentURL,
     }));
 
+    this._bindMoreInfoModal();
+
     this.appendChild(new Modal({
       name: 'ModalInformationForm',
       element: document.querySelector('[data-component-modal="personal-information-form"]'),
@@ -65,6 +67,28 @@ class ViewDisputesShow extends NodeSupport {
     current.classList.add('-done');
 
     current.nextElementSibling.classList.add('-current');
+  }
+
+  _bindMoreInfoModal() {
+    this.moreModalTrigger = document.querySelector('.js-Dispute__more-modal-trigger');
+    this.moreModalElement = document.querySelector('[data-component-modal="dispute-more-modal"]');
+
+    if (!this.moreModalTrigger || !this.moreModalElement) {
+      return;
+    }
+
+    this.appendChild(new Modal({
+      name: 'ModalMore',
+      element: this.moreModalElement,
+    }));
+
+    this._handleMoreModalTriggerClickRef = this._handleMoreModalTriggerClick.bind(this);
+    this.moreModalTrigger.addEventListener('click', this._handleMoreModalTriggerClickRef);
+  }
+
+  _handleMoreModalTriggerClick(ev) {
+    ev.preventDefault();
+    this.ModalMore.activate();
   }
 }
 

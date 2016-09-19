@@ -58,6 +58,17 @@ block content
         include ../includes/dispute-tools/follow-up
 
 block append body
+  //- dispute: more modal
+  if optionData.more
+    .Modal(data-component-modal="dispute-more-modal" aria-hidden="true" role="dialog")
+      button(class="Modal__close" aria-label="close")
+        svg(class="-s18"): use(xlink:href="#svg-close")
+      .Modal__body(role="document")
+        .px2
+          .max-width-1.mx-auto
+            .Tools__Text-Modal!= optionData.more
+
+  //- information: personal-information-form modal
   if optionData.steps
     each step in optionData.steps
       if step.type === 'form' && step.name === 'personal-information-form' && step.fieldSets

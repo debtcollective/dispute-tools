@@ -3,6 +3,7 @@
 
 const path = require('path');
 const Promise = require('bluebird');
+const marked = require('marked');
 
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 
@@ -61,6 +62,12 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         .then(([dispute]) => {
           res.locals.dispute = dispute;
           req.dispute = dispute;
+
+          const optionData = dispute.disputeTool.data.options[dispute.data.option];
+          if (optionData.more) {
+            optionData.more = marked(optionData.more);
+          }
+
           next();
         })
         .catch(next);

@@ -89,7 +89,11 @@ div(
     if dispute.data.option !== 'none'
       h2.-accent= dispute.data.option
     h4.pb1= optionData.title
-    p.-ff-sec!= optionData.description
+    -
+      var _re = /\[{2}(.*)\]{2}/;
+      var _replaceWith = '<a class="js-Dispute__more-modal-trigger" href="#">$1</a>';
+      var _description = optionData.description.replace(_re, _replaceWith);
+    p.-ff-sec!= _description
     .right-align
       form(
         action=routeMappings.Disputes.destroy.url(dispute.id)
