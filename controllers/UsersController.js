@@ -1,5 +1,7 @@
-/* globals Class, RestfulController, User, NotFoundError, CONFIG, Collective, Account */
+/* globals Class, RestfulController, User, NotFoundError,
+CONFIG, Collective, Account, DisputeTool */
 const Promise = require('bluebird');
+const fs = require('fs-extra');
 
 const UsersController = Class('UsersController').inherits(RestfulController)({
   beforeActions: [
@@ -12,7 +14,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
   prototype: {
     _loadUser(req, res, next) {
       User.query()
-        .include('[account.debtType]')
+        .include('[account.debtType, disputes.statuses]')
         .where('id', req.params.id)
         .then((result) => {
           if (result.length === 0) {
@@ -22,12 +24,21 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
           return req.restifyACL(result)
             .then((_result) => {
               res.locals.user = _result[0];
+
+              return Promise.each(res.locals.user.disputes, (dispute) => {
+                return DisputeTool.first({ id: dispute.disputeToolId })
+                  .then((disputeTool) => {
+                    dispute.disputeTool = disputeTool;
+                    return true;
+                  });
+              });
+            })
+            .finally(() => {
               return next();
             });
         })
         .catch((err) => {
-          console.log(err)
-          next(err)
+          next(err);
         });
     },
 
@@ -40,12 +51,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
     },
 
     new(req, res) {
-      Collective.query()
-        .then((collectives) => {
-          res.render('users/new.pug', {
-            collectives,
-          });
-        });
+      res.render('users/new.pug');
     },
 
     create(req, res) {
@@ -59,8 +65,13 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
           .then(() => {
             account.userId = user.id;
             return account.transacting(trx).save();
-          });
+          })
+          .then(trx.commit)
+          .catch(trx.rollback);
       }).then(() => {
+        return user.sendActivation();
+      })
+      .then(() => {
         res.render('users/activation.pug', {
           email: user.email,
         });
@@ -68,7 +79,13 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       .catch((err) => {
         res.status(400);
 
-        res.locals.errors = err.errors;
+        if (err.message === 'Must provide a password') {
+          err.errors = err.errors || {
+            password: `password: ${err.message}`,
+          };
+        }
+
+        res.locals.errors = err.errors || err;
 
         res.render('users/new.pug', {
           _formData: req.body,
@@ -84,20 +101,52 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       const user = res.locals.user;
 
       user.updateAttributes(req.body);
+      user.account.updateAttributes(req.body);
 
       user.role = 'User';
 
-      user.save()
-        .then(() => {
-          res.redirect(CONFIG.router.helpers.Users.show.url(req.params.id));
-        })
-        .catch((err) => {
-          res.status(400);
+      User.transaction((trx) => {
+        return user.transacting(trx).save()
+          .then(() => {
+            if (req.files.image && req.files.image.length > 0) {
+              const image = req.files.image[0];
 
-          res.locals.errors = err.errors;
+              return user.account.attach('image', image.path, {
+                fileSize: image.size,
+                mimeType: image.mimeType,
+              })
+              .then(() => {
+                fs.unlinkSync(image.path);
 
-          res.render('users/edit.pug');
-        });
+                return user.account.transacting(trx).save();
+              });
+            }
+
+            return user.account.transacting(trx).save();
+          });
+      })
+      .then(() => {
+        if (user._oldEmail === user.email) {
+          req.flash('success', 'Profile updated succesfully');
+          return res.redirect(CONFIG.router.helpers.Users.show.url(req.params.id));
+        }
+
+        return user.sendActivation()
+          .then(() => {
+            req.logout();
+
+            res.render('users/activation.pug', {
+              email: user.email,
+            });
+          });
+      })
+      .catch((err) => {
+        res.status(400);
+
+        res.locals.errors = err.errors || err;
+
+        res.render('users/edit.pug');
+      });
     },
 
     destroy(req, res) {

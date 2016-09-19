@@ -1,0 +1,80 @@
+extends ../layouts/application.pug
+
+block title
+  | #{dispute.disputeTool.name} / #{dispute.data.option} — The Debt Collective
+
+block styles
+  link(href="/build/stylesheets/disputes/show.css" rel="stylesheet")
+
+block content
+  -
+    var optionData = dispute.disputeTool.data.options[dispute.data.option];
+    var currentStep = 2;
+    var currentSection = 'information'
+    var step2require = 0;
+    var step2value = 0;
+
+  each step in optionData.steps
+    case step.type
+      when 'form'
+        - step2require++;
+        if dispute.data.forms && dispute.data.forms[step.name]
+          - step2value++;
+      when 'upload'
+        if step.optional === false
+          - step2require++;
+          if dispute.data.attachments && dispute.data.attachments.filter(a => a.name === step.name).length
+            - step2value++;
+
+  if dispute.disputeTool.data.disputeProcess && (step2require === step2value) && dispute.data.signature
+    - currentStep++;
+    - currentSection = 'follow-up'
+  else
+    if dispute.data.disputeProcess && (step2require === step2value)
+      - currentStep+=2;
+      - currentSection = 'signature'
+
+    if dispute.data.signature
+      - currentStep++
+      - currentSection = 'follow-up'
+
+  .wrapper.px2.py3
+    .clearfix.mxn2
+      .col.lg-col-3.col-12.px2
+        include ../mixins/dispute-tools/sidebar
+        if dispute.disputeTool.data.disputeProcess
+          +toolsSidebarMixin(dispute.disputeTool, currentStep, [
+            'Let’s get this dispute started!',
+            'Gather information',
+            'Follow up'
+          ])
+        else
+          +toolsSidebarMixin(dispute.disputeTool, currentStep)
+
+      .col.lg-col-9.col-12.px2
+        include ../includes/dispute-tools/information
+        include ../includes/dispute-tools/process
+        include ../includes/dispute-tools/signature
+        include ../includes/dispute-tools/follow-up
+
+block append body
+  if optionData.steps
+    each step in optionData.steps
+      if step.type === 'form' && step.name === 'personal-information-form' && step.fieldSets
+        .Modal(data-component-modal="personal-information-form" aria-hidden="true" role="dialog" aria-labelledby="modalToolPersonalInfoFormTitle")
+          button(class="Modal__close" aria-label="close")
+            svg(class="-s18"): use(xlink:href="#svg-close")
+          .Modal__body(role="document")
+            include ../includes/dispute-tools/information-form
+
+block scripts
+  script(src="/build/javascripts/disputes/show.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+        dispute: !{JSON.stringify(dispute)}
+      };
+      new ViewDisputesShow(options);
+    }, true);

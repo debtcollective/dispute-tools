@@ -1,15 +1,12 @@
 module.exports = {
   Visitor: [
     [false],
-    ['activation', true],
-    ['activate', true],
-    ['create', true],
-    ['new', true],
+    ['activation', 'activate', 'create', 'new', 'show', true],
   ],
   User: [
     [false],
-    // ['activation', false]
-    ['edit', 'update', 'show', (req) => {
+    ['activation', 'show', true],
+    ['edit', 'update', (req) => {
       if (req.params.id === req.user.id) {
         return true;
       }

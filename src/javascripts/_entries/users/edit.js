@@ -1,8 +1,8 @@
-import WebFont from 'webfontloader';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Header from '../../components/Header';
+import UsersEditForm from '../../components/users/EditForm';
 
-class ViewHomeTools extends NodeSupport {
+class ViewUsersEdit extends NodeSupport {
   constructor(config) {
     super();
 
@@ -13,12 +13,11 @@ class ViewHomeTools extends NodeSupport {
       element: document.querySelector('[data-component-header]'),
     }));
 
-    WebFont.load({
-      google: {
-        families: ['Space Mono'],
-      },
-    });
+    this.appendChild(new UsersEditForm({
+      name: 'UsersEditForm',
+      element: document.querySelector('[data-component-usereditform]'),
+    }));
   }
 }
 
-window.ViewHomeTools = ViewHomeTools;
+window.ViewUsersEdit = ViewUsersEdit;

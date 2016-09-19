@@ -6,8 +6,15 @@ export default class UsersNewForm extends Widget {
   static get constraints() {
     return {
       fullname: ['required'],
+      collectiveId: ['required'],
       state: ['required'],
-      zip: ['required'],
+      zip: ['required', {
+        rule(val) {
+          if (/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(val) === false) {
+            throw new Error('The Account\'s zip code is invalid.');
+          }
+        },
+      }],
       email: ['required', 'email'],
       password: ['required', 'minLength:8'],
     };

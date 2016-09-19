@@ -25,12 +25,12 @@ div
     hr.mb3
     .clearfix.mxn2
       .col.md-col-4.col-12.p2
-        .rounded.pt2.pr2.pb3.pl2(style="background-color: #fff; color: #000;")
+        .rounded.pt2.pr2.pb3.pl2.-bg-white.-dark
           h3.pb4 ${Wage garnishment dispute}
           .flex.items-center.pb1
             div: svg.-primary(width="46" height="56"): use(xlink:href="#svg-fingerprint")
             .pl2.-ff-sec
-              .-fw-700 ${#{currentUser && currentUser.email || 'Zachary Gibson'}}
+              .-fw-700 #{currentUser && currentUser.account.fullname || 'Zachary Gibson'}
               .-caption.-fw-700(style="color: #4A4A4A;") ${Corintian College}
 
       .col.md-col-8.col-12.p2

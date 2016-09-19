@@ -1,0 +1,135 @@
+mixin _formCard(step, _completed)
+  .Tool__Info.flex.flex-column.-fh(
+    class= `-${step.type} ${_completed && '-completed'}`
+  )
+    .flex-auto.pb3
+      .pb1.-fw-700.-ttu= step.title
+      if _completed
+        .pb1.-caption.-success.flex
+          div: svg.mr1(width="11" height="8"): use(xlink:href="#svg-checkmark")
+          .flex-auto This form is completed now.
+      else
+        .-caption= step.description
+    button.-k-btn.-sm.btn-outline.-fw-500.js-trigger-personal-modal(
+      class=_completed ? '-primary' : '-white'
+    )= _completed ? 'Update the form' : 'Fill the form'
+
+mixin _informationCard(step, _completed)
+  .Tool__Info.flex.flex-column.-fh(
+    class= `-${step.type} ${_completed && '-completed'}`
+  )
+    .flex-auto.pb3
+      .pb1.-fw-700.-ttu= step.title
+      if _completed
+        .pb1.-caption.-success.flex
+          div: svg.mr1(width="11" height="8"): use(xlink:href="#svg-checkmark")
+          .flex-auto Using information you already entered, we will complete this form for you.
+      else
+        .-caption.-neutral-mid= step.description
+
+mixin _uploadCard(step, _completed)
+  .Tool__Info.flex.flex-column.-fh(
+    class= `-${step.type} ${_completed && '-completed'}`
+  )
+    input(type="hidden" name="_csrf" value=csrfToken)
+    input(type="hidden" name="name" value=step.name)
+    .flex-auto.pb3
+      .pb1.-fw-700.-ttu= step.title
+      if step.optional
+        span.Tool__Info-optional-badge.inline-block.rounded.px1.mb2.-caption.-fw-700 OPTIONAL
+      - var _attachments = dispute.data.attachments && dispute.data.attachments.filter(a => a.name === step.name)
+
+      if !_attachments || !_attachments.length
+        .-caption!= step.description
+      else
+        ul.pt1.list-reset
+          each _att in _attachments
+            - var img = dispute.attachments.filter(a => a.id === _att.id)[0]
+            - var ext = _att.path.split('.').pop()
+            li.-caption.flex.pb1
+              .flex-auto.pr1.-ell
+                span.Tool__Info-badge.inline-block.center.-fw-700.-ttu.rounded(class= `-${ext}`)= ext
+                span.pl1= img.fileMeta.original.originalFileName
+              form(
+                action=routeMappings.Disputes.removeAttachment.url(dispute.id, _att.id)
+                method="post"
+              )
+                input(type="hidden" name="_csrf" value=csrfToken)
+                input(type="hidden" name="_method" value="PUT")
+                button.btn-clear
+                  svg.-danger(width="10" height="10"): use(xlink:href="#svg-close")
+
+    form(
+      action=routeMappings.Disputes.addAttachment.url(dispute.id)
+      method="post"
+      enctype="multipart/form-data"
+    )
+      input(type="hidden" name="_csrf" value=csrfToken)
+      input(type="hidden" name="name" value=step.name)
+      button.relative.-k-btn.-sm.btn-outline.-fw-500.-fw(
+        class=_completed ? '-primary' : '-white'
+      ) #{step.uploadButtonText}
+        input(
+          type="file"
+          name="attachment"
+          accept= step.mimeTypes.join(', ')
+          multiple= step.multiple
+          class="absolute top-0 left-0 -fw -fh"
+          style="opacity: 0;"
+          onchange="this.form.submit()"
+        )
+    .Tool__Info__footer-caption.center.-caption
+      | #{step.footerNotes}
+
+div(
+  data-dispute-information
+  class= currentSection !== 'information' && 'hide'
+)
+  .pt3.pr3.pl3.pb2.-bg-neutral-dark
+    if dispute.data.option !== 'none'
+      h2.-accent= dispute.data.option
+    h4.pb1= optionData.title
+    p.-ff-sec!= optionData.description
+    .right-align
+      form(
+        action=routeMappings.Disputes.destroy.url(dispute.id)
+        method="post"
+      )
+        input(name="_csrf" type="hidden" value=csrfToken)
+        input(type="hidden" name="_method" value="DELETE")
+        button.-k-btn.btn-link.-primary.-fw-700(type="submit") ← This is not my case
+    hr.my2
+
+    if optionData.steps
+    .clearfix.mxn2.flex.flex-wrap
+      each step in optionData.steps
+        .col.md-col-4.col-12.p2
+          - var _completed = false
+          case step.type
+            when 'form'
+              - _completed = dispute.data.forms && dispute.data.forms[step.name] ? true : false
+              +_formCard(step, _completed)
+            when 'information'
+              - _completed = dispute.data.forms && dispute.data.forms['personal-information-form'] ? true : false
+              +_informationCard(step, _completed)
+            when 'upload'
+              - _completed = dispute.data.attachments && dispute.data.attachments.filter(a => a.name === step.name)[0]
+              +_uploadCard(step, _completed)
+
+  .py3
+    if dispute.disputeTool.data.disputeProcess && !dispute.disputeTool.data.signature
+        form(
+          action=routeMappings.Disputes.setSignature.url(dispute.id)
+          method="post"
+        )
+          input(type="hidden" name="_csrf" value=csrfToken)
+          input(type="hidden" name="_method" value="PUT")
+          input(type="hidden" name="signature" value="TDC")
+          button.-k-btn.btn-primary.-fw.-fw-700(
+            disabled= step2require !== step2value
+          ) Continue to finalize your dispute&hellip;
+    else
+      button.-k-btn.btn-primary.-fw.-fw-700(
+        id='js-information-next-step'
+        disabled= step2require !== step2value
+      ) Continue to finalize your dispute&hellip;

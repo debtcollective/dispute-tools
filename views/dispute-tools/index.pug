@@ -4,44 +4,22 @@ block title
   | Tools and Services — The Debt Collective
 
 block styles
-  link(href="/build/stylesheets/home/tools.css" rel="stylesheet")
+  link(href="/build/stylesheets/dispute-tools/index.css" rel="stylesheet")
 
 block content
-  -
-    var tools = [
-      {
-        name: 'Wage garnishment dispute',
-        totalPeople: 423
-      },
-      {
-        name: 'Tax offset dispute',
-        totalPeople: 36
-      },
-      {
-        name: 'General Debt Dispute Letter',
-        totalPeople: 110
-      },
-      {
-        name: 'Defense to repayment application',
-        totalPeople: 23
-      },
-      {
-        name: 'Private student loan dispute letter',
-        totalPeople: 62
-      },
-      {
-        name: 'Credit report dispute letter',
-        totalPeople: 22
-      }
-    ]
-
   mixin ToolCard(tool)
-    .flex.flex-column.p2.rounded.-fh(style="height: 330px; background-color: #fff; color: #000;")
-      div.flex-auto
+    .ToolCard.flex.flex-column.p2.rounded.-fh.-bg-white.-dark
+      div.flex-auto.pb4
         h4.pt2= tool.name
-        p.py2: a() About
-      p.pb2 #[b= tool.totalPeople] People filled
-      a(href=routeMappings.tool.url()).-k-btn.btn-primary.-fw.-fw-700 Get started
+        p.pt1.pb2
+          button.ToolCard__about-trigger.-k-btn.btn-link(
+            id=`tool-modal-toggler-${tool.id}`
+          ) Why is this important?
+      p.pb2 #[b= tool.completed] People filled
+      a.-k-btn.btn-primary.-fw.-fw-700(
+        href=routeMappings.DisputeTools.show.url(tool.id)
+        class= !user && 'js-login-link'
+      ) Get started
 
   .wrapper.px2
     .Tools__intro
@@ -64,7 +42,7 @@ block content
         .col.md-col-11.col-12.px2
           h2.pb3 The Tools
           .clearfix.mxn2.flex.flex-wrap
-            each tool in tools
+            each tool in disputeTools
               .col.md-col-4.sm-col-6.col-12.p2
                 +ToolCard(tool)
 
@@ -74,7 +52,7 @@ block content
       .clearfix.mxn2(style="margin-top: -40px;")
         .col.md-col-6.col-12.px2
           .center.relative
-            img.fit(src="/images/tools/video.jpg")
+            img.fit.block(src="/images/tools/video.jpg")
             .flex.absolute.top-0.left-0.right-0.bottom-0.items-center.justify-center
               .PlayButton.mx-auto
                 .PlayButton__btn: svg: use(xlink:href="#svg-play")
@@ -87,12 +65,13 @@ block content
                 p Simply by disputing your debt, you are joining with others to fight back against creditors.
         .Tools__offset-text.col.md-col-5.col-12
           h4.pb3 As a member of The Debt Collective, you might dispute your debt because:
-          p.pb2 You were defrauded by your school.
-          p.pb2 You were trapped by a predatory lender.
-          p.pb2 You are being harassed by the debt collector.
-          p.pb2 You borrowed for healthcare, education, or other basic necessities.
-          p.pb2 You can’t afford to pay your debt.
-          p.pb2 You took out Parent Plus loans to help you child pay for college.
+          ul.list-reset.-fw-500
+            li.pb2 You were defrauded by your school.
+            li.pb2 You were trapped by a predatory lender.
+            li.pb2 You are being harassed by the debt collector.
+            li.pb2 You borrowed for healthcare, education, or other basic necessities.
+            li.pb2 You can’t afford to pay your debt.
+            li.pb2 You took out Parent Plus loans to help you child pay for college.
         .col.col-1 &nbsp;
 
     .pt2.pb4
@@ -100,14 +79,13 @@ block content
 
       .clearfix.mxn2(style="margin-top: -40px;")
         .col.md-col-6.col-12.px2
-          .center
-            img.fit(src="/images/tools/file.jpg")
+          .center: img.fit.block(src="/images/tools/file.jpg")
         .col.Tools__offset-text.md-col-5.col-12
-          h4.pb3(style="opacity: .6;") The Debt Collective will send hard copies of your dispute to all relevant parties, including the Department of Education, loan services, collectors, and the credit reporting agencies. You will also receive a copy by email.
-          h4(style="opacity: .6;") You will receive notifications asking you to provide information about any response you receive from the collector.
+          h4.pb3.-neutral-mid The Debt Collective will send hard copies of your dispute to all relevant parties, including the Department of Education, loan services, collectors, and the credit reporting agencies. You will also receive a copy by email.
+          h4.-neutral-mid You will receive notifications asking you to provide information about any response you receive from the collector.
           div.my2(style="width: 23px; height: 3px; background-color: #d8d8d8;")
           p.-caption.-fw-700 The tools we provide here are not the only ways you can dispute your debt.
-          p.-caption.-fw-500 For a complete list of discharge options, go here: #[a(href="https://studentaid.ed.gov/sa/repay-loans/forgiveness-cancellation" target="_blank" rel="noopener noreferrer") https://studentaid.ed.gov/sa/repay-loans/forgiveness-cancellation]
+          p.-caption.-fw-500.-neutral-mid For a complete list of discharge options, go here: #[a(href="https://studentaid.ed.gov/sa/repay-loans/forgiveness-cancellation" target="_blank" rel="noopener noreferrer") https://studentaid.ed.gov/sa/repay-loans/forgiveness-cancellation]
         .col.md-col-1.col-12 &nbsp;
 
     .max-width-3.mx-auto.pt2.pb4
@@ -118,14 +96,29 @@ block content
           p.pb3.-fw-500 We won't share your information with anyone outside the Debt Collective organizing team or with experts with whom we are consulting. We will only use your data to see who is using our tools and to contact you about opportunities to join debt resistance campaigns in your area. If we decide to use the data you provide here for some other purpose, we will contact you to explain and make sure it is okay with you.
           p If you have questions about how to use one of these tools, please email: #[a(href="mailto:support@debtcollective.org") support@debtcollective.org].
 
+block append body
+  each tool in disputeTools
+    .Modal(
+      data-component-modal=`tool-modal-${tool.id}`
+      aria-hidden="true" role="dialog"
+    )
+      button(class="Modal__close" aria-label="close")
+        svg(class="-s18"): use(xlink:href="#svg-close")
+      .Modal__body(role="document")
+        .px2
+          .max-width-1.mx-auto
+            .Tools__Modal!= tool.about
+
 block scripts
-  script(src="/build/javascripts/home/tools.js" async)
+  script(src="/build/javascripts/dispute-tools/index.js" async)
+  - var disputeIds = disputeTools.map(dispute => dispute.id);
   script.
     window.addEventListener('load', function() {
       var options = {
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
+        disputeIds: !{JSON.stringify(disputeIds)}
       };
-      new ViewHomeTools(options);
+      new ViewDisputeToolsIndex(options);
     }, true);
 

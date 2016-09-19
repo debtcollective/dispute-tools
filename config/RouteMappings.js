@@ -16,11 +16,6 @@ const routeMappings = RouteMappings()
     as: 'about',
   })
 
-  .get('/tools-and-services', {
-    to: 'Home#tools',
-    as: 'tools',
-  })
-
   .get('/tools-and-services/tool', {
     to: 'Home#tool',
     as: 'tool',
@@ -77,6 +72,28 @@ const routeMappings = RouteMappings()
       .get('/:token/activate', {
         to: 'Users#activate',
         as: 'activate',
+      });
+  })
+
+  .resources('/DisputeTools')
+
+  .resources('/Disputes', (mappings) => {
+    return mappings()
+      .put('/:id/update-dispute-data', {
+        to: 'Disputes#updateDisputeData',
+        as: 'updateDisputeData',
+      })
+      .put('/:id/set-signature', {
+        to: 'Disputes#setSignature',
+        as: 'setSignature',
+      })
+      .post('/:id/add-attachment', {
+        to: 'Disputes#addAttachment',
+        as: 'addAttachment',
+      })
+      .put('/:id/remove-attachment/:attachment_id', {
+        to: 'Disputes#removeAttachment',
+        as: 'removeAttachment',
       });
   });
 

@@ -1,0 +1,36 @@
+counter-reset: steps;
+.Tool__sidebar-steps {
+  & > li {
+    counter-increment: steps;
+    padding-left: var(--space-3);
+    color: var(--k-color-palette-neutral-mid);
+
+    &.-done {
+      color: #fff;
+      & .svg-done {display: block}
+    }
+
+    &.-current {
+      color: var(--k-color-palette-accent);
+      & .svg-current {display: block}
+    }
+
+    & > svg {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: .45em;
+    }
+
+    &::before {
+      content: counter(steps) ") ";
+    }
+  }
+}
+
+@media (--breakpoint-lg) {
+  .Tool__sidebar {
+    position: fixed;
+    width: 270px;
+  }
+}

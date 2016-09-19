@@ -7,7 +7,10 @@
 .-danger {color: var(--k-color-palette-danger)}
 .-success {color: var(--k-color-palette-success)}
 .-white {color: #fff}
+.-dark {color: #000}
 .-neutral-mid {color: var(--k-color-palette-neutral-mid)}
+.-bg-white {background-color: #fff}
+.-bg-neutral-dark {background-color: var(--k-color-palette-neutral-dark)}
 
 /* text */
 .-ttu {text-transform: uppercase}
@@ -24,7 +27,12 @@
     color: var(--k-background-color);
     mix-blend-mode: screen;
   }
+
+  &.-accent > span {
+    background-color: var(--k-color-palette-accent);
+  }
 }
+h4.-h-sec > span {padding-bottom: 0}
 
 /* secondary font */
 .-ff-sec {
@@ -43,4 +51,14 @@
     font-size: 21px;
     line-height: 1.618;
   }
+}
+
+
+@media (max-width: 52em) {
+  .md-left-align {text-align: left}
+  .md-center-align {text-align: center}
+}
+
+@media (max-width: 40em) {
+  .xs-left-align {text-align: left}
 }

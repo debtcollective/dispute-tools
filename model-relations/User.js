@@ -1,4 +1,4 @@
-/* globals Account, User, Collective */
+/* globals Account, User, Collective, Dispute */
 
 User.relations = {
   account: {
@@ -6,5 +6,13 @@ User.relations = {
     relatedModel: Account,
     ownerCol: 'id',
     relatedCol: 'user_id',
+  },
+  disputes: {
+    type: 'HasMany',
+    relatedModel: Dispute,
+    ownerCol: 'id',
+    relatedCol: 'user_id',
+    orderBy: ['created_at', 'DESC'],
+    scope: ['deleted', false],
   },
 };

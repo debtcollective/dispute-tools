@@ -1,0 +1,52 @@
+extends ../layouts/application.pug
+
+block title
+  | #{disputeTool.name} — The Debt Collective
+
+block styles
+  link(href="/build/stylesheets/dispute-tools/show.css" rel="stylesheet")
+
+block content
+  mixin DisputeCard(key, dispute)
+    .col.md-col-6.col-12.p2
+      form.Tool__DisputeCard.flex.flex-column.rounded.-fh(
+        action=routeMappings.Disputes.create.url()
+        method="post"
+      )
+        input(name="_csrf" type="hidden" value=csrfToken)
+        input(name="disputeToolId" type="hidden" value=disputeTool.id)
+        input(name="option" type="hidden" value=key)
+
+        .flex-auto.pb3
+          h2= key
+          p.pb2.-fw-700= dispute.title
+          p.pb2!= dispute.description
+
+        button.-k-btn.btn-primary.-fw.-fw-700(type="submit") This is my situation
+
+  .wrapper.px2.py3
+    .clearfix.mxn2
+      .col.lg-col-3.col-12.px2
+        include ../mixins/dispute-tools/sidebar
+        +toolsSidebarMixin(disputeTool, 1)
+
+      .col.lg-col-9.col-12.px2
+        .pt3.pr3.pl3.pb2.-bg-neutral-dark
+          h4.pb1 We #[span.-accent ❤] debt resisters. Let's get this dispute started!
+          p.pb2.-ff-sec This is the part of the dispute where you will explain why you are disputing your federal student debt. Choose the option that best applies to you.
+
+          .clearfix.mxn2.md-flex.flex-wrap
+            each val, key in disputeTool.data.options
+              +DisputeCard(key, val)
+
+block scripts
+  script(src="/build/javascripts/dispute-tools/show.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new ViewDisputeToolsShow(options);
+    }, true);
+

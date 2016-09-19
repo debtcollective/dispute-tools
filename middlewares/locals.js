@@ -1,6 +1,6 @@
-/* globals CONFIG */
+/* globals CONFIG, Collective */
 
-const stateNames = require('datasets-us-states-names');
+const US_STATES = require('datasets-us-states-names');
 
 module.exports = function locals(req, res, next) {
   if (CONFIG.env().sessions !== false) {
@@ -13,15 +13,19 @@ module.exports = function locals(req, res, next) {
     }
   }
 
-  if (!req.user) {
-    res.locals.stateNames = stateNames;
-  }
-
   res.locals.routeMappings = CONFIG.router.mappings;
   res.locals.currentUser = req.user || null;
   res.locals.currentURL = req.url;
 
   req.role = (req.user && req.user.role) || 'Visitor';
+  res.locals.US_STATES = US_STATES;
 
-  next();
+  if (!req.user) {
+    return Collective.query().then((collectives) => {
+      res.locals.COLLECTIVES = collectives;
+      next();
+    });
+  }
+
+  return next();
 };

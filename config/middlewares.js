@@ -16,6 +16,10 @@ const middlewares = [
     path: 'middlewares/bodyParserJSON.js',
   },
   {
+    name: 'Multipart Body Parser',
+    path: 'middlewares/multer.js',
+  },
+  {
     name: 'Method Override',
     path: 'middlewares/MethodOverride.js',
   },
@@ -50,6 +54,10 @@ const middlewares = [
   {
     name: 'RestifyACL',
     path: 'middlewares/RestifyACL.js',
+  },
+  {
+    name: 'ResponseTime',
+    path: 'middlewares/ResponseTime.js',
   },
   {
     name: 'Router',
