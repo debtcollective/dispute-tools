@@ -34,10 +34,6 @@ export default class DisputeToolsPersonalInformationForm extends Widget {
             return undefined;
           }
 
-          if (!f.validations.includes('required')) {
-            f.validations.unshift('required');
-          }
-
           _this.constraints[f.name] = f.validations;
           _this._constraintsAll[f.name] = f.validations;
           return undefined;
