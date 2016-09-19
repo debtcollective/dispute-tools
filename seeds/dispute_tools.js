@@ -166,7 +166,7 @@ const personalInformationFieldSets = [
       [
         {
           name: 'address1',
-          label: 'Your Address',
+          label: 'Your Mailing Address',
           validations: [
             'required',
             'maxLength:128',
@@ -176,7 +176,7 @@ const personalInformationFieldSets = [
       [
         {
           name: 'address2',
-          label: 'Your Address 2',
+          label: 'Your Mailing Address 2',
           validations: [
             'maxLength:128',
           ],
@@ -571,7 +571,7 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
                           [
                             {
                               name: 'address1',
-                              label: 'Your Address',
+                              label: 'Your Mailing Address',
                               validations: [
                                 'required',
                                 'maxLength:128',
@@ -581,7 +581,7 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
                           [
                             {
                               name: 'address2',
-                              label: 'Your Address 2',
+                              label: 'Your Mailing Address 2',
                               validations: [
                                 'maxLength:128',
                               ],
@@ -694,7 +694,7 @@ Once you have determined that there are errors on your report, you can use this 
                           [
                             {
                               name: 'address1',
-                              label: 'Your Address',
+                              label: 'Your Mailing Address',
                               validations: [
                                 'required',
                                 'maxLength:128',
@@ -704,7 +704,7 @@ Once you have determined that there are errors on your report, you can use this 
                           [
                             {
                               name: 'address2',
-                              label: 'Your Address 2',
+                              label: 'Your Mailing Address 2',
                               columnClassName: 'md-col-8',
                               validations: [
                                 'maxLength:128',
@@ -876,7 +876,7 @@ The Department of Education usually sends offset notices once per year in the su
                           [
                             {
                               name: 'address1',
-                              label: 'Your Address',
+                              label: 'Your Mailing Address',
                               validations: [
                                 'required',
                                 'maxLength:128',
@@ -1389,7 +1389,7 @@ If you don't have the name and address of the collection agency, you will not be
                           [
                             {
                               name: 'address1',
-                              label: 'Your Address',
+                              label: 'Your Mailing Address',
                               validations: [
                                 'required',
                                 'maxLength:128',
@@ -1399,7 +1399,7 @@ If you don't have the name and address of the collection agency, you will not be
                           [
                             {
                               name: 'address2',
-                              label: 'Your Address 2',
+                              label: 'Your Mailing Address 2',
                               validations: [
                                 'maxLength:128',
                               ],
