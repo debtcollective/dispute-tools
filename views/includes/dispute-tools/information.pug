@@ -117,6 +117,11 @@ div(
               +_uploadCard(step, _completed)
 
   .py3
+    -
+      var _ready = step2require === step2value
+      var _defaultButtonText = 'Complete the above documents to continue...';
+      var _readyButtonText = 'Continue to finalize your dispute...';
+
     if dispute.disputeTool.data.disputeProcess && !dispute.disputeTool.data.signature
         form(
           action=routeMappings.Disputes.setSignature.url(dispute.id)
@@ -126,10 +131,10 @@ div(
           input(type="hidden" name="_method" value="PUT")
           input(type="hidden" name="signature" value="TDC")
           button.-k-btn.btn-primary.-fw.-fw-700(
-            disabled= step2require !== step2value
-          ) Continue to finalize your dispute&hellip;
+            disabled= !_ready
+          )= _ready ? _readyButtonText : _defaultButtonText
     else
       button.-k-btn.btn-primary.-fw.-fw-700(
         id='js-information-next-step'
-        disabled= step2require !== step2value
-      ) Continue to finalize your dispute&hellip;
+        disabled= !_ready
+      )= _ready ? _readyButtonText : _defaultButtonText
