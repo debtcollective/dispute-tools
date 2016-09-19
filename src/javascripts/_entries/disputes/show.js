@@ -1,6 +1,6 @@
 import WebFont from 'webfontloader';
 import NodeSupport from '../../lib/widget/NodeSupport';
-import Header from '../../components/Header';
+import Common from '../../components/Common';
 import Modal from '../../components/Modal';
 import DisputeToolsPersonalInformationForm from '../../components/dispute-tools/personal-information-form';
 
@@ -8,11 +8,10 @@ class ViewDisputesShow extends NodeSupport {
   constructor(config) {
     super();
 
-    this.appendChild(new Header({
-      name: 'Header',
+    this.appendChild(new Common({
+      name: 'Common',
       currentUser: config.currentUser,
       currentURL: config.currentURL,
-      element: document.querySelector('[data-component-header]'),
     }));
 
     this.appendChild(new Modal({
