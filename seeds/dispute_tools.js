@@ -352,6 +352,8 @@ The number is: 1-800-304-3107.`,
           data: {
             nowWhat: `
               We do not have much more information about how long the dispute process takes because online dispute tools have not been used before. By making the dispute form easier to fill out, we are helping more people dispute their debts. This is a good thing! But it could affect the time that it takes for the Department to review each case. If you don't hear a response in a timely manner, this may be cause for legal action. We are watching what happens to these disputes very closely. And will we will prompt you to let us know what happens in your case so we can work together to develop collective strategies to fight back.
+              <br><br>
+              We will mail your dispute to the appropriate agency as soon as possible.
             `,
             signature: 'I state under penalty of law that the statements made on this request are true and accurate to the best of my knowledge.',
             options: {
@@ -450,6 +452,8 @@ The Department of Education usually sends offset notices once per year in the su
           data: {
             nowWhat: `
               We do not have much more information about how long the dispute process takes because online dispute tools have not been used before. By making the dispute form easier to fill out, we are helping more people dispute their debts. This is a good thing! But it could affect the time that it takes for the Department to review each case. If you don't hear a response in a timely manner, this may be cause for legal action. We are watching what happens to these disputes very closely. And will we will prompt you to let us know what happens in your case so we can work together to develop collective strategies to fight back.
+              <br><br>
+              We will mail your dispute to the appropriate agency as soon as possible.
             `,
             signature: 'I state under penalty of law that the statements made on this request are true and accurate to the best of my knowledge.',
             options: {
@@ -662,7 +666,7 @@ Once you have determined that there are errors on your report, you can use this 
             disputeProcess: 1,
             nowWhat: `
               Thank you for disputing your credit report. Your dispute will be sent to the agencies you specified. The dispute process can take up to 30 days. You should hear a response directly from each of the agencies.
-
+              <br><br>
               We will prompt you to report the results of your dispute so we can make sure Debt Collective member's rights are respected and that errors are promptly removed.
             `,
             options: {
@@ -843,9 +847,9 @@ The Department of Education usually sends offset notices once per year in the su
             disputeProcess: 1,
             nowWhat: `
             Thank you for disputing your Federal student loans. We don’t know how long the Department of Education will take to review your claim.
-
+            <br><br>
             We are watching the situation very closely to make sure that everyone gets a fair hearing and that the Department is following the law. We have ongoing campaigns to pressure the Department to cancel all defrauded borrowers’ debt.
-
+            <br><br>
             To learn how to participate, log in to the platform and join the conversation. You are not a loan.
             `,
             options: {
