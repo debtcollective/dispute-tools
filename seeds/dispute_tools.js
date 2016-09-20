@@ -233,13 +233,12 @@ const personalInformationFieldSets = [
           ],
         },
         {
-          name: 'guarantyAgencyEmail',
+          name: 'guarantyAgencyMailingAddress',
           label: 'Guaranty Agency mailing address',
           subLabel: 'Required for FFEL loan holders',
           columnClassName: 'md-col-6',
           validations: [
             'required',
-            'email',
             'maxLength:128',
           ],
         },
