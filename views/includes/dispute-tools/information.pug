@@ -86,8 +86,13 @@ div(
   class= currentSection !== 'information' && 'hide'
 )
   .pt3.pr3.pl3.pb2.-bg-neutral-dark
+    - var _deleteDisputeButtonText = '← This is not my case';
+
     if dispute.data.option !== 'none'
       h2.-accent= dispute.data.option
+    else
+      - _deleteDisputeButtonText = '← Return to the beginning'
+
     h4.pb1= optionData.title
     -
       var _re = /\[{2}(.*)\]{2}/;
@@ -101,7 +106,7 @@ div(
       )
         input(name="_csrf" type="hidden" value=csrfToken)
         input(type="hidden" name="_method" value="DELETE")
-        button.-k-btn.btn-link.-primary.-fw-700(type="submit") ← This is not my case
+        button.-k-btn.btn-link.-primary.-fw-700(type="submit")= _deleteDisputeButtonText
     hr.my2
 
     if optionData.steps
