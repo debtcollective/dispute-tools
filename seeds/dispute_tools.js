@@ -223,8 +223,8 @@ const personalInformationFieldSets = [
       ],
       [
         {
-          name: 'guarrantyAgency',
-          label: 'Name of Guarranty Agency',
+          name: 'guarantyAgency',
+          label: 'Name of Guaranty Agency',
           subLabel: 'Required for FFEL loan holders',
           columnClassName: 'md-col-6',
           validations: [
@@ -233,8 +233,8 @@ const personalInformationFieldSets = [
           ],
         },
         {
-          name: 'guarrantyAgencyEmail',
-          label: 'Guarranty Agency mailing address',
+          name: 'guarantyAgencyEmail',
+          label: 'Guaranty Agency mailing address',
           subLabel: 'Required for FFEL loan holders',
           columnClassName: 'md-col-6',
           validations: [
