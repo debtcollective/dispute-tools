@@ -9,6 +9,7 @@
 .-white {color: #fff}
 .-dark {color: #000}
 .-neutral-mid {color: var(--k-color-palette-neutral-mid)}
+.-bg-primary {background-color: var(--k-color-palette-primary)}
 .-bg-white {background-color: #fff}
 .-bg-neutral-dark {background-color: var(--k-color-palette-neutral-dark)}
 
