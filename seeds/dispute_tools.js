@@ -854,7 +854,7 @@ The Department of Education usually sends offset notices once per year in the su
             options: {
               none: {
                 title: 'Gather Materials',
-                description: 'A little known fact of the debt collections industry is that the vast majority of collectors can’t prove they own our debts. If they can’t prove it, then why should we pay? Demanding proof of ownership is the first step to getting debt collectors off our backs.',
+                description: '',
                 steps: [
                   {
                     type: 'form',
