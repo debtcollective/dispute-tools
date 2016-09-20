@@ -550,7 +550,9 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
             options: {
               none: {
                 title: 'Gather Materials',
-                description: 'A little known fact of the debt collections industry is that the vast majority of collectors can’t prove they own our debts. If they can’t prove it, then why should we pay? Demanding proof of ownership is the first step to getting debt collectors off our backs.',
+                description: `This dispute is for all types of debt in collections except student loans.
+                <br><br>
+                A little known fact of the debt collections industry is that the vast majority of collectors can’t prove they own our debts. If they can’t prove it, then why should we pay? Demanding proof of ownership is the first step to getting debt collectors off our backs.`,
                 steps: [
                   {
                     type: 'form',
