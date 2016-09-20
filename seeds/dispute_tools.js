@@ -137,7 +137,7 @@ const CORINTHIAN_SCHOOLS = [
 
 const personalInformationFieldSets = [
   {
-    title: 'About You',
+    title: 'Personal Information',
     subtitle: 'Let’s get started',
     fields: [
       [
@@ -561,7 +561,7 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
                     description: 'Here we need some personal, school and employment information.',
                     fieldSets: [
                       {
-                        title: 'About You',
+                        title: 'Personal Information',
                         fields: [
                           [
                             {
@@ -680,7 +680,7 @@ Millions of us have errors on our credit reports, which make it harder to do bas
                     description: 'Here we need some personal, school and employment information.',
                     fieldSets: [
                       {
-                        title: 'About You',
+                        title: 'Personal Information',
                         fields: [
                           [
                             {
@@ -863,7 +863,7 @@ The Department of Education usually sends offset notices once per year in the su
                     description: 'Here we need some personal, school and employment information.',
                     fieldSets: [
                       {
-                        title: 'About You',
+                        title: 'Personal Information',
                         fields: [
                           [
                             {
@@ -1382,7 +1382,7 @@ If you don't have the name and address of the collection agency, you will not be
                     description: 'Here we need some personal information.',
                     fieldSets: [
                       {
-                        title: 'About You',
+                        title: 'Personal Information',
                         fields: [
                           [
                             {

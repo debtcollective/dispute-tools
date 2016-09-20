@@ -12,7 +12,7 @@ include ../../mixins/dispute-tools/form-element
 
     - var _formData = dispute.data.forms && dispute.data.forms[step.name] || {}
 
-    h3#modalToolPersonalInfoFormTitle.pb3.-accent= step.title
+    h3#modalToolPersonalInfoFormTitle.pb3.-accent= dispute.disputeTool.name
 
     each sets, i in step.fieldSets
       .pt2.pr3.pl3.pb2.mb2.-bg-neutral-dark
