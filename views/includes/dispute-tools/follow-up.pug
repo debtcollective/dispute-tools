@@ -3,7 +3,14 @@ div(
   class= currentSection !== 'follow-up' && 'hide'
 )
   .p3
-    h4.pb2 Thank you for disputing #{dispute.disputeTool.name}
+    - var _headingText = `Thank you for disputing ${dispute.disputeTool.name}`;
+    case dispute.disputeTool.id
+      // General Debt Dispute Letter
+      when '11111111-1111-3333-1111-111111111111'
+        - _headingText = 'Thank you for disputing your debt.'
+
+    h4.pb2= _headingText
+
     // ul.AvatarList
     //   li: img(src="/images/temp/avatars/01.jpg" width="50" height="50")
     // hr.mb3
