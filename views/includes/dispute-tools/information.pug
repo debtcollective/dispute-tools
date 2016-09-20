@@ -12,7 +12,7 @@ mixin _formCard(step, _completed)
         .-caption= step.description
     button.-k-btn.-sm.btn-outline.-fw-500.js-trigger-personal-modal(
       class=_completed ? '-primary' : '-white'
-    )= _completed ? 'Update the form' : 'Fill the form'
+    )= _completed ? 'Update the form' : 'Fill out the form'
 
 mixin _informationCard(step, _completed)
   .Tool__Info.flex.flex-column.-fh(
