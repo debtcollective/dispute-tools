@@ -69,6 +69,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
           .then(trx.commit)
           .catch(trx.rollback);
       }).then(() => {
+        user.account = account;
         return user.sendActivation();
       })
       .then(() => {
