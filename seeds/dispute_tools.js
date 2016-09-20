@@ -383,7 +383,7 @@ The number is: 1-800-304-3107.`,
                     optional: true,
                     mimeTypes: ['application/pdf'],
                     maxFileSize: 5242880,
-                    title: 'Defence to Repayment',
+                    title: 'Defense to Repayment',
                     description: 'Attach your <a href="/dispute-tools/defence-to-repayment" target="_blank" rel="noopener noreferrer">DTR</a> If you have previously filed.',
                     uploadButtonText: 'Upload file',
                     footerNotes: 'PDF format',
@@ -464,7 +464,7 @@ The Department of Education usually sends offset notices once per year in the su
 
               B: {
                 title: 'I believe that this loan is not collectable because I was lied to or defrauded by my school.',
-                description: 'Attach a statement describing how you were lied to or defrauded and any documents that support your case, including news articles or a copy of your Defence to Repayment form',
+                description: 'Attach a statement describing how you were lied to or defrauded and any documents that support your case, including news articles or a copy of your Defense to Repayment form',
                 steps: [
                   personalInformation,
                   personalStatement,
@@ -475,7 +475,7 @@ The Department of Education usually sends offset notices once per year in the su
                     optional: true,
                     mimeTypes: ['application/pdf'],
                     maxFileSize: 5242880,
-                    title: 'Defence to Repayment',
+                    title: 'Defense to Repayment',
                     description: 'Attach your DTR If you have previously filed.',
                     uploadButtonText: 'Upload file',
                     footerNotes: 'PDF format',
@@ -827,8 +827,8 @@ Once you have determined that there are errors on your report, you can use this 
 
         {
           id: '11111111-1111-5555-1111-111111111111',
-          name: 'Defence to Repayment application',
-          about: `### Defence to Repayment application
+          name: 'Defense to Repayment application',
+          about: `### Defense to Repayment application
 
 If your taxes are being seized ("offset") or if you have been threatened with offset, you have a lot in common with thousands of other people whose taxes are offset each year. This is wrong, since no one should have to go into debt for education!
 
