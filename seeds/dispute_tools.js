@@ -618,7 +618,7 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
                           [
                             {
                               name: 'agency-address',
-                              label: 'Collection agency’s or law firm’s address',
+                              label: 'Collection agency’s or law firm’s mailing address',
                               validations: [
                                 'required',
                               ],
@@ -1413,7 +1413,7 @@ If you don't have the name and address of the collection agency, you will not be
                           [
                             {
                               name: 'firm-address',
-                              label: 'Collection agency’s or law firm’s address',
+                              label: 'Collection agency’s or law firm’s mailing address',
                               validations: [
                                 'required',
                                 'maxLength:256',
