@@ -73,8 +73,8 @@
   /* Platform Variables */
   --header-height: 60px;
   --footer-height: 187px;
-  --primary-lighter: color(var(--k-color-palette-primary) tint(10%));
-  --primary-darker: color(var(--k-color-palette-primary) shade(10%));
+  --primary-lighter: color(var(--k-color-palette-primary) tint(15%));
+  --primary-darker: color(var(--k-color-palette-primary) shade(15%));
 }
 
 
@@ -99,6 +99,7 @@ h3 {line-height: 1.081em; /* 40px */}
 a {
   color: var(--k-color-palette-primary);
   text-decoration: none;
+  transition: color 260ms;
 
   &:hover {
     color: var(--primary-lighter);
