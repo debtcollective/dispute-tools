@@ -2,18 +2,7 @@
 
 .EditProfile__image-wrapper {
   padding-top: 100%;
-  background-color: var(--k-color-palette-neutral-light);
+  background-color: var(--k-color-palette-neutral-dark);
   background-size: cover;
   background-position: 50%;
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 25%;
-    left: 25%;
-    right: 25%;
-    bottom: 25%;
-    background-color: var(--k-color-palette-primary);
-    mix-blend-mode: multiply;
-  }
 }

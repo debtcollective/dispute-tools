@@ -1,4 +1,5 @@
 /* global Krypton, Class, CONFIG, AttachmentsProcessor, AWS, S3Uploader */
+const path = require('path');
 const gm = require('gm').subClass({ imageMagick: true });
 
 const US_STATES = require('datasets-us-states-names');
@@ -73,11 +74,55 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
               .setFormat('jpg')
               .stream();
           },
+          smallGrayscale(readStream) {
+            return gm(readStream)
+              .resize('64x64^')
+              .type('Grayscale')
+              .gravity('Center')
+              .crop(64, 64, 0, 0)
+              .setFormat('jpg')
+              .stream();
+          },
+          smallRedSquare(readStream) {
+            return gm(readStream)
+              .resize('64x64^')
+              .type('Grayscale')
+              .gravity('Center')
+              .crop(64, 64, 0, 0)
+              .type('TrueColor')
+              .out(path.join(process.cwd(), 'lib/assets', '64_red-square.png'))
+              .out('-compose', 'Multiply')
+              .out('-composite')
+              .setFormat('jpg')
+              .stream();
+          },
           medium(readStream) {
             return gm(readStream)
               .resize('256x256^')
               .gravity('Center')
               .crop(256, 256, 0, 0)
+              .setFormat('jpg')
+              .stream();
+          },
+          mediumGrayscale(readStream) {
+            return gm(readStream)
+              .resize('256x256^')
+              .type('Grayscale')
+              .gravity('Center')
+              .crop(256, 256, 0, 0)
+              .setFormat('jpg')
+              .stream();
+          },
+          mediumRedSquare(readStream) {
+            return gm(readStream)
+              .resize('256x256^')
+              .type('Grayscale')
+              .gravity('Center')
+              .crop(256, 256, 0, 0)
+              .type('TrueColor')
+              .out(path.join(process.cwd(), 'lib/assets', '256_red-square.png'))
+              .out('-compose', 'Multiply')
+              .out('-composite')
               .setFormat('jpg')
               .stream();
           },

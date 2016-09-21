@@ -15,8 +15,8 @@ block content
 
       .clearfix.mxn1.pb3
         .col.col-8.px1
-          if (user.account.image.exists('medium'))
-            .EditProfile__image-wrapper.relative.block.-fw(style=`background-image: url(${user.account.image.url('medium')});`)
+          if (user.account.image.exists('mediumGrayscale'))
+            .EditProfile__image-wrapper.relative.block.-fw(style=`background-image: url(${user.account.image.url('mediumGrayscale')});`)
           else
             .EditProfile__image-wrapper.relative.block.-fw(style='background-image: url(/images/profile/placeholder.png);')
         .col.col-4.px1
