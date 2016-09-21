@@ -274,8 +274,17 @@ const personalInformationFieldSets = [
       ],
       [
         {
-          name: 'employerAddress',
-          label: 'Employer Address',
+          name: 'employerAddress1',
+          label: 'Employer Mailing Address 1',
+          columnClassName: 'md-col-8',
+          validations: [
+            'required',
+            'maxLength:128',
+          ],
+        },
+        {
+          name: 'employerAddress2',
+          label: 'Employer Mailing Address 2',
           columnClassName: 'md-col-8',
           validations: [
             'required',
