@@ -72,7 +72,7 @@ mixin mixinHeaderNav(responsive)
           li.-fh(class= item.parentClassName): +headerLink(item.url, item.text)(class= item.className)
       else
         li.px2.pl4
-          .Dropdown.-has-dropdown(data-component-dropdown)
+          .Dropdown.-right.-has-dropdown(data-component-dropdown)
             button.Dropdown__head.-fw-700
               span.Dropdown__label.inline-block.align-middle.-ell #{currentUser.account.fullname}
             ul.Dropdown__body(aria-hidden="true" aria-label="submenu")

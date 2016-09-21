@@ -7,6 +7,10 @@
     opacity: 1;
     transform: translate3d(0,10px,0);
   }
+
+  &.-right > .Dropdown__body {
+    right: 0;
+  }
 }
 
 .Dropdown__head {
