@@ -8,6 +8,7 @@
 
 .btn-link {
   background-color: transparent;
+  transition: opacity 260ms;
   &:hover {opacity: .8}
 }
 
@@ -15,7 +16,7 @@
   background-color: var(--k-color-palette-primary);
   color: white;
 
-  &:hover:not([disabled]) {
+  &:hover:not([disabled]):not(:active) {
     background-color: var(--primary-lighter);
     color: white;
   }

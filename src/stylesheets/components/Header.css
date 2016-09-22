@@ -56,6 +56,7 @@
   color: var(--k-background-color);
   background-color: inherit;
   cursor: pointer;
+  transition: color 260ms;
 
   &:hover {color: var(--k-color-palette-primary)}
 }

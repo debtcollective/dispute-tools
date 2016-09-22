@@ -1,5 +1,9 @@
 mixin _toolsYesNoMixin(field)
+  if field.caption
+    p.py1.-caption.-fw-700.-neutral-mid!= field.caption
+
   p.-ff-sec.-accent.-fw-700= field.label
+
   - var _checked = field.default
   if _formData[field.name]
     - _checked = _formData[field.name]
@@ -103,10 +107,11 @@ mixin toolsFormElementMixin(field, index)
         p.-on-error.-danger.-caption.-fw-500.mt1
 
       when 'group'
-        fieldset
+        fieldset.pb2
           h4= field.title
           p.pb2.-ff-sec= field.subtitle
-          div.pb2!= field.text
+          if field.text
+            div.pb2!= field.text
 
           if field.yesno
             +_toolsYesNoMixin({name: `__toggle-radio-${index}__`, default: 'no'})

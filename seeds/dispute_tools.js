@@ -221,11 +221,18 @@ const personalInformationFieldSets = [
           ],
         },
       ],
+    ],
+  },
+  {
+    title: 'FFEL Loan',
+    yesno: true,
+    yesNoLabel: 'Are you a FFEL holder?',
+    yesNoCaption: 'If you have FFEL loans, you will need to provide the name and address of the originator of your loan. If you don’t know the name of the guarantor, you can call the Department of the Treasury and ask them for the name and address of your guarantor. Their number is: <span class="-white">1-800-304-3107</span>.',
+    fields: [
       [
         {
           name: 'guarantyAgency',
           label: 'Name of Guaranty Agency',
-          subLabel: 'Required for FFEL loan holders',
           columnClassName: 'md-col-6',
           validations: [
             'required',
@@ -235,7 +242,6 @@ const personalInformationFieldSets = [
         {
           name: 'guarantyAgencyMailingAddress',
           label: 'Guaranty Agency mailing address',
-          subLabel: 'Required for FFEL loan holders',
           columnClassName: 'md-col-6',
           validations: [
             'required',

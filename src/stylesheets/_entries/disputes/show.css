@@ -80,6 +80,7 @@ input[name^='fieldValues[__toggle-radio'][value="no"]:checked ~ fieldset {
 
 /* 3 */
 .Tool__process-option {
+  display: block;
   height: 100%;
   cursor: pointer;
 

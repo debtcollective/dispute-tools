@@ -20,7 +20,7 @@ html(lang="en")
     include ../includes/svg/sprite.svg
     include ../mixins/header-nav
 
-    main(aria-hidden="false")
+    main(aria-hidden="false" role="main")
       if errors || error || flash
         .AlertWrapper
           if errors || error

@@ -5,6 +5,7 @@
   border-radius: 2px;
   background-color: #fff;
   color: initial;
+  border: 1px solid currentColor;
 
   &::after {
     content: "▾";

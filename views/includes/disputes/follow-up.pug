@@ -33,7 +33,8 @@ div(
           .flex.items-center.pb1
             div: svg.-primary(width="46" height="56"): use(xlink:href="#svg-fingerprint")
             .pl2.-ff-sec
-              .-fw-700 #{currentUser && currentUser.account.fullname || ''}
+              - var _formData = dispute.data.forms && dispute.data.forms['personal-information-form'] || {}
+              .-fw-700= _formData && _formData.name || ''
 
       .col.md-col-8.col-12.p2
         h2.pb3 Now what?
