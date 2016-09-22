@@ -1,4 +1,4 @@
-/* globals Class, Krypton, Attachment, DisputeTool, DisputeStatus */
+/* globals Class, Krypton, Attachment, DisputeTool, DisputeStatus, DisputeRenderer */
 /* eslint arrow-body-style: 0 */
 
 const _ = require('lodash');
@@ -61,6 +61,23 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
           })
           .then(resolve)
           .catch(reject);
+      })
+      .then(() => {
+        const renderer = new DisputeRenderer({
+          disputeId: dispute.id,
+        });
+
+        return renderer.save()
+          .then(() => {
+            return renderer.render(dispute)
+              .then((result) => {
+                console.log('result', result);
+              })
+
+          })
+          .catch((err) => {
+            console.log('error', err);
+          });
       });
     },
 
