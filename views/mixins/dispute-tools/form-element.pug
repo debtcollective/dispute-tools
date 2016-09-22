@@ -1,5 +1,9 @@
 mixin _toolsYesNoMixin(field)
+  if field.caption
+    p.py1.-caption.-fw-700.-neutral-mid!= field.caption
+
   p.-ff-sec.-accent.-fw-700= field.label
+
   - var _checked = field.default
   if _formData[field.name]
     - _checked = _formData[field.name]
