@@ -1,7 +1,8 @@
-/* globals Class, Krypton, DisputeAttachment, DisputeTool, DisputeStatus */
+/* globals Class, Krypton, Attachment, DisputeTool, DisputeStatus */
 /* eslint arrow-body-style: 0 */
 
 const _ = require('lodash');
+const gm = require('gm');
 
 const Dispute = Class('Dispute').inherits(Krypton.Model)({
   tableName: 'Disputes',
@@ -98,9 +99,29 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
 
       this.data.attachments = this.data.attachments || [];
 
-      const da = new DisputeAttachment();
+      const DisputeAttachment = Class({}, 'DisputeAttachment').inherits(Attachment)({
+        init(config) {
+          Krypton.Model.prototype.init.call(this, config);
 
-      da.disputeId = this.id;
+          this.fileMeta = this.fileMeta || {};
+
+          this.hasAttachment({
+            name: 'file',
+            versions: {
+              thumb(readStream) {
+                return gm(readStream)
+                  .resize(40, 40)
+                  .stream();
+              },
+            },
+          });
+        },
+      });
+
+      const da = new DisputeAttachment({
+        type: 'Dispute',
+        foreignKey: this.id,
+      });
 
       return da.save().then(() => {
         return da.attach('file', filePath);

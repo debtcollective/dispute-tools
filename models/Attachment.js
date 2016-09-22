@@ -1,19 +1,23 @@
 /* global Krypton, Class, CONFIG, AWS, S3Uploader */
 const gm = require('gm').subClass({ imageMagick: true });
 
-const DisputeAttachment = Class('DisputeAttachment').inherits(Krypton.Model)
+const Attachment = Class('Attachment').inherits(Krypton.Model)
   .includes(Krypton.Attachment)({
-    tableName: 'DisputeAttachments',
+    tableName: 'Attachments',
     validations: {
-      disputeId: ['required'],
+      foreignKey: ['required'],
+      type: ['required'],
     },
-    attributes: ['id', 'disputeId', 'filePath', 'fileMeta', 'createdAt', 'updatedAt'],
+    attributes: ['id', 'type', 'foreignKey', 'filePath', 'fileMeta', 'createdAt', 'updatedAt'],
     attachmentStorage: new Krypton.AttachmentStorage.Local({
-      acceptedMimeTypes : [/image/, 'application/pdf'],
+      acceptedMimeTypes: [/image/, 'application/pdf'],
       maxFileSize: 10485760, // 10MB
     }),
 
     prototype: {
+      type: null,
+      foreignKey: null,
+
       init(config) {
         Krypton.Model.prototype.init.call(this, config);
 
@@ -21,13 +25,6 @@ const DisputeAttachment = Class('DisputeAttachment').inherits(Krypton.Model)
 
         this.hasAttachment({
           name: 'file',
-          versions: {
-            thumb(readStream) {
-              return gm(readStream)
-                .resize(40, 40)
-                .stream();
-            },
-          },
         });
 
         return this;
@@ -35,4 +32,4 @@ const DisputeAttachment = Class('DisputeAttachment').inherits(Krypton.Model)
     },
   });
 
-module.exports = DisputeAttachment;
+module.exports = Attachment;
