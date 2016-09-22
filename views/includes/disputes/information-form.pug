@@ -1,6 +1,6 @@
 include ../../mixins/dispute-tools/form-element
 
-.max-width-3.mx-auto(data-component-dispute-tools-personal-information-form)
+.max-width-3.mx-auto(data-component-form="dispute-personal-information")
   form.px2(
     action=routeMappings.Disputes.updateDisputeData.url(dispute.id)
     method="post"
@@ -23,8 +23,9 @@ include ../../mixins/dispute-tools/form-element
           if sets.yesno
             +_toolsYesNoMixin({
               label: sets.yesNoLabel || sets.label,
+              caption: sets.yesNoCaption || '',
               name: `__toggle-radio-${i}__`,
-              default: _formData[`__toggle-radio-${i}__`] || 'no'
+              default: _formData[`__toggle-radio-${i}__`] || sets.default || 'no'
             })
 
           hr.my2

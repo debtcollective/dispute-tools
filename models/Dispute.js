@@ -79,12 +79,16 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
       return this;
     },
 
-    setDisputeProcess({ process }) {
+    setDisputeProcess({ process, processCity }) {
       if (!process) {
         throw new Error('The process type is required');
       }
 
       this.data.disputeProcess = process;
+
+      if (processCity) {
+        this.data.disputeProcessCity = processCity;
+      }
 
       return this;
     },

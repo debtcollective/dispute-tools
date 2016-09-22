@@ -52,10 +52,10 @@ block content
           +toolsSidebarMixin(dispute.disputeTool, currentStep)
 
       .col.lg-col-9.col-12.px2
-        include ../includes/dispute-tools/information
-        include ../includes/dispute-tools/process
-        include ../includes/dispute-tools/signature
-        include ../includes/dispute-tools/follow-up
+        include ../includes/disputes/information
+        include ../includes/disputes/process
+        include ../includes/disputes/signature
+        include ../includes/disputes/follow-up
 
 block append body
   //- dispute: more modal
@@ -76,7 +76,7 @@ block append body
           button(class="Modal__close" aria-label="close")
             svg(class="-s18"): use(xlink:href="#svg-close")
           .Modal__body(role="document")
-            include ../includes/dispute-tools/information-form
+            include ../includes/disputes/information-form
 
 block scripts
   script(src="/build/javascripts/disputes/show.js" async)

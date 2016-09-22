@@ -2,7 +2,7 @@ import Checkit from 'checkit';
 import Widget from '../../lib/widget';
 import Button from '../../components/Button';
 
-export default class DisputeToolsPersonalInformationForm extends Widget {
+export default class DisputesInformationForm extends Widget {
   constructor(config) {
     super(config);
 
