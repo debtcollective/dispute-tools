@@ -52,15 +52,13 @@ const DisputeRenderer = Class('DisputeRenderer')
                   } else {
                     const fieldData = field.split('.');
 
-                    let fieldValue;
+                    if (dispute.data.forms[fieldData[0]] &&
+                       dispute.data.forms[fieldData[0]][fieldData[1]]) {
 
-                    try {
-                      fieldValue = dispute.data.forms[fieldData[0]][fieldData[1]];
-                    } catch (e) {
-                      throw e;
+                      const fieldValue = dispute.data.forms[fieldData[0]][fieldData[1]];
+
+                      this._printField(templateFile, _field, fieldValue);
                     }
-
-                    this._printField(templateFile, _field, fieldValue);
                   }
                 }
 
