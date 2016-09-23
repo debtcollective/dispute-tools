@@ -130,7 +130,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     updateDisputeData(req, res, next) {
       const dispute = res.locals.dispute;
 
-      const commands = ['setForm', 'setDisputeProcess'];
+      const commands = ['setForm', 'setDisputeProcess', 'setConfirmFollowUp'];
 
       if (!commands.includes(req.body.command)) {
         return next(new Error('Invalid command'));
@@ -139,13 +139,27 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       try {
         dispute[req.body.command](req.body);
       } catch (e) {
-        req.flash('error', e.toString());
-        return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+        return res.format({
+          html() {
+            req.flash('error', e.toString());
+            return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+          },
+          json() {
+            return res.json({ error: e.toString() });
+          },
+        });
       }
 
       return dispute.save()
         .then(() => {
-          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+          return res.format({
+            html() {
+              return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+            },
+            json() {
+              return res.json({ status: 'confirmed' });
+            },
+          });
         })
         .catch(next);
     },

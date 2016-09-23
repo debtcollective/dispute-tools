@@ -4,6 +4,7 @@
 @import './components/Dropdown';
 @import './components/Alert';
 @import './components/Button';
+@import './components/Popover';
 @import './components/ResponsiveMenu';
 
 /* BASSCSS */
@@ -24,6 +25,7 @@
 @import './lib/kabinett/components/button';
 @import './lib/kabinett/components/input';
 @import './lib/kabinett/components/select';
+@import './lib/kabinett/components/popover';
 @import './lib/kabinett/utilities/layout';
 @import './lib/kabinett/utilities/type-font-weight';
 @import './lib/kabinett/utilities/type-font-scale';

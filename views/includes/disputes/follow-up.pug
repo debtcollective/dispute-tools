@@ -39,3 +39,15 @@ div(
       .col.md-col-8.col-12.p2
         h2.pb3 Now what?
         .pb3.-fw-500!= dispute.disputeTool.data.nowWhat
+
+  unless dispute.data.disputeConfirmFollowUp
+    .-k-popover.-bottom-right.-success.absolute(data-component-popover="dispute-completed" aria-hidden="true" style="width: 290px;")
+      .-k-popover-wrapper
+        .-k-popover__arrow
+        .-k-popover-body.p2.pr4
+          button.btn-clear.-k-popover__close(aria-label="close")
+            svg(width="13" height="13")
+              use(xlink:href="#svg-close")
+          .-dark.-fw-700 Access your filled tools
+          p.-fw-500 You can follow up your tools anytime through your Profile
+

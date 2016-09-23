@@ -39,6 +39,7 @@ export default class DisputesController extends NodeSupport {
       this.appendChild(new DisputesFollowUp({
         name: 'DisputesFollowUp',
         element: FollowUpElement,
+        dispute: config.dispute,
       }));
     }
   }
