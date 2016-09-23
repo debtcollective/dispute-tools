@@ -111,6 +111,11 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
       return this;
     },
 
+    setConfirmFollowUp() {
+      this.data.disputeConfirmFollowUp = true;
+      return this;
+    },
+
     addAttachment(name, filePath) {
       const dispute = this;
 
