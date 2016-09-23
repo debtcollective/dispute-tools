@@ -412,7 +412,318 @@ The number is: 1-800-304-3107.`,
                 title: 'I did not have a high school diploma or GED when I enrolled at the school.',
                 description: 'Attach any supporting documents.',
                 steps: [
-                  personalInformation,
+                  {
+                    type: 'form',
+                    name: 'personal-information-form',
+                    title: 'Personal Information',
+                    description: 'Here we need some personal, school and employment information.',
+                    fieldSets: [
+                      {
+                        title: 'Personal Information',
+                        subtitle: 'Let’s get started',
+                        fields: [
+                          [
+                            {
+                              name: 'name',
+                              label: 'Your Name',
+                              columnClassName: 'md-col-8',
+                              validations: [
+                                'required',
+                                'maxLength:128',
+                              ],
+                            },
+                            {
+                              name: 'ssn',
+                              label: 'Social Security Number',
+                              placeholder: 'AAA-GG-SSSS',
+                              columnClassName: 'md-col-4',
+                              validations: [
+                                'required',
+                                'alphaDash',
+                                'minLength:9',
+                                'maxLength:11',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'address1',
+                              label: 'Your Mailing Address',
+                              validations: [
+                                'required',
+                                'maxLength:128',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'address2',
+                              label: 'Your Mailing Address 2',
+                              validations: [
+                                'maxLength:128',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'email',
+                              label: 'Your email',
+                              placeholder: 'you@example.com',
+                              columnClassName: 'md-col-6',
+                              validations: [
+                                'required',
+                                'email',
+                                'maxLength:128',
+                              ],
+                            },
+                            {
+                              name: 'phone',
+                              label: 'Your telephone',
+                              placeholder: '(555) 555-5555',
+                              columnClassName: 'md-col-6',
+                              validations: [
+                                'required',
+                                'maxLength:20',
+                              ],
+                            },
+                          ],
+                        ],
+                      },
+                      {
+                        title: 'False Certification - Ability to Benefit',
+
+                        fields: [
+                          [
+                            {
+                              name: 'atb-applying-as',
+                              label: 'You are applying for this loan discharge as a parent',
+                              type: 'yesno',
+                              default: 'no',
+                              toggle: [
+                                'atb-student-name',
+                                'atb-student-ssn',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'atb-student-name',
+                              label: 'Student name (Last, First, MI)',
+                              hidden: true,
+                              validations: [
+                                'required',
+                                'maxLength:128',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'atb-student-ssn',
+                              label: 'Student SSN',
+                              placeholder: 'AAA-GG-SSSS',
+                              hidden: true,
+                              validations: [
+                                'required',
+                                'alphaNumericDash',
+                                'minLength:9',
+                                'maxLength:11',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'atb-attended-at',
+                              label: 'Did you (or the student) attend college prior to July 2, 2012?',
+                              type: 'yesno',
+                              default: 'no',
+                              toggle: [
+                                'atb-attended-where',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'atb-attended-where',
+                              label: 'Were you (or the student), prior to July 1, 2012, officially registered in college and scheduled to attend?',
+                              type: 'yesno',
+                              default: 'yes',
+                              alert: {
+                                no: {
+                                  message: 'Sorry, You are not eligible for this discharge.',
+                                },
+                              },
+                            },
+                          ],
+                          [
+                            {
+                              name: 'atb-school-name',
+                              label: 'Name of the school where you acquired the loans you are disputing on this form',
+                              columnClassName: 'md-col-8',
+                              validations: [
+                                'required',
+                                'maxLength:128',
+                              ],
+                            },
+                            {
+                              name: 'atb-school-address',
+                              label: 'Mailing Address of the school where you acquired the loans you are disputing on this form',
+                              columnClassName: 'md-col-8',
+                              validations: [
+                                'required',
+                                'maxLength:128',
+                              ],
+                            },
+                            {
+                              name: 'atb-school-address2',
+                              label: 'City, State, Zip Code of the school  where you acquired the loans you are disputing on this form',
+                              columnClassName: 'md-col-8',
+                              validations: [
+                                'required',
+                                'maxLength:128',
+                              ],
+                            },
+                            {
+                              name: 'atb-school-date',
+                              label: 'On what date did you (or the student) begin attending the school?',
+                              type: 'date',
+                              columnClassName: 'md-col-8',
+                              validations: [
+                                'required',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              title: 'Please list your (of the student\'s) dates of attendance at the school. Be as accurate as you can',
+                              fields: [
+                                [
+                                  {
+                                    name: 'atb-attendance-from',
+                                    label: 'From',
+                                    type: 'date',
+                                    columnClassName: 'md-col-4',
+                                    validations: [
+                                      'required',
+                                    ],
+                                  },
+                                  {
+                                    name: 'atb-attendance-to',
+                                    label: 'To',
+                                    type: 'date',
+                                    columnClassName: 'md-col-4',
+                                    validations: [
+                                      'required',
+                                    ],
+                                  },
+                                ],
+                                [
+                                  {
+                                    name: 'atb-program-of-study',
+                                    label: 'What was your (or the student\'s) program of study?',
+                                    validations: [
+                                      'required',
+                                      'maxLength:128',
+                                    ],
+                                  },
+                                ],
+                                [
+                                  {
+                                    name: 'atb-have-ged',
+                                    label: 'Did you (or the student) have a high school diploma or a GED while enrolled?',
+                                    type: 'yesno',
+                                    default: 'no',
+                                    alert: {
+                                      yes: {
+                                        message: 'Sorry, You are not eligible for this discharge.',
+                                      },
+                                    },
+                                  },
+                                ],
+                                [
+                                  {
+                                    name: 'atb-received-ged',
+                                    label: 'Did you (or the student) receive a GED before completing the program?',
+                                    type: 'yesno',
+                                    default: 'no',
+                                  },
+                                ],
+                                [
+                                  {
+                                    name: 'atb-enrolled-at',
+                                    label: 'When did you first enroll in college?',
+                                    type: 'date',
+                                    columnClassName: 'md-col-4',
+                                    validations: [
+                                      'required',
+                                    ],
+                                  },
+                                ],
+                              ],
+                            },
+                          ],
+                        ],
+                      },
+                      {
+                        title: 'Employment',
+                        yesno: true,
+                        yesNoLabel: 'Are You Currently employed?',
+                        fields: [
+                          [
+                            {
+                              name: 'employer',
+                              label: 'Current Employer',
+                              columnClassName: 'md-col-8',
+                              validations: [
+                                'required',
+                                'maxLength:128',
+                              ],
+                            },
+                            {
+                              name: 'employmentDate',
+                              type: 'date',
+                              label: 'Beggining Date',
+                              placeholder: 'mm-dd-yyyy',
+                              columnClassName: 'md-col-4',
+                              validations: [
+                                'required',
+                                'maxLength:20',
+                              ],
+                            },
+                          ],
+                          [
+                            {
+                              name: 'employerAddress1',
+                              label: 'Employer Mailing Address 1',
+                              columnClassName: 'md-col-8',
+                              validations: [
+                                'required',
+                                'maxLength:128',
+                              ],
+                            },
+                            {
+                              name: 'employerAddress2',
+                              label: 'Employer Mailing Address 2',
+                              columnClassName: 'md-col-8',
+                              validations: [
+                                'required',
+                                'maxLength:128',
+                              ],
+                            },
+                            {
+                              name: 'employerPhone',
+                              label: 'Employer Phone',
+                              placeholder: '(555) 555-5555',
+                              columnClassName: 'md-col-4',
+                              validations: [
+                                'required',
+                                'maxLength:20',
+                              ],
+                            },
+                          ],
+                        ],
+                      },
+                    ],
+                  },
                   {
                     type: 'information',
                     name: 'atb-form',
