@@ -13,6 +13,10 @@ const UserMailer = Class('UserMailer').inherits(BaseMailer)({
   sendResetPasswordLink: function sendResetPasswordLink(...args) {
     return this._send('sendResetPasswordLink', ...args);
   },
+
+  sendDispute: function sendDispute(...args) {
+    return this._send('sendDispute', ...args);
+  },
 });
 
 module.exports = UserMailer;

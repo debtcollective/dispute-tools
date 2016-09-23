@@ -62,6 +62,7 @@
     }
   },
   "dependencies": {
+    "archiver": "^1.1.0",
     "aws-sdk": "^2.4.14",
     "basscss": "^8.0.2",
     "bcrypt-node": "^0.1.0",
@@ -101,6 +102,7 @@
     "pug": "^2.0.0-beta4",
     "redis": "^2.6.2",
     "req-flash": "0.0.3",
+    "request": "^2.75.0",
     "response-time": "^2.3.1",
     "rimraf": "^2.5.4",
     "route-mappings": "^0.3.1",

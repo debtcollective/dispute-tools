@@ -168,6 +168,15 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       const dispute = res.locals.dispute;
 
       dispute.setSignature(req.body.signature)
+        .then((renderer) => {
+          UserMailer.sendDispute(req.user.email, {
+            user:  req.user,
+            renderer,
+            _options: {
+              subject: 'Dispute Documents - The Debt Collective',
+            }
+          });
+        })
         .then(() => {
           return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
         })
