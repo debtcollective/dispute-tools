@@ -5,7 +5,6 @@ exports.up = (knex) => {
     t.string('name', 256).notNullable();
     t.text('about');
     t.integer('completed').defaultTo(0);
-    t.jsonb('data').defaultTo('{}');
     t.timestamps();
   });
 };
