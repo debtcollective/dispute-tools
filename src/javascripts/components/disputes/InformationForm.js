@@ -102,6 +102,7 @@ export default class DisputesInformationForm extends Widget {
    */
   _handleAlertRadioChange(ev) {
     const target = ev.target;
+    const parentElement = target.parentElement;
     const data = JSON.parse(target.dataset.alert);
     const matched = data[target.value];
 
@@ -109,26 +110,27 @@ export default class DisputesInformationForm extends Widget {
       return;
     }
 
+    const opossiteAction = (target.value === 'yes') ? 'no' : 'yes';
+
     this.appendChild(new ConfirmInline({
       name: 'ConfirmInline',
       className: '-warning mt2',
       data: {
-        text: '▲  If you answer is No, you are not elegible for this discharge.',
-        cancelButtonText: 'Select Yes',
+        text: `▲ ${matched.message}`,
+        cancelButtonText: `Select ${opossiteAction}`,
         okButtonText: 'Exit form',
       },
     }));
 
     this.ConfirmInline.bind('onCancel', () => {
-      const negative = (target.value === 'yes') ? 'no' : 'yes';
-      target.parentElement.querySelector(`[name="${ev.target.name}"][value="${negative}"]`).click();
+      parentElement.querySelector(`[name="${ev.target.name}"][value="${opossiteAction}"]`).click();
     });
 
     this.ConfirmInline.bind('onOk', () => {
       this.dispatch('deleteDispute');
     });
 
-    this.ConfirmInline.render(target.parentElement).activate();
+    this.ConfirmInline.render(parentElement).activate();
   }
 
   _handleContentToogle(ev) {
