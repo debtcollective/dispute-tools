@@ -68,7 +68,7 @@ export default class DisputesFollowUp extends Widget {
       disputeId: this.dispute.id,
       body: {
         command: 'setConfirmFollowUp',
-      }
+      },
     });
   }
 }

@@ -103,6 +103,7 @@ div(
       form(
         action=routeMappings.Disputes.destroy.url(dispute.id)
         method="post"
+        data-component-form="delete-dispute"
       )
         input(name="_csrf" type="hidden" value=csrfToken)
         input(type="hidden" name="_method" value="DELETE")

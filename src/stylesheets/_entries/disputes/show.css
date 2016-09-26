@@ -2,6 +2,7 @@
 @import '../../components/dispute-tools/Sidebar';
 @import '../../components/dispute-tools/TextModal';
 @import '../../components/AvatarList';
+@import '../../components/ConfirmInline';
 
 hr {
   height: 3px;

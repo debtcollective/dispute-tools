@@ -1,5 +1,5 @@
-/* globals Dispute, RestfulController, Class, DisputeTool, CONFIG, DisputeStatus, DisputeMailer */
-/* eslint arrow-body-style: 0 */
+/* globals Dispute, RestfulController, Class, DisputeTool, CONFIG, DisputeStatus,
+    DisputeMailer, UserMailer */
 
 const path = require('path');
 const Promise = require('bluebird');
@@ -170,11 +170,11 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       dispute.setSignature(req.body.signature)
         .then((renderer) => {
           UserMailer.sendDispute(req.user.email, {
-            user:  req.user,
+            user: req.user,
             renderer,
             _options: {
               subject: 'Dispute Documents - The Debt Collective',
-            }
+            },
           });
         })
         .then(() => {
@@ -231,7 +231,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       res.locals.dispute
         .destroy()
         .then(() => {
-          req.flash('The Dispute you started has been deleted.');
+          req.flash('warning', 'The Dispute you started has been deleted.');
           return res.redirect(CONFIG.router.helpers.DisputeTools.url());
         })
         .catch(next);

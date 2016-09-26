@@ -25,6 +25,12 @@ export default class Widget extends mix(NodeSupport, CustomEventSupport) {
       element.insertAdjacentHTML('beforeend', this._getTemplate(this.data));
       this.element = element.firstElementChild;
     }
+
+    if (Object.prototype.hasOwnProperty.call(this, 'className') === true) {
+      this.className.split(' ').forEach(className => {
+        this.element.classList.add(className);
+      });
+    }
   }
 
   template() {

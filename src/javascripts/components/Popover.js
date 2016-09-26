@@ -9,7 +9,7 @@ export default class Popover extends Widget {
   }
 
   static _handleBackdropClick() {
-    Popover._activeDropdown.deactivate();
+    Popover._activePopover.deactivate();
   }
 
   constructor(config) {
@@ -39,7 +39,7 @@ export default class Popover extends Widget {
     APP.SCROLLING_BOX.style.overflow = 'hidden';
     this.element.setAttribute('aria-hidden', !this.active);
     this.element.parentElement.appendChild(Popover.backdrop);
-    Popover._activeDropdown = this;
+    Popover._activePopover = this;
     return null;
   }
 
@@ -51,7 +51,7 @@ export default class Popover extends Widget {
     APP.SCROLLING_BOX.style.overflow = 'auto';
     this.element.setAttribute('aria-hidden', true);
     this.element.parentElement.removeChild(Popover.backdrop);
-    Popover._activeDropdown = null;
+    Popover._activePopover = null;
 
     this._transitionEndRef = this.destroy.bind(this);
     this.element.addEventListener('transitionend', this._transitionEndRef);
@@ -73,4 +73,4 @@ export default class Popover extends Widget {
 }
 
 Popover._backdrop = null;
-Popover._activeDropdown = null;
+Popover._activePopover = null;

@@ -32,6 +32,19 @@
   }
 }
 
+.btn-light {
+  background-color: white;
+  color: var(--k-color-palette-primary);
+
+  &:hover:not([disabled]):not(:active) {
+    color: var(--primary-lighter);
+  }
+
+  &:active {
+    color: var(--primary-darker);
+  }
+}
+
 .btn-dark {
   background-color: #000;
   color: var(--k-color-palette-accent);

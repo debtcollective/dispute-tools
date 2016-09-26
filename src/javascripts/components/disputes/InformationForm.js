@@ -1,6 +1,7 @@
 import Checkit from 'checkit';
 import Widget from '../../lib/widget';
 import Button from '../../components/Button';
+import ConfirmInline from '../../components/ConfirmInline';
 
 export default class DisputesInformationForm extends Widget {
   constructor(config) {
@@ -80,6 +81,54 @@ export default class DisputesInformationForm extends Widget {
         }
       }
     });
+
+    this.handleAlertRadios = [].slice.call(document.querySelectorAll('[data-alert]'));
+    if (this.handleAlertRadios.length) {
+      this._handleAlertRadioChangeRef = this._handleAlertRadioChange.bind(this);
+      this.handleAlertRadios.forEach(t => {
+        t.addEventListener('change', this._handleAlertRadioChangeRef);
+      });
+    }
+  }
+
+  /**
+   * Handle the `alert` radio change event.
+   * If the value matches with the option that should display the `alert` it
+   * creates a new ConfirmInline widget instance and subscribe to its customEvents.
+   * @private
+   * @listens @module:ConfirmInline~event:onCancel
+   * @listens @module:ConfirmInline~event:onOk
+   * @return undefined
+   */
+  _handleAlertRadioChange(ev) {
+    const target = ev.target;
+    const data = JSON.parse(target.dataset.alert);
+    const matched = data[target.value];
+
+    if (!matched) {
+      return;
+    }
+
+    this.appendChild(new ConfirmInline({
+      name: 'ConfirmInline',
+      className: '-warning mt2',
+      data: {
+        text: '▲  If you answer is No, you are not elegible for this discharge.',
+        cancelButtonText: 'Select Yes',
+        okButtonText: 'Exit form',
+      },
+    }));
+
+    this.ConfirmInline.bind('onCancel', () => {
+      const negative = (target.value === 'yes') ? 'no' : 'yes';
+      target.parentElement.querySelector(`[name="${ev.target.name}"][value="${negative}"]`).click();
+    });
+
+    this.ConfirmInline.bind('onOk', () => {
+      this.dispatch('deleteDispute');
+    });
+
+    this.ConfirmInline.render(target.parentElement).activate();
   }
 
   _handleContentToogle(ev) {

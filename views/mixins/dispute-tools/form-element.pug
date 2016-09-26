@@ -17,6 +17,7 @@ mixin _toolsYesNoMixin(field)
     data-hidden= field.hidden && field.hidden.toString()
     data-default= field.default
     data-toogle-radio= field.toggle
+    data-alert!= field.alert
   )
   label.pl1.mr3.-ff-sec(for=`${field.name}-yes`) Yes
 
@@ -30,6 +31,7 @@ mixin _toolsYesNoMixin(field)
     data-hidden= field.hidden && field.hidden.toString()
     data-default= field.default
     data-toogle-radio= field.toggle
+    data-alert!= field.alert
   )
   label.pl1.-ff-sec(for=`${field.name}-no`) No
 

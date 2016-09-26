@@ -9,14 +9,17 @@ export default class DisputesInformation extends Widget {
     this.appendChild(new Modal({
       name: 'ModalInformationForm',
       element: document.querySelector('[data-component-modal="personal-information-form"]'),
-    })).appendChild(new DisputesInformationForm({
-      name: 'DisputesPersonalInformationForm',
+    }));
+
+    this.appendChild(new DisputesInformationForm({
+      name: 'DisputesInformationForm',
       dispute: config.dispute,
       element: document.querySelector('[data-component-form="dispute-personal-information"]'),
     }));
 
     this.personalInfoButton = this.element.querySelector('.js-trigger-personal-modal');
     this.informationSubmitButton = document.getElementById('js-information-next-step');
+    this.destroyDisputeForm = this.element.querySelector('[data-component-form="delete-dispute"]');
 
     this._bindMoreInfoModal();
     this._bindEvents();
@@ -26,10 +29,23 @@ export default class DisputesInformation extends Widget {
     this._handleButtonClickRef = this._handleButtonClick.bind(this);
     this.personalInfoButton.addEventListener('click', this._handleButtonClickRef);
 
+    this._handleDeleteDisputeRef = this._handleDeleteDispute.bind(this);
+    this.DisputesInformationForm.bind('deleteDispute', this._handleDeleteDisputeRef);
+
     if (this.informationSubmitButton) {
       this._displayNextStepRef = this._displayNextStep.bind(this);
       this.informationSubmitButton.addEventListener('click', this._displayNextStepRef);
     }
+  }
+
+  /**
+   * Submits the `delete-dispute` form.
+   * @private
+   * @listens @module:DisputesInformationForm~event:deleteDispute
+   * @return undefined
+   */
+  _handleDeleteDispute() {
+    this.destroyDisputeForm.submit();
   }
 
   _bindMoreInfoModal() {
