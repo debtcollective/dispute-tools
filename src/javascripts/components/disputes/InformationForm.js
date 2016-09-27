@@ -149,7 +149,6 @@ export default class DisputesInformationForm extends Widget {
           const el = this.ui[name];
 
           if (el) {
-            el.value = '';
             el.disabled = true;
           }
 
