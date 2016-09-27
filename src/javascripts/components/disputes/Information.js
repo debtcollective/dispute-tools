@@ -75,14 +75,16 @@ export default class DisputesInformation extends Widget {
   }
 
   _displayNextStep() {
-    const current = document.querySelector('.Tool__sidebar-steps > .-current');
+    this.dispatch('showNext');
+  }
 
-    this.element.classList.add('hide');
-    this.element.nextElementSibling.classList.remove('hide');
+  activate() {
+    this.active = true;
+    this.element.setAttribute('aria-hidden', !this.active);
+  }
 
-    current.classList.remove('-current');
-    current.classList.add('-done');
-
-    current.nextElementSibling.classList.add('-current');
+  deactivate() {
+    this.active = false;
+    this.element.setAttribute('aria-hidden', !this.active);
   }
 }

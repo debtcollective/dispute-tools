@@ -1,7 +1,6 @@
 if dispute.disputeTool.data.signature
-  div(
+  .Dispute__step-content(
     data-dispute-signature
-    class= currentSection !== 'signature' && 'hide'
     aria-hidden= (currentSection !== 'signature').toString()
   )
     form(

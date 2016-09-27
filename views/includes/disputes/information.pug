@@ -81,9 +81,8 @@ mixin _uploadCard(step, _completed)
     .Tool__Info__footer-caption.center.-caption
       | #{step.footerNotes}
 
-div(
+.Dispute__step-content(
   data-dispute-information
-  class= currentSection !== 'information' && 'hide'
   aria-hidden= (currentSection !== 'information').toString()
 )
   .pt3.pr3.pl3.pb2.-bg-neutral-dark
@@ -133,7 +132,7 @@ div(
       var _defaultButtonText = 'Complete the above documents to continue...';
       var _readyButtonText = 'Continue to finalize your dispute...';
 
-    if dispute.disputeTool.data.disputeProcess && !dispute.disputeTool.data.signature
+    if dispute.disputeTool.data.disputeProcess && !dispute.disputeTool.data.signature && !dispute.data.signature
         form(
           action=routeMappings.Disputes.setSignature.url(dispute.id)
           method="post"

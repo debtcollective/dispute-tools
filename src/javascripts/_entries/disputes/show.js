@@ -16,6 +16,7 @@ class ViewDisputesShow extends NodeSupport {
     this.appendChild(new DisputesController({
       name: 'DisputesController',
       dispute: config.dispute,
+      currentStep: config.currentStep,
     }));
 
     WebFont.load({

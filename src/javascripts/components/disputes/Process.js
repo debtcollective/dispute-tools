@@ -112,4 +112,14 @@ export default class DisputesProcess extends Widget {
       processCity: this.ui.processCity && this.ui.processCity.value,
     };
   }
+
+  activate() {
+    this.active = true;
+    this.element.setAttribute('aria-hidden', !this.active);
+  }
+
+  deactivate() {
+    this.active = false;
+    this.element.setAttribute('aria-hidden', !this.active);
+  }
 }

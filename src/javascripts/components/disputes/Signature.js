@@ -68,4 +68,14 @@ export default class DisputesSignature extends Widget {
     });
     return data;
   }
+
+  activate() {
+    this.active = true;
+    this.element.setAttribute('aria-hidden', !this.active);
+  }
+
+  deactivate() {
+    this.active = false;
+    this.element.setAttribute('aria-hidden', !this.active);
+  }
 }

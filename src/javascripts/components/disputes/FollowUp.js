@@ -71,4 +71,14 @@ export default class DisputesFollowUp extends Widget {
       },
     });
   }
+
+  activate() {
+    this.active = true;
+    this.element.setAttribute('aria-hidden', !this.active);
+  }
+
+  deactivate() {
+    this.active = false;
+    this.element.setAttribute('aria-hidden', !this.active);
+  }
 }

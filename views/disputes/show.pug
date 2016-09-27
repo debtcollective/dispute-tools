@@ -85,7 +85,8 @@ block scripts
       var options = {
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
-        dispute: !{JSON.stringify(dispute)}
+        dispute: !{JSON.stringify(dispute)},
+        currentStep: !{JSON.stringify(currentStep)},
       };
       new ViewDisputesShow(options);
     }, true);

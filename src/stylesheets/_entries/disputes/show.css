@@ -4,6 +4,10 @@
 @import '../../components/AvatarList';
 @import '../../components/ConfirmInline';
 
+.Dispute__step-content[aria-hidden="true"] {
+  display: none;
+}
+
 hr {
   height: 3px;
   background-color: rgba(235, 235, 235, 0.2);
