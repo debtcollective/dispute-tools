@@ -6,7 +6,8 @@
 
 .Profile__map {
   top: -60px;
-  background: transparent url('/images/profile/bg-map.jpg') 50%;
+  background-color: transparent;
+  background-position: 50%;
   background-size: cover;
   opacity: .7;
   mix-blend-mode: lighten;

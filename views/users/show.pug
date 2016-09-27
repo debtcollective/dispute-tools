@@ -8,7 +8,11 @@ block styles
 
 block content
   .ProfileWrapper.wrapper.py4.px2.flex.items-center.relative
-    .Profile__map.absolute.left-0.right-0.bottom-0
+    - var _state = user.account.state.toLowerCase().replace(' ', '-')
+    - var _stateMapUrl = `/images/profile/states-US/${_state}.png`
+    .Profile__map.absolute.left-0.right-0.bottom-0(
+      style={'background-image': `url(${_stateMapUrl})`}
+    )
     .max-width-3.mx-auto.relative.-fw
       .clearfix
         .Profile__image-wrapper.relative.right.sm-col-4.col-12
