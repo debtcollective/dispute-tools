@@ -9,7 +9,12 @@ block styles
 block content
   .max-width-1.mx-auto.py4.px2
     h2.pb3.-fw-500 Edit Profile
-    form(action=routeMappings.Users.update.url(user.id) method="post" enctype="multipart/form-data" data-component-usereditform)
+    form(
+      action=routeMappings.Users.update.url(user.id)
+      method="post"
+      enctype="multipart/form-data"
+      data-component-usereditform
+    )
       input(name="_csrf" type="hidden" value=csrfToken)
       input(name="_method" type="hidden" value="PUT")
 
