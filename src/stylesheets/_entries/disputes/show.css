@@ -16,7 +16,7 @@ fieldset {
   /* box-shadow: 0 0 0 1px dodgerblue; */
 }
 
-input[name^='fieldValues[__toggle-radio'][value="no"]:checked ~ fieldset {
+input[data-toggle-radio][value="no"]:checked ~ fieldset {
   display: none;
 }
 

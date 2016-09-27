@@ -54,8 +54,9 @@ export default class DisputesInformationForm extends Widget {
     this._handleFormSubmitRef = this._handleFormSubmit.bind(this);
     this.form.addEventListener('submit', this._handleFormSubmitRef);
 
+    // document.querySelectorAll("input[name^='fieldValues[__toggle-radio']")
     this.tooglers = [].slice.call(
-      document.querySelectorAll("input[name^='fieldValues[__toggle-radio']")
+      document.querySelectorAll("[data-toggle-radio]")
     );
     this._handleContentToogleRef = this._handleContentToogle.bind(this);
     this.tooglers.forEach(t => {
@@ -67,7 +68,7 @@ export default class DisputesInformationForm extends Widget {
     });
 
     this.toogleRadios = [].slice.call(
-      document.querySelectorAll('[data-toogle-radio]')
+      document.querySelectorAll('[data-partial-toggle-radio]')
     );
     this._toogleRadiosRefs = {};
     this._handlePartialTogglerRef = this._handlePartialToggler.bind(this);
@@ -171,7 +172,7 @@ export default class DisputesInformationForm extends Widget {
   }
 
   initHiddenElements(element) {
-    const names = JSON.parse(element.dataset.toogleRadio);
+    const names = JSON.parse(element.dataset.partialToggleRadio);
 
     names.forEach(name => {
       const el = this.ui[name];
@@ -201,7 +202,7 @@ export default class DisputesInformationForm extends Widget {
 
   _handlePartialToggler(ev) {
     const target = ev.currentTarget;
-    const names = JSON.parse(target.dataset.toogleRadio);
+    const names = JSON.parse(target.dataset.partialToggleRadio);
 
     names.forEach(name => {
       const ref = this._toogleRadiosRefs[name];

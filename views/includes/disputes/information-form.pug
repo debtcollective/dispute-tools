@@ -21,12 +21,7 @@ include ../../mixins/dispute-tools/form-element
           p.-ff-sec= sets.subtitle
 
           if sets.yesno
-            +_toolsYesNoMixin({
-              label: sets.yesNoLabel || sets.label,
-              caption: sets.yesNoCaption || '',
-              name: `__toggle-radio-${i}__`,
-              default: _formData[`__toggle-radio-${i}__`] || sets.default || 'no'
-            })
+            +_toolsYesNoMixin(sets)
 
           hr.my2
 
