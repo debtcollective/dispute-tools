@@ -1,6 +1,7 @@
 div(
   data-dispute-follow-up
   class= currentSection !== 'follow-up' && 'hide'
+  aria-hidden= (currentSection !== 'follow-up').toString()
 )
   .p3
     - var _headingText = `Thank you for disputing ${dispute.disputeTool.name}`;

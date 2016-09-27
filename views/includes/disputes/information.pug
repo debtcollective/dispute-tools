@@ -84,6 +84,7 @@ mixin _uploadCard(step, _completed)
 div(
   data-dispute-information
   class= currentSection !== 'information' && 'hide'
+  aria-hidden= (currentSection !== 'information').toString()
 )
   .pt3.pr3.pl3.pb2.-bg-neutral-dark
     - var _deleteDisputeButtonText = '← This is not my case';

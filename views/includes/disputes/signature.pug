@@ -2,6 +2,7 @@ if dispute.disputeTool.data.signature
   div(
     data-dispute-signature
     class= currentSection !== 'signature' && 'hide'
+    aria-hidden= (currentSection !== 'signature').toString()
   )
     form(
       action=routeMappings.Disputes.setSignature.url(dispute.id)

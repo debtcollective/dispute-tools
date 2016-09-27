@@ -36,6 +36,7 @@ unless dispute.disputeTool.data.disputeProcess
   div(
     data-dispute-process
     class= currentSection !== 'process' && 'hide'
+    aria-hidden= (currentSection !== 'process').toString()
   )
     form(
       action=routeMappings.Disputes.updateDisputeData.url(dispute.id)
