@@ -58,5 +58,12 @@
     display: inline-block;
     vertical-align: top;
     fill: rgba(0,0,0,.5);
+    transform: scale(1);
+    transition: transform 100ms ease-out;
+  }
+
+  &:hover > svg,
+  &:focus > svg {
+    transform: scale(1.1);
   }
 }

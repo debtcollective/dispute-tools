@@ -10,9 +10,6 @@ export default class Alert extends Widget {
   _bindEvents() {
     this._closeHandlerRef = this.deactivate.bind(this);
     this.closeButton.addEventListener('click', this._closeHandlerRef);
-
-    this._transitionEndRef = this.destroy.bind(this);
-    this.element.addEventListener('transitionend', this._transitionEndRef);
   }
 
   /**
@@ -20,6 +17,9 @@ export default class Alert extends Widget {
    */
   deactivate() {
     this.element.setAttribute('aria-hidden', true);
+
+    this._transitionEndRef = this.destroy.bind(this);
+    this.element.addEventListener('transitionend', this._transitionEndRef);
   }
 
   destroy() {

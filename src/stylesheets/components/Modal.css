@@ -31,6 +31,13 @@
     display: inline-block;
     vertical-align: top;
     fill: #fff;
+    transform: scale(1);
+    transition: transform 100ms ease-out;
+  }
+
+  &:hover > svg,
+  &:focus > svg {
+    transform: scale(1.2);
   }
 }
 
