@@ -1,6 +1,7 @@
 /* global Krypton, Class, CONFIG, UserMailer */
 
 const bcrypt = require('bcrypt-node');
+const uuid = require('uuid');
 
 const User = Class('User').inherits(Krypton.Model)({
   tableName: 'Users',
@@ -108,15 +109,8 @@ const User = Class('User').inherits(Krypton.Model)({
 
       // setActivationToken helper function
       const setActivationToken = (done) => {
-        bcrypt.hash(CONFIG.env().sessions.secret + Date.now(),
-          bcrypt.genSaltSync(10), null, (err, hash) => {
-            if (err) {
-              return done(err);
-            }
-
-            model.activationToken = hash.replace('/', '');
-            return done();
-          });
+        model.activationToken = uuid.v4();
+        return done();
       };
 
       // Create a hash and set it as activationToken

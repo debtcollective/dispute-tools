@@ -3,6 +3,7 @@
 const path = require('path');
 const bcrypt = require('bcrypt-node');
 const Promise = require('bluebird');
+const uuid = require('uuid');
 
 const passport = require(path.join(process.cwd(), 'lib', 'passport', 'local_strategy'));
 
@@ -63,8 +64,7 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
           });
         }
 
-        user[0].resetPasswordToken = bcrypt.hashSync(CONFIG.env()
-          .sessions.secret + Date.now(), bcrypt.genSaltSync(12), null);
+        user[0].resetPasswordToken = uuid.v4();
 
         return user[0].save().then(() => {
           return UserMailer.sendResetPasswordLink(user[0].email, {
@@ -120,7 +120,7 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
         }
 
         user[0].password = req.body.password;
-        user[0].resetPasswordToken = 'a';
+        user[0].resetPasswordToken = null;
 
 
         return user[0].save()
