@@ -169,7 +169,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
       dispute.setSignature(req.body.signature)
         .then((renderer) => {
-          UserMailer.sendDispute(req.user.email, {
+          return UserMailer.sendDispute(req.user.email, {
             user: req.user,
             renderer,
             _options: {
