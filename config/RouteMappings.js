@@ -1,6 +1,10 @@
 const RouteMappings = require('route-mappings');
 
 const routeMappings = RouteMappings()
+  .get('/admin', {
+    to: 'Home#admin',
+  })
+
   .get('/', {
     to: 'Home#index',
     as: 'root',
