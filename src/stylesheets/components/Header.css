@@ -1,3 +1,20 @@
+.-is-admin {
+  & .Header__bg {
+    background-color: var(--k-color);
+    opacity: 1;
+  }
+
+  & .Header__link,
+  & .Header .Dropdown__head {
+    color: var(--k-background-color);
+  }
+
+  & .Header__dropdown-item {
+    color: var(--k-color);
+  }
+}
+
+
 .Header {
   z-index: 2;
   position: fixed;

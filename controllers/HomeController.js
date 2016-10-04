@@ -18,6 +18,10 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       return next();
     },
 
+    admin(req, res) {
+      res.render('home/admin.pug');
+    },
+
     index(req, res) {
       res.render('home/index.pug');
     },

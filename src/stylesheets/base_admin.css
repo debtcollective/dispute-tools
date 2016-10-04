@@ -1,0 +1,47 @@
+@import './base';
+@import './components/Input';
+@import './components/Select';
+
+:root {
+  /* KABINETT CONFIGURATION */
+  --k-background-color: #fff;
+  --k-color: #000;
+
+  --k-xl-fs: calc(var(--k-font-size) * 1);
+  --k-xl-h: 70px;
+}
+
+/* CUSTOM STYLES */
+body {
+  background: #f0f0f0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.-status {
+  &-incomplete {color: #F5A623}
+  &-completed {color: #F04C34}
+  &-in-review {color: #267DE2}
+  &-documents-sent {color: #D0021B}
+  &-updated {color: #4D9900}
+}
+
+table {
+  border-spacing: 0 3px;
+}
+
+thead {
+  background: white;
+}
+
+thead > tr > th {
+  border-top: 5px solid black;
+}
+
+tbody > tr {
+  background: white;
+}
+
+tbody > tr > td {
+  padding: 10px;
+}

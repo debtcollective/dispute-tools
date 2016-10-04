@@ -11,6 +11,7 @@ export default class Common extends Widget {
       currentUser: this.currentUser,
       currentURL: this.currentURL,
       element: document.querySelector('[data-component-header]'),
+      isAdmin: this.isAdmin,
     }));
 
     const alertElements = [].slice.call(document.querySelectorAll('.Alert'));
