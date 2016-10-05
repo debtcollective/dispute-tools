@@ -402,21 +402,22 @@ Millions of us have errors on our credit reports, which make it harder to do bas
           completed: 0,
         },
 
-        {
-          id: '11111111-1111-5555-1111-111111111111',
-          name: 'Defense to Repayment application',
-          about: `### Defense to Repayment application
+//         {
+//           id: '11111111-1111-5555-1111-111111111111',
+//           name: 'Defense to Repayment application',
+//           about: `### Defense to Repayment application
+//
+// If your taxes are being seized ("offset") or if you have been threatened with offset, you have a lot in common with thousands of other people whose taxes are offset each year. This is wrong, since no one should have to go into debt for education!
+//
+// You can use this form to submit a dispute to the Department of Education. The Department's form is unnecessarily complicated. We have streamlined the process for our members. You can make sure your offset is placed on hold if you file this dispute by 65 days after the date you received the offset notice. You can also stop an offset that has already begun if you receive a favorable decision from the Department.
+//
+// What if I suspect that my taxes will be offset but I haven't received a notice?
+//
+// The Department of Education usually sends offset notices once per year in the summer. If you want to know whether your taxes will be offset as a result of a federal student loan, you can call the Bureau of the Fiscal Service at 1-800-304-3107. Making this call does not make it more likely that your taxes will be offset.
+// `,
+//           completed: 0,
+//         },
 
-If your taxes are being seized ("offset") or if you have been threatened with offset, you have a lot in common with thousands of other people whose taxes are offset each year. This is wrong, since no one should have to go into debt for education!
-
-You can use this form to submit a dispute to the Department of Education. The Department's form is unnecessarily complicated. We have streamlined the process for our members. You can make sure your offset is placed on hold if you file this dispute by 65 days after the date you received the offset notice. You can also stop an offset that has already begun if you receive a favorable decision from the Department.
-
-What if I suspect that my taxes will be offset but I haven't received a notice?
-
-The Department of Education usually sends offset notices once per year in the summer. If you want to know whether your taxes will be offset as a result of a federal student loan, you can call the Bureau of the Fiscal Service at 1-800-304-3107. Making this call does not make it more likely that your taxes will be offset.
-`,
-          completed: 0,
-        },
         {
           id: '11111111-1111-6666-1111-111111111111',
           name: 'Private Student Loan Dispute Letter',
