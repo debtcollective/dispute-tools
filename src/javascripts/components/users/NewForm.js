@@ -38,7 +38,7 @@ export default class UsersNewForm extends Widget {
 
     this.appendChild(new Button({
       name: 'ButtonSubmit',
-      element: this.element.querySelector('button'),
+      element: this.element.querySelector('button[type="submit"]'),
     }));
 
     this.collectivesOptions = [].slice.call(
