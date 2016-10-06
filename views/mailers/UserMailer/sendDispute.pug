@@ -5,7 +5,7 @@ block title
   div we will mail your dispute to the appropriate agency as soon as possible.
 
 block content
-  - var downloadURL = `${CONFIG.env().siteURL}${renderer.zip.url('original')}`
+  - var downloadURL = `${CONFIG.env().siteURL}${CONFIG.router.helpers.Disputers.download(renderer.disputeId)}`
   div(style="font-size: 16px; line-height: 142%;")
     div(style="font-family: monospace; color: #000000;")
       div Hi #{user.account.fullname},
