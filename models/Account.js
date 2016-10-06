@@ -9,7 +9,6 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
   states: US_STATES,
   validations: {
     userId: ['required'],
-    collectiveId: ['required'],
     fullname: ['required'],
     state: [
       'required',
@@ -38,7 +37,6 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
   attributes: [
     'id',
     'userId',
-    'collectiveId',
     'fullname',
     'bio',
     'state',

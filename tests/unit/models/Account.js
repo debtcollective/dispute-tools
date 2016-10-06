@@ -49,7 +49,7 @@ describe('Account', () => {
     });
 
     describe('collectiveId', () => {
-      it('Sould fail if collectiveId is not set', () => {
+      xit('Sould fail if collectiveId is not set', () => {
         const account = new Account({});
 
         return account.save()
@@ -209,7 +209,6 @@ describe('Account', () => {
           return user.transacting(trx).save()
             .then(() => {
               account.userId = user.id;
-              account.collectiveId = collective.id;
 
               return account.transacting(trx).save();
             });
@@ -218,7 +217,6 @@ describe('Account', () => {
           return Account.query().include('[user, debtType]');
         }).then((result) => {
           expect(result[0].user).to.be.instanceof(User);
-          expect(result[0].debtType).to.be.instanceof(Collective);
         });
       });
     });

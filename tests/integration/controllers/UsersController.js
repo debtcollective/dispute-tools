@@ -156,7 +156,7 @@ describe('UsersController', () => {
           state: 'Texas',
           zip: '90210',
           phone: '123456789',
-          collectiveId: collective.id,
+          collectiveIds: [collective.id],
           _csrf,
         })
         .end((err, res) => {
