@@ -25,7 +25,9 @@ block content
             .flex-auto
               h3.pb2= user.account.fullname
               p.pb2.-caption.-fw-700.-accent= user.account.state
-              p.-fw-700= user.account.bio
+              .-fw-700
+                each line in user.account.bio.split(/\n/g)
+                  p.pb1= line
             .flex.pt4
               if currentUser && currentUser.id === user.id
                 a(href=routeMappings.Users.edit.url(currentUser.id) class="-caption -fw-700" role="button" tabindex="0")
