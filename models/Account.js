@@ -54,6 +54,7 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
   }),
 
   prototype: {
+    bio: '',
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
 
