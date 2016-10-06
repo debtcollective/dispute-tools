@@ -120,18 +120,13 @@ const User = Class('User').inherits(Krypton.Model)({
 
       // If email changes, set activationToken again
       model.on('beforeUpdate', (done) => {
-        if (this._oldEmail === model.email) {
+        if (model._oldEmail === model.email) {
           return done();
         }
+
+        model._oldEmail = model.email;
 
         return setActivationToken(done);
-      });
-
-      // If email changed, send activation email
-      model.on('afterUpdate', (done) => {
-        if (this._oldEmail === model.email) {
-          return done();
-        }
       });
     },
 
@@ -144,7 +139,7 @@ const User = Class('User').inherits(Krypton.Model)({
     sendActivation() {
       const model = this;
 
-      UserMailer.sendActivation(this.email, {
+      return UserMailer.sendActivation(this.email, {
         user: model,
         _options: {
           subject: 'Activate your account - The Debt Collective',
