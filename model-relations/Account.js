@@ -7,10 +7,4 @@ Account.relations = {
     ownerCol: 'user_id',
     relatedCol: 'id',
   },
-  debtType: {
-    type: 'HasOne',
-    relatedModel: Collective,
-    ownerCol: 'collective_id',
-    relatedCol: 'id',
-  },
 };

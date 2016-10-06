@@ -14,7 +14,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
   prototype: {
     _loadUser(req, res, next) {
       User.query()
-        .include('[account.debtType, disputes.statuses]')
+        .include('[disputes.statuses]')
         .where('id', req.params.id)
         .then((result) => {
           if (result.length === 0) {
@@ -65,6 +65,24 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
           .then(() => {
             account.userId = user.id;
             return account.transacting(trx).save();
+          })
+          .then(() => {
+            return User.knex()
+              .table('UsersCollectives')
+              .where('user_id', user.id)
+              .transacting(trx)
+              .del();
+          })
+          .then(() => {
+            return Promise.each(req.body.collectiveIds, (collectiveId) => {
+              return User.knex()
+                .table('UsersCollectives')
+                .transacting(trx)
+                .insert({
+                  user_id: user.id,
+                  collective_id: collectiveId,
+                });
+            });
           })
           .then(trx.commit)
           .catch(trx.rollback);
@@ -124,7 +142,27 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             }
 
             return user.account.transacting(trx).save();
-          });
+          })
+          .then(() => {
+            return User.knex()
+              .table('UsersCollectives')
+              .where('user_id', user.id)
+              .transacting(trx)
+              .del();
+          })
+          .then(() => {
+            return Promise.each(req.body.collectiveIds, (collectiveId) => {
+              return User.knex()
+                .table('UsersCollectives')
+                .transacting(trx)
+                .insert({
+                  user_id: user.id,
+                  collective_id: collectiveId,
+                });
+            });
+          })
+          .finally(trx.commit)
+          .catch(trx.rollback);
       })
       .then(() => {
         if (user._oldEmail === user.email) {
