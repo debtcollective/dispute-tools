@@ -6,6 +6,7 @@
 @import './components/Button';
 @import './components/Popover';
 @import './components/ResponsiveMenu';
+@import './components/users/NewForm';
 
 /* BASSCSS */
 @import 'basscss-align';
@@ -60,7 +61,7 @@
 
   /* BASSCSS CONFIGURATION */
   /* basscss-layout */
-  --width-1: 23rem;
+  --width-1: 23.125rem;
   --width-2: 36rem;
   --width-3: 48rem;
   --width-4: 60.625rem;
