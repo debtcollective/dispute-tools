@@ -1,5 +1,5 @@
 /* globals Dispute, RestfulController, Class, DisputeTool, CONFIG, DisputeStatus,
-    DisputeMailer, UserMailer */
+    DisputeMailer, UserMailer, NotFoundError, DisputeRenderer */
 
 const path = require('path');
 const Promise = require('bluebird');
@@ -224,6 +224,21 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         .catch((err) => {
           req.flash('error', err.message);
           return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+        });
+    },
+
+    download(req, res, next) {
+      DisputeRenderer.query()
+        .where({
+          dispute_id: req.params.id,
+        })
+        .limit(1)
+        .then((renderer) => {
+          if (renderer.length === 0) {
+            return next(new NotFoundError('File not found'));
+          }
+
+          return res.sendFile(path.join(process.cwd(), 'public', renderer[0].zip.url('original')));
         });
     },
 
