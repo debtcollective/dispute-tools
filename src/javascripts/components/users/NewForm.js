@@ -41,10 +41,6 @@ export default class UsersNewForm extends Widget {
       element: this.element.querySelector('button'),
     }));
 
-    this._setupStepOne()._bindEvents();
-  }
-
-  _setupStepOne() {
     this.collectivesOptions = [].slice.call(
       this.element.querySelectorAll('[name="collectiveIds"]')
     );
@@ -58,7 +54,7 @@ export default class UsersNewForm extends Widget {
       element: this.nextBtn,
     }));
 
-    return this;
+    this._bindEvents();
   }
 
   _bindEvents() {
@@ -67,8 +63,11 @@ export default class UsersNewForm extends Widget {
       this.collectivesOptions[i].addEventListener('change', this._handleCollectiveOptionsChangeRef);
     }
 
-    this.nextBtn.addEventListener('click', this.next.bind(this));
-    this.prevBtn.addEventListener('click', this.prev.bind(this));
+    this._hadnleShowNextStepRef = this._handleShowNextStep.bind(this);
+    this.nextBtn.addEventListener('click', this._hadnleShowNextStepRef);
+
+    this._handleShowPrevStepRef = this._handleShowPrevStep.bind(this);
+    this.prevBtn.addEventListener('click', this._handleShowPrevStepRef);
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this.element.querySelector('form').addEventListener('submit', this._handleFormSubmit);
@@ -82,12 +81,12 @@ export default class UsersNewForm extends Widget {
     this.ButtonContinue[selected.length ? 'enable' : 'disable']();
   }
 
-  next() {
+  _handleShowNextStep() {
     this.step1Layer.setAttribute('aria-hidden', true);
     this.step2Layer.setAttribute('aria-hidden', false);
   }
 
-  prev() {
+  _handleShowPrevStep() {
     this.step1Layer.setAttribute('aria-hidden', false);
     this.step2Layer.setAttribute('aria-hidden', true);
   }
