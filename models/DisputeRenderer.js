@@ -24,7 +24,7 @@ const DisputeRenderer = Class('DisputeRenderer')
     data: disputeRendererData,
     attributes: ['id', 'disputeId', 'zipPath', 'zipMeta', 'createdAt', 'updatedAt'],
     attachmentStorage: new Krypton.AttachmentStorage.Local({
-      acceptedMimeTypes: ['application/zip'],
+      acceptedMimeTypes: ['application/zip', 'application/octet-stream', /application/],
       maxFileSize: 20971520, // 20MB
     }),
 
@@ -142,52 +142,92 @@ const DisputeRenderer = Class('DisputeRenderer')
         });
       },
 
-      buildZip(dispute) {
+      buildZip(_renderer) {
         const renderer = this;
 
         const zip = archiver.create('zip', {});
-
-        dispute.attachments.forEach((attachment) => {
-          let readStream;
-
-          const url = attachment.file.url('original');
-
-          if (LOCAL_URI_REGEXP.test(url)) {
-            readStream = fs.createReadStream(path.join(process.cwd(), 'public', url));
-          } else if (REMOTE_URI_REGEXP.test(url)) {
-            readStream = request.get(url);
-          }
-
-          zip.append(readStream, {
-            name: `the-debtcollective-dispute/${attachment.file.meta('original').originalFileName}`,
-          });
-        });
-
         const zipPath = path.join(OS.tmpdir(), `${uuid.v4()}.zip`);
         const writer = fs.createWriteStream(zipPath);
 
-        return new Promise((resolve, reject) => {
-          zip.finalize();
+        zip.pipe(writer);
 
-          zip.on('finish', (err) => {
-            if (err) {
-              return reject(err);
-            }
+        return Promise.resolve()
+          .then(() => {
+            return Promise.map(_renderer.attachments, (attachment) => {
+              return new Promise((resolve) => {
+                let readStream;
 
-            return zip.pipe(writer);
-          });
+                const url = attachment.file.url('original');
 
-          writer.on('finish', (err) => {
-            if (err) {
-              return reject(err);
-            }
+                if (LOCAL_URI_REGEXP.test(url)) {
+                  readStream = fs.createReadStream(path.join(process.cwd(), 'public', url));
+                } else if (REMOTE_URI_REGEXP.test(url)) {
+                  readStream = request.get(url);
+                }
 
+                return Promise.resolve()
+                  .then(() => {
+                    return zip.append(readStream, {
+                      name: `debt-collective-dispute/${attachment.file.meta('original').originalFileName}`,
+                    });
+                  })
+                  .then(() => {
+                    return resolve();
+                  });
+              });
+            }, { concurrency: 1 });
+          })
+          .then(() => {
+            return Dispute.query()
+              .where('id', _renderer.disputeId)
+              .include('attachments')
+              .then(([dispute]) => {
+                return Promise.map(dispute.attachments, (attachment) => {
+                  return new Promise((resolve) => {
+                    let readStream;
+
+                    const url = attachment.file.url('original');
+
+                    if (LOCAL_URI_REGEXP.test(url)) {
+                      readStream = fs.createReadStream(path.join(process.cwd(), 'public', url));
+                    } else if (REMOTE_URI_REGEXP.test(url)) {
+                      readStream = request.get(url);
+                    }
+
+                    return Promise.resolve()
+                      .then(() => {
+                        return zip.append(readStream, {
+                          name: `debt-collective-dispute/${attachment.file.meta('original').originalFileName}`,
+                        });
+                      })
+                      .then(() => {
+                        return resolve();
+                      });
+                  });
+                }, { concurrency: 1 });
+              });
+          })
+          .then(() => {
+            return new Promise((resolve, reject) => {
+              writer.on('close', (err) => {
+                if (err) {
+                  return reject(err);
+                }
+
+                return resolve();
+              });
+
+              return zip.finalize();
+            });
+          })
+          .then(() => {
             return renderer.attach('zip', zipPath)
               .then(() => {
-                renderer.save().then(resolve);
+                return renderer.save().then(([id]) => {
+                  return id;
+                });
               });
           });
-        });
       },
     },
   });
