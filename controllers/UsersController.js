@@ -122,7 +122,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       user.updateAttributes(req.body);
       user.account.updateAttributes(req.body);
 
-      user.role = 'User';
+      user.role = user.role;
 
       User.transaction((trx) => {
         return user.transacting(trx).save()
@@ -143,29 +143,11 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
             return user.account.transacting(trx).save();
           })
-          .then(() => {
-            return User.knex()
-              .table('UsersCollectives')
-              .where('user_id', user.id)
-              .transacting(trx)
-              .del();
-          })
-          .then(() => {
-            return Promise.each(req.body.collectiveIds, (collectiveId) => {
-              return User.knex()
-                .table('UsersCollectives')
-                .transacting(trx)
-                .insert({
-                  user_id: user.id,
-                  collective_id: collectiveId,
-                });
-            });
-          })
           .finally(trx.commit)
           .catch(trx.rollback);
       })
       .then(() => {
-        if (user._oldEmail === user.email) {
+        if (!user.activationToken) {
           req.flash('success', 'Profile updated succesfully');
           return res.redirect(CONFIG.router.helpers.Users.show.url(req.params.id));
         }
