@@ -48,34 +48,6 @@ describe('Account', () => {
       });
     });
 
-    describe('collectiveId', () => {
-      xit('Sould fail if collectiveId is not set', () => {
-        const account = new Account({});
-
-        return account.save()
-          .then(() => {
-            expect.fail('Should have rejected');
-          })
-          .catch((err) => {
-            expect(err.errors.collectiveId.message).to.be.equal('The collectiveId is required');
-          });
-      });
-
-      it('Sould pass if collectiveId is set', () => {
-        const account = new Account({
-          collectiveId: uuid.v4(),
-        });
-
-        return account.save()
-          .then(() => {
-            expect.fail('Should have rejected');
-          })
-          .catch((err) => {
-            expect(err.errors.collectiveId).to.be.undefined;
-          });
-      });
-    });
-
     describe('fullname', () => {
       it('Sould fail if fullname is not set', () => {
         const account = new Account({});
