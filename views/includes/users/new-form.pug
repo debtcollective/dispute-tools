@@ -1,5 +1,5 @@
-div(data-component-usernewform)
-  .max-width-1.mx-auto.px2
+.px2(data-component-usernewform)
+  .max-width-1.mx-auto
     h3#modalSignupTitle.pb2 Join us
 
     form(method="post" action=routeMappings.Users.create.url())
@@ -8,7 +8,11 @@ div(data-component-usernewform)
       .UsersNewForm__step.js-step-1(aria-hidden='false')
         p#modalSignupDesc.-fw-500.mb3 First, let us know yout types of debt:
         .pb2.mxn1
-          each collective in COLLECTIVES
+          -
+            var _collectives = COLLECTIVES.slice();
+            _collectives = _collectives.filter(c => c.name.indexOf('Solidarity') === -1);
+
+          each collective in _collectives
             - var name = collective.name.replace(/\sCollective$/, '').replace(/\s\and\s/g, ' & ')
             label.UsersNewForm__collective-option
               input(
@@ -100,5 +104,5 @@ div(data-component-usernewform)
           .col.sm-col-9.col-12.px1
             button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Sign up
 
-        p.pt3.center
-          span.-fw-500 I’m already a member #[a(href=routeMappings.login.url()) Log in]
+    p.pt3.center
+      span.-fw-500 I’m already a member #[a(href=routeMappings.login.url()) Log in]
