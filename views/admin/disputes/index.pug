@@ -90,10 +90,11 @@ block content
           tr
             td
               .flex.items-center
-                // if (_dispute.user.account.image.exists('mediumGrayscale'))
-                //   img.block.-fw(src=_dispute.user.account.image.url('mediumGrayscale') alt=user.account.fullname)
-                img(src='/images/profile/placeholder.png' width="50" height="50")
-                p.pl2.-fw-700= _dispute.user.email
+                if (_dispute.user.account.image.exists('small'))
+                  img(src=_dispute.user.account.image.url('small') alt=_dispute.user.account.fullname width="50" height="50")
+                else
+                  img(src='/images/profile/placeholder-small.png' width="50" height="50")
+                p.pl2.-fw-700= _dispute.user.account.fullname
             td.-fw-500= _dispute.disputeTool.name
             td.-fw-700(
               class=`-status-${_dispute.statuses[0].status.toLowerCase().replace(/\W/g, '-')}`

@@ -109,7 +109,7 @@ export default class AdminDisputesIndexController extends Widget {
 
     for (let i = 0, len = this.disputes.length; i < len; i++) {
       if (this._filterOptions.search) {
-        if (this.disputes[i].user.email.toLowerCase().indexOf(this._filterOptions.search) === -1) {
+        if (this.disputes[i].user.account.fullname.toLowerCase().indexOf(this._filterOptions.search) === -1) {
           data.push(i);
         }
       }
