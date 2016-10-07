@@ -7,21 +7,20 @@ block styles
   link(href="/build/stylesheets/home/about.css" rel="stylesheet")
 
 block content
-  .wrapper
-    .About__cover.relative
-      img.-fw.inline-block.align-top(src="/images/about/cover.jpg")
-      .flex.absolute.top-0.left-0.right-0.bottom-0.items-center.justify-center
-        .max-width-2.center
-          h2.pb2.-accent About us
-          h4.pb3 The Debt Collective leverages collective power by offering debtors a shared platform for direct action.
-          .PlayButton.mx-auto
-            .PlayButton__btn: svg: use(xlink:href="#svg-play")
-            div.center.pt1.-caption 1:20
+  .About__cover.relative.wrapper
+    img.-fw.inline-block.align-top(src="/images/about/cover.jpg")
+    .flex.absolute.top-0.left-0.right-0.bottom-0.items-center.justify-center
+      .max-width-2.center
+        h2.pb2.-accent About us
+        h4.pb3 The Debt Collective leverages collective power by offering debtors a shared platform for direct action.
+        .PlayButton.mx-auto
+          .PlayButton__btn: svg: use(xlink:href="#svg-play")
+          div.center.pt1.-caption 1:20
 
-    .max-width-3.mx-auto.pt4.px2
+  .pt3.px2.-bg-primary
+    .max-width-3.mx-auto
       h2.pt3.-h-sec: span What is<br/>The Debt Collective?
-      img.relative.fit(src="/images/about/team.png" style="margin-top: -5rem;")
-      p.mt2.-ff-sec In 2012, we launched the Rolling Jubilee as a public education campaign about the injustice of requiring public goods, such as education and healthcare, to be personally debt-financed. Our long-term aim is to transform personal grievances into collective political action by helping people realize that they are not “a loan.”
+      p.pt4.-ff-sec In 2012, we launched the Rolling Jubilee as a public education campaign about the injustice of requiring public goods, such as education and healthcare, to be personally debt-financed. Our long-term aim is to transform personal grievances into collective political action by helping people realize that they are not “a loan.”
 
     -
       var founders = [
@@ -33,8 +32,8 @@ block content
         'Astra Taylor'
       ]
 
-    .py4.px2
-      .max-width-3.mx-auto.py3: h3.-accent The Founders
+    .wrapper.pt4.pb3.px2
+      .max-width-3.mx-auto.pt3.pb4: h3.-accent The Founders
       ul.list-reset.clearfix.mxn2.md-flex.flex-wrap
         each founder in founders
           - var photo_path = `/images/about/founders/${founder.toLowerCase().replace(/\s/, '-')}`
@@ -42,58 +41,56 @@ block content
             img.fit(src=`${photo_path}.jpg` title=founder width="170" srcset=`${photo_path}@2x.jpg 2x`)
             h4= founder
 
-    .max-width-4.mx-auto.pt3.pb4.px2
-      h2.-h-sec.center: span The Red Square
-      .About__red-square-content.clearfix.mxn2
-        .col.md-col-6.col-12.px2.right-align
-          img.fit(src="/images/about/the-red-square.jpg")
-          .relative
-            .About__red-square-square.absolute.left-0
-        .col.md-col-6.col-12.pt4.px2
-          .mb2.-h4.-fw-500 The red square was first used as a symbol in the student strikes in 2005 and again in 2012 in Quebec.
-          p.-ff-sec The students wore red felt squares as a symbol of debt: it means carrément dans le rouge, or squarely in the red.
+  .max-width-3.mx-auto.pt4.pb4.px2
+    h2.md-center-align.mt3.-h-sec: span The Red Square
+    .About__red-square-content.clearfix.mxn2
+      .col.md-col-5.col-12.px2
+        .pt4.right-align.md-center-align
+          .About__red-square-square.inline-block.mt1
+      .col.md-col-7.col-12.pt4.px2
+        .mb2.-h4.-fw-500 The red square was first used as a symbol in the student strikes in 2005 and again in 2012 in Quebec.
+        p.-ff-sec The students wore red felt squares as a symbol of debt: it means carrément dans le rouge, or squarely in the red.
 
-    -
-      var press = [
-        {
-          logo: '/images/about/press/fusion.jpg',
-          title: 'fusion.net',
-          url: 'http://fusion.net',
-          desc: 'These students were ruined by predatory colleges. Now they’re getting even.'
-        },
-        {
-          logo: '/images/about/press/the-guardian.jpg',
-          title: 'theguardian.com',
-          url: 'https://www.theguardian.com',
-          desc: 'Occupy activists abolish $3.85m in Corinthian Colleges students’ loan debt.'
-        },
-        {
-          logo: '/images/about/press/wp.jpg',
-          title: 'washingtonpost.com',
-          url: 'washingtonpost.com',
-          desc: 'How one student got burned by a for-profit college and bailed out by Occupy Wall Street.'
-        },
-        {
-          logo: '/images/about/press/aljazeera.jpg',
-          title: 'aljazeera.com',
-          url: 'aljazeera.com',
-          desc: 'Once people realize how little student loans are worth to creditors, they might ask why they should pay them back'
-        }
-      ]
+  -
+    var press = [
+      {
+        logo: '/images/about/press/fusion.jpg',
+        title: 'fusion.net',
+        url: 'http://fusion.net/story/204007/students-ruined-by-for-profit-colleges-fight-back/',
+        desc: 'These students were ruined by predatory colleges. Now they’re getting even.'
+      },
+      {
+        logo: '/images/about/press/the-guardian.jpg',
+        title: 'theguardian.com',
+        url: 'http://www.theguardian.com/money/2014/sep/17/occupy-activists-student-debt-corinthian-colleges',
+        desc: 'Occupy activists abolish $3.85m in Corinthian Colleges students’ loan debt.'
+      },
+      {
+        logo: '/images/about/press/wp.jpg',
+        title: 'washingtonpost.com',
+        url: 'http://www.washingtonpost.com/news/storyline/wp/2014/09/17/how-one-student-got-burned-by-a-for-profit-college-and-bailed-out-by-occupy-wall-street/',
+        desc: 'How one student got burned by a for-profit college and bailed out by Occupy Wall Street.'
+      },
+      {
+        logo: '/images/about/press/aljazeera.jpg',
+        title: 'aljazeera.com',
+        url: 'http://america.aljazeera.com/opinions/2014/9/strike-student-debt.html',
+        desc: 'Once people realize how little student loans are worth to creditors, they might ask why they should pay them back'
+      }
+    ]
 
-    .relative.px2.mt4
-      .-bg-neutral-dark.absolute.top-0.right-0.bottom-0.left-0(style="opacity: .6")
-      .max-width-3.mx-auto.pt1.relative
-        h3.py3.-accent Press
-        ul.list-reset.clearfix.mxn2.md-flex.flex-wrap
-          each item in press
-            li.col.md-col-6.col-12.px2.mb4
-              .About__press-item.clearfix.-fh
-                .col.sm-col-2.md-col-3.col-3.center
-                  img.fit.circle(src=item.logo)
-                .col.sm-col-10.md-col-9.col-9.pl3
-                  p.pb1.-caption.-primary.-ttu.-fw-700= item.title
-                  p.-fw-700= item.desc
+  .max-width-4.mx-auto.px2.my4.-bg-white
+    .max-width-3.mx-auto.pt1.pb3.-bg-white.-dark
+      h2.py4 Press
+      ul.list-reset.clearfix.mxn2.md-flex.flex-wrap
+        each item in press
+          li.col.md-col-6.col-12.px2.mb4
+            a(href= item.url rel="noopener noreferrer" target="_blank").block.clearfix
+              .col.sm-col-2.md-col-3.col-3.center
+                img.About__press-item-image.fit.circle(src=item.logo)
+              .col.sm-col-10.md-col-9.col-9.pl3
+                p.pb1.-caption.-primary.-ttu.-fw-700= item.title
+                p.-dark.-fw-700= item.desc
 
 block scripts
   script(src="/build/javascripts/home/about.js" async)

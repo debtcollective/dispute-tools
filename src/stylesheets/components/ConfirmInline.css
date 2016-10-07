@@ -1,0 +1,29 @@
+.ConfirmInline {
+  &__body {
+    position: relative;
+    z-index: 1;
+  }
+
+  &.-warning > .ConfirmInline__body {
+    background-color: #F0E990;
+    color: #784E00;
+  }
+}
+
+.ConfirmInline__backdrop {
+  user-select: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,.7);
+  opacity: 0;
+  transition: opacity 200ms linear;
+  transform: translate3d(0,0,0);
+  will-change: opacity;
+
+  &.active {
+    opacity: 1;
+  }
+}

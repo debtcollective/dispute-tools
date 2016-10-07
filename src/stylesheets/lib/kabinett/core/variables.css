@@ -33,6 +33,10 @@
   --k-xl-p: calc(var(--k-xl-fs) - 1px) 1em calc(var(--k-xl-fs) - 2px);
   --k-xl-h: calc(calc(var(--k-xl-fs) - 1px) + var(--k-xl-fs) + calc(var(--k-xl-fs) - 2px));
 
+  /* elements */
+  --k-popover-arrow-size: 10px;
+  --k-popover-border-radius: 6px;
+
   /* color palette */
   --k-color-palette-primary: rebeccapurple;
   --k-color-palette-danger: #e74c3c;

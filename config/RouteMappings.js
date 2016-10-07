@@ -1,6 +1,10 @@
 const RouteMappings = require('route-mappings');
 
 const routeMappings = RouteMappings()
+  .get('/admin', {
+    to: 'Home#admin',
+  })
+
   .get('/', {
     to: 'Home#index',
     as: 'root',
@@ -79,6 +83,10 @@ const routeMappings = RouteMappings()
 
   .resources('/Disputes', (mappings) => {
     return mappings()
+      .get('/:id/download', {
+        to: 'Disputes#download',
+        as: 'download',
+      })
       .put('/:id/update-dispute-data', {
         to: 'Disputes#updateDisputeData',
         as: 'updateDisputeData',

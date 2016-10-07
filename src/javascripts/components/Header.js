@@ -43,8 +43,10 @@ export default class Header extends Widget {
   }
 
   _bindEvents() {
-    this._handleScrollRef = this._handleScroll.bind(this);
-    window.addEventListener('scroll', this._handleScrollRef);
+    if (!this.isAdmin) {
+      this._handleScrollRef = this._handleScroll.bind(this);
+      window.addEventListener('scroll', this._handleScrollRef);
+    }
 
     this._handleHamburgerMenuClickRef = this._handleHamburgerMenuClick.bind(this);
     this.hamburgerMenuElement.addEventListener('click', this._handleHamburgerMenuClickRef);

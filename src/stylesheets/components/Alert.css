@@ -4,11 +4,24 @@
   top: var(--header-height);
   left: 0;
   right: 0;
+  perspective: 1000px;
 }
 
 .Alert {
   position: relative;
   padding: .75rem 50px;
+  transform-origin: 50% 0;
+  opacity: 1;
+  transform: none;
+  transition:
+    visibility 0ms linear 260ms,
+    opacity 260ms,
+    transform 260ms cubic-bezier(0.175, 0.885, 0.320, 1.275);
+
+  &[aria-hidden="true"] {
+    transform: rotateX(-90deg);
+    opacity: 0;
+  }
 
   &.-success {
     background-color: #bae88b;
@@ -45,5 +58,12 @@
     display: inline-block;
     vertical-align: top;
     fill: rgba(0,0,0,.5);
+    transform: scale(1);
+    transition: transform 100ms ease-out;
+  }
+
+  &:hover > svg,
+  &:focus > svg {
+    transform: scale(1.1);
   }
 }

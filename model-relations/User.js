@@ -15,4 +15,15 @@ User.relations = {
     orderBy: ['created_at', 'DESC'],
     scope: ['deleted', false],
   },
+  debtTypes: {
+    type: 'HasManyThrough',
+    relatedModel: Collective,
+    ownerCol: 'id',
+    relatedCol: 'id',
+    through: {
+      tableName: 'UsersCollectives',
+      ownerCol: 'user_id',
+      relatedCol: 'collective_id',
+    },
+  },
 };

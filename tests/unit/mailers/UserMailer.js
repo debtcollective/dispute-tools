@@ -12,6 +12,9 @@ describe('UserMailer', () => {
     return UserMailer.sendActivation('success@simulator.amazonses.com', {
       user: {
         email: 'user@example.com',
+        account: {
+          fullname: 'User Name',
+        },
       },
       _options: {
         subject: 'Activate your account - The Debt Collective',
@@ -28,6 +31,9 @@ describe('UserMailer', () => {
     return UserMailer.sendResetPasswordLink('success@simulator.amazonses.com', {
       user: {
         email: 'user@example.com',
+        account: {
+          fullname: 'User Name',
+        },
       },
       _options: {
         subject: 'Reset your password - The Debt Collective',

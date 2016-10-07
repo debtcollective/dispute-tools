@@ -3,6 +3,7 @@
   padding: calc(var(--k-font-size) - 1px) 1em calc(var(--k-font-size) - 2px);
   border-width: 0;
   border-radius: var(--border-radius);
+  border: 1px solid currentColor;
 
   &[disabled] {opacity: .5}
 

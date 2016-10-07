@@ -1,20 +1,19 @@
 import WebFont from 'webfontloader';
 import NodeSupport from '../../lib/widget/NodeSupport';
-import Header from '../../components/Header';
+import Common from '../../components/Common';
 import Modal from '../../components/Modal';
 
 class ViewDisputeToolsIndex extends NodeSupport {
   constructor(config) {
     super();
 
-    this.disputeIds = config.disputeIds;
-
-    this.appendChild(new Header({
-      name: 'Header',
+    this.appendChild(new Common({
+      name: 'Common',
       currentUser: config.currentUser,
       currentURL: config.currentURL,
-      element: document.querySelector('[data-component-header]'),
     }));
+
+    this.disputeIds = config.disputeIds;
 
     WebFont.load({
       google: {

@@ -1,6 +1,10 @@
 mixin _toolsYesNoMixin(field)
+  if field.caption
+    p.py1.-caption.-fw-700.-neutral-mid!= field.caption
+
   p.-ff-sec.-accent.-fw-700= field.label
-  - var _checked = field.default
+
+  - var _checked = field.default || 'no'
   if _formData[field.name]
     - _checked = _formData[field.name]
   input(
@@ -12,7 +16,9 @@ mixin _toolsYesNoMixin(field)
     data-name= field.name
     data-hidden= field.hidden && field.hidden.toString()
     data-default= field.default
-    data-toogle-radio= field.toggle
+    data-partial-toggle-radio= field.toggle
+    data-toggle-radio= field.yesno && field.yesno.toString()
+    data-alert!= field.alert
   )
   label.pl1.mr3.-ff-sec(for=`${field.name}-yes`) Yes
 
@@ -25,7 +31,9 @@ mixin _toolsYesNoMixin(field)
     data-name= field.name
     data-hidden= field.hidden && field.hidden.toString()
     data-default= field.default
-    data-toogle-radio= field.toggle
+    data-partial-toggle-radio= field.toggle
+    data-toggle-radio= field.yesno && field.yesno.toString()
+    data-alert!= field.alert
   )
   label.pl1.-ff-sec(for=`${field.name}-no`) No
 
@@ -96,6 +104,7 @@ mixin toolsFormElementMixin(field, index)
               type="checkbox"
               name=`fieldValues[${field.name}]`
               checked= _formData[field.name]
+              value='yes'
               data-name=field.name
               data-hidden= field.hidden && field.hidden.toString()
             )
@@ -103,13 +112,18 @@ mixin toolsFormElementMixin(field, index)
         p.-on-error.-danger.-caption.-fw-500.mt1
 
       when 'group'
-        fieldset
-          h4= field.title
-          p.pb2.-ff-sec= field.subtitle
-          div.pb2!= field.text
+        fieldset.pb2
+          if field.title
+            h4= field.title
+
+          if field.subtitle
+            p.pb2.-ff-sec= field.subtitle
+
+          if field.text
+            div.pb2!= field.text
 
           if field.yesno
-            +_toolsYesNoMixin({name: `__toggle-radio-${index}__`, default: 'no'})
+            +_toolsYesNoMixin(field)
 
           fieldset
             each row2 in field.fields

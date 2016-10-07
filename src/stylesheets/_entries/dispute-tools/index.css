@@ -1,5 +1,6 @@
 @import '../../base';
 @import '../../components/PlayButton';
+@import '../../components/dispute-tools/TextModal';
 
 .Tools__intro {
   margin-top: 0;
@@ -29,22 +30,6 @@
 
 .Tools__offset-text {
   padding: 1rem 1rem 0;
-}
-
-.Tools__Modal {
-  & h3,
-  & strong {
-    color: var(--k-color-palette-accent);
-  }
-
-  & h3 {
-    padding-bottom: var(--space-2);
-  }
-
-  & p {
-    padding-top: var(--space-2);
-    font-weight: 500;
-  }
 }
 
 @media (--breakpoint-md) {

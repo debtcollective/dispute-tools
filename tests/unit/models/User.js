@@ -195,16 +195,15 @@ describe('User', () => {
           return user.transacting(trx).save()
             .then(() => {
               account.userId = user.id;
-              account.collectiveId = collective.id;
 
               return account.transacting(trx).save();
             });
         }).then(() => {
-          return User.query().include('[account.debtType]');
+          // return User.query().include('[account.debtType]');
+          return User.query().include('account');
         })
         .then((result) => {
           expect(result[0].account).to.be.instanceof(Account);
-          expect(result[0].account.debtType).to.be.instanceof(Collective);
         });
       });
     });

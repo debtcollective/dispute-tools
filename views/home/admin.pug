@@ -1,0 +1,77 @@
+extends ../layouts/admin.pug
+
+block title
+  | Admin — The Debt Collective
+
+block styles
+  link(href="/build/stylesheets/admin/index.css" rel="stylesheet")
+
+block content
+
+  - var _statuses = ['Incomplete', 'Completed', 'In review', 'Documents sent', 'Updated']
+  - var _statusesLen = _statuses.length
+  - var _tools = ['Tax Offset Dispute', 'Credit Report Dispute Letter', 'Defense to Repayment application', 'Private Student Loan Dispute Letter', 'General Debt Dispute Letter', 'Wage Garnishment Dispute']
+  - var _toolsLen = _tools.length
+
+  .wrapper.px2.pb3
+    h2.pt4.pb1 Disputes
+
+    table.-fw(cellpadding='0' cellspacing='0')
+      thead
+        tr
+          th
+            .-input-group-icon
+              svg(width='17' height='17'): use(xlink:href='#svg-search')
+              input.-k-input.-clean.-xl.-fw-700(placeholder='Search...')
+          th
+            .-k-select.-clean.-xl
+              select.-fw-700.-fw(name='')
+                option(value="") Tools
+                each tool in _tools
+                  option(value= tool)= tool
+          th
+            .-k-select.-clean.-xl
+              select.-fw-700.-fw(name='')
+                option(value="") Status
+                each status in _statuses
+                  option(value= status)= status
+          th.-fw-700 Actions
+
+      tbody
+        - var _n = 0
+        while _n < 15
+          - _n++
+          tr
+            td
+              .flex.items-center
+                - var _a = (_n > 10) ? (_n - 10) : `0${_n}`
+                img(src=`/images/temp/avatars/${_a}.jpg` width='50' height='50')
+                p.pl2.-fw-700 Ann Bowers
+            td.-fw-500= _tools[Math.floor(Math.random() * _toolsLen)]
+
+            - var _s = _statuses[Math.floor(Math.random() * _statusesLen)]
+            td.-fw-700(
+              class=`-status-${_s.toLowerCase().replace(/\W/g, '-')}`
+            )= _s
+
+            td
+              button.btn-clear.p1.align-top
+                svg.block.align-top(width='15' height='15'): use(xlink:href='#svg-pencil')
+              button.btn-clear.p1.align-top
+                svg.block.align-top(width='15' height='15'): use(xlink:href='#svg-comment')
+              button.btn-clear.p1.align-top(
+                class= _n % 2 && '-primary'
+              )
+                svg.block.align-top(width='14' height='17'): use(xlink:href='#svg-download')
+
+block scripts
+  script(src="/build/javascripts/admin/index.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+        isAdmin: true,
+      };
+      new ViewAdminIndex(options);
+    }, true);

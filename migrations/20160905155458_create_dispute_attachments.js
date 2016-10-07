@@ -1,16 +1,14 @@
 
 exports.up = (knex) => {
-  return knex.schema.createTable('DisputeAttachments', (t) => {
+  return knex.schema.createTable('Attachments', (t) => {
     t.uuid('id').primary();
-    t.uuid('dispute_id')
-      .notNullable()
-      .references('id')
-      .inTable('Disputes')
-      .onDelete('CASCADE')
-      .index();
+    t.string('type', 64);
+    t.uuid('foreign_key')
+      .notNullable();
     t.string('file_path');
     t.jsonb('file_meta').defaultTo('{}');
     t.timestamps();
+    t.index(['foreign_key', 'type']);
   });
 };
 

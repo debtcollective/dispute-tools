@@ -1,0 +1,25 @@
+.Tools__Text-Modal {
+  & h3,
+  & strong {
+    color: var(--k-color-palette-accent);
+  }
+
+  & h3 {
+    padding-bottom: var(--space-2);
+  }
+
+  & p {
+    padding-top: var(--space-2);
+    font-weight: 500;
+  }
+
+  & ul {
+    padding-top: var(--space-1);
+    padding-left: var(--space-2);
+    font-weight: 500;
+  }
+
+  & li {
+    padding-bottom: var(--space-2);
+  }
+}

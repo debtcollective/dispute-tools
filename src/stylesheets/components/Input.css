@@ -1,0 +1,20 @@
+.-input-group-icon {
+  position: relative;
+
+  & > svg {
+    position: absolute;
+    left: 1em;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  & .-k-input {
+    display: block;
+    width: 100%;
+    padding-left: 3em;
+  }
+}
+
+.-clean {
+  border-color: transparent;
+}

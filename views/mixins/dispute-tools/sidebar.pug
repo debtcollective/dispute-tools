@@ -12,18 +12,33 @@ mixin toolsSidebarMixin(disputeTool, currentStep = 1, steps = _toolSteps)
     h4.pb1.-ttu.-h-sec.-accent
       span
         | #{disputeTool.name}
-    p.pb4.-caption.-ttu.-fw-500
+    p.pb3.-caption.-ttu.-fw-500
       | #{disputeTool.completed} People Filled
     ul.list-reset.Tool__sidebar-steps
       each step, index in steps
         -
           var _index = index + 1
           var _className = ''
-          if (currentStep === _index) _className = '-current';
-            else if (currentStep > _index) _className = '-done';
+          var _disabled = true
 
-        li.relative.pb2.-fw-700(class= _className)
-          svg.svg-done(width="14" height="14"): use(xlink:href="#svg-arrow-forward")
-          svg.svg-current(width="14" height="10"): use(xlink:href="#svg-checkmark")
-          | #{step}
+          if (_index === 1) {
+            _className = '-done';
+            _disabled = true;
+          } else if (currentStep === _index) {
+            _className = '-current';
+            _disabled = false;
+          } else if (currentStep > _index) {
+            _className = '-done';
+            _disabled = false;
+          }
+
+        li.relative
+          button.Tool__sidebar-step.relative.btn-clear.left-align.-fw-700.-fw(
+            class= _className
+            data-index= _index
+            disabled!= _disabled
+          )
+            svg.svg-done(width="14" height="14"): use(xlink:href="#svg-arrow-forward")
+            svg.svg-current(width="14" height="10"): use(xlink:href="#svg-checkmark")
+            | #{step}
   | &nbsp;
