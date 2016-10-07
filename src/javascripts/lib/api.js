@@ -30,6 +30,7 @@ export default {
       .put(`/disputes/${args.disputeId}/update-dispute-data`)
       .send(args.body || {})
       .set('X-CSRF-Token', csrfToken)
+      .set('Accept', 'application/json')
       .end((err, res) => {
         if (typeof callback === 'function') {
           callback(err, res);
