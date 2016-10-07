@@ -1,6 +1,6 @@
-/* globals Class, CONFIG, Dispute */
+/* globals Class, Admin, RestfulController, DisputeTool, CONFIG, Dispute, DisputeStatus */
 const path = require('path');
-const Promise = require('bluebird');
+// const Promise = require('bluebird');
 
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 
@@ -28,6 +28,24 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       },
       actions: ['index'],
     },
+    {
+      before(req, res, next) {
+        DisputeTool.query()
+          .orderBy('created_at', 'ASC')
+          .then((disputeTools) => {
+            res.locals.disputeTools = disputeTools.map(dispute => {
+              return {
+                id: dispute.id,
+                name: dispute.name,
+              };
+            });
+            next();
+          })
+          .catch(next);
+      },
+      actions: ['index'],
+    },
+
   ],
   prototype: {
     _loadDispute(req, res, next) {
@@ -38,11 +56,6 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
           res.locals.dispute = dispute;
           req.dispute = dispute;
 
-          const optionData = dispute.disputeTool.data.options[dispute.data.option];
-          if (optionData.more) {
-            optionData.more = marked(optionData.more);
-          }
-
           next();
         })
         .catch(next);
@@ -50,6 +63,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
 
     index(req, res) {
       res.locals.disputes = res.locals.results;
+      res.locals.statuses = DisputeStatus.statuses;
 
       res.render('admin/disputes/index');
     },
