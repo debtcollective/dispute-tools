@@ -20,7 +20,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         RESTfulAPI.createMiddleware({
           queryBuilder: Dispute.query()
             .where('deleted', false)
-            .include('[statuses, attachments, disputeTool]'),
+            .include('[user, statuses, attachments, disputeTool]'),
           filters: {
             allowedFields: [],
           },
