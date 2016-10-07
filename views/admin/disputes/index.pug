@@ -7,57 +7,6 @@ block styles
   link(href="/build/stylesheets/admin/index.css" rel="stylesheet")
 
 block content
-  -
-    var _statuses = [
-      {
-        name: 'Incomplete',
-        id: "1"
-      },
-      {
-        name: 'Completed',
-        id: "2"
-      },
-      {
-        name: 'In review',
-        id: "3"
-      },
-      {
-        name: 'Documents sent',
-        id: "4"
-      },
-      {
-        name: 'Update',
-        id: "5"
-      }
-    ]
-
-    var _tools = [
-      {
-        name: 'Tax Offset Dispute',
-        id: "1"
-      },
-      {
-        name: 'Credit Report Dispute Letter',
-        id: "2"
-      },
-      {
-        name: 'Defense to Repayment application',
-        id: "3"
-      },
-      {
-        name: 'Private Student Loan Dispute Letter',
-        id: "4"
-      },
-      {
-        name: 'General Debt Dispute Letter',
-        id: "5"
-      },
-      {
-        name: 'Wage Garnishment Dispute',
-        id: "6"
-      }
-    ]
-
   .wrapper.px2.pb3
     h2.pt4.pb2 Disputes
     table.-fw(cellpadding='0' cellspacing='0')
@@ -71,14 +20,14 @@ block content
             .-k-select.-clean
               select.-fw-700.-fw(name='disputesListValue[tools]')
                 option(value="") Tools
-                each tool in _tools
+                each tool in disputeTools
                   option(value= tool.id)= tool.name
           th.js-status-select-parent
             .-k-select.-clean
               select.-fw-700.-fw(name='disputesListValue[status]')
                 option(value="") Status
-                each status in _statuses
-                  option(value= status.name)= status.name
+                each status in statuses
+                  option(value= status)= status
           th.-fw-700
             button.-k-btn.btn-link.-primary.-fw-700(
               name='disputesListValue[resetFilters]'
