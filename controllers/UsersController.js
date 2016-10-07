@@ -74,6 +74,10 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
               .del();
           })
           .then(() => {
+            if (!Array.isArray(req.body.collectiveIds)) {
+              req.body.collectiveIds = [req.body.collectiveIds];
+            }
+
             return Promise.each(req.body.collectiveIds, (collectiveId) => {
               return User.knex()
                 .table('UsersCollectives')
@@ -97,6 +101,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       })
       .catch((err) => {
         res.status(400);
+        console.log(err)
 
         if (err.message === 'Must provide a password') {
           err.errors = err.errors || {
