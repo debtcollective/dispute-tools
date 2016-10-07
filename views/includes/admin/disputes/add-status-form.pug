@@ -1,0 +1,10 @@
+.px2(data-component-form='dispute-add-status')
+  .max-width-1.mx-auto
+    h3#modalAddStatusTitle.pb2 Edit
+    h4#modalAddStatusDesc.-fw-500.mb1 ${dispute.user.email}
+    h4.-accent.-fw-500.mb3 ${dispute.disputeTool.name}
+
+    form(method="post" action='')
+      input(type="hidden" name="_csrf" value=csrfToken)
+      | Add status form
+      pre.test(style='white-space: inherit;')

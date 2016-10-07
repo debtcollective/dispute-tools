@@ -1,0 +1,9 @@
+div(data-component-form='dispute-add-update')
+  .max-width-1.mx-auto.px2
+    h3#modalAddUpdateTitle.pb2 Send Message
+    p#modalAddUpdateDesc.-fw-500.mb3 ${dispute.user.email}
+
+    form(method="post" action='')
+      input(type="hidden" name="_csrf" value=csrfToken)
+      | Add update form
+      pre.test(style='white-space: inherit;')

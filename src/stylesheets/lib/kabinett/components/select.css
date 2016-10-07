@@ -2,7 +2,6 @@
   font-size: var(--k-font-size);
   position: relative;
   height: 45px;
-  padding: 0 !important;
   border-radius: 2px;
   background-color: #fff;
   color: initial;
@@ -10,6 +9,7 @@
 
   &::after {
     content: "▾";
+    line-height: 1;
     position: absolute;
     top: 50%;
     right: 1rem;
