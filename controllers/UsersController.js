@@ -101,7 +101,6 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       })
       .catch((err) => {
         res.status(400);
-        console.log(err)
 
         if (err.message === 'Must provide a password') {
           err.errors = err.errors || {
