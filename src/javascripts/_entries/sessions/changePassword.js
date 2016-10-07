@@ -1,16 +1,15 @@
 import NodeSupport from '../../lib/widget/NodeSupport';
-import Header from '../../components/Header';
+import Common from '../../components/Common';
 import SessionsChangePasswordForm from '../../components/sessions/ChangePasswordForm';
 
 class ViewChangePassword extends NodeSupport {
   constructor(config) {
     super();
 
-    this.appendChild(new Header({
-      name: 'Header',
+    this.appendChild(new Common({
+      name: 'Common',
       currentUser: config.currentUser,
       currentURL: config.currentURL,
-      element: document.querySelector('[data-component-header]'),
     }));
 
     this.appendChild(new SessionsChangePasswordForm({

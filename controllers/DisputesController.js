@@ -1,8 +1,9 @@
-/* globals Dispute, RestfulController, Class, DisputeTool, CONFIG, DisputeStatus, DisputeMailer */
-/* eslint arrow-body-style: 0 */
+/* globals Dispute, RestfulController, Class, DisputeTool, CONFIG, DisputeStatus,
+    DisputeMailer, UserMailer, NotFoundError, DisputeRenderer */
 
 const path = require('path');
 const Promise = require('bluebird');
+const marked = require('marked');
 
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 
@@ -61,6 +62,12 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         .then(([dispute]) => {
           res.locals.dispute = dispute;
           req.dispute = dispute;
+
+          const optionData = dispute.disputeTool.data.options[dispute.data.option];
+          if (optionData.more) {
+            optionData.more = marked(optionData.more);
+          }
+
           next();
         })
         .catch(next);
@@ -123,7 +130,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     updateDisputeData(req, res, next) {
       const dispute = res.locals.dispute;
 
-      const commands = ['setForm', 'setDisputeProcess'];
+      const commands = ['setForm', 'setDisputeProcess', 'setConfirmFollowUp'];
 
       if (!commands.includes(req.body.command)) {
         return next(new Error('Invalid command'));
@@ -132,13 +139,27 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       try {
         dispute[req.body.command](req.body);
       } catch (e) {
-        req.flash('error', e.toString());
-        return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+        return res.format({
+          html() {
+            req.flash('error', e.toString());
+            return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+          },
+          json() {
+            return res.json({ error: e.toString() });
+          },
+        });
       }
 
       return dispute.save()
         .then(() => {
-          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+          return res.format({
+            html() {
+              return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+            },
+            json() {
+              return res.json({ status: 'confirmed' });
+            },
+          });
         })
         .catch(next);
     },
@@ -147,6 +168,15 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       const dispute = res.locals.dispute;
 
       dispute.setSignature(req.body.signature)
+        .then((renderer) => {
+          return UserMailer.sendDispute(req.user.email, {
+            user: req.user,
+            renderer,
+            _options: {
+              subject: 'Dispute Documents - The Debt Collective',
+            },
+          });
+        })
         .then(() => {
           return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
         })
@@ -197,11 +227,26 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         });
     },
 
+    download(req, res, next) {
+      DisputeRenderer.query()
+        .where({
+          dispute_id: req.params.id,
+        })
+        .limit(1)
+        .then((renderer) => {
+          if (renderer.length === 0) {
+            return next(new NotFoundError('File not found'));
+          }
+
+          return res.sendFile(path.join(process.cwd(), 'public', renderer[0].zip.url('original')));
+        });
+    },
+
     destroy(req, res, next) {
       res.locals.dispute
         .destroy()
         .then(() => {
-          req.flash('The Dispute you started has been deleted.');
+          req.flash('warning', 'The Dispute you started has been deleted.');
           return res.redirect(CONFIG.router.helpers.DisputeTools.url());
         })
         .catch(next);

@@ -1,6 +1,7 @@
 /* global Krypton, Class, CONFIG, UserMailer */
 
 const bcrypt = require('bcrypt-node');
+const uuid = require('uuid');
 
 const User = Class('User').inherits(Krypton.Model)({
   tableName: 'Users',
@@ -108,15 +109,8 @@ const User = Class('User').inherits(Krypton.Model)({
 
       // setActivationToken helper function
       const setActivationToken = (done) => {
-        bcrypt.hash(CONFIG.env().sessions.secret + Date.now(),
-          bcrypt.genSaltSync(10), null, (err, hash) => {
-            if (err) {
-              return done(err);
-            }
-
-            model.activationToken = hash.replace('/', '');
-            return done();
-          });
+        model.activationToken = uuid.v4();
+        return done();
       };
 
       // Create a hash and set it as activationToken
@@ -126,18 +120,13 @@ const User = Class('User').inherits(Krypton.Model)({
 
       // If email changes, set activationToken again
       model.on('beforeUpdate', (done) => {
-        if (this._oldEmail === model.email) {
+        if (model._oldEmail === model.email) {
           return done();
         }
+
+        model._oldEmail = model.email;
 
         return setActivationToken(done);
-      });
-
-      // If email changed, send activation email
-      model.on('afterUpdate', (done) => {
-        if (this._oldEmail === model.email) {
-          return done();
-        }
       });
     },
 
@@ -150,7 +139,7 @@ const User = Class('User').inherits(Krypton.Model)({
     sendActivation() {
       const model = this;
 
-      UserMailer.sendActivation(this.email, {
+      return UserMailer.sendActivation(this.email, {
         user: model,
         _options: {
           subject: 'Activate your account - The Debt Collective',

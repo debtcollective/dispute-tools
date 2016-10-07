@@ -10,6 +10,10 @@ const DisputeMailer = Class('DisputeMailer').inherits(BaseMailer)({
     return User.query()
       .where('role', 'Admin')
       .then((admins) => {
+        if (admins.length === 0) {
+          return Promise.resolve();
+        }
+
         const emails = admins.map((admin) => admin.email);
 
         return this._send('sendToAdmins', emails, locals);

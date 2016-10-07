@@ -21,3 +21,7 @@
    background-color: var(--k-color-palette-primary);
  }
 }
+
+.About__press-item-image {
+  border: 1px solid var(--k-color-palette-neutral-light);
+}

@@ -1,4 +1,4 @@
-/* globals User, Account, CONFIG, Collective, Dispute, DisputeTool, DisputeAttachment */
+/* globals User, Account, CONFIG, Collective, Dispute, DisputeTool, Attachment */
 
 const expect = require('chai').expect;
 const path = require('path');
@@ -131,6 +131,9 @@ describe('Dispute', () => {
             expect(dispute.data.attachments[0].thumb).to.exists;
             expect(dispute.data.attachments[0].name).to.be.equal('single-uploader');
           });
+      })
+      .catch((err) => {
+        console.log(err)
       });
     });
 

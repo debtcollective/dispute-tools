@@ -5,4 +5,25 @@
 
 .underlined-link {
   border-bottom: .25em solid;
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  overflow: hidden;
+
+  & > span {
+    position: relative;
+    display: block;
+    transition: transform 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
+
+    &::before {
+      content: attr(data-hover);
+      position: absolute;
+      top: 100%;
+      color: var(--primary-lighter);
+    }
+  }
+
+  &:hover > span {
+    transform: translateY(-100%);
+  }
 }

@@ -1,0 +1,95 @@
+-
+  var _disputeProcesses = [
+    {
+      value: "1",
+      icon: {
+        name: 'assignment',
+        width: 50,
+        height: 56
+      },
+      title: 'Written records',
+      description: 'Selecting this option means that you are asking the Department of Education to review your dispute and the evidence you provide on this form and provide you with a written decision.'
+    },
+    {
+      value: "2",
+      icon: {
+        name: 'walking',
+        width: 30,
+        height: 51
+      },
+      title: 'In-person hearing',
+      description: 'Selecting this option means that you want to meet with a Department official in person to present your evidence. You can only attend in person if you can travel to Atlanta, Chicago, or San Francisco.'
+    },
+    {
+      value: "3",
+      icon: {
+        name: 'phone',
+        width: 38,
+        height: 38
+      },
+      title: 'Telephone hearing',
+      description: 'Selecting this option means that you will provide a telephone number so that a Department official can call you to discuss your dispute. The Department requires that you be available during business hours on weekdays.'
+    }
+  ]
+
+unless dispute.disputeTool.data.disputeProcess
+  .Dispute__step-content(
+    data-dispute-process
+    aria-hidden= (currentSection !== 'process').toString()
+  )
+    form(
+      action=routeMappings.Disputes.updateDisputeData.url(dispute.id)
+      method="post"
+    )
+      input(type="hidden" name="_csrf" value=csrfToken)
+      input(name="_method" type="hidden" value="PUT")
+      input(type="hidden" name="command" value="setDisputeProcess")
+
+      .pt3.pr3.pl3.pb2.-bg-neutral-dark
+        h4.pb1 You’re on your way to disputing #{dispute.disputeTool.name}.
+        p.-ff-sec Before moving to the next section, we want to give you three options for having your claim reviewed.
+        hr.my2
+        .clearfix.mxn2.md-flex.flex-wrap
+
+          each process in _disputeProcesses
+            .col.md-col-4.col-12.p2
+              label.Tool__process-option
+                input(
+                  type="radio"
+                  name="process"
+                  value=process.value
+                  checked=(process.value === dispute.data.disputeProcess)
+                )
+                .Tool__process-option-inner.flex.flex-column.-fh
+                  .flex-auto.pb2
+                    .Tool__process-option-icon
+                      svg(width=process.icon.width height=process.icon.height)
+                        use(xlink:href=`#svg-${process.icon.name}`)
+                    h4.pb2= process.title
+                    p.-caption= process.description
+
+                  if dispute.disputeTool.id === '11111111-1111-1111-1111-111111111111'
+                    if process.value === '2'
+                      .pb2
+                        - var _processCities = ['Atlanta', 'Chicago', 'San Francisco'];
+                        .-k-select
+                          select.-fw(name="processCity")
+                            option(value="") I’ll go to...
+                            each city in _processCities
+                              option(
+                                value= city
+                                selected!= dispute.data.disputeProcessCity && dispute.data.disputeProcessCity === city
+                              )= city
+                        p(class="-on-error -danger -caption -fw-500 mt1") ▲ Please choose a city
+
+                  .-fw-700(role="button" tabindex="0")
+                    .-k-btn.btn-dark.-fw.-fw-700.css-btn-selected
+                      svg.mr1(width="14" height="10"): use(xlink:href="#svg-checkmark")
+                      | Selected
+                    .-k-btn.btn-outline.-fw.-white.-fw-700 Choose this process
+
+      .py3
+        button.-k-btn.btn-primary.-fw.-fw-700(
+          type="submit"
+          disabled= !dispute.data.disputeProcess
+        ) Continue to sign your dispute&hellip;

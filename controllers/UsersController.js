@@ -14,7 +14,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
   prototype: {
     _loadUser(req, res, next) {
       User.query()
-        .include('[account.debtType, disputes.statuses]')
+        .include('[account, disputes.statuses]')
         .where('id', req.params.id)
         .then((result) => {
           if (result.length === 0) {
@@ -66,9 +66,32 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             account.userId = user.id;
             return account.transacting(trx).save();
           })
+          .then(() => {
+            return User.knex()
+              .table('UsersCollectives')
+              .where('user_id', user.id)
+              .transacting(trx)
+              .del();
+          })
+          .then(() => {
+            if (!Array.isArray(req.body.collectiveIds)) {
+              req.body.collectiveIds = [req.body.collectiveIds];
+            }
+
+            return Promise.each(req.body.collectiveIds, (collectiveId) => {
+              return User.knex()
+                .table('UsersCollectives')
+                .transacting(trx)
+                .insert({
+                  user_id: user.id,
+                  collective_id: collectiveId,
+                });
+            });
+          })
           .then(trx.commit)
           .catch(trx.rollback);
       }).then(() => {
+        user.account = account;
         return user.sendActivation();
       })
       .then(() => {
@@ -103,7 +126,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       user.updateAttributes(req.body);
       user.account.updateAttributes(req.body);
 
-      user.role = 'User';
+      user.role = user.role;
 
       User.transaction((trx) => {
         return user.transacting(trx).save()
@@ -123,10 +146,12 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             }
 
             return user.account.transacting(trx).save();
-          });
+          })
+          .finally(trx.commit)
+          .catch(trx.rollback);
       })
       .then(() => {
-        if (user._oldEmail === user.email) {
+        if (!user.activationToken) {
           req.flash('success', 'Profile updated succesfully');
           return res.redirect(CONFIG.router.helpers.Users.show.url(req.params.id));
         }

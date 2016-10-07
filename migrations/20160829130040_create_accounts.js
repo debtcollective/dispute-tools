@@ -7,12 +7,6 @@ exports.up = (knex) => {
       .references('id')
       .inTable('Users')
       .onDelete('CASCADE');
-    t.uuid('collective_id')
-      .notNullable()
-      .references('id')
-      .inTable('Collectives')
-      .onDelete('CASCADE')
-      .index();
     t.string('fullname', 512).notNullable();
     t.text('bio');
     t.string('state', 32);

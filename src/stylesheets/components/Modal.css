@@ -4,7 +4,6 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  overflow: auto;
   background-color: var(--k-background-color);
 
   opacity: 0;
@@ -32,9 +31,18 @@
     display: inline-block;
     vertical-align: top;
     fill: #fff;
+    transform: scale(1);
+    transition: transform 100ms ease-out;
+  }
+
+  &:hover > svg,
+  &:focus > svg {
+    transform: scale(1.2);
   }
 }
 
 .Modal__body {
+  overflow: auto;
   padding: 5rem 0;
+  height: 100%;
 }

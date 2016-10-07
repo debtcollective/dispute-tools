@@ -4,7 +4,9 @@
 @import './components/Dropdown';
 @import './components/Alert';
 @import './components/Button';
+@import './components/Popover';
 @import './components/ResponsiveMenu';
+@import './components/users/NewForm';
 
 /* BASSCSS */
 @import 'basscss-align';
@@ -23,6 +25,8 @@
 @import './lib/kabinett/core/base';
 @import './lib/kabinett/components/button';
 @import './lib/kabinett/components/input';
+@import './lib/kabinett/components/select';
+@import './lib/kabinett/components/popover';
 @import './lib/kabinett/utilities/layout';
 @import './lib/kabinett/utilities/type-font-weight';
 @import './lib/kabinett/utilities/type-font-scale';
@@ -57,7 +61,7 @@
 
   /* BASSCSS CONFIGURATION */
   /* basscss-layout */
-  --width-1: 23rem;
+  --width-1: 23.125rem;
   --width-2: 36rem;
   --width-3: 48rem;
   --width-4: 60.625rem;
@@ -72,8 +76,8 @@
   /* Platform Variables */
   --header-height: 60px;
   --footer-height: 187px;
-  --primary-lighter: color(var(--k-color-palette-primary) tint(10%));
-  --primary-darker: color(var(--k-color-palette-primary) shade(10%));
+  --primary-lighter: color(var(--k-color-palette-primary) tint(15%));
+  --primary-darker: color(var(--k-color-palette-primary) shade(15%));
 }
 
 
@@ -98,6 +102,7 @@ h3 {line-height: 1.081em; /* 40px */}
 a {
   color: var(--k-color-palette-primary);
   text-decoration: none;
+  transition: color 260ms;
 
   &:hover {
     color: var(--primary-lighter);
@@ -132,56 +137,4 @@ main {
   max-width: 1200px;
   margin-right: auto;
   margin-left: auto;
-}
-
-/* @TODO: move to kabinett */
-.-k-select {
-  position: relative;
-  height: 45px;
-  border-radius: 2px;
-  background-color: #fff;
-  color: initial;
-
-  &::after {
-    content: "▾";
-    position: absolute;
-    top: 0;
-    right: 1rem;
-    line-height: 45px;
-    pointer-events: none;
-    color: currentColor;
-  }
-
-  & > select {
-    font-size: 16px;
-    padding: 0 1rem;
-    height: 100%;
-    border: none;
-    appearance: none;
-    border-radius: inherit;
-    background-color: transparent;
-  }
-}
-.-k-select-multiple {
-  font-size: var(--k-font-size);
-  padding: calc(var(--k-font-size) - 1px) 1em calc(var(--k-font-size) - 2px);
-  border-width: 0;
-  border-radius: var(--border-radius);
-}
-
-.-on-error {display: none}
-.error .-on-error,
-.error + .-on-error {display: block}
-
-.error > .-k-input,
-.error.-k-select {
-  color: var(--k-color-palette-danger);
-  background-color: color(var(--k-color-palette-danger) tint(80))
-}
-.error > select {
-  color: var(--k-color-palette-danger);
-}
-
-.error ::placeholder {
-  color: color(var(--k-color-palette-danger) tint(40));
 }

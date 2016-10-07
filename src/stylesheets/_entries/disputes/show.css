@@ -1,6 +1,12 @@
 @import '../../base';
 @import '../../components/dispute-tools/Sidebar';
-@import '../../components/AvatarList';
+@import '../../components/dispute-tools/TextModal';
+/* @import '../../components/AvatarList'; */
+@import '../../components/ConfirmInline';
+
+.Dispute__step-content[aria-hidden="true"] {
+  display: none;
+}
 
 hr {
   height: 3px;
@@ -14,11 +20,11 @@ fieldset {
   /* box-shadow: 0 0 0 1px dodgerblue; */
 }
 
-input[name^='fieldValues[__toggle-radio'][value="no"]:checked ~ fieldset {
+input[data-toggle-radio][value="no"]:checked ~ fieldset {
   display: none;
 }
 
-/* 2 */
+/* information */
 .Tool__Info {
   padding: var(--space-3) var(--space-3) 40px;
   background-color: #333;
@@ -77,8 +83,9 @@ input[name^='fieldValues[__toggle-radio'][value="no"]:checked ~ fieldset {
   }
 }
 
-/* 3 */
+/* process */
 .Tool__process-option {
+  display: block;
   height: 100%;
   cursor: pointer;
 
@@ -110,3 +117,7 @@ input[name^='fieldValues[__toggle-radio'][value="no"]:checked ~ fieldset {
   }
 }
 
+/* follow-up */
+.Dispute__FollowUp__CommentBox {
+  background-color: var(--k-color-palette-accent);
+}

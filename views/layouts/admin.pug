@@ -1,0 +1,57 @@
+doctype html
+html(lang="en")
+
+  head
+    meta(name="viewport" content="initial-scale=1.0")
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(name="csrf-token" content=csrfToken)
+    link(rel="icon" type="image/png" href="/images/favicon.png")
+
+    title
+      block title
+        | The Debt Collective
+
+    block styles
+      link(rel="stylesheet" href="/build/stylesheets/style.css")
+
+  body.-is-admin
+    include ../includes/svg/sprite.svg
+    include ../mixins/header-nav
+
+    main(aria-hidden="false" role="main")
+      if errors || error || flash
+        .AlertWrapper
+          if errors || error
+            .Alert.wrapper.center.-fw-500.-error
+              button.Alert__close(aria-label="close")
+                svg: use(xlink:href="#svg-close")
+              p= error
+              if errors
+                each val in errors
+                  p= val
+          if flash
+            each val, key in flash
+              .Alert.wrapper.center.-fw-500(class=`-${key}`)
+                button.Alert__close(aria-label="close")
+                  svg: use(xlink:href="#svg-close")
+                p= val
+
+      include ../includes/header
+      block content
+
+    .ResponsiveMenu(aria-hidden="true")
+      .ResponsiveMenu__Header.px2.clearfix
+        .left.-fh
+          a.block(href=routeMappings.root.url() style="padding: 11px 0;")
+            svg(width="64" height="31"): use(xlink:href="#svg-logo")
+            .sr-only The Collective Homepage
+        .right.-fh
+          button.js-close-responsive-menu.btn-clear(aria-label="close" style="padding: 19px 0 19px 19px;")
+            svg.-s18(width='32' height='32'): use(xlink:href='#svg-close')
+      +mixinHeaderNav(true)
+
+    block body
+
+    block scripts
+      script(src="/build/javascripts/application.js")

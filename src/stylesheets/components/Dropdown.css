@@ -7,6 +7,10 @@
     opacity: 1;
     transform: translate3d(0,10px,0);
   }
+
+  &.-right > .Dropdown__body {
+    right: 0;
+  }
 }
 
 .Dropdown__head {
@@ -65,4 +69,5 @@
   left: 0;
   width: 100vw;
   height: 100vh;
+  background-color: rgba(0,0,0,.7);
 }
