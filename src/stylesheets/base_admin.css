@@ -24,6 +24,10 @@ body {
   &-update {color: #4D9900}
 }
 
+.-download-disabled {
+  opacity: .2;
+}
+
 table {
   border-spacing: 0 3px;
 }
