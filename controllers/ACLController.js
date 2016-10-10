@@ -32,7 +32,14 @@ const ACLController = Class('ACLController').inherits(RestfulController)({
           return handler.assert(req)
             .then((handlerResult) => {
               if (handlerResult === true) {
-                const resource = route.handler[0] || route._resourceName;
+                let resource;
+
+                if (/\./.test(route._resourceName)) {
+                  resource = route._resourceName;
+                } else {
+                  resource = route.handler[0] || route._resourceName;
+                }
+
                 const action = route._actionName || route.handler[1];
 
                 response[resource] = response[resource] || {};
