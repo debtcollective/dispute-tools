@@ -108,7 +108,7 @@ mixin toolsFormElementMixin(field, index)
               data-name=field.name
               data-hidden= field.hidden && field.hidden.toString()
             )
-            | #{field.label}
+            | !{field.label}
         p.-on-error.-danger.-caption.-fw-500.mt1
 
       when 'group'
