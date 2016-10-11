@@ -386,7 +386,7 @@ The Department of Education usually sends offset notices once per year in the su
 
 #### for any defaulted personal debt
 
-This tool is for anyone who is in default on a debt. If you have been contacted by a collector who bought your loan from the original lender, you can fill out this form. Most of the time, collectors can't prove they own your debt, so by disputing the loan you may be able to stop collections. Before you begin to use this tool, you should make sure you have the name and address of the collections agency that is attempting to collect from you.
+Before you begin to use this tool, you should make sure you have the name and address of the collections agency that is attempting to collect from you.
 
 **If you don't have the name and address of the collection agency, you will not be able to file this dispute.**`,
           completed: 0,
