@@ -49,7 +49,7 @@ mixin toolsFormElementMixin(field, index)
             multiple= field.multiple
             data-name= field.name
             data-hidden= field.hidden && field.hidden.toString()
-          )
+          )&attributes(field.attributes)
             each option in field.options
               option(
                 value= option
@@ -61,7 +61,7 @@ mixin toolsFormElementMixin(field, index)
               name=`fieldValues[${field.name}]`
               data-name= field.name
               data-hidden= field.hidden && field.hidden.toString()
-            )
+            )&attributes(field.attributes)
               option(value="") Choose an option
               each option in field.options
                 option(
@@ -76,10 +76,9 @@ mixin toolsFormElementMixin(field, index)
           type="date"
           name=`fieldValues[${field.name}]`
           value=_formData[field.name]
-          placeholder=field.placeholder
           data-name=field.name
           data-hidden= field.hidden && field.hidden.toString()
-        )
+        )&attributes(field.attributes)
         p.-on-error.-danger.-caption.-fw-500.mt1
 
       when 'yesno'
@@ -91,10 +90,9 @@ mixin toolsFormElementMixin(field, index)
         textarea.block.-k-input.-fw(
           name=`fieldValues[${field.name}]`
           value=_formData[field.name]
-          placeholder=field.placeholder
           data-name=field.name
           data-hidden= field.hidden && field.hidden.toString()
-        )= _formData[field.name]
+        )&attributes(field.attributes)= _formData[field.name]
         p.-on-error.-danger.-caption.-fw-500.mt1
 
       when 'checkbox'
@@ -107,7 +105,7 @@ mixin toolsFormElementMixin(field, index)
               value='yes'
               data-name=field.name
               data-hidden= field.hidden && field.hidden.toString()
-            )
+            )&attributes(field.attributes)
             | !{field.label}
         p.-on-error.-danger.-caption.-fw-500.mt1
 
@@ -149,10 +147,9 @@ mixin toolsFormElementMixin(field, index)
           type="text"
           name=`fieldValues[${field.name}]`
           value=_formData[field.name]
-          placeholder=field.placeholder
           data-name=field.name
           data-hidden= field.hidden && field.hidden.toString()
-        )
+        )&attributes(field.attributes)
         p.-on-error.-danger.-caption.-fw-500.mt1
 
     if field.subLabel
