@@ -111,6 +111,18 @@ mixin toolsFormElementMixin(field, index)
             | !{field.label}
         p.-on-error.-danger.-caption.-fw-500.mt1
 
+      when 'radio'
+        input(
+          type="radio"
+          name=`fieldValues[${field.name}]`
+          id=`${field.name}-${field.value}`
+          value=`${field.value}`
+          checked= _formData && _formData[field.name] === field.value
+          data-name= field.name
+        )
+        label.pl1.mr3.-ff-sec(for=`${field.name}-${field.value}`)!= field.label
+        p.-on-error.-danger.-caption.-fw-500.mt1
+
       when 'group'
         fieldset.pb2
           if field.title
