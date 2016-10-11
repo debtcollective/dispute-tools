@@ -176,8 +176,9 @@ const personalInformationFieldSets = [
       [
         {
           name: 'address2',
-          label: 'Your Mailing Address 2',
+          label: 'City, State, Zip Code',
           validations: [
+            'required',
             'maxLength:128',
           ],
         },
@@ -290,7 +291,7 @@ const personalInformationFieldSets = [
         },
         {
           name: 'employerAddress2',
-          label: 'Employer Mailing Address 2',
+          label: 'Employer City, State, Zip Code',
           columnClassName: 'md-col-8',
           validations: [
             'required',
@@ -431,7 +432,7 @@ If you are in default on a student loan, this tool will assist you to generate a
 
 This tool should **not** be used in response to a Complaint/Summons letter letting you know that the collector is actively seeking a judgment against you in court. If you are being sued, you should seek legal advice.
 
-This tool is for anyone who is in default on a debt. If you have been contacted by a collector who bought your loan from the original lender, you can fill out this form. Most of the time, collectors can't prove they own your debt, so by disputing the loan you may be able to stop collections. Before you begin to use this tool, you should make sure you have the name and address of the collections agency that is attempting to collect from you.
+Before you begin to use this tool, you should make sure you have the name and address of the collections agency that is attempting to collect from you.
 
 If you don't have the name and address of the collection agency, you will not be able to file this dispute.
 

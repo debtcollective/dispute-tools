@@ -2,7 +2,7 @@
 /* eslint arrow-body-style: 0 */
 
 const _ = require('lodash');
-const gm = require('gm');
+const gm = require('gm').subClass({ imageMagick: true });;
 
 const Dispute = Class('Dispute').inherits(Krypton.Model)({
   tableName: 'Disputes',
