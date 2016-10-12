@@ -1,11 +1,12 @@
 .ResponsiveMenu {
-  background: #000;
   position: fixed;
   right: 0;
   top: 0;
   width: 100vw;
   height: 100vh;
   z-index: 2;
+  background-color: #000;
+  color: #fff;
 
   opacity: 0;
   transition: visibility 0ms linear 300ms,
@@ -26,7 +27,7 @@
     color: #fff;
 
     &:hover {
-      color: inherit;
+      color: #fff;
       opacity: .8;
     }
     &.active {color: var(--k-color-palette-primary)}
