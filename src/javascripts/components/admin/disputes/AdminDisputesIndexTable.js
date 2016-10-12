@@ -45,12 +45,6 @@ export default class AdminDisputesIndexTable extends Widget {
       return this.dispatch('addStatus', { dispute: this.disputes[rowIndex] });
     }
 
-    if (button.dataset.addUpdate !== undefined) {
-      console.log('addUpdate', rowIndex);
-      console.log(this.disputes[rowIndex].user.name);
-      return this.dispatch('addUpdate', { dispute: this.disputes[rowIndex] });
-    }
-
     return null;
   }
 
