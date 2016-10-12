@@ -1,6 +1,6 @@
-import NodeSupport from '../../lib/widget/NodeSupport';
-import Common from '../../components/Common';
-import Controller from '../../components/admin/disputes/AdminDisputesIndexController';
+import NodeSupport from '../../../lib/widget/NodeSupport';
+import Common from '../../../components/Common';
+import Controller from '../../../components/admin/disputes/AdminDisputesIndexController';
 
 class ViewAdminIndex extends NodeSupport {
   constructor(config) {

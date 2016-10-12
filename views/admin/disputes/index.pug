@@ -4,7 +4,7 @@ block title
   | Admin — The Debt Collective
 
 block styles
-  link(href="/build/stylesheets/admin/index.css" rel="stylesheet")
+  link(href="/build/stylesheets/admin/disputes/index.css" rel="stylesheet")
 
 block content
   .wrapper.px2.pb3
@@ -71,7 +71,7 @@ block body
       include ../../includes/admin/disputes/add-status-form.pug
 
 block scripts
-  script(src="/build/javascripts/admin/index.js" async)
+  script(src="/build/javascripts/admin/disputes/index.js" async)
   script.
     window.addEventListener('load', function() {
       var options = {
@@ -80,5 +80,5 @@ block scripts
         disputes: !{JSON.stringify(disputes)},
         isAdmin: true,
       };
-      window.z = new ViewAdminIndex(options);
+      new ViewAdminIndex(options);
     }, true);

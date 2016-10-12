@@ -1,0 +1,6 @@
+@import '../../../base_admin';
+
+button[data-add-status] {
+  cursor: pointer;
+  &:hover {opacity: .6}
+}
