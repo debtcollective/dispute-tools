@@ -1,14 +1,14 @@
 extends ../layouts/UserMailer.pug
 
 block title
-  div You recently finished a dispute in The Debt Collective.
-  div we will mail your dispute to the appropriate agency as soon as possible.
+  div You have submitted a dispute with The Debt Collective.
 
 block content
   - var downloadURL = `${CONFIG.env().siteURL}${CONFIG.router.helpers.Disputes.download.url(renderer.disputeId)}`
   div(style="font-size: 16px; line-height: 142%;")
     div(style="font-family: monospace; color: #000000;")
-      div Hi #{user.account.fullname},
+      div We will mail your dispute as soon as possible. When you receive a reply from the lender, please update the status of your dispute on your profile page.
+      div &nbsp;
       div Here are a copy of the documents for you to review them #[a(href=downloadURL style="color: #f04c34;")= downloadURL].
       div &nbsp;
       div &nbsp;
