@@ -51,7 +51,7 @@ block content
             td.-fw-700(
               class=`-status-${_dispute.statuses[0].status.toLowerCase().replace(/\W/g, '-')}`
             )= _dispute.statuses[0].status
-            td
+            td.center
               button.btn-clear.p1.align-top(data-add-status)
                 svg.-pen.block.align-top(width='15' height='15'): use(xlink:href='#svg-pencil')
 
@@ -64,7 +64,7 @@ block content
                   svg.-pen.block.align-top(width='14' height='17'): use(xlink:href='#svg-download')
 
 block body
-  .Modal(data-component-modal="add-status" aria-hidden="true" role="dialog" aria-labelledby="modalSignupTitle" aria-describedby="modalAddStatusDesc")
+  .Modal(data-component-modal="add-status" aria-hidden="true" role="dialog" aria-labelledby="modalSignupTitle")
     button(class="Modal__close" aria-label="close")
       svg(class="-s18"): use(xlink:href="#svg-close")
     .Modal__body(role="document")

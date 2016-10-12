@@ -48,7 +48,10 @@ thead > tr > th {
 }
 
 tbody > tr {
-  background: white;
+  background-color: white;
+  &:hover {
+    background-color: var(--k-color-palette-accent);
+  }
 }
 
 tbody > tr > td {
