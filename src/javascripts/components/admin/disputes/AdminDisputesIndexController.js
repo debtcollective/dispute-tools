@@ -2,7 +2,6 @@ import Widget from '../../../lib/widget';
 import AdminDisputesIndexTableControls from './AdminDisputesIndexTableControls';
 import AdminDisputesIndexTable from './AdminDisputesIndexTable';
 import Modal from '../../Modal';
-import AdminDisputesAddUpdateForm from './AdminDisputesAddUpdateForm';
 import AdminDisputesAddStatusForm from './AdminDisputesAddStatusForm';
 
 export default class AdminDisputesIndexController extends Widget {
@@ -41,16 +40,6 @@ export default class AdminDisputesIndexController extends Widget {
       element: document.querySelector('[data-component-form="dispute-add-status"]'),
     }));
 
-    this.appendChild(new Modal({
-      name: 'addUpdateModal',
-      element: document.querySelector('[data-component-modal="add-update"]'),
-    }));
-
-    this.appendChild(new AdminDisputesAddUpdateForm({
-      name: 'AdminDisputesAddUpdateForm',
-      element: document.querySelector('[data-component-form="dispute-add-update"]'),
-    }));
-
     this._bindEvents();
   }
 
@@ -80,11 +69,6 @@ export default class AdminDisputesIndexController extends Widget {
     this.AdminDisputesIndexTable.bind('addStatus', data => {
       this.AdminDisputesAddStatusForm.updateData(data.dispute);
       this.addStatusModal.activate();
-    });
-
-    this.AdminDisputesIndexTable.bind('addUpdate', data => {
-      this.AdminDisputesAddUpdateForm.updateData(data.dispute);
-      this.addUpdateModal.activate();
     });
   }
 
