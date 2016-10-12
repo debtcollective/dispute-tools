@@ -32,9 +32,14 @@ export default class Dropdown extends Widget {
   activate() {
     this.active = true;
     APP.SCROLLING_BOX.style.overflow = 'hidden';
-    this.bodyElement.setAttribute('aria-hidden', !this.active);
     this.element.appendChild(Dropdown.backdrop);
+    this.bodyElement.setAttribute('aria-hidden', !this.active);
     Dropdown._activeDropdown = this;
+
+    requestAnimationFrame(() => {
+      Dropdown.backdrop.classList.add('active');
+    });
+
     return null;
   }
 
