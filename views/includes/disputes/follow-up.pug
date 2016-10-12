@@ -40,26 +40,40 @@
         h2.pb3 Now what?
         .pb3.-fw-500!= dispute.disputeTool.data.nowWhat
 
-        .Dispute__FollowUp__CommentBox.p2.rounded.-dark
-          form(
-            action=routeMappings.Disputes.update.url(dispute.id)
-            method="post"
-            data-component-form="dispute-comment"
-          )
-            input(name="_csrf" type="hidden" value=csrfToken)
-            input(name="_method" type="hidden" value="PUT")
+        if dispute.data.disputeConfirmFollowUp
+          table.mb3.-fw
+            thead.left-align
+              tr
+                th status
+                th comment
+                th date
+            tbody
+              each status in dispute.statuses
+                tr
+                  td= status.status
+                  td= status.comment
+                  td= new Date(status.createdAt).toDateString()
 
-            h3.mt1.pb2 Got a reply?
-            p.pb1.-fw-700 We prompt you to notify us when you get a reply from the Department
-            p.pb2.-fw-500.-caption We follow very closely what happens with these disputes so that we can find out which creditors are not breaking the law.
-            textarea.block.mb2.-k-input.-ff-sec.-fw(
-              name="comment"
-              rows="3"
-              placeholder='Briefly describe the response you got…'
+          .Dispute__FollowUp__CommentBox.p2.rounded.-dark
+            form(
+              action=routeMappings.Disputes.update.url(dispute.id)
+              method="post"
+              data-component-form="dispute-comment"
             )
-            button.-fw.-k-btn.btn-primary.-fw-700(
-              type="submit"
-            ) I already get a notification
+              input(name="_csrf" type="hidden" value=csrfToken)
+              input(name="_method" type="hidden" value="PUT")
+
+              h3.mt1.pb2 Got a reply?
+              p.pb1.-fw-700 We prompt you to notify us when you get a reply from the Department
+              p.pb2.-fw-500.-caption We follow very closely what happens with these disputes so that we can find out which creditors are not breaking the law.
+              textarea.block.mb2.-k-input.-ff-sec.-fw(
+                name="comment"
+                rows="3"
+                placeholder='Briefly describe the response you got…'
+              )
+              button.-fw.-k-btn.btn-primary.-fw-700(
+                type="submit"
+              ) I already get a notification
 
   unless dispute.data.disputeConfirmFollowUp
     .-k-popover.-bottom-right.-success.absolute(data-component-popover="dispute-completed" aria-hidden="true" style="width: 290px;")
