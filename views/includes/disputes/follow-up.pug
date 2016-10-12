@@ -41,18 +41,18 @@
         .pb3.-fw-500!= dispute.disputeTool.data.nowWhat
 
         if dispute.data.disputeConfirmFollowUp
-          table.mb3.-fw
-            thead.left-align
-              tr
-                th status
-                th comment
-                th date
-            tbody
-              each status in dispute.statuses
-                tr
-                  td= status.status
-                  td= status.comment
-                  td= new Date(status.createdAt).toDateString()
+          // table.mb3.-fw
+          //   thead.left-align
+          //     tr
+          //       th status
+          //       th comment
+          //       th date
+          //   tbody
+          //     each status in dispute.statuses
+          //       tr
+          //         td= status.status
+          //         td= status.comment
+          //         td= new Date(status.createdAt).toDateString()
 
           .Dispute__FollowUp__CommentBox.p2.rounded.-dark
             form(
