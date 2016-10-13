@@ -36,13 +36,18 @@ block content
 
       tbody
         each _dispute, index in disputes
+
+          -
+            // add the user accout image to be accesible on the front-end
+            _dispute.user.account.imageURL = '/images/profile/placeholder-small.png';
+
+            if (_dispute.user.account.image.exists('small'))
+              _dispute.user.account.imageURL = _dispute.user.account.image.url('small');
+
           tr
             td
               .flex.items-center
-                if (_dispute.user.account.image.exists('small'))
-                  img(src=_dispute.user.account.image.url('small') alt=_dispute.user.account.fullname width="50" height="50")
-                else
-                  img(src='/images/profile/placeholder-small.png' width="50" height="50")
+                img(src=_dispute.user.account.imageURL alt=_dispute.user.account.fullname width="50" height="50")
                 p.pl2.-fw-700= _dispute.user.account.fullname
             td.-fw-500
               | #{_dispute.disputeTool.name}

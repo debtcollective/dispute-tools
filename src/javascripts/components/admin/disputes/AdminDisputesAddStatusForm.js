@@ -29,6 +29,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
 
     this.a = this.element.querySelector('.a');
     this.b = this.element.querySelector('.b');
+    this.c = this.element.querySelector('.c');
 
     this._bindEvents();
   }
@@ -95,16 +96,23 @@ export default class AdminDisputesAddStatusForm extends Widget {
 
   /**
    * Resets the form fields and replace the dynamic form data using `disputeData`.
-   * @param {Object} disputeData - the dispute data to render
+   * @param {Object} dispute - the dispute data to render
    */
-  updateData(disputeData) {
+  updateData(dispute) {
     // @TODO update form action url
     this.ui.status.selectedIndex = 0;
     this.ui.comment.value = '';
     this._clearFieldErrors();
 
-    this.a.textContent = disputeData.user.account.fullname;
-    this.b.textContent = disputeData.disputeTool.name;
+    let disputeToolName = dispute.disputeTool.name;
+
+    if (dispute.data.option !== 'none') {
+      disputeToolName += ` / ${dispute.data.option}`;
+    }
+
+    this.a.textContent = dispute.user.account.fullname;
+    this.b.textContent = disputeToolName;
+    this.c.src = dispute.user.account.imageURL;
   }
 }
 
