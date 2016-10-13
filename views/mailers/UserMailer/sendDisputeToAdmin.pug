@@ -1,0 +1,12 @@
+extends ../layouts/UserMailer.pug
+
+block title
+  div #{user.account.fullname} have submitted a new dispute with The Debt Collective.
+
+block content
+  - var downloadURL = `${CONFIG.env().siteURL}${CONFIG.router.helpers.Disputes.download.url(renderer.disputeId)}`
+  div(style="font-size: 16px; line-height: 142%;")
+    div(style="font-family: monospace; color: #000000;")
+      div Here are a copy of the documents #[a(href=downloadURL style="color: #f04c34;")= downloadURL].
+      div &nbsp;
+      div &nbsp;

@@ -97,6 +97,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
           });
         })
         .then(() => {
+          req.flash('success', 'The dispute status has been updated.');
           return res.redirect(CONFIG.router.helpers.Admin.Disputes.url());
         })
         .catch(next);
