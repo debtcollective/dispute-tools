@@ -9,7 +9,7 @@ const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
     'In Review',
     'Documents Sent',
     'Update',
-    'UserUpdate',
+    'User Update',
   ],
   validations: {
     disputeId: ['required'],
