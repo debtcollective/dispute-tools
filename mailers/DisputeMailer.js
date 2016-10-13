@@ -15,6 +15,7 @@ const DisputeMailer = Class('DisputeMailer').inherits(BaseMailer)({
   sendStatusToUser(locals) {
     return User.query()
       .where({ id: locals.dispute.userId })
+      .include('account')
       .then(([user]) => {
         locals.user = user;
 
