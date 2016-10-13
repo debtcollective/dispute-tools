@@ -11,6 +11,16 @@ const DisputeMailer = Class('DisputeMailer').inherits(BaseMailer)({
 
     return this._send('sendToAdmins', emails, locals);
   },
+
+  sendStatusToUser(locals) {
+    return User.query()
+      .where({ id: locals.dispute.userId })
+      .then(([user]) => {
+        locals.user = user;
+
+        return this._send('sendStatusToUser', user.email, locals);
+      });
+  },
 });
 
 module.exports = DisputeMailer;

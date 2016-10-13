@@ -1,4 +1,5 @@
-/* globals Class, Admin, RestfulController, DisputeTool, CONFIG, Dispute, DisputeStatus */
+/* globals Class, Admin, RestfulController, DisputeTool, CONFIG, Dispute,
+ DisputeMailer, DisputeStatus */
 const path = require('path');
 // const Promise = require('bluebird');
 
@@ -12,6 +13,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       before: '_loadDispute',
       actions: [
         'show',
+        'update',
         'destroy',
       ],
     },
@@ -76,8 +78,28 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       res.render('admin/disputes/edit');
     },
 
-    new(req, res) {
-      res.send(501, 'Not Implemented');
+    update(req, res, next) {
+      const dispute = res.locals.dispute;
+
+      const { comment, status } = req.body;
+
+      const ds = new DisputeStatus({
+        comment,
+        status,
+        disputeId: dispute.id,
+      });
+
+      ds.save()
+        .then(() => {
+          return DisputeMailer.sendStatusToUser({
+            dispute,
+            disputeStatus: ds,
+          });
+        })
+        .then(() => {
+          return res.redirect(CONFIG.router.helpers.Admin.Disputes.url());
+        })
+        .catch(next);
     },
 
     destroy(req, res, next) {
