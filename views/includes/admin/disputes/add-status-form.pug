@@ -9,6 +9,7 @@
 
     form(method="post" action='')
       input(type="hidden" name="_csrf" value=csrfToken)
+      input(name="_method" type="hidden" value="PUT")
       .pb2
         .-k-select
           select.-fw-700.-fw(name='status')
