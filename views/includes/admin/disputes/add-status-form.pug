@@ -15,7 +15,8 @@
           select.-fw-700.-fw(name='status')
             option(value="") Status
             each status in statuses
-              option(value= status)= status
+              if status !== 'User Update'
+                option(value= status)= status
         p(class="-on-error -danger -caption -fw-500 mt1")
 
       .pb2

@@ -111,7 +111,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       const ds = new DisputeStatus({
         comment,
         disputeId: dispute.id,
-        status: 'UserUpdate',
+        status: 'User Update',
       });
 
       ds.save()
