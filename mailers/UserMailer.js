@@ -6,16 +6,22 @@ const UserMailer = Class('UserMailer').inherits(BaseMailer)({
     subject: 'The Debt Collective',
   },
 
-  sendActivation: function sendActivation(...args) {
+  sendActivation(...args) {
     return this._send('sendActivation', ...args);
   },
 
-  sendResetPasswordLink: function sendResetPasswordLink(...args) {
+  sendResetPasswordLink(...args) {
     return this._send('sendResetPasswordLink', ...args);
   },
 
-  sendDispute: function sendDispute(...args) {
+  sendDispute(...args) {
     return this._send('sendDispute', ...args);
+  },
+
+  sendDisputeToAdmin(locals) {
+    const mails = CONFIG.env().mailers.disputesBCCAddresses;
+
+    return this._send('sendDisputeToAdmin', mails, locals);
   },
 });
 
