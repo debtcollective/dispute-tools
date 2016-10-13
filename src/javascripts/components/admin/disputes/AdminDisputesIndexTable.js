@@ -40,8 +40,6 @@ export default class AdminDisputesIndexTable extends Widget {
     const rowIndex = [].indexOf.call(this.element.children, row);
 
     if (button.dataset.addStatus !== undefined) {
-      console.log('addStatus', rowIndex);
-      console.log(this.disputes[rowIndex].user.name);
       return this.dispatch('addStatus', { dispute: this.disputes[rowIndex] });
     }
 

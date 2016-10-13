@@ -10,6 +10,10 @@ export default class AdminDisputesAddStatusForm extends Widget {
     };
   }
 
+  static get updateUrlString() {
+    return '/admin/disputes/${id}';
+  }
+
   constructor(config) {
     super(config);
 
@@ -27,6 +31,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
       element: this.element.querySelector('button[type="submit"]'),
     }));
 
+    this.formElement = this.element.getElementsByTagName('form')[0];
     this.a = this.element.querySelector('.a');
     this.b = this.element.querySelector('.b');
     this.c = this.element.querySelector('.c');
@@ -99,7 +104,6 @@ export default class AdminDisputesAddStatusForm extends Widget {
    * @param {Object} dispute - the dispute data to render
    */
   updateData(dispute) {
-    // @TODO update form action url
     this.ui.status.selectedIndex = 0;
     this.ui.comment.value = '';
     this._clearFieldErrors();
@@ -110,6 +114,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
       disputeToolName += ` / ${dispute.data.option}`;
     }
 
+    this.formElement.action = this.constructor.updateUrlString.replace('${id}', dispute.id);
     this.a.textContent = dispute.user.account.fullname;
     this.b.textContent = disputeToolName;
     this.c.src = dispute.user.account.imageURL;
