@@ -14,7 +14,6 @@ module.exports = {
       return false;
     }],
   ],
-  // CollectiveManager: [],
   Admin: [
     [true],
   ],
