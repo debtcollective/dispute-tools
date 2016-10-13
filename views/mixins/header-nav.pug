@@ -36,6 +36,17 @@
     ]
   }
 
+  if (currentUser && currentUser.role === 'Admin') {
+    // remove Donate option
+    _menuItems.all.pop();
+    // add Admin Disputes option
+    _menuItems.all.push({
+      text: 'Disputes',
+      title: 'Admin Disputes',
+      url: routeMappings.Admin.Disputes.url(),
+    });
+  }
+
 mixin headerLink(href, name, responsive = false)
   - var _className = 'Header__link -fw-700 flex items-center -fh'
   if responsive
