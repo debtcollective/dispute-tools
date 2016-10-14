@@ -24,7 +24,12 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
             .where('deleted', false)
             .include('[user.account, statuses, attachments, disputeTool]'),
           filters: {
-            allowedFields: [],
+            allowedFields: [
+              'dispute_tool_id',
+            ],
+          },
+          paginate: {
+            pageSize: 10,
           },
         })(req, res, next);
       },
