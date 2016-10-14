@@ -24,9 +24,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         Promise.coroutine(function* restfulAPI() {
           const disputeIds = yield Dispute.search(req.query);
 
-          query
-            .whereIn('id', disputeIds);
-
+          query.whereIn('id', disputeIds);
         })().then(() => {
           RESTfulAPI.createMiddleware({
             queryBuilder: query
@@ -81,6 +79,12 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     index(req, res) {
       res.locals.disputes = res.locals.results;
       res.locals.statuses = DisputeStatus.statuses;
+      res.locals.headers = {
+        total_count: res._headers.total_count,
+        total_pages: res._headers.total_pages,
+        current_page: req.param('page') || 1,
+        query: req.query,
+      };
 
       res.render('admin/disputes/index');
     },
