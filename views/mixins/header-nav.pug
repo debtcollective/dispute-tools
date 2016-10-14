@@ -11,12 +11,6 @@
         title: 'Browse Our Tools and Services',
         url: routeMappings.DisputeTools.url(),
       },
-      {
-        text: 'Donate',
-        title: 'Support Us',
-        url: null,
-        parentClassName: 'pr3'
-      },
     ],
     loggedOut: [
       {
@@ -37,9 +31,6 @@
   }
 
   if (currentUser && currentUser.role === 'Admin') {
-    // remove Donate option
-    _menuItems.all.pop();
-    // add Admin Disputes option
     _menuItems.all.push({
       text: 'Disputes',
       title: 'Admin Disputes',
