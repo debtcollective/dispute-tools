@@ -1,8 +1,10 @@
-/* globals Class, Krypton, Attachment, DisputeTool, DisputeStatus, DisputeRenderer, UserMailer */
+/* globals Class, Krypton, Attachment, DisputeTool, DisputeStatus, DisputeRenderer, UserMailer
+ Account */
 /* eslint arrow-body-style: 0 */
 
 const _ = require('lodash');
 const gm = require('gm').subClass({ imageMagick: true });;
+const Promise = require('bluebird');
 
 const Dispute = Class('Dispute').inherits(Krypton.Model)({
   tableName: 'Disputes',
@@ -11,6 +13,46 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
     disputeToolId: ['required'],
   },
   attributes: ['id', 'userId', 'disputeToolId', 'data', 'deleted', 'createdAt', 'updatedAt'],
+
+  search(qs) {
+    const query = this.query()
+      .where('deleted', false)
+      .include('[user.account, statuses]');
+
+    const results = [];
+
+    return query.then((records) => {
+      records.forEach((record) => {
+        let nameFound = false;
+        let statusFound = false;
+
+        if (record.user.account.fullname.toLowerCase().search(qs.name.toLowerCase()) !== -1) {
+          nameFound = true;
+        }
+
+        if (record.statuses.length > 0 && record.statuses[0].status === qs.status) {
+          statusFound = true;
+        }
+
+        if (!qs.name) {
+          nameFound = true;
+        }
+
+        if (!qs.status) {
+          statusFound = true;
+        }
+
+        if (nameFound && statusFound) {
+          results.push(record);
+        }
+      });
+    })
+    .then(() => {
+      return results.map((item) => {
+        return item.id;
+      });
+    });
+  },
 
   prototype: {
     data: null,

@@ -1,7 +1,7 @@
 /* globals Class, Admin, RestfulController, DisputeTool, CONFIG, Dispute,
  DisputeMailer, DisputeStatus */
 const path = require('path');
-// const Promise = require('bluebird');
+const Promise = require('bluebird');
 
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 
@@ -19,19 +19,30 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     },
     {
       before(req, res, next) {
-        RESTfulAPI.createMiddleware({
-          queryBuilder: Dispute.query()
-            .where('deleted', false)
-            .include('[user.account, statuses, attachments, disputeTool]'),
-          filters: {
-            allowedFields: [
-              'dispute_tool_id',
-            ],
-          },
-          paginate: {
-            pageSize: 10,
-          },
-        })(req, res, next);
+        const query = Dispute.query();
+
+        Promise.coroutine(function* restfulAPI() {
+          const disputeIds = yield Dispute.search(req.query);
+
+          if (disputeIds.length > 0) {
+            query
+              .whereIn('id', disputeIds);
+          }
+        })().then(() => {
+          RESTfulAPI.createMiddleware({
+            queryBuilder: query
+              .where('deleted', false)
+              .include('[user.account, statuses, attachments, disputeTool]'),
+            filters: {
+              allowedFields: [
+                'dispute_tool_id',
+              ],
+            },
+            paginate: {
+              pageSize: 10,
+            },
+          })(req, res, next);
+        });
       },
       actions: ['index'],
     },
