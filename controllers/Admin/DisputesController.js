@@ -24,10 +24,9 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         Promise.coroutine(function* restfulAPI() {
           const disputeIds = yield Dispute.search(req.query);
 
-          if (disputeIds.length > 0) {
-            query
-              .whereIn('id', disputeIds);
-          }
+          query
+            .whereIn('id', disputeIds);
+
         })().then(() => {
           RESTfulAPI.createMiddleware({
             queryBuilder: query

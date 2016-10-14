@@ -3,7 +3,7 @@
 /* eslint arrow-body-style: 0 */
 
 const _ = require('lodash');
-const gm = require('gm').subClass({ imageMagick: true });;
+const gm = require('gm').subClass({ imageMagick: true });
 const Promise = require('bluebird');
 
 const Dispute = Class('Dispute').inherits(Krypton.Model)({
@@ -26,11 +26,12 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
         let nameFound = false;
         let statusFound = false;
 
-        if (record.user.account.fullname.toLowerCase().search(qs.name.toLowerCase()) !== -1) {
+        if (qs.name && record.user.account.fullname.toLowerCase()
+          .search(qs.name.toLowerCase()) !== -1) {
           nameFound = true;
         }
 
-        if (record.statuses.length > 0 && record.statuses[0].status === qs.status) {
+        if (qs.status && record.statuses.length > 0 && record.statuses[0].status === qs.status) {
           statusFound = true;
         }
 
