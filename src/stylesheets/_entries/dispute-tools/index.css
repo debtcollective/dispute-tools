@@ -1,5 +1,4 @@
 @import '../../base';
-@import '../../components/PlayButton';
 @import '../../components/dispute-tools/TextModal';
 
 .Tools__intro {
