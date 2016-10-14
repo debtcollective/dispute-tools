@@ -16,6 +16,7 @@ class ViewAdminIndex extends NodeSupport {
     this.appendChild(new Controller({
       name: 'AdminDisputesIndexController',
       disputes: config.disputes,
+      currentPage: config.currentPage,
     }));
   }
 }
