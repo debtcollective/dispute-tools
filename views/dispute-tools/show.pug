@@ -39,6 +39,20 @@ block content
             each val, key in disputeTool.data.options
               +DisputeCard(key, val)
 
+block append body
+  each option, key in disputeTool.data.options
+    if option.more
+      .Modal(
+        data-component-modal=`common-cases-modal-${key}`
+        aria-hidden="true" role="dialog"
+      )
+        button(class="Modal__close" aria-label="close")
+          svg(class="-s18"): use(xlink:href="#svg-close")
+        .Modal__body(role="document")
+          .px2
+            .max-width-1.mx-auto
+              .Tools__Text-Modal!= option.more
+
 block scripts
   script(src="/build/javascripts/dispute-tools/show.js" async)
   script.
@@ -46,6 +60,7 @@ block scripts
       var options = {
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
+        options: !{JSON.stringify(disputeTool.data.options)},
       };
       new ViewDisputeToolsShow(options);
     }, true);
