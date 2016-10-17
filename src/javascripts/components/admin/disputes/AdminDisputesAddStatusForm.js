@@ -32,6 +32,8 @@ export default class AdminDisputesAddStatusForm extends Widget {
     }));
 
     this.formElement = this.element.getElementsByTagName('form')[0];
+    this.statusElement = this.formElement.querySelector('[name="status"]');
+    this.statusOptions = [].slice.call(this.statusElement.options);
     this.a = this.element.querySelector('.a');
     this.b = this.element.querySelector('.b');
     this.c = this.element.querySelector('.c');
@@ -109,6 +111,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
     this._clearFieldErrors();
 
     let disputeToolName = dispute.disputeTool.name;
+    const status = dispute.statuses[0].status;
 
     if (dispute.data.option !== 'none') {
       disputeToolName += ` / ${dispute.data.option}`;
@@ -118,6 +121,14 @@ export default class AdminDisputesAddStatusForm extends Widget {
     this.a.textContent = dispute.user.account.fullname;
     this.b.textContent = disputeToolName;
     this.c.src = dispute.user.account.imageURL;
+
+    const selected = this.statusOptions.filter(option => {
+      return option.value === status;
+    });
+
+    if (selected.length) {
+      selected[0].selected = true;
+    }
   }
 }
 
