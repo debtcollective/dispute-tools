@@ -17,6 +17,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         'update',
         'updateDisputeData',
         'setSignature',
+        'download',
         'addAttachment',
         'removeAttachment',
         'destroy',
