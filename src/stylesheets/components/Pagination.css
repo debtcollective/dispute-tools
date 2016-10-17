@@ -1,0 +1,19 @@
+.Pagination {
+  & li {
+    border-right: 1px solid transparent;
+  }
+
+  & button {
+    border-radius: 0;
+  }
+
+  & li:first-child > button {
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+  }
+
+  & li:last-child > button {
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+  }
+}

@@ -8,17 +8,6 @@ export default class AdminDisputesIndexController extends Widget {
   constructor(config) {
     super(config);
 
-    this._filterOptions = {
-      search: '',
-      toolID: '',
-      status: '',
-    };
-
-    this.INDEXES_ARRAY = [];
-    for (let i = 0, len = this.disputes.length; i < len; i++) {
-      this.INDEXES_ARRAY.push(i);
-    }
-
     this.appendChild(new AdminDisputesIndexTableControls({
       name: 'AdminDisputesIndexTableControls',
       element: document.querySelector('thead'),
@@ -40,100 +29,89 @@ export default class AdminDisputesIndexController extends Widget {
       element: document.querySelector('[data-component-form="dispute-add-status"]'),
     }));
 
+    this.originalQuery = {
+      filters: {
+        dispute_tool_id: this.AdminDisputesIndexTableControls.toolsSelect.value,
+      },
+      name: this.AdminDisputesIndexTableControls.searchInput.value,
+      status: this.AdminDisputesIndexTableControls.statusSelect.value,
+    };
+
+    this._query = JSON.parse(JSON.stringify(this.originalQuery));
+
+    this.pagination = document.querySelector('.Pagination ul');
+
     this._bindEvents();
   }
 
   _bindEvents() {
     this.AdminDisputesIndexTableControls.bind('searchInput', data => {
-      this._filterOptions.search = data.value;
-      this._filter();
+      this._query.name = data.value;
+      this._enableButtons();
     });
 
     this.AdminDisputesIndexTableControls.bind('toolsChange', data => {
-      this._filterOptions.toolID = data.value;
-      this._filter();
+      this._query.filters.dispute_tool_id = data.value;
+      this._enableButtons();
     });
 
     this.AdminDisputesIndexTableControls.bind('statusChange', data => {
-      this._filterOptions.status = data.value;
-      this._filter();
+      this._query.status = data.value;
+      this._enableButtons();
+    });
+
+    this.AdminDisputesIndexTableControls.bind('applyFilters', () => {
+      const search = this._serialize(this._query);
+      window.location.replace(`?page=${this.currentPage}&${search}`);
     });
 
     this.AdminDisputesIndexTableControls.bind('resetFilters', () => {
-      this._filterOptions.search = '';
-      this._filterOptions.toolID = '';
-      this._filterOptions.status = '';
-      this._filter();
+      window.location.replace(`?page=${this.currentPage}`);
     });
 
     this.AdminDisputesIndexTable.bind('addStatus', data => {
       this.AdminDisputesAddStatusForm.updateData(data.dispute);
       this.addStatusModal.activate();
     });
+
+    this._handlePaginationClickRef = this._handlePaginationClick.bind(this);
+    this.pagination.addEventListener('click', this._handlePaginationClickRef);
   }
 
-  _filter() {
-    const indexesToHide = this._getIndexesToHide();
-    const enable = this._getDropdownState(indexesToHide);
+  _handlePaginationClick(ev) {
+    const target = ev.target;
+    ev.stopPropagation();
 
-    if (indexesToHide.length) {
-      this.AdminDisputesIndexTableControls.showResetButton();
-    } else {
-      this.AdminDisputesIndexTableControls.hideResetButton();
+    if (target.tagName === 'BUTTON') {
+      const search = this._serialize(this.originalQuery);
+      window.location.replace(`?page=${target.dataset.page}&${search}`);
     }
-
-    this.AdminDisputesIndexTable.filterItemsByIndex(indexesToHide);
-    this.AdminDisputesIndexTableControls
-      .updateToolsDropdownOptionsState(enable.tools)
-      .updateStatusDropdownOptionsState(enable.statuses);
   }
 
-  _getIndexesToHide() {
-    const data = [];
-
-    for (let i = 0, len = this.disputes.length; i < len; i++) {
-      if (this._filterOptions.search) {
-        if (this.disputes[i].user.account.fullname.toLowerCase().indexOf(this._filterOptions.search) === -1) {
-          data.push(i);
-        }
-      }
-
-      if (this._filterOptions.toolID) {
-        if (this.disputes[i].disputeTool.id !== this._filterOptions.toolID) {
-          data.push(i);
-        }
-      }
-
-      if (this._filterOptions.status) {
-        if (this.disputes[i].statuses[0].status !== this._filterOptions.status) {
-          data.push(i);
-        }
-      }
+  _enableButtons() {
+    if (
+      (this._query.name !== this.originalQuery.name) ||
+      (this._query.status !== this.originalQuery.status) ||
+      (this._query.filters.dispute_tool_id !== this.originalQuery.filters.dispute_tool_id)
+    ) {
+      return this.AdminDisputesIndexTableControls.enableApplyButton();
     }
 
-    return data;
+    return this.AdminDisputesIndexTableControls.disableApplyButton();
   }
 
-  _getDropdownState(hide) {
-    const data = {
-      tools: [],
-      statuses: [],
-    };
-    const displayedIndexes = this.INDEXES_ARRAY.slice();
-    let index;
+  _serialize(obj, prefix) {
+    const str = [];
 
-    for (let i = 0, len = hide.length; i < len; i++) {
-      index = displayedIndexes.indexOf(hide[i]);
-      if (index > -1) {
-        displayedIndexes.splice(index, 1);
+    for (let p in obj) {
+      if (obj.hasOwnProperty(p)) {
+        var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
+        str.push(typeof v === 'object' ?
+          this._serialize(v, k) :
+          `${encodeURIComponent(k)}=${encodeURIComponent(v)}`);
       }
     }
 
-    for (let i = 0, len = displayedIndexes.length; i < len; i++) {
-      data.tools.push(this.disputes[displayedIndexes[i]].disputeTool.id);
-      data.statuses.push(this.disputes[displayedIndexes[i]].statuses[0].status);
-    }
-
-    return data;
+    return str.join('&');
   }
 }
