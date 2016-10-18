@@ -43,14 +43,14 @@ block content
                     value= status
                     selected= queryStatus === status
                   )= status
-          th
-            button.-k-btn.btn-primary.mr1.-fw-700(
+          th.-wsnw
+            button.-k-btn.btn-primary.-fw-700(
               name='disputesListValue[applyFilters]'
               disabled= true
             ) Apply
-            button.-k-btn.btn-link.-primary.-fw-700(
+            button.-k-btn.btn-link(
               name='disputesListValue[resetFilters]'
-              disabled= !queryName && !queryFilters && !queryStatus
+              disabled= !queryName && (!queryFilters || !queryFilters.dispute_tool_id) && !queryStatus
             ) Reset
 
       tbody
@@ -76,25 +76,32 @@ block content
               class=`-status-${_dispute.statuses[0].status.toLowerCase().replace(/\W/g, '-')}`
             )= _dispute.statuses[0].status
             td.center
-              button.btn-clear.p1.align-top(data-add-status)
+              button.mr2.btn-clear.p1.align-top(data-add-status)
                 svg.-pen.block.align-top(width='15' height='15'): use(xlink:href='#svg-pencil')
 
               if _dispute.data.signature
-                a.btn-clear.-primary.p1.align-top.ml3.inline-block(
+                a.btn-clear.-primary.p1.align-top.inline-block(
                   href= routeMappings.Disputes.download.url(_dispute.id)
                 ): svg.-pen.block.align-top(width='14' height='17'): use(xlink:href='#svg-download')
               else
-                 button.btn-clear.p1.ml3.align-top.-download-disabled(disabled)
+                 button.btn-clear.p1.align-top.-download-disabled(disabled)
                   svg.-pen.block.align-top(width='14' height='17'): use(xlink:href='#svg-download')
 
-    .Pagination.center.pt3
-      ul.list-reset
-        - for (let i = 1; i <= headers.total_pages; i++)
-          li.inline-block
-            button.btn.-k-btn.btn-light.-fw-500(
-              data-page= i
-              disabled= i == headers.current_page
-            )= i
+              form.ml2.inline-block(
+                action=routeMappings.Admin.Disputes.destroy.url(_dispute.id)
+                method="post"
+                data-component-form="delete-dispute"
+              )
+                input(name="_csrf" type="hidden" value=csrfToken)
+                input(type="hidden" name="_method" value="DELETE")
+                button.btn-clear.p1(
+                  type="submit"
+                  data-delete-dispute
+                )
+                  svg.-pen.block.align-top(width='14' height='18'): use(xlink:href='#svg-thrash')
+
+    include ../../mixins/pagination
+    +mixinPagination(headers.current_page, headers.total_pages)(class='pt3')
 
 block body
   .Modal(data-component-modal="add-status" aria-hidden="true" role="dialog" aria-labelledby="modalSignupTitle")

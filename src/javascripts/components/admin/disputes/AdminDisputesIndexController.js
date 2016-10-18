@@ -62,11 +62,11 @@ export default class AdminDisputesIndexController extends Widget {
 
     this.AdminDisputesIndexTableControls.bind('applyFilters', () => {
       const search = this._serialize(this._query);
-      window.location.replace(`?page=${this.currentPage}&${search}`);
+      window.location.replace(`?${search}`);
     });
 
     this.AdminDisputesIndexTableControls.bind('resetFilters', () => {
-      window.location.replace(`?page=${this.currentPage}`);
+      window.location.replace('?page=1');
     });
 
     this.AdminDisputesIndexTable.bind('addStatus', data => {

@@ -6,8 +6,8 @@
       input(type="hidden" name="_csrf" value=csrfToken)
 
       .UsersNewForm__step.js-step-1(aria-hidden='false')
-        p#modalSignupDesc.-fw-500.mb3 First, let us know your types of debt:
-        .pb2.mxn1
+        p#modalSignupDesc.-fw-500.mb1 First, let us know your types of debt, check all that apply:
+        .pb3.mxn1
           -
             var _collectives = COLLECTIVES.slice();
             _collectives = _collectives.filter(c => c.name.indexOf('Solidarity') === -1);
@@ -20,8 +20,26 @@
                 type="checkbox"
                 value= collective.id
                 checked= _formData && _formData.collectiveIds && _formData.collectiveIds.includes(collective.id)
+                data-has-debt="true"
               )
               .inner.-k-btn.-fw-700= name
+
+        -
+          var _solidarityBloc = COLLECTIVES.slice();
+          _solidarityBloc = _solidarityBloc.filter(c => c.name.indexOf('Solidarity') > -1)[0];
+        p.-fw-500 Or if you don’t have debts:
+        .pb3.mxn1
+          label.UsersNewForm__collective-option.-fw
+            input(
+              name="collectiveIds"
+              type="checkbox"
+              value= _solidarityBloc.id
+              checked= _formData && _formData.collectiveIds && _formData.collectiveIds.includes(_solidarityBloc.id)
+              data-has-debt="false"
+            )
+            .inner.-k-btn.-fw-700 Joining in solidarity
+
+
         button#sign-up-btn-next.-k-btn.btn-primary.-fw.-fw-700(
           type="button"
           disabled= (_formData && _formData.collectiveIds && _formData.collectiveIds.length ? false : true)
