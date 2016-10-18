@@ -1,4 +1,4 @@
-/* globas Krypton, Class, Dispute, DisputeStatus */
+/* globals Krypton, Class, Dispute, DisputeStatus */
 
 const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
   tableName: 'DisputeStatuses',
