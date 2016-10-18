@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import Widget from '../../../lib/widget';
 
 export default class AdminDisputesIndexTable extends Widget {
@@ -12,6 +13,8 @@ export default class AdminDisputesIndexTable extends Widget {
   }
 
   _handleClick(ev) {
+    ev.preventDefault();
+
     const target = ev.target;
 
     if (target.tagName === 'BUTTON') {
@@ -41,6 +44,12 @@ export default class AdminDisputesIndexTable extends Widget {
 
     if (button.dataset.addStatus !== undefined) {
       return this.dispatch('addStatus', { dispute: this.disputes[rowIndex] });
+    }
+
+    if (button.dataset.deleteDispute !== undefined) {
+      if (confirm('Are you sure you want to delete this dispute?') === true) {
+        button.form.submit();
+      }
     }
 
     return null;
