@@ -248,4 +248,4 @@ export default class Glitch {
 }
 
 Glitch.instances = [];
-Glitch._draw = Glitch.run.bind(this);
+Glitch._draw = Glitch.run.bind(Glitch);
