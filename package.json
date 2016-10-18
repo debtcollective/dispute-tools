@@ -98,6 +98,7 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "pg": "^6.0.3",
+    "pisces": "0.0.15",
     "pluralize": "^3.0.0",
     "pug": "^2.0.0-beta4",
     "redis": "^2.6.2",

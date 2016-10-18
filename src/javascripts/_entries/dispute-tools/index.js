@@ -1,4 +1,5 @@
 import WebFont from 'webfontloader';
+import Pisces from 'pisces';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
 import Modal from '../../components/Modal';
@@ -36,6 +37,14 @@ class ViewDisputeToolsIndex extends NodeSupport {
       this.handlers[id] = this._aboutClickHandler.bind(this, this[`modal-${id}`]);
       document.getElementById(`tool-modal-toggler-${id}`)
         .addEventListener('click', this.handlers[id]);
+    });
+
+    this.pisces = new Pisces();
+    this.whyFileDisputeAnchor = document.getElementById('why-file-dispute-anchor');
+    this.whyFileDisputeSection = document.getElementById('why-file-dispute-section');
+
+    this.whyFileDisputeAnchor.addEventListener('click', () => {
+      this.pisces.scrollToElement(this.whyFileDisputeSection);
     });
   }
 
