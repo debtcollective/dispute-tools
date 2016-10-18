@@ -36,7 +36,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
               ],
             },
             paginate: {
-              pageSize: 10,
+              pageSize: 50,
             },
           })(req, res, next);
         });
@@ -80,9 +80,9 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       res.locals.disputes = res.locals.results;
       res.locals.statuses = DisputeStatus.statuses;
       res.locals.headers = {
-        total_count: res._headers.total_count,
-        total_pages: res._headers.total_pages,
-        current_page: req.param('page') || 1,
+        total_count: ~~res._headers.total_count,
+        total_pages: ~~res._headers.total_pages,
+        current_page: ~~req.param('page') || 1,
         query: req.query,
       };
 

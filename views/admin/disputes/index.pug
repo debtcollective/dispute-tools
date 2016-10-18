@@ -50,7 +50,7 @@ block content
             ) Apply
             button.-k-btn.btn-link.-primary.-fw-700(
               name='disputesListValue[resetFilters]'
-              disabled= !queryName && !queryFilters && !queryStatus
+              disabled= !queryName && (queryFilters && !queryFilters.dispute_tool_id) && !queryStatus
             ) Reset
 
       tbody
@@ -87,14 +87,8 @@ block content
                  button.btn-clear.p1.ml3.align-top.-download-disabled(disabled)
                   svg.-pen.block.align-top(width='14' height='17'): use(xlink:href='#svg-download')
 
-    .Pagination.center.pt3
-      ul.list-reset
-        - for (let i = 1; i <= headers.total_pages; i++)
-          li.inline-block
-            button.btn.-k-btn.btn-light.-fw-500(
-              data-page= i
-              disabled= i == headers.current_page
-            )= i
+    include ../../mixins/pagination
+    +mixinPagination(headers.current_page, headers.total_pages)(class='pt3')
 
 block body
   .Modal(data-component-modal="add-status" aria-hidden="true" role="dialog" aria-labelledby="modalSignupTitle")
