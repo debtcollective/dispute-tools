@@ -44,6 +44,12 @@ export default class UsersNewForm extends Widget {
     this.collectivesOptions = [].slice.call(
       this.element.querySelectorAll('[name="collectiveIds"]')
     );
+    this.collectivesWithDebt = this.collectivesOptions.filter(option => {
+      return (option.dataset.hasDebt === 'true');
+    });
+    this.collectivesWithoutDebt = this.collectivesOptions.filter(option => {
+      return (option.dataset.hasDebt === 'false');
+    });
     this.step1Layer = this.element.querySelector('.js-step-1');
     this.step2Layer = this.element.querySelector('.js-step-2');
     this.nextBtn = this.element.querySelector('#sign-up-btn-next');
@@ -73,10 +79,20 @@ export default class UsersNewForm extends Widget {
     this.element.querySelector('form').addEventListener('submit', this._handleFormSubmit);
   }
 
-  _handleCollectiveOptionsChange() {
+  _handleCollectiveOptionsChange(ev) {
     const selected = this.collectivesOptions
       .filter(c => { return c.checked; })
       .map(v => { return v.value; });
+
+    if (ev.target.dataset.hasDebt === 'true') {
+      this.collectivesWithoutDebt.map(option => {
+        return (option.checked = false);
+      });
+    } else {
+      this.collectivesWithDebt.map(option => {
+        return (option.checked = false);
+      });
+    }
 
     this.ButtonContinue[selected.length ? 'enable' : 'disable']();
   }
