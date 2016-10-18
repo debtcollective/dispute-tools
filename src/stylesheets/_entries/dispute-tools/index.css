@@ -11,12 +11,10 @@
 }
 
 .ToolCard {
-  & h4 {line-height: 1.19em; /* 25px */}
+  & h4 {line-height: 1.4em}
 
   &__about-trigger {
     padding: 0;
-    color: var(--k-color-palette-neutral-dark);
-    text-decoration: underline;
   }
 }
 
