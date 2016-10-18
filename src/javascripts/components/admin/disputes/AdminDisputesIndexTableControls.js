@@ -4,16 +4,10 @@ export default class AdminDisputesIndexTableControls extends Widget {
   constructor(config) {
     super(config);
 
-    this.searchInputParent = this.element.querySelector('.js-search-input-parent');
-    this.searchInput = this.searchInputParent.querySelector('[name="disputesListValue[search]"]');
-
-    this.toolsSelectParent = this.element.querySelector('.js-tool-select-parent');
-    this.toolsSelect = this.toolsSelectParent.querySelector('[name="disputesListValue[tools]"]');
-    this.toolsSelectOptions = [].slice.call(this.toolsSelect.options);
-
-    this.statusSelectParent = this.element.querySelector('.js-status-select-parent');
-    this.statusSelect = this.statusSelectParent.querySelector('[name="disputesListValue[status]"]');
-    this.statusSelectOptions = [].slice.call(this.statusSelect.options);
+    this.searchInput = this.element.querySelector('[name="disputesListValue[search]"]');
+    this.toolsSelect = this.element.querySelector('[name="disputesListValue[tools]"]');
+    this.statusSelect = this.element.querySelector('[name="disputesListValue[status]"]');
+    this.orderSelect = this.element.querySelector('[name="disputesListValue[order]"]');
 
     this.applyFiltersBtn = this.element.querySelector('[name="disputesListValue[applyFilters]"]');
     this.resetFiltersBtn = this.element.querySelector('[name="disputesListValue[resetFilters]"]');
@@ -36,6 +30,12 @@ export default class AdminDisputesIndexTableControls extends Widget {
 
     this.statusSelect.addEventListener('change', ev => {
       this.dispatch('statusChange', {
+        value: ev.target.value,
+      });
+    });
+
+    this.orderSelect.addEventListener('change', ev => {
+      this.dispatch('orderChange', {
         value: ev.target.value,
       });
     });
