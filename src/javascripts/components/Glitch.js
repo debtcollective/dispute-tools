@@ -60,10 +60,10 @@ export default class Glitch {
     ]);
   }
 
-  static run() {
+  static run(ts) {
     Glitch._raf = requestAnimationFrame(Glitch._draw);
 
-    const now = performance.now();
+    const now = (ts || performance.now());
     for (let i = 0, len = Glitch.instances.length; i < len; i++) {
       Glitch.instances[i].draw(now);
     }
