@@ -35,6 +35,7 @@ export default class AdminDisputesIndexController extends Widget {
       },
       name: this.AdminDisputesIndexTableControls.searchInput.value,
       status: this.AdminDisputesIndexTableControls.statusSelect.value,
+      order: this.AdminDisputesIndexTableControls.orderSelect.value,
     };
 
     this._query = JSON.parse(JSON.stringify(this.originalQuery));
@@ -57,6 +58,11 @@ export default class AdminDisputesIndexController extends Widget {
 
     this.AdminDisputesIndexTableControls.bind('statusChange', data => {
       this._query.status = data.value;
+      this._enableButtons();
+    });
+
+    this.AdminDisputesIndexTableControls.bind('orderChange', data => {
+      this._query.order = data.value;
       this._enableButtons();
     });
 
@@ -92,7 +98,8 @@ export default class AdminDisputesIndexController extends Widget {
     if (
       (this._query.name !== this.originalQuery.name) ||
       (this._query.status !== this.originalQuery.status) ||
-      (this._query.filters.dispute_tool_id !== this.originalQuery.filters.dispute_tool_id)
+      (this._query.filters.dispute_tool_id !== this.originalQuery.filters.dispute_tool_id) ||
+      (this._query.order !== this.originalQuery.order)
     ) {
       return this.AdminDisputesIndexTableControls.enableApplyButton();
     }
