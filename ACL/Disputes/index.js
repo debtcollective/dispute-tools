@@ -1,17 +1,28 @@
 module.exports = {
   Visitor: [
     [false],
-    ['updateDisputeData', 'addAttachment', false],
+    ['updateDisputeData', 'addAttachment', 'download', 'setSignature', 'removeAttachment', false],
   ],
   User: [
     ['index', true],
     ['create', true],
-    ['show', 'edit', 'update', 'destroy', 'updateDisputeData', 'addAttachment', (req) => {
-      return (req.dispute.userId === req.user.id);
-    }],
+    [
+      'show',
+      'edit',
+      'update',
+      'destroy',
+      'updateDisputeData',
+      'addAttachment',
+      'download',
+      'setSignature',
+      'removeAttachment',
+      (req) => {
+        return (req.dispute.userId === req.user.id);
+      },
+    ],
   ],
   Admin: [
     [true],
-    // ['updateDisputeData', 'addAttachment', false],
+    ['updateDisputeData', 'addAttachment', 'download', 'setSignature', 'removeAttachment', true],
   ],
 };

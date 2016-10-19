@@ -1,0 +1,30 @@
+.px2(data-component-form='dispute-add-status')
+  .max-width-1.mx-auto
+    h3#modalAddStatusTitle.pb3 Edit Dispute Status
+    .flex.items-center.pb3
+      img.c(src="/images/profile/placeholder-small.png" width="50")
+      .pl2.overflow-hidden
+        h4.a.-fw-700.-ell ${dispute.user.account.fullname}
+        p.b.-accent.-fw-500.-ell ${dispute.disputeTool.name}
+
+    form(method="post" action='')
+      input(type="hidden" name="_csrf" value=csrfToken)
+      input(name="_method" type="hidden" value="PUT")
+      .pb2
+        .-k-select
+          select.-fw-700.-fw(name='status')
+            option(value="") Status
+            each status in statuses
+              if status !== 'User Update'
+                option(value= status)= status
+        p(class="-on-error -danger -caption -fw-500 mt1")
+
+      .pb2
+        textarea.block.-k-input.-fw(
+          name="comment"
+          rows="6"
+          placeholder="Comment"
+        )
+        p(class="-on-error -danger -caption -fw-500 mt1")
+
+      button.-fw.-k-btn.btn-primary.-fw-700(type="submit") Send

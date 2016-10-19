@@ -4,7 +4,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: var(--k-background-color);
+  background-color: #000;
 
   opacity: 0;
   transform: translate3d(0,150px,0);
@@ -45,4 +45,5 @@
   overflow: auto;
   padding: 5rem 0;
   height: 100%;
+  color: #fff;
 }

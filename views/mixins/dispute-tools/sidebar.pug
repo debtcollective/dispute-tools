@@ -12,6 +12,8 @@ mixin toolsSidebarMixin(disputeTool, currentStep = 1, steps = _toolSteps)
     h4.pb1.-ttu.-h-sec.-accent
       span
         | #{disputeTool.name}
+        if dispute && dispute.data.option !== 'none'
+          |  / #{dispute.data.option}
     p.pb3.-caption.-ttu.-fw-500
       | #{disputeTool.completed} People Filled
     ul.list-reset.Tool__sidebar-steps

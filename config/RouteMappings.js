@@ -1,10 +1,6 @@
 const RouteMappings = require('route-mappings');
 
 const routeMappings = RouteMappings()
-  .get('/admin', {
-    to: 'Home#admin',
-  })
-
   .get('/', {
     to: 'Home#index',
     as: 'root',
@@ -65,6 +61,11 @@ const routeMappings = RouteMappings()
   .get('/acl', {
     to: 'ACL#index',
     as: 'acl',
+  })
+
+  .namespace('/Admin', (mappings) => {
+    return mappings()
+      .resources('/Disputes');
   })
 
   .resources('/Users', (mappings) => {

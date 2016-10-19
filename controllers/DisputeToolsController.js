@@ -25,16 +25,18 @@ const DisputeToolsController = Class('DisputeToolsController')
     prototype: {
       index(req, res, next) {
         DisputeTool.query()
-          .orderBy('created_at', 'ASC')
+          .orderBy('id', 'ASC')
           .then((disputeTools) => {
-            res.locals.disputeTools = disputeTools.map(dispute => {
-              return {
+            res.locals.disputeTools = [];
+
+            disputeTools.forEach((dispute) => {
+              res.locals.disputeTools.push({
                 id: dispute.id,
                 name: dispute.name,
                 about: marked(dispute.about),
                 completed: dispute.completed,
                 data: dispute.data,
-              };
+              });
             });
             res.render('dispute-tools/index');
           })
@@ -43,6 +45,15 @@ const DisputeToolsController = Class('DisputeToolsController')
 
       show(req, res, next) {
         const disputeTool = res.locals.disputeTool;
+
+        let _option;
+        Object.keys(disputeTool.data.options).forEach(option => {
+          _option = disputeTool.data.options[option];
+
+          if (_option.more) {
+            _option.more = marked(_option.more);
+          }
+        });
 
         if (Object.keys(disputeTool.data.options).length === 1) {
           return disputeTool.createDispute({

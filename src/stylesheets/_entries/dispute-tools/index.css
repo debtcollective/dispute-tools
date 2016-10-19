@@ -1,23 +1,16 @@
 @import '../../base';
-@import '../../components/PlayButton';
 @import '../../components/dispute-tools/TextModal';
 
 .Tools__intro {
   margin-top: 0;
   border-bottom: 3px solid color(var(--k-color-palette-neutral-light) alpha(20%));
-
-  &-image {
-    display: none;
-  }
 }
 
 .ToolCard {
-  & h4 {line-height: 1.19em; /* 25px */}
+  & h4 {line-height: 1.4em}
 
   &__about-trigger {
     padding: 0;
-    color: var(--k-color-palette-neutral-dark);
-    text-decoration: underline;
   }
 }
 
@@ -33,15 +26,6 @@
 }
 
 @media (--breakpoint-md) {
-  .Tools__intro {
-    margin-top: -120px;
-
-    &-image {
-      display: block;
-      transform: translate3d(-40px, 0, 0);
-    }
-  }
-
   .Tools__title {
     padding-left: 18rem;
     text-align: left;

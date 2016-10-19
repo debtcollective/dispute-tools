@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import Checkit from 'checkit';
 import Widget from '../../lib/widget';
 import Button from '../../components/Button';
@@ -17,8 +18,6 @@ export default class DisputesInformationForm extends Widget {
     const formData = data.steps.filter(step => {
       return step.type === 'form';
     })[0];
-
-    window.x = formData.fieldSets;
 
     this.constraints = {};
     this._constraintsAll = {};
@@ -41,7 +40,8 @@ export default class DisputesInformationForm extends Widget {
         });
       });
     }
-    window.x.forEach(test);
+
+    formData.fieldSets.forEach(test);
 
     this.ui = {};
     Object.keys(this.constraints).forEach(key => {
@@ -54,13 +54,12 @@ export default class DisputesInformationForm extends Widget {
     this._handleFormSubmitRef = this._handleFormSubmit.bind(this);
     this.form.addEventListener('submit', this._handleFormSubmitRef);
 
-    // document.querySelectorAll("input[name^='fieldValues[__toggle-radio']")
-    this.tooglers = [].slice.call(
-      document.querySelectorAll("[data-toggle-radio]")
+    this.togglers = [].slice.call(
+      document.querySelectorAll('[data-toggle-radio]')
     );
-    this._handleContentToogleRef = this._handleContentToogle.bind(this);
-    this.tooglers.forEach(t => {
-      t.addEventListener('change', this._handleContentToogleRef);
+    this._handleContentToggleRef = this._handleContentToggle.bind(this);
+    this.togglers.forEach(t => {
+      t.addEventListener('change', this._handleContentToggleRef);
       if (t.value === 'no' && t.checked) {
         t.checked = false;
         t.click();
@@ -134,7 +133,7 @@ export default class DisputesInformationForm extends Widget {
     this.ConfirmInline.render(parentElement).activate();
   }
 
-  _handleContentToogle(ev) {
+  _handleContentToggle(ev) {
     const target = ev.currentTarget;
     const fieldset = target.parentElement.querySelector('fieldset');
 
@@ -277,9 +276,18 @@ export default class DisputesInformationForm extends Widget {
 
   _getFieldsData() {
     const data = {};
+    let val;
+
     Object.keys(this.constraints).forEach(key => {
-      data[key] = this.ui[key].value;
+      if (this.ui[key].type === 'radio') {
+        val = document.querySelector(`[name="${this.ui[key].name}"]:checked`);
+      } else {
+        val = this.ui[key].value;
+      }
+
+      data[key] = val;
     });
+
     return data;
   }
 }

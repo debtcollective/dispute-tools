@@ -29,7 +29,7 @@ describe('DisputeMailer', () => {
       disputeStatus: {}, // mock the dispute status data here,
     })
     .then((response) => {
-      expect(response.envelope.to[0]).to.be.equal(admin.email);
+      expect(response.envelope.to[0]).to.be.equal(CONFIG.env().mailers.disputesBCCAddresses[0]);
     });
   });
 });

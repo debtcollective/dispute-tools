@@ -1,0 +1,140 @@
+extends ../../layouts/admin.pug
+
+block title
+  | Admin — The Debt Collective
+
+block styles
+  link(href="/build/stylesheets/admin/disputes/index.css" rel="stylesheet")
+
+block content
+  -
+    var queryName = headers.query && headers.query.name;
+    var queryFilters = headers.query && headers.query.filters
+    var queryStatus = headers.query && headers.query.status
+    var queryOrder = headers.query && headers.query.order
+
+  .wrapper.px2.pb3
+    h2.pt4.pb2 Disputes
+    table.-fw(cellpadding='0' cellspacing='0')
+      thead
+        tr
+          th.js-search-input-parent
+            .-input-group-icon
+              svg(width='17' height='17'): use(xlink:href='#svg-search')
+              input.-k-input.-clean.-fw-700(
+                name="disputesListValue[search]"
+                placeholder='Search...'
+                value= queryName
+              )
+          th.js-tool-select-parent
+            .-k-select.-clean
+              select.-fw-700.-fw(name='disputesListValue[tools]')
+                option(value="") Tools
+                each tool in disputeTools
+                  option(
+                    value= tool.id
+                    selected= queryFilters && queryFilters.dispute_tool_id === tool.id
+                  )= tool.name
+          th.js-status-select-parent
+            .-k-select.-clean
+              select.-fw-700.-fw(name='disputesListValue[status]')
+                option(value="") Status
+                each status in statuses
+                  option(
+                    value= status
+                    selected= queryStatus === status
+                  )= status
+          th
+            .-k-select.-clean
+              select.-fw-700.-fw(name='disputesListValue[order]')
+                option(value="") Date
+                option(
+                  value='created_at'
+                  selected= queryOrder === 'created_at'
+                )= 'ASC'
+                option(
+                  value='-created_at'
+                  selected= queryOrder === '-created_at'
+                )= 'DESC'
+
+          th.-wsnw
+            button.-k-btn.btn-primary.-fw-700(
+              name='disputesListValue[applyFilters]'
+              disabled= true
+            ) Apply
+            button.-k-btn.btn-link(
+              name='disputesListValue[resetFilters]'
+              disabled= !queryName && (!queryFilters || !queryFilters.dispute_tool_id) && !queryStatus && !queryOrder
+            ) Reset
+
+      tbody
+        each _dispute, index in disputes
+
+          -
+            // add the user accout image to be accesible on the front-end
+            _dispute.user.account.imageURL = '/images/profile/placeholder-small.png';
+
+            if (_dispute.user.account.image.exists('small'))
+              _dispute.user.account.imageURL = _dispute.user.account.image.url('small');
+
+          tr
+            td
+              .flex.items-center
+                img(src=_dispute.user.account.imageURL alt=_dispute.user.account.fullname width="50" height="50")
+                p.pl2.-fw-700= _dispute.user.account.fullname
+            td.-fw-500
+              | #{_dispute.disputeTool.name}
+              if _dispute.data.option !== 'none'
+                |  / #{_dispute.data.option}
+            td.-fw-700(
+              class=`-status-${_dispute.statuses[0].status.toLowerCase().replace(/\W/g, '-')}`
+            )= _dispute.statuses[0].status
+            td.-fw-500.-wsnw= new Date(_dispute.createdAt).toDateString()
+            td.center
+              button.mr2.btn-clear.p1.align-top(data-add-status)
+                svg.-pen.block.align-top(width='15' height='15'): use(xlink:href='#svg-pencil')
+
+              if _dispute.data.signature
+                a.btn-clear.-primary.p1.align-top.inline-block(
+                  href= routeMappings.Disputes.download.url(_dispute.id)
+                ): svg.-pen.block.align-top(width='14' height='17'): use(xlink:href='#svg-download')
+              else
+                 button.btn-clear.p1.align-top.-download-disabled(disabled)
+                  svg.-pen.block.align-top(width='14' height='17'): use(xlink:href='#svg-download')
+
+              form.ml2.inline-block(
+                action=routeMappings.Admin.Disputes.destroy.url(_dispute.id)
+                method="post"
+                data-component-form="delete-dispute"
+              )
+                input(name="_csrf" type="hidden" value=csrfToken)
+                input(type="hidden" name="_method" value="DELETE")
+                button.btn-clear.p1(
+                  type="submit"
+                  data-delete-dispute
+                )
+                  svg.-pen.block.align-top(width='14' height='18'): use(xlink:href='#svg-thrash')
+
+    include ../../mixins/pagination
+    +mixinPagination(headers.current_page, headers.total_pages)(class='pt3')
+
+block body
+  .Modal(data-component-modal="add-status" aria-hidden="true" role="dialog" aria-labelledby="modalSignupTitle")
+    button(class="Modal__close" aria-label="close")
+      svg(class="-s18"): use(xlink:href="#svg-close")
+    .Modal__body(role="document")
+      include ../../includes/admin/disputes/add-status-form.pug
+
+block scripts
+  script(src="/build/javascripts/admin/disputes/index.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+        disputes: !{JSON.stringify(disputes)},
+        currentPage: #{headers.current_page},
+        isAdmin: true,
+      };
+      new ViewAdminIndex(options);
+    }, true);

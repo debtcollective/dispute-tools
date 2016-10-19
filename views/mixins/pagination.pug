@@ -1,0 +1,59 @@
+mixin paginationItem(page, text)
+  li.inline-block: button.btn.-k-btn.-fw-500(
+    data-page= page
+  )&attributes(attributes)= text
+
+mixin mixinPagination(current_page, total_pages)
+  .Pagination.center&attributes(attributes)
+    ul.list-reset
+      //- first
+      +paginationItem(1, '«')(
+        disabled= current_page === 1
+        aria-label= 'First'
+      )
+
+      //- prev
+      +paginationItem(current_page - 1, '‹')(
+        disabled= current_page === 1
+        aria-label= 'Previous'
+      )
+
+      //- window
+      if total_pages <= 5
+        - for (let i = 1; i <= total_pages; i++)
+          +paginationItem(i, i)(
+            disabled= (i === current_page)
+            class= (i === current_page) && '-active'
+          )
+      else
+        -
+          var init = current_page - 2;
+          var added = 0;
+
+          if (init < 1) init = 1;
+
+          if ((current_page + 2) > total_pages) {
+            var diff = (total_pages - (current_page));
+            if (!diff) init -= 2;
+            else init -= diff;
+          }
+
+        - while(added < 5)
+          - var page = (init + added);
+          +paginationItem(page, page)(
+            disabled= (page === current_page)
+            class= (page === current_page) && '-active'
+          )
+          - added++;
+
+      //- next
+      +paginationItem(current_page + 1, '›')(
+        disabled= (current_page === total_pages)
+        aria-label= 'Next'
+      )
+
+      //- last
+      +paginationItem(total_pages, '»')(
+        disabled= (current_page === total_pages)
+        aria-label= 'Last'
+      )
