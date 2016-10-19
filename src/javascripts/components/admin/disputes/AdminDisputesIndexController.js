@@ -110,14 +110,14 @@ export default class AdminDisputesIndexController extends Widget {
   _serialize(obj, prefix) {
     const str = [];
 
-    for (let p in obj) {
-      if (obj.hasOwnProperty(p)) {
-        var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
-        str.push(typeof v === 'object' ?
-          this._serialize(v, k) :
-          `${encodeURIComponent(k)}=${encodeURIComponent(v)}`);
+    Object.keys(obj).forEach((p) => {
+      const k = prefix ? `${prefix}[${p}]` : p;
+      const v = obj[p];
+
+      if (v) {
+        str.push(typeof v === 'object' ? this._serialize(v, k) : `${encodeURIComponent(k)}=${encodeURIComponent(v)}`);
       }
-    }
+    });
 
     return str.join('&');
   }
