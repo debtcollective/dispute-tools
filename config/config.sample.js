@@ -22,6 +22,7 @@ const config = {
     // Mailer
     mailers: {
       senderEmail: 'no-reply@debtcollective.org',
+      disputesBCCAddresses: ['test@example.com'],
     },
 
     AWS: {
@@ -44,6 +45,7 @@ const config = {
     // Mailer
     mailers: {
       senderEmail: 'no-reply@debtcollective.org',
+      disputesBCCAddresses: ['test@example.com'],
     },
 
     AWS: {

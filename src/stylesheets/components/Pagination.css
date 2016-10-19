@@ -1,0 +1,23 @@
+.Pagination {
+  & li {
+    margin: 0 .25em;
+  }
+
+  & button {
+    background-color: transparent;
+    color: var(--k-color-palette-primary);
+    border-radius: 50%;
+    padding: 15px 0 14px;
+    min-width: 45px;
+
+    &:hover:not(:disabled) {
+      background-color: white;
+    }
+
+    &.-active {
+      background-color: white;
+      color: var(--k-color-palette-neutral-dark);
+      opacity: 1;
+    }
+  }
+}

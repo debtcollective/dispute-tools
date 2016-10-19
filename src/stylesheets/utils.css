@@ -1,3 +1,6 @@
+/* interaction */
+.-pen {pointer-events: none}
+
 /* sizes */
 .-s18 {width: 18px; height: 18px}
 
@@ -10,11 +13,14 @@
 .-dark {color: #000}
 .-neutral-mid {color: var(--k-color-palette-neutral-mid)}
 .-bg-primary {background-color: var(--k-color-palette-primary)}
+.-bg-accent {background-color: var(--k-color-palette-accent)}
 .-bg-white {background-color: #fff}
 .-bg-neutral-dark {background-color: var(--k-color-palette-neutral-dark)}
 
 /* text */
 .-ttu {text-transform: uppercase}
+
+.-wsnw {white-space: nowrap}
 
 /* form errors */
 .-on-error {display: none}
@@ -51,7 +57,7 @@
     background-color: var(--k-color-palette-accent);
   }
 }
-h4.-h-sec > span {padding-bottom: 0}
+h4.-h-sec > span {padding: 0 .5rem}
 
 /* secondary font */
 .-ff-sec {

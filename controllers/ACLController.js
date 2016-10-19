@@ -25,6 +25,8 @@ const ACLController = Class('ACLController').inherits(RestfulController)({
 
       const routes = filterRoutes();
 
+      const resourceNameRegex = /\./;
+
       Promise.each(routes, (route) => {
         const handler = ACL.getHandler(route, req.role);
 
@@ -32,7 +34,14 @@ const ACLController = Class('ACLController').inherits(RestfulController)({
           return handler.assert(req)
             .then((handlerResult) => {
               if (handlerResult === true) {
-                const resource = route.handler[0] || route._resourceName;
+                let resource;
+
+                if (resourceNameRegex.test(route._resourceName)) {
+                  resource = route._resourceName;
+                } else {
+                  resource = route.handler[0] || route._resourceName;
+                }
+
                 const action = route._actionName || route.handler[1];
 
                 response[resource] = response[resource] || {};

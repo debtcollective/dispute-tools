@@ -18,7 +18,7 @@ include ../../mixins/dispute-tools/form-element
       .pt2.pr3.pl3.pb2.mb2.-bg-neutral-dark
         fieldset
           h4= sets.title
-          p.-ff-sec= sets.subtitle
+          p.-ff-sec!= sets.subtitle
 
           if sets.yesno
             +_toolsYesNoMixin(sets)

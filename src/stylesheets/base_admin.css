@@ -6,16 +6,14 @@
   /* KABINETT CONFIGURATION */
   --k-background-color: #fff;
   --k-color: #000;
-
-  --k-xl-fs: calc(var(--k-font-size) * 1);
-  --k-xl-h: 70px;
+  background-color: #f0f0f0;
 }
 
 /* CUSTOM STYLES */
 body {
-  background: #f0f0f0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: none;
 }
 
 .-status {
@@ -23,7 +21,11 @@ body {
   &-completed {color: #F04C34}
   &-in-review {color: #267DE2}
   &-documents-sent {color: #D0021B}
-  &-updated {color: #4D9900}
+  &-update {color: #4D9900}
+}
+
+.-download-disabled {
+  opacity: .2;
 }
 
 table {
@@ -35,13 +37,29 @@ thead {
 }
 
 thead > tr > th {
-  border-top: 5px solid black;
+  padding: 12px 10px 13px;
+  border-right: 3px solid #f0f0f0;
+  box-shadow: 0 -5px 0 0 black;
+  transition: background-color 500ms;
+
+  &:last-child {
+    border-right: none;
+  }
 }
 
 tbody > tr {
-  background: white;
+  background-color: white;
+  &:hover {
+    background-color: var(--k-color-palette-accent);
+  }
 }
 
 tbody > tr > td {
   padding: 10px;
+}
+
+.btn-primary[disabled] {
+  opacity: 0.5 !important;
+  background-color: var(--k-color-palette-primary);
+  color: white;
 }

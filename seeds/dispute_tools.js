@@ -176,8 +176,9 @@ const personalInformationFieldSets = [
       [
         {
           name: 'address2',
-          label: 'Your Mailing Address 2',
+          label: 'City, State, Zip Code',
           validations: [
+            'required',
             'maxLength:128',
           ],
         },
@@ -290,7 +291,7 @@ const personalInformationFieldSets = [
         },
         {
           name: 'employerAddress2',
-          label: 'Employer Mailing Address 2',
+          label: 'Employer City, State, Zip Code',
           columnClassName: 'md-col-8',
           validations: [
             'required',
@@ -386,7 +387,7 @@ The Department of Education usually sends offset notices once per year in the su
 
 #### for any defaulted personal debt
 
-This tool is for anyone who is in default on a debt. If you have been contacted by a collector who bought your loan from the original lender, you can fill out this form. Most of the time, collectors can't prove they own your debt, so by disputing the loan you may be able to stop collections. Before you begin to use this tool, you should make sure you have the name and address of the collections agency that is attempting to collect from you.
+Before you begin to use this tool, you should make sure you have the name and address of the collections agency that is attempting to collect from you.
 
 **If you don't have the name and address of the collection agency, you will not be able to file this dispute.**`,
           completed: 0,
@@ -397,7 +398,7 @@ This tool is for anyone who is in default on a debt. If you have been contacted 
           name: 'Credit Report Dispute Letter',
           about: `### Credit Report Dispute Letter
 
-Millions of us have errors on our credit reports, which make it harder to do basic things like get a job or rent an apartment. Fight back! You can get a free copy of your credit report once per year at <a href="http://annualcreditreport.com" target="_blank" rel="noopener noreferrer">annualcreditreport.com</a> or call 1-877- 322-8228. For a list of common errors to look for, go <a href="http://www.consumerfinance.gov/askcfpb/1339/if-credit-reporting-error-corrected-how-long-will-it-take-i-find-out-results.html" target="_blank" rel="noopener noreferrer">here</a>. Once you have determined that there are errors on your report, you can use this tool to ask for a correction. This tool will help you write a dispute letter to the three main credit reporting agencies. The Debt Collective will submit the letters your behalf. For more information about the process, go <a href="http://www.consumerfinance.gov/askcfpb/1261/what-are-errors-show-credit-reports-out-having-creditors-report-your-accounts-credit-bureaus.html" target="_blank" rel="noopener noreferrer">here</a>. Please have a photo of your picture ID ready to upload (taking a picture with your camera phone is fine).
+Millions of us have errors on our credit reports, which makes it harder to do basic things like get a job or rent an apartment. Fight back! You can get a free copy of your credit report once per year at <a href="http://annualcreditreport.com" target="_blank" rel="noopener noreferrer">annualcreditreport.com</a> or call 1-877- 322-8228. For a list of common errors to look for, go <a href="http://www.consumerfinance.gov/askcfpb/1339/if-credit-reporting-error-corrected-how-long-will-it-take-i-find-out-results.html" target="_blank" rel="noopener noreferrer">here</a>. Once you have determined that there are errors on your report, you can use this tool to ask for a correction. This tool will help you write a dispute letter to the three main credit reporting agencies. The Debt Collective will submit the letters your behalf. For more information about the process, go <a href="http://www.consumerfinance.gov/askcfpb/1261/what-are-errors-show-credit-reports-out-having-creditors-report-your-accounts-credit-bureaus.html" target="_blank" rel="noopener noreferrer">here</a>. Please have a photo of your picture ID ready to upload (taking a picture with your camera phone is fine).
 `,
           completed: 0,
         },
@@ -431,7 +432,7 @@ If you are in default on a student loan, this tool will assist you to generate a
 
 This tool should **not** be used in response to a Complaint/Summons letter letting you know that the collector is actively seeking a judgment against you in court. If you are being sued, you should seek legal advice.
 
-This tool is for anyone who is in default on a debt. If you have been contacted by a collector who bought your loan from the original lender, you can fill out this form. Most of the time, collectors can't prove they own your debt, so by disputing the loan you may be able to stop collections. Before you begin to use this tool, you should make sure you have the name and address of the collections agency that is attempting to collect from you.
+Before you begin to use this tool, you should make sure you have the name and address of the collections agency that is attempting to collect from you.
 
 If you don't have the name and address of the collection agency, you will not be able to file this dispute.
 

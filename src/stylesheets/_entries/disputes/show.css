@@ -118,6 +118,57 @@ input[data-toggle-radio][value="no"]:checked ~ fieldset {
 }
 
 /* follow-up */
-.Dispute__FollowUp__CommentBox {
-  background-color: var(--k-color-palette-accent);
+.Dispute__FollowUp__Title {
+  border-top: 5px solid var(--k-color-palette-accent);
+}
+
+.Dispute__FollowUp__card {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 14px;
+    right: 14px;
+    height: 4px;
+    border-radius: 0 0 1px 1px;
+    background-color: var(--k-color-palette-neutral-mid);
+  }
+}
+
+.Dispute__FollowUp__MainStatus {
+  border-bottom: 5px solid;
+}
+
+.Dispute__FollowUp__Status {
+  border-bottom: 2px solid rgba(155, 155, 155, .5);
+}
+
+.Dispute__FollowUp__Status-Avatar {
+  width: 50px;
+}
+
+.Dispute__FollowUp__Status-Text {
+  margin-left: 65px;
+}
+
+.Dispute__FollowUp__SendBtn {
+  padding-left: 4em;
+  padding-right: 4em;
+}
+
+.tdc-placeholder {
+  width: 25px;
+  height: 25px;
+  margin: 5px auto 0;
+  background-color: var(--k-color-palette-primary);
+}
+
+.-status {
+  &-incomplete {color: #F8E71C}
+  &-completed {color: #7ED321}
+  &-in-review {color: #268AFF}
+  &-documents-sent {color: #F04C34}
+  &-update {color: #50E3C2}
 }

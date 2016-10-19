@@ -8,25 +8,36 @@ block styles
 
 block content
   mixin ToolCard(tool)
-    .ToolCard.flex.flex-column.p2.rounded.-fh.-bg-white.-dark
+    .ToolCard.flex.flex-column.p2.rounded.-fh.-bg-neutral-dark
       div.flex-auto.pb4
-        h4.pt2= tool.name
-        p.pt1.pb2
-          button.ToolCard__about-trigger.-k-btn.btn-link(
-            id=`tool-modal-toggler-${tool.id}`
-          ) Why is this important?
-      p.pb2 #[b= tool.completed] People filled
+        h4.pb1.-ttu.-h-sec.-accent.pt2: span= tool.name
+
+        - var _label = '';
+        case tool.id
+          when '11111111-1111-1111-1111-111111111111'
+          when '11111111-1111-2222-1111-111111111111'
+            - _label = 'Federal student loans only'
+          when '11111111-1111-3333-1111-111111111111'
+            - _label = 'All debt types except private student loans'
+
+        .-accent.-ttu.-caption= _label
+
+      p.pt1.pb2.center
+        button.ToolCard__about-trigger.-k-btn.btn-link.-primary.-fw-700(
+          id=`tool-modal-toggler-${tool.id}`
+        ) Why is this important?
       a.-k-btn.btn-primary.-fw.-fw-700(
         href=routeMappings.DisputeTools.show.url(tool.id)
         class= !user && 'js-login-link'
       ) Get started
+      p.pt2.center.-caption.-ttu #[b= tool.completed] People filled
 
   .px2.pb2
     .Tools__intro.wrapper
       .max-width-4.mx-auto
         .clearfix.mxn2.md-flex.items-center
-          .col.md-col-5.col-12.px2
-            img.Tools__intro-image(src="/images/tools/intro.jpg" width="499" height="829")
+          .col.md-col-5.col-12.mx2.relative
+            img#glitch-image-1.sm-hide.xs-hide.-fw(src="/images/global/hands-collectives-bill.png" width="" height="")
 
           .relative.col.md-col-7.col-12.px2.pb3
             h2.pb3 Together, we own the bank.
@@ -40,24 +51,22 @@ block content
       .clearfix.mxn2
         .col.md-col-1.px2 &nbsp;
         .col.md-col-11.col-12.px2
-          h2.pb3 The Tools
+          .clearfix.pb3
+            .left: h2 The Tools
+            .right.pt2: button#why-file-dispute-anchor.-k-btn.btn-link.-fw-700.-primary.-h4 Why file a dispute?
           .clearfix.mxn2.flex.flex-wrap
             each tool in disputeTools
               .col.md-col-4.sm-col-6.col-12.p2
                 +ToolCard(tool)
 
-    .pt3.pb4.-bg-primary
+    #why-file-dispute-section.pt3.pb4.-bg-primary
       .wrapper
         h2.Tools__title.relative.-h-sec: span Why file <br/>a Dispute?
 
         .clearfix.mxn2(style="margin-top: -40px;")
           .col.md-col-6.col-12.px2
             .center.relative
-              img.fit.inline-block(src="/images/tools/video.jpg")
-              .flex.absolute.top-0.left-0.right-0.bottom-0.items-center.justify-center
-                .PlayButton.mx-auto
-                  .PlayButton__btn: svg: use(xlink:href="#svg-play")
-                  .center.pt1.-caption 1:20
+              img#glitch-image-2.fit.inline-block(src="/images/tools/video.jpg")
             .clearfix.mxn2
               .col.md-col-2.col-12.px2 &nbsp;
               .col.md-col-10.col-12.px2.pt4
@@ -79,14 +88,12 @@ block content
     .pt2.pb4.wrapper
       h2.Tools__title.-h-sec: span What happens <br/>after I file?
 
-      .clearfix.mxn2(style="margin-top: -40px;")
+      .clearfix.mxn2.mt2
         .col.md-col-6.col-12.px2
-          .center: img.fit.inline-block(src="/images/tools/file.jpg")
+          .center.relative: img#glitch-image-3.fit.inline-block(src="/images/tools/file.jpg")
         .col.Tools__offset-text.md-col-5.col-12.-fw-500
-          p.pb2 The Debt Collective will send hard copies of your dispute to all relevant parties, including the Department of Education, loan services, collectors, and the credit reporting agencies. You will also receive a copy by email.
-          p.pb2 You will receive notifications asking you to provide information about any response you receive from the collector.
-          p.pb2 #[a Make a donation] to the Debt Collective General Fund to help more people dispute debts of all kinds.
-          p.pb3 Thank you.
+          p.pb2 The Debt Collective will send hard copies of your dispute to all relevant parties, including the Department of Education, loan servicers, collectors, and the credit reporting agencies. You will also receive a copy by email.
+          p.pb3 You will receive notifications asking you to provide information about any response you receive from the collector.
           div.my2(style="width: 23px; height: 3px; background-color: #d8d8d8;")
           p.-caption.-fw-700 The tools we provide here are not the only ways you can dispute your debt.
           p.-caption.-fw-500.-neutral-mid For a complete list of discharge options, go here: #[a(href="https://studentaid.ed.gov/sa/repay-loans/forgiveness-cancellation" target="_blank" rel="noopener noreferrer") https://studentaid.ed.gov/sa/repay-loans/forgiveness-cancellation]
@@ -124,4 +131,3 @@ block scripts
       };
       new ViewDisputeToolsIndex(options);
     }, true);
-

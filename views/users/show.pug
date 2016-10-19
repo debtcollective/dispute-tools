@@ -57,12 +57,12 @@ block content
                   each dispute in user.disputes
                     li
                       a.block.clearfix.py1.mxn1.-white(href=routeMappings.Disputes.show.url(dispute.id))
-                        .col.col-9.px1
+                        .col.col-8.px1
                           .-fw-700
                             | #{dispute.disputeTool.name}
                             if dispute.data.option !== 'none'
                               |  / #{dispute.data.option}
-                        .col.col-3.px1.right-align
+                        .col.col-4.px1.right-align
                           .pt1.-caption.-ttu.-fw-700(
                             class=`-status-${dispute.statuses[0].status.toLowerCase().replace(/\W/g, '-')}`
                           )= dispute.statuses[0].status

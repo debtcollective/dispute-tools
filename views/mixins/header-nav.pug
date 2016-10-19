@@ -11,12 +11,6 @@
         title: 'Browse Our Tools and Services',
         url: routeMappings.DisputeTools.url(),
       },
-      {
-        text: 'Donate',
-        title: 'Support Us',
-        url: null,
-        parentClassName: 'pr3'
-      },
     ],
     loggedOut: [
       {
@@ -34,6 +28,14 @@
         parentClassName: 'pl2'
       },
     ]
+  }
+
+  if (currentUser && currentUser.role === 'Admin') {
+    _menuItems.all.push({
+      text: 'Disputes',
+      title: 'Admin Disputes',
+      url: routeMappings.Admin.Disputes.url(),
+    });
   }
 
 mixin headerLink(href, name, responsive = false)

@@ -1,0 +1,7 @@
+@import '../../../base_admin';
+@import '../../../components/Pagination';
+
+button[data-add-status] {
+  cursor: pointer;
+  &:hover {opacity: .6}
+}

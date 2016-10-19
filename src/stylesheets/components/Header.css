@@ -47,7 +47,6 @@
 
   &.active {
     position: relative;
-    color: var(--k-color);
 
     &::after {
       content: '';

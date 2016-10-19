@@ -17,6 +17,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         'update',
         'updateDisputeData',
         'setSignature',
+        'download',
         'addAttachment',
         'removeAttachment',
         'destroy',
@@ -111,7 +112,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       const ds = new DisputeStatus({
         comment,
         disputeId: dispute.id,
-        status: 'Update',
+        status: 'User Update',
       });
 
       ds.save()
@@ -175,6 +176,15 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
             _options: {
               subject: 'Dispute Documents - The Debt Collective',
             },
+          })
+          .then(() => {
+            return UserMailer.sendDisputeToAdmin({
+              user: req.user,
+              renderer,
+              _options: {
+                subject: 'New Dispute Completed - The Debt Collective',
+              },
+            });
           });
         })
         .then(() => {

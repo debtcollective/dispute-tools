@@ -36,17 +36,16 @@
   list-style: none;
   background-color: white;
 
-  opacity: 0;
-  transform: translate3d(0,0,0);
-  transition:
-    visibility 0ms linear 100ms,
-    opacity 100ms linear,
-    transform 100ms ease-in;
-
   &[aria-hidden="false"] {
-    transition: none;
     opacity: 1;
     transform: translate3d(0,10px,0);
+    transition: opacity 100ms linear, transform 100ms ease-in;
+  }
+
+  &[aria-hidden="true"] {
+    opacity: 0;
+    transform: translate3d(0,0,0);
+    transition: visibility 0ms linear 100ms, opacity 100ms linear, transform 100ms ease-in;
   }
 
   &::before {
@@ -70,4 +69,11 @@
   width: 100vw;
   height: 100vh;
   background-color: rgba(0,0,0,.7);
+  opacity: 0;
+  transition: opacity 200ms linear;
+  transform: translate3d(0,0,0);
+
+  &.active {
+    opacity: 1;
+  }
 }

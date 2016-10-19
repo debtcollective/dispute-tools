@@ -1,4 +1,4 @@
-/* globas Krypton, Class, Dispute, DisputeStatus */
+/* globals Krypton, Class, Dispute, DisputeStatus */
 
 const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
   tableName: 'DisputeStatuses',
@@ -9,6 +9,7 @@ const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
     'In Review',
     'Documents Sent',
     'Update',
+    'User Update',
   ],
   validations: {
     disputeId: ['required'],

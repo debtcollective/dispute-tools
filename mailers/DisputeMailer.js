@@ -7,16 +7,19 @@ const DisputeMailer = Class('DisputeMailer').inherits(BaseMailer)({
   },
 
   sendToAdmins(locals) {
+    const emails = CONFIG.env().mailers.disputesBCCAddresses;
+
+    return this._send('sendToAdmins', emails, locals);
+  },
+
+  sendStatusToUser(locals) {
     return User.query()
-      .where('role', 'Admin')
-      .then((admins) => {
-        if (admins.length === 0) {
-          return Promise.resolve();
-        }
+      .where({ id: locals.dispute.userId })
+      .include('account')
+      .then(([user]) => {
+        locals.user = user;
 
-        const emails = admins.map((admin) => admin.email);
-
-        return this._send('sendToAdmins', emails, locals);
+        return this._send('sendStatusToUser', user.email, locals);
       });
   },
 });
