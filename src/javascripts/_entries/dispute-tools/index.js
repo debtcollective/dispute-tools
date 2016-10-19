@@ -3,6 +3,7 @@ import Pisces from 'pisces';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
 import Modal from '../../components/Modal';
+import Glitch from '../../components/Glitch';
 
 class ViewDisputeToolsIndex extends NodeSupport {
   constructor(config) {
@@ -22,7 +23,7 @@ class ViewDisputeToolsIndex extends NodeSupport {
       },
     });
 
-    this._bindEvents();
+    this._bindEvents()._applyGlitch();
   }
 
   _bindEvents() {
@@ -46,6 +47,34 @@ class ViewDisputeToolsIndex extends NodeSupport {
     this.whyFileDisputeAnchor.addEventListener('click', () => {
       this.pisces.scrollToElement(this.whyFileDisputeSection);
     });
+
+    return this;
+  }
+
+  _applyGlitch() {
+    const i1 = document.getElementById('glitch-image-1');
+    const g1 = new Glitch();
+
+    const i2 = document.getElementById('glitch-image-2');
+    const g2 = new Glitch();
+
+    const i3 = document.getElementById('glitch-image-3');
+    const g3 = new Glitch();
+
+    g1.load(i1, () => {
+      g1.canvas.className = 'sm-hide xs-hide';
+      g1.render(i1.parentElement);
+    });
+
+    g2.load(i2, () => {
+      g2.render(i2.parentElement);
+    });
+
+    g3.load(i3, () => {
+      g3.render(i3.parentElement);
+    });
+
+    Glitch.run();
   }
 
   _aboutClickHandler(instance) {
