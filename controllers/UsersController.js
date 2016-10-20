@@ -13,8 +13,10 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
   prototype: {
     _loadUser(req, res, next) {
-      User.query()
-        .include('[account, disputes.statuses]')
+      const query = User.query()
+        .include('[account, disputes.statuses.disputeTool]');
+
+      query
         .where('id', req.params.id)
         .then((result) => {
           if (result.length === 0) {
@@ -47,6 +49,18 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
     },
 
     show(req, res) {
+      if (req.user.id !== res.locals.user.id) {
+        const _disputes = [];
+
+        res.locals.user.disputes.forEach((dispute) => {
+          if (dispute.status !== 'Incomplete') {
+            _disputes.push(dispute);
+          }
+        });
+
+        res.locals.user.disputes = _disputes;
+      }
+
       res.render('users/show.pug');
     },
 

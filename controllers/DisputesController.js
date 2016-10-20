@@ -80,7 +80,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     },
 
     show(req, res) {
-      res.render('disputes/show');
+      res.render('disputes/showForVisitor');
     },
 
     edit(req, res) {
