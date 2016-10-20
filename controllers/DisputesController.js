@@ -129,6 +129,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         .then(() => {
           return DisputeMailer.sendToAdmins({
             dispute,
+            user: req.user,
             disputeStatus: ds,
           });
         })
