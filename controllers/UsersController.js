@@ -49,7 +49,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
     },
 
     show(req, res) {
-      if (req.user.id !== res.locals.user.id) {
+      if (req.user && req.user.id !== res.locals.user.id) {
         const _disputes = [];
 
         res.locals.user.disputes.forEach((dispute) => {
