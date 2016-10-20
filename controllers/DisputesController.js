@@ -80,7 +80,11 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     },
 
     show(req, res) {
-      res.render('disputes/showForVisitor');
+      if (req.user.id === req.dispute.userId) {
+        res.render('disputes/show');
+      } else {
+        res.render('disputes/showForVisitor');
+      }
     },
 
     edit(req, res) {
