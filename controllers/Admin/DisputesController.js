@@ -100,7 +100,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     update(req, res, next) {
       const dispute = res.locals.dispute;
 
-      const { comment, status } = req.body;
+      const { comment, status, notify } = req.body;
 
       const ds = new DisputeStatus({
         comment,
@@ -108,8 +108,16 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         disputeId: dispute.id,
       });
 
+      if (!notify) {
+        ds.notify = false;
+      }
+
       ds.save()
         .then(() => {
+          if (!ds.notify) {
+            return Promise.resolve();
+          }
+
           return DisputeMailer.sendStatusToUser({
             dispute,
             disputeStatus: ds,
