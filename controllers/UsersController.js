@@ -49,11 +49,11 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
     },
 
     show(req, res) {
-      if (req.user && req.user.id !== res.locals.user.id) {
+      if (!req.user || (req.user && req.user.id !== res.locals.user.id)) {
         const _disputes = [];
 
         res.locals.user.disputes.forEach((dispute) => {
-          if (dispute.status !== 'Incomplete') {
+          if (dispute.statuses[0].status !== 'Incomplete') {
             _disputes.push(dispute);
           }
         });

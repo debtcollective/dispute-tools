@@ -1,13 +1,13 @@
 module.exports = {
   Visitor: [
     [false],
+    ['show', true],
     ['updateDisputeData', 'addAttachment', 'download', 'setSignature', 'removeAttachment', false],
   ],
   User: [
     ['index', true],
     ['create', true],
     [
-      'show',
       'edit',
       'update',
       'destroy',
