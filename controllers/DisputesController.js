@@ -59,7 +59,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     _loadDispute(req, res, next) {
       Dispute.query()
         .where({ id: req.params.id })
-        .include('[user, statuses, attachments, disputeTool]')
+        .include('[user.account, statuses, attachments, disputeTool]')
         .then(([dispute]) => {
           res.locals.dispute = dispute;
           req.dispute = dispute;
