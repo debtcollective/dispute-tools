@@ -77,9 +77,10 @@ input[data-toggle-radio][value="no"]:checked ~ fieldset {
     width: 40px;
     color: #fff;
     padding: 0 .3em;
+    background-color: #000;
 
-    &.-jpeg, &.-jpg {background-color: #000}
     &.-pdf {background-color: var(--k-color-palette-primary)}
+    &.-doc {background-color: #4A90E2}
   }
 }
 

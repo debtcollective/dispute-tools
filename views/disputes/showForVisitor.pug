@@ -5,3 +5,36 @@ block title
 
 block styles
   link(href="/build/stylesheets/disputes/show.css" rel="stylesheet")
+
+block content
+  -
+    var currentStep = 3;
+    var currentSection = 'follow-up';
+
+  .wrapper.px2.py3
+    .clearfix.mxn2
+      .col.lg-col-3.col-12.px2
+        include ../mixins/dispute-tools/sidebar
+        if dispute.disputeTool.data.disputeProcess
+          +toolsSidebarMixin(dispute.disputeTool,  currentStep, [
+            'Let’s get this dispute started!',
+            'Gather information',
+            'Follow up'
+          ])
+        else
+          - currentStep = 5;
+          +toolsSidebarMixin(dispute.disputeTool, currentStep)
+
+      .col.lg-col-9.col-12.px2
+        include ../includes/disputes/follow-up
+
+block scripts
+  script(src="/build/javascripts/disputes/showForVisitors.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new ViewDisputesShowForVisitors(options);
+    }, true);
