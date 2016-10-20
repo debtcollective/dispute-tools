@@ -2,10 +2,14 @@
   .max-width-1.mx-auto
     h3#modalAddStatusTitle.pb3 Edit Dispute Status
     .flex.items-center.pb3
-      img.c(src='/images/profile/placeholder-small.png' width='50')
+      img(
+        data-user-avatar
+        src='/images/profile/placeholder-small.png'
+        width='50'
+      )
       .pl2.overflow-hidden
-        h4.a.-fw-700.-ell ${dispute.user.account.fullname}
-        p.b.-accent.-fw-500.-ell ${dispute.disputeTool.name}
+        h4.-fw-700.-ell(data-user-name) ${dispute.user.account.fullname}
+        p.-accent.-fw-500.-ell(data-dispute-name) ${dispute.disputeTool.name}
 
     form(method='post' action='')
       input(type='hidden' name='_csrf' value=csrfToken)
@@ -35,3 +39,5 @@
         | Notify
 
       button.-fw.-k-btn.btn-primary.-fw-700(type='submit') Send
+
+    .pt4(data-statuses-wrapper)

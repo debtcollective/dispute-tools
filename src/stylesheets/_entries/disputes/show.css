@@ -1,6 +1,7 @@
 @import '../../base';
 @import '../../components/dispute-tools/Sidebar';
 @import '../../components/dispute-tools/TextModal';
+@import '../../components/disputes/StatusItem';
 /* @import '../../components/AvatarList'; */
 @import '../../components/ConfirmInline';
 
@@ -142,28 +143,9 @@ input[data-toggle-radio][value="no"]:checked ~ fieldset {
   border-bottom: 5px solid;
 }
 
-.Dispute__FollowUp__Status {
-  border-bottom: 2px solid rgba(155, 155, 155, .5);
-}
-
-.Dispute__FollowUp__Status-Avatar {
-  width: 50px;
-}
-
-.Dispute__FollowUp__Status-Text {
-  margin-left: 65px;
-}
-
 .Dispute__FollowUp__SendBtn {
   padding-left: 4em;
   padding-right: 4em;
-}
-
-.tdc-placeholder {
-  width: 25px;
-  height: 25px;
-  margin: 5px auto 0;
-  background-color: var(--k-color-palette-primary);
 }
 
 .-status {

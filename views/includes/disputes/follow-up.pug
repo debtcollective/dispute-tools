@@ -54,17 +54,17 @@
               userUpdate = true;
             }
 
-          .Dispute__FollowUp__Status.py2.clearfix
-            .Dispute__FollowUp__Status-Avatar.left
+          .StatusItem.py2.clearfix
+            .StatusItem-Avatar.left
               if userUpdate
                 if (dispute.user.account.image.exists('small'))
                   img.block.-fw(src=dispute.user.account.image.url('small') alt=dispute.user.account.fullname)
                 else
                   img.block(width='50' height='50' src='/images/profile/placeholder-small.png')
               else
-                .tdc-placeholder
+                .StatusItem-TDC-placeholder
 
-            .Dispute__FollowUp__Status-Text
+            .StatusItem-Text
               .clearfix
                 .left
                   if userUpdate
@@ -72,8 +72,9 @@
                   else
                     p.-fw-700.-primary= 'The Debt Collective'
                   .-caption.-neutral-mid
-                    svg.inline-block(width='13px' height='11px' viewBox='0 4 13 11' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink')
-                      path(d='M4.95833333,6.83333333 L4.95833333,4 L0,8.95833333 L4.95833333,13.9166667 L4.95833333,11.0125 C8.5,11.0125 10.9791667,12.1458333 12.75,14.625 C12.0416667,11.0833333 9.91666667,7.54166667 4.95833333,6.83333333 L4.95833333,6.83333333 Z' stroke='none' fill='#9B9B9B' fill-rule='evenodd')
+                    <svg class="inline-block" width="13" height="11">
+                      <use xlink:href="#svg-reply"></use>
+                    </svg>
                     .ml1.inline-block.-fw-700= new Date(status.createdAt).toDateString()
                 .right
                   p.-caption.-fw-700.-ttu(
@@ -83,13 +84,13 @@
 
         if _isDisputeOwner()
           .py2.clearfix
-            .Dispute__FollowUp__Status-Avatar.left
+            .StatusItem-Avatar.left
               if (currentUser.account.image.exists('small'))
                 img.block.-fw(src=currentUser.account.image.url('small') alt=currentUser.account.fullname)
               else
                 img.block(width='50' height='50' src='/images/profile/placeholder-small.png')
 
-            .Dispute__FollowUp__Status-Text
+            .StatusItem-Text
               form(
                 action=routeMappings.Disputes.update.url(dispute.id)
                 method='post'

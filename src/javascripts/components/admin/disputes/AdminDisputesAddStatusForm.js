@@ -1,6 +1,7 @@
 import Checkit from 'checkit';
 import Widget from '../../../lib/widget';
 import Button from '../../../components/Button';
+import DisputeStatusItem from '../../../components/disputes/StatusItem';
 
 export default class AdminDisputesAddStatusForm extends Widget {
   static get constraints() {
@@ -34,9 +35,10 @@ export default class AdminDisputesAddStatusForm extends Widget {
     this.formElement = this.element.getElementsByTagName('form')[0];
     this.statusElement = this.formElement.querySelector('[name="status"]');
     this.statusOptions = [].slice.call(this.statusElement.options);
-    this.a = this.element.querySelector('.a');
-    this.b = this.element.querySelector('.b');
-    this.c = this.element.querySelector('.c');
+    this.userNameElement = this.element.querySelector('[data-user-name]');
+    this.disputeNameElement = this.element.querySelector('[data-dispute-name]');
+    this.userAvatarElement = this.element.querySelector('[data-user-avatar]');
+    this.statusesWrapper = this.element.querySelector('[data-statuses-wrapper]');
 
     this._bindEvents();
   }
@@ -110,25 +112,39 @@ export default class AdminDisputesAddStatusForm extends Widget {
     this.ui.comment.value = '';
     this._clearFieldErrors();
 
+    const lastStatus = dispute.statuses[0].status;
+    const selectedStatus = this.statusOptions.filter(option => {
+      return (option.value === lastStatus);
+    });
+    const fragmentStatus = document.createDocumentFragment();
     let disputeToolName = dispute.disputeTool.name;
-    const status = dispute.statuses[0].status;
+
+    if (selectedStatus.length) {
+      selectedStatus[0].selected = true;
+    }
 
     if (dispute.data.option !== 'none') {
       disputeToolName += ` / ${dispute.data.option}`;
     }
 
     this.formElement.action = this.constructor.updateUrlString.replace('${id}', dispute.id);
-    this.a.textContent = dispute.user.account.fullname;
-    this.b.textContent = disputeToolName;
-    this.c.src = dispute.user.account.imageURL;
+    this.userNameElement.textContent = dispute.user.account.fullname;
+    this.disputeNameElement.textContent = disputeToolName;
+    this.userAvatarElement.src = dispute.user.account.imageURL;
 
-    const selected = this.statusOptions.filter(option => {
-      return option.value === status;
+    while (this.statusesWrapper.firstChild) {
+      this.statusesWrapper.removeChild(this.statusesWrapper.firstChild);
+    }
+
+    dispute.statuses.forEach(status => {
+      fragmentStatus.appendChild(
+        new DisputeStatusItem({
+          data: { dispute, status },
+        }).element
+      );
     });
 
-    if (selected.length) {
-      selected[0].selected = true;
-    }
+    this.statusesWrapper.appendChild(fragmentStatus);
   }
 }
 
