@@ -29,7 +29,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
           RESTfulAPI.createMiddleware({
             queryBuilder: query
               .where('deleted', false)
-              .include('[user.account, statuses, attachments, disputeTool]'),
+              .include('[user.account, attachments, disputeTool]'),
             filters: {
               allowedFields: [
                 'dispute_tool_id',
@@ -57,6 +57,26 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
             next();
           })
           .catch(next);
+      },
+      actions: ['index'],
+    },
+    {
+      before(req, res, next) {
+        Promise.mapSeries(res.locals.results, (result) => {
+          return DisputeStatus.query()
+            .where({
+              dispute_id: result.id,
+            })
+            .orderBy('created_at', 'DESC')
+            .then((statuses) => {
+              result.statuses = statuses;
+              return Promise.resolve();
+            });
+        })
+        .then(() => {
+          next();
+        })
+        .catch(next);
       },
       actions: ['index'],
     },
