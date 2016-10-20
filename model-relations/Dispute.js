@@ -30,5 +30,6 @@ Dispute.relations = {
     ownerCol: 'id',
     relatedCol: 'dispute_id',
     orderBy: ['created_at', 'DESC'],
+    scope: ['notify', true],
   },
 };

@@ -20,7 +20,7 @@
     staging : {
       user : "deploy",
       host : "staging.debtcollective.org",
-      ref  : "origin/35",
+      ref  : "origin/65-66",
       repo : "git@gitlab.com:empathia/debtcollective.git",
       path : "/home/deploy/apps/tdc",
       "post-deploy" : "npm run post_deploy_staging"
