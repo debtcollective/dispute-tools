@@ -80,6 +80,12 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     },
 
     show(req, res) {
+      res.locals.lastStatus = req.dispute.statuses.filter((status) => {
+        if (status.status !== 'User Update') {
+          return true;
+        }
+      })[0];
+
       if (req.user && req.user.id === req.dispute.userId) {
         res.render('disputes/show');
       } else {

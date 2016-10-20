@@ -42,8 +42,8 @@
     if dispute.data.disputeConfirmFollowUp
       .-caption.-neutral-mid.-ttu.-fw-700 Your dispute status:
       h4.Dispute__FollowUp__MainStatus.pb1.mb2.-ttu(
-        class=`-status-${dispute.statuses[0].status.toLowerCase().replace(/\W/g, '-')}`
-      )= dispute.statuses[0].status
+        class=`-status-${lastStatus.status.toLowerCase().replace(/\W/g, '-')}`
+      )= lastStatus.status
 
       .mb3
         each status in dispute.statuses
