@@ -96,7 +96,7 @@ mixin _uploadCard(step, _completed)
     h4.pb1= optionData.title
     -
       var _re = /\[{2}(.*)\]{2}/;
-      var _replaceWith = '<a class='js-Dispute__more-modal-trigger' href='#'>$1</a>';
+      var _replaceWith = '<a class="js-Dispute__more-modal-trigger" href="#">$1</a>';
       var _description = optionData.description.replace(_re, _replaceWith);
     p.-ff-sec!= _description
     .right-align
