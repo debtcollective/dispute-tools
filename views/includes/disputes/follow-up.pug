@@ -11,9 +11,9 @@
   data-dispute-follow-up
   aria-hidden= (currentSection !== 'follow-up').toString()
 )
-  .p3
+  div
     .clearfix.mxn2.pb3
-      .col.md-col-4.col-12.p2
+      .col.md-col-4.col-12.px2
         .Dispute__FollowUp__card.rounded.py3.px2.-bg-white.-dark
           h3.pb4= dispute.disputeTool.name
           .flex.items-center.pb1
@@ -22,7 +22,7 @@
               - var _formData = dispute.data.forms && dispute.data.forms['personal-information-form'] || {}
               .-fw-700= _formData && _formData.name || ''
 
-      .col.md-col-8.col-12.px2.pb2.pt2
+      .col.md-col-8.col-12.px2
 
         - var _headingText = '';
         case dispute.disputeTool.id
