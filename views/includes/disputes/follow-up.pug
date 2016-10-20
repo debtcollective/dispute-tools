@@ -12,7 +12,7 @@
   aria-hidden= (currentSection !== 'follow-up').toString()
 )
   .p3
-    .clearfix.mxn2
+    .clearfix.mxn2.pb3
       .col.md-col-4.col-12.p2
         .Dispute__FollowUp__card.rounded.py3.px2.-bg-white.-dark
           h3.pb4= dispute.disputeTool.name
@@ -37,7 +37,7 @@
 
         h4.Dispute__FollowUp__Title.pb3.pt2.-accent= _headingText
         h3.pb3 Now what?
-        .pb3.-fw-500!= dispute.disputeTool.data.nowWhat
+        .-fw-500!= dispute.disputeTool.data.nowWhat
 
     if dispute.data.disputeConfirmFollowUp
       .-caption.-neutral-mid.-ttu.-fw-700 Your dispute status:

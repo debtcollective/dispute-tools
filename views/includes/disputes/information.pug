@@ -6,7 +6,7 @@ mixin _formCard(step, _completed)
       .pb1.-fw-700.-ttu= step.title
       if _completed
         .pb1.-caption.-success.flex
-          div: svg.mr1(width="11" height="8"): use(xlink:href="#svg-checkmark")
+          div: svg.mr1(width='11' height='8'): use(xlink:href='#svg-checkmark')
           .flex-auto This form is completed now.
       else
         .-caption= step.description
@@ -22,7 +22,7 @@ mixin _informationCard(step, _completed)
       .pb1.-fw-700.-ttu= step.title
       if _completed
         .pb1.-caption.-success.flex
-          div: svg.mr1(width="11" height="8"): use(xlink:href="#svg-checkmark")
+          div: svg.mr1(width='11' height='8'): use(xlink:href='#svg-checkmark')
           .flex-auto Using information you already entered, we will complete this form for you.
       else
         .-caption.-neutral-mid= step.description
@@ -31,8 +31,8 @@ mixin _uploadCard(step, _completed)
   .Tool__Info.flex.flex-column.-fh(
     class= `-${step.type} ${_completed && '-completed'}`
   )
-    input(type="hidden" name="_csrf" value=csrfToken)
-    input(type="hidden" name="name" value=step.name)
+    input(type='hidden' name='_csrf' value=csrfToken)
+    input(type='hidden' name='name' value=step.name)
     .flex-auto.pb3
       .pb1.-fw-700.-ttu= step.title
       if step.optional
@@ -52,31 +52,31 @@ mixin _uploadCard(step, _completed)
                 span.pl1= img.fileMeta.original.originalFileName
               form(
                 action=routeMappings.Disputes.removeAttachment.url(dispute.id, _att.id)
-                method="post"
+                method='post'
               )
-                input(type="hidden" name="_csrf" value=csrfToken)
-                input(type="hidden" name="_method" value="PUT")
+                input(type='hidden' name='_csrf' value=csrfToken)
+                input(type='hidden' name='_method' value='PUT')
                 button.btn-clear
-                  svg.-danger(width="10" height="10"): use(xlink:href="#svg-close")
+                  svg.-danger(width='10' height='10'): use(xlink:href='#svg-close')
 
     form(
       action=routeMappings.Disputes.addAttachment.url(dispute.id)
-      method="post"
-      enctype="multipart/form-data"
+      method='post'
+      enctype='multipart/form-data'
     )
-      input(type="hidden" name="_csrf" value=csrfToken)
-      input(type="hidden" name="name" value=step.name)
+      input(type='hidden' name='_csrf' value=csrfToken)
+      input(type='hidden' name='name' value=step.name)
       button.relative.-k-btn.-sm.btn-outline.-fw-500.-fw(
         class=_completed ? '-primary' : '-white'
       ) #{step.uploadButtonText}
         input(
-          type="file"
-          name="attachment"
+          type='file'
+          name='attachment'
           accept= step.mimeTypes.join(', ')
           multiple= step.multiple
-          class="absolute top-0 left-0 -fw -fh"
-          style="opacity: 0;"
-          onchange="this.form.submit()"
+          class='absolute top-0 left-0 -fw -fh'
+          style='opacity: 0;'
+          onchange='this.form.submit()'
         )
     .Tool__Info__footer-caption.center.-caption
       | #{step.footerNotes}
@@ -86,28 +86,28 @@ mixin _uploadCard(step, _completed)
   aria-hidden= (currentSection !== 'information').toString()
 )
   .pt3.pr3.pl3.pb2.-bg-neutral-dark
-    - var _deleteDisputeButtonText = '← This is not my case';
+    - var _deleteDisputeButtonText = '← This is not my case (delete dispute)';
 
     if dispute.data.option !== 'none'
       h2.-accent= dispute.data.option
     else
-      - _deleteDisputeButtonText = '← Return to the beginning'
+      - _deleteDisputeButtonText = '← Return to the beginning (delete dispute)'
 
     h4.pb1= optionData.title
     -
       var _re = /\[{2}(.*)\]{2}/;
-      var _replaceWith = '<a class="js-Dispute__more-modal-trigger" href="#">$1</a>';
+      var _replaceWith = '<a class='js-Dispute__more-modal-trigger' href='#'>$1</a>';
       var _description = optionData.description.replace(_re, _replaceWith);
     p.-ff-sec!= _description
     .right-align
       form(
         action=routeMappings.Disputes.destroy.url(dispute.id)
-        method="post"
-        data-component-form="delete-dispute"
+        method='post'
+        data-component-form='delete-dispute'
       )
-        input(name="_csrf" type="hidden" value=csrfToken)
-        input(type="hidden" name="_method" value="DELETE")
-        button.-k-btn.btn-link.-primary.-fw-700(type="submit")= _deleteDisputeButtonText
+        input(name='_csrf' type='hidden' value=csrfToken)
+        input(type='hidden' name='_method' value='DELETE')
+        button.-k-btn.btn-link.-primary.-fw-700(type='submit')= _deleteDisputeButtonText
     hr.my2
 
     if optionData.steps
@@ -135,11 +135,11 @@ mixin _uploadCard(step, _completed)
     if dispute.disputeTool.data.disputeProcess && !dispute.disputeTool.data.signature && !dispute.data.signature
         form(
           action=routeMappings.Disputes.setSignature.url(dispute.id)
-          method="post"
+          method='post'
         )
-          input(type="hidden" name="_csrf" value=csrfToken)
-          input(type="hidden" name="_method" value="PUT")
-          input(type="hidden" name="signature" value="TDC")
+          input(type='hidden' name='_csrf' value=csrfToken)
+          input(type='hidden' name='_method' value='PUT')
+          input(type='hidden' name='signature' value='TDC')
           button.-k-btn.btn-primary.-fw.-fw-700(
             disabled= !_ready
           )= _ready ? _readyButtonText : _defaultButtonText
