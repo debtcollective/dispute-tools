@@ -24,9 +24,32 @@ describe('DisputeMailer', () => {
   it('Should execute a sendToAdmins method', () => {
     DisputeMailer.transport(CONFIG.env().mailers.transport);
 
+    admin.account = {
+      name: 'Test Name',
+    };
+
     return DisputeMailer.sendToAdmins({
-      dispute: {}, // mock the dispute data here
-      disputeStatus: {}, // mock the dispute status data here,
+      user: admin,
+      dispute: {
+        id: 1,
+        userId: admin.id,
+        disputeToolId: '11111111-1111-1111-1111-111111111111',
+        deleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        disputeTool: {
+          name: 'Test Tool',
+        },
+      }, // mock the dispute data here
+      disputeStatus: {
+        id: 1,
+        disputeId: 1,
+        status: 'Update',
+        comment: 'Hello',
+        notify: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }, // mock the dispute status data here,
     })
     .then((response) => {
       expect(response.envelope.to[0]).to.be.equal(CONFIG.env().mailers.disputesBCCAddresses[0]);
