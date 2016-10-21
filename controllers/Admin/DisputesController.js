@@ -102,7 +102,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       res.locals.headers = {
         total_count: ~~res._headers.total_count,
         total_pages: ~~res._headers.total_pages,
-        current_page: ~~req.params.page || 1,
+        current_page: ~~req.query.page || 1,
         query: req.query,
       };
 
