@@ -10,7 +10,7 @@ block content
   .ProfileWrapper.wrapper.py4.px2.flex.items-center.relative
     - var _state = user.account.state.toLowerCase().replace(' ', '-')
     - var _stateMapUrl = `/images/profile/states-US/${_state}.png`
-    .Profile__map.absolute.left-0.right-0.bottom-0(
+    .Profile__map.absolute.left-0.right-0.bottom-0.-bg-neutral-dark(
       style={'background-image': `url(${_stateMapUrl})`}
     )
     .max-width-3.mx-auto.relative.-fw
