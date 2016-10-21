@@ -134,6 +134,9 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           });
         })
         .then(() => {
+          return dispute.save();
+        })
+        .then(() => {
           return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
         })
         .catch(next);

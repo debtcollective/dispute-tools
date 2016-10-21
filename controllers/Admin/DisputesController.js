@@ -35,6 +35,13 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
                 'dispute_tool_id',
               ],
             },
+            order : {
+              default: '-updated_at',
+              allowedFields: [
+                'created_at',
+                'updated_at',
+              ],
+            },
             paginate: {
               pageSize: 50,
             },
@@ -142,6 +149,9 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
             dispute,
             disputeStatus: ds,
           });
+        })
+        .then(() => {
+          return dispute.save();
         })
         .then(() => {
           req.flash('success', 'The dispute status has been updated.');
