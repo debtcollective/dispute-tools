@@ -23,6 +23,10 @@ class ViewHomeIndex extends NodeSupport {
   }
 
   _applyGlitch() {
+    if (!Glitch._supported) {
+      return;
+    }
+
     const i1 = document.getElementById('glitch-image-1');
     const g1 = new Glitch();
 
