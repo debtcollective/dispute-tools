@@ -10,13 +10,16 @@ const DisputeToolsController = Class('DisputeToolsController')
             return neonode.controllers.Home._authenticate(req, res, next);
           },
           (req, res, next) => {
-            DisputeTool.first(req.params.id)
-              .then((disputeTool) => {
+            DisputeTool.query()
+              .where({
+                id: req.params.id,
+              })
+              .then(([disputeTool]) => {
                 res.locals.disputeTool = disputeTool;
 
                 next();
               })
-              .catch(next);
+              .catch(next);;
           },
         ],
         actions: ['show'],
@@ -46,14 +49,15 @@ const DisputeToolsController = Class('DisputeToolsController')
       show(req, res, next) {
         const disputeTool = res.locals.disputeTool;
 
-        let _option;
         Object.keys(disputeTool.data.options).forEach(option => {
-          _option = disputeTool.data.options[option];
+          const _option = disputeTool.data.options[option];
 
           if (_option.more) {
             _option.more = marked(_option.more);
           }
         });
+
+        // console.log(disputeTool.data.options[option].more)
 
         if (Object.keys(disputeTool.data.options).length === 1) {
           return disputeTool.createDispute({

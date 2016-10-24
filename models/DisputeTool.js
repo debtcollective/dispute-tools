@@ -9,8 +9,11 @@ const DisputeTool = Class('DisputeTool').inherits(Krypton.Model)({
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
 
-      this.data = require(path
-        .join(process.cwd(), '/lib/data/dispute-tools/', `${this.id}.js`));
+      const dataFile = path.join(process.cwd(), '/lib/data/dispute-tools/', `${this.id}.js`);
+
+      delete require.cache[require.resolve(dataFile)];
+
+      this.data = require(dataFile);
     },
     createDispute(config) {
       const dispute = new Dispute({
