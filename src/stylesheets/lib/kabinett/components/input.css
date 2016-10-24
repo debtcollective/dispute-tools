@@ -8,6 +8,7 @@
   &[disabled] {opacity: .5}
 
   &:not(textarea) {
+    padding: 0 1em;
     height: calc(calc(var(--k-font-size) - 1px) + var(--k-font-size) + calc(var(--k-font-size) - 2px));
   }
 }
