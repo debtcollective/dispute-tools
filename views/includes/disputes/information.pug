@@ -66,7 +66,7 @@ mixin _uploadCard(step, _completed)
     )
       input(type='hidden' name='_csrf' value=csrfToken)
       input(type='hidden' name='name' value=step.name)
-      button.relative.-k-btn.-sm.btn-outline.-fw-500.-fw(
+      div.relative.-k-btn.-sm.btn-outline.-fw-500.-fw(
         class=_completed ? '-primary' : '-white'
       ) #{step.uploadButtonText}
         input(
