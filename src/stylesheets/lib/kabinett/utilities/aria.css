@@ -1,11 +1,5 @@
-[aria-hidden="true"] {
-  visibility: hidden;
-  pointer-events: none;
-}
-[aria-hidden="false"] {
-  visibility: visible;
-  pointer-events: auto;
-}
+[aria-hidden="true"] {visibility: hidden}
+[aria-hidden="false"] {visibility: visible}
 
 .sr-only {
   clip: rect(1px, 1px, 1px, 1px);
