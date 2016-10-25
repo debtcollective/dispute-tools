@@ -1,0 +1,18 @@
+.StatusItem {
+  border-bottom: 2px solid rgba(155, 155, 155, .5);
+
+  &-Avatar {
+    width: 50px;
+  }
+
+  &-TDC-placeholder {
+    width: 25px;
+    height: 25px;
+    margin: 5px auto 0;
+    background-color: var(--k-color-palette-primary);
+  }
+
+  &-Text {
+    margin-left: 65px;
+  }
+}

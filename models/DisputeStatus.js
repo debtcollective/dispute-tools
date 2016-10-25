@@ -2,7 +2,7 @@
 
 const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
   tableName: 'DisputeStatuses',
-  attributes: ['id', 'disputeId', 'status', 'comment', 'createdAt', 'updatedAt'],
+  attributes: ['id', 'disputeId', 'status', 'comment', 'notify', 'createdAt', 'updatedAt'],
   statuses: [
     'Incomplete',
     'Completed',
@@ -24,6 +24,10 @@ const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
         message: 'Invalid status',
       },
     ],
+  },
+
+  prototype: {
+    notify: true,
   },
 });
 

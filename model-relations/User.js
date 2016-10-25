@@ -15,6 +15,8 @@ User.relations = {
     orderBy: ['created_at', 'DESC'],
     scope: ['deleted', false],
   },
+
+
   debtTypes: {
     type: 'HasManyThrough',
     relatedModel: Collective,

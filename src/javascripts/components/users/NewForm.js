@@ -98,13 +98,13 @@ export default class UsersNewForm extends Widget {
   }
 
   _handleShowNextStep() {
-    this.step1Layer.setAttribute('aria-hidden', true);
-    this.step2Layer.setAttribute('aria-hidden', false);
+    this.step1Layer.classList.add('hide');
+    this.step2Layer.classList.remove('hide');
   }
 
   _handleShowPrevStep() {
-    this.step1Layer.setAttribute('aria-hidden', false);
-    this.step2Layer.setAttribute('aria-hidden', true);
+    this.step1Layer.classList.remove('hide');
+    this.step2Layer.classList.add('hide');
   }
 
   _handleFormSubmit(ev) {

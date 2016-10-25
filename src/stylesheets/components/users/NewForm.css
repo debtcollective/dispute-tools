@@ -1,9 +1,5 @@
 .UsersNewForm__step {
   display: block;
-
-  &[aria-hidden='true'] {
-    display: none;
-  }
 }
 
 .UsersNewForm__collective-option {

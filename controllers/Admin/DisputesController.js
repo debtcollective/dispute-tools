@@ -29,10 +29,17 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
           RESTfulAPI.createMiddleware({
             queryBuilder: query
               .where('deleted', false)
-              .include('[user.account, statuses, attachments, disputeTool]'),
+              .include('[user.account, attachments, disputeTool]'),
             filters: {
               allowedFields: [
                 'dispute_tool_id',
+              ],
+            },
+            order : {
+              default: '-updated_at',
+              allowedFields: [
+                'created_at',
+                'updated_at',
               ],
             },
             paginate: {
@@ -60,6 +67,26 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       },
       actions: ['index'],
     },
+    {
+      before(req, res, next) {
+        Promise.mapSeries(res.locals.results, (result) => {
+          return DisputeStatus.query()
+            .where({
+              dispute_id: result.id,
+            })
+            .orderBy('created_at', 'DESC')
+            .then((statuses) => {
+              result.statuses = statuses;
+              return Promise.resolve();
+            });
+        })
+        .then(() => {
+          next();
+        })
+        .catch(next);
+      },
+      actions: ['index'],
+    },
 
   ],
   prototype: {
@@ -82,7 +109,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       res.locals.headers = {
         total_count: ~~res._headers.total_count,
         total_pages: ~~res._headers.total_pages,
-        current_page: ~~req.param('page') || 1,
+        current_page: ~~req.query.page || 1,
         query: req.query,
       };
 
@@ -100,7 +127,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     update(req, res, next) {
       const dispute = res.locals.dispute;
 
-      const { comment, status } = req.body;
+      const { comment, status, notify } = req.body;
 
       const ds = new DisputeStatus({
         comment,
@@ -108,12 +135,23 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         disputeId: dispute.id,
       });
 
+      if (!notify) {
+        ds.notify = false;
+      }
+
       ds.save()
         .then(() => {
+          if (!ds.notify) {
+            return Promise.resolve();
+          }
+
           return DisputeMailer.sendStatusToUser({
             dispute,
             disputeStatus: ds,
           });
+        })
+        .then(() => {
+          return dispute.save();
         })
         .then(() => {
           req.flash('success', 'The dispute status has been updated.');

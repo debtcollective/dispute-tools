@@ -12,15 +12,17 @@ export default class DisputesController extends NodeSupport {
     this.sidebarItems = [].slice.call(document.querySelectorAll('.Tool__sidebar-step'));
     this.contentItems = [];
 
-    this._registerContentItems(config);
-    this._bindEvents();
+    if (!config.dispute.data.signature) {
+      this._registerSteps(config);
+    } else {
+      this._finalize(config);
+    }
   }
 
-  _registerContentItems(config) {
+  _registerSteps(config) {
     const InformationElement = document.querySelector('[data-dispute-information]');
     const ProcessElement = document.querySelector('[data-dispute-process]');
     const SignatureElement = document.querySelector('[data-dispute-signature]');
-    const FollowUpElement = document.querySelector('[data-dispute-follow-up]');
 
     if (InformationElement) {
       this.contentItems.push(this.appendChild(new DisputesInformation({
@@ -47,6 +49,12 @@ export default class DisputesController extends NodeSupport {
       })));
     }
 
+    this._bindSidebarEvents();
+  }
+
+  _finalize(config) {
+    const FollowUpElement = document.querySelector('[data-dispute-follow-up]');
+
     if (FollowUpElement) {
       this.contentItems.push(this.appendChild(new DisputesFollowUp({
         name: 'DisputesFollowUp',
@@ -56,7 +64,7 @@ export default class DisputesController extends NodeSupport {
     }
   }
 
-  _bindEvents() {
+  _bindSidebarEvents() {
     this._handleSidebarItemClickRef = this._handleSidebarItemClick.bind(this);
     this.sidebarItems.forEach(item => {
       if (item.disabled === false) {

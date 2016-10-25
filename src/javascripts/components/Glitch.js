@@ -81,7 +81,7 @@ export default class Glitch {
     Object.assign(this, Glitch._defaults, config);
 
     this.canvas = this._createCanvas();
-    this.gl = this.canvas.getContext('webgl');
+    this.gl = this.canvas.getContext('webgl') || this.canvas.getContext('experimental-webgl');
 
     this._elapsed = 0;
 
@@ -247,5 +247,10 @@ export default class Glitch {
   }
 }
 
+Glitch._supported = (function _supported() {
+  const canvas = document.createElement('canvas');
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  return (gl && gl instanceof WebGLRenderingContext);
+}());
 Glitch.instances = [];
 Glitch._draw = Glitch.run.bind(Glitch);

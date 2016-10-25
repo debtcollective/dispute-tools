@@ -385,7 +385,9 @@ The Department of Education usually sends offset notices once per year in the su
           name: 'General Debt Dispute Letter',
           about: `### General Debt Dispute Letter
 
-#### for any defaulted personal debt
+#### For any defaulted personal debt
+
+Debt collectors are shady. They often try to collect on debts that they do not have the right to collect on because they do not have the right paperwork or because they are committing outright fraud. This tool generates a dispute letter that the Debt Collective will send to the collector on your behalf. The letter demands that the collector prove they own your debt or stop collecting. You can only use this tool if your debt is in collections, which means you haven’t paid in a while and the person trying to collect from you is not the original lender.
 
 Before you begin to use this tool, you should make sure you have the name and address of the collections agency that is attempting to collect from you.
 

@@ -49,12 +49,12 @@ block content
               select.-fw-700.-fw(name='disputesListValue[order]')
                 option(value="") Date
                 option(
-                  value='created_at'
-                  selected= queryOrder === 'created_at'
+                  value='updated_at'
+                  selected= queryOrder === 'updated_at'
                 )= 'ASC'
                 option(
-                  value='-created_at'
-                  selected= queryOrder === '-created_at'
+                  value='-updated_at'
+                  selected= queryOrder === '-updated_at'
                 )= 'DESC'
 
           th.-wsnw
@@ -89,7 +89,7 @@ block content
             td.-fw-700(
               class=`-status-${_dispute.statuses[0].status.toLowerCase().replace(/\W/g, '-')}`
             )= _dispute.statuses[0].status
-            td.-fw-500.-wsnw= new Date(_dispute.createdAt).toDateString()
+            td.-fw-500.-wsnw= new Date(_dispute.updatedAt).toDateString()
             td.center
               button.mr2.btn-clear.p1.align-top(data-add-status)
                 svg.-pen.block.align-top(width='15' height='15'): use(xlink:href='#svg-pencil')
