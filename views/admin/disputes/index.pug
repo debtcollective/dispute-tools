@@ -1,7 +1,7 @@
 extends ../../layouts/admin.pug
 
 block title
-  | Admin — The Debt Collective
+  | Admin/Disputes — The Debt Collective
 
 block styles
   link(href="/build/stylesheets/admin/disputes/index.css" rel="stylesheet")
@@ -68,7 +68,7 @@ block content
             ) Reset
 
       tbody
-        each _dispute, index in disputes
+        each _dispute in disputes
 
           -
             // add the user accout image to be accesible on the front-end
