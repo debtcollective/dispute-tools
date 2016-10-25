@@ -9,8 +9,7 @@ block styles
 block content
   .wrapper.px2.pb3
     h2.pt4.pb2 Edit Collective
-    pre= JSON.stringify(collective)
-    pre= JSON.stringify(disputeTools)
+
     form(
       method='post'
       action= routeMappings.Admin.Collectives.update.url(collective.id)
@@ -39,6 +38,7 @@ block content
 
       .pb2
         p.pb1.-fw-500 Dispute Tools
+        - var toolIds = collective.tools.map(t => t.id)
         each tool in disputeTools
           div
             input(
@@ -46,6 +46,7 @@ block content
               name='disputeToolIds'
               value= tool.id
               id= tool.id
+              checked= toolIds.includes(tool.id)
             )
             label.pl1(
               for= tool.id
