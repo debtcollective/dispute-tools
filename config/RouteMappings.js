@@ -65,7 +65,8 @@ const routeMappings = RouteMappings()
 
   .namespace('/Admin', (mappings) => {
     return mappings()
-      .resources('/Disputes');
+      .resources('/Disputes')
+      .resources('/Collectives');
   })
 
   .resources('/Users', (mappings) => {
