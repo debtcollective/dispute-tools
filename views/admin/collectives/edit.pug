@@ -10,4 +10,43 @@ block content
   .wrapper.px2.pb3
     h2.pt4.pb2 Edit Collective
     pre= JSON.stringify(collective)
+    pre= JSON.stringify(disputeTools)
+    form(
+      method='post'
+      action= routeMappings.Admin.Collectives.update.url(collective.id)
+    )
+      input(type='hidden' name='_csrf' value=csrfToken)
+      input(name='_method' type='hidden' value='PUT')
 
+      label.block.pb1.-fw-500 Name
+      input.-k-input.-fw(
+        type='text'
+        name='name'
+        value= collective.name
+      )
+
+      label.block.pb1.-fw-500 Description
+      textarea.-k-input.-fw(
+        name='description'
+        rows='3'
+      )= collective.description
+
+      label.block.pb1.-fw-500 Manifest
+      textarea.-k-input.-fw(
+        name='manifest'
+        rows='10'
+      )= collective.manifest
+
+      .pb2
+        p.pb1.-fw-500 Dispute Tools
+        each tool in disputeTools
+          div
+            input(
+              type='checkbox'
+              name='disputeToolIds'
+            )
+            label.pl1= tool.name
+
+      button.-k-btn.btn-primary.-fw-700.-fw(
+        type='submit'
+      ) Update “#{collective.name}”
