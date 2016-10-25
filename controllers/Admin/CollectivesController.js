@@ -38,7 +38,7 @@ Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(Res
           })
           .catch(next);
       },
-      actions: ['index'],
+      actions: ['index', 'edit'],
     },
   ],
   prototype: {
