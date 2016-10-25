@@ -59,7 +59,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     _loadDispute(req, res, next) {
       Dispute.query()
         .where({ id: req.params.id })
-        .include('[statuses, attachments, disputeTool]')
+        .include('[user.account, statuses, attachments, disputeTool]')
         .then(([dispute]) => {
           res.locals.dispute = dispute;
           req.dispute = dispute;
@@ -80,7 +80,17 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     },
 
     show(req, res) {
-      res.render('disputes/show');
+      res.locals.lastStatus = req.dispute.statuses.filter((status) => {
+        if (status.status !== 'User Update') {
+          return true;
+        }
+      })[0];
+
+      if (req.user && req.user.id === req.dispute.userId) {
+        res.render('disputes/show');
+      } else {
+        res.render('disputes/showForVisitor');
+      }
     },
 
     edit(req, res) {
@@ -119,8 +129,12 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         .then(() => {
           return DisputeMailer.sendToAdmins({
             dispute,
+            user: req.user,
             disputeStatus: ds,
           });
+        })
+        .then(() => {
+          return dispute.save();
         })
         .then(() => {
           return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
@@ -130,6 +144,8 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
     updateDisputeData(req, res, next) {
       const dispute = res.locals.dispute;
+
+      console.log(req.body)
 
       const commands = ['setForm', 'setDisputeProcess', 'setConfirmFollowUp'];
 

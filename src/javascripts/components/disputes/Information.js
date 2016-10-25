@@ -49,7 +49,7 @@ export default class DisputesInformation extends Widget {
   }
 
   _bindMoreInfoModal() {
-    this.moreModalTrigger = this.element.querySelector('.js-Dispute__more-modal-trigger');
+    this.moreModalTrigger = this.element.querySelector('[id*=common-cases-toggler]');
     this.moreModalElement = document.querySelector('[data-component-modal="dispute-more-modal"]');
 
     if (!this.moreModalTrigger || !this.moreModalElement) {

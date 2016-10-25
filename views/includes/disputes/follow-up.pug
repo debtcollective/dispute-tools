@@ -1,37 +1,49 @@
+-
+  function _isDisputeOwner() {
+    return (currentUser && (currentUser.id === dispute.user.id));
+  }
+
+  function _isFollowUpConfirmed() {
+    return dispute.data.disputeConfirmFollowUp;
+  }
+
 .Dispute__step-content(
   data-dispute-follow-up
   aria-hidden= (currentSection !== 'follow-up').toString()
 )
-  .p3
-    .clearfix.mxn2
-      .col.md-col-4.col-12.p2
+  div
+    .clearfix.mxn2.pb3
+      .col.md-col-4.col-12.px2
         .Dispute__FollowUp__card.rounded.py3.px2.-bg-white.-dark
           h3.pb4= dispute.disputeTool.name
           .flex.items-center.pb1
-            div: svg.block.-primary(width="46" height="56"): use(xlink:href="#svg-fingerprint")
+            div: svg.block.-primary(width='46' height='56'): use(xlink:href='#svg-fingerprint')
             .pl2.-ff-sec
               - var _formData = dispute.data.forms && dispute.data.forms['personal-information-form'] || {}
               .-fw-700= _formData && _formData.name || ''
 
-      .col.md-col-8.col-12.px2.pb2.pt2
+      .col.md-col-8.col-12.px2
 
-        - var _headingText = `Thank you for disputing ${dispute.disputeTool.name}`;
+        - var _headingText = '';
         case dispute.disputeTool.id
           // General Debt Dispute Letter
           when '11111111-1111-3333-1111-111111111111'
             - _headingText = 'Thank you for disputing your debt.'
+          // Private Student Loan Dispute Letter
           when '11111111-1111-6666-1111-111111111111'
             - _headingText = 'Thank you for disputing your private student debt.'
+          default
+            - _headingText = `Thank you for disputing ${dispute.disputeTool.name}`;
 
         h4.Dispute__FollowUp__Title.pb3.pt2.-accent= _headingText
         h3.pb3 Now what?
-        .pb3.-fw-500!= dispute.disputeTool.data.nowWhat
+        .-fw-500!= dispute.disputeTool.data.nowWhat
 
     if dispute.data.disputeConfirmFollowUp
       .-caption.-neutral-mid.-ttu.-fw-700 Your dispute status:
       h4.Dispute__FollowUp__MainStatus.pb1.mb2.-ttu(
-        class=`-status-${dispute.statuses[0].status.toLowerCase().replace(/\W/g, '-')}`
-      )= dispute.statuses[0].status
+        class=`-status-${lastStatus.status.toLowerCase().replace(/\W/g, '-')}`
+      )= lastStatus.status
 
       .mb3
         each status in dispute.statuses
@@ -42,26 +54,27 @@
               userUpdate = true;
             }
 
-          .Dispute__FollowUp__Status.py2.clearfix
-            .Dispute__FollowUp__Status-Avatar.left
+          .StatusItem.py2.clearfix
+            .StatusItem-Avatar.left
               if userUpdate
-                if (currentUser.account.image.exists('small'))
-                  img.block.-fw(src=currentUser.account.image.url('small') alt=currentUser.account.fullname)
+                if (dispute.user.account.image.exists('small'))
+                  img.block.-fw(src=dispute.user.account.image.url('small') alt=dispute.user.account.fullname)
                 else
-                  img.block(width="50" height="50" src='/images/profile/placeholder-small.png')
+                  img.block(width='50' height='50' src='/images/profile/placeholder-small.png')
               else
-                .tdc-placeholder
+                .StatusItem-TDC-placeholder
 
-            .Dispute__FollowUp__Status-Text
+            .StatusItem-Text
               .clearfix
                 .left
                   if userUpdate
-                    p.-fw-700= currentUser.account.fullname
+                    p.-fw-700= dispute.user.account.fullname
                   else
                     p.-fw-700.-primary= 'The Debt Collective'
                   .-caption.-neutral-mid
-                    svg.inline-block(width="13px" height="11px" viewBox="0 4 13 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink")
-                      path(d="M4.95833333,6.83333333 L4.95833333,4 L0,8.95833333 L4.95833333,13.9166667 L4.95833333,11.0125 C8.5,11.0125 10.9791667,12.1458333 12.75,14.625 C12.0416667,11.0833333 9.91666667,7.54166667 4.95833333,6.83333333 L4.95833333,6.83333333 Z" stroke="none" fill="#9B9B9B" fill-rule="evenodd")
+                    <svg class="inline-block" width="13" height="11">
+                      <use xlink:href="#svg-reply"></use>
+                    </svg>
                     .ml1.inline-block.-fw-700= new Date(status.createdAt).toDateString()
                 .right
                   p.-caption.-fw-700.-ttu(
@@ -69,44 +82,44 @@
                   )= status.status
               p.-fw-500= status.comment
 
-        .py2.clearfix
-          .Dispute__FollowUp__Status-Avatar.left
-            if (currentUser.account.image.exists('small'))
-              img.block.-fw(src=currentUser.account.image.url('small') alt=currentUser.account.fullname)
-            else
-              img.block(width="50" height="50" src='/images/profile/placeholder-small.png')
+        if _isDisputeOwner()
+          .py2.clearfix
+            .StatusItem-Avatar.left
+              if (currentUser.account.image.exists('small'))
+                img.block.-fw(src=currentUser.account.image.url('small') alt=currentUser.account.fullname)
+              else
+                img.block(width='50' height='50' src='/images/profile/placeholder-small.png')
 
-          .Dispute__FollowUp__Status-Text
-            form(
-              action=routeMappings.Disputes.update.url(dispute.id)
-              method="post"
-              data-component-form="dispute-comment"
-            )
-              input(name="_csrf" type="hidden" value=csrfToken)
-              input(name="_method" type="hidden" value="PUT")
-
-              h4.-accent Got a reply?
-              p.-accent We prompt you to notify us when you get a reply from the Department
-
-              textarea.block.my2.-k-input.-fw(
-                name="comment"
-                rows="5"
-                placeholder='Briefly describe the response you got…'
+            .StatusItem-Text
+              form(
+                action=routeMappings.Disputes.update.url(dispute.id)
+                method='post'
+                data-component-form='dispute-comment'
               )
-              .flex
-                p.mt1.mr3.-caption.-fw-500 We follow very closely what happens with these disputes so that we can find out which creditors are not breaking the law.
-                button.Dispute__FollowUp__SendBtn.-k-btn.btn-primary.-fw-700(
-                  type="submit"
-                ) Send
+                input(name='_csrf' type='hidden' value=csrfToken)
+                input(name='_method' type='hidden' value='PUT')
 
-  unless dispute.data.disputeConfirmFollowUp
-    .-k-popover.-bottom-right.-success.absolute(data-component-popover="dispute-completed" aria-hidden="true" style="width: 290px;")
+                h4.-accent Got a reply?
+                p.-accent We prompt you to notify us when you get a reply from the Department
+
+                textarea.block.my2.-k-input.-fw(
+                  name='comment'
+                  rows='5'
+                  placeholder='Briefly describe the response you got…'
+                )
+                .flex
+                  p.mt1.mr3.-caption.-fw-500 We follow very closely what happens with these disputes so that we can find out which creditors are not breaking the law.
+                  button.Dispute__FollowUp__SendBtn.-k-btn.btn-primary.-fw-700(
+                    type='submit'
+                  ) Send
+
+  if _isDisputeOwner() && !_isFollowUpConfirmed()
+    .-k-popover.-bottom-right.-success.absolute(data-component-popover='dispute-completed' aria-hidden='true' style='width: 290px;')
       .-k-popover-wrapper
         .-k-popover__arrow
         .-k-popover-body.p2.pr4
-          button.btn-clear.-k-popover__close(aria-label="close")
-            svg(width="13" height="13")
-              use(xlink:href="#svg-close")
+          button.btn-clear.-k-popover__close(aria-label='close')
+            svg(width='13' height='13')
+              use(xlink:href='#svg-close')
           .-dark.-fw-700 Access your filled tools
           p.-fw-500 You can follow up your tools anytime through your Profile
-

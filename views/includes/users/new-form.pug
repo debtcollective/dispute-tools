@@ -5,7 +5,7 @@
     form(method="post" action=routeMappings.Users.create.url())
       input(type="hidden" name="_csrf" value=csrfToken)
 
-      .UsersNewForm__step.js-step-1(aria-hidden='false')
+      .UsersNewForm__step.js-step-1
         p#modalSignupDesc.-fw-500.mb1 First, let us know your types of debt, check all that apply:
         .pb3.mxn1
           -
@@ -45,7 +45,7 @@
           disabled= (_formData && _formData.collectiveIds && _formData.collectiveIds.length ? false : true)
         ) Continue...
 
-      .UsersNewForm__step.js-step-2(aria-hidden='true')
+      .UsersNewForm__step.js-step-2.hide
         p#modalSignupDesc.-fw-500.mb3 Now, let us know something about you
 
         .clearfix.pb2.mxn1

@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import Checkit from 'checkit';
+import Pisces from 'pisces';
 import Widget from '../../lib/widget';
 import Button from '../../components/Button';
 import ConfirmInline from '../../components/ConfirmInline';
@@ -74,7 +75,7 @@ export default class DisputesInformationForm extends Widget {
     this.toogleRadios.forEach(t => {
       t.addEventListener('change', this._handlePartialTogglerRef);
       if (t.checked) {
-        this.initHiddenElements.call(this, t);
+        this._initHiddenElements.call(this, t);
         if (t.value !== t.dataset.default) {
           t.checked = false;
           t.click();
@@ -89,6 +90,8 @@ export default class DisputesInformationForm extends Widget {
         t.addEventListener('change', this._handleAlertRadioChangeRef);
       });
     }
+
+    this.pisces = new Pisces(this.element.parentElement);
   }
 
   /**
@@ -169,7 +172,7 @@ export default class DisputesInformationForm extends Widget {
     }
   }
 
-  initHiddenElements(element) {
+  _initHiddenElements(element) {
     const names = JSON.parse(element.dataset.partialToggleRadio);
 
     names.forEach(name => {
@@ -266,6 +269,22 @@ export default class DisputesInformationForm extends Widget {
         errorLabel.innerText = `▲ ${errors[key].message}`;
       }
     });
+
+    const firstErrorKey = Object.keys(errors)[0];
+
+    if (firstErrorKey) {
+      const element = this.ui[firstErrorKey];
+      const parent = element.parentElement;
+      let y = parent.getBoundingClientRect().top;
+
+      y = (y >= 0) ? `+${y}` : y.toString();
+
+      this.pisces.scrollToPosition({ y }, {
+        onComplete: () => {
+          element.focus();
+        },
+      });
+    }
   }
 
   _clearFieldErrors() {
