@@ -88,6 +88,10 @@ Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(Res
               .del();
           })
           .then(() => {
+            if (!Array.isArray(disputeToolIds)) {
+              disputeToolIds = [disputeToolIds];
+            }
+
             return Promise.each(disputeToolIds, (id) => {
               return knex('CollectivesTools')
                 .transacting(trx)
