@@ -44,8 +44,11 @@ block content
             input(
               type='checkbox'
               name='disputeToolIds'
+              id= tool.id
             )
-            label.pl1= tool.name
+            label.pl1(
+              for= tool.id
+            )= tool.name
 
       button.-k-btn.btn-primary.-fw-700.-fw(
         type='submit'
