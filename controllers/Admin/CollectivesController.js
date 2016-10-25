@@ -68,6 +68,9 @@ Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(Res
         name,
         description,
         manifest,
+      } = req.body;
+
+      let {
         disputeToolIds,
       } = req.body;
 
@@ -82,12 +85,20 @@ Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(Res
       Collective.transaction((trx) => {
         return req.collective.transacting(trx).save()
           .then(() => {
+            if (!disputeToolIds) {
+              return Promise.resolve();
+            }
+
             return knex('CollectivesTools')
               .transacting(trx)
               .where('collective_id', req.collective.id)
               .del();
           })
           .then(() => {
+            if (!disputeToolIds) {
+              return Promise.resolve();
+            }
+
             if (!Array.isArray(disputeToolIds)) {
               disputeToolIds = [disputeToolIds];
             }
