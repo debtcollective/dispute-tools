@@ -7,6 +7,7 @@ User.relations = {
     ownerCol: 'id',
     relatedCol: 'user_id',
   },
+
   disputes: {
     type: 'HasMany',
     relatedModel: Dispute,
@@ -15,7 +16,6 @@ User.relations = {
     orderBy: ['created_at', 'DESC'],
     scope: ['deleted', false],
   },
-
 
   debtTypes: {
     type: 'HasManyThrough',
