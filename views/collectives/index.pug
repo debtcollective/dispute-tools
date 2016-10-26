@@ -1,0 +1,36 @@
+extends ../layouts/application.pug
+
+block title
+  | Collectives — The Debt Collective
+
+block content
+  .px2.pt3
+    .max-width-4.mx-auto
+      h4.pb1.-bb-accent The Collectives
+
+      section.pt4.clearfix.mxn2.md-flex.flex-wrap
+        each c in collectives
+          article.col.md-col-4.col-12.px2.mb4
+            .flex.items-center
+              div
+                svg.-sw5.-stroke-accent(width='56' height='56')
+                  use(xlink:href=`#svg-collective-${c.id.charAt(0)}`)
+              - var name = c.name.replace(/\sCollective$/, '').replace(/\s\and\s/g, ' & ')
+              h3.pl2.-accent= name
+            if c.description
+              p.py2.-fw-500= c.description
+            p.pb1.-accent.-fw-700 +4K strikers
+            hr
+            .-bb-accent.py1
+              a.-fw-700(href=routeMappings.Collectives.show.url(c.id)) Go to collective
+
+block scripts
+  script(src="/build/javascripts/collectives/index.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new ViewCollectivesIndex(options);
+    }, true);
