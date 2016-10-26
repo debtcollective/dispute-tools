@@ -105,6 +105,8 @@ const routeMappings = RouteMappings()
         to: 'Disputes#removeAttachment',
         as: 'removeAttachment',
       });
-  });
+  })
+
+  .resources('/Collectives');
 
 module.exports = routeMappings;
