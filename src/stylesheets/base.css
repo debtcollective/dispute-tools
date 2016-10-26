@@ -84,9 +84,20 @@
 
 /* CUSTOM STYLES */
 body {
-  background: var(--k-background-color) url('/images/global/bg-black-pattern.gif') 50% 0 repeat fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    will-change: transform;
+    background: var(--k-background-color) url('/images/global/bg-black-pattern.gif') 50% 0 repeat;
+  }
 }
 
 * {margin: 0}
