@@ -22,19 +22,6 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       },
       actions: ['index'],
     },
-    {
-      before(req, res, next) {
-        DisputeTool.query()
-          .orderBy('created_at', 'ASC')
-          .then((tools) => {
-            req.disputeTools = tools;
-            res.locals.disputeTools = tools;
-            next();
-          })
-          .catch(next);
-      },
-      actions: ['index', 'show'],
-    },
   ],
   prototype: {
     _loadCollective(req, res, next) {
