@@ -4,7 +4,7 @@ block title
   | #{collective.name} — The Debt Collective
 
 block styles
-  link(href="/build/stylesheets/collectives/show.css" rel="stylesheet")
+  link(href='/build/stylesheets/collectives/show.css' rel='stylesheet')
 
 block content
   div
@@ -52,7 +52,7 @@ block content
                     _avatars = _avatars.concat(_avatars)
                   }
                 each avatar in _avatars
-                  li.mb1: img(src=`/images/temp/avatars/${avatar}.jpg` width="50" height="50")
+                  li.mb1: img(src=`/images/temp/avatars/${avatar}.jpg` width='50' height='50')
 
             .clearfix
               .col.col-4 &nbsp;
@@ -65,16 +65,16 @@ block content
                 p.pb2.-fw-700.center.-neutral-dark Spread
                 ul.list-reset.center.pb4
                   li.inline-block
-                    a.Button--circle.-dark(href='#' rel="noopener noreferrer" target="_blank")
-                      svg(width="13" height="11"): use(xlink:href="#svg-twitter")
+                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank')
+                      svg(width='13' height='11'): use(xlink:href='#svg-twitter')
                       .sr-only Share on Twitter
                   li.inline-block.mx2
-                    a.Button--circle.-dark(href='#' rel="noopener noreferrer" target="_blank")
-                      svg(width="6" height="13"): use(xlink:href="#svg-facebook")
+                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank')
+                      svg(width='6' height='13'): use(xlink:href='#svg-facebook')
                       .sr-only Share on Facebook
                   li.inline-block
-                    a.Button--circle.-dark(href='#' rel="noopener noreferrer" target="_blank")
-                      svg(width="14" height="11"): use(xlink:href="#svg-email")
+                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank')
+                      svg(width='14' height='11'): use(xlink:href='#svg-email')
                       .sr-only Share by Email
 
           section#panel-dispute-tools.TabPane(role='tabpanel' aria-hidden='true')
@@ -92,7 +92,7 @@ block content
             | Resources
 
 block scripts
-  script(src="/build/javascripts/collectives/show.js" async)
+  script(src='/build/javascripts/collectives/show.js' async)
   script.
     window.addEventListener('load', function() {
       var options = {
