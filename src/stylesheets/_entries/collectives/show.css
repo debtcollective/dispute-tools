@@ -1,0 +1,43 @@
+@import '../../base';
+@import '../../components/dispute-tools/ToolCard';
+@import '../../components/AvatarList';
+
+.Collective_Manifest--text {
+  & h3 {padding-bottom: var(--space-3)}
+
+  & p {
+    font-family: monospace;
+    padding-bottom: var(--space-2);
+  }
+}
+.wf-spacemono-n4-active .Collective_Manifest--text p {
+  font-family: 'Space Mono', monospace;
+}
+
+.TabItem {
+  position: relative;
+  background-color: white;
+  margin: 0 1px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 5px;
+  }
+
+  &.active::after {
+    background-color: var(--k-color-palette-primary);
+  }
+}
+
+.Button--circle {
+  display: inline-block;
+  width: 46px;
+  height: 46px;
+  border: 2px solid;
+  border-radius: 50%;
+  padding-top: .5em;
+}
