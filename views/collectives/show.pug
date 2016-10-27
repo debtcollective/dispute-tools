@@ -25,72 +25,71 @@ block content
             span.-fw-700 Share
 
     .-bg-white.-dark.px2(style='background-color: #f0f0f0;')
-      .max-width-4.mx-auto
-        .flex
-          .flex-auto
-            a.TabItem.active.block.p3.-fw-700.-dark(href='#manifest') Manifest
-          .flex-auto
-            a.TabItem.block.p3.-fw-700.-dark(href='#dispute-tools')
-              | Dispute tools
-              span.right.-caption.-neutral-mid= collective.tools.length
-          .flex-auto
-            a.TabItem.block.p3.-fw-700.-dark(href='#resources')
-              | Resources
-              span.right.-caption.-neutral-mid 9
+      .max-width-4.mx-auto(data-tabs-component)
+        ul.list-reset.flex(role='tablist')
+          li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-manifest' aria-selected='false')
+            | Manifest
+          li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-dispute-tools' aria-selected='false')
+            | Dispute tools
+            span.right.-caption.-neutral-mid= collective.tools.length
+          li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-resources' aria-selected='false')
+            | Resources
+            span.right.-caption.-neutral-mid 9
 
-        section
-          .clearfix.pt4
-            .col.col-4 &nbsp;
-            .col.col-7
-              h1 Manifest
-              .Collective_Manifest--text!= collective.manifest
+        .Collective_TabPanes
+          section#panel-manifest.TabPane(role='tabpanel' aria-hidden='true')
+            .clearfix.pt4
+              .col.col-4 &nbsp;
+              .col.col-7
+                h1 Manifest
+                .Collective_Manifest--text!= collective.manifest
 
-          div.pt3.pb2
-            ul.AvatarList
-              -
-                var _avatars = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'];
-                for (var i = 0; i < 2; i++) {
-                  _avatars = _avatars.concat(_avatars)
-                }
-              each avatar in _avatars
-                li.mb1: img(src=`/images/temp/avatars/${avatar}.jpg` width="50" height="50")
+            div.pt3.pb2
+              ul.AvatarList
+                -
+                  var _avatars = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'];
+                  for (var i = 0; i < 2; i++) {
+                    _avatars = _avatars.concat(_avatars)
+                  }
+                each avatar in _avatars
+                  li.mb1: img(src=`/images/temp/avatars/${avatar}.jpg` width="50" height="50")
 
-          .clearfix
-            .col.col-4 &nbsp;
-            .col.col-7
-              p.pb2.-ff-sec.-fw-700 To the Department of Education, we say:
+            .clearfix
+              .col.col-4 &nbsp;
+              .col.col-7
+                p.pb2.-ff-sec.-fw-700 To the Department of Education, we say:
 
-              div.border.p3.mb4(style='border-width: 8px')
-                h4 Cancel all Corinthian students’ federal loans. Doing so will demonstrate your commitment to your job as a regulator.
+                div.border.p3.mb4(style='border-width: 8px')
+                  h4 Cancel all Corinthian students’ federal loans. Doing so will demonstrate your commitment to your job as a regulator.
 
-              p.pb2.-fw-700.center.-neutral-dark Spread
-              ul.list-reset.center.pb4
-                li.inline-block
-                  a.Button--circle.-dark(href='#' rel="noopener noreferrer" target="_blank")
-                    svg(width="13" height="11"): use(xlink:href="#svg-twitter")
-                    .sr-only Share on Twitter
-                li.inline-block.mx2
-                  a.Button--circle.-dark(href='#' rel="noopener noreferrer" target="_blank")
-                    svg(width="6" height="13"): use(xlink:href="#svg-facebook")
-                    .sr-only Share on Facebook
-                li.inline-block
-                  a.Button--circle.-dark(href='#' rel="noopener noreferrer" target="_blank")
-                    svg(width="14" height="11"): use(xlink:href="#svg-email")
-                    .sr-only Share by Email
+                p.pb2.-fw-700.center.-neutral-dark Spread
+                ul.list-reset.center.pb4
+                  li.inline-block
+                    a.Button--circle.-dark(href='#' rel="noopener noreferrer" target="_blank")
+                      svg(width="13" height="11"): use(xlink:href="#svg-twitter")
+                      .sr-only Share on Twitter
+                  li.inline-block.mx2
+                    a.Button--circle.-dark(href='#' rel="noopener noreferrer" target="_blank")
+                      svg(width="6" height="13"): use(xlink:href="#svg-facebook")
+                      .sr-only Share on Facebook
+                  li.inline-block
+                    a.Button--circle.-dark(href='#' rel="noopener noreferrer" target="_blank")
+                      svg(width="14" height="11"): use(xlink:href="#svg-email")
+                      .sr-only Share by Email
 
-        section
-          .mx4.pt3.pb4
-            h3.pb1 We all have the right to dispute unfair debts.
-            p We made these free tools to help us fight back. #[a(href=`${routeMappings.DisputeTools.url()}/#why-file-dispute`) Learn more]
+          section#panel-dispute-tools.TabPane(role='tabpanel' aria-hidden='true')
+            .mx4.pt3.pb4
+              h3.pb1 We all have the right to dispute unfair debts.
+              p We made these free tools to help us fight back. #[a(href=`${routeMappings.DisputeTools.url()}/#why-file-dispute`) Learn more]
 
-            .pt3.clearfix.mxn2.flex.flex-wrap
-              include ../mixins/dispute-tools/tool-card
-              each tool in collective.tools
-                .col.md-col-4.sm-col-6.col-12.p2
-                  +toolCardMixin(tool)
+              .pt3.clearfix.mxn2.flex.flex-wrap
+                include ../mixins/dispute-tools/tool-card
+                each tool in collective.tools
+                  .col.md-col-4.sm-col-6.col-12.p2
+                    +toolCardMixin(tool)
 
-        section
-          | Resources
+          section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
+            | Resources
 
 block scripts
   script(src="/build/javascripts/collectives/show.js" async)
