@@ -5,8 +5,8 @@ export default class Tabs extends Widget {
     super(config);
 
     this.panelPrefixRef = new RegExp(/^panel\-/);
-    this.tabs = [].slice.call(this.element.querySelectorAll('[role="tab"]'));
-    this.panels = [].slice.call(this.element.querySelectorAll('[role="tabpanel"]'));
+    this.tabs = Array.prototype.slice.call(this.element.querySelectorAll('[role="tab"]'));
+    this.panels = Array.prototype.slice.call(this.element.querySelectorAll('[role="tabpanel"]'));
 
     this._setup()._bindEvents();
   }
