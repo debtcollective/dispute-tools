@@ -140,7 +140,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       user.updateAttributes(req.body);
       user.account.updateAttributes(req.body);
 
-      user.role = user.role;
+      delete user.role;
 
       User.transaction((trx) => {
         return user.transacting(trx).save()
