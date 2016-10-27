@@ -6,7 +6,7 @@ block title
 block content
   .px2.pt3
     .max-width-4.mx-auto
-      h4.pb1.-bb-accent The Collectives
+      h4.pb1.border-bottom.-bw5.-border-accent The Collectives
 
       section.pt4.clearfix.mxn2.md-flex.flex-wrap
         each c in collectives
@@ -21,7 +21,7 @@ block content
               p.py2.-fw-500= c.description
             p.pb1.-accent.-fw-700 +4K strikers
             hr
-            .-bb-accent.py1
+            .border-bottom.-bw5.-border-accent.py1
               a.-fw-700(href=routeMappings.Collectives.show.url(c.id)) Go to collective
 
 block scripts

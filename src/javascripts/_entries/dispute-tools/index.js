@@ -42,7 +42,7 @@ class ViewDisputeToolsIndex extends NodeSupport {
 
     this.pisces = new Pisces();
     this.whyFileDisputeAnchor = document.getElementById('why-file-dispute-anchor');
-    this.whyFileDisputeSection = document.getElementById('why-file-dispute-section');
+    this.whyFileDisputeSection = document.getElementById('why-file-dispute');
 
     this.whyFileDisputeAnchor.addEventListener('click', () => {
       this.pisces.scrollToElement(this.whyFileDisputeSection);

@@ -1,4 +1,5 @@
 /* globals CONFIG, Class, RestfulController, Collective, DisputeTool, */
+const marked = require('marked');
 
 const CollectivesController = Class('CollectivesController').inherits(RestfulController)({
   beforeActions: [
@@ -29,7 +30,8 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
         .where({ id: req.params.id })
         .include('tools')
         .then(([collective]) => {
-          res.locals.collective = collective;
+          const manifest = marked(collective.manifest);
+          res.locals.collective = Object.assign({}, collective, { manifest });
           req.collective = collective;
 
           next();

@@ -1,0 +1,7 @@
+.ToolCard {
+  & h4 {line-height: 1.4em}
+
+  &__about-trigger {
+    padding: 0;
+  }
+}

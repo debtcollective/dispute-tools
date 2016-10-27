@@ -1,17 +1,10 @@
 @import '../../base';
 @import '../../components/dispute-tools/TextModal';
+@import '../../components/dispute-tools/ToolCard';
 
 .Tools__intro {
   margin-top: 0;
   border-bottom: 3px solid color(var(--k-color-palette-neutral-light) alpha(20%));
-}
-
-.ToolCard {
-  & h4 {line-height: 1.4em}
-
-  &__about-trigger {
-    padding: 0;
-  }
 }
 
 .Tools__title {
