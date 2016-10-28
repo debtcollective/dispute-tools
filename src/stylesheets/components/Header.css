@@ -30,7 +30,7 @@
     opacity: 0;
   }
 
-  & .Dropdown__label {max-width: 110px}
+  & .Dropdown__label {max-width: 190px}
 }
 
 .Header__logo {

@@ -11,6 +11,12 @@
   &.-right > .Dropdown__body {
     right: 0;
   }
+
+
+  & .-separator {
+    border-bottom: 1px solid var(--k-color-palette-neutral-light);
+    margin: var(--space-1) var(--space-2);
+  }
 }
 
 .Dropdown__head {
