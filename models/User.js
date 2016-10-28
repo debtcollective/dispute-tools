@@ -61,6 +61,57 @@ const User = Class('User').inherits(Krypton.Model)({
 
   roles: ['Admin', 'CollectiveManager', 'User'],
 
+  search(qs) {
+    const query = this.query()
+      .include('[account]');
+
+    const results = [];
+
+    return query.then((records) => {
+      records.forEach((record) => {
+        let nameFound = false;
+        let stateFound = false;
+        let zipFound = false;
+
+        if (qs.name && record.account.fullname.toLowerCase()
+          .search(qs.name.toLowerCase()) !== -1) {
+          nameFound = true;
+        }
+
+        if (qs.state && record.account.state.toLowerCase()
+          .search(qs.state.toLowerCase()) !== -1) {
+          stateFound = true;
+        }
+
+        if (qs.zip && record.account.zip
+          .search(qs.zip.toLowerCase()) !== -1) {
+          zipFound = true;
+        }
+
+        if (!qs.name) {
+          nameFound = true;
+        }
+
+        if (!qs.state) {
+          stateFound = true;
+        }
+
+        if (!qs.zip) {
+          zipFound = true;
+        }
+
+        if (nameFound && stateFound && zipFound) {
+          results.push(record);
+        }
+      });
+    })
+    .then(() => {
+      return results.map((item) => {
+        return item.id;
+      });
+    });
+  },
+
   prototype: {
     email: null,
     password: null,
@@ -80,7 +131,7 @@ const User = Class('User').inherits(Krypton.Model)({
           return done(new Error('Must provide a password'));
         }
 
-        done();
+        return done();
       });
 
       // If password is present hash password and set it as encryptedPassword
@@ -89,7 +140,7 @@ const User = Class('User').inherits(Krypton.Model)({
           return done();
         }
 
-        bcrypt.hash(model.password, bcrypt.genSaltSync(10), null, (err, hash) => {
+        return bcrypt.hash(model.password, bcrypt.genSaltSync(10), null, (err, hash) => {
           if (err) {
             return done(err);
           }

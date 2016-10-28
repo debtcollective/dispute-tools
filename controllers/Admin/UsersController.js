@@ -3,6 +3,7 @@ CONFIG, Collective, Account, DisputeTool */
 
 const fs = require('fs-extra');
 const path = require('path');
+const Promise = require('bluebird');
 
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 
@@ -16,25 +17,36 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
     },
     {
       before(req, res, next) {
-        RESTfulAPI.createMiddleware({
-          queryBuilder: User.query()
-            .include('[account, debtTypes]'),
-          filters: {
-            allowedFields: [
+        const query = User.query();
 
-            ],
-          },
-          order: {
-            default: '-created_at',
-            allowedFields: [
-              'created_at',
-              'updated_at',
-            ],
-          },
-          paginate: {
-            pageSize: 50,
-          },
-        })(req, res, next);
+        Promise.coroutine(function*() {
+          const userIds = yield User.search(req.query);
+
+          query.whereIn('id', userIds);
+        })()
+        .then(() => {
+          RESTfulAPI.createMiddleware({
+            queryBuilder: query
+              .include('[account, debtTypes]'),
+            filters: {
+              allowedFields: [
+                'email',
+                'role',
+              ],
+            },
+            order: {
+              default: '-created_at',
+              allowedFields: [
+                'created_at',
+                'updated_at',
+              ],
+            },
+            paginate: {
+              pageSize: 50,
+            },
+          })(req, res, next);
+        })
+        .catch(next);
       },
       actions: ['index'],
     },
