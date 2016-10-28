@@ -71,10 +71,10 @@ mixin _linkMixin(item, responsive = false)
     | #{item.text}
 
 mixin _logoutMixin
-  form(method="post" action=routeMappings.logout.url())
-    input(type="hidden" name="_csrf" value=csrfToken)
-    input(type="hidden" name="_method" value="DELETE")
-    button(type="submit")&attributes(attributes) Logout
+  form(method='post' action=routeMappings.logout.url())
+    input(type='hidden' name='_csrf' value=csrfToken)
+    input(type='hidden' name='_method' value='DELETE')
+    button(type='submit')&attributes(attributes) Logout
 
 mixin _responsiveMenuMixin
   ul.list-reset.pt1.center
@@ -112,22 +112,22 @@ mixin _defaultMenuMixin
                 if _menuItemsData.admin.length
                   svg.mr1(width='18' height='11'): use(xlink:href='#svg-key')
                 | #{currentUser.account.fullname}
-            ul.Dropdown__body(aria-hidden="true" aria-label="submenu")
+            ul.Dropdown__body(aria-hidden='true' aria-label='submenu')
               each item in _menuItemsData.loggedIn
-                li: a.Header__dropdown-item(href=item.url role="button" tabindex="0")= item.text
+                li: a.Header__dropdown-item(href=item.url role='button' tabindex='0')= item.text
               each item, index in _menuItemsData.admin
                 if index === 0
                   li.-separator
-                li: a.Header__dropdown-item(href=item.url role="button" tabindex="0")
+                li: a.Header__dropdown-item(href=item.url role='button' tabindex='0')
                   svg.mr1(width='18' height='11'): use(xlink:href='#svg-key')
                   | #{item.text}
               li.-separator
               li: +_logoutMixin(class='Header__dropdown-item')
 
   ul.list-reset.-fh.md-hide.lg-hide
-    li: button.js-hamburger-menu.-white.-k-btn.btn-link(style="padding: 13px 0 13px 16px;")
-      svg(viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%")
-        path(d="M4 8 L28 8 M4 16 L28 16 M4 24 L28 24")
+    li: button.js-hamburger-menu.-white.-k-btn.btn-link(style='padding: 13px 0 13px 16px;')
+      svg(viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='6.25%')
+        path(d='M4 8 L28 8 M4 16 L28 16 M4 24 L28 24')
       span.sr-only Toogle navigation
 
 mixin mixinHeaderNav(responsive)
