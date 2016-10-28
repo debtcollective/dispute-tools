@@ -1,6 +1,11 @@
 @import '../../base';
+@import '../../components/Tabs';
 @import '../../components/dispute-tools/ToolCard';
 @import '../../components/AvatarList';
+
+.Collective_TabPanes {
+  min-height: 500px;
+}
 
 .Collective_Manifest--text {
   & h3 {padding-bottom: var(--space-3)}
@@ -12,25 +17,6 @@
 }
 .wf-spacemono-n4-active .Collective_Manifest--text p {
   font-family: 'Space Mono', monospace;
-}
-
-.TabItem {
-  position: relative;
-  background-color: white;
-  margin: 0 1px;
-
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 5px;
-  }
-
-  &.active::after {
-    background-color: var(--k-color-palette-primary);
-  }
 }
 
 .Button--circle {

@@ -1,5 +1,6 @@
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
+import Tabs from '../../components/Tabs';
 
 class ViewCollectivesShow extends NodeSupport {
   constructor(config) {
@@ -9,6 +10,13 @@ class ViewCollectivesShow extends NodeSupport {
       name: 'Common',
       currentUser: config.currentUser,
       currentURL: config.currentURL,
+    }));
+
+    this.appendChild(new Tabs({
+      name: 'Tabs',
+      element: document.querySelector('[data-tabs-component]'),
+      updateHash: true,
+      defaultTab: 'panel-manifest',
     }));
   }
 }
