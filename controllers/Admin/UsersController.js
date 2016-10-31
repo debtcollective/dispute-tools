@@ -19,7 +19,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
       before(req, res, next) {
         const query = User.query();
 
-        Promise.coroutine(function*() {
+        Promise.coroutine(function* restfulapi() {
           const userIds = yield User.search(req.query);
 
           query.whereIn('id', userIds);
@@ -100,6 +100,8 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
       user.updateAttributes(req.body);
       user.account.updateAttributes(req.body);
 
+      const knex = User.knex();
+
       User.transaction((trx) => {
         return user.transacting(trx).save()
           .then(() => {
@@ -118,6 +120,34 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
             }
 
             return user.account.transacting(trx).save();
+          })
+          .then(() => {
+            return knex('CollectiveAdmins')
+              .transacting(trx)
+              .where({
+                user_id: user.id,
+              })
+              .del();
+          })
+          .then(() => {
+            if (user.role !== 'CollectiveAdmin') {
+              return Promise.resolve();
+            }
+
+            if (!Array.isArray(req.body.collectiveIds)) {
+              req.body.collectiveIds = [req.body.collectiveIds];
+            }
+
+            const collectiveAdmins = req.body.collectiveIds.map((id) => {
+              return {
+                user_id: user.id,
+                collective_id: id,
+              };
+            });
+
+            return knex('CollectiveAdmins')
+              .transacting(trx)
+              .insert(collectiveAdmins);
           })
           .finally(trx.commit)
           .catch(trx.rollback);
