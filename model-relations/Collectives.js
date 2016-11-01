@@ -12,4 +12,16 @@ Collective.relations = {
       relatedCol: 'tool_id',
     },
   },
+
+  users: {
+    type: 'HasManyThrough',
+    relatedModel: User,
+    ownerCol: 'id',
+    relatedCol: 'id',
+    through: {
+      tableName: 'UsersCollectives',
+      ownerCol: 'collective_id',
+      relatedCol: 'user_id',
+    },
+  }
 };
