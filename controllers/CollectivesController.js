@@ -12,7 +12,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
     {
       before(req, res, next) {
         Collective.query()
-          .include('tools')
+          .include('[tools, users]')
           .orderBy('created_at', 'DESC')
           .then((collectives) => {
             req.collectives = collectives;
@@ -28,7 +28,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
     _loadCollective(req, res, next) {
       Collective.query()
         .where({ id: req.params.id })
-        .include('tools')
+        .include('[tools, users]')
         .then(([collective]) => {
           const manifest = marked(collective.manifest);
           res.locals.collective = Object.assign({}, collective, { manifest });
