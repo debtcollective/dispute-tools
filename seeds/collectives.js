@@ -1,6 +1,4 @@
 exports.seed = (knex) => {
-  const uuid = require('uuid');
-
   return knex('Collectives').del()
     .then(() => {
       const collectives = [
@@ -18,7 +16,8 @@ exports.seed = (knex) => {
         },
         {
           id: '44444444-4444-4444-4444-444444444444',
-          name: 'Mortgage Debt Collective',
+          name: 'Housing Debt Collective',
+          description: 'For anyone in debt for a home.',
         },
         {
           id: '55555555-5555-5555-5555-555555555555',
@@ -46,6 +45,7 @@ exports.seed = (knex) => {
         return {
           id: collective.id,
           name: collective.name,
+          description: collective.description,
           created_at: new Date(),
           updated_at: new Date(),
         };
