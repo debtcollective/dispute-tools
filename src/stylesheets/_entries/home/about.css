@@ -2,6 +2,14 @@
 
 .About__cover {
   margin-top: -60px;
+  min-height: 300px;
+  background-color: var(--k-color-palette-neutral-dark);
+  background-image: url('/images/about/cover.jpg');
+  background-size: cover;
+
+  &-space {
+    padding-top: 53.417%;
+  }
 }
 
 .About__founder-item > div {

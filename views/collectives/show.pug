@@ -91,13 +91,29 @@ block content
           section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
             | Resources
 
+block append body
+  each tool in collective.tools
+    .Modal(
+      data-component-modal=`tool-modal-${tool.id}`
+      aria-hidden="true" role="dialog"
+    )
+      button(class="Modal__close" aria-label="close")
+        svg(class="-s18"): use(xlink:href="#svg-close")
+      .Modal__body(role="document")
+        .px2
+          .max-width-1.mx-auto
+            .Tools__Text-Modal!= tool.about
+
+
 block scripts
   script(src='/build/javascripts/collectives/show.js' async)
+  - var disputeIds = collective.tools.map(dispute => dispute.id);
   script.
     window.addEventListener('load', function() {
       var options = {
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
+        disputeIds: !{JSON.stringify(disputeIds)}
       };
       new ViewCollectivesShow(options);
     }, true);

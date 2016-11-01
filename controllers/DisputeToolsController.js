@@ -19,7 +19,7 @@ const DisputeToolsController = Class('DisputeToolsController')
 
                 next();
               })
-              .catch(next);;
+              .catch(next);
           },
         ],
         actions: ['show'],
@@ -56,8 +56,6 @@ const DisputeToolsController = Class('DisputeToolsController')
             _option.more = marked(_option.more);
           }
         });
-
-        // console.log(disputeTool.data.options[option].more)
 
         if (Object.keys(disputeTool.data.options).length === 1) {
           return disputeTool.createDispute({
