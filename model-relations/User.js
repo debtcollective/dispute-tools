@@ -28,4 +28,16 @@ User.relations = {
       relatedCol: 'collective_id',
     },
   },
+
+  collectiveAdmins: {
+    type: 'HasManyThrough',
+    relatedModel: Collective,
+    ownerCol: 'id',
+    relatedCol: 'id',
+    through: {
+      tableName: 'CollectiveAdmins',
+      ownerCol: 'user_id',
+      relatedCol: 'collective_id',
+    },
+  },
 };
