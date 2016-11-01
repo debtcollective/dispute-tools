@@ -1,5 +1,6 @@
 @import '../../base';
 @import '../../components/Tabs';
+@import '../../components/dispute-tools/TextModal';
 @import '../../components/dispute-tools/ToolCard';
 @import '../../components/AvatarList';
 

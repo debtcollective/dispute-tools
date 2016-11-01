@@ -30,9 +30,14 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
         .where({ id: req.params.id })
         .include('tools')
         .then(([collective]) => {
+          collective.tools.forEach(tool => {
+            tool.about = marked(tool.about);
+          });
+
           if (collective.manifest) {
             collective.manifest = marked(collective.manifest);
           }
+
           res.locals.collective = collective;
           req.collective = collective;
 
