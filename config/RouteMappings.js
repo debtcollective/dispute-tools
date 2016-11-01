@@ -108,6 +108,12 @@ const routeMappings = RouteMappings()
       });
   })
 
-  .resources('/Collectives');
+  .resources('/Collectives', (map) => {
+    return map()
+      .post('/:id/join', {
+        to: 'Collectives#join',
+        as: 'join',
+      });
+  });
 
 module.exports = routeMappings;

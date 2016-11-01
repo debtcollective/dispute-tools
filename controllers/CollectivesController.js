@@ -7,6 +7,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       before: '_loadCollective',
       actions: [
         'show',
+        'join',
       ],
     },
     {
@@ -52,6 +53,20 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
 
     show(req, res) {
       res.render('collectives/show');
+    },
+
+    join(req, res, next) {
+      User.knex()
+        .table('UsersCollectives')
+        .insert({
+          user_id: user.id,
+          collective_id: req.collective.id,
+        })
+        .then(() => {
+          req.flash('success', `You have successfully joined ${collective.name}`);
+          res.redirect(CONFIG.router.helpers.Collectives.show.url(req.params.id));
+        })
+        .catch(next);
     },
   },
 });
