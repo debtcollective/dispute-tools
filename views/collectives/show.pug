@@ -48,19 +48,20 @@ block content
             .clearfix.pt4
               .col.md-col-4.col-12 &nbsp;
               .col.md-col-7.col-12
-                pre= JSON.stringify(collective.users)
                 h1 Manifest
                 .Collective_Manifest--text!= collective.manifest
 
             div.pt3.pb2
               ul.AvatarList
-                -
-                  var _avatars = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'];
-                  for (var i = 0; i < 2; i++) {
-                    _avatars = _avatars.concat(_avatars)
-                  }
-                each avatar in _avatars
-                  li.mb1: img(src=`/images/temp/avatars/${avatar}.jpg` width='50' height='50')
+                each user in collective.users
+                  li.mb1
+                    - var _avatarUrl = '/images/profile/placeholder-small.png';
+                    if (user.account.image.exists('smallGrayscale'))
+                      - _avatarUrl = user.account.image.url('smallGrayscale')
+                    a.block(
+                      href=routeMappings.Users.show.url(user.id)
+                      title=`${user.account.fullname}’s profile`
+                    ): img(src=_avatarUrl alt=user.account.fullname width='50' height='50')
 
             .clearfix
               .col.md-col-4.col-12 &nbsp;
