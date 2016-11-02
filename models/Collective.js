@@ -5,7 +5,16 @@ const Collective = Class('Collective').inherits(Krypton.Model)({
   validations: {
     name: ['required'],
   },
-  attributes: ['id', 'name', 'description', 'manifest', 'createdAt', 'updatedAt'],
+  attributes: [
+    'id',
+    'name',
+    'description',
+    'manifest',
+    'goalTitle',
+    'goal',
+    'createdAt',
+    'updatedAt',
+  ],
 });
 
 module.exports = Collective;
