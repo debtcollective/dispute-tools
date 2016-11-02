@@ -23,6 +23,5 @@ Collective.relations = {
       ownerCol: 'collective_id',
       relatedCol: 'user_id',
     },
-    scope: ['limit', 50],
   }
 };
