@@ -1,0 +1,7 @@
+@import '../../base';
+
+hr {
+  height: 2px;
+  background-color: #4A4A4A;
+  border: none;
+}

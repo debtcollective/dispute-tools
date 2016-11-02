@@ -27,7 +27,7 @@ block content
       label.block.pb1.-fw-500 Description
       textarea.-k-input.-fw(
         name='description'
-        rows='3'
+        rows='2'
       )= collective.description
 
       label.block.pb1.-fw-500 Manifest
@@ -35,6 +35,19 @@ block content
         name='manifest'
         rows='10'
       )= collective.manifest
+
+      label.block.pb1.-fw-500 Goal title
+      input.-k-input.-fw(
+        type='text'
+        name='goalTitle'
+        value= collective.goalTitle
+      )
+
+      label.block.pb1.-fw-500 Goal
+      textarea.-k-input.-fw(
+        name='goal'
+        rows='2'
+      )= collective.goal
 
       .pb2
         p.pb1.-fw-500 Dispute Tools

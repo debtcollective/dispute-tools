@@ -1,7 +1,6 @@
 .AvatarList {
   padding: 0;
   margin: 0 -.25rem 1rem;
-  mix-blend-mode: luminosity;
 
   & > li {
     display: inline-block;
