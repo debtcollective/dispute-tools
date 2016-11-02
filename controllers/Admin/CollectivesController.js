@@ -64,21 +64,9 @@ Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(Res
     },
 
     update(req, res, next) {
-      const {
-        name,
-        description,
-        manifest,
-      } = req.body;
+      let { disputeToolIds } = req.body;
 
-      let {
-        disputeToolIds,
-      } = req.body;
-
-      req.collective.updateAttributes({
-        name,
-        description,
-        manifest,
-      });
+      req.collective.updateAttributes(req.body);
 
       const knex = Collective.knex();
 
