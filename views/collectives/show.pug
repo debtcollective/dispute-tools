@@ -66,10 +66,11 @@ block content
             .clearfix
               .col.md-col-4.col-12 &nbsp;
               .col.md-col-7.col-12
-                p.pb2.-ff-sec.-fw-700 To the Department of Education, we say:
+                p.pb2.-ff-sec.-fw-700= collective.goalTitle
 
-                div.border.p3.mb4(style='border-width: 8px')
-                  h4 Cancel all Corinthian students’ federal loans. Doing so will demonstrate your commitment to your job as a regulator.
+                if collective.goal
+                  div.border.p3.mb4(style='border-width: 8px')
+                    h4= collective.goal
 
                 p.pb2.-fw-700.center.-neutral-dark Spread
                 ul.list-reset.center.pb4
