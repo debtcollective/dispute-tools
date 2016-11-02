@@ -1,3 +1,4 @@
+import WebFont from 'webfontloader';
 import debounce from 'lodash/debounce';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
@@ -31,6 +32,12 @@ class ViewCollectivesShow extends NodeSupport {
 
     this.tabsOffsetSection = document.querySelector('[data-offset-section]');
     this.tabsOffset = 0;
+
+    WebFont.load({
+      google: {
+        families: ['Space Mono'],
+      },
+    });
 
     this._setup()
       ._bindEvents();
