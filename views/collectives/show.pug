@@ -8,7 +8,7 @@ block styles
 
 block content
   div
-    .px2.pt3
+    .px2.pt3(data-offset-section)
       .max-width-4.mx-auto
         h3.border-bottom.-bw5.-border-accent.pb2
           svg.inline-block.align-middle.-sw7.-stroke-accent(width='60' height='60')
@@ -24,9 +24,10 @@ block content
           .right.pr4
             span.-fw-700 Share
 
-    .-bg-white.-dark.px2(style='background-color: #f0f0f0;')
+    .relative.-bg-neutral-light.-dark.px2
+      div(data-hit-sticky)
       .max-width-4.mx-auto(data-tabs-component)
-        ul.list-reset.flex(role='tablist')
+        ul.list-reset.flex.-bg-neutral-light(role='tablist')
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-manifest' aria-selected='false')
             | Manifest
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-dispute-tools' aria-selected='false')
@@ -39,8 +40,8 @@ block content
         .Collective_TabPanes
           section#panel-manifest.TabPane(role='tabpanel' aria-hidden='true')
             .clearfix.pt4
-              .col.col-4 &nbsp;
-              .col.col-7
+              .col.md-col-4.col-12 &nbsp;
+              .col.md-col-7.col-12
                 h1 Manifest
                 .Collective_Manifest--text!= collective.manifest
 
@@ -55,8 +56,8 @@ block content
                   li.mb1: img(src=`/images/temp/avatars/${avatar}.jpg` width='50' height='50')
 
             .clearfix
-              .col.col-4 &nbsp;
-              .col.col-7
+              .col.md-col-4.col-12 &nbsp;
+              .col.md-col-7.col-12
                 p.pb2.-ff-sec.-fw-700 To the Department of Education, we say:
 
                 div.border.p3.mb4(style='border-width: 8px')
