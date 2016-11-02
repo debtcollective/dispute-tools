@@ -1,4 +1,4 @@
-/* globals CONFIG, Class, RestfulController, Collective, DisputeTool, */
+/* globals CONFIG, Class, RestfulController, Collective, DisputeTool, User */
 const marked = require('marked');
 
 const CollectivesController = Class('CollectivesController').inherits(RestfulController)({
@@ -13,7 +13,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
     {
       before(req, res, next) {
         Collective.query()
-          .include('[tools, users]')
+          .include('[tools, users.account]')
           .orderBy('created_at', 'DESC')
           .then((collectives) => {
             req.collectives = collectives;
@@ -24,12 +24,34 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       },
       actions: ['index'],
     },
+    {
+      before(req, res, next) {
+        res.locals.belongsToCollective = false;
+
+        if (!req.user) {
+          return next();
+        }
+
+        return User.knex().table('UsersCollectives')
+          .where({
+            user_id: req.user.id,
+            collective_id: req.params.id,
+          })
+          .then(result => {
+            if (result.length > 0) {
+              res.locals.belongsToCollective = true;
+            }
+            next();
+          });
+      },
+      actions: ['show'],
+    },
   ],
   prototype: {
     _loadCollective(req, res, next) {
       Collective.query()
         .where({ id: req.params.id })
-        .include('[tools, users]')
+        .include('[tools, users.[account]]')
         .then(([collective]) => {
           collective.tools.forEach(tool => {
             tool.about = marked(tool.about);
@@ -59,11 +81,11 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       User.knex()
         .table('UsersCollectives')
         .insert({
-          user_id: user.id,
+          user_id: req.user.id,
           collective_id: req.collective.id,
         })
         .then(() => {
-          req.flash('success', `You have successfully joined ${collective.name}`);
+          req.flash('success', `You have successfully joined ${req.collective.name}`);
           res.redirect(CONFIG.router.helpers.Collectives.show.url(req.params.id));
         })
         .catch(next);

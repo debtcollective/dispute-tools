@@ -14,15 +14,21 @@ block content
           svg.inline-block.align-middle.-sw7.-stroke-accent(width='60' height='60')
             use(xlink:href=`#svg-collective-${collective.id.charAt(0)}`)
               span.pl2.inline-block.align-middle.-accent= collective.name
-        .pt2.pb3.clearfix
+        .py2.clearfix
           .left
             span.-accent
               span.-fw-700 + 4,567&nbsp;
               span.-fw-500 people joined
             span.-fw-700.px2 &middot;
             span.-fw-700 $23,560 USD Debt to cancel
-          .right.pr4
-            span.-fw-700 Share
+          .right
+            unless belongsToCollective
+              if currentUser
+                form(method='post' action=routeMappings.Collectives.join.url(collective.id))
+                  input(type='hidden' name='_csrf' value=csrfToken)
+                  button.-k-btn.btn-link.-primary.-fw-700.-sm Join
+              else
+                button.js-login-link.-k-btn.btn-link.-primary.-fw-700.-sm Join
 
     .relative.-bg-neutral-light.-dark.px2
       div(data-hit-sticky)
@@ -42,6 +48,7 @@ block content
             .clearfix.pt4
               .col.md-col-4.col-12 &nbsp;
               .col.md-col-7.col-12
+                pre= JSON.stringify(collective.users)
                 h1 Manifest
                 .Collective_Manifest--text!= collective.manifest
 
