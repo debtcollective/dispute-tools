@@ -13,7 +13,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
     {
       before(req, res, next) {
         Collective.query()
-          .include('[tools, users.account]')
+          .include('[tools, users]')
           .orderBy('created_at', 'DESC')
           .then((collectives) => {
             req.collectives = collectives;
@@ -43,6 +43,22 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
             }
             next();
           });
+      },
+      actions: ['show'],
+    },
+    {
+      before(req, res, next) {
+        return Promise.each(req.collective.users, (user) => {
+          return Account.query()
+            .where('user_id', user.id)
+            .then(([account]) => {
+              user.account = account;
+            });
+        })
+        .then(() => {
+          next();
+        })
+        .catch(next);
       },
       actions: ['show'],
     },
