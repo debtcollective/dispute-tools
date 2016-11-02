@@ -1,5 +1,6 @@
 /* globals CONFIG, Class, RestfulController, Collective, DisputeTool, User */
 const marked = require('marked');
+const Promise = require('bluebird');
 
 const CollectivesController = Class('CollectivesController').inherits(RestfulController)({
   beforeActions: [
