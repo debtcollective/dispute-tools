@@ -63,7 +63,7 @@ const User = Class('User').inherits(Krypton.Model)({
 
   search(qs) {
     const query = this.knex()
-      .select(`Users.*`)
+      .select('Users.*')
       .from('Users')
       .join('Accounts', 'Users.id', 'Accounts.user_id');
 
