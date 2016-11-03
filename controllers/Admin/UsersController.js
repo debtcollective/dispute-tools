@@ -106,7 +106,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
       User.transaction((trx) => {
         return user.transacting(trx).save()
           .then(() => {
-            if (req.files.image && req.files.image.length > 0) {
+            if (req.files && req.files.image && req.files.image.length > 0) {
               const image = req.files.image[0];
 
               return user.account.attach('image', image.path, {
@@ -151,7 +151,10 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
               .insert(collectiveAdmins);
           })
           .finally(trx.commit)
-          .catch(trx.rollback);
+          .catch((err) => {
+            console.error(err)
+            trx.rollback()
+          });
       })
       .then(() => {
         user.activationToken = null;
