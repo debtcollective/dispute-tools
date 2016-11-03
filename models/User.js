@@ -75,7 +75,7 @@ const User = Class('User').inherits(Krypton.Model)({
         .andWhere('Accounts.state', 'ilike', `%${qs.state}%`);
     }
 
-    query
+    return query
       .then((results) => {
         return results.map((item) => {
           return item.id;
