@@ -68,11 +68,11 @@ const User = Class('User').inherits(Krypton.Model)({
       .join('Accounts', 'Users.id', 'Accounts.user_id')
       .where('Users.email', 'ilike', `%${qs.search}%`)
       .orWhere('Accounts.fullname', 'ilike', `%${qs.search}%`)
-      .orWhere('Accounts.zip', 'ilike', `%${qs.search}%`)
+      .orWhere('Accounts.zip', 'ilike', `%${qs.search}%`);
 
     if (qs.state && qs.state !== '') {
       query
-        .andWhere('Accounts.state', 'ilike', `%${qs.state}%`);
+        .andWhere('Accounts.state', '=', qs.state);
     }
 
     return query

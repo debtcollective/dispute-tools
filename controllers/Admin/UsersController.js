@@ -22,7 +22,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
         Promise.coroutine(function* restfulapi() {
           const userIds = yield User.search(req.query);
 
-          if (userIds.length > 0) {
+          if (req.query.search || req.query.state) {
             query.whereIn('id', userIds);
           }
         })()
