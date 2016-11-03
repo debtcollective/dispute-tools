@@ -77,7 +77,10 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
           })
           .catch(next);
       },
-      actions: ['edit'],
+      actions: [
+        'edit',
+        'update',
+      ],
     },
   ],
 
