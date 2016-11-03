@@ -22,7 +22,9 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
         Promise.coroutine(function* restfulapi() {
           const userIds = yield User.search(req.query);
 
-          query.whereIn('id', userIds);
+          if (req.query.search || req.query.state) {
+            query.whereIn('id', userIds);
+          }
         })()
         .then(() => {
           RESTfulAPI.createMiddleware({
@@ -30,7 +32,6 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
               .include('[account, debtTypes]'),
             filters: {
               allowedFields: [
-                'email',
                 'role',
               ],
             },
@@ -91,7 +92,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
     },
 
     edit(req, res) {
-      res.render('users/edit.pug');
+      res.render('admin/users/edit');
     },
 
     update(req, res) {

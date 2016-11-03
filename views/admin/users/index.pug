@@ -1,0 +1,113 @@
+extends ../../layouts/admin.pug
+
+block title
+  | Admin/Users — The Debt Collective
+
+block styles
+  link(href="/build/stylesheets/admin/users/index.css" rel="stylesheet")
+
+block content
+  -
+    var queryFilters = headers.query && headers.query.filters
+    var querySearch = headers.query && headers.query.search;
+    var queryState = headers.query && headers.query.state;
+    var queryOrder = headers.query && headers.query.order
+
+  .wrapper.px2.pb3
+    h2.pt4.pb2 Users
+
+    table.-fw(cellpadding='0' cellspacing='0')
+      thead
+        tr
+          th(colspan='3')
+            .-input-group-icon
+              svg(width='18' height='18'): use(xlink:href='#svg-search')
+              input.-k-input.-clean.-fw-700(
+                name="usersListValue[search]"
+                placeholder='Seach by name, email, zip...'
+                value= querySearch
+              )
+
+          th
+            .-k-select.-clean
+              select.-fw-700.-fw(name='usersListValue[state]')
+                option(value="") State
+                each state in US_STATES
+                  option(
+                    value= state
+                    selected= queryState === state
+                  )= state
+
+          th
+            .-k-select.-clean
+              select.-fw-700.-fw(name='usersListValue[role]')
+                option(value="") Role
+                each role in User.roles
+                  option(
+                    value= role
+                    selected= queryFilters && queryFilters.role === role
+                  )= role
+
+          th
+            .-k-select.-clean
+              select.-fw-700.-fw(name='usersListValue[order]')
+                option(value="") Date
+                option(
+                  value='created_at'
+                  selected= queryOrder === 'created_at'
+                )= 'ASC'
+                option(
+                  value='-created_at'
+                  selected= queryOrder === '-created_at'
+                )= 'DESC'
+
+          th.-wsnw
+            button.-k-btn.btn-primary.-fw-700(
+              name='usersListValue[applyFilters]'
+              disabled= true
+            ) Apply
+            button.-k-btn.btn-link(
+              name='usersListValue[resetFilters]'
+              disabled= !querySearch && !queryFilters && !queryState && !queryOrder
+            ) Reset
+
+
+      tbody
+        each user in users
+          tr
+            td
+              .flex.items-center
+                -
+                  var _avatarUrl = '/images/profile/placeholder-small.png';
+
+                  if (user.account.image.exists('small'))
+                    _avatarUrl = user.account.image.url('small');
+
+                div: img.block(src= _avatarUrl alt=user.account.fullname width="50" height="50")
+                p.pl2.-fw-700= user.account.fullname
+            td.-fw-500= user.email
+            td.-fw-500= user.account.zip
+            td.-fw-500= user.account.state
+            td.-fw-700= user.role
+            td.-fw-500= new Date(user.createdAt).toDateString()
+            td.center
+              a.inline-block.btn-clear.p1.align-top(
+                href= routeMappings.Admin.Users.edit.url(user.id)
+              )
+                svg.-pen.block.align-top(width='15' height='15')
+                  use(xlink:href='#svg-pencil')
+
+    include ../../mixins/pagination
+    +mixinPagination(headers.current_page, headers.total_pages)(class='pt3')
+
+block scripts
+  script(src="/build/javascripts/admin/users/index.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+        isAdmin: true,
+      };
+      new ViewAdminUsersIndex(options);
+    }, true);

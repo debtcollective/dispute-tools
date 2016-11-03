@@ -1,4 +1,5 @@
 import Widget from '../../../lib/widget';
+import { serialize } from '../../../lib/AdminUtils';
 import AdminDisputesIndexTableControls from './AdminDisputesIndexTableControls';
 import AdminDisputesIndexTable from './AdminDisputesIndexTable';
 import Modal from '../../Modal';
@@ -67,7 +68,7 @@ export default class AdminDisputesIndexController extends Widget {
     });
 
     this.AdminDisputesIndexTableControls.bind('applyFilters', () => {
-      const search = this._serialize(this._query);
+      const search = serialize(this._query);
       window.location.replace(`?${search}`);
     });
 
@@ -89,7 +90,7 @@ export default class AdminDisputesIndexController extends Widget {
     ev.stopPropagation();
 
     if (target.tagName === 'BUTTON') {
-      const search = this._serialize(this.originalQuery);
+      const search = serialize(this.originalQuery);
       window.location.replace(`?page=${target.dataset.page}&${search}`);
     }
   }
@@ -105,20 +106,5 @@ export default class AdminDisputesIndexController extends Widget {
     }
 
     return this.AdminDisputesIndexTableControls.disableApplyButton();
-  }
-
-  _serialize(obj, prefix) {
-    const str = [];
-
-    Object.keys(obj).forEach((p) => {
-      const k = prefix ? `${prefix}[${p}]` : p;
-      const v = obj[p];
-
-      if (v) {
-        str.push(typeof v === 'object' ? this._serialize(v, k) : `${encodeURIComponent(k)}=${encodeURIComponent(v)}`);
-      }
-    });
-
-    return str.join('&');
   }
 }

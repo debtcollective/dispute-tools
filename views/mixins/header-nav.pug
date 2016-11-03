@@ -48,6 +48,10 @@
   if (currentUser && currentUser.role === 'Admin') {
     _menuItemsData.admin = _menuItemsData.admin.concat([
       {
+        text: 'Users',
+        url: routeMappings.Admin.Users.url(),
+      },
+      {
         text: 'Disputes',
         url: routeMappings.Admin.Disputes.url(),
       },
