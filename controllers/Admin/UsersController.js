@@ -183,7 +183,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
 
         res.locals.errors = err.errors || err;
 
-        res.render('users/edit.pug');
+        res.render('admin/users/edit.pug');
       });
     },
   },
