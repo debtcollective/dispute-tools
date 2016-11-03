@@ -23,5 +23,8 @@ Collective.relations = {
       ownerCol: 'collective_id',
       relatedCol: 'user_id',
     },
+    filters: {
+      limit: 50,
+    },
   }
 };
