@@ -65,10 +65,14 @@ const User = Class('User').inherits(Krypton.Model)({
     const query = this.knex()
       .select(`Users.*`)
       .from('Users')
-      .join('Accounts', 'Users.id', 'Accounts.user_id')
-      .where('Users.email', 'ilike', `%${qs.search}%`)
-      .orWhere('Accounts.fullname', 'ilike', `%${qs.search}%`)
-      .orWhere('Accounts.zip', 'ilike', `%${qs.search}%`);
+      .join('Accounts', 'Users.id', 'Accounts.user_id');
+
+    if (qs.search && qs.search !== '') {
+      query
+        .where('Users.email', 'ilike', `%${qs.search}%`)
+        .orWhere('Accounts.fullname', 'ilike', `%${qs.search}%`)
+        .orWhere('Accounts.zip', 'ilike', `%${qs.search}%`);
+    }
 
     if (qs.state && qs.state !== '') {
       query
