@@ -164,10 +164,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
               .insert(collectiveAdmins);
           })
           .finally(trx.commit)
-          .catch((err) => {
-            console.error(err)
-            trx.rollback()
-          });
+          .catch(trx.rollback);
       })
       .then(() => {
         user.activationToken = null;
