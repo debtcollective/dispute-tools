@@ -84,7 +84,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
   prototype: {
     _loadUser(req, res, next) {
       const query = User.query()
-        .include('[account, debtTypes]')
+        .include('[account, debtTypes, collectiveAdmins]')
         .where('id', req.params.id);
 
       query
