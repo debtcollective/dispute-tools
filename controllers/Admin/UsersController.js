@@ -144,7 +144,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
               .del();
           })
           .then(() => {
-            if (user.role !== 'CollectiveAdmin') {
+            if (user.role !== 'CollectiveManager') {
               return Promise.resolve();
             }
 
