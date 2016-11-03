@@ -66,6 +66,19 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
       },
       actions: ['index'],
     },
+    {
+      before(req, res, next) {
+        Collective.query()
+          .orderBy('created_at', 'ASC')
+          .then((collectives) => {
+            req.collectives = collectives;
+            res.locals.collectives = collectives;
+            next();
+          })
+          .catch(next);
+      },
+      actions: ['show'],
+    },
   ],
 
   prototype: {
