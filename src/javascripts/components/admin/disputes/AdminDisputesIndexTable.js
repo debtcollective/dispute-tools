@@ -54,15 +54,4 @@ export default class AdminDisputesIndexTable extends Widget {
 
     return null;
   }
-
-  filterItemsByIndex(indexes) {
-    for (let i = 0, len = this.disputes.length; i < len; i++) {
-      if (indexes.indexOf(i) > -1) {
-        this.element.children[i].style.display = 'none';
-      } else {
-        this.element.children[i].style.display = '';
-      }
-    }
-    return this;
-  }
 }

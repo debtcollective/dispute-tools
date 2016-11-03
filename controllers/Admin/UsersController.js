@@ -91,7 +91,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
     },
 
     edit(req, res) {
-      res.render('users/edit.pug');
+      res.render('admin/users/edit');
     },
 
     update(req, res) {

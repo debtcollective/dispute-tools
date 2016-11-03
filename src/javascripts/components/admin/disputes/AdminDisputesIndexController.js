@@ -115,6 +115,7 @@ export default class AdminDisputesIndexController extends Widget {
       const v = obj[p];
 
       if (v) {
+        /* eslint-disable max-len */
         str.push(typeof v === 'object' ? this._serialize(v, k) : `${encodeURIComponent(k)}=${encodeURIComponent(v)}`);
       }
     });
