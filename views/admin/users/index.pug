@@ -9,8 +9,7 @@ block styles
 block content
   -
     var queryFilters = headers.query && headers.query.filters
-    var queryName = headers.query && headers.query.name;
-    var queryZip = headers.query && headers.query.zip;
+    var querySearch = headers.query && headers.query.search;
     var queryState = headers.query && headers.query.state;
     var queryOrder = headers.query && headers.query.order
 
@@ -20,31 +19,13 @@ block content
     table.-fw(cellpadding='0' cellspacing='0')
       thead
         tr
-          th
+          th(colspan='3')
             .-input-group-icon
               svg(width='18' height='18'): use(xlink:href='#svg-search')
               input.-k-input.-clean.-fw-700(
-                name="usersListValue[name]"
-                placeholder='Name...'
-                value= queryName
-              )
-
-          th
-            .-input-group-icon
-              svg(width='18' height='18'): use(xlink:href='#svg-search')
-              input.-k-input.-clean.-fw-700(
-                name="usersListValue[email]"
-                placeholder='Email...'
-                value= queryFilters && queryFilters.email
-              )
-
-          th
-            .-input-group-icon
-              svg(width='18' height='18'): use(xlink:href='#svg-search')
-              input.-k-input.-clean.-fw-700(
-                name="usersListValue[zip]"
-                placeholder='ZIP...'
-                value= queryZip
+                name="usersListValue[search]"
+                placeholder='Seach by name, email, zip...'
+                value= querySearch
               )
 
           th
@@ -87,7 +68,7 @@ block content
             ) Apply
             button.-k-btn.btn-link(
               name='usersListValue[resetFilters]'
-              disabled= !queryName && !queryFilters && !queryZip && !queryState && !queryOrder
+              disabled= !querySearch && !queryFilters && !queryState && !queryOrder
             ) Reset
 
 

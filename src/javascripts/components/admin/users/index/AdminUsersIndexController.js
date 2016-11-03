@@ -12,11 +12,9 @@ export default class AdminUsersIndexController extends Widget {
 
     this.originalQuery = {
       filters: {
-        email: this.AdminUsersIndexTableControls.emailInput.value,
         role: this.AdminUsersIndexTableControls.roleSelect.value,
       },
-      name: this.AdminUsersIndexTableControls.nameInput.value,
-      zip: this.AdminUsersIndexTableControls.zipInput.value,
+      search: this.AdminUsersIndexTableControls.searchInput.value,
       state: this.AdminUsersIndexTableControls.stateSelect.value,
       order: this.AdminUsersIndexTableControls.orderSelect.value,
     };
@@ -29,18 +27,8 @@ export default class AdminUsersIndexController extends Widget {
   }
 
   _bindEvents() {
-    this.AdminUsersIndexTableControls.bind('nameInput', data => {
-      this._query.name = data.value;
-      this._updateApplyButton();
-    });
-
-    this.AdminUsersIndexTableControls.bind('emailInput', data => {
-      this._query.filters.email = data.value;
-      this._updateApplyButton();
-    });
-
-    this.AdminUsersIndexTableControls.bind('zipInput', data => {
-      this._query.zip = data.value;
+    this.AdminUsersIndexTableControls.bind('searchInput', data => {
+      this._query.search = data.value;
       this._updateApplyButton();
     });
 
@@ -74,10 +62,8 @@ export default class AdminUsersIndexController extends Widget {
 
   _updateApplyButton() {
     if (
-      (this._query.filters.email !== this.originalQuery.filters.email) ||
       (this._query.filters.role !== this.originalQuery.filters.role) ||
-      (this._query.name !== this.originalQuery.name) ||
-      (this._query.zip !== this.originalQuery.zip) ||
+      (this._query.search !== this.originalQuery.search) ||
       (this._query.state !== this.originalQuery.state) ||
       (this._query.order !== this.originalQuery.order)
     ) {

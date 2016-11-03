@@ -4,9 +4,7 @@ export default class AdminUsersIndexTableControls extends Widget {
   constructor(config) {
     super(config);
 
-    this.nameInput = this.element.querySelector('[name="usersListValue[name]"]');
-    this.emailInput = this.element.querySelector('[name="usersListValue[email]"]');
-    this.zipInput = this.element.querySelector('[name="usersListValue[zip]"]');
+    this.searchInput = this.element.querySelector('[name="usersListValue[search]"]');
     this.stateSelect = this.element.querySelector('[name="usersListValue[state]"]');
     this.roleSelect = this.element.querySelector('[name="usersListValue[role]"]');
     this.orderSelect = this.element.querySelector('[name="usersListValue[order]"]');
@@ -18,21 +16,9 @@ export default class AdminUsersIndexTableControls extends Widget {
   }
 
   _bindEvents() {
-    this.nameInput.addEventListener('input', ev => {
-      this.dispatch('nameInput', {
+    this.searchInput.addEventListener('input', ev => {
+      this.dispatch('searchInput', {
         value: ev.target.value.toLowerCase(),
-      });
-    });
-
-    this.emailInput.addEventListener('input', ev => {
-      this.dispatch('emailInput', {
-        value: ev.target.value.toLowerCase(),
-      });
-    });
-
-    this.zipInput.addEventListener('input', ev => {
-      this.dispatch('zipInput', {
-        value: ev.target.value,
       });
     });
 
