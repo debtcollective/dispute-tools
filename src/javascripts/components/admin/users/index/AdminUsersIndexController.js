@@ -23,6 +23,7 @@ export default class AdminUsersIndexController extends Widget {
 
     this._query = JSON.parse(JSON.stringify(this.originalQuery));
 
+    this.pagination = document.querySelector('.Pagination ul');
 
     this._bindEvents();
   }
@@ -30,32 +31,32 @@ export default class AdminUsersIndexController extends Widget {
   _bindEvents() {
     this.AdminUsersIndexTableControls.bind('nameInput', data => {
       this._query.name = data.value;
-      this._enableButtons();
+      this._updateApplyButton();
     });
 
     this.AdminUsersIndexTableControls.bind('emailInput', data => {
       this._query.filters.email = data.value;
-      this._enableButtons();
+      this._updateApplyButton();
     });
 
     this.AdminUsersIndexTableControls.bind('zipInput', data => {
       this._query.zip = data.value;
-      this._enableButtons();
+      this._updateApplyButton();
     });
 
     this.AdminUsersIndexTableControls.bind('stateChange', data => {
       this._query.state = data.value;
-      this._enableButtons();
+      this._updateApplyButton();
     });
 
     this.AdminUsersIndexTableControls.bind('roleChange', data => {
       this._query.filters.role = data.value;
-      this._enableButtons();
+      this._updateApplyButton();
     });
 
     this.AdminUsersIndexTableControls.bind('orderChange', data => {
       this._query.order = data.value;
-      this._enableButtons();
+      this._updateApplyButton();
     });
 
     this.AdminUsersIndexTableControls.bind('applyFilters', () => {
@@ -66,9 +67,12 @@ export default class AdminUsersIndexController extends Widget {
     this.AdminUsersIndexTableControls.bind('resetFilters', () => {
       window.location.replace('?page=1');
     });
+
+    this._paginationClickHandlerRef = this._paginationClickHandler.bind(this);
+    this.pagination.addEventListener('click', this._paginationClickHandlerRef);
   }
 
-  _enableButtons() {
+  _updateApplyButton() {
     if (
       (this._query.filters.email !== this.originalQuery.filters.email) ||
       (this._query.filters.role !== this.originalQuery.filters.role) ||
@@ -98,4 +102,15 @@ export default class AdminUsersIndexController extends Widget {
 
     return str.join('&');
   }
+
+  _paginationClickHandler(ev) {
+    const target = ev.target;
+    ev.stopPropagation();
+
+    if (target.tagName === 'BUTTON') {
+      const search = this._serialize(this.originalQuery);
+      window.location.replace(`?page=${target.dataset.page}&${search}`);
+    }
+  }
+
 }
