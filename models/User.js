@@ -62,54 +62,18 @@ const User = Class('User').inherits(Krypton.Model)({
   roles: ['Admin', 'CollectiveManager', 'User'],
 
   search(qs) {
-    const query = this.query()
-      .include('[account]');
-
-    const results = [];
-
-    return query.then((records) => {
-      records.forEach((record) => {
-        let nameFound = false;
-        let stateFound = false;
-        let zipFound = false;
-
-        if (qs.name && record.account.fullname.toLowerCase()
-          .search(qs.name.toLowerCase()) !== -1) {
-          nameFound = true;
-        }
-
-        if (qs.state && record.account.state.toLowerCase()
-          .search(qs.state.toLowerCase()) !== -1) {
-          stateFound = true;
-        }
-
-        if (qs.zip && record.account.zip
-          .search(qs.zip.toLowerCase()) !== -1) {
-          zipFound = true;
-        }
-
-        if (!qs.name) {
-          nameFound = true;
-        }
-
-        if (!qs.state) {
-          stateFound = true;
-        }
-
-        if (!qs.zip) {
-          zipFound = true;
-        }
-
-        if (nameFound && stateFound && zipFound) {
-          results.push(record);
-        }
+    return this.knex()
+      .select(`Users.*`)
+      .from('Users')
+      .join('Accounts', 'Users.id', 'Accounts.user_id')
+      .where('Users.email', 'ilike', `%${qs.search}%`)
+      .orWhere('Accounts.fullname', 'ilike', `%${qs.search}%`)
+      .orWhere('Accounts.zip', 'ilike', `%${qs.search}%`)
+      .then((results) => {
+        return results.map((item) => {
+          return item.id;
+        });
       });
-    })
-    .then(() => {
-      return results.map((item) => {
-        return item.id;
-      });
-    });
   },
 
   prototype: {
