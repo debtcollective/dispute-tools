@@ -1,4 +1,5 @@
 import Widget from '../../../../lib/widget';
+import { serialize } from '../../../../lib/AdminUtils';
 import AdminUsersIndexTableControls from './AdminUsersIndexTableControls';
 
 export default class AdminUsersIndexController extends Widget {
@@ -48,7 +49,7 @@ export default class AdminUsersIndexController extends Widget {
     });
 
     this.AdminUsersIndexTableControls.bind('applyFilters', () => {
-      const search = this._serialize(this._query);
+      const search = serialize(this._query);
       window.location.replace(`?${search}`);
     });
 
@@ -73,30 +74,13 @@ export default class AdminUsersIndexController extends Widget {
     return this.AdminUsersIndexTableControls.disableApplyButton();
   }
 
-  _serialize(obj, prefix) {
-    const str = [];
-
-    Object.keys(obj).forEach((p) => {
-      const k = prefix ? `${prefix}[${p}]` : p;
-      const v = obj[p];
-
-      if (v) {
-        /* eslint-disable max-len */
-        str.push(typeof v === 'object' ? this._serialize(v, k) : `${encodeURIComponent(k)}=${encodeURIComponent(v)}`);
-      }
-    });
-
-    return str.join('&');
-  }
-
   _paginationClickHandler(ev) {
     const target = ev.target;
     ev.stopPropagation();
 
     if (target.tagName === 'BUTTON') {
-      const search = this._serialize(this.originalQuery);
+      const search = serialize(this.originalQuery);
       window.location.replace(`?page=${target.dataset.page}&${search}`);
     }
   }
-
 }
