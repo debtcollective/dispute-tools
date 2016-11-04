@@ -14,7 +14,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
     {
       before(req, res, next) {
         Collective.query()
-          .include('[tools, users]')
+          .include('[tools, users, campaigns]')
           .orderBy('created_at', 'DESC')
           .then((collectives) => {
             req.collectives = collectives;
@@ -68,7 +68,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
     _loadCollective(req, res, next) {
       Collective.query()
         .where({ id: req.params.id })
-        .include('[tools, users.[account]]')
+        .include('[tools, users.[account], campaigns]')
         .then(([collective]) => {
           collective.tools.forEach(tool => {
             tool.about = marked(tool.about);

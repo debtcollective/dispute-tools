@@ -1,4 +1,4 @@
-/* globals Collective, DisputeTool, */
+/* globals Collective, DisputeTool, User, Campaign */
 
 Collective.relations = {
   tools: {
@@ -26,5 +26,13 @@ Collective.relations = {
     filters: {
       limit: 50,
     },
-  }
+  },
+
+  campaigns: {
+    type: 'HasMany',
+    relatedModel: Campaign,
+    ownerCol: 'id',
+    relatedCol: 'collective_id',
+    orderBy: ['created_at', 'DESC'],
+  },
 };
