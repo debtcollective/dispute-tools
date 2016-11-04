@@ -145,7 +145,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       User.transaction((trx) => {
         return user.transacting(trx).save()
           .then(() => {
-            if (req.files.image && req.files.image.length > 0) {
+            if (req.files && req.files.image && req.files.image.length > 0) {
               const image = req.files.image[0];
 
               return user.account.attach('image', image.path, {

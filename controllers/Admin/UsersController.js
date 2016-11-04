@@ -66,12 +66,28 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
       },
       actions: ['index'],
     },
+    {
+      before(req, res, next) {
+        Collective.query()
+          .orderBy('created_at', 'ASC')
+          .then((collectives) => {
+            req.collectives = collectives;
+            res.locals.collectives = collectives;
+            next();
+          })
+          .catch(next);
+      },
+      actions: [
+        'edit',
+        'update',
+      ],
+    },
   ],
 
   prototype: {
     _loadUser(req, res, next) {
       const query = User.query()
-        .include('[account, debtTypes]')
+        .include('[account, debtTypes, collectiveAdmins]')
         .where('id', req.params.id);
 
       query
@@ -106,7 +122,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
       User.transaction((trx) => {
         return user.transacting(trx).save()
           .then(() => {
-            if (req.files.image && req.files.image.length > 0) {
+            if (req.files && req.files.image && req.files.image.length > 0) {
               const image = req.files.image[0];
 
               return user.account.attach('image', image.path, {
@@ -131,7 +147,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
               .del();
           })
           .then(() => {
-            if (user.role !== 'CollectiveAdmin') {
+            if (user.role !== 'CollectiveManager') {
               return Promise.resolve();
             }
 
@@ -167,7 +183,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
 
         res.locals.errors = err.errors || err;
 
-        res.render('users/edit.pug');
+        res.render('admin/users/edit.pug');
       });
     },
   },
