@@ -16,6 +16,7 @@ block content
       form(
         method='post'
         action= routeMappings.Admin.Users.update.url(user.id)
+        enctype="multipart/form-data"
         data-component-editform
       )
         input(type='hidden' name='_csrf' value=csrfToken)
@@ -23,8 +24,8 @@ block content
 
         .clearfix.mxn1.pb1
           .col.col-8.px1
-            if (user.account.image.exists('mediumGrayscale'))
-              .EditProfile__image-wrapper.relative.block.-fw(style=`background-image: url(${user.account.image.url('mediumGrayscale')});`)
+            if (user.account.image.exists('medium'))
+              .EditProfile__image-wrapper.relative.block.-fw(style=`background-image: url(${user.account.image.url('medium')});`)
             else
               .EditProfile__image-wrapper.relative.block.-fw(style='background-image: url(/images/profile/placeholder.png);')
           .col.col-4.px1
