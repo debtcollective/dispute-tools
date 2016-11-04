@@ -16,6 +16,7 @@ block content
       form(
         method='post'
         action= routeMappings.Admin.Users.update.url(user.id)
+        data-component-editform
       )
         input(type='hidden' name='_csrf' value=csrfToken)
         input(name='_method' type='hidden' value='PUT')
@@ -31,10 +32,9 @@ block content
               input.absolute.top-0.left-0.-fh.-fw(name="image" type="file" accept="image/*" style="opacity: 0;")
               span.-fw-500.-primary Upload
 
-
         .py1
           label.block.pb1.-fw-500 Role
-          .-k-select
+          .-k-select.-border-neutral-mid
               select.-fw(name='role')
                 option(value='') Role
                 each role in User.roles
@@ -42,26 +42,48 @@ block content
                     value= role
                     selected!= user.role === role
                   )= role
+          p(class="-on-error -danger -caption -fw-500 mt1")
+
+        .py1(
+          class= !user.collectiveAdmins.length && 'hide'
+          data-collective-manager
+        )
+          label.block.pb1.-fw-500 Collectives
+          - var collectiveAdminIds = user.collectiveAdmins.map(c => c.id);
+          each collective in collectives
+            div
+              input(
+                type='checkbox'
+                name='collectiveIds'
+                value= collective.id
+                id= collective.id
+                checked= collectiveAdminIds.includes(collective.id)
+              )
+              label.pl1(
+                for= collective.id
+              )= collective.name
 
         .py1
           label.block.pb1.-fw-500 Fullname
-          input.-k-input.-fw(
+          input.-k-input.-fw.-border-neutral-mid(
             type='text'
             name='fullname'
             value= user.account.fullname
           )
+          p(class="-on-error -danger -caption -fw-500 mt1")
 
         .py1
           label.block.pb1.-fw-500 Email
-          input.-k-input.-fw(
+          input.-k-input.-fw.-border-neutral-mid(
             type='email'
             name='email'
             value= user.email
           )
+          p(class="-on-error -danger -caption -fw-500 mt1")
 
         .py1
           label.block.pb1.-fw-500 Phone
-          input.-k-input.-fw(
+          input.-k-input.-fw.-border-neutral-mid(
             type='phone'
             name='phone'
             value= user.account.phone
@@ -70,7 +92,7 @@ block content
         .clearfix.mxn1.py1
           .col.col-6.px1
             label.block.pb1.-fw-500 State
-            .-k-select
+            .-k-select.-border-neutral-mid
               select.-fw(name="state")
                 option(value="") State
                 each state in US_STATES
@@ -78,18 +100,20 @@ block content
                     value= state
                     selected!= user.account.state === state
                   )= state
+            p(class="-on-error -danger -caption -fw-500 mt1")
 
           .col.col-6.px1
             label.block.pb1.-fw-500 ZIP
-            input.-k-input.-fw(
+            input.-k-input.-fw.-border-neutral-mid(
               type='text'
               name='zip'
               value= user.account.zip
             )
+          p(class="-on-error -danger -caption -fw-500 mt1")
 
         .py1
           label.block.pb1.-fw-500 Bio
-          textarea.-k-input.-fw.-ff-sec(name="bio" rows="4") #{user.account.bio}
+          textarea.-k-input.-fw.-ff-sec.-border-neutral-mid(name="bio" rows="4") #{user.account.bio}
 
         div
           input(
@@ -100,31 +124,44 @@ block content
 
           .py1
             label.block.pb1.-fw-500 Twitter link
-            input.-k-input.-fw(
+            input.-k-input.-fw.-border-neutral-mid(
               name="twitter-url"
               type='text'
               value=user.account.socialLinks.twitter
               placeholder="https://twitter.com/username"
             )
+            p(class="-on-error -danger -caption -fw-500 mt1")
 
           .py1
             label.block.pb1.-fw-500 Facebook link
-            input.-k-input.-fw(
+            input.-k-input.-fw.-border-neutral-mid(
               name="facebook-url"
               type='text'
               value=user.account.socialLinks.facebook
               placeholder="https://facebook.com/username"
             )
+            p(class="-on-error -danger -caption -fw-500 mt1")
 
           .py1
             label.block.pb1.-fw-500 Website
-            input.-k-input.-fw(
+            input.-k-input.-fw.-border-neutral-mid(
               name="website-url"
               type='text'
               value=user.account.socialLinks.website
               placeholder="http://website.com"
             )
+            p(class="-on-error -danger -caption -fw-500 mt1")
 
         .pt3
           button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Save changes
 
+block scripts
+  script(src="/build/javascripts/admin/users/edit.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new ViewAdminUsersEdit(options);
+    }, true);
