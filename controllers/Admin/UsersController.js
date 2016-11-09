@@ -12,6 +12,14 @@ global.Admin = global.Admin || {};
 Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulController)({
   beforeActions: [
     {
+      before: [
+        (req, res, next) => {
+          return neonode.controllers.Home._authenticate(req, res, next);
+        },
+      ],
+      actions: ['index', 'edit', 'update'],
+    },
+    {
       before: '_loadUser',
       actions: ['edit', 'update'],
     },
