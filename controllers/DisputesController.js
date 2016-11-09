@@ -145,8 +145,6 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     updateDisputeData(req, res, next) {
       const dispute = res.locals.dispute;
 
-      console.log(req.body)
-
       const commands = ['setForm', 'setDisputeProcess', 'setConfirmFollowUp'];
 
       if (!commands.includes(req.body.command)) {

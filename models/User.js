@@ -61,6 +61,32 @@ const User = Class('User').inherits(Krypton.Model)({
 
   roles: ['Admin', 'CollectiveManager', 'User'],
 
+  search(qs) {
+    const query = this.knex()
+      .select('Users.*')
+      .from('Users')
+      .join('Accounts', 'Users.id', 'Accounts.user_id');
+
+    if (qs.search && qs.search !== '') {
+      query
+        .where('Users.email', 'ilike', `%${qs.search}%`)
+        .orWhere('Accounts.fullname', 'ilike', `%${qs.search}%`)
+        .orWhere('Accounts.zip', 'ilike', `%${qs.search}%`);
+    }
+
+    if (qs.state && qs.state !== '') {
+      query
+        .andWhere('Accounts.state', '=', qs.state);
+    }
+
+    return query
+      .then((results) => {
+        return results.map((item) => {
+          return item.id;
+        });
+      });
+  },
+
   prototype: {
     email: null,
     password: null,
@@ -80,7 +106,7 @@ const User = Class('User').inherits(Krypton.Model)({
           return done(new Error('Must provide a password'));
         }
 
-        done();
+        return done();
       });
 
       // If password is present hash password and set it as encryptedPassword
@@ -89,7 +115,7 @@ const User = Class('User').inherits(Krypton.Model)({
           return done();
         }
 
-        bcrypt.hash(model.password, bcrypt.genSaltSync(10), null, (err, hash) => {
+        return bcrypt.hash(model.password, bcrypt.genSaltSync(10), null, (err, hash) => {
           if (err) {
             return done(err);
           }

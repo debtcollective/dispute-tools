@@ -12,10 +12,20 @@
 .-white {color: #fff}
 .-dark {color: #000}
 .-neutral-mid {color: var(--k-color-palette-neutral-mid)}
+/* background colors */
 .-bg-primary {background-color: var(--k-color-palette-primary)}
 .-bg-accent {background-color: var(--k-color-palette-accent)}
 .-bg-white {background-color: #fff}
 .-bg-neutral-dark {background-color: var(--k-color-palette-neutral-dark)}
+/* borders */
+.-border-accent {border-color: var(--k-color-palette-accent)}
+/* stroke color */
+.-stroke-accent {stroke: var(--k-color-palette-accent)}
+/* stroke widths */
+.-sw5 {stroke-width: 5}
+.-sw7 {stroke-width: 7}
+/* border widths */
+.-bw5 {border-width: 5px}
 
 /* text */
 .-ttu {text-transform: uppercase}

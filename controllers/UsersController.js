@@ -137,15 +137,15 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
     update(req, res) {
       const user = res.locals.user;
 
+      delete req.body.role;
+
       user.updateAttributes(req.body);
       user.account.updateAttributes(req.body);
-
-      user.role = user.role;
 
       User.transaction((trx) => {
         return user.transacting(trx).save()
           .then(() => {
-            if (req.files.image && req.files.image.length > 0) {
+            if (req.files && req.files.image && req.files.image.length > 0) {
               const image = req.files.image[0];
 
               return user.account.attach('image', image.path, {

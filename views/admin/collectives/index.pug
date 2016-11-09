@@ -1,0 +1,27 @@
+extends ../../layouts/admin.pug
+
+block title
+  | Admin/Collectives — The Debt Collective
+
+block styles
+  link(href="/build/stylesheets/admin/disputes/index.css" rel="stylesheet")
+
+block content
+  .wrapper.px2.pb3
+    h2.pt4.pb2 Collectives
+    table.-fw(cellpadding='0' cellspacing='0')
+      thead
+        tr
+          th Name
+          th
+      tbody
+        each collective in collectives
+          tr
+            td.-fw-500= collective.name
+            td.center
+              a.btn-clear.p1.inline-block.align-top(
+                href= routeMappings.Admin.Collectives.edit.url(collective.id)
+              )
+                svg.-pen.block.align-top(width='15' height='15')
+                  use(xlink:href='#svg-pencil')
+

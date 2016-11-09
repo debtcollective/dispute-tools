@@ -65,7 +65,9 @@ const routeMappings = RouteMappings()
 
   .namespace('/Admin', (mappings) => {
     return mappings()
-      .resources('/Disputes');
+      .resources('/Disputes')
+      .resources('/Collectives')
+      .resources('/Users');
   })
 
   .resources('/Users', (mappings) => {
@@ -103,6 +105,14 @@ const routeMappings = RouteMappings()
       .put('/:id/remove-attachment/:attachment_id', {
         to: 'Disputes#removeAttachment',
         as: 'removeAttachment',
+      });
+  })
+
+  .resources('/Collectives', (map) => {
+    return map()
+      .post('/:id/join', {
+        to: 'Collectives#join',
+        as: 'join',
       });
   });
 

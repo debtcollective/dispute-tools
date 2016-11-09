@@ -1,0 +1,42 @@
+@import '../../base';
+@import '../../components/Tabs';
+@import '../../components/dispute-tools/TextModal';
+@import '../../components/dispute-tools/ToolCard';
+@import '../../components/AvatarList';
+
+/* page utils */
+.-bg-neutral-light {background-color: var(--k-color-palette-neutral-light)}
+
+/* page styles */
+[data-hit-sticky] {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+}
+
+.Collective_TabPanes {
+  min-height: 500px;
+}
+
+.Collective_Manifest--text {
+  & h3 {padding-bottom: var(--space-3)}
+
+  & p {
+    font-family: monospace;
+    padding-bottom: var(--space-2);
+  }
+}
+.wf-spacemono-n4-active .Collective_Manifest--text p {
+  font-family: 'Space Mono', monospace;
+}
+
+.Button--circle {
+  display: inline-block;
+  width: 46px;
+  height: 46px;
+  border: 2px solid;
+  border-radius: 50%;
+  padding-top: .5em;
+}

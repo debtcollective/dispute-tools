@@ -1,7 +1,7 @@
 extends ../../layouts/admin.pug
 
 block title
-  | Admin — The Debt Collective
+  | Admin/Disputes — The Debt Collective
 
 block styles
   link(href="/build/stylesheets/admin/disputes/index.css" rel="stylesheet")
@@ -18,15 +18,15 @@ block content
     table.-fw(cellpadding='0' cellspacing='0')
       thead
         tr
-          th.js-search-input-parent
+          th
             .-input-group-icon
-              svg(width='17' height='17'): use(xlink:href='#svg-search')
+              svg(width='18' height='18'): use(xlink:href='#svg-search')
               input.-k-input.-clean.-fw-700(
                 name="disputesListValue[search]"
                 placeholder='Search...'
                 value= queryName
               )
-          th.js-tool-select-parent
+          th
             .-k-select.-clean
               select.-fw-700.-fw(name='disputesListValue[tools]')
                 option(value="") Tools
@@ -35,7 +35,7 @@ block content
                     value= tool.id
                     selected= queryFilters && queryFilters.dispute_tool_id === tool.id
                   )= tool.name
-          th.js-status-select-parent
+          th
             .-k-select.-clean
               select.-fw-700.-fw(name='disputesListValue[status]')
                 option(value="") Status
@@ -68,7 +68,7 @@ block content
             ) Reset
 
       tbody
-        each _dispute, index in disputes
+        each _dispute in disputes
 
           -
             // add the user accout image to be accesible on the front-end
@@ -133,8 +133,7 @@ block scripts
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
         disputes: !{JSON.stringify(disputes)},
-        currentPage: #{headers.current_page},
         isAdmin: true,
       };
-      new ViewAdminIndex(options);
+      new ViewAdminDisputesIndex(options);
     }, true);

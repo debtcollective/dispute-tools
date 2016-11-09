@@ -1,0 +1,24 @@
+.Tab {
+  position: relative;
+  background-color: white;
+  margin: 0 1px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 5px;
+  }
+
+  &[aria-selected="true"]::after {
+    background-color: var(--k-color-palette-primary);
+  }
+}
+
+.TabPane {
+  &[aria-hidden='true'] {
+    display: none;
+  }
+}

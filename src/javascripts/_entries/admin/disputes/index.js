@@ -2,7 +2,7 @@ import NodeSupport from '../../../lib/widget/NodeSupport';
 import Common from '../../../components/Common';
 import Controller from '../../../components/admin/disputes/AdminDisputesIndexController';
 
-class ViewAdminIndex extends NodeSupport {
+class ViewAdminDisputesIndex extends NodeSupport {
   constructor(config) {
     super();
 
@@ -16,9 +16,8 @@ class ViewAdminIndex extends NodeSupport {
     this.appendChild(new Controller({
       name: 'AdminDisputesIndexController',
       disputes: config.disputes,
-      currentPage: config.currentPage,
     }));
   }
 }
 
-window.ViewAdminIndex = ViewAdminIndex;
+window.ViewAdminDisputesIndex = ViewAdminDisputesIndex;

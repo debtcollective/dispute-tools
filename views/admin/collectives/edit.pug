@@ -1,0 +1,70 @@
+extends ../../layouts/admin.pug
+
+block title
+  | Admin/Collective/edit — The Debt Collective
+
+block styles
+  link(href="/build/stylesheets/admin/disputes/index.css" rel="stylesheet")
+
+block content
+  .wrapper.px2.pb3
+    h2.pt4.pb2 Edit Collective
+
+    form(
+      method='post'
+      action= routeMappings.Admin.Collectives.update.url(collective.id)
+    )
+      input(type='hidden' name='_csrf' value=csrfToken)
+      input(name='_method' type='hidden' value='PUT')
+
+      label.block.pb1.-fw-500 Name
+      input.-k-input.-fw(
+        type='text'
+        name='name'
+        value= collective.name
+      )
+
+      label.block.pb1.-fw-500 Description
+      textarea.-k-input.-fw(
+        name='description'
+        rows='2'
+      )= collective.description
+
+      label.block.pb1.-fw-500 Manifest
+      textarea.-k-input.-fw(
+        name='manifest'
+        rows='10'
+      )= collective.manifest
+
+      label.block.pb1.-fw-500 Goal title
+      input.-k-input.-fw(
+        type='text'
+        name='goalTitle'
+        value= collective.goalTitle
+      )
+
+      label.block.pb1.-fw-500 Goal
+      textarea.-k-input.-fw(
+        name='goal'
+        rows='2'
+      )= collective.goal
+
+      .pb2
+        p.pb1.-fw-500 Dispute Tools
+        - var toolIds = collective.tools.map(t => t.id)
+        each tool in disputeTools
+          div
+            input(
+              type='checkbox'
+              name='disputeToolIds'
+              value= tool.id
+              id= tool.id
+              checked= toolIds.includes(tool.id)
+            )
+            label.pl1(
+              for= tool.id
+            )= tool.name
+
+      button.-k-btn.btn-primary.-fw-700.-fw(
+        type='submit'
+      ) Update “#{collective.name}”

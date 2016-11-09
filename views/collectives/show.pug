@@ -1,0 +1,135 @@
+extends ../layouts/application.pug
+
+block title
+  | #{collective.name} — The Debt Collective
+
+block styles
+  link(href='/build/stylesheets/collectives/show.css' rel='stylesheet')
+
+block content
+  div
+    .px2.pt3(data-offset-section)
+      .max-width-4.mx-auto
+        h3.border-bottom.-bw5.-border-accent.pb2
+          svg.inline-block.align-middle.-sw7.-stroke-accent(width='60' height='60')
+            use(xlink:href=`#svg-collective-${collective.id.charAt(0)}`)
+              span.pl2.inline-block.align-middle.-accent= collective.name
+        .py2.clearfix
+          .left.flex.items-center
+            if belongsToCollective
+              - var _avatarUrl = '/images/profile/placeholder-small.png';
+              if (currentUser.account.image.exists('smallGrayscale'))
+                - _avatarUrl = currentUser.account.image.url('smallGrayscale')
+                img.mr1(src=_avatarUrl alt=currentUser.account.fullname width='40' height='40')
+
+            span.-accent
+              span.-fw-700= (belongsToCollective ? 'You + 4,567' : '+ 4,567')
+              span.-fw-500 &nbsp;members
+            span.-fw-700.px2 &middot;
+            span.-fw-700 $23,560 USD Debt to cancel
+          .right
+            unless belongsToCollective
+              if currentUser
+                form(method='post' action=routeMappings.Collectives.join.url(collective.id))
+                  input(type='hidden' name='_csrf' value=csrfToken)
+                  button.-k-btn.btn-primary.-fw-700.-sm Join this collective
+              else
+                button.js-login-link.-k-btn.btn-link.-primary.-fw-700.-sm Join
+
+    .relative.-bg-neutral-light.-dark.px2
+      div(data-hit-sticky)
+      .max-width-4.mx-auto(data-tabs-component)
+        ul.list-reset.flex.-bg-neutral-light(role='tablist')
+          li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-manifest' aria-selected='false')
+            | Manifest
+          li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-dispute-tools' aria-selected='false')
+            | Dispute tools
+            span.right.-caption.-neutral-mid= collective.tools.length
+          li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-resources' aria-selected='false')
+            | Resources
+            span.right.-caption.-neutral-mid 9
+
+        .Collective_TabPanes
+          section#panel-manifest.TabPane(role='tabpanel' aria-hidden='true')
+            .clearfix.pt4
+              .col.md-col-4.col-12 &nbsp;
+              .col.md-col-7.col-12
+                h1 Manifest
+                .Collective_Manifest--text!= collective.manifest
+
+            div.pt3.pb2
+              ul.AvatarList
+                each user in collective.users
+                  li.mb1
+                    - var _avatarUrl = '/images/profile/placeholder-small.png';
+                    if (user.account.image.exists('smallGrayscale'))
+                      - _avatarUrl = user.account.image.url('smallGrayscale')
+                    a.block(
+                      href=routeMappings.Users.show.url(user.id)
+                      title=`${user.account.fullname}’s profile`
+                    ): img(src=_avatarUrl alt=user.account.fullname width='50' height='50')
+
+            .clearfix
+              .col.md-col-4.col-12 &nbsp;
+              .col.md-col-7.col-12
+                p.pb2.-ff-sec.-fw-700= collective.goalTitle
+
+                if collective.goal
+                  div.border.p3.mb4(style='border-width: 8px')
+                    h4= collective.goal
+
+                p.pb2.-fw-700.center.-neutral-dark Spread
+                ul.list-reset.center.pb4
+                  li.inline-block
+                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank')
+                      svg(width='13' height='11'): use(xlink:href='#svg-twitter')
+                      .sr-only Share on Twitter
+                  li.inline-block.mx2
+                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank')
+                      svg(width='6' height='13'): use(xlink:href='#svg-facebook')
+                      .sr-only Share on Facebook
+                  li.inline-block
+                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank')
+                      svg(width='14' height='11'): use(xlink:href='#svg-email')
+                      .sr-only Share by Email
+
+          section#panel-dispute-tools.TabPane(role='tabpanel' aria-hidden='true')
+            .mx4.pt3.pb4
+              h3.pb1 We all have the right to dispute unfair debts.
+              p We made these free tools to help us fight back. #[a(href=`${routeMappings.DisputeTools.url()}/#why-file-dispute`) Learn more]
+
+              .pt3.clearfix.mxn2.flex.flex-wrap
+                include ../mixins/dispute-tools/tool-card
+                each tool in collective.tools
+                  .col.md-col-4.sm-col-6.col-12.p2
+                    +toolCardMixin(tool)
+
+          section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
+            | Resources
+
+block append body
+  each tool in collective.tools
+    .Modal(
+      data-component-modal=`tool-modal-${tool.id}`
+      aria-hidden="true" role="dialog"
+    )
+      button(class="Modal__close" aria-label="close")
+        svg(class="-s18"): use(xlink:href="#svg-close")
+      .Modal__body(role="document")
+        .px2
+          .max-width-1.mx-auto
+            .Tools__Text-Modal!= tool.about
+
+
+block scripts
+  script(src='/build/javascripts/collectives/show.js' async)
+  - var disputeIds = collective.tools.map(dispute => dispute.id);
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+        disputeIds: !{JSON.stringify(disputeIds)}
+      };
+      new ViewCollectivesShow(options);
+    }, true);

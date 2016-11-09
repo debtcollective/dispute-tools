@@ -35,7 +35,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
                 'dispute_tool_id',
               ],
             },
-            order : {
+            order: {
               default: '-updated_at',
               allowedFields: [
                 'created_at',

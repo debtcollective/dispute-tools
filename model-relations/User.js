@@ -7,6 +7,7 @@ User.relations = {
     ownerCol: 'id',
     relatedCol: 'user_id',
   },
+
   disputes: {
     type: 'HasMany',
     relatedModel: Dispute,
@@ -16,7 +17,6 @@ User.relations = {
     scope: ['deleted', false],
   },
 
-
   debtTypes: {
     type: 'HasManyThrough',
     relatedModel: Collective,
@@ -24,6 +24,18 @@ User.relations = {
     relatedCol: 'id',
     through: {
       tableName: 'UsersCollectives',
+      ownerCol: 'user_id',
+      relatedCol: 'collective_id',
+    },
+  },
+
+  collectiveAdmins: {
+    type: 'HasManyThrough',
+    relatedModel: Collective,
+    ownerCol: 'id',
+    relatedCol: 'id',
+    through: {
+      tableName: 'CollectiveAdmins',
       ownerCol: 'user_id',
       relatedCol: 'collective_id',
     },

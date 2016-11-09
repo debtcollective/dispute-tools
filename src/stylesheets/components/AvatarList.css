@@ -1,14 +1,12 @@
 .AvatarList {
   padding: 0;
   margin: 0 -.25rem 1rem;
-  white-space: nowrap;
-  overflow: hidden;
-  mix-blend-mode: luminosity;
 
   & > li {
     display: inline-block;
     vertical-align: top;
-    margin: 0 .25rem;
+    margin-left: .25rem;
+    margin-right: .25rem;
   }
 
   & img {display: block}
