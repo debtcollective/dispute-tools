@@ -67,7 +67,18 @@ const routeMappings = RouteMappings()
     return mappings()
       .resources('/Disputes')
       .resources('/Collectives')
-      .resources('/Users');
+      .resources('/Users')
+      .resources('/Campaigns', (map) => {
+        return map()
+          .post('/:id/activate', {
+            to: 'Campaigns#activate',
+            as: 'activate',
+          })
+          .post('/:id/deactivate', {
+            to: 'Campaigns#deactivate',
+            as: 'deactivate',
+          });
+      });
   })
 
   .resources('/Users', (mappings) => {
