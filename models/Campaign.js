@@ -3,7 +3,7 @@
 const Campaign = Class('Campaign').inherits(Krypton.Model)({
   tableName: 'Campaigns',
   validations: {
-    name: ['required'],
+    title: ['required'],
   },
   attributes: [
     'id',
