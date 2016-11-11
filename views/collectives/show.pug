@@ -67,8 +67,9 @@ block content
                       a.inline-block.btn-clear.p1.align-top(
                         href= routeMappings.Admin.Campaigns.edit.url(campaign.id)
                       )
-                        svg.-pen.block.align-top(width='15' height='15')
+                        svg.-pen.inline-block.align-middle(width='15' height='15')
                           use(xlink:href='#svg-pencil')
+                        span.inline-block.align-middle.pl1 Edit campaign
                   .border-bottom.-bw5
 
               if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
