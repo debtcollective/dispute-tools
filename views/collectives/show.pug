@@ -40,6 +40,9 @@ block content
       div(data-hit-sticky)
       .max-width-4.mx-auto(data-tabs-component)
         ul.list-reset.flex.-bg-neutral-light(role='tablist')
+          li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-campaigns' aria-selected='false')
+            | Campaigns
+            span.right.-caption.-neutral-mid 3
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-manifest' aria-selected='false')
             | Manifest
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-dispute-tools' aria-selected='false')
@@ -50,6 +53,9 @@ block content
             span.right.-caption.-neutral-mid 9
 
         .Collective_TabPanes
+          section#panel-campaigns.TabPane(role='tabpanel' aria-hidden='true')
+            | Campaigns
+
           section#panel-manifest.TabPane(role='tabpanel' aria-hidden='true')
             .clearfix.pt4
               .col.md-col-4.col-12 &nbsp;
@@ -57,7 +63,7 @@ block content
                 h1 Manifest
                 .Collective_Manifest--text!= collective.manifest
 
-            div.pt3.pb2
+            .pt3.pb2
               ul.AvatarList
                 each user in collective.users
                   li.mb1
