@@ -7,7 +7,8 @@ module.exports = {
     ['new', 'create', 'edit', 'update', 'activate', 'deactivate', false],
   ],
   CollectiveManager: [
-    ['new', 'create', 'edit', 'update', 'activate', 'deactivate', (req) => {
+    ['new', 'create', true],
+    ['edit', 'update', 'activate', 'deactivate', (req) => {
       Admin.Campaign.query()
         .where('id', req.params.id)
         .then(([campaign]) => {

@@ -1,9 +1,10 @@
-/* globals CONFIG, Class, RestfulController, Collective, DisputeTool, User */
+/* globals CONFIG, Class, RestfulController, Collective, DisputeTool, User, Account */
 const marked = require('marked');
 const Promise = require('bluebird');
 
 const CollectivesController = Class('CollectivesController').inherits(RestfulController)({
   beforeActions: [
+    // Load Collective
     {
       before: '_loadCollective',
       actions: [
@@ -11,6 +12,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
         'join',
       ],
     },
+    // Load Collectives
     {
       before(req, res, next) {
         Collective.query()
@@ -25,6 +27,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       },
       actions: ['index'],
     },
+    // Check if user belongs to collective
     {
       before(req, res, next) {
         res.locals.belongsToCollective = false;
@@ -47,6 +50,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       },
       actions: ['show'],
     },
+    // Attach accounts to users
     {
       before(req, res, next) {
         return Promise.each(req.collective.users, (user) => {
@@ -60,6 +64,34 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
           next();
         })
         .catch(next);
+      },
+      actions: ['show'],
+    },
+    // Check if user can create campaings
+    {
+      before(req, res, next) {
+        req.canCreateCampaigns = false;
+        res.locals.canCreateCampaigns = false;
+
+        if (!req.user) {
+          return next();
+        }
+
+        User.knex()
+          .table('CollectiveAdmins')
+          .where({
+            collective_id: req.params.id,
+            user_id: req.user.id,
+          })
+          .then((results) => {
+            if (results.length !== 0) {
+              req.canCreateCampaigns = true;
+              res.locals.canCreateCampaigns = true;
+            }
+
+            return next();
+          })
+          .catch(next);
       },
       actions: ['show'],
     },
