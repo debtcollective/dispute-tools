@@ -204,10 +204,10 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
       .then(() => {
         req.flash('success', 'Profile updated succesfully');
 
-        let redirect = CONFIG.router.helpers.Users.show.url(user.id);
+        let redirect = CONFIG.router.helpers.Admin.Users.url();
 
-        if (user.role === 'Admin') {
-          redirect = CONFIG.router.helpers.Admin.Users.url();
+        if (user.id === req.user.id && user.role !== 'Admin') {
+          redirect = CONFIG.router.helpers.Users.show.url(user.id);
         }
 
         return res.redirect(redirect);
