@@ -36,7 +36,7 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
           })
           .catch(next);
       },
-      actions: ['new', 'edit'],
+      actions: ['new', 'create', 'edit', 'update'],
     },
   ],
 
@@ -69,9 +69,10 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
       campaign.save()
         .then(() => {
           req.flash('success', 'The campaign has been created.');
-          res.redirect(CONFIG.router.helpers.Campaigns.show.url(campaign.id));
+          res.redirect(CONFIG.router.helpers.Collectives.show.url(campaign.collectiveId));
         })
         .catch((err) => {
+          console.log('err', err)
           res.status(400);
 
           res.locals.errors = err.errors || err;
@@ -90,7 +91,7 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
       req.campaign.save()
         .then(() => {
           req.flash('success', 'The campaign has been updated.');
-          res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.campaign.id));
+          res.redirect(CONFIG.router.helpers.Collectives.show.url(req.campaign.collectiveId));
         })
         .catch((err) => {
           res.status(400);
