@@ -55,20 +55,26 @@ block content
         .Collective_TabPanes
           section#panel-campaigns.TabPane(role='tabpanel' aria-hidden='true')
             .pt4.clearfix.mxn2.md-flex.flex-wrap
-              each c in collective.campaigns
-                article.col.md-col-4.col-12.px2.mb4
-                  p= c.name
+              each campaign in collective.campaigns
+                article.col.md-col-4.col-12.px2.pb4
+                  h3.pb1.-neutral-dark= campaign.title
+                  if campaign.active
+                    p: span.-bg-primary.-white.-caption.-ttu.-fw-700.inline-block.align-top.px1 active
+                  p.pb1.-neutral-dark= campaign.description
+                  p.pb2.center.-fw-700.-neutral-dark We are the #{campaign.title} #{campaign.userCount}
+                  .border-bottom.-bw5
 
               if currentUser && currentUser.role === 'Admin' || belongsToCollective
-                article.col.md-col-4.col-12.px2.mb4
+                article.col.md-col-4.col-12.px2.pb4
                   a.CreateNewCampaingBtn(
                     href=routeMappings.Admin.Campaigns.new.url()
                     title='Create new campaign'
                   )
                     .flex.items-center.justify-center.absolute.top-0.right-0.bottom-0.left-0
                       .CreateNewCampaingBtn--Plus +
-                  a.block.center.pt2.-fw-700(href=routeMappings.Admin.Campaigns.new.url())
+                  a.block.center.py2.-fw-700(href=routeMappings.Admin.Campaigns.new.url())
                     | Create new campaign
+                  .border-bottom.-bw5
 
           section#panel-manifest.TabPane(role='tabpanel' aria-hidden='true')
             .clearfix.pt4
