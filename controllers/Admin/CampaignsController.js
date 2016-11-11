@@ -1,5 +1,5 @@
 /* globals neonode, CONFIG, Class, Admin, RestfulController, Collective, DisputeTool,
-NotFoundError */
+NotFoundError, Campaign */
 
 global.Admin = global.Admin || {};
 
@@ -72,7 +72,6 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
           res.redirect(CONFIG.router.helpers.Collectives.show.url(campaign.collectiveId));
         })
         .catch((err) => {
-          console.log('err', err)
           res.status(400);
 
           res.locals.errors = err.errors || err;
