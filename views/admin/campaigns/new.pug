@@ -1,0 +1,47 @@
+extends ../../layouts/admin.pug
+
+block title
+  | Admin/Campaigns/new — The Debt Collective
+
+block styles
+  link(href="/build/stylesheets/admin/campaigns/new.css" rel="stylesheet")
+
+block content
+  .px2.pb4
+    .max-width-1.mx-auto
+
+      h2.pt4.pb3 New Campaign
+
+      form(
+        method='post'
+        action=routeMappings.Admin.Campaigns.create.url()
+      )
+        input(type='hidden' name='_csrf' value=csrfToken)
+
+        .py1
+          label.block.pb1.-fw-500 Collective
+          .-k-select.-border-neutral-mid
+              select.-fw(name='collectiveId' required)
+                option(value='') Collective
+                each collective in collectives
+                  option(
+                    value= collective.id
+                  )= collective.name
+          p(class="-on-error -danger -caption -fw-500 mt1")
+
+        .py1
+          label.block.pb1.-fw-500 Title
+          input.-k-input.-fw.-border-neutral-mid(
+            type='text'
+            name='title'
+            required
+          )
+          p(class="-on-error -danger -caption -fw-500 mt1")
+
+        .py1
+          label.block.pb1.-fw-500 Description
+          textarea.-k-input.-fw.-ff-sec.-border-neutral-mid(name="bio" rows="4")
+
+        .pt3
+          button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Create
+
