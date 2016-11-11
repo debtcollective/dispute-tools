@@ -42,7 +42,7 @@ block content
         ul.list-reset.flex.-bg-neutral-light(role='tablist')
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-campaigns' aria-selected='false')
             | Campaigns
-            span.right.-caption.-neutral-mid 3
+            span.right.-caption.-neutral-mid= collective.campaigns.length
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-manifest' aria-selected='false')
             | Manifest
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-dispute-tools' aria-selected='false')
@@ -54,7 +54,21 @@ block content
 
         .Collective_TabPanes
           section#panel-campaigns.TabPane(role='tabpanel' aria-hidden='true')
-            | Campaigns
+            .pt4.clearfix.mxn2.md-flex.flex-wrap
+              each c in collective.campaigns
+                article.col.md-col-4.col-12.px2.mb4
+                  p= c.name
+
+              if currentUser && currentUser.role === 'Admin' || belongsToCollective
+                article.col.md-col-4.col-12.px2.mb4
+                  a.CreateNewCampaingBtn(
+                    href=routeMappings.Admin.Campaigns.new.url()
+                    title='Create new campaign'
+                  )
+                    .flex.items-center.justify-center.absolute.top-0.right-0.bottom-0.left-0
+                      .CreateNewCampaingBtn--Plus +
+                  a.block.center.pt2.-fw-700(href=routeMappings.Admin.Campaigns.new.url())
+                    | Create new campaign
 
           section#panel-manifest.TabPane(role='tabpanel' aria-hidden='true')
             .clearfix.pt4
