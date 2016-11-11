@@ -10,6 +10,7 @@ const Campaign = Class('Campaign').inherits(Krypton.Model)({
     'collectiveId',
     'title',
     'description',
+    'active',
     'createdAt',
     'updatedAt',
   ],
