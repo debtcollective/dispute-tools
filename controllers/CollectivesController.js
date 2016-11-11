@@ -77,7 +77,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
           return next();
         }
 
-        User.knex()
+        return User.knex()
           .table('CollectiveAdmins')
           .where({
             collective_id: req.params.id,
