@@ -69,7 +69,7 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
       campaign.save()
         .then(() => {
           req.flash('success', 'The campaign has been created.');
-          res.redirect(CONFIG.router.helpers.Collectives.show.url(campaign.collectiveId));
+          res.redirect(`${CONFIG.router.helpers.Collectives.show.url(campaign.collectiveId)}#campaigns`);
         })
         .catch((err) => {
           res.status(400);
