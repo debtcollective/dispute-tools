@@ -1,5 +1,5 @@
 /* globals Admin, Class, RestfulController, User, NotFoundError,
-CONFIG, Collective, Account, DisputeTool */
+CONFIG, Collective, Account, DisputeTool, neonode */
 
 const fs = require('fs-extra');
 const path = require('path');
@@ -127,6 +127,13 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
 
       const knex = User.knex();
 
+      const usersCollectives = req.body.collectiveIds.map((id) => {
+        return {
+          user_id: user.id,
+          collective_id: id,
+        };
+      });
+
       User.transaction((trx) => {
         return user.transacting(trx).save()
           .then(() => {
@@ -163,16 +170,28 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
               req.body.collectiveIds = [req.body.collectiveIds];
             }
 
-            const collectiveAdmins = req.body.collectiveIds.map((id) => {
-              return {
-                user_id: user.id,
-                collective_id: id,
-              };
-            });
-
             return knex('CollectiveAdmins')
               .transacting(trx)
-              .insert(collectiveAdmins);
+              .insert(usersCollectives);
+          })
+          .then(() => {
+            if (user.role !== 'CollectiveManager') {
+              return Promise.resolve();
+            }
+
+            return Promise.each(usersCollectives, (uc) => {
+              return knex('UsersCollectives')
+                .where(uc)
+                .then((result) => {
+                  if (result.length !== 0) {
+                    return Promise.resolve();
+                  }
+
+                  return knex('UsersCollectives')
+                    .transacting(trx)
+                    .insert(uc);
+                });
+            });
           })
           .finally(trx.commit)
           .catch(trx.rollback);
@@ -184,7 +203,14 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
       })
       .then(() => {
         req.flash('success', 'Profile updated succesfully');
-        return res.redirect(CONFIG.router.helpers.Admin.Users.url());
+
+        let redirect = CONFIG.router.helpers.Users.show.url(user.id);
+
+        if (user.role === 'Admin') {
+          redirect = CONFIG.router.helpers.Admin.Users.url();
+        }
+
+        return res.redirect(redirect);
       })
       .catch((err) => {
         res.status(400);
