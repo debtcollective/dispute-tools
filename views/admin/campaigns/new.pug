@@ -15,13 +15,14 @@ block content
       form(
         method='post'
         action=routeMappings.Admin.Campaigns.create.url()
+        data-component-form
       )
         input(type='hidden' name='_csrf' value=csrfToken)
 
         .py1
           label.block.pb1.-fw-500 Collective
           .-k-select.-border-neutral-mid
-              select.-fw(name='collectiveId' required)
+              select.-fw(name='collectiveId')
                 option(value='') Collective
                 each collective in collectives
                   option(
@@ -34,7 +35,6 @@ block content
           input.-k-input.-fw.-border-neutral-mid(
             type='text'
             name='title'
-            required
           )
           p(class="-on-error -danger -caption -fw-500 mt1")
 
@@ -48,3 +48,13 @@ block content
         .pt3
           button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Create
 
+block scripts
+  script(src="/build/javascripts/admin/campaigns/new.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new ViewAdminCampaignsNew(options);
+    }, true);

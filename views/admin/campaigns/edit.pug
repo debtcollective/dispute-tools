@@ -16,6 +16,7 @@ block content
       form(
         method='post'
         action= routeMappings.Admin.Campaigns.update.url(campaign.id)
+        data-component-form
       )
         input(type='hidden' name='_csrf' value=csrfToken)
         input(name='_method' type='hidden' value='PUT')
@@ -23,7 +24,7 @@ block content
         .py1
           label.block.pb1.-fw-500 Collective
           .-k-select.-border-neutral-mid
-              select.-fw(name='collectiveId' required)
+              select.-fw(name='collectiveId')
                 option(value='') Collective
                 each collective in collectives
                   option(
@@ -37,7 +38,6 @@ block content
           input.-k-input.-fw.-border-neutral-mid(
             type='text'
             name='title'
-            required
             value=campaign.title
           )
           p(class="-on-error -danger -caption -fw-500 mt1")
@@ -62,3 +62,13 @@ block content
         .pt3
           button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Update
 
+block scripts
+  script(src="/build/javascripts/admin/campaigns/edit.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new ViewAdminCampaignsEdit(options);
+    }, true);
