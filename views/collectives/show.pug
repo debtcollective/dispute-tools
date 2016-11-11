@@ -64,7 +64,7 @@ block content
                   p.pb2.center.-fw-700.-neutral-dark We are the #{campaign.title} #{campaign.userCount}
                   .border-bottom.-bw5
 
-              if currentUser && currentUser.role === 'Admin' || belongsToCollective
+              if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
                 article.col.md-col-4.col-12.px2.pb4
                   a.CreateNewCampaingBtn(
                     href=routeMappings.Admin.Campaigns.new.url()
