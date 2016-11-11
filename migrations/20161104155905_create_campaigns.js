@@ -9,7 +9,7 @@ exports.up = (knex) => {
       .onDelete('CASCADE');
     t.string('title').notNullable();
     t.text('description');
-    t.integer('user_count');
+    t.integer('user_count').defaultTo(0);
     t.timestamps();
   });
 };
