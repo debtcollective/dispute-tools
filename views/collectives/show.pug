@@ -62,6 +62,13 @@ block content
                     p: span.-bg-primary.-white.-caption.-ttu.-fw-700.inline-block.align-top.px1 active
                   p.pb1.-neutral-dark= campaign.description
                   p.pb2.center.-fw-700.-neutral-dark We are the #{campaign.title} #{campaign.userCount}
+                  if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
+                    .border-top.py2
+                      a.inline-block.btn-clear.p1.align-top(
+                        href= routeMappings.Admin.Campaigns.edit.url(campaign.id)
+                      )
+                        svg.-pen.block.align-top(width='15' height='15')
+                          use(xlink:href='#svg-pencil')
                   .border-bottom.-bw5
 
               if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
