@@ -11,6 +11,7 @@ const Campaign = Class('Campaign').inherits(Krypton.Model)({
     'title',
     'description',
     'active',
+    'userCount',
     'createdAt',
     'updatedAt',
   ],
