@@ -67,7 +67,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       },
       actions: ['show'],
     },
-    // Check if user can create campaings
+    // Check if user can create campaigns
     {
       before(req, res, next) {
         req.canCreateCampaigns = false;
