@@ -1,5 +1,5 @@
 /* globals neonode, CONFIG, Class, Admin, RestfulController, Collective, DisputeTool,
-NotFoundError */
+NotFoundError, Campaign */
 
 global.Admin = global.Admin || {};
 
@@ -36,7 +36,7 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
           })
           .catch(next);
       },
-      actions: ['new', 'edit'],
+      actions: ['new', 'create', 'edit', 'update'],
     },
   ],
 
@@ -69,7 +69,9 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
       campaign.save()
         .then(() => {
           req.flash('success', 'The campaign has been created.');
-          res.redirect(CONFIG.router.helpers.Campaigns.show.url(campaign.id));
+          res.redirect(
+            `${CONFIG.router.helpers.Collectives.show.url(campaign.collectiveId)}#campaigns`
+          );
         })
         .catch((err) => {
           res.status(400);
@@ -87,10 +89,16 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
     update(req, res) {
       req.campaign.updateAttributes(req.body);
 
+      const active = req.body.active === 'true';
+
+      req.campaign.active = active;
+
       req.campaign.save()
         .then(() => {
           req.flash('success', 'The campaign has been updated.');
-          res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.campaign.id));
+          res.redirect(
+            `${CONFIG.router.helpers.Collectives.show.url(req.campaign.collectiveId)}#campaigns`
+          );
         })
         .catch((err) => {
           res.status(400);

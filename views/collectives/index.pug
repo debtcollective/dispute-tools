@@ -14,7 +14,10 @@ block content
       section.pt4.clearfix.mxn2.md-flex.flex-wrap
         each c in collectives
           article.col.md-col-4.col-12.px2.mb4
-            .flex.items-center
+            a(
+              href=routeMappings.Collectives.show.url(c.id)
+              title=c.name
+            ).flex.items-center
               div
                 svg.-sw5.-stroke-accent(width='56' height='56')
                   use(xlink:href=`#svg-collective-${c.id.charAt(0)}`)
