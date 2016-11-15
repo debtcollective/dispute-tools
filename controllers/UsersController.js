@@ -94,7 +94,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
           .then(() => {
             const userCollectives = req.body.collectiveIds.map((collectiveId) => {
               return {
-                user_id: req.user.id,
+                user_id: user.id,
                 collective_id: collectiveId,
               };
             });
