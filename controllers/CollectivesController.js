@@ -1,22 +1,15 @@
-/* globals CONFIG, Class, RestfulController, Collective, DisputeTool, User, Account */
+/* globals CONFIG, Class, RestfulController, Collective, DisputeTool, User, Campaign, Account */
+
 const marked = require('marked');
 const Promise = require('bluebird');
 
 const CollectivesController = Class('CollectivesController').inherits(RestfulController)({
   beforeActions: [
-    // Load Collective
-    {
-      before: '_loadCollective',
-      actions: [
-        'show',
-        'join',
-      ],
-    },
     // Load Collectives
     {
       before(req, res, next) {
         Collective.query()
-          .include('[tools, users, campaigns]')
+          .include('[tools, users]')
           .orderBy('created_at', 'DESC')
           .then((collectives) => {
             req.collectives = collectives;
@@ -95,12 +88,20 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       },
       actions: ['show'],
     },
+    // Load Collective
+    {
+      before: '_loadCollective',
+      actions: [
+        'show',
+        'join',
+      ],
+    },
   ],
   prototype: {
     _loadCollective(req, res, next) {
       Collective.query()
         .where({ id: req.params.id })
-        .include('[tools, users.[account], campaigns]')
+        .include('[tools, users.[account]]')
         .then(([collective]) => {
           collective.tools.forEach(tool => {
             tool.about = marked(tool.about);
@@ -110,10 +111,31 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
             collective.manifest = marked(collective.manifest);
           }
 
-          res.locals.collective = collective;
-          req.collective = collective;
+          return collective;
+        })
+        .then((collective) => {
+          const query = Campaign.query();
 
-          next();
+          query.where({
+            collective_id: req.params.id,
+            published: true,
+          });
+
+          if (req.user.role === 'Admin' ||
+          (req.user.role === 'CampaignManager' && req.canCreateCampaigns)) {
+            query.andWhere({
+              published: false,
+            });
+          }
+
+          query.then((campaigns) => {
+            collective.campaigns = campaigns;
+
+            res.locals.collective = collective;
+            req.collective = collective;
+            return next();
+          })
+          .catch(next);
         })
         .catch(next);
     },
