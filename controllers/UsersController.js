@@ -74,6 +74,10 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
       user.role = 'User';
 
+      if (!Array.isArray(req.body.collectiveIds)) {
+        req.body.collectiveIds = [req.body.collectiveIds];
+      }
+
       User.transaction((trx) => {
         return user.transacting(trx).save()
           .then(() => {
@@ -88,17 +92,29 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
               .del();
           })
           .then(() => {
-            if (!Array.isArray(req.body.collectiveIds)) {
-              req.body.collectiveIds = [req.body.collectiveIds];
-            }
+            const userCollectives = req.body.collectiveIds.map((collectiveId) => {
+              return {
+                user_id: user.id,
+                collective_id: collectiveId,
+              };
+            });
 
+            return User.knex()
+              .table('UsersCollectives')
+              .transacting(trx)
+              .insert(userCollectives);
+          })
+          .then(() => {
             return Promise.each(req.body.collectiveIds, (collectiveId) => {
-              return User.knex()
-                .table('UsersCollectives')
+              return Collective.query()
                 .transacting(trx)
-                .insert({
-                  user_id: user.id,
-                  collective_id: collectiveId,
+                .where('id', collectiveId)
+                .then(([collective]) => {
+                  collective.userCount++;
+
+                  return collective
+                    .transacting(trx)
+                    .save();
                 });
             });
           })
