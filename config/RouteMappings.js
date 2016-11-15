@@ -125,6 +125,17 @@ const routeMappings = RouteMappings()
         to: 'Collectives#join',
         as: 'join',
       });
+  })
+
+  .resources('/Campaigns')
+
+  .post('/campaigns/:id/posts', {
+    to: 'Posts#create',
+    as: 'CreatePost',
+  })
+  .put('/campaigns/:campaign_id/posts/:id', {
+    to: 'Posts#update',
+    as: 'UpdatePost',
   });
 
 module.exports = routeMappings;
