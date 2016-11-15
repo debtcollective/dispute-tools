@@ -40,6 +40,9 @@ block content
       div(data-hit-sticky)
       .max-width-4.mx-auto(data-tabs-component)
         ul.list-reset.flex.-bg-neutral-light(role='tablist')
+          li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-campaigns' aria-selected='false')
+            | Campaigns
+            span.right.-caption.-neutral-mid= collective.campaigns.length
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-manifest' aria-selected='false')
             | Manifest
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-dispute-tools' aria-selected='false')
@@ -50,6 +53,37 @@ block content
             span.right.-caption.-neutral-mid 9
 
         .Collective_TabPanes
+          section#panel-campaigns.TabPane(role='tabpanel' aria-hidden='true')
+            .pt4.clearfix.mxn2.md-flex.flex-wrap
+              each campaign in collective.campaigns
+                article.col.md-col-4.col-12.px2.pb4
+                  h3.pb1.-neutral-dark= campaign.title
+                  if campaign.active
+                    p: span.-bg-primary.-white.-caption.-ttu.-fw-700.inline-block.align-top.px1 active
+                  p.pb1.-neutral-dark= campaign.description
+                  p.pb2.center.-fw-700.-neutral-dark We are the #{campaign.title} #{campaign.userCount}
+                  if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
+                    .border-top.py2
+                      a.inline-block.btn-clear.p1.align-top(
+                        href= routeMappings.Admin.Campaigns.edit.url(campaign.id)
+                      )
+                        svg.-pen.inline-block.align-middle(width='15' height='15')
+                          use(xlink:href='#svg-pencil')
+                        span.inline-block.align-middle.pl1 Edit campaign
+                  .border-bottom.-bw5
+
+              if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
+                article.col.md-col-4.col-12.px2.pb4
+                  a.CreateNewCampaingBtn(
+                    href=routeMappings.Admin.Campaigns.new.url()
+                    title='Create new campaign'
+                  )
+                    .flex.items-center.justify-center.absolute.top-0.right-0.bottom-0.left-0
+                      .CreateNewCampaingBtn--Plus +
+                  a.block.center.py2.-fw-700(href=routeMappings.Admin.Campaigns.new.url())
+                    | Create new campaign
+                  .border-bottom.-bw5
+
           section#panel-manifest.TabPane(role='tabpanel' aria-hidden='true')
             .clearfix.pt4
               .col.md-col-4.col-12 &nbsp;
@@ -57,7 +91,7 @@ block content
                 h1 Manifest
                 .Collective_Manifest--text!= collective.manifest
 
-            div.pt3.pb2
+            .pt3.pb2
               ul.AvatarList
                 each user in collective.users
                   li.mb1
