@@ -14,5 +14,8 @@ Campaign.relations = {
     ownerCol: 'id',
     relatedCol: 'campaign_id',
     orderBy: ['created_at', 'DESC'],
+    filters: {
+      limit: 50,
+    },
   },
 };
