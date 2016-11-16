@@ -12,6 +12,7 @@ const Collective = Class('Collective').inherits(Krypton.Model)({
     'manifest',
     'goalTitle',
     'goal',
+    'userCount',
     'createdAt',
     'updatedAt',
   ],
