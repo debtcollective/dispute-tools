@@ -127,6 +127,10 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
 
       const knex = User.knex();
 
+      if (!Array.isArray(req.body.collectiveIds)) {
+        req.body.collectiveIds = [req.body.collectiveIds];
+      }
+
       const usersCollectives = req.body.collectiveIds.map((id) => {
         return {
           user_id: user.id,
@@ -166,13 +170,40 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
               return Promise.resolve();
             }
 
-            if (!Array.isArray(req.body.collectiveIds)) {
-              req.body.collectiveIds = [req.body.collectiveIds];
-            }
-
             return knex('CollectiveAdmins')
               .transacting(trx)
               .insert(usersCollectives);
+          })
+          .then(() => {
+            // Get collectiveIds where the users has not already joined
+            return Promise.map(req.body.collectiveIds, (collectiveId) => {
+              return User.knex()
+                .table('UsersCollectives')
+                .where({
+                  user_id: user.id,
+                  collective_id: collectiveId,
+                }).then((result) => {
+                  if (result.length === 0) {
+                    return collectiveId;
+                  }
+                });
+            })
+            .then((collectiveIds) => {
+              collectiveIds = collectiveIds.filter(n => {
+                return n !== undefined;
+              });
+
+              // Sum newly joined collective's user count
+              return Promise.each(collectiveIds, (collectiveId) => {
+                return Collective.query()
+                  .where('id', collectiveId)
+                  .then(([collective]) => {
+                    collective.userCount++;
+
+                    return collective.save();
+                  });
+              });
+            });
           })
           .then(() => {
             if (user.role !== 'CollectiveManager') {
