@@ -12,7 +12,7 @@ Campaign.relations = {
     type: 'HasMany',
     relatedModel: Post,
     ownerCol: 'id',
-    relatedCol: 'collective_id',
+    relatedCol: 'campaign_id',
     orderBy: ['created_at', 'DESC'],
   },
 };
