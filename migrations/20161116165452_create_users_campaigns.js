@@ -9,7 +9,7 @@ exports.up = (knex) => {
     t.uuid('campaign_id')
       .notNullable()
       .references('id')
-      .inTable('Collectives')
+      .inTable('Campaign')
       .onDelete('CASCADE');
   });
 };
