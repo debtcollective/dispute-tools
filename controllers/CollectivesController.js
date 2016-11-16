@@ -20,6 +20,42 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       },
       actions: ['index'],
     },
+    // Load Collective
+    {
+      before: '_loadCollective',
+      actions: [
+        'show',
+        'join',
+      ],
+    },
+    // Check if user can create campaigns
+    {
+      before(req, res, next) {
+        req.canCreateCampaigns = false;
+        res.locals.canCreateCampaigns = false;
+
+        if (!req.user) {
+          return next();
+        }
+
+        return User.knex()
+          .table('CollectiveAdmins')
+          .where({
+            collective_id: req.params.id,
+            user_id: req.user.id,
+          })
+          .then((results) => {
+            if (results.length !== 0) {
+              req.canCreateCampaigns = true;
+              res.locals.canCreateCampaigns = true;
+            }
+
+            return next();
+          })
+          .catch(next);
+      },
+      actions: ['show'],
+    },
     // Check if user belongs to collective
     {
       before(req, res, next) {
@@ -60,42 +96,6 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       },
       actions: ['show'],
     },
-    // Check if user can create campaigns
-    {
-      before(req, res, next) {
-        req.canCreateCampaigns = false;
-        res.locals.canCreateCampaigns = false;
-
-        if (!req.user) {
-          return next();
-        }
-
-        return User.knex()
-          .table('CollectiveAdmins')
-          .where({
-            collective_id: req.params.id,
-            user_id: req.user.id,
-          })
-          .then((results) => {
-            if (results.length !== 0) {
-              req.canCreateCampaigns = true;
-              res.locals.canCreateCampaigns = true;
-            }
-
-            return next();
-          })
-          .catch(next);
-      },
-      actions: ['show'],
-    },
-    // Load Collective
-    {
-      before: '_loadCollective',
-      actions: [
-        'show',
-        'join',
-      ],
-    },
   ],
   prototype: {
     _loadCollective(req, res, next) {
@@ -123,7 +123,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
 
           if (req.user && req.user.role === 'Admin' ||
           (req.user && req.user.role === 'CampaignManager' && req.canCreateCampaigns)) {
-            query.andWhere({
+            query.orWhere({
               published: false,
             });
           }
