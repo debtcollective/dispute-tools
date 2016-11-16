@@ -151,30 +151,29 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
     join(req, res, next) {
       const knex = User.knex();
 
-      Collective.query()
-        .transaction((trx) => {
-          return knex
-            .table('UsersCollectives')
-            .transacting(trx)
-            .insert({
-              user_id: req.user.id,
-              collective_id: req.collective.id,
-            })
-            .then(() => {
-              req.collective.userCount++;
+      Collective.transaction((trx) => {
+        return knex
+          .table('UsersCollectives')
+          .transacting(trx)
+          .insert({
+            user_id: req.user.id,
+            collective_id: req.collective.id,
+          })
+          .then(() => {
+            req.collective.userCount++;
 
-              return req.collective
-                .transacting(trx)
-                .save();
-            })
-            .then(trx.commit)
-            .catch(trx.rollback);
-        })
-        .then(() => {
-          req.flash('success', `You have successfully joined ${req.collective.name}`);
-          res.redirect(CONFIG.router.helpers.Collectives.show.url(req.params.id));
-        })
-        .catch(next);
+            return req.collective
+              .transacting(trx)
+              .save();
+          })
+          .then(trx.commit)
+          .catch(trx.rollback);
+      })
+      .then(() => {
+        req.flash('success', `You have successfully joined ${req.collective.name}`);
+        res.redirect(CONFIG.router.helpers.Collectives.show.url(req.params.id));
+      })
+      .catch(next);
     },
   },
 });
