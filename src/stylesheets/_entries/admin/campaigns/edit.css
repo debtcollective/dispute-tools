@@ -1,1 +1,4 @@
 @import '../../../base_admin';
+
+/* view utils */
+.-border-neutral-mid {border-color: var(--k-color-palette-neutral-mid)}

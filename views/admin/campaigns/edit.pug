@@ -12,7 +12,6 @@ block content
 
       h2.pt4 Edit Campaign
       h4.pb3= campaign.title
-
       form(
         method='post'
         action= routeMappings.Admin.Campaigns.update.url(campaign.id)
@@ -58,6 +57,16 @@ block content
             checked= campaign.active
           )
           label.pl1(for='campaign-active') Active
+
+        .py1
+          input(
+            type='checkbox'
+            name='published'
+            value='true'
+            id='campaign-published'
+            checked= campaign.published
+          )
+          label.pl1(for='campaign-published') Published
 
         .pt3
           button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Update
