@@ -121,9 +121,10 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
             published: true,
           });
 
-          if (req.user && req.user.role === 'Admin' ||
-          (req.user && req.user.role === 'CampaignManager' && req.canCreateCampaigns)) {
+          if ((req.user && req.user.role === 'Admin') ||
+            (req.user && req.user.role === 'CampaignManager' && req.canCreateCampaigns)) {
             query.orWhere({
+              collective_id: req.params.id,
               published: false,
             });
           }
