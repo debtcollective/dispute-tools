@@ -1,0 +1,7 @@
+@import '../../base';
+@import '../../components/Tabs';
+
+/* page utils */
+.-bg-neutral-light {background-color: var(--k-color-palette-neutral-light)}
+.-stroke-dark {stroke: #000}
+
