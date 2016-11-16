@@ -1,14 +1,15 @@
 module.exports = {
   Visitor: [
-    ['show', true],
+    ['show', true]
+    ['join', false],
   ],
   User: [
-    ['show', true],
+    ['show', 'join', true],
   ],
   CollectiveManager: [
-    ['show', true],
+    ['show', 'join', true],
   ],
   Admin: [
-    ['show', true],
+    ['show', 'join', true],
   ],
 };

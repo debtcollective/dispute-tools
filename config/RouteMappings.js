@@ -127,7 +127,13 @@ const routeMappings = RouteMappings()
       });
   })
 
-  .resources('/Campaigns')
+  .resources('/Campaigns', (map) => {
+    return map()
+      .post('/:id/join', {
+        to: 'Campaigns#join',
+        as: 'join',
+      });
+  })
 
   .post('/campaigns/:id/posts', {
     to: 'Posts#create',
