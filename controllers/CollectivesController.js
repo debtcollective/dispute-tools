@@ -128,6 +128,39 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       },
       actions: ['show'],
     },
+    // Check if user belongs to collectives
+    {
+      before(req, res, next) {
+        if (!req.user) {
+          return next();
+        }
+
+        const knex = Collective.knex();
+
+        return Promise.each(req.collectives, (collective) => {
+          return knex.table('usersCollectives')
+            .where({
+              user_id: req.user.id,
+              collective_id: collective.id,
+            })
+            .then((results) => {
+              collective.userBelongsToCollective = false;
+
+              if (results.length > 0) {
+                collective.userBelongsToCollective = true;
+              }
+
+              return Promise.resolve();
+            });
+        })
+        .then(() => {
+          return next();
+        })
+        .catch(next);
+      },
+      actions: ['index'],
+    },
+
   ],
   prototype: {
     _loadCollective(req, res, next) {
