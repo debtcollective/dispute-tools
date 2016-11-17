@@ -6,6 +6,34 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
       before: '_loadCampaign',
       actions: ['show', 'join'],
     },
+    {
+      before(req, res, next) {
+        const knex = Campaign.knex();
+
+        req.userBelongsToCampaign = false;
+        res.locals.userBelongsToCampaign = false;
+
+        if (!req.user) {
+          return next();
+        }
+
+        return knex.table('UsersCampaigns')
+          .where({
+            user_id: req.user.id,
+            campaign_id: req.params.id,
+          })
+          .then((result) => {
+            if (result.length > 0) {
+              req.userBelongsToCampaign = true;
+              res.locals.userBelongsToCampaign = true;
+            }
+
+            return next();
+          })
+          .catch(next);
+      },
+      actions: ['show'],
+    },
   ],
 
   prototype: {
