@@ -6,6 +6,8 @@ const PostImage = Class('PostImage').inherits(Attachment)({
   init(config) {
     Krypton.Model.prototype.init.call(this, config);
 
+    this.type = 'Post';
+
     this.fileMeta = this.fileMeta || {};
 
     this.hasAttachment({
