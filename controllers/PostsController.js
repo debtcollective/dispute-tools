@@ -27,10 +27,14 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
 
   prototype: {
     create(req, res) {
-      let builder = Promise.resolve({});
+      let builder = Promise.reject(new Error('Invalid post type'));
 
       if (req.type === 'Text') {
         builder = this._createTextPost(req, req.body.text);
+      }
+
+      if (req.type === 'Poll') {
+        builder = this._createPollPost(req, req.body.options);
       }
 
       builder
@@ -73,6 +77,30 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       post.data = {
         text,
       };
+
+      return post.save()
+        .then(() => {
+          return post;
+        });
+    },
+
+    _createPollPost(req, options) {
+      const post = new Post();
+
+      post.campaignId = req.params.campaignId;
+      post.userId = req.user.id;
+
+      const sanitizedOptions = options.map((option) => {
+        return sanitize(option, {
+          allowedTags: [],
+          allowedAttributes: [],
+        });
+      });
+
+      post.data.options = sanitizedOptions;
+      post.data.votes = sanitizedOptions.map((option) => {
+        return [];
+      });
 
       return post.save()
         .then(() => {
