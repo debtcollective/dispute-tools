@@ -17,6 +17,12 @@ const Campaign = Class('Campaign').inherits(Krypton.Model)({
     'createdAt',
     'updatedAt',
   ],
+
+  prototype: {
+    userCount: 0,
+    active: false,
+    published: false,
+  },
 });
 
 module.exports = Campaign;

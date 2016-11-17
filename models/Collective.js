@@ -16,6 +16,10 @@ const Collective = Class('Collective').inherits(Krypton.Model)({
     'createdAt',
     'updatedAt',
   ],
+
+  prototype: {
+    userCount: 0,
+  },
 });
 
 module.exports = Collective;
