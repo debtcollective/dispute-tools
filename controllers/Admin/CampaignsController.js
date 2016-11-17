@@ -43,6 +43,7 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
         const knex = Campaign.knex();
 
         req.userBelongsToCampaign = false;
+        res.locals.userBelongsToCampaign = false;
 
         if (!req.user) {
           return next();
@@ -56,6 +57,7 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
           .then((result) => {
             if (result.length > 0) {
               req.userBelongsToCampaign = true;
+              res.locals.userBelongsToCampaign = true;
             }
 
             return next();
