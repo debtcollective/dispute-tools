@@ -1,5 +1,7 @@
 /* global Class, CONFIG, RestfulController, NotFoundError, Post, PostsController */
 
+const sanitize = require('sanitize-html');
+
 const PostsController = Class('PostsController').inherits(RestfulController)({
   beforeActions: [
     {
@@ -23,21 +25,22 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
   ],
 
   prototype: {
-    create(req, res, next) {
-      const post = new Post(req.body);
+    create(req, res) {
+      let builder;
 
-      post.userId = req.user.id;
+      if (req.type === 'Text') {
+        builder = this._createTextPost(req, req.body.text);
+      }
 
-      post.campaignId = req.params.campaignId;
-
-      post.processAttachment(req.body)
-        .then(() => {
-          return post.save();
+      builder
+        .then((post) => {
+          res.json(post);
         })
-        .then(() => {
-          res.redirect(CONFIG.router.helpers.Campaigns.show.url(post.campaignId));
-        })
-        .catch(next);
+        .catch((err) => {
+          res.status = 400;
+
+          res.json(err.errors || err);
+        });
     },
 
     update(req, res) {
@@ -52,6 +55,27 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         .catch((err) => {
           res.status = 400;
           res.json(err.errors || err);
+        });
+    },
+
+    _createTextPost(req, text) {
+      const post = new Post();
+
+      post.campaignId = req.params.campaignId;
+      post.userId = req.user.id;
+
+      text = sanitize(text, {
+        allowedTags: [],
+        allowedAttributes: [],
+      });
+
+      post.data = {
+        text,
+      };
+
+      return post.save()
+        .then(() => {
+          return post;
         });
     },
   },
