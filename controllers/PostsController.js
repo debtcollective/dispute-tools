@@ -50,22 +50,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         .catch((err) => {
           res.status = 400;
 
-          res.json(err.errors || err);
-        });
-    },
-
-    update(req, res) {
-      const post = req.post;
-
-      post.data.text = req.body.text;
-
-      post.save()
-        .then(() => {
-          res.json(post);
-        })
-        .catch((err) => {
-          res.status = 400;
-          res.json(err.errors || err);
+          res.json(err.errors || { error: err });
         });
     },
 
@@ -90,17 +75,22 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         });
     },
 
-    _createPollPost(req, options) {
+    _createPollPost(req, body) {
       const post = new Post();
 
       post.campaignId = req.params.campaignId;
       post.userId = req.user.id;
 
-      const sanitizedOptions = options.map((option) => {
+      const sanitizedOptions = body.options.map((option) => {
         return sanitize(option, {
           allowedTags: [],
           allowedAttributes: [],
         });
+      });
+
+      post.data.title = sanitize(body.title, {
+        allowedTags: [],
+        allowedAttributes: [],
       });
 
       post.data.options = sanitizedOptions;
@@ -167,6 +157,79 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
 
         return post;
       });
+    },
+
+    update(req, res) {
+      const post = req.post;
+
+      const builder = Promise.reject(new Error('Invalid post type'));
+
+      if (post.type === 'Text') {
+        this._updateTextPost(post, req.body.text);
+      }
+
+      if (post.type === 'Poll') {
+        this._updatePollPost(req, post, req.body);
+      }
+
+      if (post.type === 'Image') {
+        this._updateTextPost(post, req.body.text);
+      }
+
+      builder
+        .then(res.json)
+        .catch((err) => {
+          res.status = 400;
+
+          res.json(err.errors || { error: err });
+        });
+    },
+
+    _updateTextPost(post, text) {
+      post.data.text = sanitize(text, {
+        allowedTags: [],
+        allowedAttributes: [],
+      });
+
+      return post.save()
+        .then(() => {
+          return post;
+        });
+    },
+
+    _updatePollPost(req, post, body) {
+      if (body.title) {
+        post.data.title = sanitize(body.title, {
+          allowedTags: [],
+          allowedAttributes: [],
+        });
+      }
+
+      const index = body.index;
+
+      let foundUser = false;
+
+      for (let i = 0; i < post.votes.length; i++) {
+        const currentItem = post.votes[i];
+
+        for (let j = 0; j < currentItem.length; j++) {
+          if (currentItem[j] === req.user.id) {
+            foundUser = true;
+            break;
+          }
+        }
+      }
+
+      if (!foundUser) {
+        post.data.votes[index].push(req.user.id);
+
+        return post.save()
+          .then(() => {
+            return post;
+          });
+      } else {
+        return Promise.reject(new Error('You\'ve already voted in this poll'));
+      }
     },
   },
 });
