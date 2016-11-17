@@ -138,7 +138,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
         const knex = Collective.knex();
 
         return Promise.each(req.collectives, (collective) => {
-          return knex.table('usersCollectives')
+          return knex.table('UsersCollectives')
             .where({
               user_id: req.user.id,
               collective_id: collective.id,
