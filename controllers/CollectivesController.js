@@ -96,6 +96,38 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       },
       actions: ['show'],
     },
+    // Check if user belongs to campaigns
+    {
+      before(req, res, next) {
+        if (!req.user) {
+          return next();
+        }
+
+        const knex = Campaign.knex();
+
+        return Promise.each(req.collective.campaigns, (campaign) => {
+          return knex.table('UsersCampaigns')
+            .where({
+              user_id: req.user.id,
+              campaign_id: campaign.id,
+            })
+            .then((results) => {
+              campaign.userBelongsToCampaign = false;
+
+              if (results.length > 0) {
+                campaign.userBelongsToCampaign = true;
+              }
+
+              return Promise.resolve();
+            });
+        })
+        .then(() => {
+          return next();
+        })
+        .catch(next);
+      },
+      actions: ['show'],
+    },
   ],
   prototype: {
     _loadCollective(req, res, next) {
