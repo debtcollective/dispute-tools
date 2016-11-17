@@ -1,7 +1,9 @@
-/* global Class, CONFIG, RestfulController, NotFoundError, Post, PostsController */
+/* global Class, CONFIG, RestfulController, NotFoundError, Post, PostsController,
+PostImage */
 
 const sanitize = require('sanitize-html');
 const Promise = require('bluebird');
+const fs = require('fs-extra');
 
 const PostsController = Class('PostsController').inherits(RestfulController)({
   beforeActions: [
@@ -35,6 +37,10 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
 
       if (req.type === 'Poll') {
         builder = this._createPollPost(req, req.body.options);
+      }
+
+      if (req.type === 'Image') {
+        builder = this._createImagePost(req, req.body.text);
       }
 
       builder
@@ -98,7 +104,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       });
 
       post.data.options = sanitizedOptions;
-      post.data.votes = sanitizedOptions.map((option) => {
+      post.data.votes = sanitizedOptions.map(() => {
         return [];
       });
 
@@ -106,6 +112,61 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         .then(() => {
           return post;
         });
+    },
+
+    _createImagePost(req, text) {
+      const post = new Post();
+
+      post.campaignId = req.params.campaignId;
+      post.userId = req.user.id;
+
+      text = sanitize(text, {
+        allowedTags: [],
+        allowedAttributes: [],
+      });
+
+      post.data = {
+        text,
+      };
+
+      const attachment = new PostImage({
+        type: 'Post',
+      });
+
+      return Post.transaction((trx) => {
+        return post.transacting(trx).save()
+          .then(() => {
+            attachment.foreignKey = post.id;
+
+            return attachment
+              .transacting(trx)
+              .save();
+          })
+          .then(trx.commit)
+          .catch(trx.rollback);
+      })
+      .then(() => {
+        if (req.files && req.files.image && req.files.image.length > 0) {
+          const image = req.files.image[0];
+
+          return attachment.attach('image', image.path, {
+            fileSize: image.size,
+            mimeType: image.mimeType,
+          })
+          .then(() => {
+            fs.unlinkSync(image.path);
+
+            return attachment.save();
+          });
+        }
+
+        return Promise.resolve();
+      })
+      .then(() => {
+        post.data.image = attachment;
+
+        return post;
+      });
     },
   },
 });

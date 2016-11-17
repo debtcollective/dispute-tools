@@ -6,6 +6,26 @@ const _ = require('lodash');
 const gm = require('gm').subClass({ imageMagick: true });
 const Promise = require('bluebird');
 
+const DisputeAttachment = Class({}, 'DisputeAttachment').inherits(Attachment)({
+  init(config) {
+    Krypton.Model.prototype.init.call(this, config);
+
+    this.fileMeta = this.fileMeta || {};
+
+    this.hasAttachment({
+      name: 'file',
+      versions: {
+        thumb(readStream) {
+          return gm(readStream)
+            .resize(40, 40)
+            .stream();
+        },
+      },
+    });
+  },
+});
+
+
 const Dispute = Class('Dispute').inherits(Krypton.Model)({
   tableName: 'Disputes',
   validations: {
@@ -167,25 +187,6 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
       const dispute = this;
 
       this.data.attachments = this.data.attachments || [];
-
-      const DisputeAttachment = Class({}, 'DisputeAttachment').inherits(Attachment)({
-        init(config) {
-          Krypton.Model.prototype.init.call(this, config);
-
-          this.fileMeta = this.fileMeta || {};
-
-          this.hasAttachment({
-            name: 'file',
-            versions: {
-              thumb(readStream) {
-                return gm(readStream)
-                  .resize(40, 40)
-                  .stream();
-              },
-            },
-          });
-        },
-      });
 
       const da = new DisputeAttachment({
         type: 'Dispute',
