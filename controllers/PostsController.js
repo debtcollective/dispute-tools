@@ -23,7 +23,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
           })
           .catch(next);
       },
-      actions: ['update'],
+      actions: ['update', 'delete'],
     },
   ],
 
