@@ -1,6 +1,6 @@
 module.exports = {
   Visitor: [
-    ['show', true]
+    ['show', true],
     ['join', false],
   ],
   User: [
