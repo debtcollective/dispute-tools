@@ -1,6 +1,7 @@
 /* global Class, CONFIG, RestfulController, NotFoundError, Post, PostsController */
 
 const sanitize = require('sanitize-html');
+const Promise = require('bluebird');
 
 const PostsController = Class('PostsController').inherits(RestfulController)({
   beforeActions: [
@@ -26,7 +27,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
 
   prototype: {
     create(req, res) {
-      let builder;
+      let builder = Promise.resolve();
 
       if (req.type === 'Text') {
         builder = this._createTextPost(req, req.body.text);
