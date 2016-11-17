@@ -227,9 +227,16 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
           .then(() => {
             return post;
           });
-      } else {
-        return Promise.reject(new Error('You\'ve already voted in this poll'));
       }
+
+      return Promise.reject(new Error('You\'ve already voted in this poll'));
+    },
+
+    delete(req, res) {
+      req.post.destroy()
+        .then(() => {
+          res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.params.campaignId));
+        });
     },
   },
 });
