@@ -27,7 +27,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
 
   prototype: {
     create(req, res) {
-      let builder = Promise.resolve();
+      let builder = Promise.resolve({});
 
       if (req.type === 'Text') {
         builder = this._createTextPost(req, req.body.text);
