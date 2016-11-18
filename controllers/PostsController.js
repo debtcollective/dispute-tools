@@ -1,5 +1,5 @@
 /* global Class, CONFIG, RestfulController, NotFoundError, Post, PostsController,
-PostImage */
+PostImage, RESTfulAPI */
 
 const sanitize = require('sanitize-html');
 const Promise = require('bluebird');
@@ -7,6 +7,56 @@ const fs = require('fs-extra');
 
 const PostsController = Class('PostsController').inherits(RestfulController)({
   beforeActions: [
+    {
+      before(req, res, next) {
+        Campaign.query()
+          .where('id', req.params.campaignId)
+          .then(([campaign]) => {
+            req.campaign = campaign;
+            next();
+          })
+          .catch(next);
+      },
+      actions: ['index'],
+    },
+    {
+      before(req, res, next) {
+        const query = Post.query()
+          .where('campaign_id', req.params.campaignId);
+
+        RESTfulAPI.createMiddleware({
+          queryBuilder: query,
+          filters: {
+            allowedFields: [],
+          },
+          order: {
+            default: '-created_at',
+            allowedFields: [
+              'created_at',
+            ],
+          },
+          paginate: {
+            pageSize: 50,
+          },
+        })(req, res, next);
+      },
+      actions: ['index'],
+    },
+    {
+      before(req, res, next) {
+        req.posts = res.locals.results;
+
+        res.locals.headers = {
+          total_count: parseInt(res._headers.total_count, 10),
+          total_pages: parseInt(res._headers.total_pages, 10),
+          current_page: parseInt(req.query.page || 1, 10),
+          query: req.query,
+        };
+
+        next();
+      },
+      actions: ['index'],
+    },
     {
       before(req, res, next) {
         Post.query()
@@ -28,6 +78,34 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
   ],
 
   prototype: {
+    index(req, res, next) {
+      Promise.each(req.posts, (post) => {
+        if (post.type !== 'Image') {
+          return Promise.resolve();
+        }
+
+        return PostImage.query()
+          .where({
+            type: 'Post',
+            foreignKey: post.id,
+          })
+          .then((result) => {
+            if (result.length !== 0) {
+              post.image = result[0];
+            }
+
+            return Promise.resolve();
+          });
+      })
+      .then(() => {
+        res.json(req.posts);
+      })
+      .catch(next);
+
+
+      res.json(req.results);
+    },
+
     create(req, res) {
       let builder = Promise.reject(new Error('Invalid post type'));
 
