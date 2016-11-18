@@ -2,7 +2,7 @@
 
 const gm = require('gm');
 
-const Collective = Class('Collective').inherits(Krypton.Model)({
+const Collective = Class('Collective').inherits(Krypton.Model).includes(Krypton.Attachment)({
   tableName: 'Collectives',
   validations: {
     name: ['required'],
