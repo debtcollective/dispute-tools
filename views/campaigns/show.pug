@@ -11,11 +11,13 @@ block content
     .px2(data-offset-section)
 
       .max-width-4.mx-auto(data-tabs-component)
+
         unless campaign.published
           .Alert.wrapper.center.-fw-500.-warning
             p This campaign is currently on Staging mode. #[a(href=routeMappings.Admin.Campaigns.edit.url(campaign.id)) Edit campaign] to make it public.
+
         ul.list-reset.flex.-bg-neutral-light(role='tablist')
-          li.Tab.flex.flex-auto.p1.-dark(role='tab' aria-controls='panel-campaigns' aria-selected='false')
+          li.Tab.flex.flex-auto.p1.-dark(role='tab' aria-controls='panel-campaigns' aria-selected='true')
             .flex.items-center
               svg.-sw7.-stroke-dark(width='40' height='40')
                 use(xlink:href=`#svg-collective-${campaign.collective.id.charAt(0)}`)
@@ -23,23 +25,42 @@ block content
               div
                 h4.inline-block.pr1= campaign.title
                 a.-fw-700(href=routeMappings.Collectives.show.url(campaign.collective.id))= campaign.collective.name
-              p.-caption.-fw-500 + #{campaign.userCount} people joined with $10,560 USD in debt
-          li.Tab.flex-auto.p2.-fw-700.-dark(role='tab' aria-controls='panel-resources' aria-selected='false')
+              p.-caption.-fw-500= (userBelongsToCampaign ? `You + ${campaign.userCount - 1}` : campaign.userCount) + ' people joined with $10,560 USD in debt'
+          li.Tab.flex-auto.p2.-fw-700.-dark.items-center.flex(role='tab' aria-controls='panel-resources' aria-selected='false')
+            .flex-auto
+              | Resources
+              span.right.-caption.-neutral-mid 9
+          li.Tab.p2.-fw-700.-dark.flex.items-center
+            div
+              | Share
+              ul.list-reset.inline-block.ml3
+                li.inline-block
+                  a.px1.-dark(href='#' rel="noopener noreferrer" target="_blank")
+                    svg(width="13" height="11"): use(xlink:href="#svg-twitter")
+                    .sr-only Twitter
+                li.inline-block
+                  a.px1.-dark(href='#' rel="noopener noreferrer" target="_blank")
+                    svg(width="6" height="13"): use(xlink:href="#svg-facebook")
+                    .sr-only Facebook
+
+        .Campaigns_TabPanes.pt3.pb4
+          section#panel-campaign.TabPane(role='tabpanel' aria-hidden='false')
+            if campaign.active
+              include ../includes/campaigns/active-view
+            else
+              include ../includes/campaigns/inactive-view
+
+          section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
             | Resources
-            span.right.-caption.-neutral-mid 9
-          li.Tab.p2.-fw-700.-dark(role='tab' aria-controls='panel-resources' aria-selected='false')
-            | Share
-            ul.list-reset.inline-block.ml3
-              li.inline-block
-                a.px1(href='#' rel="noopener noreferrer" target="_blank")
-                  svg(width="13" height="11"): use(xlink:href="#svg-twitter")
-                  .sr-only Twitter
-              li.inline-block
-                a.px1(href='#' rel="noopener noreferrer" target="_blank")
-                  svg(width="6" height="13"): use(xlink:href="#svg-facebook")
-                  .sr-only Facebook
 
-
-
-    pre= JSON.stringify(campaign,  null, '\t')
+block scripts
+  script(src='/build/javascripts/campaigns/show.js' async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new ViewCampaignsShow(options);
+    }, true);
 

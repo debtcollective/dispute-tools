@@ -1,7 +1,22 @@
 @import '../../base';
 @import '../../components/Tabs';
+@import '../../components/ReadMore';
+@import '../../components/AvatarList';
 
 /* page utils */
 .-bg-neutral-light {background-color: var(--k-color-palette-neutral-light)}
 .-stroke-dark {stroke: #000}
 
+/* page styles */
+.Campaign_IntroBox--active {
+  background-image: url('/images/campaigns/intro-bg.jpg');
+  background-position: 0 30px;
+  background-repeat: no-repeat;
+  background-size: 244px 401px;
+}
+
+.Campaign_description {
+  & p {
+    padding-top: var(--space-2);
+  }
+}

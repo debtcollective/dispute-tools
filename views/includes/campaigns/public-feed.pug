@@ -1,0 +1,25 @@
+.Campaign_IntroBox--active.-bg-white.p3
+  h3.pb1= campaign.title
+  h4.pb2= campaign.introText
+  .ReadMore(
+    data-collapsed-height='180px'
+  )
+    .Campaign_description(
+      id='rm-description'
+      data-readmore-content
+      aria-expanded='false'
+      style='max-height: 180px;'
+    )!= campaign.description
+    a.inline-block.mt2.-fw-700(
+      href='#'
+      data-readmore-toggler
+      aria-controls='rm-description'
+    ) Continue reading...
+
+  .pt3
+    if currentUser
+      form(method='post' action=routeMappings.Campaigns.join.url(campaign.id))
+        input(type='hidden' name='_csrf' value=csrfToken)
+        button.-k-btn.btn-primary.-fw-700.-fw Join this Campaign
+    else
+      button.js-login-link.-k-btn.btn-primary.-fw-700.-fw Join this Campaign
