@@ -1,6 +1,8 @@
 /* globals neonode, CONFIG, Class, Admin, RestfulController, Collective, DisputeTool,
 NotFoundError, Campaign */
 
+const fs = require('fs-extra');
+
 global.Admin = global.Admin || {};
 
 Class(Admin, 'Campaign').inherits(Campaign)({
@@ -68,6 +70,23 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
 
       campaign.save()
         .then(() => {
+          if (req.files && req.files.image && req.files.image.length > 0) {
+            const image = req.files.image[0];
+
+            return campaign.attach('cover', image.path, {
+              fileSize: image.size,
+              mimeType: image.mimeType,
+            })
+            .then(() => {
+              fs.unlinkSync(image.path);
+
+              return campaign.save();
+            });
+          }
+
+          return Promise.resolve();
+        })
+        .then(() => {
           req.flash('success', 'The campaign has been created.');
           res.redirect(
             `${CONFIG.router.helpers.Collectives.show.url(campaign.collectiveId)}#campaigns`
@@ -94,6 +113,23 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
       req.campaign.active = active;
 
       req.campaign.save()
+        .then(() => {
+          if (req.files && req.files.image && req.files.image.length > 0) {
+            const image = req.files.image[0];
+
+            return req.campaign.attach('cover', image.path, {
+              fileSize: image.size,
+              mimeType: image.mimeType,
+            })
+            .then(() => {
+              fs.unlinkSync(image.path);
+
+              return req.campaign.save();
+            });
+          }
+
+          return Promise.resolve();
+        })
         .then(() => {
           req.flash('success', 'The campaign has been updated.');
           res.redirect(
