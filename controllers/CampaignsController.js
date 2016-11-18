@@ -1,4 +1,6 @@
-/* global Class, CONFIG, RestfulController, Campaign, NotFoundError */
+/* global Class, CONFIG, RestfulController, Campaign, NotFoundError, Account */
+const marked = require('marked');
+const Promise = require('bluebird');
 
 const CampaignsController = Class('CampaignsController').inherits(RestfulController)({
   beforeActions: [
@@ -34,16 +36,38 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
       },
       actions: ['show'],
     },
+    // Attach accounts to users
+    {
+      before(req, res, next) {
+        return Promise.each(req.campaign.users, (user) => {
+          return Account.query()
+            .where('user_id', user.id)
+            .then(([account]) => {
+              user.account = account;
+            });
+        })
+        .then(() => {
+          next();
+        })
+        .catch(next);
+      },
+      actions: ['show'],
+    },
+
   ],
 
   prototype: {
     _loadCampaign(req, res, next) {
       Campaign.query()
         .where('id', req.params.id)
-        .include('collective')
+        .include('[collective, posts, users.[account]]')
         .then((campaign) => {
           if (campaign.length === 0) {
             return next(new NotFoundError('Campaign not found.'));
+          }
+
+          if (campaign[0].description) {
+            campaign[0].description = marked(campaign[0].description);
           }
 
           req.campaign = campaign[0];
