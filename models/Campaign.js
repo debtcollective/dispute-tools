@@ -1,6 +1,8 @@
 /* globals Class, Krypton, Campaign */
 
-const Campaign = Class('Campaign').inherits(Krypton.Model)({
+const gm = require('gm');
+
+const Campaign = Class('Campaign').inherits(Krypton.Model).includes(Krypton.Attachment)({
   tableName: 'Campaigns',
   validations: {
     title: ['required'],
@@ -14,6 +16,8 @@ const Campaign = Class('Campaign').inherits(Krypton.Model)({
     'active',
     'userCount',
     'published',
+    'coverMeta',
+    'coverPath',
     'createdAt',
     'updatedAt',
   ],
@@ -22,6 +26,27 @@ const Campaign = Class('Campaign').inherits(Krypton.Model)({
     userCount: 0,
     active: false,
     published: false,
+
+    init(config) {
+      Krypton.Model.prototype.init.call(this, config);
+
+      this.fileMeta = this.fileMeta || {};
+
+      this.hasAttachment({
+        name: 'cover',
+        versions: {
+          grayscale(readStream) {
+            return gm(readStream)
+              .resize(500, null, '>')
+              .type('Grayscale')
+              .setFormat('jpg')
+              .stream();
+          },
+        },
+      });
+
+      return this;
+    },
   },
 });
 
