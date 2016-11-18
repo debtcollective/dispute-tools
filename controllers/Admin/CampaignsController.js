@@ -66,7 +66,7 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
     create(req, res) {
       const campaign = new Admin.Campaign(req.body);
 
-      campaign.active = false;
+      campaign.active = true;
 
       campaign.save()
         .then(() => {
@@ -109,8 +109,10 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
       req.campaign.updateAttributes(req.body);
 
       const active = req.body.active === 'true';
+      const published = req.body.published === 'true';
 
       req.campaign.active = active;
+      req.campaign.published = published;
 
       req.campaign.save()
         .then(() => {
