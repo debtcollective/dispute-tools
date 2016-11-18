@@ -1,4 +1,5 @@
 @import '../../base';
+@import '../../components/Masonry';
 
 hr {
   height: 2px;
