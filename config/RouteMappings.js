@@ -136,6 +136,10 @@ const routeMappings = RouteMappings()
   .put('/campaigns/:campaign_id/posts/:id', {
     to: 'Posts#update',
     as: 'UpdatePost',
+  })
+  .delete('/campaigns/:campaign_id/posts/:id', {
+    to: 'Posts#delete',
+    as: 'DeletePost',
   });
 
 module.exports = routeMappings;

@@ -2,10 +2,11 @@
 module.exports = {
   Visitor: [
     [false],
+    ['index', true],
   ],
   User: [
-    ['create', true],
-    ['edit', 'update', (req) => {
+    ['create', 'index', true],
+    ['edit', 'update', 'delete', (req) => {
       if (req.post.userId !== req.user.id) {
         return false;
       }
@@ -14,8 +15,8 @@ module.exports = {
     }],
   ],
   CollectiveManager: [
-    ['create', true],
-    ['edit', 'update', (req) => {
+    ['create', 'index', true],
+    ['edit', 'update', 'delete', (req) => {
       return User.knex().table('CollectiveAdmins')
         .where({
           collective_id: req.post.collectiveId,
