@@ -22,7 +22,11 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
     {
       before(req, res, next) {
         const query = Post.query()
-          .where('campaign_id', req.params.campaignId);
+          .where({
+            campaign_id: req.params.campaignId,
+            parent_id: null,
+          })
+          .include('comments');
 
         RESTfulAPI.createMiddleware({
           queryBuilder: query,
