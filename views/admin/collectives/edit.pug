@@ -4,7 +4,7 @@ block title
   | Admin/Collective/edit — The Debt Collective
 
 block styles
-  link(href="/build/stylesheets/admin/disputes/index.css" rel="stylesheet")
+  link(href="/build/stylesheets/admin/collectives/edit.css" rel="stylesheet")
 
 block content
   .wrapper.px2.pb3
@@ -14,43 +14,55 @@ block content
     form(
       method='post'
       action= routeMappings.Admin.Collectives.update.url(collective.id)
+      enctype='multipart/form-data'
     )
       input(type='hidden' name='_csrf' value=csrfToken)
       input(name='_method' type='hidden' value='PUT')
 
-      label.block.pb1.-fw-500 Name
-      input.-k-input.-fw(
-        type='text'
-        name='name'
-        value= collective.name
-      )
+      .py1
+        label.block.pb1.-fw-500 Cover
+        if collective.cover.exists('grayscale')
+          img(src=collective.cover.url('grayscale') width='300')
+        input(name='image' type='file' accept='image/*')
 
-      label.block.pb1.-fw-500 Description
-      textarea.-k-input.-fw(
-        name='description'
-        rows='2'
-      )= collective.description
+      .py1
+        label.block.pb1.-fw-500 Name
+        input.-border-neutral-mid.-k-input.-fw(
+          type='text'
+          name='name'
+          value= collective.name
+        )
 
-      label.block.pb1.-fw-500 Manifest
-      textarea.-k-input.-fw(
-        name='manifest'
-        rows='10'
-      )= collective.manifest
+      .py1
+        label.block.pb1.-fw-500 Description
+        textarea.-border-neutral-mid.-k-input.-fw(
+          name='description'
+          rows='2'
+        )= collective.description
 
-      label.block.pb1.-fw-500 Goal title
-      input.-k-input.-fw(
-        type='text'
-        name='goalTitle'
-        value= collective.goalTitle
-      )
+      .py1
+        label.block.pb1.-fw-500 Manifest
+        textarea.-border-neutral-mid.-k-input.-fw(
+          name='manifest'
+          rows='10'
+        )= collective.manifest
 
-      label.block.pb1.-fw-500 Goal
-      textarea.-k-input.-fw(
-        name='goal'
-        rows='2'
-      )= collective.goal
+      .py1
+        label.block.pb1.-fw-500 Goal title
+        input.-border-neutral-mid.-k-input.-fw(
+          type='text'
+          name='goalTitle'
+          value= collective.goalTitle
+        )
 
-      .pb2
+      .py1
+        label.block.pb1.-fw-500 Goal
+        textarea.-border-neutral-mid.-k-input.-fw(
+          name='goal'
+          rows='2'
+        )= collective.goal
+
+      .py1
         p.pb1.-fw-500 Dispute Tools
         - var toolIds = collective.tools.map(t => t.id)
         each tool in disputeTools
@@ -66,6 +78,7 @@ block content
               for= tool.id
             )= tool.name
 
-      button.-k-btn.btn-primary.-fw-700.-fw(
-        type='submit'
-      ) Update “#{collective.name}”
+      .pt3
+        button.-k-btn.btn-primary.-fw-700.-fw(
+          type='submit'
+        ) Update “#{collective.name}”
