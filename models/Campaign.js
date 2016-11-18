@@ -21,6 +21,10 @@ const Campaign = Class('Campaign').inherits(Krypton.Model).includes(Krypton.Atta
     'createdAt',
     'updatedAt',
   ],
+  attachmentStorage: new Krypton.AttachmentStorage.Local({
+    maxFileSize: 5242880,
+    acceptedMimeTypes: [/image/],
+  }),
 
   prototype: {
     userCount: 0,

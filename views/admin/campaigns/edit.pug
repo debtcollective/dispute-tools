@@ -12,13 +12,21 @@ block content
 
       h2.pt4 Edit Campaign
       h4.pb3= campaign.title
+
       form(
         method='post'
         action= routeMappings.Admin.Campaigns.update.url(campaign.id)
+        enctype='multipart/form-data'
         data-component-form
       )
         input(type='hidden' name='_csrf' value=csrfToken)
         input(name='_method' type='hidden' value='PUT')
+
+        .py1
+          label.block.pb1.-fw-500 Cover
+          if campaign.cover.exists('grayscale')
+            img(src=campaign.cover.url('grayscale') width='300')
+          input(name='image' type='file' accept='image/*')
 
         .py1
           label.block.pb1.-fw-500 Collective
@@ -42,10 +50,18 @@ block content
           p(class="-on-error -danger -caption -fw-500 mt1")
 
         .py1
+          label.block.pb1.-fw-500 Intro text
+          textarea.-k-input.-fw.-ff-sec.-border-neutral-mid(
+            name='introText'
+            rows='2'
+          ) #{campaign.introText}
+
+
+        .py1
           label.block.pb1.-fw-500 Description
           textarea.-k-input.-fw.-ff-sec.-border-neutral-mid(
             name='description'
-            rows='4'
+            rows='6'
           ) #{campaign.description}
 
         .py1
