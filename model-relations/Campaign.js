@@ -1,4 +1,4 @@
-/* globals Campaign, Collective, Post */
+/* globals Campaign, Collective, Post, User */
 
 Campaign.relations = {
   collective: {
@@ -8,12 +8,16 @@ Campaign.relations = {
     relatedCol: 'id',
   },
 
-  posts: {
-    type: 'HasMany',
-    relatedModel: Post,
+  users: {
+    type: 'HasManyThrough',
+    relatedModel: User,
     ownerCol: 'id',
-    relatedCol: 'campaign_id',
-    orderBy: ['created_at', 'DESC'],
+    relatedCol: 'id',
+    through: {
+      tableName: 'UsersCampaigns',
+      ownerCol: 'campaign_id',
+      relatedCol: 'user_id',
+    },
     filters: {
       limit: 50,
     },

@@ -1,7 +1,62 @@
-/* global Class, CONFIG, RestfulController, NotFoundError, Post, PostsController */
+/* global Class, CONFIG, RestfulController, NotFoundError, Post, PostsController,
+PostImage, RESTfulAPI */
+
+const sanitize = require('sanitize-html');
+const Promise = require('bluebird');
+const fs = require('fs-extra');
 
 const PostsController = Class('PostsController').inherits(RestfulController)({
   beforeActions: [
+    {
+      before(req, res, next) {
+        Campaign.query()
+          .where('id', req.params.campaignId)
+          .then(([campaign]) => {
+            req.campaign = campaign;
+            next();
+          })
+          .catch(next);
+      },
+      actions: ['index'],
+    },
+    {
+      before(req, res, next) {
+        const query = Post.query()
+          .where('campaign_id', req.params.campaignId);
+
+        RESTfulAPI.createMiddleware({
+          queryBuilder: query,
+          filters: {
+            allowedFields: [],
+          },
+          order: {
+            default: '-created_at',
+            allowedFields: [
+              'created_at',
+            ],
+          },
+          paginate: {
+            pageSize: 50,
+          },
+        })(req, res, next);
+      },
+      actions: ['index'],
+    },
+    {
+      before(req, res, next) {
+        req.posts = res.locals.results;
+
+        res.locals.headers = {
+          total_count: parseInt(res._headers.total_count, 10),
+          total_pages: parseInt(res._headers.total_pages, 10),
+          current_page: parseInt(req.query.page || 1, 10),
+          query: req.query,
+        };
+
+        next();
+      },
+      actions: ['index'],
+    },
     {
       before(req, res, next) {
         Post.query()
@@ -18,40 +73,247 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
           })
           .catch(next);
       },
-      actions: ['update'],
+      actions: ['update', 'delete'],
     },
   ],
 
   prototype: {
-    create(req, res, next) {
-      const post = new Post(req.body);
+    index(req, res, next) {
+      Promise.each(req.posts, (post) => {
+        if (post.type !== 'Image') {
+          return Promise.resolve();
+        }
 
-      post.userId = req.user.id;
+        return PostImage.query()
+          .where({
+            type: 'Post',
+            foreignKey: post.id,
+          })
+          .then((result) => {
+            if (result.length !== 0) {
+              post.image = result[0];
+            }
+
+            return Promise.resolve();
+          });
+      })
+      .then(() => {
+        res.json(req.posts);
+      })
+      .catch(next);
+
+
+      res.json(req.results);
+    },
+
+    create(req, res) {
+      let builder = Promise.reject(new Error('Invalid post type'));
+
+      if (req.type === 'Text') {
+        builder = this._createTextPost(req, req.body.text);
+      }
+
+      if (req.type === 'Poll') {
+        builder = this._createPollPost(req, req.body.options);
+      }
+
+      if (req.type === 'Image') {
+        builder = this._createImagePost(req, req.body.text);
+      }
+
+      builder
+        .then((post) => {
+          res.json(post);
+        })
+        .catch((err) => {
+          res.status = 400;
+
+          res.json(err.errors || { error: err });
+        });
+    },
+
+    _createTextPost(req, text) {
+      const post = new Post();
 
       post.campaignId = req.params.campaignId;
+      post.userId = req.user.id;
 
-      post.processAttachment(req.body)
+      text = sanitize(text, {
+        allowedTags: [],
+        allowedAttributes: [],
+      });
+
+      post.data = {
+        text,
+      };
+
+      return post.save()
         .then(() => {
-          return post.save();
-        })
+          return post;
+        });
+    },
+
+    _createPollPost(req, body) {
+      const post = new Post();
+
+      post.campaignId = req.params.campaignId;
+      post.userId = req.user.id;
+
+      const sanitizedOptions = body.options.map((option) => {
+        return sanitize(option, {
+          allowedTags: [],
+          allowedAttributes: [],
+        });
+      });
+
+      post.data.title = sanitize(body.title, {
+        allowedTags: [],
+        allowedAttributes: [],
+      });
+
+      post.data.options = sanitizedOptions;
+      post.data.votes = sanitizedOptions.map(() => {
+        return [];
+      });
+
+      return post.save()
         .then(() => {
-          res.redirect(CONFIG.router.helpers.Campaigns.show.url(post.campaignId));
-        })
-        .catch(next);
+          return post;
+        });
+    },
+
+    _createImagePost(req, text) {
+      const post = new Post();
+
+      post.campaignId = req.params.campaignId;
+      post.userId = req.user.id;
+
+      text = sanitize(text, {
+        allowedTags: [],
+        allowedAttributes: [],
+      });
+
+      post.data = {
+        text,
+      };
+
+      const attachment = new PostImage({
+        type: 'Post',
+      });
+
+      return Post.transaction((trx) => {
+        return post.transacting(trx).save()
+          .then(() => {
+            attachment.foreignKey = post.id;
+
+            return attachment
+              .transacting(trx)
+              .save();
+          })
+          .then(trx.commit)
+          .catch(trx.rollback);
+      })
+      .then(() => {
+        if (req.files && req.files.image && req.files.image.length > 0) {
+          const image = req.files.image[0];
+
+          return attachment.attach('image', image.path, {
+            fileSize: image.size,
+            mimeType: image.mimeType,
+          })
+          .then(() => {
+            fs.unlinkSync(image.path);
+
+            return attachment.save();
+          });
+        }
+
+        return Promise.resolve();
+      })
+      .then(() => {
+        post.data.image = attachment;
+
+        return post;
+      });
     },
 
     update(req, res) {
       const post = req.post;
 
-      post.data.text = req.body.text;
+      const builder = Promise.reject(new Error('Invalid post type'));
 
-      post.save()
-        .then(() => {
-          res.json(post);
-        })
+      if (post.type === 'Text') {
+        this._updateTextPost(post, req.body.text);
+      }
+
+      if (post.type === 'Poll') {
+        this._updatePollPost(req, post, req.body);
+      }
+
+      if (post.type === 'Image') {
+        this._updateTextPost(post, req.body.text);
+      }
+
+      builder
+        .then(res.json)
         .catch((err) => {
           res.status = 400;
-          res.json(err.errors || err);
+
+          res.json(err.errors || { error: err });
+        });
+    },
+
+    _updateTextPost(post, text) {
+      post.data.text = sanitize(text, {
+        allowedTags: [],
+        allowedAttributes: [],
+      });
+
+      return post.save()
+        .then(() => {
+          return post;
+        });
+    },
+
+    _updatePollPost(req, post, body) {
+      if (body.title) {
+        post.data.title = sanitize(body.title, {
+          allowedTags: [],
+          allowedAttributes: [],
+        });
+      }
+
+      const index = body.index;
+
+      let foundUser = false;
+
+      for (let i = 0; i < post.votes.length; i++) {
+        const currentItem = post.votes[i];
+
+        for (let j = 0; j < currentItem.length; j++) {
+          if (currentItem[j] === req.user.id) {
+            foundUser = true;
+            break;
+          }
+        }
+      }
+
+      if (!foundUser) {
+        post.data.votes[index].push(req.user.id);
+
+        return post.save()
+          .then(() => {
+            return post;
+          });
+      }
+
+      return Promise.reject(new Error('You\'ve already voted in this poll'));
+    },
+
+    delete(req, res) {
+      req.post.destroy()
+        .then(() => {
+          res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.params.campaignId));
         });
     },
   },

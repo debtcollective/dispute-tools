@@ -40,7 +40,7 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
     _loadCampaign(req, res, next) {
       Campaign.query()
         .where('id', req.params.id)
-        .include('[collective, posts]')
+        .include('collective')
         .then((campaign) => {
           if (campaign.length === 0) {
             return next(new NotFoundError('Campaign not found.'));
