@@ -20,10 +20,10 @@ block content
               - var _avatarUrl = '/images/profile/placeholder-small.png';
               if (currentUser.account.image.exists('smallGrayscale'))
                 - _avatarUrl = currentUser.account.image.url('smallGrayscale')
-                img.mr1(src=_avatarUrl alt=currentUser.account.fullname width='40' height='40')
+              img.mr1(src=_avatarUrl alt=currentUser.account.fullname width='40' height='40')
 
             span.-accent
-              span.-fw-700= (belongsToCollective ? 'You + 4,567' : '+ 4,567')
+              span.-fw-700= (belongsToCollective ? `You + ${collective.userCount - 1}` : `+ ${collective.userCount}`)
               span.-fw-500 &nbsp;members
             span.-fw-700.px2 &middot;
             span.-fw-700 $23,560 USD Debt to cancel
@@ -34,7 +34,7 @@ block content
                   input(type='hidden' name='_csrf' value=csrfToken)
                   button.-k-btn.btn-primary.-fw-700.-sm Join this collective
               else
-                button.js-login-link.-k-btn.btn-link.-primary.-fw-700.-sm Join
+                button.js-login-link.-k-btn.btn-primary.-fw-700.-sm Join this collective
 
     .relative.-bg-neutral-light.-dark.px2
       div(data-hit-sticky)
@@ -54,26 +54,48 @@ block content
 
         .Collective_TabPanes
           section#panel-campaigns.TabPane(role='tabpanel' aria-hidden='true')
-            .pt4.clearfix.mxn2.md-flex.flex-wrap
-              each campaign in collective.campaigns
-                article.col.md-col-4.col-12.px2.pb4
-                  h3.pb1.-neutral-dark= campaign.title
-                  if campaign.active
-                    p: span.-bg-primary.-white.-caption.-ttu.-fw-700.inline-block.align-top.px1 active
-                  p.pb1.-neutral-dark= campaign.description
-                  p.pb2.center.-fw-700.-neutral-dark We are the #{campaign.title} #{campaign.userCount}
-                  if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
-                    .border-top.py2
-                      a.inline-block.btn-clear.p1.align-top(
-                        href= routeMappings.Admin.Campaigns.edit.url(campaign.id)
-                      )
-                        svg.-pen.inline-block.align-middle(width='15' height='15')
-                          use(xlink:href='#svg-pencil')
-                        span.inline-block.align-middle.pl1 Edit campaign
+            .Masonry.mxn2.pt4
+              each campaign, index in collective.campaigns
+                article.Masonry_item.px2.pb4
+                  a(href=routeMappings.Campaigns.show.url(campaign.id))
+                    h3.-neutral-dark.pb1= campaign.title
+
+                    unless campaign.published
+                      span.-bg-accent.-caption.-ttu.-fw-700.inline-block.align-top.px1 staging
+                    if campaign.active
+                      span.-bg-primary.-white.-caption.-ttu.-fw-700.inline-block.align-top.px1 active
+
+                    if campaign.description
+                      .pb2.-neutral-dark!= campaign.description
+
+                    if campaign.cover.exists('grayscale')
+                      .center.pb2
+                        img.inline-block.align-top.fit(
+                          src=campaign.cover.url('grayscale')
+                        )
+
+                    if campaign.userBelongsToCampaign
+                      - var _avatarUrl = '/images/profile/placeholder-small.png';
+                      if (currentUser.account.image.exists('smallRedSquare'))
+                        - _avatarUrl = currentUser.account.image.url('smallRedSquare')
+                      .flex.items-center.pb2
+                        img.mr1(src=_avatarUrl alt=currentUser.account.fullname width='40' height='40')
+                        span.-fw-700.-neutral-dark You + #{campaign.userCount - 1} members
+                    else
+                      p.pb2.center.-fw-700.-neutral-dark We are the #{campaign.title} #{campaign.userCount}
+
+                    if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
+                      .border-top.py2
+                        a.inline-block.btn-clear.p1.align-top(
+                          href= routeMappings.Admin.Campaigns.edit.url(campaign.id)
+                        )
+                          svg.-pen.inline-block.align-middle(width='15' height='15')
+                            use(xlink:href='#svg-pencil')
+                          span.inline-block.align-middle.pl1 Edit campaign
                   .border-bottom.-bw5
 
               if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
-                article.col.md-col-4.col-12.px2.pb4
+                article.Masonry_item.px2.mb4
                   a.CreateNewCampaingBtn(
                     href=routeMappings.Admin.Campaigns.new.url()
                     title='Create new campaign'
