@@ -113,15 +113,15 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
     create(req, res) {
       let builder = Promise.reject(new Error('Invalid post type'));
 
-      if (req.type === 'Text') {
+      if (req.body.type === 'Text') {
         builder = this._createTextPost(req, req.body.text);
       }
 
-      if (req.type === 'Poll') {
+      if (req.body.type === 'Poll') {
         builder = this._createPollPost(req, req.body.options);
       }
 
-      if (req.type === 'Image') {
+      if (req.body.type === 'Image') {
         builder = this._createImagePost(req, req.body.text);
       }
 
