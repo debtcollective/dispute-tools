@@ -23,6 +23,7 @@ Class('Post').inherits(Krypton.Model)({
 
   attributes: [
     'id',
+    'parentId',
     'campaignId',
     'userId',
     'type',
