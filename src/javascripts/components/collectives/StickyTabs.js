@@ -88,8 +88,11 @@ export default class CollectiveStickyTabs extends Widget {
     this.state.default = true;
     this.state.sticky = false;
 
-    this.stickyElement.style = '';
-    this.siblingElement.style = '';
+    this.stickyElement.style.position = '';
+    this.stickyElement.style.zIndex = '';
+    this.stickyElement.style.top = '';
+    this.stickyElement.style.width = '';
+    this.siblingElement.style.paddingTop = '';
 
     return this;
   }
