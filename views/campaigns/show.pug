@@ -53,6 +53,8 @@ block content
           section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
             | Resources
 
+          pre= JSON.stringify(campaign, null, '\t')
+
 block scripts
   script(src='/build/javascripts/campaigns/show.js' async)
   script.
@@ -60,6 +62,7 @@ block scripts
       var options = {
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
+        campaignId: !{JSON.stringify(campaign.id)},
       };
       new ViewCampaignsShow(options);
     }, true);

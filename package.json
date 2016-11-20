@@ -63,6 +63,7 @@
   },
   "dependencies": {
     "archiver": "^1.1.0",
+    "autosize": "^3.0.18",
     "aws-sdk": "^2.4.14",
     "basscss": "^8.0.2",
     "bcrypt-node": "^0.1.0",

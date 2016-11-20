@@ -1,5 +1,6 @@
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
+import CreateNewPost from '../../components/campaigns/show/CreateNewPost';
 import ReadMore from '../../components/ReadMore';
 
 class ViewCampaignsShow extends NodeSupport {
@@ -20,6 +21,14 @@ class ViewCampaignsShow extends NodeSupport {
         closeText: 'Hide',
         expanded: false,
         collapsedHeight: readMore.dataset.collapsedHeight,
+      }));
+    }
+
+    const createNewPostElement = document.querySelector('[data-create-new-post]');
+    if (createNewPostElement) {
+      this.appendChild(new CreateNewPost({
+        element: createNewPostElement,
+        campaignId: config.campaignId,
       }));
     }
   }

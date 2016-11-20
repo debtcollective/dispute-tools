@@ -4,10 +4,60 @@
 @import '../../components/AvatarList';
 
 /* page utils */
+.-neutral-dark {color: var(--k-color-palette-neutral-dark)}
 .-bg-neutral-light {background-color: var(--k-color-palette-neutral-light)}
 .-stroke-dark {stroke: #000}
+.-k-input.-no-border {border: 0}
+.-k-select.-accent {
+  border: 0;
+  color: #785616;
+  background-color: var(--k-color-palette-accent);
+}
 
 /* page styles */
+.CreateNewPost {
+  &.active > .CreateNewPost_Box {
+    z-index: 3;
+  }
+
+  &_Input {
+    resize: none;
+  }
+
+  &_Backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,.7);
+    z-index: 2;
+
+    &[aria-hidden='true'] {
+      opacity: 0;
+      transition: visibility 0ms linear 300ms, opacity 300ms;
+    }
+
+    &[aria-hidden='false'] {
+      opacity: 1;
+      transition: opacity 300ms;
+    }
+  }
+}
+
+.Campaign_NewPost__ImageDropper {
+  border: 1px dashed var(--k-color-palette-neutral-mid);
+}
+
+.Campaign_FeedItem {
+  margin-bottom: 1px;
+}
+
+.Tag {
+  padding: 0 .5em;
+  color: #785616;
+}
+
 .Campaign_IntroBox--active {
   background-image: url('/images/campaigns/intro-bg.jpg');
   background-position: 0 30px;

@@ -55,6 +55,9 @@
   --k-h4: 1.3125rem; /* 21px; */
   --k-font-caption-size: .75rem; /* 12px; */
 
+  --k-xs-fs: 12px;
+  --k-xs-h: 25px;
+
   --k-sm-fs: calc(var(--k-font-size) * 1);
   --k-sm-p: 9px 1em 10px;
   --k-sm-h: 35px;

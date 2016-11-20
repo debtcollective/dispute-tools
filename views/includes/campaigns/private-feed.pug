@@ -1,27 +1,124 @@
-.-bg-white.mb1.p2
-  - var _avatarUrl = '/images/profile/placeholder-small.png';
-  if (currentUser.account.image.exists('smallRedSquare'))
-    - _avatarUrl = currentUser.account.image.url('smallRedSquare')
-  img(src=_avatarUrl alt=currentUser.account.fullname width='50' height='50')
-  textarea(placeholder='Write something...')
-  .actions.clearfix
-    .left.
-      [image]
-      [poll]
-      [topics dropdown]
-    .right.
-      [public]
-      [POST]
+.mb1.CreateNewPost(data-create-new-post)
+  .CreateNewPost_Box.relative.-bg-white.p2
+    button.hide.absolute.top-0.right-0.btn-clear.px1(data-create-new-post-close)
+      svg(width='10' height='10'): use(xlink:href='#svg-close')
 
-.-bg-white.p2
-  - var _avatarUrl = '/images/profile/placeholder-small.png';
-  if (currentUser.account.image.exists('smallRedSquare'))
-    - _avatarUrl = currentUser.account.image.url('smallRedSquare')
-  img(src=_avatarUrl alt=currentUser.account.fullname width='50' height='50')
-  p= currentUser.fullname
-  p November 26, 2016
-  span.-bg-accent.-caption.-ttu meeting
-  p How'd it go? I'm a graduate & want to hear more, it's difficult finding what i'm looking for on the internet.
-  .right-align.
-    [comments 3]
+    .flex
+      - var _avatarUrl = '/images/profile/placeholder-small.png';
+      if (currentUser.account.image.exists('smallRedSquare'))
+        - _avatarUrl = currentUser.account.image.url('smallRedSquare')
+      img(
+        src=_avatarUrl
+        alt=currentUser.account.fullname
+        width='50'
+        height='50'
+      )
+      .pb2.flex-auto
+        textarea.CreateNewPost_Input.-k-input.-no-border.block.-fw(
+          placeholder='Write something...'
+          rows='1'
+        )
+
+    .hide.Campaign_NewPost__ImageDropper.-bg-accent.center.p1.mb2(
+      data-post-type-content
+      data-type='Image'
+    )
+      input(type='file' accept='image/*' data-create-new-post-image-input)
+      img.fit(data-create-new-post-image-preview)
+
+    div.hide(data-post-type-content data-type='Poll')
+      | poll content
+
+    .flex
+      .flex-auto.flex.items-center
+        button.btn-clear.mr1(data-post-type-icon data-type='Text')
+          svg.align-middle(width='20' height='20'): use(xlink:href='#svg-comment')
+        button.btn-clear.mr1(data-post-type-icon data-type='Image')
+          svg.align-middle(width='20' height='20'): use(xlink:href='#svg-camera')
+        button.btn-clear.mr1(data-post-type-icon data-type='Poll')
+          svg.align-middle(width='20' height='20'): use(xlink:href='#svg-assignment')
+
+        .-k-select.-accent.-xs
+          select.-fw-700(create-new-post-topic-select)
+            option TOPIC
+            option Know your Rights
+            option Know your Debt
+            option Wall Street
+            option Lenders and Servicers
+            option Art and Design
+            option Social Media
+            option Debt Disputes
+            option Schools
+            option Actions
+            option Hospitals
+            option Collection
+            option Agencies
+            option Politis
+            option Organizing
+
+      div
+        label.mr2
+          input(type='checkbox' checked)
+          span.pl1.-caption.-ttu.-fw-700 Public
+        button.-k-btn.btn-dark.-sm.-fw-700(type='submit') Post
+  .CreateNewPost_Backdrop(aria-hidden='true')
+
+.Campaign_Feed
+  .Campaign_FeedItem.-bg-white.p2
+    .flex.relative
+      span.Tag.-bg-accent.-caption.-ttu.-fw-700.absolute.top-0.right-0 meeting
+      - var _avatarUrl = '/images/profile/placeholder-small.png';
+      if (currentUser.account.image.exists('smallRedSquare'))
+        - _avatarUrl = currentUser.account.image.url('smallRedSquare')
+      div: img(src=_avatarUrl alt=currentUser.account.fullname width='50' height='50')
+      .flex-auto.pl2
+        p.-fw-500= currentUser.account.fullname
+        p.pb2.-caption.-neutral-dark November 26, 2016
+        p.-fw-500 How'd it go? I'm a graduate & want to hear more, it's difficult finding what i'm looking for on the internet.
+        .right-align
+          button.btn-clear.mx1
+            svg.inline-block.align-middle(width='20' height='20'): use(xlink:href='#svg-comment')
+            span.inline-block.align-middle.pl1 3
+
+  .Campaign_FeedItem.-bg-white.p2
+    .flex.relative
+      span.Tag.-bg-accent.-caption.-ttu.-fw-700.absolute.top-0.right-0 poll
+      - var _avatarUrl = '/images/profile/placeholder-small.png';
+      if (currentUser.account.image.exists('smallRedSquare'))
+        - _avatarUrl = currentUser.account.image.url('smallRedSquare')
+      div: img(src=_avatarUrl alt=currentUser.account.fullname width='50' height='50')
+      .flex-auto.pl2
+        p.-fw-500= currentUser.account.fullname
+        p.pb2.-caption.-neutral-dark November 26, 2016
+        p.pb2 Do you want to protests in front of a bank in:
+        form
+          label.block.pb1
+            input(type='radio' name='x')
+            span.pl1 San Francisco
+          label.block.pb1
+            input(type='radio' name='x')
+            span.pl1 Los Angeles
+          label.block.pb1
+            input(type='radio' name='x')
+            span.pl1 New York
+        .right-align
+          button.btn-clear.mx1
+            svg.inline-block.align-middle(width='20' height='20'): use(xlink:href='#svg-comment')
+            span.inline-block.align-middle.pl1 3
+
+  .Campaign_FeedItem.-bg-white.p2
+    .flex.relative
+      span.Tag.-bg-accent.-caption.-ttu.-fw-700.absolute.top-0.right-0 meeting
+      - var _avatarUrl = '/images/profile/placeholder-small.png';
+      if (currentUser.account.image.exists('smallRedSquare'))
+        - _avatarUrl = currentUser.account.image.url('smallRedSquare')
+      div: img(src=_avatarUrl alt=currentUser.account.fullname width='50' height='50')
+      .flex-auto.pl2
+        p.-fw-500= currentUser.account.fullname
+        p.pb2.-caption.-neutral-dark November 26, 2016
+        p.-fw-500 How'd it go? I'm a graduate & want to hear more, it's difficult finding what i'm looking for on the internet.
+        .right-align
+          button.btn-clear.mx1
+            svg.inline-block.align-middle(width='20' height='20'): use(xlink:href='#svg-comment')
+            span.inline-block.align-middle.pl1 3
 
