@@ -27,6 +27,7 @@
 @import './lib/kabinett/components/input';
 @import './lib/kabinett/components/select';
 @import './lib/kabinett/components/popover';
+@import './lib/kabinett/components/tooltip-inline';
 @import './lib/kabinett/utilities/layout';
 @import './lib/kabinett/utilities/type-font-weight';
 @import './lib/kabinett/utilities/type-font-scale';
@@ -61,6 +62,12 @@
   --k-sm-fs: calc(var(--k-font-size) * 1);
   --k-sm-p: 9px 1em 10px;
   --k-sm-h: 35px;
+
+  --k-tooltip-font-size: var(--k-font-caption-size);
+  --k-tooltip-font-weight: 700;
+  --k-tooltip-arrow-size: 5px;
+  --k-tooltip-background-color: var(--k-color-palette-neutral-dark);
+  --k-tooltip-color: var(--k-color-palette-neutral-light);
 
   /* BASSCSS CONFIGURATION */
   /* basscss-layout */

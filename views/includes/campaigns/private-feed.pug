@@ -31,11 +31,23 @@
 
     .flex
       .flex-auto.flex.items-center
-        button.btn-clear.mr1(data-post-type-icon data-type='Text')
+        button.btn-clear.mr1.-k-tooltip-inline.-top(
+          data-post-type-icon
+          data-type='Text'
+          aria-label='Text'
+        )
           svg.align-middle(width='20' height='20'): use(xlink:href='#svg-comment')
-        button.btn-clear.mr1(data-post-type-icon data-type='Image')
+        button.btn-clear.mr1.-k-tooltip-inline.-top(
+          data-post-type-icon
+          data-type='Image'
+          aria-label='Image'
+        )
           svg.align-middle(width='20' height='20'): use(xlink:href='#svg-camera')
-        button.btn-clear.mr1(data-post-type-icon data-type='Poll')
+        button.btn-clear.mr1.-k-tooltip-inline.-top(
+          data-post-type-icon
+          data-type='Poll'
+          aria-label='Poll'
+        )
           svg.align-middle(width='20' height='20'): use(xlink:href='#svg-assignment')
 
         .-k-select.-accent.-xs
