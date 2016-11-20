@@ -1,5 +1,6 @@
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
+import FixedTabs from '../../components/campaigns/show/FixedTabs';
 import CreateNewPost from '../../components/campaigns/show/CreateNewPost';
 import ReadMore from '../../components/ReadMore';
 
@@ -13,14 +14,19 @@ class ViewCampaignsShow extends NodeSupport {
       currentURL: config.currentURL,
     }));
 
-    const readMore = document.querySelector('.ReadMore');
-    if (readMore) {
+    this.appendChild(new FixedTabs({
+      name: 'FixedTabs',
+      element: document.querySelector('[role="tablist"]'),
+    }));
+
+    const readMoreElement = document.querySelector('.ReadMore');
+    if (readMoreElement) {
       this.appendChild(new ReadMore({
-        element: readMore,
+        element: readMoreElement,
         openText: 'Continue reading...',
         closeText: 'Hide',
         expanded: false,
-        collapsedHeight: readMore.dataset.collapsedHeight,
+        collapsedHeight: readMoreElement.dataset.collapsedHeight,
       }));
     }
 

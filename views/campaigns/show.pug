@@ -43,8 +43,8 @@ block content
                     svg(width="6" height="13"): use(xlink:href="#svg-facebook")
                     .sr-only Facebook
 
-        .Campaigns_TabPanes.pt3.pb4
-          section#panel-campaign.TabPane(role='tabpanel' aria-hidden='false')
+        .Campaigns_TabPanes.pb4
+          section#panel-campaign.TabPane.pt3(role='tabpanel' aria-hidden='false')
             if campaign.active
               include ../includes/campaigns/active-view
             else
