@@ -87,7 +87,7 @@ export default class CreateNewPost extends Widget {
 
     const dirty = (
       this._inputElement.value.length ||
-      this._imageInputElement.files.length ||
+      (this.type === 'Image' && this._imageInputElement.files.length) ||
       this.type === 'Poll'
     );
 
@@ -121,6 +121,8 @@ export default class CreateNewPost extends Widget {
       }.bind(this);
 
       reader.readAsDataURL(input.files[0]);
+    } else {
+      this._imagePreviewElement.src = '';
     }
   }
 
