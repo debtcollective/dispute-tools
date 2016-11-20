@@ -34,6 +34,15 @@
   --k-xl-h: calc(calc(var(--k-xl-fs) - 1px) + var(--k-xl-fs) + calc(var(--k-xl-fs) - 2px));
 
   /* elements */
+  /* elements tooltip */
+  --k-tooltip-font-size: 1rem;
+  --k-tooltip-font-weight: 500;
+  --k-tooltip-radius: 3px;
+  --k-tooltip-arrow-size: 5px;
+  --k-tooltip-background-color: var(--k-color);
+  --k-tooltip-color: var(--k-background-color);
+
+  /* elements popover */
   --k-popover-arrow-size: 10px;
   --k-popover-border-radius: 6px;
 
