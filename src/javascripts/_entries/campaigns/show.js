@@ -1,3 +1,4 @@
+import shareUrl from 'share-url';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
 import FixedTabs from '../../components/campaigns/show/FixedTabs';
@@ -17,7 +18,17 @@ class ViewCampaignsShow extends NodeSupport {
     this.appendChild(new FixedTabs({
       name: 'FixedTabs',
       element: document.querySelector('[role="tablist"]'),
-    }));
+    }
+                                  ));
+    document.querySelector('[data-share-url-twitter]').href = shareUrl.twitter({
+      url: location.href,
+      text: `Join the ${config.campaignTitle}`,
+      via: '0debtzone',
+    });
+
+    document.querySelector('[data-share-url-facebook]').href = shareUrl.facebook({
+      u: location.href,
+    });
 
     const readMoreElement = document.querySelector('.ReadMore');
     if (readMoreElement) {
