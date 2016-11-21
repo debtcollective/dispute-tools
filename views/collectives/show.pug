@@ -137,15 +137,15 @@ block content
                 p.pb2.-fw-700.center.-neutral-dark Spread
                 ul.list-reset.center.pb4
                   li.inline-block
-                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank')
+                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank' data-share-url-twitter)
                       svg(width='13' height='11'): use(xlink:href='#svg-twitter')
                       .sr-only Share on Twitter
                   li.inline-block.mx2
-                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank')
+                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank' data-share-url-facebook)
                       svg(width='6' height='13'): use(xlink:href='#svg-facebook')
                       .sr-only Share on Facebook
                   li.inline-block
-                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank')
+                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' data-share-url-email)
                       svg(width='14' height='11'): use(xlink:href='#svg-email')
                       .sr-only Share by Email
 
@@ -185,7 +185,8 @@ block scripts
       var options = {
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
-        disputeIds: !{JSON.stringify(disputeIds)}
+        disputeIds: !{JSON.stringify(disputeIds)},
+        collectiveName: !{JSON.stringify(collective.name)},
       };
       new ViewCollectivesShow(options);
     }, true);
