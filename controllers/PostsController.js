@@ -10,7 +10,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
     {
       before(req, res, next) {
         Campaign.query()
-          .where('id', req.params.campaignId)
+          .where('id', req.params.id)
           .then(([campaign]) => {
             req.campaign = campaign;
             next();
@@ -23,7 +23,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       before(req, res, next) {
         const query = Post.query()
           .where({
-            campaign_id: req.params.campaignId,
+            campaign_id: req.params.id,
             parent_id: null,
           })
           .include('comments');

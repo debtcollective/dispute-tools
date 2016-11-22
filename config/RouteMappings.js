@@ -135,6 +135,10 @@ const routeMappings = RouteMappings()
       });
   })
 
+  .get('/campaigns/:id/posts', {
+    to: 'Posts#index',
+    as: 'PostsIndex',
+  })
   .post('/campaigns/:id/posts', {
     to: 'Posts#create',
     as: 'CreatePost',
