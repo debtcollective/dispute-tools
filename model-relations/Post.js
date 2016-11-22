@@ -1,9 +1,18 @@
-/* globals Post */
+/* globals Post, Topic */
 
 Post.relations = {
-  type: 'HasMany',
-  relatedModel: Post,
-  ownerCol: 'id',
-  relatedCol: 'parent_id',
-  orderBy: ['created_at', 'DESC'],
+  comments: {
+    type: 'HasMany',
+    relatedModel: Post,
+    ownerCol: 'id',
+    relatedCol: 'parent_id',
+    orderBy: ['created_at', 'DESC'],
+  },
+
+  topic: {
+    type: 'HasOne',
+    relatedModel: Topic,
+    ownerCol: 'id',
+    relatedCol: 'topic_id',
+  },
 };
