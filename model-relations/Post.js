@@ -12,7 +12,7 @@ Post.relations = {
   topic: {
     type: 'HasOne',
     relatedModel: Topic,
-    ownerCol: 'id',
-    relatedCol: 'topic_id',
+    ownerCol: 'topic_id',
+    relatedCol: 'id',
   },
 };

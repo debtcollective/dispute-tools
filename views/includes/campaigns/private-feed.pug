@@ -52,21 +52,9 @@
 
         .-k-select.-accent.-xs
           select.-fw-700(create-new-post-topic-select)
-            option TOPIC
-            option Know your Rights
-            option Know your Debt
-            option Wall Street
-            option Lenders and Servicers
-            option Art and Design
-            option Social Media
-            option Debt Disputes
-            option Schools
-            option Actions
-            option Hospitals
-            option Collection
-            option Agencies
-            option Politis
-            option Organizing
+            option(value='') TOPIC
+            each topic in topics
+              option(value=topic.id)= topic.title
 
       div
         label.mr2

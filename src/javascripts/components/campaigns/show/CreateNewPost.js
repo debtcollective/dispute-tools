@@ -6,6 +6,13 @@ export default class CreateNewPost extends Widget {
   constructor(config) {
     super(config);
 
+    API.getCampaignPosts({
+      campaignId: this.campaignId,
+    }, function(err, res){
+      console.log(err);
+      console.log(res);
+    });
+
     this.type = 'Text';
 
     this._closeElement = this.element.querySelector('[data-create-new-post-close]');
@@ -88,7 +95,7 @@ export default class CreateNewPost extends Widget {
     const dirty = (
       this._inputElement.value.length ||
       (this.type === 'Image' && this._imageInputElement.files.length) ||
-      this.type === 'Poll'
+      (this.type === 'Poll')
     );
 
     if (dirty) {
@@ -130,6 +137,10 @@ export default class CreateNewPost extends Widget {
     const data = new FormData();
     data.append('type', this.type);
 
+    if (this._topicElement.value) {
+      data.append('topicId', this._topicElement.value);
+    }
+
     switch (this.type) {
       case 'Text':
         data.append('text', this._inputElement.value.trim());
@@ -141,7 +152,9 @@ export default class CreateNewPost extends Widget {
       case 'Poll':
         data.append('title', this._inputElement.value.trim());
         // TODO: send real data
-        data.append('options', ['option I', 'option II', 'option III']);
+        ['option I', 'option II', 'option III'].forEach(option => {
+          data.append('options[]', option);
+        });
         break;
       default:
         throw new Error('Invalid post type');
