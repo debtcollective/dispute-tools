@@ -147,7 +147,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         type: 'Text',
         campaignId: req.params.id,
         userId: req.user.id,
-        topicId: req.params.topicId,
+        topicId: req.body.topicId,
       });
 
       text = sanitize(text, {
@@ -170,10 +170,10 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         type: 'Poll',
         campaignId: req.params.id,
         userId: req.user.id,
-        topicId: req.params.topicId,
+        topicId: req.body.topicId,
       });
 
-      const sanitizedOptions = body.options.map((option) => {
+      const sanitizedOptions = req.body.options.map((option) => {
         return sanitize(option, {
           allowedTags: [],
           allowedAttributes: [],
@@ -201,7 +201,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         type: 'Image',
         campaignId: req.params.id,
         userId: req.user.id,
-        topicId: req.params.topicId,
+        topicId: req.body.topicId,
       });
 
       text = sanitize(text, {
