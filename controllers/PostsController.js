@@ -1,9 +1,12 @@
 /* global Class, CONFIG, RestfulController, NotFoundError, Post, PostsController,
-PostImage, RESTfulAPI, neonode, Campaign */
+PostImage, neonode, Campaign */
 
 const sanitize = require('sanitize-html');
 const Promise = require('bluebird');
 const fs = require('fs-extra');
+const path = require('path');
+
+const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 
 const PostsController = Class('PostsController').inherits(RestfulController)({
   beforeActions: [
