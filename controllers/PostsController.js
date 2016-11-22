@@ -26,7 +26,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
             campaign_id: req.params.id,
             parent_id: null,
           })
-          .include('comments');
+          .include('[comments, topic]');
 
         RESTfulAPI.createMiddleware({
           queryBuilder: query,
