@@ -32,11 +32,13 @@ Class('Post').inherits(Krypton.Model)({
     'topicId',
     'type',
     'data',
+    'public',
     'createdAt',
     'updatedAt',
   ],
 
   prototype: {
+    public: false,
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
 
