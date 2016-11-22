@@ -123,7 +123,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       }
 
       if (req.body.type === 'Poll') {
-        builder = controller._createPollPost(req, req.body.options);
+        builder = controller._createPollPost(req);
       }
 
       if (req.body.type === 'Image') {
@@ -168,7 +168,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         });
     },
 
-    _createPollPost(req, body) {
+    _createPollPost(req) {
       const post = new Post({
         type: 'Poll',
         campaignId: req.params.id,
@@ -183,7 +183,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         });
       });
 
-      post.data.title = sanitize(body.title, {
+      post.data.title = sanitize(req.body.title, {
         allowedTags: [],
         allowedAttributes: [],
       });
