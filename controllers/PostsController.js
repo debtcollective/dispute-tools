@@ -94,7 +94,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         return PostImage.query()
           .where({
             type: 'Post',
-            foreignKey: post.id,
+            foreign_key: post.id,
           })
           .then((result) => {
             if (result.length !== 0) {
@@ -108,9 +108,6 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         res.json(req.posts);
       })
       .catch(next);
-
-
-      res.json(req.results);
     },
 
     create(req, res) {
@@ -236,7 +233,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         if (req.files && req.files.image && req.files.image.length > 0) {
           const image = req.files.image[0];
 
-          return attachment.attach('image', image.path, {
+          return attachment.attach('file', image.path, {
             fileSize: image.size,
             mimeType: image.mimeType,
           })
