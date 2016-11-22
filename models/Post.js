@@ -21,7 +21,6 @@ Class('Post').inherits(Krypton.Model)({
     ],
     campaignId: ['required'],
     userId: ['required'],
-    topicId: ['required'],
   },
 
   attributes: [
