@@ -26,6 +26,7 @@ Class('Post').inherits(Krypton.Model)({
     'parentId',
     'campaignId',
     'userId',
+    'topicId',
     'type',
     'data',
     'createdAt',
