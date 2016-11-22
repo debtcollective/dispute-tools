@@ -1,5 +1,5 @@
 /* global Class, CONFIG, RestfulController, NotFoundError, Post, PostsController,
-PostImage, RESTfulAPI */
+PostImage, RESTfulAPI, neonode */
 
 const sanitize = require('sanitize-html');
 const Promise = require('bluebird');
@@ -111,18 +111,24 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
     },
 
     create(req, res) {
-      let builder = Promise.reject(new Error('Invalid post type'));
+      let builder = false;
+
+      const controller = neonode.controllers.Posts;
 
       if (req.body.type === 'Text') {
-        builder = this._createTextPost(req, req.body.text);
+        builder = controller._createTextPost(req, req.body.text);
       }
 
       if (req.body.type === 'Poll') {
-        builder = this._createPollPost(req, req.body.options);
+        builder = controller._createPollPost(req, req.body.options);
       }
 
       if (req.body.type === 'Image') {
-        builder = this._createImagePost(req, req.body.text);
+        builder = controller._createImagePost(req, req.body.text);
+      }
+
+      if (!builder) {
+        builder = Promise.reject(new Error('Invalid post type'))
       }
 
       builder
@@ -137,9 +143,11 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
     },
 
     _createTextPost(req, text) {
-      const post = new Post();
+      const post = new Post({
+        type: 'Text',
+      });
 
-      post.campaignId = req.params.campaignId;
+      post.campaignId = req.params.id;
       post.userId = req.user.id;
 
       text = sanitize(text, {
@@ -158,9 +166,11 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
     },
 
     _createPollPost(req, body) {
-      const post = new Post();
+      const post = new Post({
+        type: 'Poll',
+      });
 
-      post.campaignId = req.params.campaignId;
+      post.campaignId = req.params.id;
       post.userId = req.user.id;
 
       const sanitizedOptions = body.options.map((option) => {
@@ -187,9 +197,11 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
     },
 
     _createImagePost(req, text) {
-      const post = new Post();
+      const post = new Post({
+        type: 'Image',
+      });
 
-      post.campaignId = req.params.campaignId;
+      post.campaignId = req.params.id;
       post.userId = req.user.id;
 
       text = sanitize(text, {
@@ -244,18 +256,24 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
     update(req, res) {
       const post = req.post;
 
-      const builder = Promise.reject(new Error('Invalid post type'));
+      const controller = neonode.controllers.Posts;
+
+      let builder = false;
 
       if (post.type === 'Text') {
-        this._updateTextPost(post, req.body.text);
+        builder = controller._updateTextPost(post, req.body.text);
       }
 
       if (post.type === 'Poll') {
-        this._updatePollPost(req, post, req.body);
+        builder = controller._updatePollPost(req, post, req.body);
       }
 
       if (post.type === 'Image') {
-        this._updateTextPost(post, req.body.text);
+        builder = controller._updateTextPost(post, req.body.text);
+      }
+
+      if (!builder) {
+        builder = Promise.reject(new Error('Invalid post type'));
       }
 
       builder
