@@ -3,24 +3,31 @@
 const gm = require('gm');
 
 const PostImage = Class('PostImage').inherits(Attachment)({
-  init(config) {
-    Krypton.Model.prototype.init.call(this, config);
+  attachmentStorage: new Krypton.AttachmentStorage.Local({
+    maxFileSize: 5242880,
+    acceptedMimeTypes: [/image/],
+  }),
 
-    this.type = 'Post';
+  prototype: {
+    init(config) {
+      Krypton.Model.prototype.init.call(this, config);
 
-    this.fileMeta = this.fileMeta || {};
+      this.type = 'Post';
 
-    this.hasAttachment({
-      name: 'file',
-      versions: {
-        thumb(readStream) {
-          return gm(readStream)
-            .resize(500, null, '>')
-            .stream();
+      this.fileMeta = this.fileMeta || {};
+
+      this.hasAttachment({
+        name: 'file',
+        versions: {
+          thumb(readStream) {
+            return gm(readStream)
+              .resize(500, null, '>')
+              .stream();
+          },
         },
-      },
-    });
-  },
+      });
+    },
+  }
 });
 
 module.exports = PostImage;

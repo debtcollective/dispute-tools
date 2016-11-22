@@ -233,7 +233,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         if (req.files && req.files.image && req.files.image.length > 0) {
           const image = req.files.image[0];
 
-          return attachment.attach('image', image.path, {
+          return attachment.attach('file', image.path, {
             fileSize: image.size,
             mimeType: image.mimeType,
           })
