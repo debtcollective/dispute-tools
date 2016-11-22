@@ -94,7 +94,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         return PostImage.query()
           .where({
             type: 'Post',
-            foreignKey: post.id,
+            foreign_key: post.id,
           })
           .then((result) => {
             if (result.length !== 0) {
@@ -108,9 +108,6 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         res.json(req.posts);
       })
       .catch(next);
-
-
-      res.json(req.results);
     },
 
     create(req, res) {
