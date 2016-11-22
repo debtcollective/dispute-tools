@@ -1,4 +1,4 @@
-/* global Class, CONFIG, RestfulController, Campaign, NotFoundError, Account */
+/* global Class, CONFIG, RestfulController, Campaign, NotFoundError, Account, Topic */
 const marked = require('marked');
 const Promise = require('bluebird');
 
@@ -50,6 +50,19 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
           next();
         })
         .catch(next);
+      },
+      actions: ['show'],
+    },
+    // Load topics
+    {
+      before(req, res, next) {
+        Topic.query()
+          .then((result) => {
+            req.topics = result;
+            res.locals.topics = result;
+
+            next();
+          });
       },
       actions: ['show'],
     },

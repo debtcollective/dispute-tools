@@ -1,5 +1,5 @@
 /* global Class, CONFIG, RestfulController, NotFoundError, Post, PostsController,
-PostImage, RESTfulAPI, neonode */
+PostImage, RESTfulAPI, neonode, Campaign */
 
 const sanitize = require('sanitize-html');
 const Promise = require('bluebird');
@@ -128,7 +128,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       }
 
       if (!builder) {
-        builder = Promise.reject(new Error('Invalid post type'))
+        builder = Promise.reject(new Error('Invalid post type'));
       }
 
       builder
@@ -145,10 +145,10 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
     _createTextPost(req, text) {
       const post = new Post({
         type: 'Text',
+        campaignId: req.params.id,
+        userId: req.user.id,
+        topicId: req.params.topicId,
       });
-
-      post.campaignId = req.params.id;
-      post.userId = req.user.id;
 
       text = sanitize(text, {
         allowedTags: [],
@@ -168,10 +168,10 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
     _createPollPost(req, body) {
       const post = new Post({
         type: 'Poll',
+        campaignId: req.params.id,
+        userId: req.user.id,
+        topicId: req.params.topicId,
       });
-
-      post.campaignId = req.params.id;
-      post.userId = req.user.id;
 
       const sanitizedOptions = body.options.map((option) => {
         return sanitize(option, {
@@ -199,10 +199,10 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
     _createImagePost(req, text) {
       const post = new Post({
         type: 'Image',
+        campaignId: req.params.id,
+        userId: req.user.id,
+        topicId: req.params.topicId,
       });
-
-      post.campaignId = req.params.id;
-      post.userId = req.user.id;
 
       text = sanitize(text, {
         allowedTags: [],

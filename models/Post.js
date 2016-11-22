@@ -19,6 +19,9 @@ Class('Post').inherits(Krypton.Model)({
         message: 'Invalid post type',
       },
     ],
+    campaignId: ['required'],
+    userId: ['required'],
+    topicId: ['required'],
   },
 
   attributes: [
