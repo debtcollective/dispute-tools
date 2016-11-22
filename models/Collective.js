@@ -29,7 +29,7 @@ const Collective = Class('Collective').inherits(Krypton.Model).includes(Krypton.
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
 
-      this.fileMeta = this.fileMeta || {};
+      this.coverMeta = this.coverMeta || {};
 
       this.hasAttachment({
         name: 'cover',

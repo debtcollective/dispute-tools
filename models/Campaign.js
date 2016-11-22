@@ -34,7 +34,7 @@ const Campaign = Class('Campaign').inherits(Krypton.Model).includes(Krypton.Atta
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
 
-      this.fileMeta = this.fileMeta || {};
+      this.coverMeta = this.coverMeta || {};
 
       this.hasAttachment({
         name: 'cover',
