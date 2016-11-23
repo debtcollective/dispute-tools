@@ -25,6 +25,7 @@
 @import './lib/kabinett/core/base';
 @import './lib/kabinett/components/button';
 @import './lib/kabinett/components/input';
+@import './lib/kabinett/components/textarea';
 @import './lib/kabinett/components/select';
 @import './lib/kabinett/components/popover';
 @import './lib/kabinett/components/tooltip-inline';

@@ -2,6 +2,7 @@
 @import '../../components/Tabs';
 @import '../../components/ReadMore';
 @import '../../components/AvatarList';
+@import '../../components/Input';
 
 /* page utils */
 .-neutral-dark {color: var(--k-color-palette-neutral-dark)}

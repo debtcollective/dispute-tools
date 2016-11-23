@@ -1,7 +1,6 @@
-.-k-input {
+.-k-textarea {
   font-size: var(--k-font-size);
-  padding: 0 1em;
-  height: calc(calc(var(--k-font-size) - 1px) + var(--k-font-size) + calc(var(--k-font-size) - 2px));
+  padding: calc(var(--k-font-size) - 1px) 1em calc(var(--k-font-size) - 2px);
   border-radius: var(--border-radius);
   border: 1px solid currentColor;
 
