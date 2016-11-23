@@ -14,6 +14,8 @@ export default class CreateNewPost extends Widget {
     this._topicElement = this.element.querySelector('[create-new-post-topic-select]');
     this._imageInputElement = this.element.querySelector('[data-create-new-post-image-input]');
     this._imagePreviewElement = this.element.querySelector('[data-create-new-post-image-preview]');
+    this._pollOptions = document.getElementsByName('pollOption');
+    this._pollOptions = Array.prototype.slice.call(this._pollOptions);
     this._postTypeIcons = this.element.querySelectorAll('[data-post-type-icon]');
     this._postTypeIcons = Array.prototype.slice.call(this._postTypeIcons);
     this._postTypeContents = this.element.querySelectorAll('[data-post-type-content]');
@@ -146,9 +148,8 @@ export default class CreateNewPost extends Widget {
         break;
       case 'Poll':
         data.append('title', this._inputElement.value.trim());
-        // TODO: send real data
-        ['option I', 'option II', 'option III'].forEach(option => {
-          data.append('options[]', option);
+        this._pollOptions.filter(option => option.value).forEach(option => {
+          data.append('options[]', option.value);
         });
         break;
       default:
