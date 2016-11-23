@@ -6,13 +6,6 @@ export default class CreateNewPost extends Widget {
   constructor(config) {
     super(config);
 
-    API.getCampaignPosts({
-      campaignId: this.campaignId,
-    }, function(err, res){
-      console.log(err);
-      console.log(res);
-    });
-
     this.type = 'Text';
 
     this._closeElement = this.element.querySelector('[data-create-new-post-close]');

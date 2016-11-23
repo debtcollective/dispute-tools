@@ -3,6 +3,7 @@ import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
 import Tabs from '../../components/Tabs';
 import FixedTabs from '../../components/campaigns/show/FixedTabs';
+import FeedController from '../../components/campaigns/show/FeedController';
 import CreateNewPost from '../../components/campaigns/show/CreateNewPost';
 import ReadMore from '../../components/ReadMore';
 
@@ -24,8 +25,8 @@ class ViewCampaignsShow extends NodeSupport {
     this.appendChild(new FixedTabs({
       name: 'FixedTabs',
       element: document.querySelector('[role="tablist"]'),
-    }
-                                  ));
+    }));
+
     document.querySelector('[data-share-url-twitter]').href = shareUrl.twitter({
       url: location.href,
       text: `Join the ${config.campaignTitle}`,
@@ -35,6 +36,12 @@ class ViewCampaignsShow extends NodeSupport {
     document.querySelector('[data-share-url-facebook]').href = shareUrl.facebook({
       u: location.href,
     });
+
+    this.appendChild(new FeedController({
+      name: 'FeedController',
+      campaignId: config.campaignId,
+      element: document.querySelector('.Campaign_Feed'),
+    }));
 
     const readMoreElement = document.querySelector('.ReadMore');
     if (readMoreElement) {

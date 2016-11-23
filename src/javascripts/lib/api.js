@@ -70,7 +70,6 @@ export default {
 
     superagent
       .get(`/campaigns/${args.campaignId}/posts`)
-      .set('X-CSRF-Token', csrfToken)
       .set('Accept', 'application/json')
       .end((err, res) => {
         if (typeof callback === 'function') {

@@ -26,8 +26,28 @@
       input(type='file' accept='image/*' data-create-new-post-image-input)
       img.fit(data-create-new-post-image-preview)
 
-    div.hide(data-post-type-content data-type='Poll')
-      | poll content
+    .hide.mb2(data-post-type-content data-type='Poll')
+      .Poll_create-option.-bg-accent.mxn2
+        .-input-group-icon
+          svg(width='10' height='10'): use(xlink:href='#svg-plus')
+          input.-k-input.-no-border.-transparent.-fw(
+            name='pollOption'
+            placeholder='Write an option...'
+          )
+      .Poll_create-option.-bg-accent.mxn2
+        .-input-group-icon
+          svg(width='10' height='10'): use(xlink:href='#svg-plus')
+          input.-k-input.-no-border.-transparent.-fw(
+            name='pollOption'
+            placeholder='Write an option...'
+          )
+      .Poll_create-option.-bg-accent.mxn2
+        .-input-group-icon
+          svg(width='10' height='10'): use(xlink:href='#svg-plus')
+          input.-k-input.-no-border.-transparent.-fw(
+            name='pollOption'
+            placeholder='Write an option...'
+          )
 
     .flex
       .flex-auto.flex.items-center
@@ -64,61 +84,3 @@
   .CreateNewPost_Backdrop(aria-hidden='true')
 
 .Campaign_Feed
-  .Campaign_FeedItem.-bg-white.p2
-    .flex.relative
-      span.Tag.-bg-accent.-caption.-ttu.-fw-700.absolute.top-0.right-0 meeting
-      - var _avatarUrl = '/images/profile/placeholder-small.png';
-      if (currentUser.account.image.exists('smallRedSquare'))
-        - _avatarUrl = currentUser.account.image.url('smallRedSquare')
-      div: img(src=_avatarUrl alt=currentUser.account.fullname width='50' height='50')
-      .flex-auto.pl2
-        p.-fw-500= currentUser.account.fullname
-        p.pb2.-caption.-neutral-dark November 26, 2016
-        p.-fw-500 How'd it go? I'm a graduate & want to hear more, it's difficult finding what i'm looking for on the internet.
-        .right-align
-          button.btn-clear.mx1
-            svg.inline-block.align-middle(width='20' height='20'): use(xlink:href='#svg-comment')
-            span.inline-block.align-middle.pl1 3
-
-  .Campaign_FeedItem.-bg-white.p2
-    .flex.relative
-      span.Tag.-bg-accent.-caption.-ttu.-fw-700.absolute.top-0.right-0 poll
-      - var _avatarUrl = '/images/profile/placeholder-small.png';
-      if (currentUser.account.image.exists('smallRedSquare'))
-        - _avatarUrl = currentUser.account.image.url('smallRedSquare')
-      div: img(src=_avatarUrl alt=currentUser.account.fullname width='50' height='50')
-      .flex-auto.pl2
-        p.-fw-500= currentUser.account.fullname
-        p.pb2.-caption.-neutral-dark November 26, 2016
-        p.pb2 Do you want to protests in front of a bank in:
-        form
-          label.block.pb1
-            input(type='radio' name='x')
-            span.pl1 San Francisco
-          label.block.pb1
-            input(type='radio' name='x')
-            span.pl1 Los Angeles
-          label.block.pb1
-            input(type='radio' name='x')
-            span.pl1 New York
-        .right-align
-          button.btn-clear.mx1
-            svg.inline-block.align-middle(width='20' height='20'): use(xlink:href='#svg-comment')
-            span.inline-block.align-middle.pl1 3
-
-  .Campaign_FeedItem.-bg-white.p2
-    .flex.relative
-      span.Tag.-bg-accent.-caption.-ttu.-fw-700.absolute.top-0.right-0 meeting
-      - var _avatarUrl = '/images/profile/placeholder-small.png';
-      if (currentUser.account.image.exists('smallRedSquare'))
-        - _avatarUrl = currentUser.account.image.url('smallRedSquare')
-      div: img(src=_avatarUrl alt=currentUser.account.fullname width='50' height='50')
-      .flex-auto.pl2
-        p.-fw-500= currentUser.account.fullname
-        p.pb2.-caption.-neutral-dark November 26, 2016
-        p.-fw-500 How'd it go? I'm a graduate & want to hear more, it's difficult finding what i'm looking for on the internet.
-        .right-align
-          button.btn-clear.mx1
-            svg.inline-block.align-middle(width='20' height='20'): use(xlink:href='#svg-comment')
-            span.inline-block.align-middle.pl1 3
-
