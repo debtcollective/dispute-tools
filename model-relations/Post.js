@@ -1,4 +1,4 @@
-/* globals Post, Topic */
+/* globals Post, Topic, User */
 
 Post.relations = {
   comments: {
@@ -13,6 +13,13 @@ Post.relations = {
     type: 'HasOne',
     relatedModel: Topic,
     ownerCol: 'topic_id',
+    relatedCol: 'id',
+  },
+
+  user: {
+    type: 'HasOne',
+    relatedModel: User,
+    ownerCol: 'user_id',
     relatedCol: 'id',
   },
 };
