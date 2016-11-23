@@ -64,6 +64,23 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       },
       actions: ['index'],
     },
+    // add imageURL to post.users
+    {
+      before(req, res, next) {
+        req.posts.forEach(post => {
+          let imageURL = '';
+
+          if (post.user.account.image.exists('smallRedSquare')) {
+            imageURL = post.user.account.image.url('smallRedSquare');
+          }
+
+          post.user.account.imageURL = imageURL;
+        });
+
+        next();
+      },
+      actions: ['index']
+    },
     {
       before(req, res, next) {
         Post.query()
