@@ -116,6 +116,10 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
           .then((result) => {
             if (result.length !== 0) {
               post.image = result[0];
+
+              if (post.image.file.exists('thumb')) {
+                post.imageURL = post.image.file.url('thumb');
+              }
             }
 
             return Promise.resolve();
