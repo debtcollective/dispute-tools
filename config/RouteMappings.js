@@ -139,6 +139,10 @@ const routeMappings = RouteMappings()
     to: 'Posts#index',
     as: 'PostsIndex',
   })
+  .post('/campaigns/:id/posts/:post_id', {
+    to: 'Posts#createComment',
+    as: 'CreatePostComment',
+  })
   .post('/campaigns/:id/posts', {
     to: 'Posts#create',
     as: 'CreatePost',

@@ -253,6 +253,30 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       });
     },
 
+    createComment(req, res) {
+      const post = new Post({
+        type: 'Text',
+        parentId: req.body.parentId,
+        campaignId: req.params.id,
+        userId: req.user.id,
+        topicId: req.body.topicId,
+      });
+
+      const text = sanitize(req.body.text, {
+        allowedTags: [],
+        allowedAttributes: [],
+      });
+
+      post.data = {
+        text,
+      };
+
+      return post.save()
+        .then(() => {
+          return post;
+        });
+    },
+
     update(req, res) {
       const post = req.post;
 
