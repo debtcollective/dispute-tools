@@ -148,6 +148,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         campaignId: req.params.id,
         userId: req.user.id,
         topicId: req.body.topicId,
+        public: req.body.public,
       });
 
       text = sanitize(text, {
@@ -171,6 +172,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         campaignId: req.params.id,
         userId: req.user.id,
         topicId: req.body.topicId,
+        public: req.body.public,
       });
 
       const sanitizedOptions = req.body.options.map((option) => {
@@ -202,6 +204,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         campaignId: req.params.id,
         userId: req.user.id,
         topicId: req.body.topicId,
+        public: req.body.public,
       });
 
       text = sanitize(text, {

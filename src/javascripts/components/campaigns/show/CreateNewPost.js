@@ -25,6 +25,7 @@ export default class CreateNewPost extends Widget {
     this._postTypeIcons = Array.prototype.slice.call(this._postTypeIcons);
     this._postTypeContents = this.element.querySelectorAll('[data-post-type-content]');
     this._postTypeContents = Array.prototype.slice.call(this._postTypeContents);
+    this._publicElement = this.element.querySelector('[data-create-new-post-public-checkbox]');
     this._submitButton = this.element.querySelector('button[type="submit"]');
 
     this.setPostType(this.type)._bindEvents();
@@ -136,6 +137,7 @@ export default class CreateNewPost extends Widget {
   _handleSubmit() {
     const data = new FormData();
     data.append('type', this.type);
+    data.append('public', this._publicElement.checked);
 
     if (this._topicElement.value) {
       data.append('topicId', this._topicElement.value);
