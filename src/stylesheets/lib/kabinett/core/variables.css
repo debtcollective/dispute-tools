@@ -34,6 +34,9 @@
   --k-xl-h: calc(calc(var(--k-xl-fs) - 1px) + var(--k-xl-fs) + calc(var(--k-xl-fs) - 2px));
 
   /* elements */
+  /* elements loader */
+  --k-loader-color: var(--k-color);
+
   /* elements tooltip */
   --k-tooltip-font-size: 1rem;
   --k-tooltip-font-weight: 500;

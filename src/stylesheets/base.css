@@ -64,6 +64,8 @@
   --k-sm-p: 9px 1em 10px;
   --k-sm-h: 35px;
 
+  --k-loader-color: var(--k-color-palette-primary);
+
   --k-tooltip-font-size: var(--k-font-caption-size);
   --k-tooltip-font-weight: 700;
   --k-tooltip-arrow-size: 5px;
@@ -126,9 +128,7 @@ a {
   text-decoration: none;
   transition: color 260ms;
 
-  &:hover {
-    color: var(--primary-lighter);
-  }
+  &:hover {color: var(--primary-lighter)}
 
   &:not([href]) {
     text-decoration: line-through;
@@ -142,6 +142,13 @@ a {
   }
 }
 
+a, button, textarea, input, select {
+  &:focus {
+    outline: none;
+    border-color: rgb(132, 191, 252);
+    box-shadow: 0 0 0 2px rgb(132, 191, 252);
+  }
+}
 
 @media (max-width: 52em) {
   :root {font-size: 14px}

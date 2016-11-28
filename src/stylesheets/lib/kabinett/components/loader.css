@@ -1,0 +1,29 @@
+/**
+  Modules::Elements::Loader
+  .-k-loader
+
+  @example
+    <span class='-k-loader'>Loading...</span>
+*/
+
+.-k-loader {
+  display: inline-block;
+  font-size: 60px;
+  width: 1em;
+  height: 1em;
+  position: relative;
+  border-top: .15em solid color(var(--k-loader-color) alpha(-80%));
+  border-right: .15em solid color(var(--k-loader-color) alpha(-80%));
+  border-bottom: .15em solid color(var(--k-loader-color) alpha(-80%));
+  border-left: .15em solid var(--k-loader-color);
+  border-radius: 50%;
+  color: transparent;
+  transform: translateZ(0);
+  text-indent: -9999em;
+  animation: -k-animation-loader .7s infinite linear;
+}
+
+@keyframes -k-animation-loader {
+  0% {transform: rotate(0deg)}
+  100% {transform: rotate(360deg)}
+}
