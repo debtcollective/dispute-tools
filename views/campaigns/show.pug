@@ -7,7 +7,7 @@ block styles
   link(href='/build/stylesheets/campaigns/show.css' rel='stylesheet')
 
 block content
-  .-bg-neutral-light.-dark
+  .bg-light-pattern.-dark
     .px2(data-offset-section)
 
       .max-width-4.mx-auto(data-tabs-component)
@@ -43,7 +43,7 @@ block content
                     svg(width="6" height="13"): use(xlink:href="#svg-facebook")
                     .sr-only Facebook
 
-        .Campaigns_TabPanes.pb4
+        .Campaigns_TabPanes
           section#panel-campaign.TabPane.pt3(role='tabpanel' aria-hidden='false')
             if campaign.active
               include ../includes/campaigns/active-view

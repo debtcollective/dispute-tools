@@ -11,13 +11,8 @@
 }
 
 /* CUSTOM STYLES */
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  &::before {
-    content: initial;
-  }
+body::before {
+  background: var(--k-background-color) url('/images/global/bg-white-pattern.gif') 50% 0 repeat;
 }
 
 .-status {

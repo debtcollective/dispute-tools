@@ -17,6 +17,24 @@
   background-color: var(--k-color-palette-accent);
 }
 
+.bg-light-pattern::before {
+  content: '';
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background-color: var(--k-color-palette-neutral-light);
+  background-image: url(/images/global/bg-white-pattern.gif);
+  background-position: 50% 0;
+  background-repeat: repeat;
+}
+
+.Campaigns_TabPanes {
+  min-height: 500px;
+}
+
 /* page styles */
 .CreateNewPost {
   &.active > .CreateNewPost_Box {
