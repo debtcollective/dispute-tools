@@ -4,7 +4,7 @@ import Common from '../../components/Common';
 import Tabs from '../../components/Tabs';
 import FixedTabs from '../../components/campaigns/show/FixedTabs';
 import FeedController from '../../components/campaigns/show/FeedController';
-import CreateNewPost from '../../components/campaigns/show/CreateNewPost';
+import CreateNewPost from '../../components/campaigns/show/create-new-post/Manager';
 import ReadMore from '../../components/ReadMore';
 
 class ViewCampaignsShow extends NodeSupport {

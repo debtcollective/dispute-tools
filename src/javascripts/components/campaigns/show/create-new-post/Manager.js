@@ -1,8 +1,14 @@
 import autosize from 'autosize';
-import API from '../../../lib/api';
-import Widget from '../../../lib/widget';
+import API from '../../../../lib/api';
+import Widget from '../../../../lib/widget';
+import Button from '../../../../components/Button';
+import Poll from './Poll';
 
 export default class CreateNewPost extends Widget {
+  static get types() {
+    return ['Text', 'Image', 'Poll'];
+  }
+
   constructor(config) {
     super(config);
 
@@ -14,14 +20,20 @@ export default class CreateNewPost extends Widget {
     this._topicElement = this.element.querySelector('[create-new-post-topic-select]');
     this._imageInputElement = this.element.querySelector('[data-create-new-post-image-input]');
     this._imagePreviewElement = this.element.querySelector('[data-create-new-post-image-preview]');
-    this._pollOptions = document.getElementsByName('pollOption');
-    this._pollOptions = Array.prototype.slice.call(this._pollOptions);
     this._postTypeIcons = this.element.querySelectorAll('[data-post-type-icon]');
     this._postTypeIcons = Array.prototype.slice.call(this._postTypeIcons);
     this._postTypeContents = this.element.querySelectorAll('[data-post-type-content]');
     this._postTypeContents = Array.prototype.slice.call(this._postTypeContents);
     this._publicElement = this.element.querySelector('[data-create-new-post-public-checkbox]');
-    this._submitButton = this.element.querySelector('button[type="submit"]');
+    this.appendChild(new Button({
+      name: 'SubmitButton',
+      element: this.element.querySelector('button[type="submit"]'),
+    }));
+
+    this.appendChild(new Poll({
+      name: 'Poll',
+      element: this.element.querySelector('[data-post-type-content][data-type="Poll"]'),
+    }));
 
     this.setPostType(this.type)._bindEvents();
   }
@@ -44,8 +56,10 @@ export default class CreateNewPost extends Widget {
     this._postTypeContents.forEach(content => {
       if (content.dataset.type === this.type) {
         content.classList.remove('hide');
+        content.setAttribute('aria-hidden', false);
       } else {
         content.classList.add('hide');
+        content.setAttribute('aria-hidden', true);
       }
     });
 
@@ -72,7 +86,7 @@ export default class CreateNewPost extends Widget {
     this._imageInputElement.addEventListener('change', this._handleImageInputChangeRef);
 
     this._handleSubmitRef = this._handleSubmit.bind(this);
-    this._submitButton.addEventListener('click', this._handleSubmitRef);
+    this.SubmitButton.element.addEventListener('click', this._handleSubmitRef);
 
     return this;
   }
@@ -119,9 +133,9 @@ export default class CreateNewPost extends Widget {
     if (input.files && input.files[0]) {
       const reader = new FileReader();
 
-      reader.onload = function readerLoad(e) {
+      reader.onload = (e) => {
         this._imagePreviewElement.src = e.target.result;
-      }.bind(this);
+      };
 
       reader.readAsDataURL(input.files[0]);
     } else {
@@ -130,6 +144,21 @@ export default class CreateNewPost extends Widget {
   }
 
   _handleSubmit() {
+    this.SubmitButton.disable();
+
+    const valid = (() => {
+      switch (this.type) {
+        case 'Text': return this._inputElement.value.length;
+        case 'Image': return this._imageInputElement.files.length;
+        case 'Poll': return this.Poll.getOptionValues().length;
+        default: return false;
+      }
+    })();
+
+    if (!valid) {
+      return this.SubmitButton.enable();
+    }
+
     const data = new FormData();
     data.append('type', this.type);
     data.append('public', this._publicElement.checked);
@@ -148,23 +177,20 @@ export default class CreateNewPost extends Widget {
         break;
       case 'Poll':
         data.append('title', this._inputElement.value.trim());
-        this._pollOptions.filter(option => option.value).forEach(option => {
-          data.append('options[]', option.value);
+        this.Poll.getOptionValues().forEach(value => {
+          data.append('options[]', value);
         });
         break;
       default:
         throw new Error('Invalid post type');
     }
 
-    function createPostCallback(err, res) {
-      console.log(err);
-      console.log(res);
-    }
-
-    API.createCampaignPost({
+    return API.createCampaignPost({
       campaignId: this.campaignId,
       body: data,
-    }, createPostCallback);
+    }, () => {
+      window.location.reload();
+    });
   }
 
   _displayImage() {
@@ -172,9 +198,9 @@ export default class CreateNewPost extends Widget {
     this._inputElement.focus();
   }
 
-  // _displayPoll() {
-  //   console.log('display poll');
-  // }
+  _displayPoll() {
+    this.Poll.getFirstOption().focus();
+  }
 
   _activate() {
     super._activate();
@@ -183,6 +209,7 @@ export default class CreateNewPost extends Widget {
     autosize(this._inputElement);
     this._inputElement.focus();
     this._closeElement.classList.remove('hide');
+    this._closeElement.setAttribute('aria-hidden', !this.active);
     this._backdropdElement.setAttribute('aria-hidden', !this.active);
   }
 
@@ -192,6 +219,7 @@ export default class CreateNewPost extends Widget {
     this._inputElement.setAttribute('rows', 1);
     autosize.destroy(this._inputElement);
     this._closeElement.classList.add('hide');
+    this._closeElement.setAttribute('aria-hidden', !this.active);
     this._backdropdElement.setAttribute('aria-hidden', !this.active);
 
     this._inputElement.value = '';
@@ -202,5 +230,3 @@ export default class CreateNewPost extends Widget {
     this.setPostType('Text');
   }
 }
-
-CreateNewPost.types = ['Text', 'Image', 'Poll'];
