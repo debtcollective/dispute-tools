@@ -1,13 +1,22 @@
 @import '../../base';
 @import '../../components/Tabs';
+@import '../../components/Masonry';
 @import '../../components/dispute-tools/TextModal';
 @import '../../components/dispute-tools/ToolCard';
 @import '../../components/AvatarList';
 
 /* page utils */
 .-bg-neutral-light {background-color: var(--k-color-palette-neutral-light)}
+.-neutral-dark {color: var(--k-color-palette-neutral-dark)}
 
 /* page styles */
+.bg-light-pattern {
+  background-color: var(--k-color-palette-neutral-light);
+  background-image: url(/images/global/bg-white-pattern.gif);
+  background-position: 50% 0;
+  background-repeat: repeat;
+}
+
 [data-hit-sticky] {
   position: absolute;
   top: 0;
@@ -20,6 +29,40 @@
   min-height: 500px;
 }
 
+/* campaigns tab */
+.CreateNewCampaingBtn {
+  display: block;
+  position: relative;
+  padding-top: 94%;
+  border: 2px dashed var(--k-color-palette-neutral-mid);
+  text-align: center;
+  border-radius: 2px;
+  background-color: transparent;
+  transition: background-color 300ms;
+
+  &--Plus {
+    font-size: 3.5rem;
+    line-height: 1.1em;
+    width: 4.5rem;
+    height: 4.5rem;
+    background-color: white;
+    border-radius: 50%;
+    font-weight: 700;
+    transform: scale(1);
+    transition: transform 300ms cubic-bezier(.165,.84,.44,1);
+  }
+
+
+  &:hover {
+    background-color: color(var(--k-color-palette-neutral-mid) alpha(-90%));
+
+    & .CreateNewCampaingBtn--Plus {
+      transform: scale(1.1);
+    }
+  }
+}
+
+/* manifest tab */
 .Collective_Manifest--text {
   & h3 {padding-bottom: var(--space-3)}
 

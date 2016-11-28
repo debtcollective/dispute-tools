@@ -1,0 +1,67 @@
+extends ../../layouts/admin.pug
+
+block title
+  | Admin/Campaigns/new — The Debt Collective
+
+block styles
+  link(href="/build/stylesheets/admin/campaigns/new.css" rel="stylesheet")
+
+block content
+  .px2.pb4
+    .max-width-1.mx-auto
+
+      h2.pt4.pb3 New Campaign
+
+      form(
+        method='post'
+        action=routeMappings.Admin.Campaigns.create.url()
+        data-component-form
+      )
+        input(type='hidden' name='_csrf' value=csrfToken)
+
+        .py1
+          label.block.pb1.-fw-500 Collective
+          .-k-select.-border-neutral-mid
+              select.-fw(name='collectiveId')
+                option(value='') Collective
+                each collective in collectives
+                  option(
+                    value= collective.id
+                  )= collective.name
+          p(class="-on-error -danger -caption -fw-500 mt1")
+
+        .py1
+          label.block.pb1.-fw-500 Title
+          input.-k-input.-fw.-border-neutral-mid(
+            type='text'
+            name='title'
+          )
+          p(class="-on-error -danger -caption -fw-500 mt1")
+
+        .py1
+          label.block.pb1.-fw-500 Intro text
+          textarea.-k-textarea.-fw.-ff-sec.-border-neutral-mid(
+            name='introText'
+            rows='2'
+          )
+
+        .py1
+          label.block.pb1.-fw-500 Description
+          textarea.-k-textarea.-fw.-ff-sec.-border-neutral-mid(
+            name='description'
+            rows='6'
+          )
+
+        .pt3
+          button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Create
+
+block scripts
+  script(src="/build/javascripts/admin/campaigns/new.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new ViewAdminCampaignsNew(options);
+    }, true);

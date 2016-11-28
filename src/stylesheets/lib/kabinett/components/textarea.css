@@ -1,0 +1,9 @@
+.-k-textarea {
+  font-size: var(--k-font-size);
+  font-family: inherit;
+  padding: calc(var(--k-font-size) - 1px) 1em calc(var(--k-font-size) - 2px);
+  border-radius: var(--border-radius);
+  border: 1px solid currentColor;
+
+  &[disabled] {opacity: .5}
+}

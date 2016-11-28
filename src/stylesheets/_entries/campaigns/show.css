@@ -1,0 +1,121 @@
+@import '../../base';
+
+@import '../../components/Tabs';
+@import '../../components/ReadMore';
+@import '../../components/AvatarList';
+@import '../../components/Input';
+
+@import '../../lib/kabinett/components/loader';
+
+/* page utils */
+.-neutral-dark {color: var(--k-color-palette-neutral-dark)}
+.-bg-neutral-light {background-color: var(--k-color-palette-neutral-light)}
+.-stroke-dark {stroke: #000}
+.-k-input.-no-border,
+.-k-textarea {border: 0}
+.-k-input.-transparent,
+.-k-textarea.-transparent{background-color: transparent}
+.-k-select.-accent {
+  border: 0;
+  color: #785616;
+  background-color: var(--k-color-palette-accent);
+}
+.-rn {resize: none}
+
+/* page styles */
+.bg-light-pattern::before {
+  content: '';
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background-color: var(--k-color-palette-neutral-light);
+  background-image: url(/images/global/bg-white-pattern.gif);
+  background-position: 50% 0;
+  background-repeat: repeat;
+}
+
+.Campaigns_TabPanes {
+  min-height: 500px;
+}
+
+.CreateNewPost {
+  margin-bottom: 10px;
+
+  &.active > .CreateNewPost_Box {
+    z-index: 3;
+  }
+
+  &_Backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,.7);
+    z-index: 2;
+
+    &[aria-hidden='true'] {
+      opacity: 0;
+      transition: visibility 0ms linear 300ms, opacity 300ms;
+    }
+
+    &[aria-hidden='false'] {
+      opacity: 1;
+      transition: opacity 300ms;
+    }
+  }
+}
+
+.Poll_create-option {
+  margin-bottom: 2px;
+  &:last-child {margin-bottom: 0}
+}
+
+.Campaign_NewPost__ImageDropper {
+  border: 1px dashed var(--k-color-palette-neutral-mid);
+}
+
+.Campaign_FeedItem {
+  margin-bottom: 10px;
+
+  &Comment {margin-bottom: 2px}
+}
+
+.Post_Topic {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 .5em;
+  color: #785616;
+}
+
+.PostPoll_result-bar {
+  height: 10px;
+  border-radius: 5px;
+  transition: width 300ms cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+.Campaign_FeedItemComments {
+  &[aria-expanded='false'] {
+    display: none;
+  }
+  &[aria-expanded='true'] {
+    display: block;
+  }
+}
+
+.Campaign_IntroBox--active {
+  background-image: url('/images/campaigns/intro-bg.jpg');
+  background-position: 0 30px;
+  background-repeat: no-repeat;
+  background-size: 244px 401px;
+}
+
+.Campaign_description {
+  & p {
+    padding-top: var(--space-2);
+  }
+}

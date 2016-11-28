@@ -1,5 +1,5 @@
 /* globals Admin, Class, RestfulController, User, NotFoundError,
-CONFIG, Collective, Account, DisputeTool */
+CONFIG, Collective, Account, DisputeTool, neonode */
 
 const fs = require('fs-extra');
 const path = require('path');
@@ -11,6 +11,14 @@ global.Admin = global.Admin || {};
 
 Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulController)({
   beforeActions: [
+    {
+      before: [
+        (req, res, next) => {
+          return neonode.controllers.Home._authenticate(req, res, next);
+        },
+      ],
+      actions: ['index', 'edit', 'update'],
+    },
     {
       before: '_loadUser',
       actions: ['edit', 'update'],
@@ -119,6 +127,17 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
 
       const knex = User.knex();
 
+      if (!Array.isArray(req.body.collectiveIds)) {
+        req.body.collectiveIds = [req.body.collectiveIds];
+      }
+
+      const usersCollectives = req.body.collectiveIds.map((id) => {
+        return {
+          user_id: user.id,
+          collective_id: id,
+        };
+      });
+
       User.transaction((trx) => {
         return user.transacting(trx).save()
           .then(() => {
@@ -151,20 +170,59 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
               return Promise.resolve();
             }
 
-            if (!Array.isArray(req.body.collectiveIds)) {
-              req.body.collectiveIds = [req.body.collectiveIds];
-            }
-
-            const collectiveAdmins = req.body.collectiveIds.map((id) => {
-              return {
-                user_id: user.id,
-                collective_id: id,
-              };
-            });
-
             return knex('CollectiveAdmins')
               .transacting(trx)
-              .insert(collectiveAdmins);
+              .insert(usersCollectives);
+          })
+          .then(() => {
+            // Get collectiveIds where the users has not already joined
+            return Promise.map(req.body.collectiveIds, (collectiveId) => {
+              return User.knex()
+                .table('UsersCollectives')
+                .where({
+                  user_id: user.id,
+                  collective_id: collectiveId,
+                }).then((result) => {
+                  if (result.length === 0) {
+                    return collectiveId;
+                  }
+                });
+            })
+            .then((collectiveIds) => {
+              collectiveIds = collectiveIds.filter(n => {
+                return n !== undefined;
+              });
+
+              // Sum newly joined collective's user count
+              return Promise.each(collectiveIds, (collectiveId) => {
+                return Collective.query()
+                  .where('id', collectiveId)
+                  .then(([collective]) => {
+                    collective.userCount++;
+
+                    return collective.save();
+                  });
+              });
+            });
+          })
+          .then(() => {
+            if (user.role !== 'CollectiveManager') {
+              return Promise.resolve();
+            }
+
+            return Promise.each(usersCollectives, (uc) => {
+              return knex('UsersCollectives')
+                .where(uc)
+                .then((result) => {
+                  if (result.length !== 0) {
+                    return Promise.resolve();
+                  }
+
+                  return knex('UsersCollectives')
+                    .transacting(trx)
+                    .insert(uc);
+                });
+            });
           })
           .finally(trx.commit)
           .catch(trx.rollback);
@@ -176,7 +234,14 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
       })
       .then(() => {
         req.flash('success', 'Profile updated succesfully');
-        return res.redirect(CONFIG.router.helpers.Admin.Users.url());
+
+        let redirect = CONFIG.router.helpers.Admin.Users.url();
+
+        if (user.id === req.user.id && user.role !== 'Admin') {
+          redirect = CONFIG.router.helpers.Users.show.url(user.id);
+        }
+
+        return res.redirect(redirect);
       })
       .catch((err) => {
         res.status(400);

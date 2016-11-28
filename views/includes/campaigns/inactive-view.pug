@@ -1,0 +1,33 @@
+.pt3.pb4.max-width-3.mx-auto
+  header.pb2.border-bottom.-bw5
+    h2= campaign.title
+    h4= campaign.introText
+
+  .Campaign_description.pt2!= campaign.description
+
+  if campaign.users.length
+    .pt3
+      ul.AvatarList
+        each user in campaign.users
+          li.mb1
+            - var _avatarUrl = '/images/profile/placeholder-small.png';
+            if (user.account.image.exists('smallGrayscale'))
+              - _avatarUrl = user.account.image.url('smallGrayscale')
+            a.block(
+              href=routeMappings.Users.show.url(user.id)
+              title=`${user.account.fullname}’s profile`
+            ): img(src=_avatarUrl alt=user.account.fullname width='50' height='50')
+
+
+  unless userBelongsToCampaign
+    .pt3
+      if currentUser
+        form(method='post' action=routeMappings.Campaigns.join.url(campaign.id))
+          input(type='hidden' name='_csrf' value=csrfToken)
+          button.-k-btn.btn-primary.-fw-700.-fw Join campaign
+      else
+        button.js-login-link.-k-btn.btn-primary.-fw-700.-fw Join campaign
+
+      p.pt2.center.-caption.-fw-500 This campaign is currently inactive, you can join the campaign and we notifify you when starts the activity, if you have any doubt please contact us.
+
+

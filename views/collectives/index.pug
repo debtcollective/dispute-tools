@@ -11,21 +11,41 @@ block content
     .max-width-4.mx-auto
       h4.pb1.border-bottom.-bw5.-border-accent The Collectives
 
-      section.pt4.clearfix.mxn2.md-flex.flex-wrap
-        each c in collectives
-          article.col.md-col-4.col-12.px2.mb4
-            .flex.items-center
-              div
-                svg.-sw5.-stroke-accent(width='56' height='56')
-                  use(xlink:href=`#svg-collective-${c.id.charAt(0)}`)
-              - var name = c.name.replace(/\sCollective$/, '').replace(/\s\and\s/g, ' & ')
-              h3.pl2.-accent= name
-            if c.description
-              p.py2.-fw-500= c.description
-            p.pb1.-accent.-fw-700 +4K strikers
+      section.Masonry.pt4.mxn2
+        each collective, index in collectives
+          article.Masonry_item.px2.pb4
+            a(
+              href=routeMappings.Collectives.show.url(collective.id)
+              title=collective.name
+            )
+              header.flex.items-center
+                div
+                  svg.-sw5.-stroke-accent(width='56' height='56')
+                    use(xlink:href=`#svg-collective-${collective.id.charAt(0)}`)
+                - var name = collective.name.replace(/\sCollective$/, '').replace(/\s\and\s/g, ' & ')
+                h3.-accent.pl2= name
+
+              if collective.description
+                p.-white.py2.-fw-500= collective.description
+
+              if collective.cover.exists('grayscale')
+                .center.pb2
+                  img.inline-block.align-top.fit(
+                    src=collective.cover.url('grayscale')
+                  )
+
+              if collective.userBelongsToCollective
+                - var _avatarUrl = '/images/profile/placeholder-small.png';
+                if (currentUser.account.image.exists('smallRedSquare'))
+                  - _avatarUrl = currentUser.account.image.url('smallRedSquare')
+                .flex.items-center.pb2
+                  img.mr1(src=_avatarUrl alt=currentUser.account.fullname width='40' height='40')
+                  span.-fw-700.-accent You + #{collective.userCount - 1} members
+              else
+                p.-accent.pb1.-fw-700= collective.userCount + ' members'
             hr
             .border-bottom.-bw5.-border-accent.py1
-              a.-fw-700(href=routeMappings.Collectives.show.url(c.id)) Go to collective
+              a.-fw-700(href=routeMappings.Collectives.show.url(collective.id)) Go to collective
 
 block scripts
   script(src="/build/javascripts/collectives/index.js" async)

@@ -55,12 +55,11 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
 
   prototype: {
     bio: '',
+    imageMeta: {},
+    socialLinks: {},
+
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
-
-      // temporal fix to set defaults
-      this.imageMeta = this.imageMeta || {};
-      this.socialLinks = this.socialLinks || {};
 
       this.hasAttachment({
         name: 'image',
@@ -126,6 +125,13 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
               .stream();
           },
         },
+      });
+
+      this.image.urls = {};
+      Object.keys(this.image.versions).forEach(version => {
+        if (this.image.exists(version)) {
+          this.image.urls[version] = this.image.url(version);
+        }
       });
 
       return this;

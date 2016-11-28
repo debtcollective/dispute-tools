@@ -20,10 +20,10 @@ block content
               - var _avatarUrl = '/images/profile/placeholder-small.png';
               if (currentUser.account.image.exists('smallGrayscale'))
                 - _avatarUrl = currentUser.account.image.url('smallGrayscale')
-                img.mr1(src=_avatarUrl alt=currentUser.account.fullname width='40' height='40')
+              img.mr1(src=_avatarUrl alt=currentUser.account.fullname width='40' height='40')
 
             span.-accent
-              span.-fw-700= (belongsToCollective ? 'You + 4,567' : '+ 4,567')
+              span.-fw-700= (belongsToCollective ? `You + ${collective.userCount - 1}` : `+ ${collective.userCount}`)
               span.-fw-500 &nbsp;members
             span.-fw-700.px2 &middot;
             span.-fw-700 $23,560 USD Debt to cancel
@@ -34,12 +34,15 @@ block content
                   input(type='hidden' name='_csrf' value=csrfToken)
                   button.-k-btn.btn-primary.-fw-700.-sm Join this collective
               else
-                button.js-login-link.-k-btn.btn-link.-primary.-fw-700.-sm Join
+                button.js-login-link.-k-btn.btn-primary.-fw-700.-sm Join this collective
 
-    .relative.-bg-neutral-light.-dark.px2
+    .bg-light-pattern.relative.-dark.px2
       div(data-hit-sticky)
       .max-width-4.mx-auto(data-tabs-component)
         ul.list-reset.flex.-bg-neutral-light(role='tablist')
+          li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-campaigns' aria-selected='false')
+            | Campaigns
+            span.right.-caption.-neutral-mid= collective.campaigns.length
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-manifest' aria-selected='false')
             | Manifest
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-dispute-tools' aria-selected='false')
@@ -50,6 +53,59 @@ block content
             span.right.-caption.-neutral-mid 9
 
         .Collective_TabPanes
+          section#panel-campaigns.TabPane(role='tabpanel' aria-hidden='true')
+            .Masonry.mxn2.pt4
+              each campaign, index in collective.campaigns
+                article.Masonry_item.px2.pb4
+                  a(href=routeMappings.Campaigns.show.url(campaign.id))
+                    h3.-neutral-dark.pb1= campaign.title
+
+                    unless campaign.published
+                      span.-bg-accent.-caption.-ttu.-fw-700.inline-block.align-top.px1 staging
+                    if campaign.active
+                      span.-bg-primary.-white.-caption.-ttu.-fw-700.inline-block.align-top.px1 active
+
+                    if campaign.description
+                      .pb2.-neutral-dark!= campaign.description
+
+                    if campaign.cover.exists('grayscale')
+                      .center.pb2
+                        img.inline-block.align-top.fit(
+                          src=campaign.cover.url('grayscale')
+                        )
+
+                    if campaign.userBelongsToCampaign
+                      - var _avatarUrl = '/images/profile/placeholder-small.png';
+                      if (currentUser.account.image.exists('smallRedSquare'))
+                        - _avatarUrl = currentUser.account.image.url('smallRedSquare')
+                      .flex.items-center.pb2
+                        img.mr1(src=_avatarUrl alt=currentUser.account.fullname width='40' height='40')
+                        span.-fw-700.-neutral-dark You + #{campaign.userCount - 1} members
+                    else
+                      p.pb2.center.-fw-700.-neutral-dark We are the #{campaign.title} #{campaign.userCount}
+
+                    if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
+                      .border-top.py2
+                        a.inline-block.btn-clear.p1.align-top(
+                          href= routeMappings.Admin.Campaigns.edit.url(campaign.id)
+                        )
+                          svg.-pen.inline-block.align-middle(width='15' height='15')
+                            use(xlink:href='#svg-pencil')
+                          span.inline-block.align-middle.pl1 Edit campaign
+                  .border-bottom.-bw5
+
+              if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
+                article.Masonry_item.px2.mb4
+                  a.CreateNewCampaingBtn(
+                    href=routeMappings.Admin.Campaigns.new.url()
+                    title='Create new campaign'
+                  )
+                    .flex.items-center.justify-center.absolute.top-0.right-0.bottom-0.left-0
+                      .CreateNewCampaingBtn--Plus +
+                  a.block.center.py2.-fw-700(href=routeMappings.Admin.Campaigns.new.url())
+                    | Create new campaign
+                  .border-bottom.-bw5
+
           section#panel-manifest.TabPane(role='tabpanel' aria-hidden='true')
             .clearfix.pt4
               .col.md-col-4.col-12 &nbsp;
@@ -57,7 +113,7 @@ block content
                 h1 Manifest
                 .Collective_Manifest--text!= collective.manifest
 
-            div.pt3.pb2
+            .pt3.pb2
               ul.AvatarList
                 each user in collective.users
                   li.mb1
@@ -81,15 +137,15 @@ block content
                 p.pb2.-fw-700.center.-neutral-dark Spread
                 ul.list-reset.center.pb4
                   li.inline-block
-                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank')
+                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank' data-share-url-twitter)
                       svg(width='13' height='11'): use(xlink:href='#svg-twitter')
                       .sr-only Share on Twitter
                   li.inline-block.mx2
-                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank')
+                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank' data-share-url-facebook)
                       svg(width='6' height='13'): use(xlink:href='#svg-facebook')
                       .sr-only Share on Facebook
                   li.inline-block
-                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank')
+                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' data-share-url-email)
                       svg(width='14' height='11'): use(xlink:href='#svg-email')
                       .sr-only Share by Email
 
@@ -129,7 +185,8 @@ block scripts
       var options = {
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
-        disputeIds: !{JSON.stringify(disputeIds)}
+        disputeIds: !{JSON.stringify(disputeIds)},
+        collectiveName: !{JSON.stringify(collective.name)},
       };
       new ViewCollectivesShow(options);
     }, true);

@@ -1,4 +1,5 @@
 import WebFont from 'webfontloader';
+import shareUrl from 'share-url';
 import debounce from 'lodash/debounce';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
@@ -29,6 +30,7 @@ class ViewCollectivesShow extends NodeSupport {
     }));
 
     this.disputeIds = config.disputeIds;
+    this.collectiveName = config.collectiveName;
 
     this.tabsOffsetSection = document.querySelector('[data-offset-section]');
     this.tabsOffset = 0;
@@ -39,12 +41,31 @@ class ViewCollectivesShow extends NodeSupport {
       },
     });
 
-    this._setup()
-      ._bindEvents();
+    this._setup()._generateShareUrls()._bindEvents();
   }
 
   _setup() {
     this.tabsOffset = this.tabsOffsetSection.offsetHeight;
+
+    return this;
+  }
+
+  _generateShareUrls() {
+    document.querySelector('[data-share-url-twitter]').href = shareUrl.twitter({
+      url: location.href,
+      text: `Join the ${this.collectiveName}`,
+      via: '0debtzone',
+    });
+
+    document.querySelector('[data-share-url-facebook]').href = shareUrl.facebook({
+      u: location.href,
+    });
+
+    document.querySelector('[data-share-url-email]').href = shareUrl.email({
+      to: '',
+      subject: 'Check out this at debtcollective.org',
+      body: `${this.collectiveName}\n${location.href}`,
+    });
 
     return this;
   }

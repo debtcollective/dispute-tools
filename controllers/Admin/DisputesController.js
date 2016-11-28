@@ -1,4 +1,4 @@
-/* globals Class, Admin, RestfulController, DisputeTool, CONFIG, Dispute,
+/* globals neonode, Class, Admin, RestfulController, DisputeTool, CONFIG, Dispute,
  DisputeMailer, DisputeStatus */
 const path = require('path');
 const Promise = require('bluebird');
@@ -9,6 +9,14 @@ global.Admin = global.Admin || {};
 
 Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulController)({
   beforeActions: [
+    {
+      before: [
+        (req, res, next) => {
+          return neonode.controllers.Home._authenticate(req, res, next);
+        },
+      ],
+      actions: ['index', 'show', 'edit', 'update', 'destroy'],
+    },
     {
       before: '_loadDispute',
       actions: [

@@ -18,5 +18,5 @@
   user-select: none;
   touch-action: manipulation;
 
-  &[disabled] {opacity: .5}
+  &[disabled] {opacity: .2}
 }

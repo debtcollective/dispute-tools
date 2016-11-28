@@ -1,0 +1,96 @@
+.CreateNewPost(data-create-new-post)
+  .CreateNewPost_Box.relative.-bg-white.p2.rounded
+    button.hide.absolute.top-0.right-0.btn-clear.px1(
+      data-create-new-post-close
+      aria-hidden='true'
+    )
+      svg(width='10' height='10'): use(xlink:href='#svg-close')
+
+    .flex
+      - var _avatarUrl = '/images/profile/placeholder-small.png';
+      if (currentUser.account.image.exists('smallRedSquare'))
+        - _avatarUrl = currentUser.account.image.url('smallRedSquare')
+      img.mr1(
+        src=_avatarUrl
+        alt=currentUser.account.fullname
+        width='50'
+        height='50'
+      )
+      .pb2.flex-auto
+        textarea.CreateNewPost_Input.-k-textarea.-no-border.block.-fw.-rn(
+          placeholder='Write something...'
+          rows='1'
+        )
+
+    .hide.Campaign_NewPost__ImageDropper.-bg-accent.center.p1.mb2(
+      data-post-type-content
+      data-type='Image'
+      aria-hidden='true'
+    )
+      input(type='file' accept='image/*' data-create-new-post-image-input)
+      img.fit(data-create-new-post-image-preview)
+
+    .hide.mb2(
+      data-post-type-content
+      data-type='Poll'
+      aria-hidden='true'
+    )
+      .Poll_create-option.-bg-accent.mxn2
+        .-input-group-icon
+          svg(width='10' height='10'): use(xlink:href='#svg-plus')
+          input.-k-input.-no-border.-transparent.-fw(
+            name='pollOption'
+            placeholder='Write an option...'
+          )
+      .Poll_create-option.-bg-accent.mxn2
+        .-input-group-icon
+          svg(width='10' height='10'): use(xlink:href='#svg-plus')
+          input.-k-input.-no-border.-transparent.-fw(
+            name='pollOption'
+            placeholder='Write an option...'
+          )
+      .Poll_create-option.-bg-accent.mxn2
+        .-input-group-icon
+          svg(width='10' height='10'): use(xlink:href='#svg-plus')
+          input.-k-input.-no-border.-transparent.-fw(
+            name='pollOption'
+            placeholder='Write an option...'
+          )
+
+    .flex
+      .flex-auto.flex.items-center
+        button.btn-clear.mr1.-k-tooltip-inline.-top(
+          data-post-type-icon
+          data-type='Text'
+          aria-label='Text'
+        )
+          svg.align-middle(width='20' height='20'): use(xlink:href='#svg-comment')
+        button.btn-clear.mr1.-k-tooltip-inline.-top(
+          data-post-type-icon
+          data-type='Image'
+          aria-label='Image'
+        )
+          svg.align-middle(width='20' height='20'): use(xlink:href='#svg-camera')
+        button.btn-clear.mr1.-k-tooltip-inline.-top(
+          data-post-type-icon
+          data-type='Poll'
+          aria-label='Poll'
+        )
+          svg.align-middle(width='20' height='20'): use(xlink:href='#svg-assignment')
+
+        .-k-select.-accent.-xs
+          select.-fw-700(create-new-post-topic-select)
+            option(value='') TOPIC
+            each topic in topics
+              option(value=topic.id)= topic.title
+
+      div
+        label.mr2
+          input(type='checkbox' data-create-new-post-public-checkbox)
+          span.pl1.-caption.-ttu.-fw-700 Public
+        button.-k-btn.btn-primary.-sm.-fw-700(type='submit') Post
+  .CreateNewPost_Backdrop(aria-hidden='true')
+
+.Campaign_Feed
+.Campaign_FeedLoader.center.pt4: .-k-loader.align-top Loading...
+.Campaign_FeedLoadMore.center.pt3: button.hide.-k-btn.btn-light.-fw.-fw-700 Load more...

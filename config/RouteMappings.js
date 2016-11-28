@@ -67,7 +67,18 @@ const routeMappings = RouteMappings()
     return mappings()
       .resources('/Disputes')
       .resources('/Collectives')
-      .resources('/Users');
+      .resources('/Users')
+      .resources('/Campaigns', (map) => {
+        return map()
+          .post('/:id/activate', {
+            to: 'Campaigns#activate',
+            as: 'activate',
+          })
+          .post('/:id/deactivate', {
+            to: 'Campaigns#deactivate',
+            as: 'deactivate',
+          });
+      });
   })
 
   .resources('/Users', (mappings) => {
@@ -114,6 +125,39 @@ const routeMappings = RouteMappings()
         to: 'Collectives#join',
         as: 'join',
       });
+  })
+
+  .resources('/Campaigns', (map) => {
+    return map()
+      .post('/:id/join', {
+        to: 'Campaigns#join',
+        as: 'join',
+      });
+  })
+
+  .get('/campaigns/:id/posts', {
+    to: 'Posts#index',
+    as: 'PostsIndex',
+  })
+  .post('/campaigns/:id/posts/:post_id', {
+    to: 'Posts#createComment',
+    as: 'CreatePostComment',
+  })
+  .post('/campaigns/:campaign_id/posts/:id/vote', {
+    to: 'Posts#votePoll',
+    as: 'VotePostPoll',
+  })
+  .post('/campaigns/:id/posts', {
+    to: 'Posts#create',
+    as: 'CreatePost',
+  })
+  .put('/campaigns/:campaign_id/posts/:id', {
+    to: 'Posts#update',
+    as: 'UpdatePost',
+  })
+  .delete('/campaigns/:campaign_id/posts/:id', {
+    to: 'Posts#delete',
+    as: 'DeletePost',
   });
 
 module.exports = routeMappings;

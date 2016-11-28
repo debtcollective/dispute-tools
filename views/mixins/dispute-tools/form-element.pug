@@ -87,7 +87,7 @@ mixin toolsFormElementMixin(field, index)
 
       when 'text'
         label.inline-block.pb1.-fw-500= field.label
-        textarea.block.-k-input.-fw(
+        textarea.-k-textarea.block.-fw(
           name=`fieldValues[${field.name}]`
           value=_formData[field.name]
           data-name=field.name

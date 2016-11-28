@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="60px" height="72px" viewBox="30 26 60 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(30.000000, 26.718310)">
+        <rect fill="#CCCCCC" x="0" y="1" width="60" height="69.0140845" rx="3"></rect>
+        <text font-family="SpaceMono-Bold, Space Mono, monospace" font-size="21" font-weight="bold" line-spacing="28" fill="#FFFFFF">
+            <tspan x="9.82114286" y="23.353342">• •</tspan>
+        </text>
+        <text font-family="SpaceMono-Bold, Space Mono, monospace" font-size="16" font-weight="bold" line-spacing="22" fill="#FFFFFF">
+            <tspan x="14.6511429" y="44.5730359">NOV</tspan>
+        </text>
+    </g>
+</svg>

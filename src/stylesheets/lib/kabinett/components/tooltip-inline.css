@@ -1,0 +1,107 @@
+/**
+  Modules::Elements::Tooltip
+  .-k-tooltip-inline
+
+  @example
+    <span class='-k-inline-tooltip -top' aria-label='Tooltip Text'>...</span>
+*/
+
+.-k-tooltip-inline {
+  cursor: pointer;
+  position: relative;
+
+  &::before {
+    content: attr(aria-label);
+    position: absolute;
+    z-index: 1;
+    font-size: var(--k-tooltip-font-size);
+    font-weight: var(--k-tooltip-font-weight);
+    padding: .25em .75em;
+    border: 1px solid;
+    color: var(--k-tooltip-color);
+    background-color: var(--k-tooltip-background-color);
+    border-color: var(--k-tooltip-background-color);
+    border-radius: var(--k-tooltip-radius);
+  }
+
+  &.-top::before {
+    bottom: 100%;
+    left: 50%;
+    transform: translate(-50%, -10px);
+  }
+
+  &.-right::before {
+    left: 100%;
+    top: 50%;
+    transform: translate(10px, -50%);
+  }
+
+  &.-bottom::before {
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 10px);
+  }
+
+  &.-left::before {
+    right: 100%;
+    top: 50%;
+    transform: translate(-10px, -50%);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    border-width: var(--k-tooltip-arrow-size);
+    border-style: solid;
+    border-color: transparent;
+    color: var(--k-tooltip-background-color);
+    font-size: 0;
+    line-height: 0;
+    width: 0;
+  }
+
+  &.-top::after {
+    border-top-color: inherit;
+    top: 0;
+    left: 50%;
+    margin-left: calc(var(--k-tooltip-arrow-size) * -1);
+    margin-top: calc(var(--k-tooltip-arrow-size) * 2 * -1);
+  }
+
+  &.-right::after {
+    border-right-color: inherit;
+    right: 0;
+    bottom: 50%;
+    margin-bottom: calc(var(--k-tooltip-arrow-size) * -1);
+    margin-right: calc(var(--k-tooltip-arrow-size) * 2 * -1);
+  }
+
+  &.-bottom::after {
+    border-bottom-color: inherit;
+    bottom: 0;
+    left: 50%;
+    margin-left: calc(var(--k-tooltip-arrow-size) * -1);
+    margin-bottom: calc(var(--k-tooltip-arrow-size) * 2 * -1);
+  }
+
+  &.-left::after {
+    border-left-color: inherit;
+    left: 0;
+    top: 50%;
+    margin-top: calc(var(--k-tooltip-arrow-size) * -1);
+    margin-left: calc(var(--k-tooltip-arrow-size) * 2 * -1);
+  }
+
+  &::before,
+  &::after {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &:focus::before,
+  &:focus::after,
+  &:hover::before,
+  &:hover::after {
+    opacity: 1;
+  }
+}
