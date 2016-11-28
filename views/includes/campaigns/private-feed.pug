@@ -1,6 +1,9 @@
 .mb1.CreateNewPost(data-create-new-post)
   .CreateNewPost_Box.relative.-bg-white.p2.rounded
-    button.hide.absolute.top-0.right-0.btn-clear.px1(data-create-new-post-close)
+    button.hide.absolute.top-0.right-0.btn-clear.px1(
+      data-create-new-post-close
+      aria-hidden='true'
+    )
       svg(width='10' height='10'): use(xlink:href='#svg-close')
 
     .flex
@@ -22,11 +25,16 @@
     .hide.Campaign_NewPost__ImageDropper.-bg-accent.center.p1.mb2(
       data-post-type-content
       data-type='Image'
+      aria-hidden='true'
     )
       input(type='file' accept='image/*' data-create-new-post-image-input)
       img.fit(data-create-new-post-image-preview)
 
-    .hide.mb2(data-post-type-content data-type='Poll')
+    .hide.mb2(
+      data-post-type-content
+      data-type='Poll'
+      aria-hidden='true'
+    )
       .Poll_create-option.-bg-accent.mxn2
         .-input-group-icon
           svg(width='10' height='10'): use(xlink:href='#svg-plus')
@@ -80,7 +88,9 @@
         label.mr2
           input(type='checkbox' data-create-new-post-public-checkbox)
           span.pl1.-caption.-ttu.-fw-700 Public
-        button.-k-btn.btn-dark.-sm.-fw-700(type='submit') Post
+        button.-k-btn.btn-primary.-sm.-fw-700(type='submit') Post
   .CreateNewPost_Backdrop(aria-hidden='true')
 
 .Campaign_Feed
+.Campaign_FeedLoader.center.pt4: .-k-loader.align-top Loading...
+.Campaign_FeedLoadMore.hide.center.pt3: button.-k-btn.btn-light.-fw.-fw-700 Load more...
