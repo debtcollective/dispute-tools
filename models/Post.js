@@ -19,6 +19,8 @@ Class('Post').inherits(Krypton.Model)({
         message: 'Invalid post type',
       },
     ],
+    campaignId: ['required'],
+    userId: ['required'],
   },
 
   attributes: [
@@ -26,13 +28,16 @@ Class('Post').inherits(Krypton.Model)({
     'parentId',
     'campaignId',
     'userId',
+    'topicId',
     'type',
     'data',
+    'public',
     'createdAt',
     'updatedAt',
   ],
 
   prototype: {
+    public: false,
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
 

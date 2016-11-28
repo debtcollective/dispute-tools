@@ -30,7 +30,8 @@ export default class Button extends Widget {
    * @override
    */
   enable() {
-    this.element.disabled = false;
+    this.disabled = false;
+    this.element.disabled = this.disabled;
     return this;
   }
 
@@ -39,8 +40,8 @@ export default class Button extends Widget {
    * @override
    */
   disable() {
-    this.element.disabled = true;
+    this.disabled = true;
+    this.element.disabled = this.disabled;
     return this;
   }
 }
-

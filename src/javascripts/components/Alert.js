@@ -8,6 +8,10 @@ export default class Alert extends Widget {
   }
 
   _bindEvents() {
+    if (!this.closeButton) {
+      return;
+    }
+
     this._closeHandlerRef = this.deactivate.bind(this);
     this.closeButton.addEventListener('click', this._closeHandlerRef);
   }

@@ -25,7 +25,15 @@
     border: none;
     appearance: none;
     border-radius: inherit;
+    color: inherit;
     background-color: transparent;
+  }
+
+  &.-xs,
+  &.-sm,
+  &.-lg,
+  &.-xl {
+    padding: 0;
   }
 }
 

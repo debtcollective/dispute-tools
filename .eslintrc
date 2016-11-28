@@ -46,7 +46,7 @@
     ],
     "arrow-body-style": [
       1,
-      "always"
+      "as-needed"
     ],
     "no-global-assign": [
       0,

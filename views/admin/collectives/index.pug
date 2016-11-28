@@ -25,3 +25,14 @@ block content
                 svg.-pen.block.align-top(width='15' height='15')
                   use(xlink:href='#svg-pencil')
 
+block scripts
+  script(src="/build/javascripts/admin/collectives/index.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+        isAdmin: true,
+      };
+      new ViewAdminCollectivesIndex(options);
+    }, true);

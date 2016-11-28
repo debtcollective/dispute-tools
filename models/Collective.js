@@ -20,12 +20,16 @@ const Collective = Class('Collective').inherits(Krypton.Model).includes(Krypton.
     'createdAt',
     'updatedAt',
   ],
+  attachmentStorage: new Krypton.AttachmentStorage.Local({
+    maxFileSize: 5242880,
+    acceptedMimeTypes: [/image/],
+  }),
 
   prototype: {
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
 
-      this.fileMeta = this.fileMeta || {};
+      this.coverMeta = this.coverMeta || {};
 
       this.hasAttachment({
         name: 'cover',

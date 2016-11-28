@@ -21,5 +21,5 @@ Campaign.relations = {
     filters: {
       limit: 50,
     },
-  }
+  },
 };

@@ -20,6 +20,42 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       },
       actions: ['index'],
     },
+    // Load Collective
+    {
+      before: '_loadCollective',
+      actions: [
+        'show',
+        'join',
+      ],
+    },
+    // Check if user can create campaigns
+    {
+      before(req, res, next) {
+        req.canCreateCampaigns = false;
+        res.locals.canCreateCampaigns = false;
+
+        if (!req.user) {
+          return next();
+        }
+
+        return User.knex()
+          .table('CollectiveAdmins')
+          .where({
+            collective_id: req.params.id,
+            user_id: req.user.id,
+          })
+          .then((results) => {
+            if (results.length !== 0) {
+              req.canCreateCampaigns = true;
+              res.locals.canCreateCampaigns = true;
+            }
+
+            return next();
+          })
+          .catch(next);
+      },
+      actions: ['show'],
+    },
     // Check if user belongs to collective
     {
       before(req, res, next) {
@@ -60,42 +96,71 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       },
       actions: ['show'],
     },
-    // Check if user can create campaigns
+    // Check if user belongs to campaigns
     {
       before(req, res, next) {
-        req.canCreateCampaigns = false;
-        res.locals.canCreateCampaigns = false;
-
         if (!req.user) {
           return next();
         }
 
-        return User.knex()
-          .table('CollectiveAdmins')
-          .where({
-            collective_id: req.params.id,
-            user_id: req.user.id,
-          })
-          .then((results) => {
-            if (results.length !== 0) {
-              req.canCreateCampaigns = true;
-              res.locals.canCreateCampaigns = true;
-            }
+        const knex = Campaign.knex();
 
-            return next();
-          })
-          .catch(next);
+        return Promise.each(req.collective.campaigns, (campaign) => {
+          return knex.table('UsersCampaigns')
+            .where({
+              user_id: req.user.id,
+              campaign_id: campaign.id,
+            })
+            .then((results) => {
+              campaign.userBelongsToCampaign = false;
+
+              if (results.length > 0) {
+                campaign.userBelongsToCampaign = true;
+              }
+
+              return Promise.resolve();
+            });
+        })
+        .then(() => {
+          return next();
+        })
+        .catch(next);
       },
       actions: ['show'],
     },
-    // Load Collective
+    // Check if user belongs to collectives
     {
-      before: '_loadCollective',
-      actions: [
-        'show',
-        'join',
-      ],
+      before(req, res, next) {
+        if (!req.user) {
+          return next();
+        }
+
+        const knex = Collective.knex();
+
+        return Promise.each(req.collectives, (collective) => {
+          return knex.table('UsersCollectives')
+            .where({
+              user_id: req.user.id,
+              collective_id: collective.id,
+            })
+            .then((results) => {
+              collective.userBelongsToCollective = false;
+
+              if (results.length > 0) {
+                collective.userBelongsToCollective = true;
+              }
+
+              return Promise.resolve();
+            });
+        })
+        .then(() => {
+          return next();
+        })
+        .catch(next);
+      },
+      actions: ['index'],
     },
+
   ],
   prototype: {
     _loadCollective(req, res, next) {
@@ -121,15 +186,22 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
             published: true,
           });
 
-          if (req.user && req.user.role === 'Admin' ||
-          (req.user && req.user.role === 'CampaignManager' && req.canCreateCampaigns)) {
-            query.andWhere({
+          if ((req.user && (req.user.role === 'Admin')) ||
+            (req.user && (req.user.role === 'CampaignManager') && req.canCreateCampaigns)) {
+            query.orWhere({
+              collective_id: req.params.id,
               published: false,
             });
           }
 
           query.then((campaigns) => {
             collective.campaigns = campaigns;
+
+            collective.campaigns.forEach(campaign => {
+              if (campaign.description) {
+                campaign.description = marked(`${campaign.description.substring(0, 100)}...`);
+              }
+            });
 
             res.locals.collective = collective;
             req.collective = collective;
@@ -151,30 +223,29 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
     join(req, res, next) {
       const knex = User.knex();
 
-      Collective.query()
-        .transaction((trx) => {
-          return knex
-            .table('UsersCollectives')
-            .transacting(trx)
-            .insert({
-              user_id: req.user.id,
-              collective_id: req.collective.id,
-            })
-            .then(() => {
-              req.collective.userCount++;
+      Collective.transaction((trx) => {
+        return knex
+          .table('UsersCollectives')
+          .transacting(trx)
+          .insert({
+            user_id: req.user.id,
+            collective_id: req.collective.id,
+          })
+          .then(() => {
+            req.collective.userCount++;
 
-              return req.collective
-                .transacting(trx)
-                .save();
-            })
-            .then(trx.commit)
-            .catch(trx.rollback);
-        })
-        .then(() => {
-          req.flash('success', `You have successfully joined ${req.collective.name}`);
-          res.redirect(CONFIG.router.helpers.Collectives.show.url(req.params.id));
-        })
-        .catch(next);
+            return req.collective
+              .transacting(trx)
+              .save();
+          })
+          .then(trx.commit)
+          .catch(trx.rollback);
+      })
+      .then(() => {
+        req.flash('success', `You have successfully joined ${req.collective.name}`);
+        res.redirect(CONFIG.router.helpers.Collectives.show.url(req.params.id));
+      })
+      .catch(next);
     },
   },
 });

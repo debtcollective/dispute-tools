@@ -1,0 +1,14 @@
+.clearfix.mxn2
+  .col.md-col-7.col-12.px2
+    if userBelongsToCampaign
+      include private-feed
+    else
+      include public-feed
+
+  .col.md-col-5.col-12.px2
+    .-bg-white.p3
+      .flex.items-center
+        div.pr2
+          svg.inline-block.align-top(width='60' height='72')
+            use(xlink:href='#svg-no-date')
+        p.-neutral-mid.-fw-500 Currently there are no scheduled events

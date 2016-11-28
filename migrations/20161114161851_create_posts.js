@@ -5,7 +5,7 @@ exports.up = (knex) => {
     t.uuid('campaign_id')
       .notNullable()
       .references('id')
-      .inTable('Collectives')
+      .inTable('Campaigns')
       .onDelete('CASCADE');
     t.uuid('user_id')
       .notNullable()

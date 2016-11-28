@@ -1,16 +1,20 @@
 /* global Class, CONFIG, RestfulController, NotFoundError, Post, PostsController,
-PostImage, RESTfulAPI */
+PostImage, neonode, Campaign, Account */
 
 const sanitize = require('sanitize-html');
 const Promise = require('bluebird');
 const fs = require('fs-extra');
+const path = require('path');
+
+const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
+const PAGE_SIZE = 50;
 
 const PostsController = Class('PostsController').inherits(RestfulController)({
   beforeActions: [
     {
       before(req, res, next) {
         Campaign.query()
-          .where('id', req.params.campaignId)
+          .where('id', req.params.id)
           .then(([campaign]) => {
             req.campaign = campaign;
             next();
@@ -23,10 +27,10 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       before(req, res, next) {
         const query = Post.query()
           .where({
-            campaign_id: req.params.campaignId,
+            campaign_id: req.params.id,
             parent_id: null,
           })
-          .include('comments');
+          .include('[comments, topic, user.account]');
 
         RESTfulAPI.createMiddleware({
           queryBuilder: query,
@@ -40,7 +44,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
             ],
           },
           paginate: {
-            pageSize: 50,
+            pageSize: PAGE_SIZE,
           },
         })(req, res, next);
       },
@@ -61,6 +65,28 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       },
       actions: ['index'],
     },
+    // add user account to comments
+    {
+      before(req, res, next) {
+        function getAccount(comment) {
+          return Account.query()
+            .where('user_id', comment.userId)
+            .then(([account]) => {
+              comment.user = comment.user || {};
+              comment.user.account = account;
+            });
+        }
+
+        Promise.all(function* getCommentsAccount() {
+          for (const post of req.posts) {
+            for (const comment of post.comments) {
+              yield getAccount(comment);
+            }
+          }
+        }()).then(() => next()).catch(next);
+      },
+      actions: ['index'],
+    },
     {
       before(req, res, next) {
         Post.query()
@@ -77,7 +103,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
           })
           .catch(next);
       },
-      actions: ['update', 'delete'],
+      actions: ['update', 'delete', 'votePoll'],
     },
   ],
 
@@ -91,11 +117,15 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         return PostImage.query()
           .where({
             type: 'Post',
-            foreignKey: post.id,
+            foreign_key: post.id,
           })
           .then((result) => {
             if (result.length !== 0) {
               post.image = result[0];
+
+              if (post.image.file.exists('thumb')) {
+                post.imageURL = post.image.file.url('thumb');
+              }
             }
 
             return Promise.resolve();
@@ -105,24 +135,27 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         res.json(req.posts);
       })
       .catch(next);
-
-
-      res.json(req.results);
     },
 
     create(req, res) {
-      let builder = Promise.reject(new Error('Invalid post type'));
+      let builder = false;
 
-      if (req.type === 'Text') {
-        builder = this._createTextPost(req, req.body.text);
+      const controller = neonode.controllers.Posts;
+
+      if (req.body.type === 'Text') {
+        builder = controller._createTextPost(req, req.body.text);
       }
 
-      if (req.type === 'Poll') {
-        builder = this._createPollPost(req, req.body.options);
+      if (req.body.type === 'Poll') {
+        builder = controller._createPollPost(req);
       }
 
-      if (req.type === 'Image') {
-        builder = this._createImagePost(req, req.body.text);
+      if (req.body.type === 'Image') {
+        builder = controller._createImagePost(req, req.body.text);
+      }
+
+      if (!builder) {
+        builder = Promise.reject(new Error('Invalid post type'));
       }
 
       builder
@@ -137,10 +170,13 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
     },
 
     _createTextPost(req, text) {
-      const post = new Post();
-
-      post.campaignId = req.params.campaignId;
-      post.userId = req.user.id;
+      const post = new Post({
+        type: 'Text',
+        campaignId: req.params.id,
+        userId: req.user.id,
+        topicId: req.body.topicId,
+        public: req.body.public,
+      });
 
       text = sanitize(text, {
         allowedTags: [],
@@ -152,45 +188,45 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       };
 
       return post.save()
-        .then(() => {
-          return post;
-        });
+        .then(() => post);
     },
 
-    _createPollPost(req, body) {
-      const post = new Post();
-
-      post.campaignId = req.params.campaignId;
-      post.userId = req.user.id;
-
-      const sanitizedOptions = body.options.map((option) => {
-        return sanitize(option, {
-          allowedTags: [],
-          allowedAttributes: [],
-        });
+    _createPollPost(req) {
+      const post = new Post({
+        type: 'Poll',
+        campaignId: req.params.id,
+        userId: req.user.id,
+        topicId: req.body.topicId,
+        public: req.body.public,
       });
 
-      post.data.title = sanitize(body.title, {
+      const sanitizedOptions = req.body.options.map((option) =>
+        sanitize(option, {
+          allowedTags: [],
+          allowedAttributes: [],
+        })
+      );
+
+      post.data.title = sanitize(req.body.title, {
         allowedTags: [],
         allowedAttributes: [],
       });
 
       post.data.options = sanitizedOptions;
-      post.data.votes = sanitizedOptions.map(() => {
-        return [];
-      });
+      post.data.votes = sanitizedOptions.map(() => []);
 
       return post.save()
-        .then(() => {
-          return post;
-        });
+        .then(() => post);
     },
 
     _createImagePost(req, text) {
-      const post = new Post();
-
-      post.campaignId = req.params.campaignId;
-      post.userId = req.user.id;
+      const post = new Post({
+        type: 'Image',
+        campaignId: req.params.id,
+        userId: req.user.id,
+        topicId: req.body.topicId,
+        public: req.body.public,
+      });
 
       text = sanitize(text, {
         allowedTags: [],
@@ -205,8 +241,8 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         type: 'Post',
       });
 
-      return Post.transaction((trx) => {
-        return post.transacting(trx).save()
+      return Post.transaction((trx) =>
+        post.transacting(trx).save()
           .then(() => {
             attachment.foreignKey = post.id;
 
@@ -215,13 +251,13 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
               .save();
           })
           .then(trx.commit)
-          .catch(trx.rollback);
-      })
+          .catch(trx.rollback)
+      )
       .then(() => {
         if (req.files && req.files.image && req.files.image.length > 0) {
           const image = req.files.image[0];
 
-          return attachment.attach('image', image.path, {
+          return attachment.attach('file', image.path, {
             fileSize: image.size,
             mimeType: image.mimeType,
           })
@@ -241,58 +277,43 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       });
     },
 
-    update(req, res) {
-      const post = req.post;
+    createComment(req, res) {
+      const post = new Post({
+        type: 'Text',
+        parentId: req.body.parentId,
+        campaignId: req.params.id,
+        userId: req.user.id,
+        topicId: req.body.topicId,
+      });
 
-      const builder = Promise.reject(new Error('Invalid post type'));
+      const text = sanitize(req.body.text, {
+        allowedTags: [],
+        allowedAttributes: [],
+      });
 
-      if (post.type === 'Text') {
-        this._updateTextPost(post, req.body.text);
-      }
+      post.data = {
+        text,
+      };
 
-      if (post.type === 'Poll') {
-        this._updatePollPost(req, post, req.body);
-      }
-
-      if (post.type === 'Image') {
-        this._updateTextPost(post, req.body.text);
-      }
-
-      builder
-        .then(res.json)
-        .catch((err) => {
+      return post.save()
+        .then(() => {
+          res.json(post);
+        })
+        .catch(err => {
           res.status = 400;
 
           res.json(err.errors || { error: err });
         });
     },
 
-    _updateTextPost(post, text) {
-      post.data.text = sanitize(text, {
-        allowedTags: [],
-        allowedAttributes: [],
-      });
-
-      return post.save()
-        .then(() => {
-          return post;
-        });
-    },
-
-    _updatePollPost(req, post, body) {
-      if (body.title) {
-        post.data.title = sanitize(body.title, {
-          allowedTags: [],
-          allowedAttributes: [],
-        });
-      }
-
-      const index = body.index;
+    votePoll(req, res) {
+      const index = req.body.index;
+      const post = req.post;
 
       let foundUser = false;
 
-      for (let i = 0; i < post.votes.length; i++) {
-        const currentItem = post.votes[i];
+      for (let i = 0; i < post.data.votes.length; i++) {
+        const currentItem = post.data.votes[i];
 
         for (let j = 0; j < currentItem.length; j++) {
           if (currentItem[j] === req.user.id) {
@@ -307,11 +328,70 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
 
         return post.save()
           .then(() => {
-            return post;
+            res.json(post);
+          })
+          .catch((err) => {
+            res.status = 400;
+
+            res.json(err.errors || { error: err });
           });
       }
 
       return Promise.reject(new Error('You\'ve already voted in this poll'));
+    },
+
+    update(req, res) {
+      const post = req.post;
+
+      const controller = neonode.controllers.Posts;
+
+      let builder = false;
+
+      if (post.type === 'Text') {
+        builder = controller._updateTextPost(post, req.body.text);
+      }
+
+      if (post.type === 'Poll') {
+        builder = controller._updatePollPost(req, post, req.body);
+      }
+
+      if (post.type === 'Image') {
+        builder = controller._updateTextPost(post, req.body.text);
+      }
+
+      if (!builder) {
+        builder = Promise.reject(new Error('Invalid post type'));
+      }
+
+      builder
+        .then(() => {
+          res.json(post);
+        })
+        .catch((err) => {
+          res.status = 400;
+
+          res.json(err.errors || { error: err });
+        });
+    },
+
+    _updateTextPost(post, text) {
+      post.data.text = sanitize(text, {
+        allowedTags: [],
+        allowedAttributes: [],
+      });
+
+      return post.save()
+        .then(() => post);
+    },
+
+    _updatePollPost(req, post, body) {
+      post.data.title = sanitize(body.title, {
+        allowedTags: [],
+        allowedAttributes: [],
+      });
+
+      return post.save()
+        .then(() => post);
     },
 
     delete(req, res) {

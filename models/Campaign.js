@@ -21,12 +21,20 @@ const Campaign = Class('Campaign').inherits(Krypton.Model).includes(Krypton.Atta
     'createdAt',
     'updatedAt',
   ],
+  attachmentStorage: new Krypton.AttachmentStorage.Local({
+    maxFileSize: 5242880,
+    acceptedMimeTypes: [/image/],
+  }),
 
   prototype: {
+    userCount: 0,
+    active: false,
+    published: false,
+
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
 
-      this.fileMeta = this.fileMeta || {};
+      this.coverMeta = this.coverMeta || {};
 
       this.hasAttachment({
         name: 'cover',

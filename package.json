@@ -63,6 +63,7 @@
   },
   "dependencies": {
     "archiver": "^1.1.0",
+    "autosize": "^3.0.18",
     "aws-sdk": "^2.4.14",
     "basscss": "^8.0.2",
     "bcrypt-node": "^0.1.0",
@@ -111,6 +112,7 @@
     "scandium-express": "0.0.3",
     "scripty": "^1.6.0",
     "scroll-into-view-if-needed": "^1.0.2",
+    "share-url": "^1.0.0",
     "superagent": "^1.7.2",
     "uuid": "^2.0.2",
     "webfontloader": "^1.6.26",
