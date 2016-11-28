@@ -24,43 +24,28 @@ export default class PostPoll extends Post {
 
   template(data) {
     return `
-      <div class="Campaign_FeedItem mb1">
-        <div class='-bg-white p2'>
-          <div class="flex relative">
-            ${this._tag(data.topic)}
+      <div class='Campaign_FeedItem'>
+        <div data-campaing-post-container class='-bg-white p2'>
+          <div class='flex relative'>
+            ${this.getTopicHTMLString(data.topic)}
             <div>
-              ${this._getPostAuthorAvatar(data.user.account)}
+              ${this.getAvatarHTMLString(data.user.account)}
             </div>
-            <div class="flex-auto pl2">
-              <p class="-fw-500">${data.user.account.fullname}</p>
-              <p class="pb2 -caption -neutral-dark">${new Date(data.createdAt).toDateString()}</p>
-              <p class="pb3">${data.data.title}</p>
+            <div class='flex-auto pl2'>
+              <p class='-fw-500'>${data.user.account.fullname}</p>
+              <p class='pb2 -caption -neutral-dark'>${new Date(data.createdAt).toDateString()}</p>
+              <p class='pb3'>${data.data.title}</p>
               <div data-main-content>
-                ${this._renderMainContent(data)}
-              </div>
-              <div class="right-align">
-                <button class="Post_ToggleCommentsBtn btn-clear"
-                  aria-expanded="false"
-                  aria-controls="comments-${data.id}"
-                >
-                  <svg class="inline-block align-middle" width="20" height="20"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-comment"></use></svg>
-                  <span class="inline-block align-middle pl1">${data.comments.length}</span>
-                </button>
+                ${this._renderPollContent(data)}
               </div>
             </div>
           </div>
-        </div>
-        <div class='Campaign_FeedItemComments -bg-white'
-          id='comments-${data.id}'
-          aria-expanded="false"
-        >
-          ${data.comments.map(comment => this._printComment(comment)).join('')}
         </div>
       </div>
     `;
   }
 
-  _renderMainContent(data) {
+  _renderPollContent(data) {
     if (this._userAlreadyVoted(data)) {
       const totalVotes = data.data.votes.reduce((p, c) => p.concat(c), []).length;
       const mostVoted = data.data.votes.reduce((a, b) => (a.length > b.length ? a : b), []);
@@ -68,18 +53,20 @@ export default class PostPoll extends Post {
 
       return `
         <div class='pb2'>
-          ${data.data.options.map((option, index) => this._x(option, index, data, totalVotes, mostVotedIndex)).join('')}
+          ${data.data.options.map((option, index) =>
+            this._renderPollResults(option, index, data, totalVotes, mostVotedIndex))
+          .join('')}
         </div>
       `;
     }
 
     return `
-      ${data.data.options.map(option => this._label(option, data)).join('')}
+      ${data.data.options.map(option => this._renderPollOption(option, data)).join('')}
       <button class='-k-btn btn-dark -sm -fw-700 mt2' data-vote-btn>Vote</button>
     `;
   }
 
-  _x(label, index, data, totalVotes, mostVotedIndex) {
+  _renderPollResults(label, index, data, totalVotes, mostVotedIndex) {
     let percentage = (data.data.votes[index].length * 100) / totalVotes;
     let color = '-bg-neutral-dark';
 
@@ -94,8 +81,8 @@ export default class PostPoll extends Post {
         <div class='mr1' style='width: 30px; height: 30px;'>
           ${(function itsMe() {
             if (data.data.votes[index].indexOf(currentUser.get('id')) >= 0) {
-              const url = currentUser.getImage('smallRedSquare');
-              return `<img src="${url}" width="25" height="25"/>`;
+              const avatarUrl = currentUser.getImage('smallRedSquare');
+              return `<img src='${avatarUrl}' width='25' height='25'/>`;
             }
             return '';
           }())}
@@ -110,6 +97,15 @@ export default class PostPoll extends Post {
           </div>
         </div>
       </div>
+    `;
+  }
+
+  _renderPollOption(label, post) {
+    return `
+      <label class="block pb1">
+        <input type="radio" name="${post.id}">
+        <span class="pl1">${label}</span>
+      </label>
     `;
   }
 
@@ -158,7 +154,7 @@ export default class PostPoll extends Post {
       return;
     }
 
-    this.voteButton.disable();
+    this.voteButton.disable().updateText('Saving...');
 
     selectedOption = selectedOption[0];
     index = this.optionsElements.indexOf(selectedOption);
@@ -170,21 +166,12 @@ export default class PostPoll extends Post {
         body: { index },
       }, (err, res) => {
         if (err) {
-          return this.voteButton.enable();
+          return this.voteButton.enable().restoreText();
         }
 
-        this.mainElement.innerHTML = this._renderMainContent(res.body);
+        this.mainElement.innerHTML = this._renderPollContent(res.body);
         return null;
       });
     }
-  }
-
-  _label(label, post) {
-    return `
-      <label class="block pb1">
-        <input type="radio" name="${post.id}">
-        <span class="pl1">${label}</span>
-      </label>
-    `;
   }
 }

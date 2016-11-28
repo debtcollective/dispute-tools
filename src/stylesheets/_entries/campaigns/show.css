@@ -21,6 +21,7 @@
   background-color: var(--k-color-palette-accent);
 }
 
+/* page styles */
 .bg-light-pattern::before {
   content: '';
   position: fixed;
@@ -39,8 +40,9 @@
   min-height: 500px;
 }
 
-/* page styles */
 .CreateNewPost {
+  margin-bottom: 10px;
+
   &.active > .CreateNewPost_Box {
     z-index: 3;
   }
@@ -80,9 +82,8 @@
 }
 
 .Campaign_FeedItem {
-  /* margin-bottom: 1px; */
+  margin-bottom: 10px;
 
-  &Comments {}
   &Comment {margin-bottom: 2px}
 }
 

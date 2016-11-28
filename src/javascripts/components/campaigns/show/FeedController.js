@@ -17,44 +17,53 @@ export default class FeedController extends Widget {
 
     if (!this._loadMoreBtn) return;
 
-    this._bindEvents().loadPosts();
-  }
-
-  loadPosts() {
-    API.getCampaignPosts({
-      campaignId: this.campaignId,
-      page: this._currentPage,
-    }, this._handlePostLoad);
+    this._bindEvents()._loadPosts();
   }
 
   _bindEvents() {
-    this._loadMoreBtn.addEventListener('click', () => {
-      this._loader.classList.remove('hide');
-      this._currentPage++;
-      this.loadPosts();
-    });
+    this._handlePostLoadResponse = this._handlePostLoadResponse.bind(this);
+    this._handleLoadMoreButtonClick = this._handleLoadMoreButtonClick.bind(this);
 
-    this._handlePostLoad = this._handlePostLoad.bind(this);
-
+    this._loadMoreBtn.addEventListener('click', this._handleLoadMoreButtonClick);
     return this;
   }
 
-  _handlePostLoad(err, res) {
+  _handleLoadMoreButtonClick() {
+    this._loadMoreBtn.classList.add('hide');
+    this._loader.classList.remove('hide');
+    this._currentPage++;
+    this._loadPosts();
+  }
+
+  _loadPosts() {
+    API.getCampaignPosts({
+      campaignId: this.campaignId,
+      page: this._currentPage,
+    }, this._handlePostLoadResponse);
+  }
+
+  _handlePostLoadResponse(err, res) {
+    const fragment = document.createDocumentFragment();
+    let PostClass;
+
     this._totalCount = parseInt(res.headers.total_count, 10);
     this._totalPages = parseInt(res.headers.total_pages, 10);
 
-    const fragment = document.createDocumentFragment();
     res.body.forEach(post => {
-      let X;
-
       switch (post.type) {
-        case 'Text': X = PostText; break;
-        case 'Image': X = PostImage; break;
-        case 'Poll': X = PostPoll; break;
+        case 'Text':
+          PostClass = PostText;
+          break;
+        case 'Image':
+          PostClass = PostImage;
+          break;
+        case 'Poll':
+          PostClass = PostPoll;
+          break;
         default: throw new Error(`${post.type} not valid`);
       }
 
-      this.appendChild(new X({
+      this.appendChild(new PostClass({
         name: post.id,
         data: post,
       }));
@@ -63,13 +72,14 @@ export default class FeedController extends Widget {
     });
 
     this.element.appendChild(fragment);
-
     this._loader.classList.add('hide');
 
     if (this._currentPage >= this._totalPages) {
+      this._loadMoreBtn.removeEventListener('click', this._handleLoadMoreButtonClick);
       this._loadMoreBtn.parentElement.removeChild(this._loadMoreBtn);
+      this._handleLoadMoreButtonClick = null;
     } else {
-      this._loadMoreBtn.parentElement.classList.remove('hide');
+      this._loadMoreBtn.classList.remove('hide');
     }
   }
 }

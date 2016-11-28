@@ -1,10 +1,10 @@
 import autosize from 'autosize';
-import Widget from '../../../../lib/widget';
-import API from '../../../../lib/api';
-import currentUser from '../../../../lib/currentUser';
-import Button from '../../../../components/Button';
+import Widget from '../../../../../lib/widget';
+import API from '../../../../../lib/api';
+import currentUser from '../../../../../lib/currentUser';
+import Button from '../../../../../components/Button';
 
-export default class CommentBox extends Widget {
+export default class NewComment extends Widget {
   constructor(config) {
     super(config);
 
@@ -55,14 +55,19 @@ export default class CommentBox extends Widget {
   }
 
   _bindEvents() {
-    this._clickHandlerRef = this._clickHandler.bind(this);
-    this.buttonWidget.element.addEventListener('click', this._clickHandlerRef);
+    this._handleNewCommentSubmit = this._handleNewCommentSubmit.bind(this);
+    this.buttonWidget.element.addEventListener('click', this._handleNewCommentSubmit);
 
-    this._keyUpHandlerRef = this._keyUpHandler.bind(this);
-    this.textareaElement.addEventListener('keyup', this._keyUpHandlerRef);
+    this._handleInputKeyUp = this._handleInputKeyUp.bind(this);
+    this.textareaElement.addEventListener('keyup', this._handleInputKeyUp);
   }
 
-  _clickHandler() {
+  /**
+   * Tries to create a new Comment (API endpoint).
+   * @private
+   * @emits {newComment} emit event when the server response is returned.
+   */
+  _handleNewCommentSubmit() {
     const text = this.textareaElement.value;
     const parentId = this.data.id;
 
@@ -70,7 +75,7 @@ export default class CommentBox extends Widget {
       return;
     }
 
-    this.buttonWidget.disable();
+    this.buttonWidget.disable().updateText();
 
     API.postCreateComment({
       campaignId: this.data.campaignId,
@@ -79,12 +84,13 @@ export default class CommentBox extends Widget {
     }, (err, res) => {
       res.body.user = currentUser.get();
       this.textareaElement.value = '';
+      this.buttonWidget.restoreText();
 
-      this.dispatch('commentCreated', { err, res });
+      this.dispatch('newComment', { err, res });
     });
   }
 
-  _keyUpHandler() {
+  _handleInputKeyUp() {
     const state = this.textareaElement.value.length ? 'enable' : 'disable';
     this.buttonWidget[state]();
   }
