@@ -19,19 +19,21 @@ export default class NewComment extends Widget {
 
   template() {
     return `
-      <div class='-bg-neutral-light p2'>
+      <div class='p2'>
         <div class='flex'>
           <div>
             <img
-              src="${currentUser.getImage('smallRedSquare')}"
-              alt="${currentUser.get('account').fullname}"
-              width="50" height="50"/>
+              src='${currentUser.getImage('smallRedSquare')}'
+              alt='${currentUser.get('account').fullname}'
+              class='mr1'
+              width='50' height='50'/>
           </div>
-          <div class='flex-auto'>
+          <div class='flex-auto right-align'>
             <textarea
-              class='-k-textarea -no-border -transparent block -fw'
+              class='-k-textarea -no-border -transparent block -fw -rn'
+              rows='1'
               placeholder='Write a comment...'></textarea>
-            <button disabled>Send</button>
+            <button class='-k-btn btn-primary -xs -fw-500 mt1' disabled>Post comment</button>
           </div>
         </div>
       </div>

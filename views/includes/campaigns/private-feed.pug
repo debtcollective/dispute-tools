@@ -10,14 +10,14 @@
       - var _avatarUrl = '/images/profile/placeholder-small.png';
       if (currentUser.account.image.exists('smallRedSquare'))
         - _avatarUrl = currentUser.account.image.url('smallRedSquare')
-      img(
+      img.mr1(
         src=_avatarUrl
         alt=currentUser.account.fullname
         width='50'
         height='50'
       )
       .pb2.flex-auto
-        textarea.CreateNewPost_Input.-k-textarea.-no-border.block.-fw(
+        textarea.CreateNewPost_Input.-k-textarea.-no-border.block.-fw.-rn(
           placeholder='Write something...'
           rows='1'
         )

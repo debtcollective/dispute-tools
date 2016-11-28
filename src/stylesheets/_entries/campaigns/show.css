@@ -20,6 +20,7 @@
   color: #785616;
   background-color: var(--k-color-palette-accent);
 }
+.-rn {resize: none}
 
 /* page styles */
 .bg-light-pattern::before {
@@ -45,10 +46,6 @@
 
   &.active > .CreateNewPost_Box {
     z-index: 3;
-  }
-
-  &_Input {
-    resize: none;
   }
 
   &_Backdrop {
