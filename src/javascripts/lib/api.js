@@ -69,7 +69,48 @@ export default {
     }
 
     superagent
-      .get(`/campaigns/${args.campaignId}/posts`)
+      .get(`/campaigns/${args.campaignId}/posts?page=${args.page || 1}`)
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        if (typeof callback === 'function') {
+          callback(err, res);
+        }
+      });
+  },
+
+  /**
+   * Registers a new vote for a Post of type Poll.
+   * @param {Object} args - the arguments needed to hit the endpoint.
+   * @param {string} args.campaignId - the campaign id to which the post is associated with.
+   * @param {string} args.postId - the post id to cast the vote.
+   * @param {function} [callback] - the callback to handle the server response.
+   */
+  campaignPostVote(args, callback) {
+    if (!args || !args.campaignId || !args.postId) {
+      throw new Error('Missing required params');
+    }
+
+    superagent
+      .post(`/campaigns/${args.campaignId}/posts/${args.postId}/vote`)
+      .send(args.body || {})
+      .set('X-CSRF-Token', csrfToken)
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        if (typeof callback === 'function') {
+          callback(err, res);
+        }
+      });
+  },
+
+  postCreateComment(args, callback) {
+    if (!args || !args.campaignId || !args.postId) {
+      throw new Error('Missing required params');
+    }
+
+    superagent
+      .post(`/campaigns/${args.campaignId}/posts/${args.postId}`)
+      .send(args.body || {})
+      .set('X-CSRF-Token', csrfToken)
       .set('Accept', 'application/json')
       .end((err, res) => {
         if (typeof callback === 'function') {

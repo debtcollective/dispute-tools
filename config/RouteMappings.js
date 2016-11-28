@@ -143,6 +143,10 @@ const routeMappings = RouteMappings()
     to: 'Posts#createComment',
     as: 'CreatePostComment',
   })
+  .post('/campaigns/:campaign_id/posts/:id/vote', {
+    to: 'Posts#votePoll',
+    as: 'VotePostPoll',
+  })
   .post('/campaigns/:id/posts', {
     to: 'Posts#create',
     as: 'CreatePost',

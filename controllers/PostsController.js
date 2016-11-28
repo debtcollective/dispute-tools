@@ -97,7 +97,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
           })
           .catch(next);
       },
-      actions: ['update', 'delete'],
+      actions: ['update', 'delete', 'votePoll'],
     },
   ],
 
@@ -301,6 +301,40 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         });
     },
 
+    votePoll(req, res) {
+      const index = req.body.index;
+      const post = req.post;
+
+      let foundUser = false;
+
+      for (let i = 0; i < post.data.votes.length; i++) {
+        const currentItem = post.data.votes[i];
+
+        for (let j = 0; j < currentItem.length; j++) {
+          if (currentItem[j] === req.user.id) {
+            foundUser = true;
+            break;
+          }
+        }
+      }
+
+      if (!foundUser) {
+        post.data.votes[index].push(req.user.id);
+
+        return post.save()
+          .then(() => {
+            res.json(post);
+          })
+          .catch((err) => {
+            res.status = 400;
+
+            res.json(err.errors || { error: err });
+          });
+      }
+
+      return Promise.reject(new Error('You\'ve already voted in this poll'));
+    },
+
     update(req, res) {
       const post = req.post;
 
@@ -340,44 +374,17 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       });
 
       return post.save()
-        .then(() => {
-          return post;
-        });
+        .then(() => post);
     },
 
     _updatePollPost(req, post, body) {
-      if (body.title) {
-        post.data.title = sanitize(body.title, {
-          allowedTags: [],
-          allowedAttributes: [],
-        });
-      }
+      post.data.title = sanitize(body.title, {
+        allowedTags: [],
+        allowedAttributes: [],
+      });
 
-      const index = body.index;
-
-      let foundUser = false;
-
-      for (let i = 0; i < post.votes.length; i++) {
-        const currentItem = post.votes[i];
-
-        for (let j = 0; j < currentItem.length; j++) {
-          if (currentItem[j] === req.user.id) {
-            foundUser = true;
-            break;
-          }
-        }
-      }
-
-      if (!foundUser) {
-        post.data.votes[index].push(req.user.id);
-
-        return post.save()
-          .then(() => {
-            return post;
-          });
-      }
-
-      return Promise.reject(new Error('You\'ve already voted in this poll'));
+      return post.save()
+        .then(() => post);
     },
 
     delete(req, res) {

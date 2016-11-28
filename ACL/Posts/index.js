@@ -6,7 +6,7 @@ module.exports = {
     ['index', true],
   ],
   User: [
-    ['create', 'createComment', 'index', true],
+    ['create', 'createComment', 'votePoll', 'index', true],
     ['edit', 'update', 'delete', (req) => {
       if (req.post.userId !== req.user.id) {
         return false;
@@ -17,8 +17,8 @@ module.exports = {
   ],
   CollectiveManager: [
     ['create', 'index', 'createComment', true],
-    ['edit', 'update', 'delete', (req) => {
-      return User.knex().table('CollectiveAdmins')
+    ['edit', 'update', 'delete', (req) =>
+      User.knex().table('CollectiveAdmins')
         .where({
           collective_id: req.post.collectiveId,
           user_id: req.user.id,
@@ -29,8 +29,8 @@ module.exports = {
           }
 
           return true;
-        });
-    }],
+        }),
+    ],
   ],
   Admin: [
     ['createComment', true],
