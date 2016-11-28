@@ -1,5 +1,5 @@
 /* global Class, CONFIG, RestfulController, NotFoundError, Post, PostsController,
-PostImage, neonode, Campaign */
+PostImage, neonode, Campaign, Account */
 
 const sanitize = require('sanitize-html');
 const Promise = require('bluebird');
@@ -7,6 +7,7 @@ const fs = require('fs-extra');
 const path = require('path');
 
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
+const PAGE_SIZE = 50;
 
 const PostsController = Class('PostsController').inherits(RestfulController)({
   beforeActions: [
@@ -43,7 +44,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
             ],
           },
           paginate: {
-            pageSize: 50,
+            pageSize: PAGE_SIZE,
           },
         })(req, res, next);
       },
@@ -64,22 +65,27 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       },
       actions: ['index'],
     },
-    // add imageURL to post.users
+    // add user account to comments
     {
       before(req, res, next) {
-        req.posts.forEach(post => {
-          let imageURL = '';
+        function getAccount(comment) {
+          return Account.query()
+            .where('user_id', comment.userId)
+            .then(([account]) => {
+              comment.user = comment.user || {};
+              comment.user.account = account;
+            });
+        }
 
-          if (post.user.account.image.exists('smallRedSquare')) {
-            imageURL = post.user.account.image.url('smallRedSquare');
+        Promise.all(function* getCommentsAccount() {
+          for (const post of req.posts) {
+            for (const comment of post.comments) {
+              yield getAccount(comment);
+            }
           }
-
-          post.user.account.imageURL = imageURL;
-        });
-
-        next();
+        }()).then(() => next()).catch(next);
       },
-      actions: ['index']
+      actions: ['index'],
     },
     {
       before(req, res, next) {
@@ -182,9 +188,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       };
 
       return post.save()
-        .then(() => {
-          return post;
-        });
+        .then(() => post);
     },
 
     _createPollPost(req) {
@@ -196,12 +200,12 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         public: req.body.public,
       });
 
-      const sanitizedOptions = req.body.options.map((option) => {
-        return sanitize(option, {
+      const sanitizedOptions = req.body.options.map((option) =>
+        sanitize(option, {
           allowedTags: [],
           allowedAttributes: [],
-        });
-      });
+        })
+      );
 
       post.data.title = sanitize(req.body.title, {
         allowedTags: [],
@@ -209,14 +213,10 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       });
 
       post.data.options = sanitizedOptions;
-      post.data.votes = sanitizedOptions.map(() => {
-        return [];
-      });
+      post.data.votes = sanitizedOptions.map(() => []);
 
       return post.save()
-        .then(() => {
-          return post;
-        });
+        .then(() => post);
     },
 
     _createImagePost(req, text) {
@@ -241,8 +241,8 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         type: 'Post',
       });
 
-      return Post.transaction((trx) => {
-        return post.transacting(trx).save()
+      return Post.transaction((trx) =>
+        post.transacting(trx).save()
           .then(() => {
             attachment.foreignKey = post.id;
 
@@ -251,8 +251,8 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
               .save();
           })
           .then(trx.commit)
-          .catch(trx.rollback);
-      })
+          .catch(trx.rollback)
+      )
       .then(() => {
         if (req.files && req.files.image && req.files.image.length > 0) {
           const image = req.files.image[0];
@@ -297,7 +297,12 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
 
       return post.save()
         .then(() => {
-          return post;
+          res.json(post);
+        })
+        .catch(err => {
+          res.status = 400;
+
+          res.json(err.errors || { error: err });
         });
     },
 
@@ -359,7 +364,9 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       }
 
       builder
-        .then(res.json)
+        .then(() => {
+          res.json(post);
+        })
         .catch((err) => {
           res.status = 400;
 
