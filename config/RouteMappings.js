@@ -160,4 +160,21 @@ const routeMappings = RouteMappings()
     as: 'DeletePost',
   });
 
+  .get('/campaigns/:id/events', {
+    to: 'Events#index',
+    as: 'EventsIndex',
+  })
+  .post('/campaigns/:id/events', {
+    to: 'Events#create',
+    as: 'CreateEvent',
+  })
+  .put('/campaigns/:campaign_id/events/:id', {
+    to: 'Events#update',
+    as: 'UpdateEvent',
+  })
+  .delete('/campaigns/:campaign_id/events/:id', {
+    to: 'Events#delete',
+    as: 'DeleteEvent',
+  });
+
 module.exports = routeMappings;
