@@ -26,7 +26,7 @@
 
         -
           var _solidarityBloc = COLLECTIVES.slice();
-          _solidarityBloc = _solidarityBloc.filter(c => c.name.indexOf('Solidarity') > -1)[0];
+          _solidarityBloc = _solidarityBloc.filter(c => c.name.indexOf('Solidarity') > -1)[0] || {};
         p.-fw-500 Or if you don’t have debts:
         .pb3.mxn1
           label.UsersNewForm__collective-option.-fw
