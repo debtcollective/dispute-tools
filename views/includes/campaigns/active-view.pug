@@ -12,4 +12,13 @@
           svg.inline-block.align-top(width='60' height='72')
             use(xlink:href='#svg-no-date')
         p.-neutral-mid.-fw-500 Currently there are no scheduled events
-    pre= JSON.stringify(events, null, 2)
+
+      p Events:
+      ul
+        each event in events
+          li
+            a(href='#')
+              span= event.name
+              p= event.description
+            small by: #{event.user.account.fullname}
+            p &mdash; #[a(href='#') RSVP] or #[a(href='#') ignore]
