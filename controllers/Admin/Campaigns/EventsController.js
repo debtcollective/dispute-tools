@@ -105,7 +105,7 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
         date: req.body.date,
         name: req.body.name,
         title: req.body.title,
-        mapUrl: req.body.map_url,
+        map: req.body.map_url,
         description: req.body.description,
         locationName: req.body.location_name,
       });
@@ -114,14 +114,19 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
         .then(() => res.json(event))
         .catch((err) => {
           res.status = 400;
-          res.json(err.erros || { error: err });
+          res.json(err.errors || { error: err });
         });
     },
 
     update(req, res) {
       req.event
         .updateAttributes({
-          // TODO: ...
+          date: req.body.date,
+          name: req.body.name,
+          title: req.body.title,
+          map: req.body.map_url,
+          description: req.body.description,
+          locationName: req.body.location_name,
         }).save()
         .then(() => res.json(req.event))
         .catch((err) => {
