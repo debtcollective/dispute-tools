@@ -130,6 +130,7 @@ const routeMappings = RouteMappings()
 
   .resources('/Campaigns', (map) => {
     return map()
+      .resources('/Events')
       .post('/:id/join', {
         to: 'Campaigns#join',
         as: 'join',

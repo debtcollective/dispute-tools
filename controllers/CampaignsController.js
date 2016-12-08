@@ -86,7 +86,15 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
           req.campaign = campaign[0];
           res.locals.campaign = campaign[0];
 
-          return next();
+          // load related events
+          return Event.query()
+            .where('campaign_id', req.params.id)
+            .where('date', '>=', new Date().toISOString().slice(0, 10))
+            .include('[user.account]')
+            .then((events) => {
+              res.locals.events = events;
+              next();
+            });
         })
         .catch(next);
     },

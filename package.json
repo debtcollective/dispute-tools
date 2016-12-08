@@ -19,7 +19,7 @@
     "report": "scripty",
     "start": "scripty",
     "iron-node": "scripty",
-    "watch": "scripty",
+    "watch": "tarima -wP localhost:3000",
     "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
     "post_deploy_staging": "scripty"
   },
@@ -34,6 +34,9 @@
       "**/_entries/**"
     ],
     "rename": "**:{filepath/1/_entries}/{filename}.{extname}",
+    "devPlugins": [
+      "tarima-lr"
+    ],
     "bundleOptions": {
       "extensions": {
         "js": "es6",
