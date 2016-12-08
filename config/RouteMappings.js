@@ -70,6 +70,7 @@ const routeMappings = RouteMappings()
       .resources('/Users')
       .resources('/Campaigns', (map) => {
         return map()
+          .resources('/Events')
           .post('/:id/activate', {
             to: 'Campaigns#activate',
             as: 'activate',
@@ -158,23 +159,8 @@ const routeMappings = RouteMappings()
   .delete('/campaigns/:campaign_id/posts/:id', {
     to: 'Posts#delete',
     as: 'DeletePost',
-  });
+  })
 
-  .get('/campaigns/:id/events', {
-    to: 'Events#index',
-    as: 'EventsIndex',
-  })
-  .post('/campaigns/:id/events', {
-    to: 'Events#create',
-    as: 'CreateEvent',
-  })
-  .put('/campaigns/:campaign_id/events/:id', {
-    to: 'Events#update',
-    as: 'UpdateEvent',
-  })
-  .delete('/campaigns/:campaign_id/events/:id', {
-    to: 'Events#delete',
-    as: 'DeleteEvent',
-  });
+  ;
 
 module.exports = routeMappings;

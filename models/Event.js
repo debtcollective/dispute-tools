@@ -1,6 +1,6 @@
-/* globals CONFIG, Class, Krypton, Event */
+/* globals CONFIG, Class, Krypton, Admin, Campaign */
 
-Class('Event').inherits(Krypton.Model)({
+const Event = Class('Event').inherits(Krypton.Model)({
   tableName: 'Events',
   validations: {
     campaignId: ['required'],
@@ -37,4 +37,4 @@ Class('Event').inherits(Krypton.Model)({
   },
 });
 
-module.exports = Events;
+module.exports = Event;
