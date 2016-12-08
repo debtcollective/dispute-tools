@@ -130,7 +130,6 @@ const routeMappings = RouteMappings()
 
   .resources('/Campaigns', (map) => {
     return map()
-      .resources('/Events')
       .post('/:id/join', {
         to: 'Campaigns#join',
         as: 'join',
@@ -161,6 +160,8 @@ const routeMappings = RouteMappings()
     to: 'Posts#delete',
     as: 'DeletePost',
   })
+
+  .resources('/Events')
 
   ;
 
