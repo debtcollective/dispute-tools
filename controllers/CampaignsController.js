@@ -1,4 +1,5 @@
-/* global Class, CONFIG, RestfulController, Campaign, NotFoundError, Account, Topic */
+/* global Class, CONFIG, RestfulController, Campaign, NotFoundError, Account, Topic,
+Event, EventAssistant */
 const marked = require('marked');
 const Promise = require('bluebird');
 
@@ -93,7 +94,25 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
             .include('[user.account]')
             .then((events) => {
               res.locals.events = events;
-              next();
+
+              // mark events according
+              return Promise.all(events.map(e =>
+                EventAssistant.query()
+                .where('event_id', e.id)
+                .where('user_id', req.user.id)))
+                .then((results) => {
+                  events.forEach((event) => {
+                    const result = results.shift();
+
+                    if (result.length === 0) {
+                      event.status = 'pending';
+                    } else {
+                      event.status = result[0].ignore ? 'ignored' : 'going';
+                    }
+                  });
+
+                  next();
+                });
             });
         })
         .catch(next);
