@@ -1,19 +1,27 @@
-/* global Class, CONFIG, RestfulController, NotFoundError, Event, EventsController, neonode, Campaign, Account */
+/* global Class, CONFIG, RestfulController, NotFoundError,
+Event, EventsController, neonode, Campaign, Account */
 
-const sanitize = require('sanitize-html');
-const Promise = require('bluebird');
-const fs = require('fs-extra');
+// const sanitize = require('sanitize-html');
+// const Promise = require('bluebird');
+// const fs = require('fs-extra');
 const path = require('path');
 
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 const PAGE_SIZE = 50;
 
-const EventsController = Class('EventsController').inherits(RestfulController)({
+/* global Admin */
+global.Admin = global.Admin || {};
+global.Admin.Campaigns = global.Admin.Campaigns
+  || Class(Admin, 'Campaign').inherits(Campaign)({
+    resourceName: 'Admin.Campaigns',
+  });
+
+const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(RestfulController)({
   beforeActions: [
     {
       before(req, res, next) {
         Campaign.query()
-          .where('id', req.params.id)
+          .where('id', req.params.campaign_id)
           .then(([campaign]) => {
             req.campaign = campaign;
             next();
@@ -26,7 +34,7 @@ const EventsController = Class('EventsController').inherits(RestfulController)({
       before(req, res, next) {
         const query = Event.query()
           .where({
-            campaign_id: req.params.id,
+            campaign_id: req.params.campaign_id,
           })
           .include('[user.account]');
 
@@ -50,14 +58,16 @@ const EventsController = Class('EventsController').inherits(RestfulController)({
     },
     {
       before(req, res, next) {
-        req.events = res.locals.results;
+        req.events = res.locals.results || [];
 
-        res.locals.headers = {
-          total_count: parseInt(res._headers.total_count, 10),
-          total_pages: parseInt(res._headers.total_pages, 10),
-          current_page: parseInt(req.query.page || 1, 10),
-          query: req.query,
-        };
+        if (req._headers) {
+          res.locals.headers = {
+            total_count: parseInt(res._headers.total_count, 10),
+            total_pages: parseInt(res._headers.total_pages, 10),
+            current_page: parseInt(req.query.page || 1, 10),
+            query: req.query,
+          };
+        }
 
         next();
       },
@@ -84,56 +94,47 @@ const EventsController = Class('EventsController').inherits(RestfulController)({
   ],
 
   prototype: {
-    index(req, res, next) {
-      Promise.each(req.events, (event) => {
-          return Promise.resolve();
-      })
-      .then(() => {
-        res.json(req.events);
-      })
-      .catch(next);
+    index(req, res) {
+      res.json(req.events);
     },
 
     create(req, res) {
       const event = new Event({
-        campaignId: req.params.id,
+        campaignId: req.params.campaign_id,
         userId: req.user.id,
         date: req.body.date,
         name: req.body.name,
         title: req.body.title,
-        description: req.body.description,
         mapUrl: req.body.map_url,
-        locationName: req.body.location_name
+        description: req.body.description,
+        locationName: req.body.location_name,
       });
 
       event.save()
-          .then((event) => {
-              res.json(event);
-          })
-          .catch((err) => {
-              res.status = 400;
-
-              res.json(err.errors || { error: err });
-          });
+        .then(() => res.json(event))
+        .catch((err) => {
+          res.status = 400;
+          res.json(err.erros || { error: err });
+        });
     },
 
     update(req, res) {
-      req.event.save()
-          .then((event) => {
-              res.json(event);
-          })
-          .catch((err) => {
-              res.status = 400;
-
-              res.json(err.errors || { error: err });
-          });
+      req.event
+        .updateAttributes({
+          // TODO: ...
+        }).save()
+        .then(() => res.json(req.event))
+        .catch((err) => {
+          res.status = 400;
+          res.json(err.errors || { error: err });
+        });
     },
 
     delete(req, res) {
       req.event.destroy()
-          .then(() => {
-              res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.params.campaignId));
-          });
+        .then(() => {
+          res.redirect(CONFIG.router.helpers.Campaigns.Events.url(req.params.campaign_id));
+        });
     },
   },
 });
