@@ -25,11 +25,12 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
           .include('collective')
           .then(([campaign]) => {
             req.campaign = campaign;
+            res.locals.campaign = campaign;
             next();
           })
           .catch(next);
       },
-      actions: ['index'],
+      actions: ['index', 'new'],
     },
     {
       before(req, res, next) {
@@ -99,13 +100,16 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
       res.json(req.events);
     },
 
+    new(req, res) {
+      res.render('admin/campaigns/events/new');
+    },
+
     create(req, res) {
       const event = new Event({
         campaignId: req.params.campaign_id,
         userId: req.user.id,
         date: req.body.date,
         name: req.body.name,
-        title: req.body.title,
         map: req.body.map_url,
         description: req.body.description,
         locationName: req.body.location_name,
