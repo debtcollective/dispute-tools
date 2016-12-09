@@ -17,8 +17,6 @@
       ul
         each event in events
           li
-            a(href='#')
-              span= event.name
-              p= event.description
+            p: a(href='#')= event.name
             small by: #{event.user.account.fullname}
             p &mdash; #[a(href='#') RSVP] or #[a(href='#') ignore]
