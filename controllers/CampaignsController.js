@@ -1,5 +1,5 @@
 /* global Class, CONFIG, RestfulController, Campaign, NotFoundError, Account, Topic,
-Event, EventAssistant */
+User, Event, EventAssistant */
 const marked = require('marked');
 const Promise = require('bluebird');
 
@@ -89,31 +89,27 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
 
           // load related events
           return Event.query()
+            .include('[user.account]')
             .where('campaign_id', req.params.id)
             .where('date', '>=', new Date().toISOString().slice(0, 10))
-            .include('[user.account]')
-            .then((events) => {
-              res.locals.events = events;
-
-              // mark events according
-              return Promise.all(events.map(e =>
-                EventAssistant.query()
-                .where('event_id', e.id)
-                .where('user_id', req.user.id)))
-                .then((results) => {
-                  events.forEach((event) => {
-                    const result = results.shift();
-
-                    if (result.length === 0) {
-                      event.status = 'pending';
-                    } else {
-                      event.status = result[0].ignore ? 'ignored' : 'going';
-                    }
+            // mark events according
+            .then((events) =>
+              Promise.all(events
+                // retrieve all attendees from all events
+                .map(e => EventAssistant.query()
+                  .include('[user.account]')
+                  .where('event_id', e.id)
+                ))
+                .then((attendees) => {
+                  attendees.forEach((users, i) => {
+                    events[i].attendees = users;
                   });
 
+                  res.locals.event = events.shift();
+                  res.locals.nextEvents = events;
+
                   next();
-                });
-            });
+                }));
         })
         .catch(next);
     },

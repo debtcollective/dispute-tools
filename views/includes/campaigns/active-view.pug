@@ -13,9 +13,13 @@
             use(xlink:href='#svg-no-date')
         p.-neutral-mid.-fw-500 Currently there are no scheduled events
 
-      p Events:
+      p Current:
+      pre= JSON.stringify(event, null, 2)
+      pre= JSON.stringify(attendees, null, 2)
+
+      p Next events:
       ul
-        each event in events
+        each event in nextEvents
           li
             p: a(href='#')= event.name
             small by: #{event.user.account.fullname}
