@@ -22,6 +22,7 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
       before(req, res, next) {
         Campaign.query()
           .where('id', req.params.campaign_id)
+          .include('collective')
           .then(([campaign]) => {
             req.campaign = campaign;
             next();
