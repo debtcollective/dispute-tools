@@ -116,10 +116,14 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
       });
 
       event.save()
-        .then(() => res.json(event))
+        .then(() => {
+          req.flash('success', 'The event has been created.');
+          res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id));
+        })
         .catch((err) => {
-          res.status = 400;
-          res.json(err.errors || { error: err });
+          res.status(400);
+          res.locals.errors = err.errors || err;
+          res.render('admin/campaigns/events/new');
         });
     },
 
