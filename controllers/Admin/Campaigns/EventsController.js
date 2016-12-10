@@ -1,5 +1,6 @@
 /* global Class, CONFIG, RestfulController, NotFoundError,
-Event, EventsController, neonode, Campaign, Account */
+Event, EventsController, neonode, Campaign, Account
+EventAssistant */
 
 // const sanitize = require('sanitize-html');
 // const Promise = require('bluebird');
@@ -93,6 +94,20 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
       },
       actions: ['update', 'delete'],
     },
+    {
+      before(req, res, next) {
+        EventAssistant.query()
+          .include('[user.account]')
+          .where('ignore', false)
+          .where('event_id', req.params.id)
+          .then((results) => {
+            res.locals.attendees = results;
+            next();
+          })
+          .catch(next);
+      },
+      actions: ['show'],
+    },
   ],
 
   prototype: {
@@ -102,6 +117,10 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
 
     new(req, res) {
       res.render('admin/campaigns/events/new');
+    },
+
+    show(req, res) {
+      res.render('admin/campaign/events/show');
     },
 
     create(req, res) {
