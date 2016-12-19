@@ -14,4 +14,16 @@ EventAssistant.relations = {
     ownerCol: 'user_id',
     relatedCol: 'id',
   },
+
+  assistans: { 
+    type: 'HasManyThrough',
+    relateModel: User,
+    ownerCol: 'id',
+    relatedCol: 'id',
+    trough: {
+      tableName: 'EventAssistants',
+      ownerCol: 'event_id',
+      relatedCol: 'user_id'
+    }
+  },
 };

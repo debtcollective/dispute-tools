@@ -8,7 +8,7 @@ module.exports = {
   ],
   CollectiveManager: [
     ['index', true],
-    ['show', 'edit', 'update', (req) => {
+    ['show', 'edit', 'update', 'ban', (req) => {
       return User.knex().table('CollectiveAdmins')
         .where({
           collective_id: req.params.id,

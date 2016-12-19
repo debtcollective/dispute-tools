@@ -66,7 +66,14 @@ const routeMappings = RouteMappings()
   .namespace('/Admin', (mappings) => {
     return mappings()
       .resources('/Disputes')
-      .resources('/Collectives')
+      .resources('/Collectives', (map) => {
+        map()
+        .resources('/KBPost')
+        .post('/:id/ban', {
+            to: 'Collectives#ban',
+            as: 'ban'
+        })
+      })
       .resources('/Users')
       .resources('/Campaigns', (map) => {
         return map()
@@ -122,6 +129,7 @@ const routeMappings = RouteMappings()
 
   .resources('/Collectives', (map) => {
     return map()
+      .resources('/KBPosts')
       .post('/:id/join', {
         to: 'Collectives#join',
         as: 'join',
@@ -162,7 +170,6 @@ const routeMappings = RouteMappings()
   })
 
   .resources('/Events')
-
   ;
 
 module.exports = routeMappings;

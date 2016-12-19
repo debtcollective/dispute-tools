@@ -28,9 +28,29 @@ Collective.relations = {
     },
   },
 
+  bans: {
+    type: 'HasManyThrough',
+    relateModel: User,
+    ownerCol: 'id',
+    relatedCol: 'id',
+    trough: {
+      tableName: 'CollectiveBans',
+      ownerCol: 'collective_id',
+      relatedCol: 'user_id'
+    }
+  },
+
   campaigns: {
     type: 'HasMany',
     relatedModel: Campaign,
+    ownerCol: 'id',
+    relatedCol: 'collective_id',
+    orderBy: ['created_at', 'DESC'],
+  },
+
+  kbPosts: {
+    type: 'HasMany',
+    relatedModel: KBPost,
     ownerCol: 'id',
     relatedCol: 'collective_id',
     orderBy: ['created_at', 'DESC'],

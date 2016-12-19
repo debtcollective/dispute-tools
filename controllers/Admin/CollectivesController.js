@@ -146,6 +146,37 @@ Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(Res
       })
       .catch(next);
     },
+    ban(req, res, next) {
+        const knex = User.knex();
+
+        Collective.transaction((trx) => {
+            return knex
+                .table('CollectiveBans')
+                .transacting(trx)
+                .insert({
+                    user_id: req.post.user_id,
+                    collective_id: req.collective.id,
+                })
+            .then(() => {
+                req.collective
+                    .transacting(trx)
+                    .save();
+            })
+            .then(trx.commit)
+            .catch(trx.rollback);
+        })
+        .then(() => {
+            User.query().where({id: req.post.user_id})
+                .then((result) => {
+                    req.bannedUser = result;
+                });
+        })
+        .then(() => {
+            req.flash('success', `You have successfully added a ban on ${req.bannedUser.name}`);
+            res.redirect(CONFIG.router.helpers.Collectives.show.url(req.params.id));
+        })
+        .catch(next);
+    },
   },
 });
 
