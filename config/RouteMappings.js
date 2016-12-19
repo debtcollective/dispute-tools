@@ -136,6 +136,27 @@ const routeMappings = RouteMappings()
       });
   })
 
+  .get('/collectivess/:id/kbposts', {
+      to: 'KBPosts#index',
+      as: 'IndexKBPost',
+  })
+  .post('/collectives/:id/kbposts', {
+      to: 'KBPosts#create',
+      as: 'CreateKBPost',
+  })
+  .get('/collectives/:collective_id/kbposts/:id', {
+      to: 'KBPosts#show',
+      as: 'ShowKBPost',
+  })
+  .put('/collectives/:collective_id/kbposts/:id', {
+      to: 'KBPosts#update',
+      as: 'UpdateKBPost',
+  })
+  .delete('/collectives/:collective_id/kbposts/:id', {
+      to: 'KBPosts#delete',
+      as: 'DeleteKBPost',
+  })
+
   .resources('/Campaigns', (map) => {
     return map()
       .post('/:id/join', {
@@ -169,7 +190,15 @@ const routeMappings = RouteMappings()
     as: 'DeletePost',
   })
 
-  .resources('/Events')
+  .get('/campaigns/:campaign_id/events', {
+      to: 'Events#index',
+      as: 'EventsIndex',
+  })
+  .post('campaigns/:campaign_id/events/:event_id', {
+      to: 'Events#assist',
+      as: 'EventAssist'
+  })
+
   ;
 
 module.exports = routeMappings;
