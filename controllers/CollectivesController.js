@@ -163,20 +163,27 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       const knex = Collective.knex();
 
       return Promise.each(req.collectives, (collective) => {
-        return knex.table('UsersCollectives')
+        return CollectiveBans.query()
           .where({
-            user_id: req.user.id,
             collective_id: collective.id,
-          })
-        .then((results) => {
-          collective.userBelongsToCollective = false;
+            user_id: req.user.id,
+          }).then((results) => {
+            collective.userBelongsToCollective = false;
+            collective.userIsBannedFromCollective = results.length > 0;
 
-          if (results.length > 0) {
-            collective.userBelongsToCollective = true;
-          }
+            return collective.userIsBannedFromCollective || knex.table('UsersCollectives')
+              .where({
+                user_id: req.user.id,
+                collective_id: collective.id,
+              })
+            .then((_results) => {
+              collective.userBelongsToCollective = false;
 
-          return Promise.resolve();
-        });
+              if (_results.length > 0) {
+                collective.userBelongsToCollective = true;
+              }
+            });
+          });
       })
       .then(() => {
         return next();
