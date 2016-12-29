@@ -30,7 +30,7 @@ Collective.relations = {
 
   bans: {
     type: 'HasManyThrough',
-    relateModel: User,
+    relatedModel: User,
     ownerCol: 'id',
     relatedCol: 'id',
     trough: {

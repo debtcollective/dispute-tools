@@ -1,7 +1,7 @@
 /* globals Class, Krypton */
 
 const CollectiveBans = Class('CollectiveBans').inherits(Krypton.Model)({
-  tableName: 'CollectiveBanss',
+  tableName: 'CollectiveBans',
   attributes: ['collectiveId', 'userId'],
 });
 

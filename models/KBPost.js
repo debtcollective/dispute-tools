@@ -1,6 +1,6 @@
 /* globals CONFIG, Class, Krypton, Post */
 
-Class('KBPost').inherits(Krypton.Model)({
+const KBPost = Class('KBPost').inherits(Krypton.Model)({
   tableName: 'KBPosts',
   validations: {
     collectiveId: ['required'],
