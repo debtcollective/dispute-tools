@@ -1,4 +1,4 @@
-/* globals Collective, DisputeTool, User, Campaign */
+/* globals Collective, DisputeTool, User, Campaign, KBPost */
 
 Collective.relations = {
   tools: {
@@ -36,8 +36,8 @@ Collective.relations = {
     trough: {
       tableName: 'CollectiveBans',
       ownerCol: 'collective_id',
-      relatedCol: 'user_id'
-    }
+      relatedCol: 'user_id',
+    },
   },
 
   campaigns: {

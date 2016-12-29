@@ -67,12 +67,12 @@ const routeMappings = RouteMappings()
     return mappings()
       .resources('/Disputes')
       .resources('/Collectives', (map) => {
-        map()
-        .resources('/KBPost')
-        .post('/:id/ban', {
+        return map()
+          .resources('/KBPosts')
+          .post('/:id/ban', {
             to: 'Collectives#ban',
-            as: 'ban'
-        })
+            as: 'ban',
+          });
       })
       .resources('/Users')
       .resources('/Campaigns', (map) => {
@@ -129,32 +129,10 @@ const routeMappings = RouteMappings()
 
   .resources('/Collectives', (map) => {
     return map()
-      .resources('/KBPosts')
       .post('/:id/join', {
         to: 'Collectives#join',
         as: 'join',
       });
-  })
-
-  .get('/collectivess/:id/kbposts', {
-      to: 'KBPosts#index',
-      as: 'IndexKBPost',
-  })
-  .post('/collectives/:id/kbposts', {
-      to: 'KBPosts#create',
-      as: 'CreateKBPost',
-  })
-  .get('/collectives/:collective_id/kbposts/:id', {
-      to: 'KBPosts#show',
-      as: 'ShowKBPost',
-  })
-  .put('/collectives/:collective_id/kbposts/:id', {
-      to: 'KBPosts#update',
-      as: 'UpdateKBPost',
-  })
-  .delete('/collectives/:collective_id/kbposts/:id', {
-      to: 'KBPosts#delete',
-      as: 'DeleteKBPost',
   })
 
   .resources('/Campaigns', (map) => {
@@ -190,14 +168,7 @@ const routeMappings = RouteMappings()
     as: 'DeletePost',
   })
 
-  .get('/campaigns/:campaign_id/events', {
-      to: 'Events#index',
-      as: 'EventsIndex',
-  })
-  .post('campaigns/:campaign_id/events/:event_id', {
-      to: 'Events#assist',
-      as: 'EventAssist'
-  })
+  .resources('/Events')
 
   ;
 

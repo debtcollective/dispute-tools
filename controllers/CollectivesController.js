@@ -3,6 +3,8 @@
 const marked = require('marked');
 const Promise = require('bluebird');
 
+// TODO: attach kbposts to any collective listed
+
 const CollectivesController = Class('CollectivesController').inherits(RestfulController)({
   beforeActions: [
     // Load Collectives
@@ -99,7 +101,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       });
     },
     actions: ['show']
-  }
+  },
   // Attach accounts to users
   {
     before(req, res, next) {

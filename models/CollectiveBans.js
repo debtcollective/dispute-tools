@@ -5,4 +5,4 @@ const CollectiveBans = Class('CollectiveBans').inherits(Krypton.Model)({
   attributes: ['collectiveId', 'userId'],
 });
 
-module.exports = ColectiveBans;
+module.exports = CollectiveBans;
