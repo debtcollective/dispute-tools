@@ -65,6 +65,9 @@ const routeMappings = RouteMappings()
 
   .namespace('/Admin', (mappings) => {
     return mappings()
+      .namespace('/Test', (map) =>
+        map()
+          .get('/', { as: 'testIndex', to: 'Test#index' }))
       .resources('/Disputes')
       .resources('/Collectives', (map) => {
         return map()
