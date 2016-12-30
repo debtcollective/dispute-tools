@@ -1,0 +1,109 @@
+script(type="text/javascript")
+  window.STRIPE_PUBLISHABLE_KEY = "#{STRIPE_PUBLISHABLE_KEY}";
+
+script(type="text/javascript" src="https://js.stripe.com/v2/")
+
+.DonationFlow(data-component-modal="donation").Modal
+  div.btn-close.-k-btn.-fw-700.Modal__close
+    svg(width=18 height=18)
+      use(xlink:href="#svg-close")
+  .DonationForm(data-component-donationform)
+    section.Donate
+      h3 Donate
+      .DonateOptions
+        .DonateOption(data-fund-option-general)
+          h4 Donate to the Debt Collective General Fund
+          small Your donation will help us grow our organization, provide services to people in debt, and support the ongoing efforts of our organizing team.
+        .DonateOption(data-fund-option-strike)
+          h4 Donate to the Strike Fund
+          small Your donation will be used to support debt strikers as they fight back against lenders and help build a national debtors movement.
+      .AmountPicker
+        .clearfix
+          .col.col-4.pb1.pr1
+            .AmountOption(data-donation-amount="1000") $10
+          .col.col-4.pb1.pl1.pr1
+            .AmountOption(data-donation-amount="2000") $20
+          .col.col-4.pb1.pl1
+            .AmountOption(data-donation-amount="3000") $30
+          .col.col-4.pt1.pr1
+            .AmountOption(data-donation-amount="5000") $50
+          .col.col-4.pt1.pl1.pr1
+            .AmountOption(data-donation-amount="10000") $100
+          .col.col-4.pt1.pl1
+            .AmountOption(data-donation-amount="25000") $250
+        .clearfix.my3
+          .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500 Amount
+          .col.sm-col-9.col-12.px1
+            input.-k-input.-fw(type="text" name="number" data-donation-custom-input)
+            p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Amount
+        .clearfix
+          .col-12
+            button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Donate
+    section.Payment
+      h3 Donate
+      p Please select a donation method.
+      .PaymentMethods
+        div.flex
+          div
+            .PaymentMethod(data-payment-method="credit-card")
+              svg(width=48 height=48)
+                use(xlink:href="#svg-credit-card")
+              strong Credit Card
+              small (Powered by Stripe)
+          div
+            .PaymentMethod(data-payment-method="paypal")
+              svg(width=48 height=48)
+                use(xlink:href="#svg-paypal")
+              strong PayPal
+              small (Opens a new window)
+              form(action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top")
+                input(type="hidden" name="cmd" value="_donations")
+                input(type="hidden" name="business" value="#{PAYPAL_ACCOUNT}")
+                input(type="hidden" name="lc" value="US")
+                input(type="hidden" name="item_name" value="Debt Collective")
+                input(type="hidden" name="amount" value="0.00")
+                input(type="hidden" name="currency_code" value="USD")
+                input(type="hidden" name="no_note" value="1")
+                input(type="hidden" name="no_shipping" value="1")
+                input(type="hidden" name="rm" value="1")
+                input(type="hidden" name="return" value="")
+                input(type="hidden" name="cancel_return" value="")
+                input(type="hidden" name="bn" value="PP-DonationsBF:btn_donate_LG.gif:NonHosted")
+                img(alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" heigth="1")
+      .clearfix.mb2
+        .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500 Email
+        .col.sm-col-9.col-12.px1
+          input.-k-input.-fw(type="email" name="email")
+          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid email
+      .clearfix.mb2
+        .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500 Card #
+        .col.sm-col-9.col-12.px1
+          input.-k-input.-fw(type="text" name="number")
+          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Card Number
+      .clearfix.mb4
+        .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500 Card info
+        .col.sm-col-9.col-12.px1
+          .col.col-7
+            input.-k-input.-fw(type="text" name="exp" placeholder="MM/YY")
+            p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Expiration
+          .col.col-5.pl1
+            input.-k-input.-fw(type="text" name="cvc" placeholder="CVC")
+            p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid CVC
+      .clearfix
+        .col.sm-col-3.col-12.right-align.xs-left-align.-fw-500
+           div.btn-back.-k-btn.-fw-700
+            svg(width=14 height=14)
+              use(xlink:href="#svg-arrow-backward")
+        .col.sm-col-9.col-12.px1
+          button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Donate $10
+    section.Success
+      .DonationResponse
+        img(src="/svg/heart.svg")
+        h2 Thank you!
+        p This means a lot to us. Our campaigns and vision would not be possible without your support!
+    section.Error
+      .DonationResponse
+        img(src="/svg/credit-card-cut.svg")
+        h3 Got some bad news
+        p Your card has been declined. Get in touch with your bank or card issuer to solve the problem.
+        p.mt3 Meanwhile, you can try <a href=''>PayPal</a> or a different card.

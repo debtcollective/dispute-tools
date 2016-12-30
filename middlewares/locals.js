@@ -20,6 +20,12 @@ module.exports = function locals(req, res, next) {
   req.role = (req.user && req.user.role) || 'Visitor';
   res.locals.US_STATES = US_STATES;
 
+  // DonationFlow
+  res.locals.STRIPE_PUBLISHABLE_KEY = CONFIG.stripe.publishable;
+  res.locals.PAYPAL_ACCOUNT = CONFIG.paypal.account;
+
+
+
   if (!req.user) {
     return Collective.query().then((collectives) => {
       res.locals.COLLECTIVES = collectives;

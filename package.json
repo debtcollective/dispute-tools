@@ -16,6 +16,8 @@
     "test:integration": "scripty",
     "utils:resetdb": "scripty",
     "utils:knexreset": "scripty",
+    "migrate:dev": "knex migrate:latest --env development",
+    "migrate:seed:dev": "knex seed:run --env development",
     "report": "scripty",
     "start": "scripty",
     "iron-node": "scripty",
@@ -26,6 +28,7 @@
   "tarima": {
     "bundle": true,
     "src": "src/**/*",
+    "watch": "views/**/*",
     "dest": "./public/build",
     "ignoreFiles": [
       ".gitignore"
@@ -34,6 +37,9 @@
       "**/_entries/**"
     ],
     "rename": "**:{filepath/1/_entries}/{filename}.{extname}",
+    "devPlugins": [
+      "tarima-browser-sync"
+    ],
     "bundleOptions": {
       "extensions": {
         "js": "es6",
@@ -114,6 +120,7 @@
     "scroll-into-view-if-needed": "^1.0.2",
     "share-url": "^1.0.0",
     "superagent": "^1.7.2",
+    "tarima-cli": "^0.3.2",
     "uuid": "^2.0.2",
     "webfontloader": "^1.6.26",
     "winston": "^2.2.0"
@@ -128,6 +135,7 @@
     "istanbul": "^0.4.4",
     "istanbul-combine": "^0.3.0",
     "mocha": "^3.0.2",
+    "node-notifier": "^4.6.1",
     "nodemailer-stub-transport": "^1.0.0",
     "postcss": "^5.1.1",
     "postcss-cssnext": "^2.7.0",

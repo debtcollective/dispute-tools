@@ -1,6 +1,8 @@
 import Widget from '../lib/widget';
 import Header from '../components/Header';
 import Alert from '../components/Alert';
+import Modal from '../components/Modal';
+import DonationFlow from '../components/DonationFlow'; // rename: DonationFlowForm
 import currentUser from '../lib/currentUser';
 
 export default class Common extends Widget {
@@ -27,5 +29,24 @@ export default class Common extends Widget {
         }));
       });
     }
+
+    // DonationFlow modal
+    const donationFlowModal = document.querySelector('.DonationFlow');
+
+    this.appendChild(new Modal({
+     name: 'donationFlowModal',
+     element: donationFlowModal,
+    })).appendChild(new DonationFlow({
+     name: 'donationFlow', element: donationFlowModal.querySelector('[data-component-donationform]'),
+    }));
+
+    // Activate DonationFlow triggers
+    Array.prototype.slice.call(document.querySelectorAll('[data-component-modal="donation"]'))
+    .forEach(trigger => trigger.addEventListener('click', () => this.donationFlowModal.activate()));
+    // Close button, BUG: does not close
+    donationFlowModal.querySelector('.btn-close').addEventListener('click', () => {
+      console.log('((CLOSE))');
+      this.donationFlowModal.deactivate();
+    });
   }
 }
