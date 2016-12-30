@@ -20,6 +20,9 @@ module.exports = multer({ storage }).fields([
     maxCount: 1,
   },
   {
+    name: 'resource',
+  },
+  {
     name: 'attachment',
   },
 ]);

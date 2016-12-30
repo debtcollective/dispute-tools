@@ -85,6 +85,10 @@ const routeMappings = RouteMappings()
           .post('/:id/deactivate', {
             to: 'Campaigns#deactivate',
             as: 'deactivate',
+          })
+          .post('/files', {
+            to: 'Campaigns#uploadFiles',
+            as: 'uploadFiles',
           });
       });
   })
