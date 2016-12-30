@@ -1,5 +1,5 @@
 /* global Class, CONFIG, RestfulController, Campaign, NotFoundError, Account, Topic,
-User, Event, EventAssistant */
+User, Event, EventIgnore, EventAssistant */
 const marked = require('marked');
 const Promise = require('bluebird');
 
@@ -88,9 +88,8 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
           res.locals.campaign = campaign[0];
 
           // load ignored events first
-          const getIgnoredEvents = () => EventAssistant.query()
+          const getIgnoredEvents = () => EventIgnore.query()
             .where('user_id', req.user.id)
-            .where('ignore', true)
             .then(results => results.map(r => r.eventId));
 
           // load related events
@@ -106,7 +105,6 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
                 .map(e => EventAssistant.query()
                   .include('[user.account]')
                   .where('event_id', e.id)
-                  .where('ignore', false)
                 ))
                 .then((attendees) => {
                   attendees.forEach((users, i) => {
