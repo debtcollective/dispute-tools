@@ -5,33 +5,16 @@ module.exports = {
     ['index', 'show', true],
   ],
   User: [
-    ['index', (req) =>
-        User.knex().table('CollectiveBans')
-            .where({
-                collective_id: req.params.collectiveId,
-                user_id: req.user.id
-            })
-            .then((results) => {
-                if (results.length === 0) {
-                    return true;
-                }
-
-                return false;
-            })
-    ],
-    ['join', (req) =>
-        User.knex().table('CollectiveBans')
-            .where({
-                collective_id: req.post.collectiveId,
-                user_id: req.user.id
-            })
-            .then((results) => {
-                if (results.length === 0) {
-                    return true;
-                }
-
-                return false;
-            })
+    ['index', true],
+    // Users shouldn't be blocked from listing collectives,
+    // once the user decides join the ban-check will run
+    // also, in the index there is not collectiveId
+    ['join', (req) => CollectiveBans.query()
+      .where({
+        collective_id: req.params.id,
+        user_id: req.user.id,
+      })
+      .then((results) => results.length === 0),
     ],
   ],
 };

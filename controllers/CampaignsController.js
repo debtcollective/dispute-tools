@@ -1,5 +1,5 @@
 /* global Class, CONFIG, RestfulController, Campaign, NotFoundError, Account, Topic,
-User, Event, EventAssistant */
+User, Event, EventIgnore, EventAssistant */
 const marked = require('marked');
 const Promise = require('bluebird');
 
@@ -87,9 +87,15 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
           req.campaign = campaign[0];
           res.locals.campaign = campaign[0];
 
+          // load ignored events first
+          const getIgnoredEvents = () => EventIgnore.query()
+            .where('user_id', req.user.id)
+            .then(results => results.map(r => r.eventId));
+
           // load related events
-          return Event.query()
+          const getRemainingEvents = (ignoredIds) => Event.query()
             .include('[user.account]')
+            .whereNotIn('id', ignoredIds)
             .where('campaign_id', req.params.id)
             .where('date', '>=', new Date().toISOString().slice(0, 10))
             // mark events according
@@ -103,6 +109,10 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
                 .then((attendees) => {
                   attendees.forEach((users, i) => {
                     events[i].attendees = users;
+
+                    // mark events if I am attendee
+                    events[i].imAttendee = req.user && users
+                      .filter(a => a.userId === req.user.id).length > 0;
                   });
 
                   res.locals.event = events.shift();
@@ -110,6 +120,12 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
 
                   next();
                 }));
+
+          if (!req.user) {
+            return getRemainingEvents([]);
+          }
+
+          return getIgnoredEvents().then(getRemainingEvents);
         })
         .catch(next);
     },

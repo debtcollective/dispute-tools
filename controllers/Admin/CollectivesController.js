@@ -1,4 +1,4 @@
-/* globals neonode, CONFIG, Class, Admin, RestfulController, Collective, DisputeTool, */
+/* globals neonode, CONFIG, Class, Admin, RestfulController, Collective, DisputeTool, CollectiveBans, User */
 
 global.Admin = global.Admin || {};
 
@@ -147,35 +147,32 @@ Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(Res
       .catch(next);
     },
     ban(req, res, next) {
-        const knex = User.knex();
-
-        Collective.transaction((trx) => {
-            return knex
-                .table('CollectiveBans')
-                .transacting(trx)
-                .insert({
-                    user_id: req.post.user_id,
-                    collective_id: req.collective.id,
-                })
-            .then(() => {
-                req.collective
-                    .transacting(trx)
-                    .save();
-            })
-            .then(trx.commit)
-            .catch(trx.rollback);
-        })
+      Collective.transaction((trx) => {
+        return CollectiveBans.query()
+          .transacting(trx)
+          .insert({
+            user_id: req.body.user_id,
+            collective_id: req.collective.id,
+          })
         .then(() => {
-            User.query().where({id: req.post.user_id})
-                .then((result) => {
-                    req.bannedUser = result;
-                });
+          return req.collective
+            .transacting(trx)
+            .save();
         })
-        .then(() => {
-            req.flash('success', `You have successfully added a ban on ${req.bannedUser.name}`);
-            res.redirect(CONFIG.router.helpers.Collectives.show.url(req.params.id));
-        })
-        .catch(next);
+        .then(trx.commit)
+        .catch(trx.rollback);
+      })
+      .then(() => {
+        return User.query().where({ id: req.body.user_id })
+          .then((result) => {
+            req.bannedUser = result;
+          });
+      })
+      .then(() => {
+        req.flash('success', `You have successfully added a ban on ${req.bannedUser.name}`);
+        res.redirect(CONFIG.router.helpers.Collectives.show.url(req.params.id));
+      })
+      .catch(next);
     },
   },
 });

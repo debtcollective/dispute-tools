@@ -1,4 +1,4 @@
-/* globals CONFIG, Class, RestfulController, Collective, DisputeTool, User, Campaign, Account */
+/* globals CONFIG, Class, RestfulController, Collective, DisputeTool, User, Campaign, Account, CollectiveBans */
 
 const marked = require('marked');
 const Promise = require('bluebird');
@@ -88,16 +88,18 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
         return next();
       }
 
-      return User.knex().table('CollectiveBans')
+      return CollectiveBans.query()
         .where({
           user_id: req.user.id,
           collective_id: req.params.id,
         })
       .then((result) => {
         if (result.length > 0) {
-          res.redirect(CONFIG.router.helpers.Collectives.index);
+          req.flash('warning', 'You are banned from this collective.');
+          res.redirect(CONFIG.router.helpers.Collectives.url());
+        } else {
+          next();
         }
-        next();
       });
     },
     actions: ['show']
@@ -161,20 +163,27 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       const knex = Collective.knex();
 
       return Promise.each(req.collectives, (collective) => {
-        return knex.table('UsersCollectives')
+        return CollectiveBans.query()
           .where({
-            user_id: req.user.id,
             collective_id: collective.id,
-          })
-        .then((results) => {
-          collective.userBelongsToCollective = false;
+            user_id: req.user.id,
+          }).then((results) => {
+            collective.userBelongsToCollective = false;
+            collective.userIsBannedFromCollective = results.length > 0;
 
-          if (results.length > 0) {
-            collective.userBelongsToCollective = true;
-          }
+            return collective.userIsBannedFromCollective || knex.table('UsersCollectives')
+              .where({
+                user_id: req.user.id,
+                collective_id: collective.id,
+              })
+            .then((_results) => {
+              collective.userBelongsToCollective = false;
 
-          return Promise.resolve();
-        });
+              if (_results.length > 0) {
+                collective.userBelongsToCollective = true;
+              }
+            });
+          });
       })
       .then(() => {
         return next();

@@ -65,6 +65,9 @@ const routeMappings = RouteMappings()
 
   .namespace('/Admin', (mappings) => {
     return mappings()
+      // .namespace('/Test', (map) =>
+      //   map()
+      //     .get('/', { as: 'testIndex', to: 'Test#index' }))
       .resources('/Disputes')
       .resources('/Collectives', (map) => {
         return map()
@@ -141,6 +144,12 @@ const routeMappings = RouteMappings()
 
   .resources('/Campaigns', (map) => {
     return map()
+      .namespace('/Events', (map) =>
+        map()
+          .post('/:id/ignore', { as: 'ignore' })
+          .post('/:id/rsvp', { as: 'doRSVP' })
+          .delete('/:id/rsvp', { as: 'undoRSVP' })
+      )
       .post('/:id/join', {
         to: 'Campaigns#join',
         as: 'join',
@@ -171,8 +180,6 @@ const routeMappings = RouteMappings()
     to: 'Posts#delete',
     as: 'DeletePost',
   })
-
-  .resources('/Events')
 
   ;
 

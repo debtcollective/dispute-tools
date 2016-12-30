@@ -11,11 +11,44 @@
         div.pr2
           svg.inline-block.align-top(width='60' height='72')
             use(xlink:href='#svg-no-date')
-        p.-neutral-mid.-fw-500 Currently there are no scheduled events
 
-      p Current:
-      pre= JSON.stringify(event, null, 2)
-      pre= JSON.stringify(attendees, null, 2)
+      if event
+        h3= event.name
+        p= event.url
+        p= event.description
+        p= event.locationName
+
+
+        if currentUser
+          if event.imAttendee
+            form.inline-block(action=routeMappings.Campaigns.Events.undoRSVP.url(event.id) method='post')
+              input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.undoRSVP.verb)
+              input(type='hidden' name='_destroy' value=1)
+              input(type='hidden' name='_csrf' value=csrfToken)
+              button.-k-btn(type='submit') Cancel RSVP
+          else
+            form.inline-block(action=routeMappings.Campaigns.Events.doRSVP.url(event.id) method='post')
+              input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.doRSVP.verb)
+              input(type='hidden' name='_csrf' value=csrfToken)
+              button.-k-btn.btn-primary(type='submit') RSVP
+
+            span.inline-block.px1 or
+
+            form.inline-block(action=routeMappings.Campaigns.Events.ignore.url(event.id) method='post')
+              input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.ignore.verb)
+              input(type='hidden' name='_csrf' value=csrfToken)
+              button.-k-btn(type='submit') Ignore
+
+        h5 Attendees:
+
+        if event.attendees.length
+          each attendee in event.attendees
+            p= attendee.user.account.fullname
+        else
+          p Currently there are no attendees for this event
+
+      else
+        p.-neutral-mid.-fw-500 Currently there are no scheduled events
 
       p Next events:
       ul
@@ -23,4 +56,3 @@
           li
             p: a(href='#')= event.name
             small by: #{event.user.account.fullname}
-            p &mdash; #[a(href='#') RSVP] or #[a(href='#') ignore]
