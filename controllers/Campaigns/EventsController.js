@@ -1,6 +1,7 @@
 /* global Class, CONFIG, RestfulController, EventAssistant */
 
-const EventsController = Class('EventsController').inherits(RestfulController)({
+const Campaigns = global.Campaigns = global.Campaigns || {};
+const EventsController = Class(Campaigns, 'EventsController').inherits(RestfulController)({
   beforeActions: [
     {
       before: '_loadEvent',
@@ -18,10 +19,7 @@ const EventsController = Class('EventsController').inherits(RestfulController)({
         .where({ user_id: userId, event_id: eventId })
         .then((results) => {
           if (results.length === 0) {
-            const a = new EventAssistant({
-              user_id: userId,
-              event_id: eventId,
-            });
+            const a = new EventAssistant({ userId, eventId });
 
             a.save()
               .then(([id]) => {
@@ -38,12 +36,26 @@ const EventsController = Class('EventsController').inherits(RestfulController)({
 
     update(req, res) {
       req.event.ignore = false;
-      req.event.save().then(() => res.end('+RSVP'));
+      req.event.save().then(() => {
+        res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id));
+      });
     },
 
-    destroy(req, res) {
+    destroy(req, res, next) {
+      if (req.body._destroy) {
+        req.event.destroy()
+          .then(() => {
+            res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id));
+            next();
+          })
+          .catch(next);
+        return;
+      }
+
       req.event.ignore = true;
-      req.event.save().then(() => res.end('+RSVP'));
+      req.event.save().then(() => {
+        res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id));
+      });
     },
   },
 });
