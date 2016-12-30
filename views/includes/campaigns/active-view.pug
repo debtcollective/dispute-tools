@@ -18,24 +18,26 @@
         p= event.description
         p= event.locationName
 
-        if event.imAttendee
-          form.inline-block(action=routeMappings.Campaigns.Events.undoRSVP.url(event.id) method='post')
-            input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.undoRSVP.verb)
-            input(type='hidden' name='_destroy' value=1)
-            input(type='hidden' name='_csrf' value=csrfToken)
-            button.-k-btn(type='submit') Cancel RSVP
-        else
-          form.inline-block(action=routeMappings.Campaigns.Events.doRSVP.url(event.id) method='post')
-            input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.doRSVP.verb)
-            input(type='hidden' name='_csrf' value=csrfToken)
-            button.-k-btn.btn-primary(type='submit') RSVP
 
-          span.inline-block.px1 or
+        if currentUser
+          if event.imAttendee
+            form.inline-block(action=routeMappings.Campaigns.Events.undoRSVP.url(event.id) method='post')
+              input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.undoRSVP.verb)
+              input(type='hidden' name='_destroy' value=1)
+              input(type='hidden' name='_csrf' value=csrfToken)
+              button.-k-btn(type='submit') Cancel RSVP
+          else
+            form.inline-block(action=routeMappings.Campaigns.Events.doRSVP.url(event.id) method='post')
+              input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.doRSVP.verb)
+              input(type='hidden' name='_csrf' value=csrfToken)
+              button.-k-btn.btn-primary(type='submit') RSVP
 
-          form.inline-block(action=routeMappings.Campaigns.Events.ignore.url(event.id) method='post')
-            input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.ignore.verb)
-            input(type='hidden' name='_csrf' value=csrfToken)
-            button.-k-btn(type='submit') Ignore
+            span.inline-block.px1 or
+
+            form.inline-block(action=routeMappings.Campaigns.Events.ignore.url(event.id) method='post')
+              input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.ignore.verb)
+              input(type='hidden' name='_csrf' value=csrfToken)
+              button.-k-btn(type='submit') Ignore
 
         h5 Attendees:
 
