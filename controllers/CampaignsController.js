@@ -111,7 +111,7 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
                     events[i].attendees = users;
 
                     // mark events if I am attendee
-                    events[i].imAttendee = users
+                    events[i].imAttendee = req.user && users
                       .filter(a => a.userId === req.user.id).length > 0;
                   });
 
@@ -120,6 +120,10 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
 
                   next();
                 }));
+
+          if (!req.user) {
+            return getRemainingEvents([]);
+          }
 
           return getIgnoredEvents().then(getRemainingEvents);
         })
