@@ -1,3 +1,4 @@
+import WebFont from 'webfontloader';
 import shareUrl from 'share-url';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
@@ -16,6 +17,12 @@ class ViewCampaignsShow extends NodeSupport {
       currentUser: config.currentUser,
       currentURL: config.currentURL,
     }));
+
+    WebFont.load({
+      google: {
+        families: ['Space Mono'],
+      },
+    });
 
     this.appendChild(new Tabs({
       name: 'Tabs',
