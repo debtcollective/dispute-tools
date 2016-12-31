@@ -7,50 +7,85 @@
 
   .col.md-col-5.col-12.px2
     .-bg-white.p3
-      .flex.items-center
-        div.pr2
-          svg.inline-block.align-top(width='60' height='72')
-            use(xlink:href='#svg-no-date')
+      if event || nextEvents.length
+        .clearfix.pb1
+          .left
+            if event
+              p.py1.-fw-700.-ttu.-caption Next Move
+          .right
+            if nextEvents.length
+              button.-k-btn.-xs.-primary.-ttu.btn-clear
+                span.pr1 Event List
+                svg(width='12' height='12'): use(xlink:href='#svg-arrow-forward')
 
-      if event
-        h3= event.name
-        p= event.url
-        p= event.description
-        p= event.locationName
+        .clearfix
+          .CampaignEvent
+            div
+              .CampaignEvent_date
+                - var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                - var date = new Date(event.date)
+                h4.-ff-sec= date.getDate()
+                p.-fw-700.-ff-sec.-ttu= months[date.getMonth()]
+            .CampaignEvent_content
+              h4= event.name
 
-        if event.imAttendee
-          form.inline-block(action=routeMappings.Campaigns.Events.undoRSVP.url(event.id) method='post')
-            input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.undoRSVP.verb)
-            input(type='hidden' name='_destroy' value=1)
-            input(type='hidden' name='_csrf' value=csrfToken)
-            button.-k-btn(type='submit') Cancel RSVP
-        else
-          form.inline-block(action=routeMappings.Campaigns.Events.doRSVP.url(event.id) method='post')
-            input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.doRSVP.verb)
-            input(type='hidden' name='_csrf' value=csrfToken)
-            button.-k-btn.btn-primary(type='submit') RSVP
+        .pt2
+          p.-caption.-fw-500= event.description
+          .CampaignEventMapWrapper.mt2.mxn3
+            iframe(width='100%' height='100%' frameborder='0' allowfullscreen
+              src=`https://www.google.com/maps/embed/v1/place?key=${CONFIG.env().GoogleMaps.key}&q=${event.locationName}`)
+          .pt3.-caption.-fw-500.mr1
+            .flex.pb2
+              div: svg.mr1.-neutral-mid(width='12' height='12'): use(xlink:href='#svg-clock-filled')
+              p 6:30 pm - 8:30 pm PST
+            .flex.pb2
+              div: svg.mr1.-neutral-mid(width='10' height='14'): use(xlink:href='#svg-pin')
+              p= event.locationName
 
-          span.inline-block.px1 or
+        .pt2
+          if event.imAttendee
+            form.inline-block(action=routeMappings.Campaigns.Events.undoRSVP.url(event.id) method='post')
+              input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.undoRSVP.verb)
+              input(type='hidden' name='_destroy' value=1)
+              input(type='hidden' name='_csrf' value=csrfToken)
+              button.-k-btn.btn-dark.-sm.-fw-700(type='submit') Not going
+          else
+            form.inline-block(action=routeMappings.Campaigns.Events.doRSVP.url(event.id) method='post')
+              input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.doRSVP.verb)
+              input(type='hidden' name='_csrf' value=csrfToken)
+              button.-k-btn.btn-primary.-sm.-fw-700(type='submit') Attend
 
-          form.inline-block(action=routeMappings.Campaigns.Events.ignore.url(event.id) method='post')
+          form.inline-block.ml1(action=routeMappings.Campaigns.Events.ignore.url(event.id) method='post')
             input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.ignore.verb)
             input(type='hidden' name='_csrf' value=csrfToken)
-            button.-k-btn(type='submit') Ignore
+            button.-k-btn.-sm(type='submit') Ignore
 
-        h5 Attendees:
-
-        if event.attendees.length
-          each attendee in event.attendees
-            p= attendee.user.account.fullname
-        else
-          p Currently there are no attendees for this event
+          span.-ttu.-caption.-fw-500.pl2 #{event.attendees.length} attendees
 
       else
-        p.-neutral-mid.-fw-500 Currently there are no scheduled events
+        .flex.items-center
+          div.pr2
+            svg.inline-block.align-top(width='60' height='72')
+              use(xlink:href='#svg-no-date')
+          p.-neutral-mid.-fw-500 Currently there are no scheduled events
 
-      p Next events:
-      ul
-        each event in nextEvents
-          li
-            p: a(href='#')= event.name
-            small by: #{event.user.account.fullname}
+    if nextEvents.length
+      .mt2.-bg-white
+        .pt3.px3
+          p.-fw-700.-ttu.-caption Event List
+
+        .CampaignEventList
+          each event in nextEvents
+            .CampaignEvent
+              div
+                .CampaignEvent_date
+                  - var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                  - var date = new Date(event.date)
+                  h4.-ff-sec= date.getDate()
+                  p.-fw-700.-ff-sec.-ttu= months[date.getMonth()]
+              .CampaignEvent_content
+                p.-fw-700: a(href='#')= event.name
+                .flex.py1.-caption
+                  div: svg.mr1.-neutral-mid(width='12' height='12'): use(xlink:href='#svg-clock-filled')
+                  p 6:30 pm - 8:30 pm PST
+                p.-caption.-ttu.-fw-500 #{event.attendees.length} Attendees
