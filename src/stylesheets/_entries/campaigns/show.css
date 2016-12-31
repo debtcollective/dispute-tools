@@ -119,3 +119,45 @@
     padding-top: var(--space-2);
   }
 }
+
+/* active campaign styles */
+.CampaignEventMapWrapper {
+  position: relative;
+  padding-bottom: 47%;
+  border-width: 2px 0;
+  border-style: solid;
+  border-color: #ECECEB;
+
+  & > iframe {
+    position: absolute;
+    border: 0;
+  }
+}
+
+.CampaignEvent {
+  display: flex;
+
+  &_date {
+    width: 60px;
+    padding: var(--space-2) 0;
+    margin-right: var(--space-1);
+    line-height: 1;
+    background: black;
+    color: white;
+    text-align: center;
+    border-radius: 3px;
+  }
+
+  &_content {
+    line-height: 1.3333;
+  }
+
+  &List {
+    & > .CampaignEvent {
+      padding: var(--space-2) var(--space-3);
+      border-top: 1px solid var(--k-color-palette-neutral-light);
+
+      &:first-child {border-top: none}
+    }
+  }
+}
