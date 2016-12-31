@@ -42,6 +42,19 @@
               div: svg.mr1.-neutral-mid(width='10' height='14'): use(xlink:href='#svg-pin')
               p= event.locationName
 
+        if event.attendees.length
+          .pt2
+            ul.AvatarList
+              each attendee in event.attendees
+                - var _avatarUrl = '/images/profile/placeholder-small.png';
+                if (attendee.user.account.image.exists('smallRedSquare'))
+                  - _avatarUrl = attendee.user.account.image.url('smallRedSquare')
+                li.mb1
+                  a.block(
+                    href=routeMappings.Users.show.url(attendee.user.id)
+                    title=`${attendee.user.account.fullname}’s profile`
+                  ): img(src=_avatarUrl alt=attendee.user.account.fullname width='50' height='50')
+
         .pt2
           if currentUser
             if event.imAttendee
