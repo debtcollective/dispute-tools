@@ -44,9 +44,6 @@ export default class Common extends Widget {
     Array.prototype.slice.call(document.querySelectorAll('[data-component-modal="donation"]'))
     .forEach(trigger => trigger.addEventListener('click', () => this.donationFlowModal.activate()));
     // Close button, BUG: does not close
-    donationFlowModal.querySelector('.btn-close').addEventListener('click', () => {
-      console.log('((CLOSE))');
-      this.donationFlowModal.deactivate();
-    });
+    document.querySelector('.DonationFlow .btn-close').addEventListener('click', () => this.donationFlowModal.deactivate());
   }
 }

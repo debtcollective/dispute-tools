@@ -1,4 +1,4 @@
-script(type="text/javascript")
+script(type="text/javascript").
   window.STRIPE_PUBLISHABLE_KEY = "#{STRIPE_PUBLISHABLE_KEY}";
 
 script(type="text/javascript" src="https://js.stripe.com/v2/")
@@ -34,7 +34,7 @@ script(type="text/javascript" src="https://js.stripe.com/v2/")
         .clearfix.my3
           .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500 Amount
           .col.sm-col-9.col-12.px1
-            input.-k-input.-fw(type="text" name="number" data-donation-custom-input)
+            input.-k-input.-fw(type="text" name="custom-amount" data-donation-custom-input)
             p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Amount
         .clearfix
           .col-12
@@ -78,16 +78,16 @@ script(type="text/javascript" src="https://js.stripe.com/v2/")
       .clearfix.mb2
         .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500 Card #
         .col.sm-col-9.col-12.px1
-          input.-k-input.-fw(type="text" name="number")
+          input.-k-input.-fw(type="text" name="number" maxLength="16")
           p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Card Number
       .clearfix.mb4
         .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500 Card info
         .col.sm-col-9.col-12.px1
           .col.col-7
-            input.-k-input.-fw(type="text" name="exp" placeholder="MM/YY")
+            input.-k-input.-fw(type="text" name="exp" placeholder="MM/YY" maxLength="5")
             p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Expiration
           .col.col-5.pl1
-            input.-k-input.-fw(type="text" name="cvc" placeholder="CVC")
+            input.-k-input.-fw(type="text" name="cvc" placeholder="CVC" maxLength="5")
             p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid CVC
       .clearfix
         .col.sm-col-3.col-12.right-align.xs-left-align.-fw-500
@@ -107,3 +107,6 @@ script(type="text/javascript" src="https://js.stripe.com/v2/")
         h3 Got some bad news
         p Your card has been declined. Get in touch with your bank or card issuer to solve the problem.
         p.mt3 Meanwhile, you can try <a href=''>PayPal</a> or a different card.
+
+
+
