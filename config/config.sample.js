@@ -29,6 +29,10 @@ const config = {
       accessKeyId: '',
       secretAccessKey: '',
     },
+
+    GoogleMaps: {
+      key: '',
+    },
   },
 
   production: {},
@@ -51,6 +55,10 @@ const config = {
     AWS: {
       accessKeyId: '',
       secretAccessKey: '',
+    },
+
+    GoogleMaps: {
+      key: '',
     },
   },
 };
