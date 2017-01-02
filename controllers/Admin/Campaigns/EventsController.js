@@ -31,7 +31,7 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
           })
           .catch(next);
       },
-      actions: ['index', 'new'],
+      actions: ['index', 'new', 'edit'],
     },
     {
       before(req, res, next) {
@@ -92,7 +92,7 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
           })
           .catch(next);
       },
-      actions: ['update', 'delete'],
+      actions: ['edit', 'update', 'delete'],
     },
     {
       before(req, res, next) {
@@ -120,7 +120,11 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
     },
 
     show(req, res) {
-      res.render('admin/campaign/events/show');
+      res.render('admin/campaigns/events/show');
+    },
+
+    edit(req, res) {
+      res.render('admin/campaigns/events/edit');
     },
 
     create(req, res) {
@@ -151,15 +155,18 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
         .updateAttributes({
           date: req.body.date,
           name: req.body.name,
-          title: req.body.title,
           map: req.body.map_url,
           description: req.body.description,
           locationName: req.body.location_name,
         }).save()
-        .then(() => res.json(req.event))
+        .then(() => {
+          req.flash('success', 'The event has been updated.');
+          res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id));
+        })
         .catch((err) => {
           res.status = 400;
-          res.json(err.errors || { error: err });
+          res.locals.errors = err.errors || err;
+          res.render('admin/campaigns/events/edit');
         });
     },
 

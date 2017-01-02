@@ -1,49 +1,53 @@
 extends ../../../layouts/admin.pug
 
 block title
-  | Admin/Campaigns/Events/new — The Debt Collective
+  | Admin/Campaigns/Event/edit — The Debt Collective
 
 block styles
-  link(href="/build/stylesheets/admin/campaigns/new.css" rel="stylesheet")
+  link(href='/build/stylesheets/admin/campaigns/new.css' rel='stylesheet')
 
 block content
   .px2.pb4
     .max-width-1.mx-auto
 
-      h2.pt4.pb3 New Event
+      h2.pt4.pb3 Edit Event
       h4= campaign.collective.name
       h4.pb3 Campaign: #{campaign.title}
 
       form(
         method='post'
-        action=routeMappings.Admin.Campaigns.Events.create.url(campaign.id)
+        action=routeMappings.Admin.Campaigns.Events.update.url(campaign.id, event.id)
         data-component-form
       )
         input(type='hidden' name='_csrf' value=csrfToken)
+        input(name='_method' type='hidden' value='PUT')
 
         .py1
           label.block.pb1.-fw-500 Name
           input.-k-input.-fw.-border-neutral-mid(
             type='text'
             name='name'
+            value=event.name
           )
-          p(class="-on-error -danger -caption -fw-500 mt1")
+          p(class='-on-error -danger -caption -fw-500 mt1')
 
         .py1
           label.block.pb1.-fw-500 Date
           input.-k-input.-fw.-border-neutral-mid(
             type='date'
             name='date'
+            value=new Date(event.date).toISOString().substring(0, 10)
           )
-          p(class="-on-error -danger -caption -fw-500 mt1")
+          p(class='-on-error -danger -caption -fw-500 mt1')
 
         .py1
           label.block.pb1.-fw-500 Map URL
           input.-k-input.-fw.-border-neutral-mid(
             type='text'
             name='map_url'
+            value=event.map
           )
-          p(class="-on-error -danger -caption -fw-500 mt1")
+          p(class='-on-error -danger -caption -fw-500 mt1')
 
         .py1
           label.block.pb1.-fw-500 Description
@@ -51,26 +55,28 @@ block content
             name='description'
             rows='6'
           )
-          p(class="-on-error -danger -caption -fw-500 mt1")
+            | #{event.description}
+          p(class='-on-error -danger -caption -fw-500 mt1')
 
         .py1
           label.block.pb1.-fw-500 Location Name
           input.-k-input.-fw.-border-neutral-mid(
             type='text'
             name='location_name'
+            value=event.locationName
           )
-          p(class="-on-error -danger -caption -fw-500 mt1")
+          p(class='-on-error -danger -caption -fw-500 mt1')
 
         .pt3
-          button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Create
+          button.-k-btn.btn-primary.-fw.-fw-700(type='submit') Update
 
 block scripts
-  script(src='/build/javascripts/admin/campaigns/events/new.js' async)
+  script(src='/build/javascripts/admin/campaigns/events/edit.js' async)
   script.
     window.addEventListener('load', function() {
       var options = {
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
       };
-      new ViewAdminEventsNew(options);
+      new ViewAdminEventsEdit(options);
     }, true);
