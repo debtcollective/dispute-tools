@@ -9,6 +9,41 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
       before: '_loadCampaign',
       actions: ['show', 'join'],
     },
+    // check if user can create events
+    {
+      before(req, res, next) {
+        req.canCreateEvents = true;
+        res.locals.canCreateEvents = false;
+
+        if (!req.user) {
+          return next();
+        }
+
+        if (req.user.role === 'Admin') {
+          req.canCreateEvents = true;
+          res.locals.canCreateEvents = true;
+
+          return next();
+        }
+
+        return User.knex()
+          .table('CollectiveAdmins')
+          .where({
+            collective_id: req.campaign.collective.id,
+            user_id: req.user.id,
+          })
+          .then(results => {
+            if (results.length !== 0) {
+              req.canCreateEvents = true;
+              res.locals.canCreateEvents = true;
+            }
+
+            return next();
+          })
+          .catch(next);
+      },
+      actions: ['show'],
+    },
     {
       before(req, res, next) {
         const knex = Campaign.knex();

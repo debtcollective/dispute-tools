@@ -10,6 +10,8 @@
 /* page utils */
 .-neutral-dark {color: var(--k-color-palette-neutral-dark)}
 .-bg-neutral-light {background-color: var(--k-color-palette-neutral-light)}
+.-bw2 {border-width: 2px}
+.-border-neutral-mid-x {border-color: var(--k-color-palette-neutral-mid-x)}
 .-stroke-dark {stroke: #000}
 .-k-input.-no-border,
 .-k-textarea {border: 0}

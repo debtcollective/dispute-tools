@@ -83,6 +83,12 @@
               use(xlink:href='#svg-no-date')
           p.-neutral-mid.-fw-500 Currently there are no scheduled events
 
+      if canCreateEvents
+          .mt2.pt1.-bw2.-border-neutral-mid-x.border-top
+            a.-fw-700(href=routeMappings.Admin.Campaigns.Events.new.url(campaign.id))
+              svg(width='10' height='10'): use(xlink:href='#svg-plus')
+              span.pl1 Create new event
+
     if nextEvents.length
       .mt2.-bg-white
         .pt3.px3
