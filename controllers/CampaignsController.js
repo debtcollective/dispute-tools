@@ -12,7 +12,7 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
     // check if user can create events
     {
       before(req, res, next) {
-        req.canCreateEvents = true;
+        req.canCreateEvents = false;
         res.locals.canCreateEvents = false;
 
         if (!req.user) {
