@@ -1,4 +1,6 @@
 import Checkit from 'checkit';
+import qs from 'query-string';
+import debounce from 'lodash/debounce';
 import Widget from '../../../../lib/widget';
 import Button from '../../../../components/Button';
 
@@ -8,8 +10,7 @@ export default class AdminEventsForm extends Widget {
       name: ['required'],
       description: ['required'],
       date: ['required'],
-      map_url: ['required'],
-      location_name: ['required'],
+      locationName: ['required'],
     };
   }
 
@@ -23,6 +24,12 @@ export default class AdminEventsForm extends Widget {
     });
     this._checkit = new Checkit(this.constructor.constraints);
 
+    this.iframeMap = document.getElementById('iframeMap');
+    this.locationAnchor = document.createElement('a');
+    this.locationAnchor.href = this.iframeMap.src;
+    this.locationBaseURL = this.locationAnchor.origin + this.locationAnchor.pathname;
+    this.locationQuery = qs.parse(this.locationAnchor.search);
+
     this.appendChild(new Button({
       name: 'Button',
       element: this.element.querySelector('button[type="submit"]'),
@@ -32,8 +39,16 @@ export default class AdminEventsForm extends Widget {
   }
 
   _bindEvents() {
+    this._handleLocationNameInput = this._handleLocationNameInput.bind(this);
+    this.ui.locationName.addEventListener('input', debounce(this._handleLocationNameInput, 500));
+
     this._handleFormSubmitRef = this._handleFormSubmit.bind(this);
     this.element.addEventListener('submit', this._handleFormSubmitRef);
+  }
+
+  _handleLocationNameInput(ev) {
+    this.locationQuery.q = ev.target.value || 'new york';
+    this.iframeMap.src = `${this.locationBaseURL}?${qs.stringify(this.locationQuery)}`;
   }
 
   _handleFormSubmit(ev) {

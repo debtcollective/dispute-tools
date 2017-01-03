@@ -22,10 +22,11 @@ block content
         input(type='hidden' name='_csrf' value=csrfToken)
 
         .py1
-          label.block.pb1.-fw-500 Name
+          label.block.pb1.-fw-500 Event Name
           input.-k-input.-fw.-border-neutral-mid(
             type='text'
             name='name'
+            placeholder='A short, clear name'
           )
           p(class="-on-error -danger -caption -fw-500 mt1")
 
@@ -50,16 +51,21 @@ block content
           textarea.-k-textarea.-fw.-ff-sec.-border-neutral-mid(
             name='description'
             rows='6'
+            placeholder='Tell people more about the event'
           )
           p(class="-on-error -danger -caption -fw-500 mt1")
 
         .py1
-          label.block.pb1.-fw-500 Location Name
+          label.block.pb1.-fw-500 Location
           input.-k-input.-fw.-border-neutral-mid(
             type='text'
-            name='location_name'
+            name='locationName'
+            placeholder='Include a place or address'
           )
           p(class="-on-error -danger -caption -fw-500 mt1")
+
+        iframe(id='iframeMap' width='100%' height='100%' frameborder='0' allowfullscreen
+          src=`https://www.google.com/maps/embed/v1/place?key=${CONFIG.env().GoogleMaps.key}&q=new+york`)
 
         .pt3
           button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Create

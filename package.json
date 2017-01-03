@@ -105,6 +105,7 @@
     "pisces": "0.0.15",
     "pluralize": "^3.0.0",
     "pug": "^2.0.0-beta4",
+    "query-string": "^4.2.3",
     "redis": "^2.6.2",
     "req-flash": "0.0.3",
     "request": "^2.75.0",
