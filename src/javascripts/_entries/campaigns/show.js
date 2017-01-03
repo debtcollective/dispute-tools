@@ -31,7 +31,7 @@ class ViewCampaignsShow extends NodeSupport {
 
     this.appendChild(new FixedTabs({
       name: 'FixedTabs',
-      element: document.querySelector('[role="tablist"]'),
+      element: document.querySelector('[data-fixed-tabs-component]'),
     }));
 
     document.querySelector('[data-share-url-twitter]').href = shareUrl.twitter({
