@@ -3,14 +3,14 @@
 const KBPost = Class('KBPost').inherits(Krypton.Model)({
   tableName: 'KBPosts',
   validations: {
-    collectiveId: ['required'],
+    campaignId: ['required'],
     name: ['required'],
   },
 
   attributes: [
     'id',
     'name',
-    'collectiveId',
+    'campaignId',
     'data',
     'createdAt',
     'updatedAt',

@@ -1,0 +1,55 @@
+extends ../../../layouts/admin.pug
+
+block title
+  | Admin/Campaigns/Events/new — The Debt Collective
+
+block styles
+  link(href="/build/stylesheets/admin/campaigns/new.css" rel="stylesheet")
+
+block content
+  .px2.pb4
+    .max-width-1.mx-auto
+
+      h2.pt4.pb3 New Resource
+      h4= campaign.collective.name
+      h4.pb3 Campaign: #{campaign.title}
+
+      form(
+        method='post'
+        action=routeMappings.Admin.Campaigns.Events.create.url(campaign.id)
+        enctype='multipart/form-data'
+        data-component-form
+      )
+        input(type='hidden' name='_csrf' value=csrfToken)
+
+        .py1
+          label.block.pb1.-fw-500 File
+          input(name='resource' type='file')
+
+        .py1
+          label.block.pb1.-fw-500 URL
+          input.-k-input.-fw.-border-neutral-mid(
+            type='text'
+            name='url'
+          )
+          p(class="-on-error -danger -caption -fw-500 mt1")
+
+        .py1
+          label.block.pb1.-fw-500 Name
+          input.-k-input.-fw.-border-neutral-mid(
+            type='text'
+            name='name'
+          )
+          p(class="-on-error -danger -caption -fw-500 mt1")
+
+        .py1
+          label.block.pb1.-fw-500 Topic
+          .-k-select.-border-neutral-mid
+              select.-fw(name='topic')
+                option(value='' style='style:') Topic
+                option(value='foo') Foo
+          p(class="-on-error -danger -caption -fw-500 mt1")
+
+        .pt3
+          button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Create
+
