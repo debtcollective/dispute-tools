@@ -198,7 +198,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
     _loadCollective(req, res, next) {
       Collective.query()
         .where({ id: req.params.id })
-        .include('[tools, users.[account]]')
+        .include('[kbPosts, tools, users.[account]]')
         .then(([collective]) => {
           collective.tools.forEach(tool => {
             tool.about = marked(tool.about);

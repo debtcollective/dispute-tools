@@ -50,7 +50,7 @@ block content
             span.right.-caption.-neutral-mid= collective.tools.length
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-resources' aria-selected='false')
             | Resources
-            span.right.-caption.-neutral-mid 9
+            span.right.-caption.-neutral-mid #{collective.kbPosts.length}
 
         .Collective_TabPanes
           section#panel-campaigns.TabPane(role='tabpanel' aria-hidden='true')
@@ -161,7 +161,22 @@ block content
                     +toolCardMixin(tool)
 
           section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
-            | Resources
+            h5 Resources
+
+            ul
+              each kbPost in collective.kbPosts
+                li
+                  if kbPost.data.url
+                    a(href=kbPost.data.url)= kbPost.name
+                  else if kbPost.file && kbPost.fileMeta
+                    p.
+                      #{kbPost.fileMeta.original.format} -
+                      #{kbPost.fileMeta.original.size}B -
+                      #{kbPost.fileMeta.original.width}&times;#{kbPost.fileMeta.original.height} -
+                      #{kbPost.fileMeta.original.mimeType}
+                  else
+                    span= kbPost.name
+
             a(href=routeMappings.Admin.Collectives.KBPosts.new.url(collective.id)) Add resource?
 
 block append body
