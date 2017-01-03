@@ -133,9 +133,9 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
         userId: req.user.id,
         date: req.body.date,
         name: req.body.name,
-        map: req.body.map_url,
         description: req.body.description,
-        locationName: req.body.location_name,
+        locationName: req.body.locationName,
+        map: '',
       });
 
       event.save()
@@ -152,13 +152,8 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
 
     update(req, res) {
       req.event
-        .updateAttributes({
-          date: req.body.date,
-          name: req.body.name,
-          map: req.body.map_url,
-          description: req.body.description,
-          locationName: req.body.location_name,
-        }).save()
+        .updateAttributes(req.body)
+        .save()
         .then(() => {
           req.flash('success', 'The event has been updated.');
           res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id));
