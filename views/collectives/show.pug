@@ -50,7 +50,6 @@ block content
             span.right.-caption.-neutral-mid= collective.tools.length
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-resources' aria-selected='false')
             | Resources
-            | FORM HERE?
             span.right.-caption.-neutral-mid 9
 
         .Collective_TabPanes
@@ -163,6 +162,7 @@ block content
 
           section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
             | Resources
+            a(href=routeMappings.Admin.Collectives.KBPosts.new.url(collective.id)) Add resource?
 
 block append body
   each tool in collective.tools

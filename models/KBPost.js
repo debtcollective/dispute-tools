@@ -1,17 +1,24 @@
 /* globals CONFIG, Class, Krypton, Post */
 
-const KBPost = Class('KBPost').inherits(Krypton.Model)({
+const KBPost = Class('KBPost').inherits(Krypton.Model).includes(Krypton.Attachment)({
+  attachmentStorage: new Krypton.AttachmentStorage.Local({
+    maxFileSize: 5242880,
+    acceptedMimeTypes: [/.+/],
+  }),
+
   tableName: 'KBPosts',
   validations: {
-    campaignId: ['required'],
+    collectiveId: ['required'],
     name: ['required'],
   },
 
   attributes: [
     'id',
     'name',
-    'campaignId',
+    'collectiveId',
     'data',
+    'filePath',
+    'fileMeta',
     'createdAt',
     'updatedAt',
   ],
@@ -22,6 +29,10 @@ const KBPost = Class('KBPost').inherits(Krypton.Model)({
       Krypton.Model.prototype.init.call(this, config);
 
       this.data = this.data || {};
+
+      this.hasAttachment({
+        name: 'file',
+      });
 
       return this;
     },
