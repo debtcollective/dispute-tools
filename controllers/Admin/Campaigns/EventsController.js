@@ -98,7 +98,6 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
       before(req, res, next) {
         EventAssistant.query()
           .include('[user.account]')
-          .where('ignore', false)
           .where('event_id', req.params.id)
           .then((results) => {
             res.locals.attendees = results;

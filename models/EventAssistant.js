@@ -2,7 +2,7 @@
 
 const EventAssistant = Class('EventAssistant').inherits(Krypton.Model)({
   tableName: 'EventAssistants',
-  attributes: ['eventId', 'userId', 'ignore', 'id'],
+  attributes: ['eventId', 'userId', 'id'],
 });
 
 module.exports = EventAssistant;
