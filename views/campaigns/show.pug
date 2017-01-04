@@ -62,6 +62,8 @@ block scripts
         currentURL: !{JSON.stringify(currentURL)},
         campaignId: !{JSON.stringify(campaign.id)},
         campaignTitle: !{JSON.stringify(campaign.title)},
+        nextEvents: !{JSON.stringify(nextEvents)},
+        googleMapsKey: !{JSON.stringify(CONFIG.env().GoogleMaps.key)},
       };
       new ViewCampaignsShow(options);
     }, true);

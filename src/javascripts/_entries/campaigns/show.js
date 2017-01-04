@@ -6,6 +6,7 @@ import Tabs from '../../components/Tabs';
 import FixedTabs from '../../components/campaigns/show/FixedTabs';
 import FeedController from '../../components/campaigns/show/FeedController';
 import CreateNewPost from '../../components/campaigns/show/create-new-post/Manager';
+import SidebarController from '../../components/campaigns/show/sidebar/SidebarController';
 import ReadMore from '../../components/ReadMore';
 
 class ViewCampaignsShow extends NodeSupport {
@@ -50,9 +51,19 @@ class ViewCampaignsShow extends NodeSupport {
       element: document.querySelector('.Campaign_Feed'),
     }));
 
+    if (config.nextEvents.length) {
+      this.appendChild(new SidebarController({
+        name: 'SidebarController',
+        element: document.querySelector('[data-component="campaign-sidebar"]'),
+        nextEvents: config.nextEvents,
+        googleMapsKey: config.googleMapsKey,
+      }));
+    }
+
     const readMoreElement = document.querySelector('.ReadMore');
     if (readMoreElement) {
       this.appendChild(new ReadMore({
+        name: 'ReadMore',
         element: readMoreElement,
         openText: 'Continue reading...',
         closeText: 'Hide',
@@ -64,6 +75,7 @@ class ViewCampaignsShow extends NodeSupport {
     const createNewPostElement = document.querySelector('[data-create-new-post]');
     if (createNewPostElement) {
       this.appendChild(new CreateNewPost({
+        name: 'CreateNewPost',
         element: createNewPostElement,
         campaignId: config.campaignId,
       }));

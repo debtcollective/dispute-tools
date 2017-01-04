@@ -123,12 +123,41 @@
 }
 
 /* active campaign styles */
+.CampaignSidebar {
+  width: 300%;
+  transition: transform 300ms;
+
+  &CarouselItem {
+    width: 33.333333333333336%;
+
+    &[aria-hidden="true"] {
+      height: 0;
+    }
+  }
+}
+
 .CampaignEventMapWrapper {
   position: relative;
   padding-bottom: 47%;
   border-width: 2px 0;
   border-style: solid;
   border-color: #ECECEB;
+  background-color: var(--k-color-palette-neutral-light);
+
+  &::before {
+    content: 'Loading map...';
+    font-size: var(--k-font-caption-size);
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    color: #9b9b9b;
+  }
 
   & > iframe {
     position: absolute;
