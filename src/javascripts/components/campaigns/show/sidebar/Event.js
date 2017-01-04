@@ -116,7 +116,7 @@ export default class Event extends Widget {
     if (this.data.imAttendee) {
       // Not going button
       buttons += `
-        <form class='inline-block' action="/campaigns/events/${this.data.id}/rsvp" method='post'>
+        <form class='inline-block mr2' action="/campaigns/events/${this.data.id}/rsvp" method='post'>
           <input type='hidden' name='_method' value='delete'>
           <input type='hidden' name='_destroy' value=1>
           <input type='hidden' name='_csrf' value=${csrfToken}>
@@ -126,23 +126,13 @@ export default class Event extends Widget {
     } else {
       // Attend button
       buttons += `
-        <form class="inline-block" action="/campaigns/events/${this.data.id}/rsvp" method="post">
+        <form class="inline-block mr2" action="/campaigns/events/${this.data.id}/rsvp" method="post">
           <input type="hidden" name="_method" value="post">
           <input type="hidden" name="_csrf" value="${csrfToken}">
           <button class="-k-btn btn-primary -sm -fw-700" type="submit">Attend</button>
         </form>
       `;
     }
-
-    // Ignore button
-    buttons += `
-      <form class="inline-block ml1 mr2"
-        action="/campaigns/events/${this.data.id}/ignore" method="post">
-        <input type="hidden" name="_method" value="post">
-        <input type="hidden" name="_csrf" value="${csrfToken}">
-        <button class="-k-btn -sm" type="submit">Ignore</button>
-      </form>
-    `;
 
     return buttons;
   }
