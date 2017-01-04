@@ -10,6 +10,7 @@ export default class AdminEventsForm extends Widget {
       name: ['required'],
       description: ['required'],
       date: ['required'],
+      timespan: ['required'],
       locationName: ['required'],
     };
   }

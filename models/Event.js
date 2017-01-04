@@ -8,6 +8,7 @@ const Event = Class('Event').inherits(Krypton.Model)({
     name: ['required'],
     description: ['required'],
     date: ['required'],
+    timespan: ['required'],
     locationName: ['required'],
   },
 
@@ -18,6 +19,7 @@ const Event = Class('Event').inherits(Krypton.Model)({
     'name',
     'description',
     'date',
+    'timespan',
     'locationName',
     'createdAt',
     'updatedAt',

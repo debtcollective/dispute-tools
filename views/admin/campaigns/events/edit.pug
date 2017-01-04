@@ -42,6 +42,16 @@ block content
           p(class='-on-error -danger -caption -fw-500 mt1')
 
         .py1
+          label.block.pb1.-fw-500 Timespan
+          input.-k-input.-fw.-border-neutral-mid(
+            type='text'
+            name='timespan'
+            placeholder='e.g: 6:30 pm - 8:30 pm PST'
+            value=event.timespan
+          )
+          p(class='-on-error -danger -caption -fw-500 mt1')
+
+        .py1
           label.block.pb1.-fw-500 Description
           textarea.-k-textarea.-fw.-ff-sec.-border-neutral-mid(
             name='description'

@@ -40,7 +40,7 @@
               .pt3.-caption.-fw-500.mr1
                 .flex.pb2
                   div: svg.mr1.-neutral-mid(width='12' height='12'): use(xlink:href='#svg-clock-filled')
-                  p 6:30 pm - 8:30 pm PST
+                  p= event.timespan
                 .flex.pb2
                   div: svg.mr1.-neutral-mid(width='10' height='14'): use(xlink:href='#svg-pin')
                   p= event.locationName
@@ -125,7 +125,7 @@
                     p.-fw-700: a(href='#')= event.name
                     .flex.py1.-caption
                       div: svg.mr1.-neutral-mid(width='12' height='12'): use(xlink:href='#svg-clock-filled')
-                      p 6:30 pm - 8:30 pm PST
+                      p= event.timespan
                     p.-caption.-ttu.-fw-500 #{event.attendees.length} Attendees
 
                     if canCreateEvents

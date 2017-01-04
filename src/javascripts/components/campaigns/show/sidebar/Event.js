@@ -47,7 +47,7 @@ export default class Event extends Widget {
                   <use xlink:href="#svg-clock-filled"></use>
                 </svg>
               </div>
-              <p>6:30 pm - 8:30 pm PST</p>
+              <p>${data.timespan}</p>
             </div>
             <div class="flex pb2">
               <div>

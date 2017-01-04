@@ -31,7 +31,7 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
           })
           .catch(next);
       },
-      actions: ['index', 'new', 'edit'],
+      actions: ['index', 'new', 'edit', 'update'],
     },
     {
       before(req, res, next) {
@@ -132,10 +132,10 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
         campaignId: req.params.campaign_id,
         userId: req.user.id,
         date: req.body.date,
+        timespan: req.body.timespan,
         name: req.body.name,
         description: req.body.description,
         locationName: req.body.locationName,
-        map: '',
       });
 
       event.save()
