@@ -166,6 +166,7 @@ block content
             ul
               each kbPost in collective.kbPosts
                 li
+                  span= kbPost.topic.title
                   if kbPost.data.url
                     a(href=kbPost.data.url)= kbPost.name
                   else if kbPost.file && kbPost.fileMeta
@@ -174,6 +175,7 @@ block content
                       #{kbPost.fileMeta.original.size}B -
                       #{kbPost.fileMeta.original.width}&times;#{kbPost.fileMeta.original.height} -
                       #{kbPost.fileMeta.original.mimeType}
+                    a(href=kbPost.file.url('original'))= kbPost.name
                   else
                     span= kbPost.name
 

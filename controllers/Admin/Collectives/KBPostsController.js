@@ -1,4 +1,4 @@
-/* global CONFIG, Class, Admin, Collective, RestfulController, KBPost */
+/* global CONFIG, Class, Admin, Collective, RestfulController, KBPost, Topic */
 
 const fs = require('fs-extra');
 
@@ -8,6 +8,7 @@ global.Admin.Collectives = global.Admin.Collectives || {};
 const KBPostsController = Class(Admin.Collectives, 'KBPostsController')
 .inherits(RestfulController)({
   beforeActions: [
+    // collective
     {
       before(req, res, next) {
         Collective.query()
@@ -19,7 +20,20 @@ const KBPostsController = Class(Admin.Collectives, 'KBPostsController')
           })
           .catch(next);
       },
-      actions: ['create', 'edit', 'new'],
+      actions: ['create', 'new'],
+    },
+    // load topics
+    {
+      before(req, res, next) {
+        Topic.query()
+          .then((result) => {
+            req.topic = result;
+            res.locals.topics = result;
+            next();
+          })
+          .catch(next);
+      },
+      actions: ['create', 'new'],
     },
   ],
 
@@ -34,6 +48,7 @@ const KBPostsController = Class(Admin.Collectives, 'KBPostsController')
         data: {
           url: req.body.url,
         },
+        topicId: req.body.topic_id,
         collectiveId: req.params.collective_id,
       });
 

@@ -29,6 +29,15 @@ block content
           )
           p(class="-on-error -danger -caption -fw-500 mt1")
 
+        .py1
+          label.block.pb1.-fw-500 Topic
+          .-k-select.-border-neutral-mid
+              select.-fw(name='topic_id')
+                option(value='') Topic
+                each topic in topics
+                  option(value=topic.id)= topic.title
+          p(class="-on-error -danger -caption -fw-500 mt1")
+
         fieldset
           legend Attachment
 
