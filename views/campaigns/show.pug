@@ -26,10 +26,6 @@ block content
                 h4.inline-block.pr1= campaign.title
                 a.-fw-700(href=routeMappings.Collectives.show.url(campaign.collective.id))= campaign.collective.name
               p.-caption.-fw-500= (userBelongsToCampaign ? `You + ${campaign.userCount - 1}` : campaign.userCount) + ' people joined with $10,560 USD in debt'
-          li.Tab.flex-auto.p2.-fw-700.-dark.items-center.flex(role='tab' aria-controls='panel-resources' aria-selected='false')
-            .flex-auto
-              | Resources
-              span.right.-caption.-neutral-mid 9
           li.Tab.p2.-fw-700.-dark.flex.items-center
             div
               | Share
