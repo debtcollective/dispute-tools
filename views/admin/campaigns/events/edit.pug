@@ -78,6 +78,7 @@ block content
           button.-k-btn.btn-primary.-fw.-fw-700(type='submit') Update
 
 block scripts
+  script(src=`https://maps.googleapis.com/maps/api/js?key=${CONFIG.env().GoogleMaps.key}&libraries=places`)
   script(src='/build/javascripts/admin/campaigns/events/edit.js' async)
   script.
     window.addEventListener('load', function() {

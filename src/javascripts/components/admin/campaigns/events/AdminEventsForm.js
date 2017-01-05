@@ -1,6 +1,6 @@
+/* globals google */
 import Checkit from 'checkit';
 import qs from 'query-string';
-import debounce from 'lodash/debounce';
 import Widget from '../../../../lib/widget';
 import Button from '../../../../components/Button';
 
@@ -25,6 +25,8 @@ export default class AdminEventsForm extends Widget {
     });
     this._checkit = new Checkit(this.constructor.constraints);
 
+    this.autocomplete = new google.maps.places.Autocomplete(this.ui.locationName);
+
     this.iframeMap = document.getElementById('iframeMap');
     this.locationAnchor = document.createElement('a');
     this.locationAnchor.href = this.iframeMap.src;
@@ -40,15 +42,20 @@ export default class AdminEventsForm extends Widget {
   }
 
   _bindEvents() {
-    this._handleLocationNameInput = this._handleLocationNameInput.bind(this);
-    this.ui.locationName.addEventListener('input', debounce(this._handleLocationNameInput, 500));
+    this._handleAutocompletePlaceChange = this._handleAutocompletePlaceChange.bind(this);
+    this.autocomplete.addListener('place_changed', this._handleAutocompletePlaceChange);
+    google.maps.event.addDomListener(this.ui.locationName, 'keydown', (e) => {
+      if (e.keyCode === 13) {
+        e.preventDefault();
+      }
+    });
 
     this._handleFormSubmitRef = this._handleFormSubmit.bind(this);
     this.element.addEventListener('submit', this._handleFormSubmitRef);
   }
 
-  _handleLocationNameInput(ev) {
-    this.locationQuery.q = ev.target.value || 'new york';
+  _handleAutocompletePlaceChange() {
+    this.locationQuery.q = this.ui.locationName.value || 'new york';
     this.iframeMap.src = `${this.locationBaseURL}?${qs.stringify(this.locationQuery)}`;
   }
 
