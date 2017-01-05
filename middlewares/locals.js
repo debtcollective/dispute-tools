@@ -21,10 +21,8 @@ module.exports = function locals(req, res, next) {
   res.locals.US_STATES = US_STATES;
 
   // DonationFlow
-  res.locals.STRIPE_PUBLISHABLE_KEY = CONFIG.stripe.publishable;
-  res.locals.PAYPAL_ACCOUNT = CONFIG.paypal.account;
-
-
+  res.locals.STRIPE_PUBLISHABLE_KEY = CONFIG.env().stripe.publishable;
+  res.locals.PAYPAL_ACCOUNT = CONFIG.env().paypal.account;
 
   if (!req.user) {
     return Collective.query().then((collectives) => {

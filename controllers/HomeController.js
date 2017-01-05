@@ -1,5 +1,9 @@
 /* globals Class, BaseController, logger, CONFIG */
 
+const stripe = require('stripe');
+
+const stripeClient = stripe(CONFIG.env().stripe.private);
+
 const HomeController = Class('HomeController').inherits(BaseController)({
   prototype: {
     _authenticate(req, res, next) {
@@ -16,6 +20,29 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       }
 
       return next();
+    },
+
+    donate(req, res) {
+      const token = req.body.token;
+      const amount = Math.floor(Number(req.body.amount));
+      const options = {
+        amount,
+        currency: 'usd',
+        source: token,
+        description: `Donation for Debt Collective: ${amount / 100}`,
+      };
+
+      if (!token) {
+        return res.status(400).json({ error: { message: 'Invalid token' } });
+      }
+
+      return stripeClient.charges.create(options, (error, charge) => {
+        if (error) {
+          res.status(500).json({ error: { message: 'Something went wrong, please try again.' } });
+        } else {
+          res.status(200).json({ success: charge.captured && charge.paid && charge.status === 'succeeded' });
+        }
+      });
     },
 
     admin(req, res) {
