@@ -17,6 +17,7 @@ function req(opts, cb) {
 
   if (!(opts.body instanceof FormData)) {
     opts.headers['Content-Type'] = 'application/json';
+    opts.body = JSON.stringify(opts.body);
   }
 
   if (opts.method === 'get') {
@@ -110,7 +111,6 @@ export default {
     req({
       url: `/campaigns/${args.campaignId}/posts?page=${args.page || 1}`,
       method: 'get',
-      body: args.body || {},
     }, (err, res) => {
       if (typeof callback === 'function') {
         callback(err, res);
