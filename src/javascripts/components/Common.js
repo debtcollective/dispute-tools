@@ -41,7 +41,7 @@ export default class Common extends Widget {
     }));
 
     // Activate DonationFlow triggers
-    Array.prototype.slice.call(document.querySelectorAll('[data-component-modal="donation"]'))
+    Array.prototype.slice.call(document.querySelectorAll('.js-donate'))
     .forEach(trigger => trigger.addEventListener('click', () => this.donationFlowModal.activate()));
     // Close button, BUG: does not close
     document.querySelector('.DonationFlow .btn-close').addEventListener('click', () => this.donationFlowModal.deactivate());
