@@ -5,7 +5,7 @@ export default class ReadMore extends Widget {
     return {
       expanded: false,
       openText: 'Read more',
-      closeText: 'Close',
+      closeText: 'Hide',
       collapsedHeight: 0,
 
       _maxHeight: '10000px',
@@ -18,6 +18,9 @@ export default class ReadMore extends Widget {
 
     this.contentElement = this.element.querySelector('[data-readmore-content]');
     this.togglerElement = this.element.querySelector('[data-readmore-toggler]');
+
+    this.collapsedHeight = this.element.dataset.collapsedHeight;
+    this.openText = this.togglerElement.textContent;
 
     this._bindEvents()._setMaxHeight();
   }

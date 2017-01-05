@@ -2,14 +2,4 @@
   position: relative;
   overflow: hidden;
   transition: max-height 300ms ease;
-
-  &[aria-expanded='false']::after {
-    content: '';
-    position: absolute;
-    background-image: linear-gradient(rgba(0,0,0,0), white);
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 16px;
-  }
 }

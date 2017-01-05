@@ -51,24 +51,19 @@ class ViewCampaignsShow extends NodeSupport {
       element: document.querySelector('.Campaign_Feed'),
     }));
 
+    Array.prototype.slice.call(document.querySelectorAll('.ReadMore')).forEach((element, i) => {
+      this.appendChild(new ReadMore({
+        name: `ReadMore-${i}`,
+        element,
+      }));
+    });
+
     if (config.nextEvents.length) {
       this.appendChild(new SidebarController({
         name: 'SidebarController',
         element: document.querySelector('[data-component="campaign-sidebar"]'),
         nextEvents: config.nextEvents,
         googleMapsKey: config.googleMapsKey,
-      }));
-    }
-
-    const readMoreElement = document.querySelector('.ReadMore');
-    if (readMoreElement) {
-      this.appendChild(new ReadMore({
-        name: 'ReadMore',
-        element: readMoreElement,
-        openText: 'Continue reading...',
-        closeText: 'Hide',
-        expanded: false,
-        collapsedHeight: readMoreElement.dataset.collapsedHeight,
       }));
     }
 

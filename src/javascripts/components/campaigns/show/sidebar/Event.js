@@ -1,4 +1,5 @@
 import Widget from '../../../../lib/widget';
+import ReadMore from '../../../../components/ReadMore';
 import currentUser from '../../../../lib/currentUser';
 
 /**
@@ -30,13 +31,25 @@ export default class Event extends Widget {
           </div>
         </div>
 
-        <div class="pt2">
-          ${(function _printDescription() {
-            return data.description.split(/\n/g).map(line => {
-              if (line.trim()) return `<p class="pb1 -caption -fw-500">${line}</p>`;
-              return '';
-            }).join('');
-          }())}
+        <div class='pt2'>
+          <div class='ReadMore' data-collapsed-height='60px'>
+            <div id='inm-description'
+              data-readmore-content
+              aria-expanded='false'
+              style='max-height: 60px;'>
+              ${(function _printDescription() {
+                return data.description.split(/\n/g).map(line => {
+                  if (line.trim()) return `<p class="pb1 -caption -fw-500">${line}</p>`;
+                  return '';
+                }).join('');
+              }())}
+            </div>
+            <div class='center'>
+              <a class='-caption inline-block -fw-500' href='#'
+                data-readmore-toggler
+                aria-controls='inm-description'>Read more</a>
+            </div>
+          </div>
           <div class="CampaignEventMapWrapper mt2 mxn3">
             <iframe width="100%" height="100%" frameborder="0" allowfullscreen="" src="https://www.google.com/maps/embed/v1/place?key=${this.googleMapsKey}&amp;q=${data.locationName}"></iframe>
           </div>
@@ -135,5 +148,19 @@ export default class Event extends Widget {
     }
 
     return buttons;
+  }
+
+  /**
+   * @override
+   */
+  _render(el, beforeElement) {
+    super._render(el, beforeElement);
+
+    Array.prototype.slice.call(this.element.querySelectorAll('.ReadMore')).forEach((element, i) => {
+      this.appendChild(new ReadMore({
+        name: `ReadMore-${i}`,
+        element,
+      }));
+    });
   }
 }

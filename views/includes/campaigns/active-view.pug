@@ -31,9 +31,24 @@
                 h4= event.name
 
             .pt2
-              each line in event.description.split(/\n/g)
-                if line.trim()
-                  p.pb1.-caption.-fw-500= line
+              if event.description
+                .ReadMore(data-collapsed-height='60px')
+                  div(
+                    id='nm-description'
+                    data-readmore-content
+                    aria-expanded='false'
+                    style='max-height: 60px;'
+                  )
+                    each line in event.description.split(/\n/g)
+                      if line.trim()
+                        p.pb1.-caption.-fw-500= line
+                  .center
+                    a.-caption.inline-block.-fw-500(
+                      href='#'
+                      data-readmore-toggler
+                      aria-controls='nm-description'
+                    ) Read more
+
               .CampaignEventMapWrapper.mt2.mxn3
                 iframe(width='100%' height='100%' frameborder='0' allowfullscreen
                   src=`https://www.google.com/maps/embed/v1/place?key=${CONFIG.env().GoogleMaps.key}&q=${event.locationName}`)
