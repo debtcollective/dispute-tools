@@ -28,8 +28,10 @@ function req(opts, cb) {
   .then((res) =>
     res.json()
       .then((result) => {
-        result.headers = res.headers;
-        return result;
+        cb(null, {
+          body: result,
+          headers: res.headers,
+        });
       }))
   .catch((error) => cb && cb(error));
 }
