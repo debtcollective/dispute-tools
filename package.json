@@ -23,7 +23,8 @@
     "iron-node": "scripty",
     "watch": "scripty",
     "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
-    "post_deploy_staging": "scripty"
+    "post_deploy_staging": "scripty",
+    "dev": "tarima -wP localhost:3000"
   },
   "tarima": {
     "bundle": true,
@@ -96,6 +97,7 @@
     "marked": "^0.3.6",
     "method-override": "^2.3.6",
     "mkdirp": "^0.5.1",
+    "mmmagic": "^0.4.5",
     "morgan": "^1.7.0",
     "multer": "^1.2.0",
     "neon": "^2.0.0",
@@ -119,6 +121,7 @@
     "scripty": "^1.6.0",
     "scroll-into-view-if-needed": "^1.0.2",
     "share-url": "^1.0.0",
+    "stripe": "^4.14.0",
     "superagent": "^1.7.2",
     "tarima-cli": "^0.3.2",
     "uuid": "^2.0.2",
