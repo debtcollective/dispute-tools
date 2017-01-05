@@ -96,12 +96,12 @@ block content
 
               if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
                 article.Masonry_item.px2.mb4
-                  a.CreateNewCampaingBtn(
+                  a.CreateNewItemBtn(
                     href=routeMappings.Admin.Campaigns.new.url()
                     title='Create new campaign'
                   )
                     .flex.items-center.justify-center.absolute.top-0.right-0.bottom-0.left-0
-                      .CreateNewCampaingBtn--Plus +
+                      .CreateNewItemBtn--Plus +
                   a.block.center.py2.-fw-700(href=routeMappings.Admin.Campaigns.new.url())
                     | Create new campaign
                   .border-bottom.-bw5
@@ -161,25 +161,36 @@ block content
                     +toolCardMixin(tool)
 
           section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
-            h5 Resources
-
-            ul
+            section.Masonry.pt4.mxn2
               each kbPost in collective.kbPosts
-                li
-                  span= kbPost.topic.title
-                  if kbPost.data.url
-                    a(href=kbPost.data.url)= kbPost.name
-                  else if kbPost.file && kbPost.fileMeta
-                    p.
-                      #{kbPost.fileMeta.original.format} -
-                      #{kbPost.fileMeta.original.size}B -
-                      #{kbPost.fileMeta.original.width}&times;#{kbPost.fileMeta.original.height} -
-                      #{kbPost.fileMeta.original.mimeType}
-                    a(href=kbPost.file.url('original'))= kbPost.name
-                  else
-                    span= kbPost.name
+                article.Masonry_item.px2.pb4
+                  .KBPost.p3
+                    .KBPost--symbol
+                      if kbPost.fixedURL && kbPost.shortURL
+                        a(href=kbPost.fixedURL)= kbPost.shortURL
 
-            a(href=routeMappings.Admin.Collectives.KBPosts.new.url(collective.id)) Add resource?
+                      if kbPost.fixedWeight
+                        if kbPost.isImage
+                          .KBPost--size!= `${kbPost.fileMeta.original.width}&times;${kbPost.fileMeta.original.height}`
+                        else
+                          .KBPost--size= kbPost.fixedWeight
+
+                    .KBPost--caption= kbPost.name
+                    .KBPost--category= kbPost.topic
+
+                    if kbPost.fixedExt
+                      .KBPost--action= kbPost.fixedExt
+
+              article.Masonry_item.px2.mb4
+                a.CreateNewItemBtn(
+                  href=routeMappings.Admin.Collectives.KBPosts.new.url(collective.id)
+                  title='Add new resource'
+                )
+                  .flex.items-center.justify-center.absolute.top-0.right-0.bottom-0.left-0
+                    .CreateNewItemBtn--Plus +
+                a.block.center.py2.-fw-700(href=routeMappings.Admin.Campaigns.new.url())
+                  | Add new resource
+                .border-bottom.-bw5
 
 block append body
   each tool in collective.tools

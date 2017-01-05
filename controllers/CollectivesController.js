@@ -216,7 +216,21 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
         return Promise.all(collective.kbPosts.map((kb) => {
           return Topic.query().where({ id: kb.topicId })
             .then(([topic]) => {
-              kb.topic = topic;
+              // decorate for views
+              if (kb.file && kb.fileMeta) {
+                kb.fixedExt = kb.fileMeta.original.format || kb.fileMeta.original.ext.toUpperCase();
+                kb.fixedWeight = `${kb.fileMeta.original.size / 1000}KB`;
+
+                kb.isImage = ['JPG', 'JPEG', 'PNG'].indexOf(kb.fileMeta.original.format) > -1;
+              }
+
+              kb.fixedURL = kb.data.url && kb.data.url.indexOf('://') === -1 ? `http://${kb.data.url}` : kb.data.url;
+              kb.shortURL = kb.fixedURL && kb.fixedURL.match(/:\/\/([^/]+)/)[1];
+
+              kb.isVideo = !!(kb.data.url && kb.data.url.match(/youtube|vimeo|mp4|ogv|webm|flv/));
+              kb.isAudio = !!(kb.data.url && kb.data.url.match(/mp3|wav|ogg/));
+
+              kb.topic = topic.title;
             });
         })).then(() => collective);
       })
