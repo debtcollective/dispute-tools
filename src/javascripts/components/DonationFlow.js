@@ -52,6 +52,7 @@ export default class DonationFlow extends Widget {
     this.sectionPaymentInputCvcEl = this.donationFormEl.querySelector('[name="cvc"]');
     this.sectionPaymentSubmitEl = this.sectionPaymentEl.querySelector('button');
     this.sectionSuccessEl = this.donationFormEl.querySelector('section.Success');
+    this.sectionDonateBtn = this.donationFormEl.querySelector('.js-donate-amount');
     this.sectionErrorEl = this.donationFormEl.querySelector('section.Error');
     this.sectionEls = Array.prototype.slice.call(this.donationFormEl.querySelectorAll('section'));
 
@@ -124,6 +125,7 @@ export default class DonationFlow extends Widget {
   render() {
     const {page, fund, amount, paymentMethod} = this.state;
     // console.log('render', this.state, amount)
+    this.sectionDonateBtn.innerHTML = `Donate $${this.customDonationCustomInputEl.value}`;
 
     // Page
     this.sectionEls.forEach(el => el.style.display = 'none'); // hide all

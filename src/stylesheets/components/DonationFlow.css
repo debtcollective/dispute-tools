@@ -1,6 +1,6 @@
 .DonationFlow {
   z-index: -1;
-  &[aria-hidden="false"] { z-index: 1; }
+  &[aria-hidden="false"] { z-index: 3; }
 }
 
 .PaymentMethods {

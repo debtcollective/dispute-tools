@@ -90,13 +90,13 @@ script(type="text/javascript" src="https://js.stripe.com/v2/")
           .col.col-5.pl1
             input.-k-input.-fw(type="text" name="cvc" placeholder="CVC" maxLength="5")
             p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid CVC
-      .clearfix
-        .col.sm-col-3.col-12.right-align.xs-left-align.-fw-500
+      .flex
+        .flex-none.mr1
            div.btn-back.-k-btn.-fw-700
             svg(width=14 height=14)
               use(xlink:href="#svg-arrow-backward")
-        .col.sm-col-9.col-12.px1
-          button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Donate $10
+        .flex-auto
+          button.-k-btn.btn-primary.-fw.-fw-700.js-donate-amount(type="submit") Donate $10
     section.Success
       .DonationResponse
         img(src="/svg/heart.svg")

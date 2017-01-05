@@ -12,8 +12,8 @@
         url: routeMappings.DisputeTools.url(),
       },
       {
-        text: 'Contribute',
-        title: 'Donate to the action fund',
+        text: 'Donate',
+        title: 'Contribute to the action fund',
         className: 'js-donate',
         url: '#',
       },
@@ -69,14 +69,15 @@
   }
 
 mixin _linkMixin(item, responsive = false)
-  - var _className = 'Header__link -fw-700 -fh' + (item.className ? ' ' + item.className : '')
+  - var _className = 'Header__link -fw-700 -fh'
   if responsive
     - _className = 'ResponsiveMenu__link -fw-700 block'
   if (item.url === currentURL) || (currentURL.startsWith(item.url))
     - _className += ' active'
   if item.url === '/dispute-tools' && currentURL.startsWith('/disputes')
     - _className += ' active'
-  a(href!=item.url, class=_className, title=item.title || item.text, data=item.data)&attributes(attributes)
+  - _className = _className + (item.className ? ' ' + item.className : '')
+  a(href!=item.url, class=_className, title=item.title || item.text)&attributes(attributes)
     block
     | #{item.text}
 
@@ -114,7 +115,7 @@ mixin _defaultMenuMixin
           .table.-fh
             +_linkMixin(item)(class= item.className class='table-cell align-middle')
     else
-      li.inline-block.align-middle.-fh.px2.pl4
+      li.inline-block.align-middle.-fh.px2
         .table.-fh
           .table-cell.align-middle.Dropdown.-right.-has-dropdown(data-component-dropdown)
             button.Dropdown__head.-fw-700
