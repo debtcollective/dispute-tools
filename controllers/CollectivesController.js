@@ -1,4 +1,4 @@
-/* globals CONFIG, Class, RestfulController, Collective, DisputeTool, User, Campaign, Account, CollectiveBans */
+/* globals CONFIG, Class, RestfulController, Collective, DisputeTool, User, Campaign, Account */
 
 const marked = require('marked');
 const Promise = require('bluebird');
@@ -80,29 +80,6 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       });
     },
     actions: ['show'],
-  },
-  //Check if user is banned
-  {
-    before(req, res, next) {
-      if (!req.user) {
-        return next();
-      }
-
-      return CollectiveBans.query()
-        .where({
-          user_id: req.user.id,
-          collective_id: req.params.id,
-        })
-      .then((result) => {
-        if (result.length > 0) {
-          req.flash('warning', 'You are banned from this collective.');
-          res.redirect(CONFIG.router.helpers.Collectives.url());
-        } else {
-          next();
-        }
-      });
-    },
-    actions: ['show']
   },
   // Attach accounts to users
   {
