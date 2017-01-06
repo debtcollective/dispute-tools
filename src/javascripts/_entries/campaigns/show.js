@@ -8,10 +8,20 @@ import FeedController from '../../components/campaigns/show/FeedController';
 import CreateNewPost from '../../components/campaigns/show/create-new-post/Manager';
 import SidebarController from '../../components/campaigns/show/sidebar/SidebarController';
 import ReadMore from '../../components/ReadMore';
+import { popupCenter } from '../../lib/utils';
 
 class ViewCampaignsShow extends NodeSupport {
+  /**
+   * @param {object} config
+   * @property {string} config.campaignId
+   * @property {string} config.campaignTitle
+   * @property {array} config.nextEvents
+   * @property {string} config.googleMapsKey
+   */
   constructor(config) {
     super();
+
+    Object.assign(this, config);
 
     this.appendChild(new Common({
       name: 'Common',
@@ -34,16 +44,6 @@ class ViewCampaignsShow extends NodeSupport {
       name: 'FixedTabs',
       element: document.querySelector('[data-fixed-tabs-component]'),
     }));
-
-    document.querySelector('[data-share-url-twitter]').href = shareUrl.twitter({
-      url: location.href,
-      text: `Join the ${config.campaignTitle}`,
-      via: '0debtzone',
-    });
-
-    document.querySelector('[data-share-url-facebook]').href = shareUrl.facebook({
-      u: location.href,
-    });
 
     this.appendChild(new FeedController({
       name: 'FeedController',
@@ -75,6 +75,37 @@ class ViewCampaignsShow extends NodeSupport {
         campaignId: config.campaignId,
       }));
     }
+
+    this._bindShareButtons();
+  }
+
+  /**
+   * Creates the urls for facebook and twitter share buttons.
+   * Binds them to open a new window.
+   * @private
+   */
+  _bindShareButtons() {
+    this.twitterButton = document.querySelector('[data-share-url-twitter]');
+    this.facebookButton = document.querySelector('[data-share-url-facebook]');
+
+    this.twitterButton.href = shareUrl.twitter({
+      url: location.href,
+      text: `Join the ${this.campaignTitle}`,
+      via: '0debtzone',
+    });
+
+    this.facebookButton.href = shareUrl.facebook({
+      u: location.href,
+    });
+
+    this._handleShareButtonClick = this._handleShareButtonClick.bind(this);
+    this.twitterButton.addEventListener('click', this._handleShareButtonClick);
+    this.facebookButton.addEventListener('click', this._handleShareButtonClick);
+  }
+
+  _handleShareButtonClick(ev) {
+    ev.preventDefault();
+    popupCenter(ev.currentTarget.href, 'sharerWindow', 520, 350);
   }
 }
 
