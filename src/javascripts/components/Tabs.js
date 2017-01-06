@@ -61,7 +61,9 @@ export default class Tabs extends Widget {
         this.panels[i].setAttribute('aria-hidden', false);
 
         if (this.updateHash) {
-          const url = `${location.pathname}#${id.replace(this.panelPrefixRef, '')}`;
+          const q = location.search || '';
+          const url = `${location.pathname}${q}#${id.replace(this.panelPrefixRef, '')}`;
+
           history.replaceState({ path: url }, '', url);
         }
 
