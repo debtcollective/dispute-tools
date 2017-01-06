@@ -23,7 +23,7 @@ describe('UserMailer', () => {
       },
     })
     .then((response) => {
-      expect(response.envelope.to[0]).to.be.equal('success@simulator.amazonses.com');
+      expect(response.accepted[0].email).to.be.equal('success@simulator.amazonses.com');
     });
   });
 
@@ -44,7 +44,7 @@ describe('UserMailer', () => {
       },
     })
     .then((response) => {
-      expect(response.envelope.to[0]).to.be.equal('success@simulator.amazonses.com');
+      expect(response.accepted[0].email).to.be.equal('success@simulator.amazonses.com');
     });
   });
 });

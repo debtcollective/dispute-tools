@@ -1,3 +1,5 @@
+const mandrillTransport = require('nodemailer-mandrill-transport');
+
 const env = process.env.NODE_ENV || 'development';
 const path = require('path');
 
@@ -25,15 +27,18 @@ const config = {
       disputesBCCAddresses: ['test@example.com'],
     },
 
-    AWS: {
-      accessKeyId: '',
-      secretAccessKey: '',
+    nodemailer: {
+      service: 'Gmail',
+      auth: {
+        user: 'EDIT ME',
+        pass: 'EDIT ME',
+      },
     },
 
     stripe: {
       private: 'EDIT ME',
       publishable: 'EDIT ME',
-    }
+    },
   },
 
   production: {},
@@ -53,10 +58,13 @@ const config = {
       disputesBCCAddresses: ['test@example.com'],
     },
 
-    AWS: {
-      accessKeyId: '',
-      secretAccessKey: '',
-    },
+    nodemailer: mandrillTransport({
+      port: 587,
+      host: 'smtp.mandrillapp.com',
+      auth: {
+        apiKey: process.env.MANDRILL_KEY,
+      },
+    }),
 
     stripe: {
       secret: 'EDIT ME sk_test_CgWXBI8DxVg83qjkKF9EWDuB',

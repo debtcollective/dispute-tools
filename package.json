@@ -102,7 +102,7 @@
     "multer": "^1.2.0",
     "neon": "^2.0.0",
     "nodemailer": "^2.5.0",
-    "nodemailer-ses-transport": "^1.4.0",
+    "nodemailer-mandrill-transport": "^1.2.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
