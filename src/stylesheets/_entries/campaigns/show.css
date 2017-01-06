@@ -50,6 +50,10 @@
     z-index: 3;
   }
 
+  &_Input:focus {
+    box-shadow: none;
+  }
+
   &_Backdrop {
     position: fixed;
     top: 0;
