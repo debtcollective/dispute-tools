@@ -65,19 +65,22 @@ const routeMappings = RouteMappings()
 
   .namespace('/Admin', (mappings) => {
     return mappings()
-      .namespace('/Test', (map) =>
-        map()
-          .get('/', { as: 'testIndex', to: 'Test#index' }))
       .resources('/Disputes')
       .resources('/Collectives', (map) => {
         return map()
-          .resources('/KBPosts')
-          .post('/:id/ban', {
-            to: 'Collectives#ban',
+          .resources('/KBPosts');
+      })
+      .resources('/Users', (map) => {
+        return map()
+          .post('/ban', {
+            to: 'Users#ban',
+            as: 'ban',
+          })
+          .delete('/ban', {
+            to: 'Users#ban',
             as: 'ban',
           });
       })
-      .resources('/Users')
       .resources('/Campaigns', (map) => {
         return map()
           .resources('/Events')
