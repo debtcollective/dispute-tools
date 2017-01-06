@@ -173,6 +173,9 @@ const routeMappings = RouteMappings()
 
   .resources('/Events')
 
-  ;
+  .post('/donate', {
+    to: 'Home#donate',
+    as: 'donate',
+  });
 
 module.exports = routeMappings;
