@@ -51,7 +51,7 @@
 
               .CampaignEventMapWrapper.mt2.mxn3
                 iframe(width='100%' height='100%' frameborder='0' allowfullscreen
-                  src=`https://www.google.com/maps/embed/v1/place?key=${CONFIG.env().GoogleMaps.key}&q=${event.locationName}`)
+                  src=`https://www.google.com/maps/embed/v1/place?key=${CONFIG.env().GoogleMaps.key}&q=${encodeURIComponent(event.locationName)}`)
               .pt3.-caption.-fw-500.mr1
                 .flex.pb2
                   div: svg.mr1.-neutral-mid(width='12' height='12'): use(xlink:href='#svg-clock-filled')

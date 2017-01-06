@@ -72,7 +72,7 @@ block content
           p(class='-on-error -danger -caption -fw-500 mt1')
 
         iframe(id='iframeMap' width='100%' height='100%' frameborder='0' allowfullscreen
-          src=`https://www.google.com/maps/embed/v1/place?key=${CONFIG.env().GoogleMaps.key}&q=${event.locationName}`)
+          src=`https://www.google.com/maps/embed/v1/place?key=${CONFIG.env().GoogleMaps.key}&q=${encodeURIComponent(event.locationName)}`)
 
         .pt3
           button.-k-btn.btn-primary.-fw.-fw-700(type='submit') Update

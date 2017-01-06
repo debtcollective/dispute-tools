@@ -51,7 +51,7 @@ export default class Event extends Widget {
             </div>
           </div>
           <div class="CampaignEventMapWrapper mt2 mxn3">
-            <iframe width="100%" height="100%" frameborder="0" allowfullscreen="" src="https://www.google.com/maps/embed/v1/place?key=${this.googleMapsKey}&amp;q=${data.locationName}"></iframe>
+            <iframe width="100%" height="100%" frameborder="0" allowfullscreen="" src="https://www.google.com/maps/embed/v1/place?key=${this.googleMapsKey}&amp;q=${encodeURIComponent(data.locationName)}"></iframe>
           </div>
           <div class="pt3 -caption -fw-500 mr1">
             <div class="flex pb2">
