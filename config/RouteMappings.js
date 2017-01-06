@@ -176,6 +176,9 @@ const routeMappings = RouteMappings()
     as: 'DeletePost',
   })
 
-  ;
+  .post('/donate', {
+    to: 'Home#donate',
+    as: 'donate',
+  });
 
 module.exports = routeMappings;

@@ -11,6 +11,12 @@
         title: 'Browse Our Tools and Services',
         url: routeMappings.DisputeTools.url(),
       },
+      {
+        text: 'Donate',
+        title: 'Contribute to the action fund',
+        className: 'js-donate',
+        url: '#',
+      },
     ],
     loggedOut: [
       {
@@ -70,6 +76,7 @@ mixin _linkMixin(item, responsive = false)
     - _className += ' active'
   if item.url === '/dispute-tools' && currentURL.startsWith('/disputes')
     - _className += ' active'
+  - _className = _className + (item.className ? ' ' + item.className : '')
   a(href!=item.url, class=_className, title=item.title || item.text)&attributes(attributes)
     block
     | #{item.text}
@@ -108,7 +115,7 @@ mixin _defaultMenuMixin
           .table.-fh
             +_linkMixin(item)(class= item.className class='table-cell align-middle')
     else
-      li.inline-block.align-middle.-fh.px2.pl4
+      li.inline-block.align-middle.-fh.px2
         .table.-fh
           .table-cell.align-middle.Dropdown.-right.-has-dropdown(data-component-dropdown)
             button.Dropdown__head.-fw-700

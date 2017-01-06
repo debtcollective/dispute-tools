@@ -2,6 +2,7 @@
 @import './components/Footer';
 @import './components/Modal';
 @import './components/Dropdown';
+@import './components/DonationFlow';
 @import './components/Alert';
 @import './components/Button';
 @import './components/Popover';
