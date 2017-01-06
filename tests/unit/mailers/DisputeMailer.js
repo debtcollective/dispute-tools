@@ -21,7 +21,9 @@ describe('DisputeMailer', () => {
     truncate([User, Account]);
   });
 
-  xit('Should execute a sendToAdmins method', () => {
+  it('Should execute a sendToAdmins method', function () {
+    this.timeout(5000);
+
     DisputeMailer.transport(CONFIG.env().mailers.transport);
 
     admin.account = {
@@ -52,7 +54,6 @@ describe('DisputeMailer', () => {
       }, // mock the dispute status data here,
     })
     .then((response) => {
-      console.log('BUG: THIS IS CALLED BUT THE TEST IS NOT BEING DONE');
       expect(response.envelope.to[0]).to.be.equal(CONFIG.env().mailers.disputesBCCAddresses[0]);
     });
   });
