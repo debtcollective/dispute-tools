@@ -28,6 +28,12 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
           });
         }
 
+        if (user.banned) {
+          req.flash('error', 'This account is currently suspended. <a href="#">Contact</a> us if you think this is a mistake.');
+          res.redirect(CONFIG.router.helpers.login.url());
+          next();
+        }
+
         req.login(user, (err) => {
           if (err) {
             return next(err);
