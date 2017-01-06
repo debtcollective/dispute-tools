@@ -96,7 +96,7 @@ describe('Dispute', () => {
     });
 
     // FIXME: suddendly this fires an un-catched promise
-    xit('Should set a signature', () => {
+    it.only('Should set a signature', () => {
       dispute.setSignature('Example Signature');
 
       expect(dispute.data.signature).to.be.equal('Example Signature');
