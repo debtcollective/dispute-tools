@@ -20,6 +20,9 @@ module.exports = function locals(req, res, next) {
   req.role = (req.user && req.user.role) || 'Visitor';
   res.locals.US_STATES = US_STATES;
 
+  // DonationFlow
+  res.locals.STRIPE_PUBLISHABLE_KEY = CONFIG.env().stripe.publishable;
+
   if (!req.user) {
     return Collective.query().then((collectives) => {
       res.locals.COLLECTIVES = collectives;

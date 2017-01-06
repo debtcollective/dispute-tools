@@ -158,6 +158,11 @@ const routeMappings = RouteMappings()
   .delete('/campaigns/:campaign_id/posts/:id', {
     to: 'Posts#delete',
     as: 'DeletePost',
+  })
+
+  .post('/donate', {
+    to: 'Home#donate',
+    as: 'donate',
   });
 
 module.exports = routeMappings;

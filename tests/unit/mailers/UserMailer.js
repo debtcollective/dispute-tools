@@ -6,7 +6,9 @@ const path = require('path');
 const UserMailer = require(path.join(process.cwd(), 'mailers', 'UserMailer'));
 
 describe('UserMailer', () => {
-  it('Should execute a sendActivation method', () => {
+  it('Should execute a sendActivation method', function () {
+    this.timeout(5000);
+
     UserMailer.transport(CONFIG.env().mailers.transport);
 
     return UserMailer.sendActivation('success@simulator.amazonses.com', {
@@ -21,11 +23,13 @@ describe('UserMailer', () => {
       },
     })
     .then((response) => {
-      expect(response.envelope.to[0]).to.be.equal('success@simulator.amazonses.com');
+      expect(response.accepted[0].email).to.be.equal('success@simulator.amazonses.com');
     });
   });
 
-  it('Should execute a sendResetPasswordLink method', () => {
+  it('Should execute a sendResetPasswordLink method', function () {
+    this.timeout(5000);
+
     UserMailer.transport(CONFIG.env().mailers.transport);
 
     return UserMailer.sendResetPasswordLink('success@simulator.amazonses.com', {
@@ -40,7 +44,7 @@ describe('UserMailer', () => {
       },
     })
     .then((response) => {
-      expect(response.envelope.to[0]).to.be.equal('success@simulator.amazonses.com');
+      expect(response.accepted[0].email).to.be.equal('success@simulator.amazonses.com');
     });
   });
 });
