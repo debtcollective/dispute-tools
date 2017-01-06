@@ -31,6 +31,17 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       'join',
     ],
   },
+  // load kb-topics
+  {
+    before(req, res, next) {
+      KBTopic.query().then((results) => {
+        req.kbTopics = results;
+        res.locals.kbTopics = results;
+        next();
+      });
+    },
+    actions: ['show'],
+  },
   // Check if user can create campaigns
   {
     before(req, res, next) {

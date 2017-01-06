@@ -161,6 +161,15 @@ block content
                     +toolCardMixin(tool)
 
           section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
+            .p3.mt3.mx3.flex(style='background:white')
+              .flex-auto
+                input(type='text')
+              .flex-none
+                select
+                  option(value="") Topic
+                  each topic in kbTopics
+                    option(value=topic.id)= topic.title
+
             section.Masonry.pt4.mxn2
               each kbPost in collective.kbPosts
                 article.Masonry_item.px2.pb4
