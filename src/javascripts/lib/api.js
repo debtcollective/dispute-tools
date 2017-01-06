@@ -8,7 +8,7 @@
 const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
 // quick helper
-function req(opts, cb) {
+export function req(opts, cb) {
   opts.headers = opts.headers || {};
 
   opts.credentials = 'same-origin';

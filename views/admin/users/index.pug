@@ -74,7 +74,7 @@ block content
 
       tbody
         each user in users
-          tr
+          tr(class=user.banned ? '.banned' : null)
             td
               .flex.items-center
                 -
@@ -96,6 +96,21 @@ block content
               )
                 svg.-pen.block.align-top(width='15' height='15')
                   use(xlink:href='#svg-pencil')
+
+              if user.banned
+                a.inline-block.btn-clear.p1.ml2.align-top(
+                  data-method= routeMappings.Admin.Users.unban.verb
+                  href= routeMappings.Admin.Users.unban.url(user.id)
+                )
+                  svg.-pen.block.align-top(width='15' height='15')
+                    use(xlink:href='#svg-plus')
+              else
+                a.inline-block.btn-clear.p1.ml2.align-top(
+                  data-method= routeMappings.Admin.Users.ban.verb
+                  href= routeMappings.Admin.Users.ban.url(user.id)
+                )
+                  svg.-pen.block.align-top(width='15' height='15')
+                    use(xlink:href='#svg-close')
 
     include ../../mixins/pagination
     +mixinPagination(headers.current_page, headers.total_pages)(class='pt3')
