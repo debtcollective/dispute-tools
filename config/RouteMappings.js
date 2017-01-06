@@ -72,13 +72,13 @@ const routeMappings = RouteMappings()
       })
       .resources('/Users', (map) => {
         return map()
-          .post('/ban', {
+          .post('/:id/ban', {
             to: 'Users#ban',
             as: 'ban',
           })
-          .delete('/ban', {
-            to: 'Users#ban',
-            as: 'ban',
+          .delete('/:id/ban', {
+            to: 'Users#unban',
+            as: 'unban',
           });
       })
       .resources('/Campaigns', (map) => {
