@@ -1,9 +1,9 @@
-/* globals KBPost, Topic */
+/* globals KBPost, KBTopic */
 
 KBPost.relations = {
   topic: {
     type: 'HasOne',
-    relatedModel: Topic,
+    relatedModel: KBTopic,
     ownerCol: 'topic_id',
     relatedCol: 'id',
   },

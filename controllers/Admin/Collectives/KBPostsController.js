@@ -1,4 +1,4 @@
-/* global CONFIG, Class, Admin, Collective, RestfulController, KBPost, Topic */
+/* global CONFIG, Class, Admin, Collective, RestfulController, KBPost, KBTopic */
 
 const fs = require('fs-extra');
 
@@ -25,7 +25,7 @@ const KBPostsController = Class(Admin.Collectives, 'KBPostsController')
     // load topics
     {
       before(req, res, next) {
-        Topic.query()
+        KBTopic.query()
           .then((result) => {
             req.topic = result;
             res.locals.topics = result;

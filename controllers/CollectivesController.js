@@ -1,5 +1,5 @@
 /* globals CONFIG, Class, RestfulController, Collective, DisputeTool, User, Campaign, Account, CollectiveBans,
-Topic */
+KBTopic */
 
 const marked = require('marked');
 const Promise = require('bluebird');
@@ -214,7 +214,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       // attach topic
       .then((collective) => {
         return Promise.all(collective.kbPosts.map((kb) => {
-          return Topic.query().where({ id: kb.topicId })
+          return KBTopic.query().where({ id: kb.topicId })
             .then(([topic]) => {
               // decorate for views
               if (kb.file && kb.fileMeta) {
