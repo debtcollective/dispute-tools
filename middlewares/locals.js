@@ -13,6 +13,12 @@ module.exports = function locals(req, res, next) {
     }
   }
 
+  if (req.ban) {
+    req.flash('error', 'This account is currently suspended. Contact us if you think this is a mistake.');
+    res.redirect(CONFIG.router.helpers.login.url());
+    return;
+  }
+
   res.locals.routeMappings = CONFIG.router.mappings;
   res.locals.currentUser = req.user || null;
   res.locals.currentURL = req.url;
