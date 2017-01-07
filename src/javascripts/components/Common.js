@@ -38,16 +38,18 @@ export default class Common extends Widget {
     }
 
     this.appendChild(new Modal({
-     name: 'donationFlowModal',
-     element: donationFlowModal,
+      name: 'donationFlowModal',
+      element: donationFlowModal,
     })).appendChild(new DonationFlow({
-     name: 'donationFlow', element: donationFlowModal.querySelector('[data-component-donationform]'),
+      name: 'donationFlow',
+      element: donationFlowModal.querySelector('[data-component-donationform]'),
     }));
 
     // Activate DonationFlow triggers
     Array.prototype.slice.call(document.querySelectorAll('.js-donate'))
-    .forEach(trigger => trigger.addEventListener('click', () => this.donationFlowModal.activate()));
-    // Close button, BUG: does not close
-    document.querySelector('.DonationFlow .btn-close').addEventListener('click', () => this.donationFlowModal.deactivate());
+    .forEach(trigger => trigger.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      this.donationFlowModal.activate();
+    }));
   }
 }

@@ -143,6 +143,11 @@ const routeMappings = RouteMappings()
 
   .resources('/Campaigns', (map) => {
     return map()
+      .namespace('/Events', (map) =>
+        map()
+          .post('/:id/rsvp', { as: 'doRSVP' })
+          .delete('/:id/rsvp', { as: 'undoRSVP' })
+      )
       .post('/:id/join', {
         to: 'Campaigns#join',
         as: 'join',

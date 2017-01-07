@@ -1,49 +1,47 @@
-/* global Class, CONFIG, RestfulController, EventAssistant */
+/* global Class, CONFIG, RestfulController, Event, EventAssistant */
 
 const EventsController = Class('EventsController').inherits(RestfulController)({
   beforeActions: [
     {
       before: '_loadEvent',
-      actions: ['update', 'destroy'],
+      actions: ['doRSVP', 'undoRSVP'],
     },
   ],
 
+  _addRow(req, res, Model) {
+    const userId = req.user.id;
+    const eventId = req.params.id;
+
+    Model.query()
+      .where({ user_id: userId, event_id: eventId })
+      .then((results) => results.length || new Model({ userId, eventId }).save())
+      .then(() => {
+        res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.event.campaignId));
+      });
+  },
+
   prototype: {
     _loadEvent(req, res, next) {
-      const userId = req.user.id;
-      const eventId = req.params.id;
-
-      // find or create relationship
-      EventAssistant.query()
-        .where({ user_id: userId, event_id: eventId })
+      Event.query()
+        .where({ id: req.params.id })
         .then((results) => {
-          if (results.length === 0) {
-            const a = new EventAssistant({
-              user_id: userId,
-              event_id: eventId,
-            });
+          req.event = results[0];
+          next();
+        })
+        .catch(next);
+    },
 
-            a.save()
-              .then(([id]) => {
-                req.event = a;
-                req.event.id = id;
-                next();
-              });
-          } else {
-            req.event = results[0];
-            next();
-          }
+    doRSVP(req, res) {
+      EventsController._addRow(req, res, EventAssistant);
+    },
+
+    undoRSVP(req, res) {
+      EventAssistant.query()
+        .where({ user_id: req.user.id, event_id: req.params.id })
+        .then((results) => results.length && results[0].destroy())
+        .then(() => {
+          res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.event.campaignId));
         });
-    },
-
-    update(req, res) {
-      req.event.ignore = false;
-      req.event.save().then(() => res.end('+RSVP'));
-    },
-
-    destroy(req, res) {
-      req.event.ignore = true;
-      req.event.save().then(() => res.end('+RSVP'));
     },
   },
 });

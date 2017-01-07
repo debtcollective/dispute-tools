@@ -1,8 +1,3 @@
-.DonationFlow {
-  z-index: -1;
-  &[aria-hidden="false"] { z-index: 3; }
-}
-
 .PaymentMethods {
   display: none;
 
@@ -11,32 +6,9 @@
   }
 }
 
-.DonationForm {
-  width: 370px;
-  background-color: 1px dashed white;
-  height: 100%;
-  margin: 0 auto;
-  margin-top: 73px;
-  margin-top: 80px;
-}
-
-.DonationFlow .btn-close {
-  position: absolute;
-  right: 40px;
-  top: 37px;
-  &:hover { cursor: pointer; }
-}
-
-.DonationForm section > h3 { margin-bottom: 21px; }
-
-section.Donate button:hover { cursor: pointer; }
-section.Payment button:hover { cursor: pointer; }
-
 /**
 * Donate section
 */
-
-section.Donate {}
 
 .DonateOptions {
   margin-top: 24px;
@@ -210,13 +182,8 @@ section.Payment {}
 section.Payment .flex div:first-child .PaymentMethod { margin-right: 30px; }
 
 .DonationForm .btn-back {
-  color: #fff;
   cursor: pointer;
-  width: 52px;
-  height: 44px;
-  border-radius: 2px;
   background-color: #28282a;
-  float: left;
 }
 
 .DonationForm .btn-back:hover {

@@ -1,25 +1,26 @@
 extends ../../../layouts/admin.pug
 
 block title
-  | Admin/Campaigns/Events/new — The Debt Collective
+  | Admin/Campaigns/Event/edit — The Debt Collective
 
 block styles
-  link(href="/build/stylesheets/admin/campaigns/new.css" rel="stylesheet")
+  link(href='/build/stylesheets/admin/campaigns/new.css' rel='stylesheet')
 
 block content
   .px2.pb4
     .max-width-1.mx-auto
 
-      h2.pt4.pb3 New Event
+      h2.pt4.pb3 Edit Event
       h4= campaign.collective.name
       h4.pb3 Campaign: #{campaign.title}
 
       form(
         method='post'
-        action=routeMappings.Admin.Campaigns.Events.create.url(campaign.id)
+        action=routeMappings.Admin.Campaigns.Events.update.url(campaign.id, event.id)
         data-component-form
       )
         input(type='hidden' name='_csrf' value=csrfToken)
+        input(name='_method' type='hidden' value='PUT')
 
         .py1
           label.block.pb1.-fw-500 Event Name
@@ -27,16 +28,18 @@ block content
             type='text'
             name='name'
             placeholder='A short, clear name'
+            value=event.name
           )
-          p(class="-on-error -danger -caption -fw-500 mt1")
+          p(class='-on-error -danger -caption -fw-500 mt1')
 
         .py1
           label.block.pb1.-fw-500 Date
           input.-k-input.-fw.-border-neutral-mid(
             type='date'
             name='date'
+            value=new Date(event.date).toISOString().substring(0, 10)
           )
-          p(class="-on-error -danger -caption -fw-500 mt1")
+          p(class='-on-error -danger -caption -fw-500 mt1')
 
         .py1
           label.block.pb1.-fw-500 Timespan
@@ -44,6 +47,7 @@ block content
             type='text'
             name='timespan'
             placeholder='e.g: 6:30 pm - 8:30 pm PST'
+            value=event.timespan
           )
           p(class='-on-error -danger -caption -fw-500 mt1')
 
@@ -54,7 +58,8 @@ block content
             rows='6'
             placeholder='Tell people more about the event'
           )
-          p(class="-on-error -danger -caption -fw-500 mt1")
+            | #{event.description}
+          p(class='-on-error -danger -caption -fw-500 mt1')
 
         .py1
           label.block.pb1.-fw-500 Location
@@ -62,23 +67,24 @@ block content
             type='text'
             name='locationName'
             placeholder='Include a place or address'
+            value=event.locationName
           )
-          p(class="-on-error -danger -caption -fw-500 mt1")
+          p(class='-on-error -danger -caption -fw-500 mt1')
 
         iframe(id='iframeMap' width='100%' height='100%' frameborder='0' allowfullscreen
-          src=`https://www.google.com/maps/embed/v1/place?key=${CONFIG.env().GoogleMaps.key}&q=new+york`)
+          src=`https://www.google.com/maps/embed/v1/place?key=${CONFIG.env().GoogleMaps.key}&q=${encodeURIComponent(event.locationName)}`)
 
         .pt3
-          button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Create
+          button.-k-btn.btn-primary.-fw.-fw-700(type='submit') Update
 
 block scripts
   script(src=`https://maps.googleapis.com/maps/api/js?key=${CONFIG.env().GoogleMaps.key}&libraries=places`)
-  script(src='/build/javascripts/admin/campaigns/events/new.js' async)
+  script(src='/build/javascripts/admin/campaigns/events/edit.js' async)
   script.
     window.addEventListener('load', function() {
       var options = {
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
       };
-      new ViewAdminEventsNew(options);
+      new ViewAdminEventsEdit(options);
     }, true);

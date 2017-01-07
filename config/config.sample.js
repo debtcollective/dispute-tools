@@ -39,6 +39,10 @@ const config = {
       private: 'EDIT ME',
       publishable: 'EDIT ME',
     },
+
+    GoogleMaps: {
+      key: '',
+    },
   },
 
   production: {},
@@ -69,6 +73,10 @@ const config = {
     stripe: {
       secret: 'EDIT ME sk_test_CgWXBI8DxVg83qjkKF9EWDuB',
       publishable: 'EDIT ME pk_test_SLHYKUBbqjnPFTXYcNrYaNAc',
+    },
+
+    GoogleMaps: {
+      key: '',
     },
   },
 };

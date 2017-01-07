@@ -21,7 +21,7 @@
     "report": "scripty",
     "start": "scripty",
     "iron-node": "scripty",
-    "watch": "tarima -wP localhost:3000",
+    "watch": "tarima -wP localhost:3000 -p 3001",
     "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
     "post_deploy_staging": "scripty",
     "dev": "tarima -wP localhost:3000 -p 3001"
@@ -110,6 +110,7 @@
     "pisces": "0.0.15",
     "pluralize": "^3.0.0",
     "pug": "^2.0.0-beta4",
+    "query-string": "^4.2.3",
     "redis": "^2.6.2",
     "req-flash": "0.0.3",
     "request": "^2.75.0",

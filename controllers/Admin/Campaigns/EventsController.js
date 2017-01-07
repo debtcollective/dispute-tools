@@ -31,7 +31,7 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
           })
           .catch(next);
       },
-      actions: ['index', 'new'],
+      actions: ['index', 'new', 'edit', 'update'],
     },
     {
       before(req, res, next) {
@@ -92,13 +92,12 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
           })
           .catch(next);
       },
-      actions: ['update', 'delete'],
+      actions: ['edit', 'update', 'delete'],
     },
     {
       before(req, res, next) {
         EventAssistant.query()
           .include('[user.account]')
-          .where('ignore', false)
           .where('event_id', req.params.id)
           .then((results) => {
             res.locals.attendees = results;
@@ -120,7 +119,11 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
     },
 
     show(req, res) {
-      res.render('admin/campaign/events/show');
+      res.render('admin/campaigns/events/show');
+    },
+
+    edit(req, res) {
+      res.render('admin/campaigns/events/edit');
     },
 
     create(req, res) {
@@ -128,10 +131,10 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
         campaignId: req.params.campaign_id,
         userId: req.user.id,
         date: req.body.date,
+        timespan: req.body.timespan,
         name: req.body.name,
-        map: req.body.map_url,
         description: req.body.description,
-        locationName: req.body.location_name,
+        locationName: req.body.locationName,
       });
 
       event.save()
@@ -148,18 +151,16 @@ const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(Res
 
     update(req, res) {
       req.event
-        .updateAttributes({
-          date: req.body.date,
-          name: req.body.name,
-          title: req.body.title,
-          map: req.body.map_url,
-          description: req.body.description,
-          locationName: req.body.location_name,
-        }).save()
-        .then(() => res.json(req.event))
+        .updateAttributes(req.body)
+        .save()
+        .then(() => {
+          req.flash('success', 'The event has been updated.');
+          res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id));
+        })
         .catch((err) => {
           res.status = 400;
-          res.json(err.errors || { error: err });
+          res.locals.errors = err.errors || err;
+          res.render('admin/campaigns/events/edit');
         });
     },
 
