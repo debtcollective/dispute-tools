@@ -12,3 +12,15 @@
           svg.inline-block.align-top(width='60' height='72')
             use(xlink:href='#svg-no-date')
         p.-neutral-mid.-fw-500 Currently there are no scheduled events
+
+      p Current:
+      pre= JSON.stringify(event, null, 2)
+      pre= JSON.stringify(attendees, null, 2)
+
+      p Next events:
+      ul
+        each event in nextEvents
+          li
+            p: a(href='#')= event.name
+            small by: #{event.user.account.fullname}
+            p &mdash; #[a(href='#') RSVP] or #[a(href='#') ignore]

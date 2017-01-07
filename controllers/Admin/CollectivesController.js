@@ -1,4 +1,4 @@
-/* globals neonode, CONFIG, Class, Admin, RestfulController, Collective, DisputeTool, */
+/* globals neonode, CONFIG, Class, Admin, RestfulController, Collective, DisputeTool, User */
 
 global.Admin = global.Admin || {};
 

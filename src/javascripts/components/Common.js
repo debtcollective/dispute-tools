@@ -33,6 +33,10 @@ export default class Common extends Widget {
     // DonationFlow modal
     const donationFlowModal = document.querySelector('.DonationFlow');
 
+    if (!donationFlowModal) {
+      return;
+    }
+
     this.appendChild(new Modal({
      name: 'donationFlowModal',
      element: donationFlowModal,

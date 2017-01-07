@@ -1,4 +1,4 @@
-/* globals Collective, DisputeTool, User, Campaign */
+/* globals Collective, DisputeTool, User, Campaign, KBPost */
 
 Collective.relations = {
   tools: {
@@ -31,6 +31,14 @@ Collective.relations = {
   campaigns: {
     type: 'HasMany',
     relatedModel: Campaign,
+    ownerCol: 'id',
+    relatedCol: 'collective_id',
+    orderBy: ['created_at', 'DESC'],
+  },
+
+  kbPosts: {
+    type: 'HasMany',
+    relatedModel: KBPost,
     ownerCol: 'id',
     relatedCol: 'collective_id',
     orderBy: ['created_at', 'DESC'],

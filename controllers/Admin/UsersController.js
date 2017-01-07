@@ -251,6 +251,39 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
         res.render('admin/users/edit.pug');
       });
     },
+
+    ban(req, res) {
+      if (req.user.id === req.params.id) {
+        res.status(400).json({ error: 'You cannot ban yourself!' });
+        return;
+      }
+
+      User.query().where({ id: req.params.id })
+      .then(([firstUser]) => {
+        firstUser.banned = true;
+        return firstUser.save();
+      })
+      .then(() => {
+        res.status(200).json({ banned: true });
+      })
+      .catch((error) => {
+        res.status(500).json({ error: error.message || error.toString() });
+      });
+    },
+
+    unban(req, res) {
+      User.query().where({ id: req.params.id })
+      .then(([firstUser]) => {
+        firstUser.banned = false;
+        return firstUser.save();
+      })
+      .then(() => {
+        res.status(200).json({ banned: false });
+      })
+      .catch((error) => {
+        res.status(500).json({ error: error.message || error.toString() });
+      });
+    },
   },
 });
 

@@ -66,10 +66,24 @@ const routeMappings = RouteMappings()
   .namespace('/Admin', (mappings) => {
     return mappings()
       .resources('/Disputes')
-      .resources('/Collectives')
-      .resources('/Users')
+      .resources('/Collectives', (map) => {
+        return map()
+          .resources('/KBPosts');
+      })
+      .resources('/Users', (map) => {
+        return map()
+          .post('/:id/ban', {
+            to: 'Users#ban',
+            as: 'ban',
+          })
+          .delete('/:id/ban', {
+            to: 'Users#unban',
+            as: 'unban',
+          });
+      })
       .resources('/Campaigns', (map) => {
         return map()
+          .resources('/Events')
           .post('/:id/activate', {
             to: 'Campaigns#activate',
             as: 'activate',
@@ -159,6 +173,8 @@ const routeMappings = RouteMappings()
     to: 'Posts#delete',
     as: 'DeletePost',
   })
+
+  .resources('/Events')
 
   .post('/donate', {
     to: 'Home#donate',
