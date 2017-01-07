@@ -161,14 +161,15 @@ block content
                     +toolCardMixin(tool)
 
           section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
-            .p3.mt3.mx3.flex(style='background:white')
+            form.mt3.mx3.flex(action=routeMappings.Collectives.show.url(collective.id) + '#resources')
               .flex-auto
-                input(type='text')
+                input(type='text' name='search')
               .flex-none
-                select
+                select(name='topicId')
                   option(value="") Topic
                   each topic in kbTopics
                     option(value=topic.id)= topic.title
+                button(type='submit') Search
 
             section.Masonry.pt4.mxn2
               each kbPost in collective.kbPosts
