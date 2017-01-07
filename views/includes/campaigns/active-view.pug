@@ -92,12 +92,6 @@
               span.-ttu.-caption.-fw-500 #{event.attendees.length}
                 span.-neutral-mid.pl1 attendees
 
-            if canCreateEvents
-              .pt2
-                a.-fw-500(href=routeMappings.Admin.Campaigns.Events.edit.url(campaign.id, event.id))
-                  svg(width='15' height='15'): use(xlink:href='#svg-pencil')
-                  span.pl1 Edit event
-
           else
             .flex.items-center
               div.pr2
@@ -106,8 +100,11 @@
               p.-neutral-mid.-fw-500 Currently there are no scheduled events
 
           if canCreateEvents
-              .mt3.pt2.-bw2.-border-neutral-mid-x.border-top.center
-                a.block.-fw-700(href=routeMappings.Admin.Campaigns.Events.new.url(campaign.id))
+              .mt3.pt2.-bw2.-border-neutral-mid-x.border-top.clearfix
+                a.-k-btn.-fw-700(href=routeMappings.Admin.Campaigns.Events.edit.url(campaign.id, event.id))
+                  svg(width='15' height='15'): use(xlink:href='#svg-pencil')
+                  span.pl1 Edit event
+                a.right.-k-btn.btn-primary.-fw-700(href=routeMappings.Admin.Campaigns.Events.new.url(campaign.id))
                   svg(width='10' height='10'): use(xlink:href='#svg-plus')
                   span.pl1 Create new event
 
