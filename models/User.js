@@ -55,6 +55,7 @@ const User = Class('User').inherits(Krypton.Model)({
     'activationToken',
     'resetPasswordToken',
     'role',
+    'banned',
     'createdAt',
     'updatedAt',
   ],

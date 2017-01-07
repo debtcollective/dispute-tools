@@ -1,4 +1,4 @@
-/* globals neonode, CONFIG, Class, Admin, RestfulController, Collective, DisputeTool, CollectiveBans, User */
+/* globals neonode, CONFIG, Class, Admin, RestfulController, Collective, DisputeTool, User */
 
 global.Admin = global.Admin || {};
 
@@ -143,34 +143,6 @@ Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(Res
       .then(() => {
         req.flash('success', 'The collective has been updated.');
         res.redirect(CONFIG.router.helpers.Admin.Collectives.url());
-      })
-      .catch(next);
-    },
-    ban(req, res, next) {
-      Collective.transaction((trx) => {
-        return CollectiveBans.query()
-          .transacting(trx)
-          .insert({
-            user_id: req.body.user_id,
-            collective_id: req.collective.id,
-          })
-        .then(() => {
-          return req.collective
-            .transacting(trx)
-            .save();
-        })
-        .then(trx.commit)
-        .catch(trx.rollback);
-      })
-      .then(() => {
-        return User.query().where({ id: req.body.user_id })
-          .then((result) => {
-            req.bannedUser = result;
-          });
-      })
-      .then(() => {
-        req.flash('success', `You have successfully added a ban on ${req.bannedUser.name}`);
-        res.redirect(CONFIG.router.helpers.Collectives.show.url(req.params.id));
       })
       .catch(next);
     },

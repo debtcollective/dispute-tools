@@ -5,13 +5,14 @@ module.exports = {
   ],
   User: [
     [false],
+    ['index', true],
   ],
   CollectiveManager: [
     ['index', true],
-    ['show', 'edit', 'update', (req) => {
-      return User.knex().table('CollectiveAdmins')
+    ['create', 'delete', (req) =>
+      User.knex().table('CollectiveAdmins')
         .where({
-          collective_id: req.params.id,
+          collective_id: req.post.collectiveId,
           user_id: req.user.id,
         })
         .then((results) => {
@@ -20,8 +21,8 @@ module.exports = {
           }
 
           return true;
-        });
-    }],
+        }),
+    ],
   ],
   Admin: [
     [true],
