@@ -28,18 +28,6 @@ Collective.relations = {
     },
   },
 
-  bans: {
-    type: 'HasManyThrough',
-    relatedModel: User,
-    ownerCol: 'id',
-    relatedCol: 'id',
-    trough: {
-      tableName: 'CollectiveBans',
-      ownerCol: 'collective_id',
-      relatedCol: 'user_id',
-    },
-  },
-
   campaigns: {
     type: 'HasMany',
     relatedModel: Campaign,

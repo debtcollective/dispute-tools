@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="47px" height="48px" viewBox="0 0 47 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>C13DDFA3-3DBE-4FAB-8BF8-D0138C5AD1D6</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="The-Debt-Collective" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="::-Donation---error" transform="translate(-578.000000, -199.000000)">
+            <g id="Group" transform="translate(415.000000, 200.000000)">
+                <g id="::-icon-(credit-card)" transform="translate(161.000000, 0.000000)">
+                    <polygon id="content-area" points="0 0 48 0 48 48 0 48"></polygon>
+                    <path d="M40,8 L8,8 C5.78,8 4.02,9.78 4.02,12 L4,36 C4,38.22 5.78,40 8,40 L40,40 C42.22,40 44,38.22 44,36 L44,12 C44,9.78 42.22,8 40,8 L40,8 Z M40,36 L8,36 L8,24 L40,24 L40,36 L40,36 Z M40,16 L8,16 L8,12 L40,12 L40,16 L40,16 Z" id="icon-(card)" fill="#F04C34"></path>
+                    <path d="M3.5,3.5 L44.7310563,44.7310563" id="Line" stroke="#000000" stroke-width="2" stroke-linecap="square"></path>
+                    <path d="M5,2 L46,44" id="Line" stroke="#F04C34" stroke-width="3" stroke-linecap="square"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

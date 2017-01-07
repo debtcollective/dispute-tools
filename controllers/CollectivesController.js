@@ -102,29 +102,6 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
     },
     actions: ['show'],
   },
-  //Check if user is banned
-  {
-    before(req, res, next) {
-      if (!req.user) {
-        return next();
-      }
-
-      return CollectiveBans.query()
-        .where({
-          user_id: req.user.id,
-          collective_id: req.params.id,
-        })
-      .then((result) => {
-        if (result.length > 0) {
-          req.flash('warning', 'You are banned from this collective.');
-          res.redirect(CONFIG.router.helpers.Collectives.url());
-        } else {
-          next();
-        }
-      });
-    },
-    actions: ['show']
-  },
   // Attach accounts to users
   {
     before(req, res, next) {
@@ -184,27 +161,20 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       const knex = Collective.knex();
 
       return Promise.each(req.collectives, (collective) => {
-        return CollectiveBans.query()
+        collective.userBelongsToCollective = false;
+
+        return knex.table('UsersCollectives')
           .where({
-            collective_id: collective.id,
             user_id: req.user.id,
-          }).then((results) => {
-            collective.userBelongsToCollective = false;
-            collective.userIsBannedFromCollective = results.length > 0;
+            collective_id: collective.id,
+          })
+        .then((_results) => {
+          collective.userBelongsToCollective = false;
 
-            return collective.userIsBannedFromCollective || knex.table('UsersCollectives')
-              .where({
-                user_id: req.user.id,
-                collective_id: collective.id,
-              })
-            .then((_results) => {
-              collective.userBelongsToCollective = false;
-
-              if (_results.length > 0) {
-                collective.userBelongsToCollective = true;
-              }
-            });
-          });
+          if (_results.length > 0) {
+            collective.userBelongsToCollective = true;
+          }
+        });
       })
       .then(() => {
         return next();
