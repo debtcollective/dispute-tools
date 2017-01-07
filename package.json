@@ -21,7 +21,7 @@
     "report": "scripty",
     "start": "scripty",
     "iron-node": "scripty",
-    "watch": "tarima -wP localhost:3000",
+    "watch": "tarima -wP localhost:3000 -p 3001",
     "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
     "post_deploy_staging": "scripty",
     "dev": "tarima -wP localhost:3000 -p 3001"
