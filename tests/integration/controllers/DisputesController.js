@@ -168,7 +168,9 @@ describe('DisputesController', () => {
   });
 
 
-  it('Should allow a User to view index', (done) => {
+  it('Should allow a User to view index', function (done) {
+    this.timeout(10000);
+
     agent.post(`${url}${urls.login.url()}`)
       .set('Accept', 'text/html')
       .send({
