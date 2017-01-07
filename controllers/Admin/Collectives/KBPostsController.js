@@ -84,6 +84,14 @@ const KBPostsController = Class(Admin.Collectives, 'KBPostsController')
           res.render('admin/collectives/kbposts/new');
         });
     },
+
+    destroy(req, res) {
+      KBPost.query().where('id', req.params.id)
+        .then(([found]) => found && found.destroy())
+        .then(() => {
+          res.status(200).end();
+        });
+    },
   },
 });
 

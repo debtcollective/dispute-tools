@@ -191,6 +191,11 @@ block content
                     if kbPost.fixedExt
                       .KBPost--action= kbPost.fixedExt
 
+                    a(
+                      href=routeMappings.Admin.Collectives.KBPosts.destroy.url(collective.id, kbPost.id)
+                      data-method=routeMappings.Admin.Collectives.KBPosts.destroy.verb
+                    ) Delete
+
               article.Masonry_item.px2.mb4
                 a.CreateNewItemBtn(
                   href=routeMappings.Admin.Collectives.KBPosts.new.url(collective.id)
