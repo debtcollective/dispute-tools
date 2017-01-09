@@ -13,7 +13,7 @@ cp ./../shared/knexfile.js ./
 cp ./../shared/config.js ./config/
 ln -sf /home/deploy/apps/tdc/shared/uploads /home/deploy/apps/tdc/current/public/
 
-npm i -g knex
+npm i -g knex pm2
 knex migrate:latest
 
 rm -f build/index.json
