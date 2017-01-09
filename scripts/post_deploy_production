@@ -4,13 +4,18 @@ export NODE_ENV=production
 
 set -e
 
-source ~/.profile
+. ~/.nvm/nvm.sh
+
 nvm use v6
 npm install --silent
+
 cp ./../shared/knexfile.js ./
 cp ./../shared/config.js ./config/
 ln -sf /home/deploy/apps/tdc/shared/uploads /home/deploy/apps/tdc/current/public/
+
 knex migrate:latest
+
 rm -f build/index.json
 npm run build
+
 pm2 startOrRestart ecosystem.json --env production
