@@ -9,7 +9,8 @@ cp ./../shared/knexfile.js ./
 cp ./../shared/config.js ./config/
 ln -sf /home/deploy/apps/tdc/shared/uploads /home/deploy/apps/tdc/current/public/
 
-yarn db:migrate -- --env production
 yarn build
+
+NODE_ENV=production yarn db:migrate
 
 pm2 startOrRestart ecosystem.json --env production
