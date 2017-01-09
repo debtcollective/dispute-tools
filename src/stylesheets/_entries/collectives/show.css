@@ -5,6 +5,7 @@
 @import '../../components/dispute-tools/ToolCard';
 @import '../../components/AvatarList';
 @import '../../components/KBPost';
+@import '../../components/SearchPanel';
 
 /* page utils */
 .-bg-neutral-light {background-color: var(--k-color-palette-neutral-light)}

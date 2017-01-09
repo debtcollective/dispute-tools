@@ -161,40 +161,67 @@ block content
                     +toolCardMixin(tool)
 
           section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
-            form.mt3.mx3.flex(action=routeMappings.Collectives.show.url(collective.id) + '#resources')
-              .flex-auto
-                input(type='text' name='search')
-              .flex-none
-                select(name='topicId')
-                  option(value="") Topic
-                  each topic in kbTopics
-                    option(value=topic.id)= topic.title
-                button(type='submit') Search
+            div.SearchPanel
+              form.flex(action=routeMappings.Collectives.show.url(collective.id) + '#resources')
+                .flex-auto.pl4.pr1
+                  input(type='text' name='search' placeholder='Search articles and resources relevant to this collective...')
+                .flex-none
+                  select(name='topicId')
+                    option(value="") Topic
+                    each topic in kbTopics
+                      option(value=topic.id)= topic.title
+                  button(type='submit') Search
 
             section.Masonry.pt4.mxn2
               each kbPost in collective.kbPosts
                 article.Masonry_item.px2.pb4
                   .KBPost.p3
-                    .KBPost--symbol
+                    div(class=`KBPost--symbol -${kbPost.type}`)
+
                       if kbPost.fixedURL && kbPost.shortURL
-                        a(href=kbPost.fixedURL)= kbPost.shortURL
+                        a(href=kbPost.fixedURL rel='noopener noreferrer')= kbPost.shortURL
 
                       if kbPost.fixedWeight
-                        if kbPost.isImage
+                        if kbPost.type === 'image' || kbPost.isImage
                           .KBPost--size!= `${kbPost.fileMeta.original.width}&times;${kbPost.fileMeta.original.height}`
                         else
                           .KBPost--size= kbPost.fixedWeight
 
                     .KBPost--caption= kbPost.name
-                    .KBPost--category= kbPost.topic
+                    .KBPost--category
+                      span= kbPost.topic
 
-                    if kbPost.fixedExt
-                      .KBPost--action= kbPost.fixedExt
+                    if kbPost.type === 'image' || kbPost.type === 'file'
+                      a.KBPost--action(href=kbPost.fixedURL rel='noopener noreferrer')=kbPost.fixedExt
 
-                    a(
+                    if kbPost.type === 'link'
+                        a.KBPost--action.-mini(href=kbPost.fixedURL rel='noopener noreferrer')
+                          svg.-sw7.-stroke-dark(width='20' height='20')
+                            use(xlink:href='#svg-chain')
+
+                    if kbPost.type === 'video' || kbPost.type === 'audio'
+                      a.KBPost--action.-mini(href=kbPost.fixedURL rel='noopener noreferrer')
+                        svg.-sw7.-stroke-dark(width='14' height='14' style='margin-top:5px')
+                          use(xlink:href='#svg-play')
+
+                    if kbPost.type === 'link' || kbPost.type === 'video'
+                      .Share
+                        span Spread
+                        div
+                          a.-twitter(href='https://twitter.com/0debtzone' rel='noopener noreferrer')
+                            svg.-sw7(width='14' height='14')
+                              use(xlink:href='#svg-twitter')
+                          a.-facebook(href='https://www.facebook.com/DebtCollective' rel='noopener noreferrer')
+                            svg.-sw7(width='14' height='14')
+                              use(xlink:href='#svg-facebook')
+                          a.-email(href='mailto:no-one@snai1mai1.com?subject=Share')
+                            svg.-sw7(width='14' height='14')
+                              use(xlink:href='#svg-email')
+
+                    a.-delete(
                       href=routeMappings.Admin.Collectives.KBPosts.destroy.url(collective.id, kbPost.id)
                       data-method=routeMappings.Admin.Collectives.KBPosts.destroy.verb
-                    ) Delete
+                    ) &times;
 
               article.Masonry_item.px2.mb4
                 a.CreateNewItemBtn(

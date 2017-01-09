@@ -291,6 +291,12 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
             kb.isAudio = !!(kb.data.url && kb.data.url.match(/mp3|wav|ogg/));
 
             kb.topic = topic.title;
+
+            // Type class name
+            if (kb.isAudio) kb.type = 'audio';
+            if (kb.isVideo) kb.type = 'video';
+            if (kb.isImage) kb.type = 'image';
+            if (kb.isFile) kb.type = 'file';
           });
       })).then(() => next()).catch(next);
     },

@@ -1,3 +1,118 @@
 .KBPost {
-  border: 1px solid blue;
+  position: relative;
+  border-radius: 1px;
+  background-color: #28282a;
+  width: 270px;
 }
+
+.KBPost--symbol {
+  width: 20px;
+  height: 20px;
+  background-image: url(/svg/type-link.svg);
+  background-size: 20px;
+  background-repeat: no-repeat;
+}
+
+.KBPost--symbol a, .KBPost--size {
+  opacity: 0.8;
+  font-size: 12px;
+  line-height: 1.58;
+  color: #fff;
+  margin-left: 30px;
+  vertical-align: top;
+}
+
+.KBPost--symbol.-image { background-image: url(/svg/type-image.svg); }
+.KBPost--symbol.-video { background-image: url(/svg/type-video.svg); }
+.KBPost--symbol.-file { background-image: url(/svg/type-file.svg); }
+
+.KBPost--caption {
+  font-size: 21px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.33;
+  color: #fff;
+  margin-top: 25px;
+  margin-bottom: .25em;
+}
+
+.KBPost--category {
+  font-size: 12px;
+  font-weight: bold;
+  color: #785616;
+}
+
+.KBPost--category span {
+  border-radius: 2px;
+  background-color: #fefac0;
+  padding: 3px 8px;
+}
+
+.KBPost--action {
+  display: block;
+  height: 35px;
+  border-radius: 2px;
+  background-color: #fff;
+  margin-top: 40px;
+  padding-top: 7px;
+  color: #f04c34;
+  text-align: center;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.KBPost--action:hover {
+  cursor: pointer;
+}
+
+.KBPost--action svg {
+  display: block;
+  margin: 0 auto;
+}
+
+.KBPost--action.-mini {
+  width: 50px;
+  margin: 40px auto;
+  margin-bottom: 0;
+}
+
+.Share {
+  width: 160px;
+  min-height: 20px;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 16px;
+}
+
+.Share span {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.42;
+  text-align: center;
+  color: #ffffff;
+  text-align: center;
+}
+.Share .twitter { background-image: url(/svg/twitter.svg);  }
+.Share .facebook { background-image: url(/svg/facebook.svg); }
+.Share .email { background-image: url(/svg/email.svg);  }
+.Share .-twitter, .Share .-facebook, .Share .-email {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  width: 30%;
+  margin-top: 10px;
+  color: white;
+}
+.Share .-twitter:hover, .Share .-facebook:hover, .Share .-email:hover { color: rgb(242, 103, 82); }
+
+.KBPost .-delete {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+}
+.KBPost .-delete:hover { color: rgb(242, 103, 82); }
