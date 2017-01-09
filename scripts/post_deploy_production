@@ -5,6 +5,7 @@ export NODE_ENV=production
 set -e
 
 source ~/.profile
+nvm use v6
 npm install --silent
 cp ./../shared/knexfile.js ./
 cp ./../shared/config.js ./config/
