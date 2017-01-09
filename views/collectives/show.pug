@@ -57,7 +57,7 @@ block content
             .Masonry.mxn2.pt4
               each campaign, index in collective.campaigns
                 article.Masonry_item.px2.pb4
-                  a(href=routeMappings.Campaigns.show.url(campaign.id))
+                  a.block(href=routeMappings.Campaigns.show.url(campaign.id))
                     h3.-neutral-dark.pb1= campaign.title
 
                     unless campaign.published
@@ -85,12 +85,9 @@ block content
                       p.pb2.center.-fw-700.-neutral-dark We are the #{campaign.title} #{campaign.userCount}
 
                     if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
-                      .border-top.py2
-                        a.inline-block.btn-clear.p1.align-top(
-                          href= routeMappings.Admin.Campaigns.edit.url(campaign.id)
-                        )
-                          svg.-pen.inline-block.align-middle(width='15' height='15')
-                            use(xlink:href='#svg-pencil')
+                      .border-top
+                        a.block.center.py2.-fw-700(href= routeMappings.Admin.Campaigns.edit.url(campaign.id))
+                          svg.-pen.inline-block.align-middle(width='15' height='15'): use(xlink:href='#svg-pencil')
                           span.inline-block.align-middle.pl1 Edit campaign
                   .border-bottom.-bw5
 
