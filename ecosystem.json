@@ -30,7 +30,7 @@
     },
 
     production : {
-      use: "deploy",
+      user: "deploy",
       // TODO: move to new.debtcollective.org (then www.)
       host: '35.167.37.20',
       ref  : "origin/fix-production-setup",
