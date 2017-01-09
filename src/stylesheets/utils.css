@@ -38,6 +38,7 @@
 .error + .-on-error {display: block}
 
 .error > .-k-input,
+.error > .-k-textarea,
 .error.-k-select {
   color: var(--k-color-palette-danger);
   background-color: color(var(--k-color-palette-danger) tint(80))

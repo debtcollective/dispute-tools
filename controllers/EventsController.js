@@ -1,10 +1,10 @@
-/* global Class, CONFIG, RestfulController, Event, EventIgnore, EventAssistant */
+/* global Class, CONFIG, RestfulController, Event, EventAssistant */
 
 const EventsController = Class('EventsController').inherits(RestfulController)({
   beforeActions: [
     {
       before: '_loadEvent',
-      actions: ['ignore', 'doRSVP', 'undoRSVP'],
+      actions: ['doRSVP', 'undoRSVP'],
     },
   ],
 
@@ -29,10 +29,6 @@ const EventsController = Class('EventsController').inherits(RestfulController)({
           next();
         })
         .catch(next);
-    },
-
-    ignore(req, res) {
-      EventsController._addRow(req, res, EventIgnore);
     },
 
     doRSVP(req, res) {

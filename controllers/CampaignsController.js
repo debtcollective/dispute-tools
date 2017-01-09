@@ -1,5 +1,5 @@
 /* global Class, CONFIG, RestfulController, Campaign, NotFoundError, Account, Topic,
-User, Event, EventIgnore, EventAssistant */
+User, Event, EventAssistant */
 const marked = require('marked');
 const Promise = require('bluebird');
 
@@ -8,6 +8,41 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
     {
       before: '_loadCampaign',
       actions: ['show', 'join'],
+    },
+    // check if user can create events
+    {
+      before(req, res, next) {
+        req.canCreateEvents = false;
+        res.locals.canCreateEvents = false;
+
+        if (!req.user) {
+          return next();
+        }
+
+        if (req.user.role === 'Admin') {
+          req.canCreateEvents = true;
+          res.locals.canCreateEvents = true;
+
+          return next();
+        }
+
+        return User.knex()
+          .table('CollectiveAdmins')
+          .where({
+            collective_id: req.campaign.collective.id,
+            user_id: req.user.id,
+          })
+          .then(results => {
+            if (results.length !== 0) {
+              req.canCreateEvents = true;
+              res.locals.canCreateEvents = true;
+            }
+
+            return next();
+          })
+          .catch(next);
+      },
+      actions: ['show'],
     },
     {
       before(req, res, next) {
@@ -87,15 +122,8 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
           req.campaign = campaign[0];
           res.locals.campaign = campaign[0];
 
-          // load ignored events first
-          const getIgnoredEvents = () => EventIgnore.query()
-            .where('user_id', req.user.id)
-            .then(results => results.map(r => r.eventId));
-
-          // load related events
-          const getRemainingEvents = (ignoredIds) => Event.query()
+          return Event.query()
             .include('[user.account]')
-            .whereNotIn('id', ignoredIds)
             .where('campaign_id', req.params.id)
             .where('date', '>=', new Date().toISOString().slice(0, 10))
             // mark events according
@@ -120,12 +148,6 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
 
                   next();
                 }));
-
-          if (!req.user) {
-            return getRemainingEvents([]);
-          }
-
-          return getIgnoredEvents().then(getRemainingEvents);
         })
         .catch(next);
     },

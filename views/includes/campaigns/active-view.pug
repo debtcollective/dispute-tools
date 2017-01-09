@@ -6,53 +6,144 @@
       include public-feed
 
   .col.md-col-5.col-12.px2
-    .-bg-white.p3
-      .flex.items-center
-        div.pr2
-          svg.inline-block.align-top(width='60' height='72')
-            use(xlink:href='#svg-no-date')
+    .-bg-white.overflow-hidden.mb3
+      .CampaignSidebar(data-component='campaign-sidebar')
+        .CampaignSidebarCarouselItem.py2.px3.inline-block.align-top(aria-hidden='false')
+          if event || nextEvents.length
+            .flex.pb2
+              .flex-auto.flex.items-center
+                if event
+                  p.-fw-700.-ttu.-caption Next Move
+              .flex-auto.right-align
+                if nextEvents.length
+                  button.-k-btn.-xs.-primary.-ttu.btn-clear.-fw-700(data-sidebar-next-btn)
+                    span.pr1.align-top Event List
+                    svg(width='12' height='12'): use(xlink:href='#svg-arrow-forward')
 
-      if event
-        h3= event.name
-        p= event.url
-        p= event.description
-        p= event.locationName
+            .CampaignEvent
+              div
+                .CampaignEvent_date
+                  - var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                  - var date = new Date(event.date)
+                  h4.-ff-sec= date.getDate()
+                  p.-fw-700.-ff-sec.-ttu= months[date.getMonth()]
+              .CampaignEvent_content
+                h4= event.name
 
+            .pt2
+              if event.description
+                .ReadMore(data-collapsed-height='60px')
+                  div(
+                    id='nm-description'
+                    data-readmore-content
+                    aria-expanded='false'
+                    style='max-height: 60px;'
+                  )
+                    each line in event.description.split(/\n/g)
+                      if line.trim()
+                        p.pb1.-caption.-fw-500= line
+                  .center
+                    a.-caption.inline-block.-fw-500(
+                      href='#'
+                      data-readmore-toggler
+                      aria-controls='nm-description'
+                    ) Read more
 
-        if currentUser
-          if event.imAttendee
-            form.inline-block(action=routeMappings.Campaigns.Events.undoRSVP.url(event.id) method='post')
-              input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.undoRSVP.verb)
-              input(type='hidden' name='_destroy' value=1)
-              input(type='hidden' name='_csrf' value=csrfToken)
-              button.-k-btn(type='submit') Cancel RSVP
+              .CampaignEventMapWrapper.mt2.mxn3
+                iframe(width='100%' height='100%' frameborder='0' allowfullscreen
+                  src=`https://www.google.com/maps/embed/v1/place?key=${CONFIG.env().GoogleMaps.key}&q=${encodeURIComponent(event.locationName)}`)
+              .pt3.-caption.-fw-500.mr1
+                .flex.pb2
+                  div: svg.mr1.-neutral-mid(width='12' height='12'): use(xlink:href='#svg-clock-filled')
+                  p= event.timespan
+                .flex.pb2
+                  div: svg.mr1.-neutral-mid(width='10' height='14'): use(xlink:href='#svg-pin')
+                  p= event.locationName
+
+            if event.attendees.length
+              .pt2
+                ul.AvatarList
+                  each attendee in event.attendees
+                    - var _avatarUrl = '/images/profile/placeholder-small.png';
+                    if (attendee.user.account.image.exists('smallRedSquare'))
+                      - _avatarUrl = attendee.user.account.image.url('smallRedSquare')
+                    li.mb1
+                      a.block(
+                        href=routeMappings.Users.show.url(attendee.user.id)
+                        title=`${attendee.user.account.fullname}’s profile`
+                      ): img(src=_avatarUrl alt=attendee.user.account.fullname width='50' height='50')
+
+            .pt2
+              if currentUser
+                if event.imAttendee
+                  form.inline-block.mr2(action=routeMappings.Campaigns.Events.undoRSVP.url(event.id) method='post')
+                    input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.undoRSVP.verb)
+                    input(type='hidden' name='_destroy' value=1)
+                    input(type='hidden' name='_csrf' value=csrfToken)
+                    button.-k-btn.btn-dark.-sm.-fw-700(type='submit') Not going
+                else
+                  form.inline-block.mr2(action=routeMappings.Campaigns.Events.doRSVP.url(event.id) method='post')
+                    input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.doRSVP.verb)
+                    input(type='hidden' name='_csrf' value=csrfToken)
+                    button.-k-btn.btn-primary.-sm.-fw-700(type='submit') Attend
+              else
+                button.js-login-link.-k-btn.btn-primary.-sm.-fw-700.mr2 Attend
+
+              span.-ttu.-caption.-fw-500 #{event.attendees.length}
+                span.-neutral-mid.pl1 attendees
+
           else
-            form.inline-block(action=routeMappings.Campaigns.Events.doRSVP.url(event.id) method='post')
-              input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.doRSVP.verb)
-              input(type='hidden' name='_csrf' value=csrfToken)
-              button.-k-btn.btn-primary(type='submit') RSVP
+            .flex.items-center
+              div.pr2
+                svg.inline-block.align-top(width='60' height='72')
+                  use(xlink:href='#svg-no-date')
+              p.-neutral-mid.-fw-500 Currently there are no scheduled events
 
-            span.inline-block.px1 or
+          if canCreateEvents
+              .mt3.pt2.-bw2.-border-neutral-mid-x.border-top.clearfix
+                a.-k-btn.-fw-700(href=routeMappings.Admin.Campaigns.Events.edit.url(campaign.id, event.id))
+                  svg(width='15' height='15'): use(xlink:href='#svg-pencil')
+                  span.pl1 Edit event
+                a.right.-k-btn.btn-primary.-fw-700(href=routeMappings.Admin.Campaigns.Events.new.url(campaign.id))
+                  svg(width='10' height='10'): use(xlink:href='#svg-plus')
+                  span.pl1 Create new event
 
-            form.inline-block(action=routeMappings.Campaigns.Events.ignore.url(event.id) method='post')
-              input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.ignore.verb)
-              input(type='hidden' name='_csrf' value=csrfToken)
-              button.-k-btn(type='submit') Ignore
+        if nextEvents.length
+          .CampaignSidebarCarouselItem.inline-block.align-top(aria-hidden='true')
+            .pt2.px3
+              .pb2.mxn2
+                button.-k-btn.-xs.-primary.-ttu.btn-clear.-fw-700(data-sidebar-prev-btn)
+                  svg(width='12' height='12'): use(xlink:href='#svg-arrow-backward')
+                  span.pl1.align-top Back
 
-        h5 Attendees:
+              p.-fw-700.-ttu.-caption Event List
 
-        if event.attendees.length
-          each attendee in event.attendees
-            p= attendee.user.account.fullname
-        else
-          p Currently there are no attendees for this event
+            .CampaignEventList
+              each event in nextEvents
+                .CampaignEvent
+                  div
+                    .CampaignEvent_date
+                      - var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                      - var date = new Date(event.date)
+                      h4.-ff-sec= date.getDate()
+                      p.-fw-700.-ff-sec.-ttu= months[date.getMonth()]
+                  .CampaignEvent_content
+                    p.-fw-700: a(href='#')= event.name
+                    .flex.py1.-caption
+                      div: svg.mr1.-neutral-mid(width='12' height='12'): use(xlink:href='#svg-clock-filled')
+                      p= event.timespan
+                    p.-caption.-ttu.-fw-500 #{event.attendees.length} Attendees
 
-      else
-        p.-neutral-mid.-fw-500 Currently there are no scheduled events
+                    if canCreateEvents
+                      .pt2
+                        a.-fw-500(href=routeMappings.Admin.Campaigns.Events.edit.url(campaign.id, event.id))
+                          svg(width='15' height='15'): use(xlink:href='#svg-pencil')
+                          span.pl1 Edit event
 
-      p Next events:
-      ul
-        each event in nextEvents
-          li
-            p: a(href='#')= event.name
-            small by: #{event.user.account.fullname}
+          .CampaignSidebarCarouselItem.py2.px3.inline-block.align-top(aria-hidden='true')
+            .pb2.mxn2
+              button.-k-btn.-xs.-primary.-ttu.btn-clear.-fw-700(data-sidebar-prev-btn)
+                svg(width='12' height='12'): use(xlink:href='#svg-arrow-backward')
+                span.pl1.align-top Event List
+            div(data-component-event)
+

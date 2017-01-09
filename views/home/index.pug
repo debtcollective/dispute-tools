@@ -43,7 +43,10 @@ block content
       .flex.absolute.top-0.left-0.right-0.bottom-0.items-center.justify-center.px2
         .py4
           .max-width-2.mx-auto
-            h4.center Together we are creating an organization to fight back and challenge the people and institutions that are squeezing us dry. #[a.js-signup-link.underlined-link(href=routeMappings.signup.url() title="Join us"): span(data-hover="Join us.") Join us.]
+            h4.center
+              | Together we are creating an organization to fight back and challenge the people and institutions that are squeezing us dry.&nbsp;
+              unless currentUser
+                a.js-signup-link.underlined-link(href=routeMappings.signup.url() title="Join us"): span(data-hover="Join us.") Join us.
 
 block scripts
   script(src="/build/javascripts/home/index.js" async)

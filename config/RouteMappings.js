@@ -149,7 +149,6 @@ const routeMappings = RouteMappings()
     return map()
       .namespace('/Events', (map) =>
         map()
-          .post('/:id/ignore', { as: 'ignore' })
           .post('/:id/rsvp', { as: 'doRSVP' })
           .delete('/:id/rsvp', { as: 'undoRSVP' })
       )
