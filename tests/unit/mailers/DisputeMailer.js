@@ -54,7 +54,9 @@ describe('DisputeMailer', () => {
       }, // mock the dispute status data here,
     })
     .then((response) => {
-      expect(response.accepted[0].email).to.be.equal(CONFIG.env().mailers.disputesBCCAddresses[0]);
+      const acceptedOrRejected = response.accepted[0] || response.rejected[0];
+
+      expect(acceptedOrRejected.email).to.be.equal(CONFIG.env().mailers.disputesBCCAddresses[0]);
     });
   });
 });
