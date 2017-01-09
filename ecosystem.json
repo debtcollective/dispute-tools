@@ -36,7 +36,7 @@
       ref  : "origin/fix-production-setup",
       repo : "git@gitlab.com:empathia/debtcollective.git",
       path : "/home/deploy/apps/tdc",
-      "post-deploy" : "npm run post_deploy_production"
+      "post-deploy" : "./scripts/post_deploy_production"
     }
   }
 }
