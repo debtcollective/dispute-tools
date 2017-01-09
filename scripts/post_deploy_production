@@ -7,16 +7,16 @@ set -e
 . ~/.nvm/nvm.sh
 
 nvm use v6
-npm install --silent
+npm i
 
 cp ./../shared/knexfile.js ./
 cp ./../shared/config.js ./config/
 ln -sf /home/deploy/apps/tdc/shared/uploads /home/deploy/apps/tdc/current/public/
 
-npm i -g knex pm2
-knex migrate:latest
+#npm i -g knex pm2
+#knex migrate:latest
 
-rm -f build/index.json
-npm run build
+#rm -f build/index.json
+#npm run build
 
 pm2 startOrRestart ecosystem.json --env production
