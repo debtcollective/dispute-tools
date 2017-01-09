@@ -1,23 +1,15 @@
 #!/usr/bin/env bash
 
-export NODE_ENV=production
-
-set -e
-
 . ~/.nvm/nvm.sh
 
 nvm use v6
-npm i
+yarn
 
 cp ./../shared/knexfile.js ./
 cp ./../shared/config.js ./config/
 ln -sf /home/deploy/apps/tdc/shared/uploads /home/deploy/apps/tdc/current/public/
 
-npm i -g knex pm2 svg-sprite
-knex migrate:latest
-knex seed:run
-
-rm -f build/index.json
-npm run build
+yarn db:migrate -- --env production
+yarn build
 
 pm2 startOrRestart ecosystem.json --env production
