@@ -36,6 +36,10 @@ const middlewares = [
     path: 'middlewares/CSRFError.js',
   },
   {
+    name: 'Flash Messages',
+    path: 'middlewares/flashMessages.js',
+  },
+  {
     name: 'Passport Initialize',
     path: 'middlewares/PassportInit.js',
   },
@@ -44,8 +48,8 @@ const middlewares = [
     path: 'middlewares/PassportSession.js',
   },
   {
-    name: 'Flash Messages',
-    path: 'middlewares/flashMessages.js',
+    name: 'Bancheck',
+    path: 'middlewares/checkIfBan.js',
   },
   {
     name: 'Locals',
