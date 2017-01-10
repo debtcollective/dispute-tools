@@ -18,13 +18,16 @@
     "utils:knexreset": "scripty",
     "migrate:dev": "knex migrate:latest --env development",
     "migrate:seed:dev": "knex seed:run --env development",
+    "db:migrate": "knex migrate:latest && knex seed:run",
     "report": "scripty",
     "start": "scripty",
     "iron-node": "scripty",
     "watch": "scripty",
     "dev": "tarima -wP localhost:3000 -p 3001",
     "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
-    "post_deploy_staging": "scripty"
+    "post_deploy_staging": "scripty",
+    "post_deploy_production": "./scripts/post_deploy_production",
+    "dev": "tarima -wP localhost:3000 -p 3001"
   },
   "tarima": {
     "bundle": true,
