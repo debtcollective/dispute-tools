@@ -15,5 +15,5 @@ exports.up = (knex) => {
 };
 
 exports.down = (knex) => {
-  return knex.schema.dropTable('Camplaings');
+  return knex.schema.dropTable('Campaings');
 };

@@ -12,10 +12,7 @@ const PAGE_SIZE = 50;
 
 /* global Admin */
 global.Admin = global.Admin || {};
-global.Admin.Campaigns = global.Admin.Campaigns
-  || Class(Admin, 'Campaign').inherits(Campaign)({
-    resourceName: 'Admin.Campaigns',
-  });
+global.Admin.Campaigns = global.Admin.Campaigns || {};
 
 const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(RestfulController)({
   beforeActions: [

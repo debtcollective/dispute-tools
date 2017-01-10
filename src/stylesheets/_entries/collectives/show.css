@@ -4,6 +4,8 @@
 @import '../../components/dispute-tools/TextModal';
 @import '../../components/dispute-tools/ToolCard';
 @import '../../components/AvatarList';
+@import '../../components/KBPost';
+@import '../../components/SearchPanel';
 
 /* page utils */
 .-bg-neutral-light {background-color: var(--k-color-palette-neutral-light)}
@@ -30,7 +32,7 @@
 }
 
 /* campaigns tab */
-.CreateNewCampaingBtn {
+.CreateNewItemBtn {
   display: block;
   position: relative;
   padding-top: 94%;
@@ -56,7 +58,7 @@
   &:hover {
     background-color: color(var(--k-color-palette-neutral-mid) alpha(-90%));
 
-    & .CreateNewCampaingBtn--Plus {
+    & .CreateNewItemBtn--Plus {
       transform: scale(1.1);
     }
   }

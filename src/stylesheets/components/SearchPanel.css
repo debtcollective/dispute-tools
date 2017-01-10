@@ -1,0 +1,44 @@
+
+.SearchPanel {
+  height: 70px;
+  background-color: #ffffff;
+  margin-top: 40px;
+  padding: 15px 19px;
+  background-image: url(/svg/search.svg);
+  background-repeat: no-repeat;
+  background-position: 38px;
+}
+
+.SearchPanel input {
+  height: 40px;
+  border: none;
+  width: 100%;
+  opacity: 0.8;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.25;
+  color: #9b9b9b;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.SearchPanel input:focus {
+  opacity: 1;
+}
+
+.SearchPanel select {
+  width: 170px;
+  height: 40px;
+  border-radius: 2px;
+  background-color: #f9f2bf;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.25;
+  color: #785616;
+  padding: 9px 13px;
+}
+
+.SearchPanel button {
+  display: none;
+}

@@ -21,7 +21,8 @@
     "report": "scripty",
     "start": "scripty",
     "iron-node": "scripty",
-    "watch": "tarima -wP localhost:3000 -p 3001",
+    "watch": "scripty",
+    "dev": "tarima -wP localhost:3000 -p 3001",
     "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
     "post_deploy_staging": "scripty",
     "dev": "tarima -wP localhost:3000 -p 3001"
@@ -143,7 +144,7 @@
     "postcss": "^5.1.1",
     "postcss-cssnext": "^2.7.0",
     "postcss-import": "^8.1.2",
-    "rollup": "^0.34.7",
+    "rollup": "^0.40.2",
     "rollup-plugin-buble": "^0.12.1",
     "rollup-plugin-commonjs": "^5.0.4",
     "rollup-plugin-node-resolve": "^2.0.0",
