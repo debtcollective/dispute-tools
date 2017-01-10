@@ -7,6 +7,10 @@
 
 @import '../../lib/kabinett/components/loader';
 
+@import '../../components/Masonry';
+@import '../../components/KBPost';
+@import '../../components/SearchPanel';
+
 /* page utils */
 .-neutral-dark {color: var(--k-color-palette-neutral-dark)}
 .-bg-neutral-light {background-color: var(--k-color-palette-neutral-light)}

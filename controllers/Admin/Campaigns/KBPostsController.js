@@ -1,21 +1,22 @@
-/* global CONFIG, Class, Admin, Collective, RestfulController, KBPost, KBTopic */
+/* global CONFIG, Class, Admin, Campaign, RestfulController, KBPost, KBTopic */
 
 const fs = require('fs-extra');
 
 global.Admin = global.Admin || {};
-global.Admin.Collectives = global.Admin.Collectives || {};
+global.Admin.Campaigns = global.Admin.Campaigns || {};
 
-const KBPostsController = Class(Admin.Collectives, 'KBPostsController')
+const KBPostsController = Class(Admin.Campaigns, 'KBPostsController')
 .inherits(RestfulController)({
   beforeActions: [
-    // collective
+    // campaign
     {
       before(req, res, next) {
-        Collective.query()
-          .where('id', req.params.collective_id)
-          .then(([collective]) => {
-            req.collective = collective;
-            res.locals.collective = collective;
+        Campaign.query()
+          .where('id', req.params.campaign_id)
+          .include('collective')
+          .then(([campaign]) => {
+            req.campaign = campaign;
+            res.locals.campaign = campaign;
             next();
           })
           .catch(next);
@@ -39,7 +40,7 @@ const KBPostsController = Class(Admin.Collectives, 'KBPostsController')
 
   prototype: {
     new(req, res) {
-      res.render('admin/collectives/kbposts/new');
+      res.render('admin/campaigns/kbposts/new');
     },
 
     create(req, res) {
@@ -49,7 +50,7 @@ const KBPostsController = Class(Admin.Collectives, 'KBPostsController')
           url: req.body.url,
         },
         topicId: req.body.topic_id,
-        collectiveId: req.params.collective_id,
+        campaignId: req.params.campaign_id,
       });
 
       kbpost.save()
@@ -73,7 +74,7 @@ const KBPostsController = Class(Admin.Collectives, 'KBPostsController')
         .then(() => {
           req.flash('success', 'The resource has been created.');
           res.redirect(
-            `${CONFIG.router.helpers.Collectives.show.url(req.params.collective_id)}#resources`
+            `${CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id)}#resources`
           );
         })
         .catch((err) => {
@@ -81,12 +82,14 @@ const KBPostsController = Class(Admin.Collectives, 'KBPostsController')
 
           res.locals.errors = err.errors || err;
 
-          res.render('admin/collectives/kbposts/new');
+          res.render('admin/campaigns/kbposts/new');
         });
     },
 
     destroy(req, res) {
-      KBPost.query().where('id', req.params.id)
+      KBPost.query()
+        .where('id', req.params.id)
+        .where('campaign_id', req.params.campaign_id)
         .then(([found]) => found && found.destroy())
         .then(() => {
           res.status(200).end();
