@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 
-export NODE_ENV=staging
+. ~/.nvm/nvm.sh
 
-set -e
+nvm use v6
+yarn
 
-source ~/.profile
-npm install --silent
 cp ./../shared/knexfile.js ./
 cp ./../shared/config.js ./config/
 ln -sf /home/deploy/apps/tdc/shared/uploads /home/deploy/apps/tdc/current/public/
-knex migrate:latest
-rm -f build/index.json
-npm run build
+
+yarn build
+
+NODE_ENV=staging yarn db:migrate
+
 pm2 startOrRestart ecosystem.json --env staging
