@@ -2,3 +2,18 @@
 
 /* view utils */
 .-border-neutral-mid {border-color: var(--k-color-palette-neutral-mid)}
+
+.CampaignStatusLabel {
+  position: relative;
+
+  &Bg {
+    border-radius: 2px;
+    background-color: white;
+    border: 1px solid var(--k-color-palette-neutral-mid);
+    z-index: -1;
+  }
+
+  & [type='checkbox']:checked + .CampaignStatusLabelBg {
+    background-color: var(--k-color-palette-accent);
+  }
+}

@@ -114,10 +114,10 @@
 }
 
 .Campaign_IntroBox--active {
-  background-image: url('/images/campaigns/intro-bg.jpg');
-  background-position: 0 30px;
+  background-image: url('/images/campaigns/intro-bg.png');
+  background-position: -100px 30px;
   background-repeat: no-repeat;
-  background-size: 244px 401px;
+  background-size: 398px;
 }
 
 .Campaign_description {

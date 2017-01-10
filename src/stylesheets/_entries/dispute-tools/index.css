@@ -3,8 +3,8 @@
 @import '../../components/dispute-tools/ToolCard';
 
 .Tools__intro {
-  margin-top: 0;
-  border-bottom: 3px solid color(var(--k-color-palette-neutral-light) alpha(20%));
+  /* margin-top: 0; */
+  /* border-bottom: 3px solid color(var(--k-color-palette-neutral-light) alpha(20%)); */
 }
 
 .Tools__title {

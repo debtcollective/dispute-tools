@@ -2,17 +2,8 @@ import Widget from '../lib/widget';
 import ResponsiveMenu from './ResponsiveMenu';
 import Modal from './Modal';
 import Dropdown from './Dropdown';
-import { APP } from '../lib/constants';
 import UsersNewForm from './users/NewForm';
 import SessionsNewForm from './sessions/NewForm';
-
-const SCROLL_MAX = 200;
-
-function normalize(value, minx, maxx, min, max) {
-  const a = (maxx - minx) / (max - min);
-  const b = maxx - (a * max);
-  return (a * value) + b;
-}
 
 export default class Header extends Widget {
   constructor(config) {
@@ -28,9 +19,6 @@ export default class Header extends Widget {
 
     this._bindEvents();
 
-    const _scrollPosition = APP.SCROLLING_BOX.scrollTop;
-    APP.SCROLLING_BOX.scrollTop = (_scrollPosition - 1);
-
     if (config.currentUser) {
       return this._handleLoggedUser();
     }
@@ -43,19 +31,8 @@ export default class Header extends Widget {
   }
 
   _bindEvents() {
-    if (!this.isAdmin) {
-      this._handleScrollRef = this._handleScroll.bind(this);
-      window.addEventListener('scroll', this._handleScrollRef);
-    }
-
     this._handleHamburgerMenuClickRef = this._handleHamburgerMenuClick.bind(this);
     this.hamburgerMenuElement.addEventListener('click', this._handleHamburgerMenuClickRef);
-  }
-
-  _handleScroll(ev) {
-    let p = ev.target.defaultView.scrollY;
-    if (p > SCROLL_MAX) p = SCROLL_MAX;
-    this.bg.style.opacity = normalize(p, 0, 1, 0, SCROLL_MAX);
   }
 
   _handleHamburgerMenuClick() {
@@ -63,9 +40,9 @@ export default class Header extends Widget {
   }
 
   _handleLoggedUser() {
-    [].slice.call(this.element.querySelectorAll('[data-component-dropdown]'), 0).forEach(d => {
-      return new Dropdown({ element: d });
-    });
+    [].slice.call(this.element.querySelectorAll('[data-component-dropdown]'), 0).forEach(d =>
+      new Dropdown({ element: d })
+    );
   }
 
   _handleVisitorUser() {
