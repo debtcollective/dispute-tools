@@ -44,12 +44,12 @@ const middlewares = [
     path: 'middlewares/PassportSession.js',
   },
   {
-    name: 'Locals',
-    path: 'middlewares/locals.js',
-  },
-  {
     name: 'Flash Messages',
     path: 'middlewares/flashMessages.js',
+  },
+  {
+    name: 'Locals',
+    path: 'middlewares/locals.js',
   },
   {
     name: 'RestifyACL',
