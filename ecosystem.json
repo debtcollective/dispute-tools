@@ -32,8 +32,8 @@
     production : {
       user: "deploy",
       // TODO: move to new.debtcollective.org (then www.)
-      host: '35.167.37.20',
-      ref  : "origin/fix-production-setup",
+      host: 'new.debtcollective.org',
+      ref  : "origin/sprint-2016.09",
       repo : "git@gitlab.com:empathia/debtcollective.git",
       path : "/home/deploy/apps/tdc",
       "post-deploy" : "./scripts/post_deploy_production"
