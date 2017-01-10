@@ -1,7 +1,6 @@
 .-is-admin {
   & .Header__bg {
     background-color: var(--k-color);
-    opacity: 1;
   }
 
   & .Header__link,
@@ -27,7 +26,6 @@
     z-index: -1;
     transform: translate3d(0,0,0);
     background-color: var(--k-background-color);
-    opacity: 0;
   }
 
   & .Dropdown__label {max-width: 150px}
