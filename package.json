@@ -24,8 +24,7 @@
     "watch": "scripty",
     "dev": "tarima -wP localhost:3000 -p 3001",
     "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
-    "post_deploy_staging": "scripty",
-    "dev": "tarima -wP localhost:3000 -p 3001"
+    "post_deploy_staging": "scripty"
   },
   "tarima": {
     "bundle": true,
@@ -70,6 +69,7 @@
     }
   },
   "dependencies": {
+    "airbrake": "^1.2.0",
     "archiver": "^1.1.0",
     "autosize": "^3.0.18",
     "aws-sdk": "^2.4.14",

@@ -64,6 +64,10 @@ const middlewares = [
     path: 'middlewares/Router.js',
   },
   {
+    name: 'airbrake',
+    path: 'middlewares/airbrake.js',
+  },
+  {
     name: 'Error',
     path: 'middlewares/Error.js',
   },

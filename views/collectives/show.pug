@@ -260,5 +260,9 @@ block scripts
         disputeIds: !{JSON.stringify(disputeIds)},
         collectiveName: !{JSON.stringify(collective.name)},
       };
-      new ViewCollectivesShow(options);
+      try {
+        new ViewCollectivesShow(options);
+      } catch(e) {
+        airbreak.notify(e);
+      }
     }, true);

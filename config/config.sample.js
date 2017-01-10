@@ -40,6 +40,11 @@ const config = {
       publishable: 'EDIT ME',
     },
 
+    airbreak: {
+      projectId: 0,
+      projectKey: ''
+    },
+
     GoogleMaps: {
       key: '',
     },
@@ -73,6 +78,11 @@ const config = {
     stripe: {
       secret: 'EDIT ME sk_test_CgWXBI8DxVg83qjkKF9EWDuB',
       publishable: 'EDIT ME pk_test_SLHYKUBbqjnPFTXYcNrYaNAc',
+    },
+
+    airbreak: {
+      projectId: 135528, // EDIT ME
+      projectKey: 'EDIT ME 74cbcb7063226d3344639d737d04bdc2'
     },
 
     GoogleMaps: {
