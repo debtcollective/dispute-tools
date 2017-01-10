@@ -168,6 +168,10 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
         })
         .catch(next);
     },
+
+    uploadFiles(req, res) {
+      res.end('OK');
+    },
   },
 });
 
