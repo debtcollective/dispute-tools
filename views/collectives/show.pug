@@ -44,7 +44,7 @@ block content
             | Campaigns
             span.right.-caption.-neutral-mid= collective.campaigns.length
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-manifest' aria-selected='false')
-            | Manifest
+            | Proclamation
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-dispute-tools' aria-selected='false')
             | Dispute tools
             span.right.-caption.-neutral-mid= collective.tools.length
@@ -57,7 +57,7 @@ block content
             .Masonry.mxn2.pt4
               each campaign, index in collective.campaigns
                 article.Masonry_item.px2.pb4
-                  a(href=routeMappings.Campaigns.show.url(campaign.id))
+                  a.block(href=routeMappings.Campaigns.show.url(campaign.id))
                     h3.-neutral-dark.pb1= campaign.title
 
                     unless campaign.published
@@ -85,12 +85,9 @@ block content
                       p.pb2.center.-fw-700.-neutral-dark We are the #{campaign.title} #{campaign.userCount}
 
                     if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
-                      .border-top.py2
-                        a.inline-block.btn-clear.p1.align-top(
-                          href= routeMappings.Admin.Campaigns.edit.url(campaign.id)
-                        )
-                          svg.-pen.inline-block.align-middle(width='15' height='15')
-                            use(xlink:href='#svg-pencil')
+                      .border-top
+                        a.block.center.py2.-fw-700(href= routeMappings.Admin.Campaigns.edit.url(campaign.id))
+                          svg.-pen.inline-block.align-middle(width='15' height='15'): use(xlink:href='#svg-pencil')
                           span.inline-block.align-middle.pl1 Edit campaign
                   .border-bottom.-bw5
 
@@ -106,48 +103,52 @@ block content
                     | Create new campaign
                   .border-bottom.-bw5
 
-          section#panel-manifest.TabPane(role='tabpanel' aria-hidden='true')
-            .clearfix.pt4
-              .col.md-col-4.col-12 &nbsp;
-              .col.md-col-7.col-12
-                h1 Manifest
-                .Collective_Manifest--text!= collective.manifest
+          section#panel-manifest.TabPane.Collective_Manifest(role='tabpanel' aria-hidden='true')
+            .pt4
+              .clearfix
+                .col.md-col-1.col-12.sm-hide.xs-hide &nbsp;
+                .col.md-col-11.col-12
+                  h1.Collective_Manifest--title.-ell Proclamation
+              .clearfix
+                .col.md-col-4.col-12.sm-hide.xs-hide &nbsp;
+                .col.md-col-7.col-12
+                  .Collective_Manifest--text!= collective.manifest
 
-            .pt3.pb2
-              ul.AvatarList
-                each user in collective.users
-                  li.mb1
-                    - var _avatarUrl = '/images/profile/placeholder-small.png';
-                    if (user.account.image.exists('smallGrayscale'))
-                      - _avatarUrl = user.account.image.url('smallGrayscale')
-                    a.block(
-                      href=routeMappings.Users.show.url(user.id)
-                      title=`${user.account.fullname}’s profile`
-                    ): img(src=_avatarUrl alt=user.account.fullname width='50' height='50')
+              .pt3.pb2
+                ul.AvatarList
+                  each user in collective.users
+                    li.mb1
+                      - var _avatarUrl = '/images/profile/placeholder-small.png';
+                      if (user.account.image.exists('smallGrayscale'))
+                        - _avatarUrl = user.account.image.url('smallGrayscale')
+                      a.block(
+                        href=routeMappings.Users.show.url(user.id)
+                        title=`${user.account.fullname}’s profile`
+                      ): img(src=_avatarUrl alt=user.account.fullname width='50' height='50')
 
-            .clearfix
-              .col.md-col-4.col-12 &nbsp;
-              .col.md-col-7.col-12
-                p.pb2.-ff-sec.-fw-700= collective.goalTitle
+              .clearfix
+                .col.md-col-4.col-12 &nbsp;
+                .col.md-col-7.col-12
+                  p.pb2.-ff-sec.-fw-700= collective.goalTitle
 
-                if collective.goal
-                  div.border.p3.mb4(style='border-width: 8px')
-                    h4= collective.goal
+                  if collective.goal
+                    div.border.p3.mb4(style='border-width: 8px')
+                      h4= collective.goal
 
-                p.pb2.-fw-700.center.-neutral-dark Spread
-                ul.list-reset.center.pb4
-                  li.inline-block
-                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank' data-share-url-twitter)
-                      svg(width='13' height='11'): use(xlink:href='#svg-twitter')
-                      .sr-only Share on Twitter
-                  li.inline-block.mx2
-                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank' data-share-url-facebook)
-                      svg(width='6' height='13'): use(xlink:href='#svg-facebook')
-                      .sr-only Share on Facebook
-                  li.inline-block
-                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' data-share-url-email)
-                      svg(width='14' height='11'): use(xlink:href='#svg-email')
-                      .sr-only Share by Email
+                  p.pb2.-fw-700.center.-neutral-dark Spread
+                  ul.list-reset.center.pb4
+                    li.inline-block
+                      a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank' data-share-url-twitter)
+                        svg(width='13' height='11'): use(xlink:href='#svg-twitter')
+                        .sr-only Share on Twitter
+                    li.inline-block.mx2
+                      a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank' data-share-url-facebook)
+                        svg(width='6' height='13'): use(xlink:href='#svg-facebook')
+                        .sr-only Share on Facebook
+                    li.inline-block
+                      a.Button--circle.-dark(href='#' rel='noopener noreferrer' data-share-url-email)
+                        svg(width='14' height='11'): use(xlink:href='#svg-email')
+                        .sr-only Share by Email
 
           section#panel-dispute-tools.TabPane(role='tabpanel' aria-hidden='true')
             .mx4.pt3.pb4
