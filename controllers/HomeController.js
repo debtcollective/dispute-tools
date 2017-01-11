@@ -2,7 +2,7 @@
 
 const stripe = require('stripe');
 
-const stripeClient = stripe(CONFIG.env().stripe.private);
+const stripeClient = stripe(CONFIG.env().stripe.secret);
 
 const HomeController = Class('HomeController').inherits(BaseController)({
   prototype: {
