@@ -23,6 +23,7 @@ const config = {
 
     // Mailer
     mailers: {
+      contactEmail: 'EDIT ME',
       senderEmail: 'no-reply@debtcollective.org',
       disputesBCCAddresses: ['test@example.com'],
     },
@@ -67,6 +68,7 @@ const config = {
 
     // Mailer
     mailers: {
+      contactEmail: 'EDIT ME',
       senderEmail: 'no-reply@debtcollective.org',
       disputesBCCAddresses: ['test@example.com'],
     },

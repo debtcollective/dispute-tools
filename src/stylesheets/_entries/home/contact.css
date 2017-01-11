@@ -1,0 +1,11 @@
+@import '../../base';
+
+.ContactWrapper {
+  max-width: 570px;
+  margin: 0 auto;
+  padding-bottom: 110px;
+}
+
+.ContactWrapper textarea {
+  height: 160px;
+}
