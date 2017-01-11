@@ -16,6 +16,15 @@ const routeMappings = RouteMappings()
     as: 'about',
   })
 
+  .get('/contact', {
+    to: 'Home#contact',
+    as: 'contact',
+  })
+
+  .post('/contact', {
+    to: 'Home#sendContact',
+  })
+
   .get('/tools-and-services/tool', {
     to: 'Home#tool',
     as: 'tool',
