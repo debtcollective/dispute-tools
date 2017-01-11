@@ -90,12 +90,12 @@ block content
 
               if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
                 article.Masonry_item.px2.mb4
-                  a.CreateNewItemBtn(
+                  a.GridButton(
                     href=routeMappings.Admin.Campaigns.new.url()
                     title='Create new campaign'
                   )
                     .flex.items-center.justify-center.absolute.top-0.right-0.bottom-0.left-0
-                      .CreateNewItemBtn--Plus +
+                      .GridButton--Plus +
                   a.block.center.py2.-fw-700(href=routeMappings.Admin.Campaigns.new.url())
                     | Create new campaign
                   .border-bottom.-bw5
