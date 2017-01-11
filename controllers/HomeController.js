@@ -2,7 +2,7 @@
 
 const stripe = require('stripe');
 
-const stripeClient = stripe(CONFIG.env().stripe.private);
+const stripeClient = stripe(CONFIG.env().stripe.secret);
 
 const HomeController = Class('HomeController').inherits(BaseController)({
   prototype: {
@@ -38,6 +38,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
 
       return stripeClient.charges.create(options, (error, charge) => {
         if (error) {
+          console.log(error)
           res.status(500).json({ error: { message: 'Something went wrong, please try again.' } });
         } else {
           res.status(200).json({ success: charge.captured && charge.paid && charge.status === 'succeeded' });
