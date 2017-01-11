@@ -35,6 +35,10 @@ const config = {
       },
     },
 
+    loggly: {
+      apiKey: 'EDIT ME',
+    },
+
     stripe: {
       private: 'EDIT ME',
       publishable: 'EDIT ME',
@@ -69,6 +73,10 @@ const config = {
         apiKey: process.env.MANDRILL_KEY,
       },
     }),
+
+    loggly: {
+      apiKey: 'EDIT ME',
+    },
 
     stripe: {
       secret: 'EDIT ME sk_test_CgWXBI8DxVg83qjkKF9EWDuB',
