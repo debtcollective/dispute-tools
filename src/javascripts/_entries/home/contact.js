@@ -1,4 +1,3 @@
-import WebFont from 'webfontloader';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
 import Button from '../../components/Button';
@@ -34,12 +33,6 @@ class ViewHomeContact extends NodeSupport {
       currentUser: config.currentUser,
       currentURL: config.currentURL,
     }));
-
-    WebFont.load({
-      google: {
-        families: ['Space Mono'],
-      },
-    });
 
     this.formElement.addEventListener('submit', (ev) => {
       this.Button.disable();

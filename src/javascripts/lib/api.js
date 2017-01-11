@@ -1,4 +1,4 @@
-/* global fetch, FormData */
+/* global fetch, FormData, airbrake */
 
 /**
  * Reference that holds the csrf token for the server to accept our requests.
@@ -10,6 +10,9 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 // quick helper
 export function req(opts, cb) {
   opts.headers = opts.headers || {};
+
+  // Capture errors with airbrake
+  cb = airbrake.wrap(cb);
 
   opts.credentials = 'same-origin';
   opts.headers.Accept = 'application/json';
