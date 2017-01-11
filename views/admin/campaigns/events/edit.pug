@@ -86,5 +86,9 @@ block scripts
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
       };
-      new ViewAdminEventsEdit(options);
+      try {
+        new ViewAdminEventsEdit(options);
+      } catch(e) {
+        airbreak.notify(e);
+      }
     }, true);

@@ -135,5 +135,9 @@ block scripts
         disputes: !{JSON.stringify(disputes)},
         isAdmin: true,
       };
-      new ViewAdminDisputesIndex(options);
+      try {
+        new ViewAdminDisputesIndex(options);
+      } catch(e) {
+        airbreak.notify(e);
+      }
     }, true);

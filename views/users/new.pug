@@ -18,5 +18,9 @@ block scripts
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
       };
-      new ViewUsersNew(options);
+      try {
+        new ViewUsersNew(options);
+      } catch(e) {
+        airbreak.notify(e);
+      }
     }, true);
