@@ -8,7 +8,7 @@ const KBPost = Class('KBPost').inherits(Krypton.Model).includes(Krypton.Attachme
 
   tableName: 'KBPosts',
   validations: {
-    collectiveId: ['required'],
+    campaignId: ['required'],
     topicId: ['required'],
     name: ['required'],
   },
@@ -17,7 +17,7 @@ const KBPost = Class('KBPost').inherits(Krypton.Model).includes(Krypton.Attachme
     'id',
     'name',
     'topicId',
-    'collectiveId',
+    'campaignId',
     'data',
     'filePath',
     'fileMeta',

@@ -18,7 +18,7 @@
     "utils:knexreset": "scripty",
     "migrate:dev": "knex migrate:latest --env development",
     "migrate:seed:dev": "knex seed:run --env development",
-    "db:migrate": "knex migrate:latest && knex seed:run",
+    "db:migrate": "knex migrate:latest",
     "report": "scripty",
     "start": "scripty",
     "iron-node": "scripty",

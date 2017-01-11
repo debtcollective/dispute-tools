@@ -6,13 +6,10 @@ import Common from '../../components/Common';
 import Tabs from '../../components/Tabs';
 import CollectiveStickyTabs from '../../components/collectives/StickyTabs';
 import Modal from '../../components/Modal';
-import Method from '../../components/Method';
 
 class ViewCollectivesShow extends NodeSupport {
   constructor(config) {
     super();
-
-    Method.init();
 
     this.appendChild(new Common({
       name: 'Common',

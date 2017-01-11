@@ -66,10 +66,7 @@ const routeMappings = RouteMappings()
   .namespace('/Admin', (mappings) => {
     return mappings()
       .resources('/Disputes')
-      .resources('/Collectives', (map) => {
-        return map()
-          .resources('/KBPosts');
-      })
+      .resources('/Collectives')
       .resources('/Users', (map) => {
         return map()
           .post('/:id/ban', {
@@ -83,6 +80,7 @@ const routeMappings = RouteMappings()
       })
       .resources('/Campaigns', (map) => {
         return map()
+          .resources('/KBPosts')
           .resources('/Events')
           .post('/:id/activate', {
             to: 'Campaigns#activate',

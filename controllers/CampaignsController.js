@@ -1,5 +1,9 @@
 /* global Class, CONFIG, RestfulController, Campaign, NotFoundError, Account, Topic,
-User, Event, EventAssistant */
+User, Event, EventAssistant, KBTopic, KBPost */
+
+const path = require('path');
+const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
+
 const marked = require('marked');
 const Promise = require('bluebird');
 
@@ -8,6 +12,25 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
     {
       before: '_loadCampaign',
       actions: ['show', 'join'],
+    },
+    {
+      before: '_getFiles',
+      actions: [ 'show' ],
+    },
+    {
+      before: '_decorateFiles',
+      actions: [ 'show' ],
+    },
+    // load kb-topics
+    {
+      before(req, res, next) {
+        KBTopic.query().then((results) => {
+          req.kbTopics = results;
+          res.locals.kbTopics = results;
+          next();
+        });
+      },
+      actions: ['show'],
     },
     // check if user can create events
     {
@@ -106,6 +129,73 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
   ],
 
   prototype: {
+    _getFiles(req, res, next) {
+      const query = KBPost.query();
+
+      Promise.coroutine(function* restfulapi() {
+        if (req.query.search) {
+          query.whereIn('id', yield KBPost.search(req.query.search));
+        }
+
+        if (req.query.topicId) {
+          query.where('topic_id', req.query.topicId);
+        }
+
+        query.where('campaign_id', req.params.id);
+      })()
+      .then(() => {
+        RESTfulAPI.createMiddleware({
+          queryBuilder: query,
+          order: {
+            default: '-created_at',
+            allowedFields: [
+              'created_at',
+              'updated_at',
+            ],
+          },
+          paginate: {
+            pageSize: 50,
+          },
+        })(req, res, next);
+      })
+      .catch(next);
+    },
+
+    _decorateFiles(req, res, next) {
+      // attach topic
+      res.locals.campaign.kbPosts = res.locals.results;
+      req.campaign.kbPosts = res.locals.results;
+
+      delete res.locals.results;
+
+      return Promise.all(req.campaign.kbPosts.map((kb) => {
+        return KBTopic.query().where({ id: kb.topicId })
+          .then(([topic]) => {
+            // decorate for views
+            if (kb.file && kb.fileMeta) {
+              kb.fixedExt = kb.fileMeta.original.format || kb.fileMeta.original.ext.toUpperCase();
+              kb.fixedWeight = `${kb.fileMeta.original.size / 1000}KB`;
+
+              kb.isImage = ['JPG', 'JPEG', 'PNG'].indexOf(kb.fileMeta.original.format) > -1;
+            }
+
+            kb.fixedURL = kb.data.url && kb.data.url.indexOf('://') === -1 ? `http://${kb.data.url}` : kb.data.url;
+            kb.shortURL = kb.fixedURL && kb.fixedURL.match(/:\/\/([^/]+)/)[1];
+
+            kb.isVideo = !!(kb.data.url && kb.data.url.match(/youtube|vimeo|mp4|ogv|webm|flv/));
+            kb.isAudio = !!(kb.data.url && kb.data.url.match(/mp3|wav|ogg/));
+
+            kb.topic = topic.title;
+
+            // Type class name
+            if (kb.isAudio) kb.type = 'audio';
+            if (kb.isVideo) kb.type = 'video';
+            if (kb.isImage) kb.type = 'image';
+            if (kb.isFile) kb.type = 'file';
+          });
+      })).then(() => next()).catch(next);
+    },
+
     _loadCampaign(req, res, next) {
       Campaign.query()
         .where('id', req.params.id)

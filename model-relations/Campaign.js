@@ -1,4 +1,4 @@
-/* globals Campaign, Collective, Post, User */
+/* globals Campaign, Collective, Post, User, KBPost */
 
 Campaign.relations = {
   collective: {
@@ -21,5 +21,13 @@ Campaign.relations = {
     filters: {
       limit: 50,
     },
+  },
+
+  kbPosts: {
+    type: 'HasMany',
+    relatedModel: KBPost,
+    ownerCol: 'id',
+    relatedCol: 'campaign_id',
+    orderBy: ['created_at', 'DESC'],
   },
 };
