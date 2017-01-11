@@ -44,20 +44,20 @@ block content
             | Campaigns
             span.right.-caption.-neutral-mid= collective.campaigns.length
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-manifest' aria-selected='false')
-            | Manifest
+            | Proclamation
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-dispute-tools' aria-selected='false')
             | Dispute tools
             span.right.-caption.-neutral-mid= collective.tools.length
-          li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-resources' aria-selected='false')
+          li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-resources' aria-selected='false' data-keep-params)
             | Resources
-            span.right.-caption.-neutral-mid 9
+            span.right.-caption.-neutral-mid #{collective.kbPosts.length}
 
         .Collective_TabPanes
           section#panel-campaigns.TabPane(role='tabpanel' aria-hidden='true')
             .Masonry.mxn2.pt4
               each campaign, index in collective.campaigns
                 article.Masonry_item.px2.pb4
-                  a(href=routeMappings.Campaigns.show.url(campaign.id))
+                  a.block(href=routeMappings.Campaigns.show.url(campaign.id))
                     h3.-neutral-dark.pb1= campaign.title
 
                     unless campaign.published
@@ -85,69 +85,70 @@ block content
                       p.pb2.center.-fw-700.-neutral-dark We are the #{campaign.title} #{campaign.userCount}
 
                     if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
-                      .border-top.py2
-                        a.inline-block.btn-clear.p1.align-top(
-                          href= routeMappings.Admin.Campaigns.edit.url(campaign.id)
-                        )
-                          svg.-pen.inline-block.align-middle(width='15' height='15')
-                            use(xlink:href='#svg-pencil')
+                      .border-top
+                        a.block.center.py2.-fw-700(href= routeMappings.Admin.Campaigns.edit.url(campaign.id))
+                          svg.-pen.inline-block.align-middle(width='15' height='15'): use(xlink:href='#svg-pencil')
                           span.inline-block.align-middle.pl1 Edit campaign
                   .border-bottom.-bw5
 
               if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
                 article.Masonry_item.px2.mb4
-                  a.CreateNewCampaingBtn(
+                  a.CreateNewItemBtn(
                     href=routeMappings.Admin.Campaigns.new.url()
                     title='Create new campaign'
                   )
                     .flex.items-center.justify-center.absolute.top-0.right-0.bottom-0.left-0
-                      .CreateNewCampaingBtn--Plus +
+                      .CreateNewItemBtn--Plus +
                   a.block.center.py2.-fw-700(href=routeMappings.Admin.Campaigns.new.url())
                     | Create new campaign
                   .border-bottom.-bw5
 
-          section#panel-manifest.TabPane(role='tabpanel' aria-hidden='true')
-            .clearfix.pt4
-              .col.md-col-4.col-12 &nbsp;
-              .col.md-col-7.col-12
-                h1 Manifest
-                .Collective_Manifest--text!= collective.manifest
+          section#panel-manifest.TabPane.Collective_Manifest(role='tabpanel' aria-hidden='true')
+            .pt4
+              .clearfix
+                .col.md-col-1.col-12.sm-hide.xs-hide &nbsp;
+                .col.md-col-11.col-12
+                  h1.Collective_Manifest--title.-ell Proclamation
+              .clearfix
+                .col.md-col-4.col-12.sm-hide.xs-hide &nbsp;
+                .col.md-col-7.col-12
+                  .Collective_Manifest--text!= collective.manifest
 
-            .pt3.pb2
-              ul.AvatarList
-                each user in collective.users
-                  li.mb1
-                    - var _avatarUrl = '/images/profile/placeholder-small.png';
-                    if (user.account.image.exists('smallGrayscale'))
-                      - _avatarUrl = user.account.image.url('smallGrayscale')
-                    a.block(
-                      href=routeMappings.Users.show.url(user.id)
-                      title=`${user.account.fullname}’s profile`
-                    ): img(src=_avatarUrl alt=user.account.fullname width='50' height='50')
+              .pt3.pb2
+                ul.AvatarList
+                  each user in collective.users
+                    li.mb1
+                      - var _avatarUrl = '/images/profile/placeholder-small.png';
+                      if (user.account.image.exists('smallGrayscale'))
+                        - _avatarUrl = user.account.image.url('smallGrayscale')
+                      a.block(
+                        href=routeMappings.Users.show.url(user.id)
+                        title=`${user.account.fullname}’s profile`
+                      ): img(src=_avatarUrl alt=user.account.fullname width='50' height='50')
 
-            .clearfix
-              .col.md-col-4.col-12 &nbsp;
-              .col.md-col-7.col-12
-                p.pb2.-ff-sec.-fw-700= collective.goalTitle
+              .clearfix
+                .col.md-col-4.col-12 &nbsp;
+                .col.md-col-7.col-12
+                  p.pb2.-ff-sec.-fw-700= collective.goalTitle
 
-                if collective.goal
-                  div.border.p3.mb4(style='border-width: 8px')
-                    h4= collective.goal
+                  if collective.goal
+                    div.border.p3.mb4(style='border-width: 8px')
+                      h4= collective.goal
 
-                p.pb2.-fw-700.center.-neutral-dark Spread
-                ul.list-reset.center.pb4
-                  li.inline-block
-                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank' data-share-url-twitter)
-                      svg(width='13' height='11'): use(xlink:href='#svg-twitter')
-                      .sr-only Share on Twitter
-                  li.inline-block.mx2
-                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank' data-share-url-facebook)
-                      svg(width='6' height='13'): use(xlink:href='#svg-facebook')
-                      .sr-only Share on Facebook
-                  li.inline-block
-                    a.Button--circle.-dark(href='#' rel='noopener noreferrer' data-share-url-email)
-                      svg(width='14' height='11'): use(xlink:href='#svg-email')
-                      .sr-only Share by Email
+                  p.pb2.-fw-700.center.-neutral-dark Spread
+                  ul.list-reset.center.pb4
+                    li.inline-block
+                      a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank' data-share-url-twitter)
+                        svg(width='13' height='11'): use(xlink:href='#svg-twitter')
+                        .sr-only Share on Twitter
+                    li.inline-block.mx2
+                      a.Button--circle.-dark(href='#' rel='noopener noreferrer' target='_blank' data-share-url-facebook)
+                        svg(width='6' height='13'): use(xlink:href='#svg-facebook')
+                        .sr-only Share on Facebook
+                    li.inline-block
+                      a.Button--circle.-dark(href='#' rel='noopener noreferrer' data-share-url-email)
+                        svg(width='14' height='11'): use(xlink:href='#svg-email')
+                        .sr-only Share by Email
 
           section#panel-dispute-tools.TabPane(role='tabpanel' aria-hidden='true')
             .mx4.pt3.pb4
@@ -161,7 +162,78 @@ block content
                     +toolCardMixin(tool)
 
           section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
-            | Resources
+            div.SearchPanel
+              form.flex(action=routeMappings.Collectives.show.url(collective.id) + '#resources')
+                .flex-auto.pl4.pr1
+                  input(type='text' name='search' placeholder='Search articles and resources relevant to this collective...')
+                .flex-none
+                  select(name='topicId')
+                    option(value="") Topic
+                    each topic in kbTopics
+                      option(value=topic.id)= topic.title
+                  button(type='submit') Search
+
+            section.Masonry.pt4.mxn2
+              each kbPost in collective.kbPosts
+                article.Masonry_item.px2.pb4
+                  .KBPost.p3
+                    div(class=`KBPost--symbol -${kbPost.type}`)
+
+                      if kbPost.fixedURL && kbPost.shortURL
+                        a(href=kbPost.fixedURL rel='noopener noreferrer')= kbPost.shortURL
+
+                      if kbPost.fixedWeight
+                        if kbPost.type === 'image' || kbPost.isImage
+                          .KBPost--size!= `${kbPost.fileMeta.original.width}&times;${kbPost.fileMeta.original.height}`
+                        else
+                          .KBPost--size= kbPost.fixedWeight
+
+                    .KBPost--caption= kbPost.name
+                    .KBPost--category
+                      span= kbPost.topic
+
+                    if kbPost.type === 'image' || kbPost.type === 'file'
+                      a.KBPost--action(href=kbPost.fixedURL rel='noopener noreferrer')=kbPost.fixedExt
+
+                    if kbPost.type === 'link'
+                        a.KBPost--action.-mini(href=kbPost.fixedURL rel='noopener noreferrer')
+                          svg.-sw7.-stroke-dark(width='20' height='20')
+                            use(xlink:href='#svg-chain')
+
+                    if kbPost.type === 'video' || kbPost.type === 'audio'
+                      a.KBPost--action.-mini(href=kbPost.fixedURL rel='noopener noreferrer')
+                        svg.-sw7.-stroke-dark(width='14' height='14' style='margin-top:5px')
+                          use(xlink:href='#svg-play')
+
+                    if kbPost.type === 'link' || kbPost.type === 'video'
+                      .Share
+                        span Spread
+                        div
+                          a.-twitter(href='https://twitter.com/0debtzone' rel='noopener noreferrer')
+                            svg.-sw7(width='14' height='14')
+                              use(xlink:href='#svg-twitter')
+                          a.-facebook(href='https://www.facebook.com/DebtCollective' rel='noopener noreferrer')
+                            svg.-sw7(width='14' height='14')
+                              use(xlink:href='#svg-facebook')
+                          a.-email(href='mailto:no-one@snai1mai1.com?subject=Share')
+                            svg.-sw7(width='14' height='14')
+                              use(xlink:href='#svg-email')
+
+                    a.-delete(
+                      href=routeMappings.Admin.Collectives.KBPosts.destroy.url(collective.id, kbPost.id)
+                      data-method=routeMappings.Admin.Collectives.KBPosts.destroy.verb
+                    ) &times;
+
+              article.Masonry_item.px2.mb4
+                a.CreateNewItemBtn(
+                  href=routeMappings.Admin.Collectives.KBPosts.new.url(collective.id)
+                  title='Add new resource'
+                )
+                  .flex.items-center.justify-center.absolute.top-0.right-0.bottom-0.left-0
+                    .CreateNewItemBtn--Plus +
+                a.block.center.py2.-fw-700(href=routeMappings.Admin.Campaigns.new.url())
+                  | Add new resource
+                .border-bottom.-bw5
 
 block append body
   each tool in collective.tools

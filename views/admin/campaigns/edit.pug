@@ -65,24 +65,33 @@ block content
           ) #{campaign.description}
 
         .py1
-          input(
-            type='checkbox'
-            name='active'
-            value='true'
-            id='campaign-active'
-            checked= campaign.active
-          )
-          label.pl1(for='campaign-active') Active
+          p.pb1.-fw-500 Campaign status
+          .md-flex.flex-wrap.mxn2
+            .col.md-col-6.col-12.px2
+              label.CampaignStatusLabel.block.p2.center.-fh(for='campaign-active')
+                p.-fw-700 Active
+                input(
+                  type='checkbox'
+                  name='active'
+                  value='true'
+                  id='campaign-active'
+                  checked= campaign.active
+                )
+                .CampaignStatusLabelBg.absolute.top-0.right-0.bottom-0.left-0
+                p.-fw-500.-caption Check to enable the campaign feed and events.
 
-        .py1
-          input(
-            type='checkbox'
-            name='published'
-            value='true'
-            id='campaign-published'
-            checked= campaign.published
-          )
-          label.pl1(for='campaign-published') Published
+            .col.md-col-6.col-12.px2
+              label.CampaignStatusLabel.block.p2.center.-fh(for='campaign-published')
+                p.-fw-700 Published
+                input(
+                  type='checkbox'
+                  name='published'
+                  value='true'
+                  id='campaign-published'
+                  checked= campaign.published
+                )
+                .CampaignStatusLabelBg.absolute.top-0.right-0.bottom-0.left-0
+                p.-fw-500.-caption Check to make this campaign visible for all, if it is unchecked only admins will see it.
 
         .pt3
           button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Update

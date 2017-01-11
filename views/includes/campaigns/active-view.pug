@@ -9,7 +9,7 @@
     .-bg-white.overflow-hidden.mb3
       .CampaignSidebar(data-component='campaign-sidebar')
         .CampaignSidebarCarouselItem.py2.px3.inline-block.align-top(aria-hidden='false')
-          if event || nextEvents.length
+          if event
             .flex.pb2
               .flex-auto.flex.items-center
                 if event
@@ -92,14 +92,7 @@
               span.-ttu.-caption.-fw-500 #{event.attendees.length}
                 span.-neutral-mid.pl1 attendees
 
-          else
-            .flex.items-center
-              div.pr2
-                svg.inline-block.align-top(width='60' height='72')
-                  use(xlink:href='#svg-no-date')
-              p.-neutral-mid.-fw-500 Currently there are no scheduled events
-
-          if canCreateEvents
+            if canCreateEvents
               .mt3.pt2.-bw2.-border-neutral-mid-x.border-top.clearfix
                 a.-k-btn.-fw-700(href=routeMappings.Admin.Campaigns.Events.edit.url(campaign.id, event.id))
                   svg(width='15' height='15'): use(xlink:href='#svg-pencil')
@@ -107,6 +100,13 @@
                 a.right.-k-btn.btn-primary.-fw-700(href=routeMappings.Admin.Campaigns.Events.new.url(campaign.id))
                   svg(width='10' height='10'): use(xlink:href='#svg-plus')
                   span.pl1 Create new event
+
+          else
+            .flex.items-center
+              div.pr2
+                svg.inline-block.align-top(width='60' height='72')
+                  use(xlink:href='#svg-no-date')
+              p.-neutral-mid.-fw-500 Currently there are no scheduled events
 
         if nextEvents.length
           .CampaignSidebarCarouselItem.inline-block.align-top(aria-hidden='true')

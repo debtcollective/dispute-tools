@@ -4,6 +4,8 @@
 @import '../../components/dispute-tools/TextModal';
 @import '../../components/dispute-tools/ToolCard';
 @import '../../components/AvatarList';
+@import '../../components/KBPost';
+@import '../../components/SearchPanel';
 
 /* page utils */
 .-bg-neutral-light {background-color: var(--k-color-palette-neutral-light)}
@@ -30,7 +32,7 @@
 }
 
 /* campaigns tab */
-.CreateNewCampaingBtn {
+.CreateNewItemBtn {
   display: block;
   position: relative;
   padding-top: 94%;
@@ -56,13 +58,28 @@
   &:hover {
     background-color: color(var(--k-color-palette-neutral-mid) alpha(-90%));
 
-    & .CreateNewCampaingBtn--Plus {
+    & .CreateNewItemBtn--Plus {
       transform: scale(1.1);
     }
   }
 }
 
 /* manifest tab */
+.Collective_Manifest {
+  background-image: url(/images/collectives/hand-proclamation.png);
+  background-position: -1rem 15rem;
+  background-repeat: no-repeat;
+  background-size: 47rem;
+}
+
+.Collective_Manifest--title {
+  @media (max-width: 870px) {font-size: 7rem}
+  @media (max-width: 670px) {font-size: 6rem}
+  @media (max-width: 500px) {font-size: 5rem}
+  @media (max-width: 420px) {font-size: 4rem}
+  @media (max-width: 350px) {font-size: 3rem}
+}
+
 .Collective_Manifest--text {
   & h3 {padding-bottom: var(--space-3)}
 
