@@ -141,7 +141,7 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
           query.where('topic_id', req.query.topicId);
         }
 
-        query.where('campaign_id', req.params.campaign_id);
+        query.where('campaign_id', req.params.id);
       })()
       .then(() => {
         RESTfulAPI.createMiddleware({
