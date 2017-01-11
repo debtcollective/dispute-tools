@@ -44,9 +44,9 @@ const config = {
       publishable: 'EDIT ME',
     },
 
-    airbreak: {
+    airbrake: {
       projectId: 0,
-      projectKey: ''
+      projectKey: '',
     },
 
     GoogleMaps: {
@@ -88,9 +88,9 @@ const config = {
       publishable: 'EDIT ME pk_test_SLHYKUBbqjnPFTXYcNrYaNAc',
     },
 
-    airbreak: {
+    airbrake: {
       projectId: 135528, // EDIT ME
-      projectKey: 'EDIT ME 74cbcb7063226d3344639d737d04bdc2'
+      projectKey: 'EDIT ME 74cbcb7063226d3344639d737d04bdc2',
     },
 
     GoogleMaps: {
