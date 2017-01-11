@@ -11,11 +11,12 @@ block content
     .max-width-1.mx-auto
 
       h2.pt4.pb3 New Resource
-      h4= collective.name
+      h4= campaign.collective.name
+      h4.pb3 Campaign: #{campaign.title}
 
       form(
         method='post'
-        action=routeMappings.Admin.Collectives.KBPosts.create.url(collective.id)
+        action=routeMappings.Admin.Campaigns.KBPosts.create.url(campaign.id)
         enctype='multipart/form-data'
         data-component-form
       )

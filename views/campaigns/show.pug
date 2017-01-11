@@ -34,7 +34,7 @@ block content
             li.Tab.flex-auto.p2.-fw-700.-dark.items-center.flex(role='tab' aria-controls='panel-resources' aria-selected='false')
               .flex-auto
                 | Resources
-                span.right.-caption.-neutral-mid 9
+                span.right.-caption.-neutral-mid #{campaign.kbPosts.length}
             li.Tab.p2.-fw-700.-dark.flex.items-center
               div
                 | Share
@@ -56,7 +56,78 @@ block content
               include ../includes/campaigns/inactive-view
 
           section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
-            | Resources
+            div.SearchPanel
+              form.flex(action=routeMappings.Campaigns.show.url(campaign.id) + '#resources')
+                .flex-auto.pl4.pr1
+                  input(type='text' name='search' placeholder='Search articles and resources relevant to this collective...')
+                .flex-none
+                  select(name='topicId')
+                    option(value="") Topic
+                    each topic in kbTopics
+                      option(value=topic.id)= topic.title
+                  button(type='submit') Search
+
+            section.Masonry.pt4.mxn2
+              each kbPost in campaign.kbPosts
+                article.Masonry_item.px2.pb4
+                  .KBPost.p3
+                    div(class=`KBPost--symbol -${kbPost.type}`)
+
+                      if kbPost.fixedURL && kbPost.shortURL
+                        a(href=kbPost.fixedURL rel='noopener noreferrer')= kbPost.shortURL
+
+                      if kbPost.fixedWeight
+                        if kbPost.type === 'image' || kbPost.isImage
+                          .KBPost--size!= `${kbPost.fileMeta.original.width}&times;${kbPost.fileMeta.original.height}`
+                        else
+                          .KBPost--size= kbPost.fixedWeight
+
+                    .KBPost--caption= kbPost.name
+                    .KBPost--category
+                      span= kbPost.topic
+
+                    if kbPost.type === 'image' || kbPost.type === 'file'
+                      a.KBPost--action(href=kbPost.fixedURL rel='noopener noreferrer')=kbPost.fixedExt
+
+                    if kbPost.type === 'link'
+                        a.KBPost--action.-mini(href=kbPost.fixedURL rel='noopener noreferrer')
+                          svg.-sw7.-stroke-dark(width='20' height='20')
+                            use(xlink:href='#svg-chain')
+
+                    if kbPost.type === 'video' || kbPost.type === 'audio'
+                      a.KBPost--action.-mini(href=kbPost.fixedURL rel='noopener noreferrer')
+                        svg.-sw7.-stroke-dark(width='14' height='14' style='margin-top:5px')
+                          use(xlink:href='#svg-play')
+
+                    if kbPost.type === 'link' || kbPost.type === 'video'
+                      .Share
+                        span Spread
+                        div
+                          a.-twitter(href='https://twitter.com/0debtzone' rel='noopener noreferrer')
+                            svg.-sw7(width='14' height='14')
+                              use(xlink:href='#svg-twitter')
+                          a.-facebook(href='https://www.facebook.com/DebtCollective' rel='noopener noreferrer')
+                            svg.-sw7(width='14' height='14')
+                              use(xlink:href='#svg-facebook')
+                          a.-email(href='mailto:no-one@snai1mai1.com?subject=Share')
+                            svg.-sw7(width='14' height='14')
+                              use(xlink:href='#svg-email')
+
+                    a.-delete(
+                      href=routeMappings.Admin.Campaigns.KBPosts.destroy.url(campaign.id, kbPost.id)
+                      data-method=routeMappings.Admin.Campaigns.KBPosts.destroy.verb
+                    ) &times;
+
+              article.Masonry_item.px2.mb4
+                a.GridButton(
+                  href=routeMappings.Admin.Campaigns.KBPosts.new.url(campaign.id)
+                  title='Add new resource'
+                )
+                  .flex.items-center.justify-center.absolute.top-0.right-0.bottom-0.left-0
+                    .GridButton--Plus +
+                a.block.center.py2.-fw-700(href=routeMappings.Admin.Campaigns.KBPosts.new.url(campaign.id))
+                  | Add new resource
+                .border-bottom.-bw5
 
 block scripts
   script(src='/build/javascripts/campaigns/show.js' async)
