@@ -21,5 +21,10 @@ block scripts
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
       };
-      new ViewHomeTos(options);
+      try {
+        new ViewHomeTos(options);
+      } catch(e) {
+        airbrake.notify(e);
+        throw e;
+      }
     }, true);

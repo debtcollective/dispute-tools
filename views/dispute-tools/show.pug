@@ -62,6 +62,10 @@ block scripts
         currentURL: !{JSON.stringify(currentURL)},
         options: !{JSON.stringify(disputeTool.data.options)},
       };
-      new ViewDisputeToolsShow(options);
+      try {
+        new ViewDisputeToolsShow(options);
+      } catch(e) {
+        airbreak.notify(e);
+      }
     }, true);
 

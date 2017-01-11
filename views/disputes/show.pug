@@ -88,5 +88,9 @@ block scripts
         dispute: !{JSON.stringify(dispute)},
         currentStep: !{JSON.stringify(currentStep)},
       };
-      new ViewDisputesShow(options);
+      try {
+        new ViewDisputesShow(options);
+      } catch(e) {
+        airbreak.notify(e);
+      }
     }, true);
