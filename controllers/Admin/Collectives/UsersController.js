@@ -94,6 +94,17 @@ Admin.UsersController = Class(Admin.Collectives, 'UsersController').inherits(Res
     },
     {
       before(req, res, next) {
+        return Promise.all(res.locals.results.map((result) =>
+          User.getCampaigns(result.id, req.params.collective_id).then((data) => {
+            result.campaigns = data;
+          })))
+        .then(() => next())
+        .catch(next);
+      },
+      actions: ['index'],
+    },
+    {
+      before(req, res, next) {
         res.locals.users = res.locals.results;
 
         res.locals.headers = {

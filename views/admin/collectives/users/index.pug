@@ -4,7 +4,7 @@ block title
   | Admin/Users — The Debt Collective
 
 block styles
-  link(href="/build/stylesheets/admin/users/index.css" rel="stylesheet")
+  link(href="/build/stylesheets/admin/collectives/users/index.css" rel="stylesheet")
 
 block content
   -
@@ -77,7 +77,15 @@ block content
                 div
                   p.pl2.-fw-700= user.account.fullname
                   p.pl2: small #[a(href='mailto:' + user.account.email)= user.email] &middot; #{user.account.state}, #{user.account.zip}
-            td.-fw-500 CAMPAIGNS
+            td.-fw-500
+              if user.campaigns.count
+                span.Tag= user.campaigns.results.shift().title
+              else
+                span.Tag.Tag--empty No campaigns
+
+              if user.campaigns.count > 1
+                span.Tag(title=user.campaigns.results.map(c => c.title).join('\n'))= ' + ' + (user.campaigns.count - 1)
+
             td.-fw-500= new Date(user.createdAt).toDateString()
             td.center
               a.inline-block.btn-clear.p1.align-top(
