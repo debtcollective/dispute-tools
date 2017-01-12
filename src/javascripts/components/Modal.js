@@ -16,7 +16,7 @@ export default class Modal extends Widget {
   /**
   * @override
   */
-  activate() {
+  _activate() {
     this.active = true;
 
     Modal._lastActiveElement = document.activeElement;
@@ -37,7 +37,7 @@ export default class Modal extends Widget {
   /**
   * @override
   */
-  deactivate() {
+  _deactivate() {
     this.active = false;
 
     APP.SCROLLING_BOX.style.overflow = 'auto';

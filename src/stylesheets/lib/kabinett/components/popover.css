@@ -154,14 +154,6 @@
   margin-top: -8px;
 }
 
-.-k-popover-title-wrapper {
-  padding: 1em 2.5em 1em 1.5em;
-
-  .has-scrollbar & {
-    padding-bottom: .5em;
-  }
-}
-
 .-k-popover-title {
   font-size: 20px;
   padding: 0 .3em;

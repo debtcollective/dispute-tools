@@ -4,4 +4,5 @@ export const APP = {
 
 export const KEYCODES = {
   ESC: 27,
+  ENTER: 13,
 };
