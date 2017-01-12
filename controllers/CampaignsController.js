@@ -268,6 +268,7 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
 
     join(req, res, next) {
       const knex = Campaign.knex();
+      const debtAmount = (req.body.debt_amount * 100) || 0;
 
       Campaign.transaction((trx) => {
         knex.table('UsersCampaigns')
@@ -275,6 +276,7 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
           .insert({
             user_id: req.user.id,
             campaign_id: req.params.id,
+            debt_amount: debtAmount,
           })
           .then(() => {
             req.campaign.userCount++;
