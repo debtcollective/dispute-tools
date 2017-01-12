@@ -18,8 +18,6 @@
 
   .pt3
     if currentUser
-      form(method='post' action=routeMappings.Campaigns.join.url(campaign.id))
-        input(type='hidden' name='_csrf' value=csrfToken)
-        button.-k-btn.btn-primary.-fw-700.-fw Join this Campaign
+      button.js-join-campaign-link.-k-btn.btn-primary.-fw-700.-fw Join this Campaign
     else
       button.js-login-link.-k-btn.btn-primary.-fw-700.-fw Join this Campaign
