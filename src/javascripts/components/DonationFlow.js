@@ -85,10 +85,9 @@ export default class DonationFlow extends Widget {
 
     // Make Payment
     this.sectionPaymentSubmitEl.addEventListener('click', () => {
-      // TODO: Test if can donate first
       this.donate((error) => {
         if (error) {
-          // console.error(error);
+          console.error(error);
           this.setState({page: PAGE_ERROR});
         } else {
           this.setState({page: PAGE_SUCCESS});
@@ -124,7 +123,6 @@ export default class DonationFlow extends Widget {
   }
   render() {
     const {page, fund, amount, paymentMethod} = this.state;
-    // console.log('render', this.state, amount)
     this.sectionDonateBtn.innerHTML = `Donate $${this.customDonationCustomInputEl.value}`;
 
     // Page
@@ -239,10 +237,15 @@ export default class DonationFlow extends Widget {
         };
 
         API.postStripePayment({ body: chargeObject }, (error, result) => {
-          // console.log('DONE API call', error, result);
           this.setState({busy: false});
-          callback(error, result);
+          if (result && result.body && result.body.error) {
+            callback(new Error(result.body.error.message));
+          } else {
+            callback(error, result);
+          }
         });
+      } else {
+        callback(new Error('Could not create Stripe token'));
       }
     });
   }

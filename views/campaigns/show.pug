@@ -142,6 +142,10 @@ block scripts
         nextEvents: !{JSON.stringify(nextEvents)},
         googleMapsKey: !{JSON.stringify(CONFIG.env().GoogleMaps.key)},
       };
-      new ViewCampaignsShow(options);
+      try {
+        new ViewCampaignsShow(options);
+      } catch(e) {
+        airbreak.notify(e);
+      }
     }, true);
 

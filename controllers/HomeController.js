@@ -2,7 +2,9 @@
 
 const stripe = require('stripe');
 
-const stripeClient = stripe(CONFIG.env().stripe.private);
+const stripeClient = stripe(CONFIG.env().stripe.secret);
+
+const CONTACT_EMAIL = CONFIG.env().mailers.contactEmail;
 
 const HomeController = Class('HomeController').inherits(BaseController)({
   prototype: {
@@ -38,6 +40,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
 
       return stripeClient.charges.create(options, (error, charge) => {
         if (error) {
+          logger.error(error);
           res.status(500).json({ error: { message: 'Something went wrong, please try again.' } });
         } else {
           res.status(200).json({ success: charge.captured && charge.paid && charge.status === 'succeeded' });
@@ -55,6 +58,30 @@ const HomeController = Class('HomeController').inherits(BaseController)({
 
     about(req, res) {
       res.render('home/about');
+    },
+
+    contact(req, res) {
+      res.render('home/contact');
+    },
+
+    sendContact(req, res, next) {
+      const {email, message, name} = req.body;
+      const emailerOptions = {
+        email: email,
+        message: message,
+        name: name,
+        _options: {
+          from: { name, address: email },
+        },
+      };
+      ContactMailer.sendMessage(CONTACT_EMAIL, emailerOptions)
+      .then((result) => {
+          logger.info('ContactMailer.sendMessage result', result);
+          req.flash('success', 'Your message has been sent, thank you for contacting us.');
+          res.redirect(CONFIG.router.helpers.contact.url());
+          next();
+      })
+      .catch(next);
     },
 
     tos(req, res) {
