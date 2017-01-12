@@ -66,7 +66,10 @@ const routeMappings = RouteMappings()
   .namespace('/Admin', (mappings) => {
     return mappings()
       .resources('/Disputes')
-      .resources('/Collectives')
+      .resources('/Collectives', (map) => {
+        return map()
+          .resources('/Users');
+      })
       .resources('/Users', (map) => {
         return map()
           .post('/:id/ban', {

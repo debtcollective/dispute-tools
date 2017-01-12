@@ -25,6 +25,18 @@ block content
                 svg.-pen.block.align-top(width='15' height='15')
                   use(xlink:href='#svg-pencil')
 
+              a.ml2.btn-clear.p1.inline-block.align-top(
+                href= routeMappings.Admin.Collectives.Users.url(collective.id)
+              )
+                svg.-pen.block.align-top(width='15' height='15')
+                  use(xlink:href='#svg-users')
+
+              a.ml2.btn-clear.p1.inline-block.align-top(
+                href= routeMappings.Collectives.show.url(collective.id)
+              )
+                svg.-pen.block.align-top(width='15' height='15')
+                  use(xlink:href='#svg-external')
+
 block scripts
   script(src="/build/javascripts/admin/collectives/index.js" async)
   script.
