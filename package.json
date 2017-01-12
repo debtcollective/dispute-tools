@@ -72,6 +72,7 @@
     }
   },
   "dependencies": {
+    "airbrake": "^1.2.0",
     "archiver": "^1.1.0",
     "autosize": "^3.0.18",
     "aws-sdk": "^2.4.14",

@@ -97,5 +97,10 @@ block scripts
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
       };
-      new ViewHomeAbout(options);
+      try {
+        new ViewHomeAbout(options);
+      } catch(e) {
+        airbrake.notify(e);
+        throw e;
+      }
     }, true);
