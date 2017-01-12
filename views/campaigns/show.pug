@@ -26,7 +26,7 @@ block content
                   h4.inline-block.pr1= campaign.title
                   a.-fw-700(href=routeMappings.Collectives.show.url(campaign.collective.id))= campaign.collective.name
                 p.-caption.-fw-500
-                  | #{(userBelongsToCampaign ? `You + ${campaign.userCount - 1}` : campaign.userCount) + ' people joined with $10,560 USD in debt'}
+                  | #{(userBelongsToCampaign ? `You + ${campaign.userCount - 1}` : campaign.userCount) + ` people joined with $${totalDebtAmount / 100} USD in debt`}
                   if canCreateEvents
                     span.-fw-700.px1 •
                     a.-fw-700(href=routeMappings.Admin.Campaigns.edit.url(campaign.id)) Edit campaign

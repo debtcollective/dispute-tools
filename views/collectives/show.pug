@@ -26,7 +26,7 @@ block content
               span.-fw-700= (belongsToCollective ? `You + ${collective.userCount - 1}` : `+ ${collective.userCount}`)
               span.-fw-500 &nbsp;members
             span.-fw-700.px2 &middot;
-            span.-fw-700 $23,560 USD Debt to cancel
+            span.-fw-700 $#{totalDebtAmount / 100} USD Debt to cancel
           .right
             unless belongsToCollective
               if currentUser

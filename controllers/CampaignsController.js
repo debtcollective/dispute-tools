@@ -13,13 +13,34 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
       before: '_loadCampaign',
       actions: ['show', 'join'],
     },
+    // Sum totalDebtAmount for Campaign
+    {
+      before(req, res, next) {
+        res.locals.totalDebtAmount = 0;
+
+        return Campaign.knex()
+          .select('debt_amount')
+          .from('UsersCampaigns')
+          .where('campaign_id', req.params.id)
+          .then(results => {
+            const total = results.reduce((p, c) =>
+              ({ debt_amount: (p.debt_amount + c.debt_amount) }), { debt_amount: 0 });
+
+            res.locals.totalDebtAmount = total.debt_amount || 0;
+
+            return next();
+          })
+          .catch(next);
+      },
+      actions: ['show'],
+    },
     {
       before: '_getFiles',
-      actions: [ 'show' ],
+      actions: ['show'],
     },
     {
       before: '_decorateFiles',
-      actions: [ 'show' ],
+      actions: ['show'],
     },
     // load kb-topics
     {
@@ -125,7 +146,6 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
       },
       actions: ['show'],
     },
-
   ],
 
   prototype: {
