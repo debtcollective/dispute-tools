@@ -7,7 +7,7 @@ const fs = require('fs-extra');
 const path = require('path');
 
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 15;
 
 const PostsController = Class('PostsController').inherits(RestfulController)({
   beforeActions: [
