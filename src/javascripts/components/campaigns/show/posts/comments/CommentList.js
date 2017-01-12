@@ -1,13 +1,20 @@
 import Widget from '../../../../../lib/widget';
 
 export default class CommentList extends Widget {
+  constructor(config) {
+    super(config);
+    this.postsWrapper = this.element.querySelector('[data-posts-wrapper]');
+  }
+
   template(post) {
     return `
       <div class='Campaign_FeedItemComments -bg-white'
         id='comments-${post.id}'
         aria-expanded='false'
       >
-        ${post.comments.map(comment => this._getCommentHTMLString(comment)).join('')}
+        <div data-posts-wrapper>
+          ${post.comments.map(comment => this._getCommentHTMLString(comment)).join('')}
+        </div>
       </div>
     `;
   }
@@ -21,7 +28,7 @@ export default class CommentList extends Widget {
    * @chainable
    */
   appendComment(comment) {
-    this.element.insertAdjacentHTML('afterbegin', this._getCommentHTMLString(comment));
+    this.postsWrapper.insertAdjacentHTML('beforeend', this._getCommentHTMLString(comment));
     return this;
   }
 
