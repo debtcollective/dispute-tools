@@ -35,18 +35,19 @@ block content
               .flex-auto
                 | Resources
                 span.right.-caption.-neutral-mid #{campaign.kbPosts.length}
-            li.Tab.p2.-fw-700.-dark.flex.items-center
-              div
-                | Share
-                ul.list-reset.inline-block.ml3
-                  li.inline-block
-                    a.px1.-dark(href='#' rel="noopener noreferrer" target="_blank" data-share-url-twitter)
-                      svg(width="13" height="11"): use(xlink:href="#svg-twitter")
-                      .sr-only Twitter
-                  li.inline-block
-                    a.px1.-dark(href='#' rel="noopener noreferrer" target="_blank" data-share-url-facebook)
-                      svg(width="6" height="13"): use(xlink:href="#svg-facebook")
-                      .sr-only Facebook
+            if campaign.published
+              li.Tab.p2.-fw-700.-dark.flex.items-center
+                div
+                  | Share
+                  ul.list-reset.inline-block.ml3
+                    li.inline-block
+                      a.px1.-dark(href='#' rel='noopener noreferrer' target='_blank' data-share-url-twitter)
+                        svg(width='13' height='11'): use(xlink:href='#svg-twitter')
+                        .sr-only Twitter
+                    li.inline-block
+                      a.px1.-dark(href='#' rel='noopener noreferrer' target='_blank' data-share-url-facebook)
+                        svg(width='6' height='13'): use(xlink:href='#svg-facebook')
+                        .sr-only Facebook
 
         .Campaigns_TabPanes
           section#panel-campaign.TabPane.pt3(role='tabpanel' aria-hidden='false')
