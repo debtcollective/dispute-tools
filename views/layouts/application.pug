@@ -44,7 +44,7 @@ html(lang='en')
               .Alert.wrapper.center.-fw-500(class=`-${key}`)
                 button.Alert__close(aria-label='close')
                   svg: use(xlink:href='#svg-close')
-                p= val
+                p!= val
 
       include ../includes/header
       block content
