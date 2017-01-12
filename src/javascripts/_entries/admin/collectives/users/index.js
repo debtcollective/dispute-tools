@@ -1,13 +1,10 @@
 import NodeSupport from '../../../../lib/widget/NodeSupport';
 import Common from '../../../../components/Common';
-import Method from '../../../../components/Method';
 import Controller from '../../../../components/admin/collectives/users/index/AdminCollectiveUsersIndexController';
 
 class ViewAdminCollectiveUsersIndex extends NodeSupport {
   constructor(config) {
     super();
-
-    Method.init();
 
     this.appendChild(new Common({
       name: 'Common',

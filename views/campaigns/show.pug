@@ -17,7 +17,7 @@ block content
             .Alert.wrapper.center.-fw-500.-warning
               p This campaign is currently on Staging mode. #[a(href=routeMappings.Admin.Campaigns.edit.url(campaign.id)) Edit campaign] to make it public.
           ul.list-reset.flex.-bg-neutral-light(role='tablist')
-            li.Tab.flex.flex-auto.p1.-dark(role='tab' aria-controls='panel-campaign' aria-selected='true')
+            li.Tab.flex.flex-auto.p1.-dark(role='tab' aria-controls='panel-campaign' aria-selected='false' data-hashname='#campaign')
               .flex.items-center
                 svg.-sw7.-stroke-dark(width='40' height='40')
                   use(xlink:href=`#svg-collective-${campaign.collective.id.charAt(0)}`)
@@ -31,7 +31,7 @@ block content
                     span.-fw-700.px1 •
                     a.-fw-700(href=routeMappings.Admin.Campaigns.edit.url(campaign.id)) Edit campaign
 
-            li.Tab.flex-auto.p2.-fw-700.-dark.items-center.flex(role='tab' aria-controls='panel-resources' aria-selected='false')
+            li.Tab.flex-auto.p2.-fw-700.-dark.items-center.flex(role='tab' aria-controls='panel-resources' aria-selected='false' data-hashname='#campaign')
               .flex-auto
                 | Resources
                 span.right.-caption.-neutral-mid #{campaign.kbPosts.length}
@@ -49,7 +49,7 @@ block content
                       .sr-only Facebook
 
         .Campaigns_TabPanes
-          section#panel-campaign.TabPane.pt3(role='tabpanel' aria-hidden='false')
+          section#panel-campaign.TabPane.pt3(role='tabpanel' aria-hidden='true')
             if campaign.active
               include ../includes/campaigns/active-view
             else
@@ -71,8 +71,15 @@ block content
               each kbPost in campaign.kbPosts
                 article.Masonry_item.px2.pb4
                   .KBPost.p3
-                    div(class=`KBPost--symbol -${kbPost.type}`)
+                    form.right.inline-block(action=routeMappings.Admin.Campaigns.KBPosts.destroy.url(campaign.id, kbPost.id) method='post')
+                      input(type='hidden' name='_csrf' value=csrfToken)
+                      input(type='hidden' name='_backUrl' value=routeMappings.Campaigns.show.url(campaign.id) + '#resources')
+                      input(type='hidden' name='_method' value=routeMappings.Admin.Campaigns.KBPosts.destroy.verb)
+                      button.p1.ml2.align-top.btn-clear(type='submit')
+                        svg.-sw7.-primary(width='20' height='20')
+                          use(xlink:href='#svg-trash')
 
+                    div(class=`KBPost--symbol -${kbPost.type}`)
                       if kbPost.fixedURL && kbPost.shortURL
                         a(href=kbPost.fixedURL rel='noopener noreferrer')= kbPost.shortURL
 
@@ -112,11 +119,6 @@ block content
                           a.-email(href='mailto:no-one@snai1mai1.com?subject=Share')
                             svg.-sw7(width='14' height='14')
                               use(xlink:href='#svg-email')
-
-                    a.-delete(
-                      href=routeMappings.Admin.Campaigns.KBPosts.destroy.url(campaign.id, kbPost.id)
-                      data-method=routeMappings.Admin.Campaigns.KBPosts.destroy.verb
-                    ) &times;
 
               article.Masonry_item.px2.mb4
                 a.GridButton(

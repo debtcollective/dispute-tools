@@ -92,7 +92,8 @@ const KBPostsController = Class(Admin.Campaigns, 'KBPostsController')
         .where('campaign_id', req.params.campaign_id)
         .then(([found]) => found && found.destroy())
         .then(() => {
-          res.status(200).end();
+          req.flash('success', 'The resource was been deleted.');
+          res.redirect(req.body._backUrl || CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id));
         });
     },
   },

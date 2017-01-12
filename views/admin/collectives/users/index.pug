@@ -99,20 +99,20 @@ block content
                   svg.-pen.-neutral-mid.block.align-top(width='15' height='15')
                     use(xlink:href='#svg-flag')
               else
-                if user.banned
-                  a.inline-block.p1.ml2.align-top(
-                    data-method= routeMappings.Admin.Users.unban.verb
-                    href= routeMappings.Admin.Users.unban.url(user.id)
-                  )
-                    svg.-pen.-danger.block.align-top(width='15' height='15')
-                      use(xlink:href='#svg-flag')
-                else
-                  a.inline-block.p1.ml2.align-top(
-                    data-method= routeMappings.Admin.Users.ban.verb
-                    href= routeMappings.Admin.Users.ban.url(user.id)
-                  )
-                    svg.-pen.-dark.block.align-top(width='15' height='15')
-                      use(xlink:href='#svg-flag')
+                form.inline-block(action=routeMappings.Admin.Users.ban.url(user.id) method='post')
+                  input(type='hidden' name='_csrf' value=csrfToken)
+                  input(type='hidden' name='_backUrl' value=routeMappings.Admin.Collectives.Users.url(collective.id))
+
+                  if user.banned
+                    input(type='hidden' name='_method' value=routeMappings.Admin.Users.unban.verb)
+                    button.p1.ml2.align-top.btn-clear(type='submit')
+                      svg.-pen.-danger.block.align-top(width='15' height='15')
+                        use(xlink:href='#svg-flag')
+                  else
+                    input(type='hidden' name='_method' value=routeMappings.Admin.Users.ban.verb)
+                    button.p1.ml2.align-top.btn-clear(type='submit')
+                      svg.-pen.-dark.block.align-top(width='15' height='15')
+                        use(xlink:href='#svg-flag')
 
     include ../../../mixins/pagination
     +mixinPagination(headers.current_page, headers.total_pages)(class='pt3')
