@@ -2,7 +2,7 @@
 
 const ContactMailer = Class('ContactMailer').inherits(BaseMailer)({
   _options: {
-    from: `'The Debt Collective' <${CONFIG.env().mailers.contactEmail}>'`,
+    from: `'The Debt Collective' <${CONFIG.env().mailers.contactEmail}>`,
     subject: 'Contact',
   },
 
