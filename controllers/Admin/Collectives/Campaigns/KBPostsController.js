@@ -3,9 +3,10 @@
 const fs = require('fs-extra');
 
 global.Admin = global.Admin || {};
-global.Admin.Campaigns = global.Admin.Campaigns || {};
+global.Admin.Collectives = global.Admin.Collectives || {};
+global.Admin.Collectives.Campaigns = global.Admin.Collectives.Campaigns || {};
 
-const KBPostsController = Class(Admin.Campaigns, 'KBPostsController')
+const KBPostsController = Class(Admin.Collectives.Campaigns, 'KBPostsController')
 .inherits(RestfulController)({
   beforeActions: [
     // campaign

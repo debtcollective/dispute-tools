@@ -1,6 +1,8 @@
 /* global Class, CONFIG, RestfulController, Event, EventAssistant */
 
-const EventsController = Class('EventsController').inherits(RestfulController)({
+const Campaigns = global.Campaigns = global.Campaigns || {};
+
+const EventsController = Class(Campaigns, 'EventsController').inherits(RestfulController)({
   beforeActions: [
     {
       before: '_loadEvent',

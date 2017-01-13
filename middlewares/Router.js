@@ -20,12 +20,20 @@ const table = new Table({
 routeMapper.routes.forEach((route) => {
   const _handler = route.handler.slice();
 
-  // save named callback
-  _helpers.push(route.as);
-
   const verbs = [route.verb];
-  const action = route._actionName || _handler.pop();
-  const controller = route._resourceName || _handler.pop();
+  const action = route._actionName || _handler[_handler.length - 1];
+  let controller = route._resourceName || _handler.slice(0, _handler.length - 1).join('.');
+
+  if (_handler.indexOf(controller) > -1) {
+    // action
+    _handler.pop();
+
+    while (_handler[_handler.length - 1] !== route._resourceName) {
+      _handler.pop();
+    }
+
+    controller = _handler.join('.');
+  }
 
   verbs.forEach((verb) => {
     table.push(
@@ -43,7 +51,7 @@ routeMapper.routes.forEach((route) => {
       && controllerObject.constructor.beforeActions) || [];
 
     if (!controllerObject) {
-      throw new Error(`Controller '${controller}' is missing`);
+      throw new Error(`Controller '${controller}' is missing. Handler: ${route.handler.join('.')}`);
     }
 
     if (!controllerMethod) {

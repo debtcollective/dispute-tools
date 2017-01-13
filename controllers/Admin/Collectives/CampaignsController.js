@@ -4,12 +4,13 @@ NotFoundError, Campaign */
 const fs = require('fs-extra');
 
 global.Admin = global.Admin || {};
+global.Admin.Collectives = global.Admin.Collectives || {};
 
-Class(Admin, 'Campaign').inherits(Campaign)({
-  resourceName: 'Admin.Campaigns',
+Class(Admin.Collectives, 'Campaign').inherits(Campaign)({
+  resourceName: 'Admin.Collectives.Campaigns',
 });
 
-Class(Admin, 'CampaignsController').inherits(RestfulController)({
+Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
   beforeActions: [
     // Authenticate
     {
@@ -175,4 +176,4 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
   },
 });
 
-module.exports = new Admin.CampaignsController();
+module.exports = new Admin.Collectives.CampaignsController();
