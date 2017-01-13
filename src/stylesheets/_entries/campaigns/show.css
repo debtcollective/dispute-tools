@@ -44,6 +44,15 @@
   background-repeat: repeat;
 }
 
+.CampaignTitle {
+  @media (max-width: 40em) {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 .Campaigns_TabPanes {
   min-height: 500px;
 }
@@ -92,6 +101,11 @@
 .Campaign_FeedItem {
   margin-bottom: 10px;
 
+  &Text {
+    white-space: pre-wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   &Comment {margin-bottom: 2px}
 }
 
