@@ -89,7 +89,7 @@ block content
             td.-fw-500= new Date(user.createdAt).toDateString()
             td.center
               a.inline-block.btn-clear.p1.align-top(
-                href= routeMappings.Admin.Users.edit.url(user.id)
+                href= routeMappings.Admin.Users.edit.url(user.id) + '?_backUrl=' + routeMappings.Admin.Collectives.Users.url(collective.id)
               )
                 svg.-pen.block.align-top(width='15' height='15')
                   use(xlink:href='#svg-pencil')

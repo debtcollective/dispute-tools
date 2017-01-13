@@ -76,6 +76,11 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
     },
     {
       before(req, res, next) {
+        // fixed redirection
+        if (req.query._backUrl) {
+          res.locals._backUrl = req.query._backUrl;
+        }
+
         Collective.query()
           .orderBy('created_at', 'ASC')
           .then((collectives) => {
@@ -241,7 +246,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
           redirect = CONFIG.router.helpers.Users.show.url(user.id);
         }
 
-        return res.redirect(redirect);
+        return res.redirect(req.body._backUrl || redirect);
       })
       .catch((err) => {
         res.status(400);
