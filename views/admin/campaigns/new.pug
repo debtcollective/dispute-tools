@@ -14,20 +14,20 @@ block content
 
       form(
         method='post'
-        action=routeMappings.Admin.Collectives.Campaigns.create.url()
+        action=routeMappings.Admin.Collectives.Campaigns.create.url(selectedCollective)
         data-component-form
       )
         input(type='hidden' name='_csrf' value=csrfToken)
-
         .py1
           label.block.pb1.-fw-500 Collective
           .-k-select.-border-neutral-mid
               select.-fw(name='collectiveId')
-                option(value='') Collective
+                option(value='') Collective #{selectedCollective}
                 each collective in collectives
-                  option(
-                    value= collective.id
-                  )= collective.name
+                  if collective.id == selectedCollective
+                    option(selected value=collective.id)= collective.name
+                  else
+                    option(value= collective.id)= collective.name
           p(class="-on-error -danger -caption -fw-500 mt1")
 
         .py1
