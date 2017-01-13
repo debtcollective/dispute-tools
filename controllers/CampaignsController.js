@@ -13,13 +13,34 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
       before: '_loadCampaign',
       actions: ['show', 'join'],
     },
+    // Sum totalDebtAmount for Campaign
+    {
+      before(req, res, next) {
+        res.locals.totalDebtAmount = 0;
+
+        return Campaign.knex()
+          .select('debt_amount')
+          .from('UsersCampaigns')
+          .where('campaign_id', req.params.id)
+          .then(results => {
+            const total = results.reduce((p, c) =>
+              ({ debt_amount: (p.debt_amount + c.debt_amount) }), { debt_amount: 0 });
+
+            res.locals.totalDebtAmount = total.debt_amount || 0;
+
+            return next();
+          })
+          .catch(next);
+      },
+      actions: ['show'],
+    },
     {
       before: '_getFiles',
-      actions: [ 'show' ],
+      actions: ['show'],
     },
     {
       before: '_decorateFiles',
-      actions: [ 'show' ],
+      actions: ['show'],
     },
     // load kb-topics
     {
@@ -59,6 +80,41 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
             if (results.length !== 0) {
               req.canCreateEvents = true;
               res.locals.canCreateEvents = true;
+            }
+
+            return next();
+          })
+          .catch(next);
+      },
+      actions: ['show'],
+    },
+    // check if user can create kb-posts
+    {
+      before(req, res, next) {
+        req.canCreateKBPosts = false;
+        res.locals.canCreateKBPosts = false;
+
+        if (!req.user) {
+          return next();
+        }
+
+        if (req.user.role === 'Admin') {
+          req.canCreateKBPosts = true;
+          res.locals.canCreateKBPosts = true;
+
+          return next();
+        }
+
+        return User.knex()
+          .table('CollectiveAdmins')
+          .where({
+            collective_id: req.campaign.collective.id,
+            user_id: req.user.id,
+          })
+          .then(results => {
+            if (results.length !== 0) {
+              req.canCreateKBPosts = true;
+              res.locals.canCreateKBPosts = true;
             }
 
             return next();
@@ -125,7 +181,6 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
       },
       actions: ['show'],
     },
-
   ],
 
   prototype: {
@@ -248,6 +303,7 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
 
     join(req, res, next) {
       const knex = Campaign.knex();
+      const debtAmount = (req.body.debt_amount * 100) || 0;
 
       Campaign.transaction((trx) => {
         knex.table('UsersCampaigns')
@@ -255,6 +311,7 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
           .insert({
             user_id: req.user.id,
             campaign_id: req.params.id,
+            debt_amount: debtAmount,
           })
           .then(() => {
             req.campaign.userCount++;

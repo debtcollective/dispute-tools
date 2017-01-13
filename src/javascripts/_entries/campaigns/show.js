@@ -5,6 +5,7 @@ import Common from '../../components/Common';
 import Tabs from '../../components/Tabs';
 import FixedTabs from '../../components/campaigns/show/FixedTabs';
 import FeedController from '../../components/campaigns/show/FeedController';
+import JoinCampaingModal from '../../components/campaigns/show/JoinCampaingModal';
 import CreateNewPost from '../../components/campaigns/show/create-new-post/Manager';
 import SidebarController from '../../components/campaigns/show/sidebar/SidebarController';
 import ReadMore from '../../components/ReadMore';
@@ -51,6 +52,16 @@ class ViewCampaignsShow extends NodeSupport {
       campaignId: config.campaignId,
       element: document.querySelector('.Campaign_Feed'),
     }));
+
+    const joinCampaingModal = document.querySelector('[data-component-modal="join-to-campaing"]');
+    const joinCampaingTriggerElement = document.querySelector('.js-join-campaign-link');
+    if (joinCampaingModal && joinCampaingTriggerElement) {
+      this.appendChild(new JoinCampaingModal({
+        name: 'JoinCampaingModal',
+        modal: joinCampaingModal,
+        trigger: joinCampaingTriggerElement,
+      }));
+    }
 
     Array.prototype.slice.call(document.querySelectorAll('.ReadMore')).forEach((element, i) => {
       this.appendChild(new ReadMore({

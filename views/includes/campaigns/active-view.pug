@@ -107,6 +107,11 @@
                 svg.inline-block.align-top(width='60' height='72')
                   use(xlink:href='#svg-no-date')
               p.-neutral-mid.-fw-500 Currently there are no scheduled events
+            if canCreateEvents
+              .mt3.pt2.-bw2.-border-neutral-mid-x.border-top
+                a.-k-btn.btn-primary.-fw-700(href=routeMappings.Admin.Campaigns.Events.new.url(campaign.id))
+                  svg(width='10' height='10'): use(xlink:href='#svg-plus')
+                  span.pl1 Create new event
 
         if nextEvents.length
           .CampaignSidebarCarouselItem.inline-block.align-top(aria-hidden='true')

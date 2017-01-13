@@ -5,7 +5,7 @@ const Promise = require('bluebird');
 
 const CollectivesController = Class('CollectivesController').inherits(RestfulController)({
   beforeActions: [
-    // Load Collectives
+  // Load Collectives
   {
     before(req, res, next) {
       Collective.query()
@@ -27,6 +27,28 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       'show',
       'join',
     ],
+  },
+  // Sum totalDebtAmount for all campaings
+  {
+    before(req, res, next) {
+      const campaingsIds = req.collective.campaigns.map(c => c.id);
+      res.locals.totalDebtAmount = 0;
+
+      return Campaign.knex()
+        .select('debt_amount')
+        .from('UsersCampaigns')
+        .whereIn('campaign_id', campaingsIds)
+        .then(results => {
+          const total = results.reduce((p, c) =>
+            ({ debt_amount: (p.debt_amount + c.debt_amount) }), { debt_amount: 0 });
+
+          res.locals.totalDebtAmount = total.debt_amount || 0;
+
+          return next();
+        })
+        .catch(next);
+    },
+    actions: ['show'],
   },
   // Check if user can create campaigns
   {

@@ -104,5 +104,9 @@ block scripts
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
       };
-      new ViewAdminCampaignsEdit(options);
+      try {
+        new ViewAdminCampaignsEdit(options);
+      } catch(e) {
+        airbreak.notify(e);
+      }
     }, true);

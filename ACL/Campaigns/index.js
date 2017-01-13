@@ -1,10 +1,17 @@
+/* global Campaign */
+
+const isPublicCampaign = (req) =>
+  Campaign.query()
+          .where('id', req.params.id)
+          .then(([result]) => result.published);
+
 module.exports = {
   Visitor: [
-    ['show', true],
+    ['show', isPublicCampaign],
     ['join', false],
   ],
   User: [
-    ['show', 'join', true],
+    ['show', 'join', isPublicCampaign],
   ],
   CollectiveManager: [
     ['show', 'join', true],

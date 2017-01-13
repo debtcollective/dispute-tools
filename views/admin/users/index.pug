@@ -128,5 +128,9 @@ block scripts
         currentURL: !{JSON.stringify(currentURL)},
         isAdmin: true,
       };
-      new ViewAdminUsersIndex(options);
+      try {
+        new ViewAdminUsersIndex(options);
+      } catch(e) {
+        airbreak.notify(e);
+      }
     }, true);
