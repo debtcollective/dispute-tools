@@ -34,33 +34,42 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
 
         const knex = Post.knex();
 
+        const restifyPosts = (onlyPublic) => {
+          // if not, display only public posts
+          if (onlyPublic) {
+            query.where('public', true);
+          }
+
+          RESTfulAPI.createMiddleware({
+            queryBuilder: query,
+            filters: {
+              allowedFields: [],
+            },
+            order: {
+              default: '-created_at',
+              allowedFields: [
+                'created_at',
+              ],
+            },
+            paginate: {
+              pageSize: PAGE_SIZE,
+            },
+          })(req, res, next);
+        };
+
+        // only public posts
+        if (!req.user) {
+          restifyPosts(true);
+          return;
+        }
+
+        // the user belongs to the campaign?
         knex('UsersCampaigns')
           .where({
             user_id: req.user.id,
             campaign_id: req.params.id,
           })
-          .then((result) => {
-            // public posts?
-            if (!result.length) {
-              query.where('public', true);
-            }
-
-            RESTfulAPI.createMiddleware({
-              queryBuilder: query,
-              filters: {
-                allowedFields: [],
-              },
-              order: {
-                default: '-created_at',
-                allowedFields: [
-                  'created_at',
-                ],
-              },
-              paginate: {
-                pageSize: PAGE_SIZE,
-              },
-            })(req, res, next);
-          }).catch(next);
+          .then(result => restifyPosts(!result.length)).catch(next);
       },
       actions: ['index'],
     },

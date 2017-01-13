@@ -34,6 +34,7 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
           .then((collectives) => {
             req.collectives = collectives;
             res.locals.collectives = collectives;
+            res.locals.selectedCollective = req.params.collective_id;
 
             return next();
           })
@@ -45,7 +46,7 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
 
   prototype: {
     _loadCampaign(req, res, next) {
-      Admin.Campaign.query()
+      Admin.Collectives.Campaign.query()
         .where('id', req.params.id)
         .include('collective')
         .then((campaign) => {
