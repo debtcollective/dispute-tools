@@ -55,7 +55,7 @@ routeMapper.routes.forEach((route) => {
     }
 
     if (!controllerMethod) {
-      throw new Error(`Action '${action}' for '${controller}' is missing `);
+      throw new Error(`Action '${action}' for '${controller}' is missing. Handler: ${route.handler.join('.')}`);
     }
 
     const args = [];
