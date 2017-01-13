@@ -13,36 +13,36 @@ const config = {
 
   development: {
     port: process.env.PORT || 3000,
-    // sessions : false, if you want to disable Redis sessions
+
     sessions: {
       key: 'session',
-      secret: 'EDIT ME ctYArFqrrXy4snywpApkTcfootxsz9Ko',
+      secret: 'SECRET',
     },
+
     siteURL: `http://localhost:${process.env.PORT || 3000}`,
     enableLithium: false,
 
-    // Mailer
     mailers: {
-      contactEmail: 'EDIT ME',
-      senderEmail: 'no-reply@debtcollective.org',
-      disputesBCCAddresses: ['test@example.com'],
+      contactEmail: 'contact@example.com',
+      senderEmail: 'no-reply@example.com',
+      disputesBCCAddresses: ['disputes@example.com'],
     },
 
     nodemailer: {
       service: 'Gmail',
       auth: {
-        user: 'EDIT ME',
-        pass: 'EDIT ME',
+        user: '',
+        pass: '',
       },
     },
 
     loggly: {
-      apiKey: 'EDIT ME',
+      apiKey: '',
     },
 
     stripe: {
-      private: 'EDIT ME',
-      publishable: 'EDIT ME',
+      private: '',
+      publishable: '',
     },
 
     airbrake: {
@@ -56,21 +56,25 @@ const config = {
   },
 
   production: {},
+
+  // NOTE:
+  // since this file is being copied on CI
+  // all values should be taken from ENV
+
   test: {
     port: process.env.PORT || 3000,
-    // sessions : false, if you want to disable Redis sessions
     sessions: {
-      key: 'session',
-      secret: 'EDIT ME ctYArFqrrXy4snywpApkTcfootxsz9Ko',
+      key: process.env.SESSION_NAME,
+      secret: process.env.SESSION_SECRET,
     },
-    siteURL: `http://localhost:${process.env.PORT || 3000}`,
+    siteURL: `http${process.env.SECURE === 'true' ? 's' : ''}://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}`,
     enableLithium: false,
 
     // Mailer
     mailers: {
-      contactEmail: 'EDIT ME',
-      senderEmail: 'no-reply@debtcollective.org',
-      disputesBCCAddresses: ['test@example.com'],
+      contactEmail: process.env.CONTACT_EMAIL,
+      senderEmail: process.env.SENDER_EMAIL,
+      disputesBCCAddresses: [process.env.DISPUTES_EMAIL],
     },
 
     nodemailer: mandrillTransport({
@@ -82,21 +86,21 @@ const config = {
     }),
 
     loggly: {
-      apiKey: 'EDIT ME',
+      apiKey: process.env.LOGGLY_KEY,
     },
 
     stripe: {
-      secret: 'EDIT ME sk_test_CgWXBI8DxVg83qjkKF9EWDuB',
-      publishable: 'EDIT ME pk_test_SLHYKUBbqjnPFTXYcNrYaNAc',
+      secret: process.env.STRIPE_SECRET,
+      publishable: process.env.STRIPE_PUBLISHABLE,
     },
 
     airbrake: {
-      projectId: 135528, // EDIT ME
-      projectKey: 'EDIT ME 74cbcb7063226d3344639d737d04bdc2',
+      projectId: process.env.AIRBRAKE_ID,
+      projectKey: process.env.AIRBRAKE_KEY,
     },
 
     GoogleMaps: {
-      key: '',
+      key: process.env.GMAPS_KEY,
     },
   },
 };
