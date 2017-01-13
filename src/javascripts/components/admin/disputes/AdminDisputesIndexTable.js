@@ -13,11 +13,10 @@ export default class AdminDisputesIndexTable extends Widget {
   }
 
   _handleClick(ev) {
-    ev.preventDefault();
-
     const target = ev.target;
 
     if (target.tagName === 'BUTTON') {
+      ev.preventDefault();
       return this._handleButtonClick(target);
     }
 
@@ -27,6 +26,7 @@ export default class AdminDisputesIndexTable extends Widget {
     }
 
     if (parent.parentElement.tagName === 'BUTTON') {
+      ev.preventDefault();
       return this._handleButtonClick(parent.parentElement);
     }
 
