@@ -10,7 +10,7 @@ block content
   div
     .px2.pt3(data-offset-section)
       .max-width-4.mx-auto
-        h3.border-bottom.-bw5.-border-accent.pb2
+        h3.border-bottom.-bw5.-border-accent.pb2.flex.items-center
           svg.inline-block.align-middle.-sw7.-stroke-accent(width='60' height='60')
             use(xlink:href=`#svg-collective-${collective.id.charAt(0)}`)
               span.pl2.inline-block.align-middle.-accent= collective.name
@@ -42,12 +42,12 @@ block content
         ul.list-reset.flex.-bg-neutral-light(role='tablist')
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-campaigns' aria-selected='false')
             | Campaigns
-            span.right.-caption.-neutral-mid= collective.campaigns.length
+            span.xs-hide.right.-caption.-neutral-mid= collective.campaigns.length
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-manifest' aria-selected='false')
             | Proclamation
           li.Tab.flex-auto.p3.-fw-700.-dark(role='tab' aria-controls='panel-dispute-tools' aria-selected='false')
             | Dispute tools
-            span.right.-caption.-neutral-mid= collective.tools.length
+            span.xs-hide.right.-caption.-neutral-mid= collective.tools.length
 
         .Collective_TabPanes
           section#panel-campaigns.TabPane(role='tabpanel' aria-hidden='true')
