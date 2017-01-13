@@ -8,13 +8,13 @@ mixin mixinPagination(current_page, total_pages)
     ul.list-reset
       //- first
       +paginationItem(1, '«')(
-        disabled= current_page === 1
+        disabled= current_page === 1 || !total_pages
         aria-label= 'First'
       )
 
       //- prev
       +paginationItem(current_page - 1, '‹')(
-        disabled= current_page === 1
+        disabled= current_page === 1 || !total_pages
         aria-label= 'Previous'
       )
 
@@ -48,12 +48,12 @@ mixin mixinPagination(current_page, total_pages)
 
       //- next
       +paginationItem(current_page + 1, '›')(
-        disabled= (current_page === total_pages)
+        disabled= (current_page === total_pages) || !total_pages
         aria-label= 'Next'
       )
 
       //- last
       +paginationItem(total_pages, '»')(
-        disabled= (current_page === total_pages)
+        disabled= (current_page === total_pages) || !total_pages
         aria-label= 'Last'
       )
