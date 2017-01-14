@@ -57,15 +57,16 @@ block content
               include ../includes/campaigns/inactive-view
 
           section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
-            div.SearchPanel
+            .SearchPanel
               form.flex(action=routeMappings.Campaigns.show.url(campaign.id) + '#resources')
                 .flex-auto.pl4.pr1
-                  input(type='text' name='search' placeholder='Search articles and resources relevant to this collective...')
+                  input.-k-input.-fw.-clean.-fw-700(type='text' name='search' placeholder='Search articles and resources relevant to this collective...')
                 .flex-none
-                  select(name='topicId')
-                    option(value="") Topic
-                    each topic in kbTopics
-                      option(value=topic.id)= topic.title
+                  .-k-select.-accent
+                    select.-fw-700(name='topicId')
+                      option(value="") All Topics
+                      each topic in kbTopics
+                        option(value=topic.id)= topic.title
                   button(type='submit') Search
 
             section.Masonry.pt4.mxn2
