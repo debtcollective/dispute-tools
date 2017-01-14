@@ -19,18 +19,6 @@ block content
       )
         input(type='hidden' name='_csrf' value=csrfToken)
         .py1
-          label.block.pb1.-fw-500 Collective
-          .-k-select.-border-neutral-mid
-              select.-fw(name='collectiveId')
-                option(value='') Collective #{selectedCollective}
-                each collective in collectives
-                  if collective.id == selectedCollective
-                    option(selected value=collective.id)= collective.name
-                  else
-                    option(value= collective.id)= collective.name
-          p(class="-on-error -danger -caption -fw-500 mt1")
-
-        .py1
           label.block.pb1.-fw-500 Title
           input.-k-input.-fw.-border-neutral-mid(
             type='text'

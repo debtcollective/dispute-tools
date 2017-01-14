@@ -30,7 +30,7 @@ block content
                     span.-fw-700.px1 •
                     a.-fw-700(href=routeMappings.Admin.Collectives.Campaigns.edit.url(campaign.collective.id, campaign.id)) Edit campaign
 
-            li.Tab.flex-auto.p2.-fw-700.-dark.items-center.flex(role='tab' aria-controls='panel-resources' aria-selected='false' data-hashname='#campaign')
+            li.Tab.flex-auto.p2.-fw-700.-dark.items-center.flex(role='tab' aria-controls='panel-resources' aria-selected='false' data-hashname='#resources' data-keep-params)
               .flex-auto
                 | Resources
                 span.right.-caption.-neutral-mid #{campaign.kbPosts.length}
@@ -55,16 +55,18 @@ block content
               include ../includes/campaigns/inactive-view
 
           section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
-            div.SearchPanel
-              form.flex(action=routeMappings.Campaigns.show.url(campaign.id) + '#resources')
-                .flex-auto.pl4.pr1
-                  input(type='text' name='search' placeholder='Search articles and resources relevant to this collective...')
-                .flex-none
-                  select(name='topicId')
-                    option(value="") Topic
-                    each topic in kbTopics
-                      option(value=topic.id)= topic.title
-                  button(type='submit') Search
+            form.m2.p2.flex(action=routeMappings.Campaigns.show.url(campaign.id) + '#resources')
+              .-input-group-icon.flex-auto
+                svg(width=18 height=18)
+                  use(xlink:href='#svg-search')
+                input.-k-input.-clean.-fw-700(name='search' placeholder='Find articles and resources relevant to this collective...')
+              .-k-select.-accent.ml1
+                select.-fw-700(name='topicId')
+                  option(value="") Topic
+                  each topic in kbTopics
+                    option(value=topic.id)= topic.title
+              .flex-none.ml1
+                button.-k-btn.btn-primary.-fw-700(type='submit') Search
 
             section.Masonry.pt4.mxn2
               each kbPost in campaign.kbPosts

@@ -24,24 +24,6 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
       before: '_loadCampaign',
       actions: ['edit', 'update', 'activate', 'deactivate'],
     },
-    // Load Collectives
-    {
-      before(req, res, next) {
-        Admin.Collective.query()
-          .then((collectives) => {
-            return req.restifyACL(collectives);
-          })
-          .then((collectives) => {
-            req.collectives = collectives;
-            res.locals.collectives = collectives;
-            res.locals.selectedCollective = req.params.collective_id;
-
-            return next();
-          })
-          .catch(next);
-      },
-      actions: ['new', 'create', 'edit', 'update'],
-    },
   ],
 
   prototype: {
@@ -68,6 +50,7 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
     create(req, res) {
       const campaign = new Admin.Campaign(req.body);
 
+      campaign.collectiveId = req.params.collective_id;
       campaign.active = true;
 
       campaign.save()
