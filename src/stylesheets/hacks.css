@@ -1,4 +1,0 @@
-#resources:target {
-  & ~ #panel-campaign { display: none; }
-  & ~ #panel-resources { border: 1px solid red; }
-}

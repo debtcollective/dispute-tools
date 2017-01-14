@@ -91,8 +91,11 @@ class ViewCampaignsShow extends NodeSupport {
     this._bindShareButtons();
 
     if (!location.hash) {
-      location.hash = 'campaign';
+      const url = `${location.pathname}#campaign`;
+
       this.Tabs._activateTab('panel-campaign');
+
+      window.history.replaceState({ path: url }, '', url);
     }
   }
 
