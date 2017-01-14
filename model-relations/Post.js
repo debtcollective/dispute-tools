@@ -6,7 +6,7 @@ Post.relations = {
     relatedModel: Post,
     ownerCol: 'id',
     relatedCol: 'parent_id',
-    orderBy: ['created_at', 'DESC'],
+    orderBy: ['created_at', 'ASC'],
   },
 
   topic: {

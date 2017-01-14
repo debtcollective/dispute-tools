@@ -34,7 +34,7 @@ export default class PostPoll extends Post {
             <div class='flex-auto pl2'>
               <p class='-fw-500'>${data.user.account.fullname}</p>
               <p class='pb2 -caption -neutral-dark'>${new Date(data.createdAt).toDateString()}</p>
-              <p class='pb3'>${data.data.title}</p>
+              <p class='Campaign_FeedItemText pb3'>${data.data.title}</p>
               <div data-main-content>
                 ${this._renderPollContent(data)}
               </div>
