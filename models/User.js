@@ -169,7 +169,7 @@ const User = Class('User').inherits(Krypton.Model)({
       return UserMailer.sendActivation(this.email, {
         user: model,
         _options: {
-          subject: 'Activate your account - The Debt Collective',
+          subject: 'Activate your account - Welcome to The Debt Collective!',
         },
       });
     },

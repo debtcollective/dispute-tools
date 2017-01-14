@@ -71,9 +71,10 @@ const HomeController = Class('HomeController').inherits(BaseController)({
         message: message,
         name: name,
         _options: {
-          from: { name, address: email },
+          from: `${name} <${email}>`,
         },
       };
+
       ContactMailer.sendMessage(CONTACT_EMAIL, emailerOptions)
       .then((result) => {
           logger.info('ContactMailer.sendMessage result', result);

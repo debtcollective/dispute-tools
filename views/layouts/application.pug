@@ -64,7 +64,7 @@ html(lang='en')
     script(src="/build/javascripts/airbrake.client.min.js" async)
     script.
       const env = !{JSON.stringify( CONFIG.environment )};
-      if (env === 'production') {
+      if (env === 'production' || env === 'staging') {
         window.addEventListener('load', function() {
           const airbrakeJs = window.airbrakeJs;
           const airbrakeConfig = !{JSON.stringify(CONFIG.env().airbrake)};
