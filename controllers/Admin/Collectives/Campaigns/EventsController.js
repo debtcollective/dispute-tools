@@ -12,9 +12,10 @@ const PAGE_SIZE = 50;
 
 /* global Admin */
 global.Admin = global.Admin || {};
-global.Admin.Campaigns = global.Admin.Campaigns || {};
+global.Admin.Collectives = global.Admin.Collectives || {};
+global.Admin.Collectives.Campaigns = global.Admin.Collectives.Campaigns || {};
 
-const EventsController = Class(Admin.Campaigns, 'EventsController').inherits(RestfulController)({
+const EventsController = Class(Admin.Collectives.Campaigns, 'EventsController').inherits(RestfulController)({
   beforeActions: [
     {
       before(req, res, next) {

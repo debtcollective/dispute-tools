@@ -4,7 +4,7 @@ export default class Tabs extends Widget {
   constructor(config) {
     super(config);
 
-    this.initialSearch = '';
+    this.initialSearch = location.search;
     this.panelPrefixRef = new RegExp(/^panel\-/);
     this.tabs = Array.prototype.slice.call(this.element.querySelectorAll('[role="tab"]'));
     this.panels = Array.prototype.slice.call(this.element.querySelectorAll('[role="tabpanel"]'));
@@ -62,11 +62,15 @@ export default class Tabs extends Widget {
         this.panels[i].setAttribute('aria-hidden', false);
 
         if (this.updateHash) {
-          if (!this._current && typeof this.tabs[i].dataset.keepParams !== 'undefined') {
-            this.initialSearch = location.search;
+          let q = '';
+
+          if (typeof this.tabs[i].dataset.keepParams !== 'undefined') {
+            this.tabs[i].dataset._search = this.tabs[i].dataset._search || this.initialSearch;
           }
 
-          const q = typeof this.tabs[i].dataset.keepParams === 'undefined' ? '' : this.initialSearch;
+          q = this.tabs[i].dataset.keepParams === 'undefined'
+            ? '' : (this.tabs[i].dataset._search || '');
+
           const url = `${location.pathname}${q}#${id.replace(this.panelPrefixRef, '')}`;
 
           history.replaceState({ path: url }, '', url);

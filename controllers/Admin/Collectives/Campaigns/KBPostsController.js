@@ -3,9 +3,10 @@
 const fs = require('fs-extra');
 
 global.Admin = global.Admin || {};
-global.Admin.Campaigns = global.Admin.Campaigns || {};
+global.Admin.Collectives = global.Admin.Collectives || {};
+global.Admin.Collectives.Campaigns = global.Admin.Collectives.Campaigns || {};
 
-const KBPostsController = Class(Admin.Campaigns, 'KBPostsController')
+const KBPostsController = Class(Admin.Collectives.Campaigns, 'KBPostsController')
 .inherits(RestfulController)({
   beforeActions: [
     // campaign
@@ -92,7 +93,8 @@ const KBPostsController = Class(Admin.Campaigns, 'KBPostsController')
         .where('campaign_id', req.params.campaign_id)
         .then(([found]) => found && found.destroy())
         .then(() => {
-          res.status(200).end();
+          req.flash('success', 'The resource was been deleted.');
+          res.redirect(req.body._backUrl || CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id));
         });
     },
   },

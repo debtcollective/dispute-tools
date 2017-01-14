@@ -15,7 +15,7 @@ block content
 
       form(
         method='post'
-        action= routeMappings.Admin.Campaigns.update.url(campaign.id)
+        action= routeMappings.Admin.Collectives.Campaigns.update.url(selectedCollective, campaign.id)
         enctype='multipart/form-data'
         data-component-form
       )
@@ -27,18 +27,6 @@ block content
           if campaign.cover.exists('grayscale')
             img(src=campaign.cover.url('grayscale') width='300')
           input(name='image' type='file' accept='image/*')
-
-        .py1
-          label.block.pb1.-fw-500 Collective
-          .-k-select.-border-neutral-mid
-              select.-fw(name='collectiveId')
-                option(value='') Collective
-                each collective in collectives
-                  option(
-                    value= collective.id
-                    selected!= campaign.collectiveId === collective.id
-                  )= collective.name
-          p(class="-on-error -danger -caption -fw-500 mt1")
 
         .py1
           label.block.pb1.-fw-500 Title

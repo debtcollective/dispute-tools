@@ -19,11 +19,24 @@ block content
           tr
             td.-fw-500= collective.name
             td.center
-              a.btn-clear.p1.inline-block.align-top(
+              a.Tag.btn-clear.p1.inline-block.align-middle(
+                href= routeMappings.Admin.Collectives.Users.url(collective.id)
+              )
+                svg.-pen.align-middle(width='15' height='15')
+                  use(xlink:href='#svg-users')
+                span.ml1= collective.userCount + ' user' + (collective.userCount === 1 ? '' : 's')
+
+              a.ml2.btn-clear.p1.inline-block.align-middle(
                 href= routeMappings.Admin.Collectives.edit.url(collective.id)
               )
-                svg.-pen.block.align-top(width='15' height='15')
+                svg.-pen.block.align-middle(width='15' height='15')
                   use(xlink:href='#svg-pencil')
+
+              a.ml2.btn-clear.p1.inline-block.align-middle(
+                href= routeMappings.Collectives.show.url(collective.id)
+              )
+                svg.-pen.block.align-middle(width='15' height='15')
+                  use(xlink:href='#svg-external')
 
 block scripts
   script(src="/build/javascripts/admin/collectives/index.js" async)

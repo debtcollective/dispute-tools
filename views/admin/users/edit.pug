@@ -22,6 +22,9 @@ block content
         input(type='hidden' name='_csrf' value=csrfToken)
         input(name='_method' type='hidden' value='PUT')
 
+        if _backUrl
+          input(type='hidden' name='_backUrl' value=_backUrl)
+
         .clearfix.mxn1.pb1
           .col.col-8.px1
             if (user.account.image.exists('medium'))

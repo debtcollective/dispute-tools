@@ -76,6 +76,11 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
     },
     {
       before(req, res, next) {
+        // fixed redirection
+        if (req.query._backUrl) {
+          res.locals._backUrl = req.query._backUrl;
+        }
+
         Collective.query()
           .orderBy('created_at', 'ASC')
           .then((collectives) => {
@@ -241,7 +246,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
           redirect = CONFIG.router.helpers.Users.show.url(user.id);
         }
 
-        return res.redirect(redirect);
+        return res.redirect(req.body._backUrl || redirect);
       })
       .catch((err) => {
         res.status(400);
@@ -254,7 +259,8 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
 
     ban(req, res) {
       if (req.user.id === req.params.id) {
-        res.status(400).json({ error: 'You cannot ban yourself!' });
+        req.flash('error', 'Cannot ban yourself!');
+        res.redirect(req.body._backUrl || CONFIG.router.helpers.Admin.Users.url());
         return;
       }
 
@@ -264,10 +270,12 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
         return firstUser.save();
       })
       .then(() => {
-        res.status(200).json({ banned: true });
+        req.flash('success', 'User banned succesfully');
+        res.redirect(req.body._backUrl || CONFIG.router.helpers.Admin.Users.url());
       })
       .catch((error) => {
-        res.status(500).json({ error: error.message || error.toString() });
+        req.flash('error', `An error was occurred: ${error.message}`);
+        res.redirect(req.body._backUrl || CONFIG.router.helpers.Admin.Users.url());
       });
     },
 
@@ -278,10 +286,12 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
         return firstUser.save();
       })
       .then(() => {
-        res.status(200).json({ banned: false });
+        req.flash('success', 'User unbanned succesfully');
+        res.redirect(req.body._backUrl || CONFIG.router.helpers.Admin.Users.url());
       })
       .catch((error) => {
-        res.status(500).json({ error: error.message || error.toString() });
+        req.flash('error', `An error was occurred: ${error.message}`);
+        res.redirect(req.body._backUrl || CONFIG.router.helpers.Admin.Users.url());
       });
     },
   },

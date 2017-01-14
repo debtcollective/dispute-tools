@@ -4,12 +4,13 @@ NotFoundError, Campaign */
 const fs = require('fs-extra');
 
 global.Admin = global.Admin || {};
+global.Admin.Collectives = global.Admin.Collectives || {};
 
-Class(Admin, 'Campaign').inherits(Campaign)({
-  resourceName: 'Admin.Campaigns',
+Class(Admin.Collectives, 'Campaign').inherits(Campaign)({
+  resourceName: 'Admin.Collectives.Campaigns',
 });
 
-Class(Admin, 'CampaignsController').inherits(RestfulController)({
+Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
   beforeActions: [
     // Authenticate
     {
@@ -23,28 +24,11 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
       before: '_loadCampaign',
       actions: ['edit', 'update', 'activate', 'deactivate'],
     },
-    // Load Collectives
-    {
-      before(req, res, next) {
-        Admin.Collective.query()
-          .then((collectives) => {
-            return req.restifyACL(collectives);
-          })
-          .then((collectives) => {
-            req.collectives = collectives;
-            res.locals.collectives = collectives;
-
-            return next();
-          })
-          .catch(next);
-      },
-      actions: ['new', 'create', 'edit', 'update'],
-    },
   ],
 
   prototype: {
     _loadCampaign(req, res, next) {
-      Admin.Campaign.query()
+      Admin.Collectives.Campaign.query()
         .where('id', req.params.id)
         .include('collective')
         .then((campaign) => {
@@ -66,6 +50,7 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
     create(req, res) {
       const campaign = new Admin.Campaign(req.body);
 
+      campaign.collectiveId = req.params.collective_id;
       campaign.active = true;
 
       campaign.save()
@@ -175,4 +160,4 @@ Class(Admin, 'CampaignsController').inherits(RestfulController)({
   },
 });
 
-module.exports = new Admin.CampaignsController();
+module.exports = new Admin.Collectives.CampaignsController();

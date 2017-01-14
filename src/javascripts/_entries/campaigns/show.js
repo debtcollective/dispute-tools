@@ -10,7 +10,6 @@ import CreateNewPost from '../../components/campaigns/show/create-new-post/Manag
 import SidebarController from '../../components/campaigns/show/sidebar/SidebarController';
 import ReadMore from '../../components/ReadMore';
 import { popupCenter } from '../../lib/utils';
-import Method from '../../components/Method';
 
 class ViewCampaignsShow extends NodeSupport {
   /**
@@ -22,8 +21,6 @@ class ViewCampaignsShow extends NodeSupport {
    */
   constructor(config) {
     super();
-
-    Method.init();
 
     Object.assign(this, config);
 
@@ -41,6 +38,7 @@ class ViewCampaignsShow extends NodeSupport {
 
     this.appendChild(new Tabs({
       name: 'Tabs',
+      updateHash: true,
       element: document.querySelector('[data-tabs-component]'),
     }));
 
@@ -91,6 +89,10 @@ class ViewCampaignsShow extends NodeSupport {
     }
 
     this._bindShareButtons();
+
+    if (!location.hash) {
+      this.Tabs._activateTab('panel-campaign');
+    }
   }
 
   /**

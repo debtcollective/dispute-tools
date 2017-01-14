@@ -75,7 +75,27 @@ const routeMappings = RouteMappings()
   .namespace('/Admin', (mappings) => {
     return mappings()
       .resources('/Disputes')
-      .resources('/Collectives')
+      .resources('/Collectives', (map) => {
+        return map()
+          .resources('/Users')
+          .resources('/Campaigns', (map) => {
+            return map()
+              .resources('/KBPosts')
+              .resources('/Events')
+              .post('/:id/activate', {
+                to: 'Campaigns#activate',
+                as: 'activate',
+              })
+              .post('/:id/deactivate', {
+                to: 'Campaigns#deactivate',
+                as: 'deactivate',
+              })
+              .post('/files', {
+                to: 'Campaigns#uploadFiles',
+                as: 'uploadFiles',
+              });
+          });
+      })
       .resources('/Users', (map) => {
         return map()
           .post('/:id/ban', {
@@ -85,23 +105,6 @@ const routeMappings = RouteMappings()
           .delete('/:id/ban', {
             to: 'Users#unban',
             as: 'unban',
-          });
-      })
-      .resources('/Campaigns', (map) => {
-        return map()
-          .resources('/KBPosts')
-          .resources('/Events')
-          .post('/:id/activate', {
-            to: 'Campaigns#activate',
-            as: 'activate',
-          })
-          .post('/:id/deactivate', {
-            to: 'Campaigns#deactivate',
-            as: 'deactivate',
-          })
-          .post('/files', {
-            to: 'Campaigns#uploadFiles',
-            as: 'uploadFiles',
           });
       });
   })
@@ -154,7 +157,7 @@ const routeMappings = RouteMappings()
 
   .resources('/Campaigns', (map) => {
     return map()
-      .namespace('/Events', (map) =>
+      .resources('/Events', (map) =>
         map()
           .post('/:id/rsvp', { as: 'doRSVP' })
           .delete('/:id/rsvp', { as: 'undoRSVP' })
@@ -189,8 +192,6 @@ const routeMappings = RouteMappings()
     to: 'Posts#delete',
     as: 'DeletePost',
   })
-
-  .resources('/Events')
 
   .post('/donate', {
     to: 'Home#donate',

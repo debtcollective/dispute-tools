@@ -13,36 +13,36 @@ const config = {
 
   development: {
     port: process.env.PORT || 3000,
-    // sessions : false, if you want to disable Redis sessions
+
     sessions: {
       key: 'session',
-      secret: 'EDIT ME',
+      secret: 'SECRET',
     },
+
     siteURL: `http://localhost:${process.env.PORT || 3000}`,
     enableLithium: false,
 
-    // Mailer
     mailers: {
-      contactEmail: 'EDIT ME',
-      senderEmail: 'no-reply@debtcollective.org',
-      disputesBCCAddresses: ['test@example.com'],
+      contactEmail: 'contact@example.com',
+      senderEmail: 'no-reply@example.com',
+      disputesBCCAddresses: ['disputes@example.com'],
     },
 
     nodemailer: {
       service: 'Gmail',
       auth: {
-        user: 'EDIT ME',
-        pass: 'EDIT ME',
+        user: '',
+        pass: '',
       },
     },
 
     loggly: {
-      apiKey: 'EDIT ME',
+      apiKey: '',
     },
 
     stripe: {
-      private: 'EDIT ME',
-      publishable: 'EDIT ME',
+      private: '',
+      publishable: '',
     },
 
     airbrake: {
@@ -67,7 +67,7 @@ const config = {
       key: process.env.SESSION_NAME,
       secret: process.env.SESSION_SECRET,
     },
-    siteURL: `http${process.env.SECURE === 'TRUE' ? 's' : ''}://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}`,
+    siteURL: `http${process.env.SECURE === 'true' ? 's' : ''}://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}`,
     enableLithium: false,
 
     // Mailer

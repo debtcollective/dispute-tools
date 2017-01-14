@@ -1,4 +1,4 @@
-/* global Krypton, Class, CONFIG, UserMailer */
+/* global Krypton, Class, CONFIG, UserMailer, Campaign */
 
 const bcrypt = require('bcrypt-node');
 const uuid = require('uuid');
@@ -86,6 +86,51 @@ const User = Class('User').inherits(Krypton.Model)({
           return item.id;
         });
       });
+  },
+
+  getCampaigns(id, collectiveId) {
+    const myCampaigns = (ids) => {
+      const query = User.knex()
+      .select('UsersCampaigns.*')
+      .select('Campaigns.*')
+      .from('UsersCampaigns')
+      .where('UsersCampaigns.user_id', id)
+      .join('Campaigns', 'UsersCampaigns.campaign_id', 'Campaigns.id');
+
+      if (ids.length) {
+        query.whereIn('UsersCampaigns.campaign_id', ids);
+      }
+
+      return query;
+    };
+
+    const myCampaignsLength = (ids) => {
+      const query = User.knex()
+        .count('UsersCampaigns.*')
+        .from('UsersCampaigns')
+        .where('UsersCampaigns.user_id', id);
+
+      if (ids.length) {
+        query.whereIn('UsersCampaigns.campaign_id', ids);
+      }
+
+      return query.then(([result]) => result);
+    };
+
+    const getCollectiveCampaignIds = () => {
+      const query = Campaign.query()
+        .where('collective_id', collectiveId)
+        .then(results => results.map(x => x.id));
+
+      return query;
+    };
+
+    return Promise.resolve(collectiveId ? getCollectiveCampaignIds() : [])
+      .then((ids) =>
+        Promise.all([
+          myCampaigns(ids),
+          myCampaignsLength(ids),
+        ]).then(([results, res]) => ({ results, count: parseInt(res.count, 10) })));
   },
 
   prototype: {

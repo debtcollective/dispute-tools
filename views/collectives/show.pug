@@ -83,7 +83,7 @@ block content
 
                     if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
                       .border-top
-                        a.block.center.py2.-fw-700(href= routeMappings.Admin.Campaigns.edit.url(campaign.id))
+                        a.block.center.py2.-fw-700(href= routeMappings.Admin.Collectives.Campaigns.edit.url(collective.id, campaign.id))
                           svg.-pen.inline-block.align-middle(width='15' height='15'): use(xlink:href='#svg-pencil')
                           span.inline-block.align-middle.pl1 Edit campaign
                   .border-bottom.-bw5
@@ -91,12 +91,12 @@ block content
               if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
                 article.Masonry_item.px2.mb4
                   a.GridButton(
-                    href=routeMappings.Admin.Campaigns.new.url()
+                    href=routeMappings.Admin.Collectives.Campaigns.new.url(collective.id)
                     title='Create new campaign'
                   )
                     .flex.items-center.justify-center.absolute.top-0.right-0.bottom-0.left-0
                       .GridButton--Plus +
-                  a.block.center.py2.-fw-700(href=routeMappings.Admin.Campaigns.new.url())
+                  a.block.center.py2.-fw-700(href=routeMappings.Admin.Collectives.Campaigns.new.url())
                     | Create new campaign
                   .border-bottom.-bw5
 
