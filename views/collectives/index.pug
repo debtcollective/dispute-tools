@@ -40,9 +40,9 @@ block content
                   - _avatarUrl = currentUser.account.image.url('smallRedSquare')
                 .flex.items-center.pb2
                   img.mr1(src=_avatarUrl alt=currentUser.account.fullname width='40' height='40')
-                  span.-fw-700.-accent You + #{collective.userCount - 1} members
+                  p.-caption.-fw-700.-accent You + #{collective.userCount - 1} members · #{collective.campaigns.length} campaigns
               else
-                p.-accent.pb1.-fw-700= collective.userCount + ' members'
+                p.-caption.-accent.pb1.-fw-700 #{collective.userCount} members · #{collective.campaigns.length} #{collective.campaigns.length > 1 ? 'campaigns' : 'campaign'}
             hr
             .border-bottom.-bw5.-border-accent.py1
               a.-fw-700(href=routeMappings.Collectives.show.url(collective.id)) Go to collective
