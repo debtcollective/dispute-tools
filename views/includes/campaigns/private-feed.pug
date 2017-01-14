@@ -58,34 +58,34 @@
           )
 
     .flex
-      .flex-auto.flex.items-center
-        button.btn-clear.mr1.-k-tooltip-inline.-top(
+      .flex-auto.flex.items-center.pr2
+        button.btn-clear.mr1.-k-tooltip-inline.-top.xs-hide(
           data-post-type-icon
           data-type='Text'
           aria-label='Text'
         )
           svg.align-middle(width='20' height='20'): use(xlink:href='#svg-comment')
-        button.btn-clear.mr1.-k-tooltip-inline.-top(
+        button.btn-clear.mr1.-k-tooltip-inline.-top.xs-hide(
           data-post-type-icon
           data-type='Image'
           aria-label='Image'
         )
           svg.align-middle(width='20' height='20'): use(xlink:href='#svg-camera')
-        button.btn-clear.mr1.-k-tooltip-inline.-top(
+        button.btn-clear.mr1.-k-tooltip-inline.-top.xs-hide(
           data-post-type-icon
           data-type='Poll'
           aria-label='Poll'
         )
           svg.align-middle(width='20' height='20'): use(xlink:href='#svg-assignment')
 
-        .-k-select.-accent.-xs
+        .-k-select.-accent.-xs.fit
           select.-fw-700(create-new-post-topic-select)
             option(value='') TOPIC
             each topic in topics
               option(value=topic.id)= topic.title
 
-      div
-        label.mr2
+      .-wsnw
+        label.pr2
           input(type='checkbox' data-create-new-post-public-checkbox)
           span.pl1.-caption.-ttu.-fw-700 Public
         button.-k-btn.btn-primary.-sm.-fw-700(type='submit') Post

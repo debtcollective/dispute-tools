@@ -5,7 +5,6 @@
  * - handle the creation of new comments
  */
 
-import Pisces from 'pisces';
 import Widget from '../../../../../lib/widget';
 import ToggleCommentsButton from './ToggleCommentsButton';
 import CommentList from './CommentList';
@@ -17,8 +16,6 @@ export default class CommentsManager extends Widget {
 
     this.expandedComments = false;
     this.totalComments = this.data.comments.length;
-
-    this.piscesComment = new Pisces();
 
     this.appendChild(new ToggleCommentsButton({
       name: 'ToggleCommentsButton',
@@ -64,14 +61,6 @@ export default class CommentsManager extends Widget {
    */
   _handleNewCreatedComment(ev) {
     this.CommentList.appendComment(ev.res.body);
-
-    let y = this.element.getBoundingClientRect().top;
-    y = (y >= 0) ? `+${y}` : y.toString();
-
-    this.piscesComment.scrollToPosition({ y }, {
-      onComplete: () => {
-        this.ToggleCommentsButton.updateLabel(++this.totalComments);
-      },
-    });
+    this.ToggleCommentsButton.updateLabel(++this.totalComments);
   }
 }

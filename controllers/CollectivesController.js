@@ -9,7 +9,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
   {
     before(req, res, next) {
       Collective.query()
-        .include('[tools, users]')
+        .include('[campaigns]')
         .orderBy('created_at', 'DESC')
         .then((collectives) => {
           req.collectives = collectives;
@@ -28,7 +28,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
       'join',
     ],
   },
-  // Sum totalDebtAmount for all campaings
+  // Sum totalDebtAmount for all campaigns
   {
     before(req, res, next) {
       const campaingsIds = req.collective.campaigns.map(c => c.id);
@@ -182,7 +182,6 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
     },
     actions: ['index'],
   },
-
   ],
   prototype: {
     _loadCollective(req, res, next) {

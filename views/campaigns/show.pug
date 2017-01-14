@@ -16,36 +16,41 @@ block content
             .Alert.wrapper.center.-fw-500.-warning
               p This campaign is currently on Staging mode. #[a(href=routeMappings.Admin.Collectives.Campaigns.edit.url(campaign.collective.id, campaign.id)) Edit campaign] to make it public.
           ul.list-reset.flex.-bg-neutral-light(role='tablist')
+<<<<<<< HEAD
             li.Tab.flex.flex-auto.p1.-dark(role='tab' aria-controls='panel-campaign' aria-selected='false' data-hashname='#campaign')
+=======
+            li.Tab.flex.items-center.flex-auto.p1.-dark(role='tab' aria-controls='panel-campaign' aria-selected='true')
+>>>>>>> origin/sprint-2016.09
               .flex.items-center
                 svg.-sw7.-stroke-dark(width='40' height='40')
                   use(xlink:href=`#svg-collective-${campaign.collective.id.charAt(0)}`)
-              .pl2
-                div
-                  h4.inline-block.pr1= campaign.title
-                  a.-fw-700(href=routeMappings.Collectives.show.url(campaign.collective.id))= campaign.collective.name
-                p.-caption.-fw-500
+              .pl2.-ell
+                .-ell
+                  h4.CampaignTitle.inline-block.pr1= campaign.title
+                  a.-fw-700.xs-hide(href=routeMappings.Collectives.show.url(campaign.collective.id))= campaign.collective.name
+                p.-ell.-caption.-fw-500.xs-hide
                   | #{(userBelongsToCampaign ? `You + ${campaign.userCount - 1}` : campaign.userCount) + ` people joined with $${totalDebtAmount / 100} USD in debt`}
                   if canCreateEvents
                     span.-fw-700.px1 •
                     a.-fw-700(href=routeMappings.Admin.Collectives.Campaigns.edit.url(campaign.collective.id, campaign.id)) Edit campaign
 
-            li.Tab.flex-auto.p2.-fw-700.-dark.items-center.flex(role='tab' aria-controls='panel-resources' aria-selected='false' data-hashname='#resources' data-keep-params)
-              .flex-auto
-                | Resources
-                span.right.-caption.-neutral-mid #{campaign.kbPosts.length}
-            li.Tab.p2.-fw-700.-dark.flex.items-center
-              div
-                | Share
-                ul.list-reset.inline-block.ml3
-                  li.inline-block
-                    a.px1.-dark(href='#' rel="noopener noreferrer" target="_blank" data-share-url-twitter)
-                      svg(width="13" height="11"): use(xlink:href="#svg-twitter")
-                      .sr-only Twitter
-                  li.inline-block
-                    a.px1.-dark(href='#' rel="noopener noreferrer" target="_blank" data-share-url-facebook)
-                      svg(width="6" height="13"): use(xlink:href="#svg-facebook")
-                      .sr-only Facebook
+            li.Tab.p2.-fw-700.-dark.items-center.flex(role='tab' aria-controls='panel-resources' aria-selected='false' data-hashname='#resources' data-keep-params)
+              .flex.items-center
+                span.pr3 Resources
+                span.-caption.-neutral-mid.xs-hide #{campaign.kbPosts.length}
+            if campaign.published
+              li.Tab.p2.-fw-700.-dark.flex.items-center.sm-hide.xs-hide
+                .flex
+                  span.pr2 Share
+                  ul.list-reset.inline-block
+                    li.inline-block
+                      a.px1.-dark(href='#' rel='noopener noreferrer' target='_blank' data-share-url-twitter)
+                        svg(width='13' height='11'): use(xlink:href='#svg-twitter')
+                        .sr-only Twitter
+                    li.inline-block
+                      a.px1.-dark(href='#' rel='noopener noreferrer' target='_blank' data-share-url-facebook)
+                        svg(width='6' height='13'): use(xlink:href='#svg-facebook')
+                        .sr-only Facebook
 
         .Campaigns_TabPanes
           section#panel-campaign.TabPane.pt3(role='tabpanel' aria-hidden='true')
@@ -55,18 +60,17 @@ block content
               include ../includes/campaigns/inactive-view
 
           section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
-            form.m2.p2.flex(action=routeMappings.Campaigns.show.url(campaign.id) + '#resources')
-              .-input-group-icon.flex-auto
-                svg(width=18 height=18)
-                  use(xlink:href='#svg-search')
-                input.-k-input.-clean.-fw-700(name='search' placeholder='Find articles and resources relevant to this collective...')
-              .-k-select.-accent.ml1
-                select.-fw-700(name='topicId')
-                  option(value="") Topic
-                  each topic in kbTopics
-                    option(value=topic.id)= topic.title
-              .flex-none.ml1
-                button.-k-btn.btn-primary.-fw-700(type='submit') Search
+            .SearchPanel
+              form.flex(action=routeMappings.Campaigns.show.url(campaign.id) + '#resources')
+                .flex-auto.pl4.pr1
+                  input.-k-input.-fw.-clean.-fw-700(type='text' name='search' placeholder='Search articles and resources relevant to this collective...')
+                .flex-none
+                  .-k-select.-accent
+                    select.-fw-700(name='topicId')
+                      option(value="") All Topics
+                      each topic in kbTopics
+                        option(value=topic.id)= topic.title
+                  button(type='submit') Search
 
             section.Masonry.pt4.mxn2
               each kbPost in campaign.kbPosts
