@@ -66,10 +66,9 @@ export default class Tabs extends Widget {
             this.initialSearch = location.search;
           }
 
-          const q = typeof this.tabs[i].dataset.keepParams === 'undefined' ? '' : this.initialSearch;
-          const url = `${location.pathname}${q}#${id.replace(this.panelPrefixRef, '')}`;
+          const hash = `${id.replace(this.panelPrefixRef, '')}`;
 
-          history.replaceState({ path: url }, '', url);
+          location.hash = hash;
         }
 
         this._current = id;

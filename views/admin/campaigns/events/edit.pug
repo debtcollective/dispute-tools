@@ -16,7 +16,7 @@ block content
 
       form(
         method='post'
-        action=routeMappings.Admin.Collectives.Campaigns.Events.update.url(campaign.id, event.id)
+        action=routeMappings.Admin.Collectives.Campaigns.Events.update.url(campaign.collective.id, campaign.id, event.id)
         data-component-form
       )
         input(type='hidden' name='_csrf' value=csrfToken)

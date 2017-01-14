@@ -16,7 +16,7 @@ block content
 
       form(
         method='post'
-        action=routeMappings.Admin.Collectives.Campaigns.KBPosts.create.url(campaign.id)
+        action=routeMappings.Admin.Collectives.Campaigns.KBPosts.create.url(campaign.collective.id, campaign.id)
         enctype='multipart/form-data'
         data-component-form
       )

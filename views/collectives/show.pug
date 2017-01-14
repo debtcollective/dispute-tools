@@ -83,7 +83,7 @@ block content
 
                     if currentUser && currentUser.role === 'Admin' || canCreateCampaigns
                       .border-top
-                        a.block.center.py2.-fw-700(href= routeMappings.Admin.Collectives.Campaigns.edit.url(campaign.id))
+                        a.block.center.py2.-fw-700(href= routeMappings.Admin.Collectives.Campaigns.edit.url(collective.id, campaign.id))
                           svg.-pen.inline-block.align-middle(width='15' height='15'): use(xlink:href='#svg-pencil')
                           span.inline-block.align-middle.pl1 Edit campaign
                   .border-bottom.-bw5

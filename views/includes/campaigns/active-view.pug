@@ -76,13 +76,13 @@
             .pt2
               if currentUser
                 if event.imAttendee
-                  form.inline-block.mr2(action=routeMappings.Campaigns.Events.undoRSVP.url(event.id) method='post')
+                  form.inline-block.mr2(action=routeMappings.Campaigns.Events.undoRSVP.url(campaign.id, event.id) method='post')
                     input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.undoRSVP.verb)
                     input(type='hidden' name='_destroy' value=1)
                     input(type='hidden' name='_csrf' value=csrfToken)
                     button.-k-btn.btn-dark.-sm.-fw-700(type='submit') Not going
                 else
-                  form.inline-block.mr2(action=routeMappings.Campaigns.Events.doRSVP.url(event.id) method='post')
+                  form.inline-block.mr2(action=routeMappings.Campaigns.Events.doRSVP.url(campaign.id, event.id) method='post')
                     input(type='hidden' name='_method' value=routeMappings.Campaigns.Events.doRSVP.verb)
                     input(type='hidden' name='_csrf' value=csrfToken)
                     button.-k-btn.btn-primary.-sm.-fw-700(type='submit') Attend
@@ -94,10 +94,10 @@
 
             if canCreateEvents
               .mt3.pt2.-bw2.-border-neutral-mid-x.border-top.clearfix
-                a.-k-btn.-fw-700(href=routeMappings.Admin.Collectives.Campaigns.Events.edit.url(campaign.id, event.id))
+                a.-k-btn.-fw-700(href=routeMappings.Admin.Collectives.Campaigns.Events.edit.url(campaign.collective.id, campaign.id, event.id))
                   svg(width='15' height='15'): use(xlink:href='#svg-pencil')
                   span.pl1 Edit event
-                a.right.-k-btn.btn-primary.-fw-700(href=routeMappings.Admin.Collectives.Campaigns.Events.new.url(campaign.id))
+                a.right.-k-btn.btn-primary.-fw-700(href=routeMappings.Admin.Collectives.Campaigns.Events.new.url(campaign.collective.id, campaign.id))
                   svg(width='10' height='10'): use(xlink:href='#svg-plus')
                   span.pl1 Create new event
 
@@ -109,7 +109,7 @@
               p.-neutral-mid.-fw-500 Currently there are no scheduled events
             if canCreateEvents
               .mt3.pt2.-bw2.-border-neutral-mid-x.border-top
-                a.-k-btn.btn-primary.-fw-700(href=routeMappings.Admin.Collectives.Campaigns.Events.new.url(campaign.id))
+                a.-k-btn.btn-primary.-fw-700(href=routeMappings.Admin.Collectives.Campaigns.Events.new.url(campaign.collective.id, campaign.id))
                   svg(width='10' height='10'): use(xlink:href='#svg-plus')
                   span.pl1 Create new event
 
@@ -141,7 +141,7 @@
 
                     if canCreateEvents
                       .pt2
-                        a.-fw-500(href=routeMappings.Admin.Collectives.Campaigns.Events.edit.url(campaign.id, event.id))
+                        a.-fw-500(href=routeMappings.Admin.Collectives.Campaigns.Events.edit.url(campaign.collective.id, campaign.id, event.id))
                           svg(width='15' height='15'): use(xlink:href='#svg-pencil')
                           span.pl1 Edit event
 

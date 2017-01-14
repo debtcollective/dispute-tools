@@ -89,6 +89,11 @@ class ViewCampaignsShow extends NodeSupport {
     }
 
     this._bindShareButtons();
+
+    if (!location.hash) {
+      location.hash = 'campaign';
+      this.Tabs._activateTab('panel-campaign');
+    }
   }
 
   /**
