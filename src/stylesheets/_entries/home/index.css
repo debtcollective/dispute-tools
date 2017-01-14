@@ -1,6 +1,45 @@
 @import '../../base';
-/* @import '../../components/CollectiveCard'; */
-/* @import '../../components/AvatarList'; */
+
+/* page styles */
+.HomeSubheading {
+  @media (max-width: 400px) {
+    font-size: 2rem;
+  }
+}
+
+.HomeHeading {
+  font-size: 3.5625rem;
+  @media (max-width: 400px) {
+    font-size: 3rem;
+  }
+}
+
+.HomeIllustrationTop {
+  margin-top: -2rem;
+}
+
+.HomeDescription {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(5em, 2em, 0);
+  width: 33.33333%;
+
+  @media (max-width: 730px) {
+    position: static;
+    width: 100%;
+    transform: none;
+    padding-top: var(--space-3);
+    padding-bottom: var(--space-3);
+  }
+}
+
+.bg-light-pattern {
+  background-color: var(--k-color-palette-neutral-light);
+  background-image: url(/images/global/bg-white-pattern.gif);
+  background-position: 50% 0;
+  background-repeat: repeat;
+}
 
 .underlined-link {
   border-bottom: .25em solid;
