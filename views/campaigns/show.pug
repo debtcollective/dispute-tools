@@ -56,10 +56,13 @@ block content
               include ../includes/campaigns/inactive-view
 
           section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
-            .SearchPanel
+            .SearchPanel.mx4
               form.flex(action=routeMappings.Campaigns.show.url(campaign.id) + '#resources')
-                .flex-auto.pl4.pr1
-                  input.-k-input.-fw.-clean.-fw-700(type='text' name='search' placeholder='Search articles and resources relevant to this collective...')
+                .flex-auto.pr1
+                  .-input-group-icon.flex-auto
+                    svg(width=18 height=18)
+                      use(xlink:href='#svg-search')
+                    input.-k-input.-clean.-fw-700(name='search' placeholder='Find articles and resources relevant to this collective...')
                 .flex-none
                   .-k-select.-accent
                     select.-fw-700(name='topicId')

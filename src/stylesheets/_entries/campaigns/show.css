@@ -10,6 +10,7 @@
 @import '../../components/Masonry';
 @import '../../components/KBPost';
 @import '../../components/GridButton';
+@import '../../components/SearchPanel';
 
 /* page utils */
 .-neutral-dark {color: var(--k-color-palette-neutral-dark)}
