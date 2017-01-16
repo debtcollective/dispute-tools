@@ -1,25 +1,17 @@
-doctype html
-html(lang="en")
+extends ../layouts/shared.pug
 
-  head
-    title 404
+block title
+  | 404 — The Debt Collective
 
-    style.
-      body {
-        font-size: 13px;
-        margin: 0;
-        color: #4c4c4c;
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        text-align: center;
-      }
-
-      .view {
-        padding: 5em 0;
-      }
-
-  body
-    .view
-      h1 404
-      h2 We can't find the page you're looking for!
-      p Looks like you followed a bad link or something went wrong.
-      p Go back to the #[a(href=CONFIG.env().siteURL) Homepage].
+block content
+  .max-width-3.mx-auto.py4
+    .clearfix.md-flex.items-center
+      .col.md-col-6.col-12.center
+        img(src='/images/global/tdc-hand.png')
+      .col.md-col-6.col-12
+        h2.pb3.-ttu.-h-sec.-accent: span 404
+        h4.pb2.-ff-sec.-fw-300 The page you are looking for can’t be found.
+        p
+          a.button-clear.-fw-700(href='/')
+            svg(width='14' height='14'): use(xlink:href='#svg-arrow-backward')
+            span.pl1 Go to homepage.

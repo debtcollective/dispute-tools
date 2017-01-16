@@ -1,0 +1,63 @@
+doctype html
+html(lang='en')
+
+  head
+    meta(charset='UTF-8')
+    meta(name='csrf-token' content=csrfToken)
+    link(rel='icon' type='image/png' href='/images/favicon.png')
+
+    title
+      block title
+        | The Debt Collective
+
+    block styles
+      link(rel='stylesheet' href='/build/stylesheets/style.css')
+
+  body
+    include ../includes/svg/sprite.svg
+    include ../mixins/header-nav
+
+    main(aria-hidden='false' role='main')
+      include ../includes/header
+      block content
+      include ../includes/footer
+
+    .ResponsiveMenu(aria-hidden='true')
+      .ResponsiveMenu__Header.px2.clearfix
+        .left.-fh
+          a.block(href=routeMappings.root.url() style='padding: 11px 0;')
+            svg(width='64' height='31'): use(xlink:href='#svg-logo')
+            .sr-only The Collective Homepage
+        .right.-fh
+          button.js-close-responsive-menu.btn-clear(aria-label='close' style='padding: 19px 0 19px 19px;')
+            svg.-s18(width='32' height='32'): use(xlink:href='#svg-close')
+      +mixinHeaderNav(true)
+
+    include ../includes/donation-flow
+
+    if !currentUser
+      if (currentURL !== routeMappings.signup.url()) && (currentURL !== routeMappings.login.url()) && (currentURL !== routeMappings.Users.create.url())
+        .Modal(data-component-modal='signup' aria-hidden='true' role='dialog' aria-labelledby='modalSignupTitle' aria-describedby='modalSignupDesc')
+          button(class='Modal__close' aria-label='close')
+            svg(class='-s18'): use(xlink:href='#svg-close')
+          .Modal__body(role='document')
+            include ../includes/users/new-form.pug
+
+        .Modal(data-component-modal='login' aria-hidden='true' role='dialog' aria-labelledby='modalLoginTitle' aria-describedby='modalLoginDesc')
+          button(class='Modal__close' aria-label='close')
+            svg(class='-s18'): use(xlink:href='#svg-close')
+          .Modal__body(role='document')
+            include ../includes/sessions/new-form.pug
+
+    script(src='/build/javascripts/default.js')
+    script(src='/build/javascripts/polyfills.js' async)
+    script(src='https://js.stripe.com/v2/' async)
+    script.
+      window.addEventListener('load', function() {
+        var options = {
+          currentUser: !{JSON.stringify(currentUser)},
+          currentURL: !{JSON.stringify(currentURL)},
+        };
+
+        new ViewDefault(options);
+      }, true);
