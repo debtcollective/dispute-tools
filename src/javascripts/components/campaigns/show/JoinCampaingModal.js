@@ -57,7 +57,7 @@ export default class JoinCampaignModal extends NodeSupport {
     this.Modal.bind('activate', this._handleModalActivate);
 
     this._handleAmountInputKeyUp = this._handleAmountInputKeyUp.bind(this);
-    this.ui.debt_amount.addEventListener('keyup', this._handleAmountInputKeyUp);
+    this.ui.debt_amount.addEventListener('input', this._handleAmountInputKeyUp);
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this.modal.querySelector('form').addEventListener('submit', this._handleFormSubmit);
