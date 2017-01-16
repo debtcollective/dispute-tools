@@ -5,12 +5,14 @@ export default class Post extends Widget {
   constructor(config) {
     super(config);
 
-    this.appendChild(new CommentsManager({
-      name: 'CommentsManager',
-      data: this.data,
-      element: this.element,
-      toogleButtonCotainer: this.element.querySelector('[data-campaing-post-container]'),
-    }));
+    if (this.userBelongsToCampaign) {
+      this.appendChild(new CommentsManager({
+        name: 'CommentsManager',
+        data: this.data,
+        element: this.element,
+        toogleButtonCotainer: this.element.querySelector('[data-campaing-post-container]'),
+      }));
+    }
   }
 
   getTopicHTMLString(topic) {

@@ -18,6 +18,7 @@ class ViewCampaignsShow extends NodeSupport {
    * @property {string} config.campaignTitle
    * @property {array} config.nextEvents
    * @property {string} config.googleMapsKey
+   * @property {boolean} config.userBelongsToCampaign
    */
   constructor(config) {
     super();
@@ -50,6 +51,7 @@ class ViewCampaignsShow extends NodeSupport {
     this.appendChild(new FeedController({
       name: 'FeedController',
       campaignId: config.campaignId,
+      userBelongsToCampaign: config.userBelongsToCampaign,
       element: document.querySelector('.Campaign_Feed'),
     }));
 

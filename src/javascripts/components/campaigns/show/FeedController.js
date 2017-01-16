@@ -66,6 +66,7 @@ export default class FeedController extends Widget {
       this.appendChild(new PostClass({
         name: post.id,
         data: post,
+        userBelongsToCampaign: this.userBelongsToCampaign,
       }));
 
       fragment.appendChild(this[post.id].element);
