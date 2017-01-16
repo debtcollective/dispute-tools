@@ -104,6 +104,10 @@ class ViewCampaignsShow extends NodeSupport {
     this.twitterButton = document.querySelector('[data-share-url-twitter]');
     this.facebookButton = document.querySelector('[data-share-url-facebook]');
 
+    if (!this.twitterButton || !this.facebookButton) {
+      return;
+    }
+
     this.twitterButton.href = shareUrl.twitter({
       url: location.href,
       text: `Join the ${this.campaignTitle}`,
