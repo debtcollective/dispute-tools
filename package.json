@@ -30,17 +30,22 @@
     "dev": "tarima -wP localhost:3000 -p 3001"
   },
   "tarima": {
-    "bundle": true,
     "src": "src/**/*",
     "watch": "views/**/*",
     "dest": "./public/build",
     "ignoreFiles": [
       ".gitignore"
     ],
-    "filter": [
-      "**/_entries/**"
+    "bundle": [
+      "**/index.js"
     ],
-    "rename": "**:{filepath/1/_entries}/{filename}.{extname}",
+    "filter": [
+      "**/{_vendor,_entries}/**"
+    ],
+    "rename": [
+      "**/_vendor/*:{filepath/1/_vendor}/{filename}.{extname}",
+      "**/_entries/**:{filepath/1/_entries}/{filename}.{extname}"
+    ],
     "devPlugins": [
       "tarima-lr"
     ],
