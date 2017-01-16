@@ -55,15 +55,17 @@ block content
               each campaign, index in collective.campaigns
                 article.Masonry_item.px2.pb4
                   a.block(href=routeMappings.Campaigns.show.url(campaign.id))
-                    h3.-neutral-dark.pb1= campaign.title
+                    h3.pb1(class=campaign.active ? '-primary' : '-neutral-dark')= campaign.title
 
                     unless campaign.published
-                      span.-bg-accent.-caption.-ttu.-fw-700.inline-block.align-top.px1 staging
-                    if campaign.active
-                      span.-bg-primary.-white.-caption.-ttu.-fw-700.inline-block.align-top.px1 active
+                      span.-bg-accent.-caption.-ttu.-fw-700.inline-block.rounded.align-top.px1 staging
 
                     if campaign.description
                       .pb2.-neutral-dark!= campaign.description
+
+                    if campaign.active
+                      .relative
+                        svg(width='64' height='57' style='position: absolute; right: 10px; top: -28px;'): use(xlink:href='#svg-badge-active')
 
                     if campaign.cover.exists('grayscale')
                       .center.pb2
