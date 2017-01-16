@@ -13,8 +13,8 @@ block content
 
       section.Masonry.pt4.mxn2
         each collective, index in collectives
-          article.Masonry_item.px2.pb4
-            a(
+          article.CollectiveCard.Masonry_item.px2.pb4(class=collective.userBelongsToCollective && 'belongsToCollective')
+            a.block(
               href=routeMappings.Collectives.show.url(collective.id)
               title=collective.name
             )

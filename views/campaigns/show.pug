@@ -204,6 +204,7 @@ block scripts
         campaignTitle: !{JSON.stringify(campaign.title)},
         nextEvents: !{JSON.stringify(nextEvents)},
         googleMapsKey: !{JSON.stringify(CONFIG.env().GoogleMaps.key)},
+        userBelongsToCampaign: !{JSON.stringify(userBelongsToCampaign)},
       };
       try {
         new ViewCampaignsShow(options);
