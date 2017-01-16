@@ -2,7 +2,9 @@ export default {
   _: {},
 
   set(userData) {
-    this._ = userData;
+    if (userData) {
+      this._ = userData;
+    }
   },
 
   get(propertyName) {

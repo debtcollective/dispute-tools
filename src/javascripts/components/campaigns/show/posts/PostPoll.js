@@ -60,9 +60,15 @@ export default class PostPoll extends Post {
       `;
     }
 
+    if (currentUser.get('id')) {
+      return `
+        ${data.data.options.map(option => this._renderPollOption(option, data)).join('')}
+        <button class='-k-btn btn-dark -sm -fw-700 mt2' data-vote-btn>Vote</button>
+      `;
+    }
+
     return `
       ${data.data.options.map(option => this._renderPollOption(option, data)).join('')}
-      <button class='-k-btn btn-dark -sm -fw-700 mt2' data-vote-btn>Vote</button>
     `;
   }
 
