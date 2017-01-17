@@ -29,6 +29,8 @@
       width: 100%;
       display: block;
       break-inside: avoid;
+
+      &:only-child { display: inline-block; }
     }
   }
 }
