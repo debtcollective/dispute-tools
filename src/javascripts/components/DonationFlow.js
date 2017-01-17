@@ -249,4 +249,9 @@ export default class DonationFlow extends Widget {
       }
     });
   }
+  reset() {
+    this.setState({
+      page: PAGE_DONATE,
+    });
+  }
 }

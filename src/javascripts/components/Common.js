@@ -45,6 +45,10 @@ export default class Common extends Widget {
       element: donationFlowModal.querySelector('[data-component-donationform]'),
     }));
 
+    this.donationFlowModal.bind('activate', () => {
+      this.donationFlowModal.donationFlow.reset();
+    });
+
     // Activate DonationFlow triggers
     Array.prototype.slice.call(document.querySelectorAll('.js-donate'))
     .forEach(trigger => trigger.addEventListener('click', (ev) => {
