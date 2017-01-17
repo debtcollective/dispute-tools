@@ -24,6 +24,14 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
       before: '_loadCampaign',
       actions: ['edit', 'update', 'activate', 'deactivate'],
     },
+    // selectedCollectiveId
+    {
+      before(req, res, next) {
+        res.locals.selectedCollective = req.params.collective_id;
+        next();
+      },
+      actions: ['new', 'edit', 'update'],
+    },
   ],
 
   prototype: {
@@ -48,7 +56,7 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
     },
 
     create(req, res) {
-      const campaign = new Admin.Campaign(req.body);
+      const campaign = new Admin.Collectives.Campaign(req.body);
 
       campaign.collectiveId = req.params.collective_id;
       campaign.active = true;
