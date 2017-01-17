@@ -30,3 +30,15 @@
 .TabPane[aria-hidden='true'] {
   display: none;
 }
+
+@media screen and (max-width: 400px) {
+  .Tab[role='tab'] {
+    padding: 0;
+    line-height: 85px;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+  }
+}
