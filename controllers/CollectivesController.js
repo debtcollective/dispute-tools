@@ -9,12 +9,30 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
   {
     before(req, res, next) {
       Collective.query()
-        .include('[campaigns]')
         .orderBy('created_at', 'DESC')
         .then((collectives) => {
-          req.collectives = collectives;
-          res.locals.collectives = collectives;
-          next();
+          return Promise.all(collectives.map((c) => {
+            const subquery = Campaign.query()
+              .count('*')
+              .where('collective_id', c.id);
+
+            if (!req.user) {
+              subquery
+                .where('published', true)
+                .where('active', true);
+            } else {
+              subquery.where('published', true);
+            }
+
+            return subquery.then(([result]) => {
+              c.campaignCount = parseInt(result.count, 10);
+              return c;
+            });
+          })).then(() => {
+            req.collectives = collectives;
+            res.locals.collectives = collectives;
+            next();
+          });
         })
       .catch(next);
     },
