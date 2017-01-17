@@ -183,7 +183,6 @@ section.Payment .flex div:first-child .PaymentMethod { margin-right: 30px; }
 
 .DonationForm .btn-back {
   cursor: pointer;
-  background-color: #28282a;
 }
 
 .DonationForm .btn-back:hover {
