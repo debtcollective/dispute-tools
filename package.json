@@ -37,7 +37,7 @@
       ".gitignore"
     ],
     "bundle": [
-      "**/index.js"
+      "**/*.js"
     ],
     "filter": [
       "**/{_vendor,_entries}/**"
