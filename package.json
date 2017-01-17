@@ -32,14 +32,17 @@
     "src": "src/**/*",
     "watch": "views/**/*",
     "dest": "./public/build",
+    "cacheFile": "./public/build/index.json",
     "ignoreFiles": [
       ".gitignore"
     ],
     "bundle": [
-      "**/*.js"
+      "**/_entries/**"
     ],
     "filter": [
-      "**/{_vendor,_entries}/**"
+      "!node_modules/**",
+      "!**/{components,lib}/**",
+      "!**/{base,utils}*.css"
     ],
     "rename": [
       "**/_vendor/*:{filepath/1/_vendor}/{filename}.{extname}",
