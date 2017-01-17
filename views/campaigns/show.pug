@@ -85,7 +85,7 @@ block content
 
                     div(class=`KBPost--symbol -${kbPost.type}`)
                       if kbPost.fixedURL && kbPost.shortURL
-                        a(href=kbPost.fixedURL rel='noopener noreferrer')= kbPost.shortURL
+                        a(href=kbPost.fixedURL  target='_blank' rel='noopener noreferrer')= kbPost.shortURL
 
                       if kbPost.fixedWeight
                         if kbPost.type === 'image' || kbPost.isImage
@@ -93,7 +93,7 @@ block content
                         else
                           .KBPost--size= kbPost.fixedWeight
 
-                    .KBPost--caption= kbPost.name
+                    a.KBPost--caption(href=kbPost.fixedURL target='_blank' rel='noopener noreferrer')= kbPost.name
                     .KBPost--category
                       span= kbPost.topic
 
