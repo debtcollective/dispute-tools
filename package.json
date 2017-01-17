@@ -160,8 +160,7 @@
     "rollup-plugin-commonjs": "^5.0.4",
     "rollup-plugin-node-resolve": "^2.0.0",
     "svg-sprite": "^1.3.3",
-    "tarima-browser-sync": "^0.1.3",
-    "tarima-cli": "^0.3.4",
+    "tarima-cli": "^0.3.5",
     "tarima-lr": "^0.0.8",
     "testdouble": "^1.6.0"
   }
