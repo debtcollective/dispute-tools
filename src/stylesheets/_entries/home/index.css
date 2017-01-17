@@ -2,9 +2,7 @@
 
 /* page styles */
 .HomeSubheading {
-  @media (max-width: 400px) {
-    font-size: 2rem;
-  }
+  font-size: 2rem;
 }
 
 .HomeHeading {
