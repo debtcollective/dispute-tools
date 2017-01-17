@@ -17,6 +17,7 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
     {
       before(req, res, next) {
         res.locals.totalDebtAmount = 0;
+        res.locals.topicId = req.query.topicId;
 
         return Campaign.knex()
           .select('debt_amount')

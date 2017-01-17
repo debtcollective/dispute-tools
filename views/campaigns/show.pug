@@ -31,9 +31,9 @@ block content
                     a.-fw-700(href=routeMappings.Admin.Collectives.Campaigns.edit.url(campaign.collective.id, campaign.id)) Edit campaign
 
             li.Tab.p2.-fw-700.-dark.items-center.flex(role='tab' aria-controls='panel-resources' aria-selected='false' data-hashname='#resources' data-keep-params)
-              .flex.items-center
-                span.pr3 Resources
-                span.-caption.-neutral-mid.xs-hide #{campaign.kbPosts.length}
+              .flex.flex-auto.items-center
+                span.flex-auto Resources
+                span.-caption.-neutral-mid.xs-hide.ml3 #{campaign.kbPosts.length}
             if campaign.published
               li.Tab.p2.-fw-700.-dark.flex.items-center.sm-hide.xs-hide
                 .flex
@@ -57,7 +57,7 @@ block content
 
           section#panel-resources.TabPane(role='tabpanel' aria-hidden='true')
             .SearchPanel.mx4
-              form.flex(action=routeMappings.Campaigns.show.url(campaign.id) + '#resources')
+              form.sm-flex(action=routeMappings.Campaigns.show.url(campaign.id) + '#resources')
                 .flex-auto.pr1
                   .-input-group-icon.flex-auto
                     svg(width=18 height=18)
@@ -65,10 +65,10 @@ block content
                     input.-k-input.-clean.-fw-700(name='search' placeholder='Find articles and resources relevant to this collective...')
                 .flex-none
                   .-k-select.-accent
-                    select.-fw-700(name='topicId')
+                    select.-fw-700(name='topicId' onchange='this.form.submit()')
                       option(value="") All Topics
                       each topic in kbTopics
-                        option(value=topic.id)= topic.title
+                        option(value=topic.id selected=topicId===topic.id)= topic.title
                   button(type='submit') Search
 
             section.Masonry.pt4.mxn2
