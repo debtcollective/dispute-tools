@@ -1,7 +1,7 @@
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
 import Button from '../../components/Button';
-import Checkit from 'checkit';
+/* global Checkit */
 
 class ViewHomeContact extends NodeSupport {
   static get constraints() {

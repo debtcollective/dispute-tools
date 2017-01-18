@@ -1,5 +1,5 @@
 // import Widget from '../../../lib/widget';
-import Checkit from 'checkit';
+/* global Checkit */
 import NodeSupport from '../../../lib/widget/NodeSupport';
 import Modal from '../../Modal';
 import Button from '../../Button';

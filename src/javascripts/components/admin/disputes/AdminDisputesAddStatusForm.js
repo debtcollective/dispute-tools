@@ -1,4 +1,4 @@
-import Checkit from 'checkit';
+/* global Checkit */
 import Widget from '../../../lib/widget';
 import Button from '../../../components/Button';
 import DisputeStatusItem from '../../../components/disputes/StatusItem';

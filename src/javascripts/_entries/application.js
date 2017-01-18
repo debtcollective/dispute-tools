@@ -1,2 +1,6 @@
 /* eslint-disable no-console */
-console.log('application.js');
+
+import Checkit from 'checkit';
+
+// modules should be exposed manually
+window.Checkit = Checkit;

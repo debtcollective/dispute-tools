@@ -1,5 +1,5 @@
 /* globals google */
-import Checkit from 'checkit';
+/* global Checkit */
 import qs from 'query-string';
 import Widget from '../../../../lib/widget';
 import Button from '../../../../components/Button';

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import Checkit from 'checkit';
+/* global Checkit */
 import Pisces from 'pisces';
 import Widget from '../../lib/widget';
 import Button from '../../components/Button';
