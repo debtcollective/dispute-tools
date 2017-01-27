@@ -71,23 +71,26 @@ script(type="text/javascript").
                     input(type="hidden" name="bn" value="PP-DonationsBF:btn_donate_LG.gif:NonHosted")
                     img(alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" heigth="1")
           .clearfix.mb2
-            .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500 Email
-            .col.sm-col-9.col-12.px1
+            .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Email
+            .col.sm-col-8.col-12.px1
               input.-k-input.-fw(type="email" name="email")
               p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid email
           .clearfix.mb2
-            .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500 Card #
-            .col.sm-col-9.col-12.px1
+            .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Card #
+            .col.sm-col-8.col-12.px1
               input.-k-input.-fw(type="text" name="number" maxLength="16")
               p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Card Number
-          .clearfix.mb4
-            .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500 Card info
-            .col.sm-col-9.col-12.px1
+          .clearfix.mb2
+            .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Expires on
+            .col.sm-col-8.col-12.px1
               .col.col-7
                 input.-k-input.-fw(type="text" name="exp" placeholder="MM/YY" maxLength="5")
                 p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Expiration
-              .col.col-5.pl1
-                input.-k-input.-fw(type="text" name="cvc" placeholder="CVC" maxLength="5")
+          .clearfix.mb4
+            .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 CVC
+            .col.sm-col-8.col-12.px1
+              .col.col-5
+                input.-k-input.-fw(type="text" name="cvc" maxLength="5")
                 p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid CVC
           .flex
             .flex-none.mr1
