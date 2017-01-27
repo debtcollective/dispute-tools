@@ -1,3 +1,4 @@
+import WebFont from 'webfontloader';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
 import UsersEditForm from '../../components/users/EditForm';
@@ -16,6 +17,12 @@ class ViewUsersEdit extends NodeSupport {
       name: 'UsersEditForm',
       element: document.querySelector('[data-component-usereditform]'),
     }));
+
+    WebFont.load({
+      google: {
+        families: ['Space Mono'],
+      },
+    });
   }
 }
 
