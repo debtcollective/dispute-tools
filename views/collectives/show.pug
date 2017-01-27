@@ -14,8 +14,8 @@ block content
           svg.inline-block.align-middle.-sw7.-stroke-accent(width='60' height='60')
             use(xlink:href=`#svg-collective-${collective.id.charAt(0)}`)
               span.pl2.inline-block.align-middle.-accent= collective.name
-        .py2.clearfix
-          .left.flex.items-center
+        .py2.flex
+          .flex.flex-auto.items-center.-ell
             if belongsToCollective
               - var _avatarUrl = '/images/profile/placeholder-small.png';
               if (currentUser.account.image.exists('smallGrayscale'))
@@ -26,8 +26,8 @@ block content
               span.-fw-700= (belongsToCollective ? `You + ${collective.userCount - 1}` : `+ ${collective.userCount}`)
               span.-fw-500 &nbsp;members
             span.-fw-700.px2 &middot;
-            span.-fw-700 $#{totalDebtAmount / 100} USD Debt to cancel
-          .right
+            span.-fw-700.-ell We have $#{totalDebtAmount / 100} debt to leverage.
+          div
             unless belongsToCollective
               if currentUser
                 form(method='post' action=routeMappings.Collectives.join.url(collective.id))
