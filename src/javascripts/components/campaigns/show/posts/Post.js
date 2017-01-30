@@ -27,4 +27,29 @@ export default class Post extends Widget {
     const url = account.image.urls.smallRedSquare || '/images/profile/placeholder-small.png';
     return `<img src='${url}' alt='${account.fullname}' width='${size}' height='${size}'/>`;
   }
+
+  getCaptionHTMLString(data) {
+    let result = `
+      <p class="pb2">
+        <time datetime='${data.createdAt}' class='-caption -neutral-dark'>
+          ${new Date(data.createdAt).toDateString()}
+        </time>
+      `;
+
+    if (data.public) {
+      result += `
+        <span class='inline-block align-top px1'>•</span>
+        <span class='inline-block align-middle -caption -neutral-mid'>
+          <svg class='inline-block align-top' width='13' height='19'>
+            <use xlink:href="#svg-website"></use>
+          </svg>
+          <span>Public</span>
+        </span>
+      `;
+    }
+
+    result += '</p>';
+
+    return result;
+  }
 }
