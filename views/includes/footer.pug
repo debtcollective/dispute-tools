@@ -23,7 +23,7 @@ footer.wrapper.mx-auto.px2
       .col.md-col-3.col-12.p1.right-align.md-left-align
         if ((currentURL === routeMappings.about.url()) || (currentURL.indexOf('about') >= 0))
           a.inline-block(href='//shuttleworthfoundation.org' target='_blank' rel='noopener noreferrer')
-            img(
+            img.fit(
               src='/images/global/footer/shuttleworth-logo.svg'
               title='Shuttleworth Funded'
             )
@@ -32,7 +32,7 @@ footer.wrapper.mx-auto.px2
     .clearfix.mxn1
       .col.md-col-10.col-12.p1.-caption.-fw-500
         a.inline-block.mr2(href=routeMappings.root.url())
-          svg(width="64" height="31"): use(xlink:href="#svg-logo")
+          img(src='/images/global/header/logo-small.svg')
           .sr-only The Collective Homepage
         span.-neutral-mid The Debt Collective. Copyright #{new Date().getFullYear()}
         span.px2 •

@@ -3,7 +3,8 @@ header.Header(data-component-header)
   .wrapper.clearfix.px2.-fh
     h1.Header__logo.left.-fh
       a.block(style="padding: 18px 0 22px;" href=routeMappings.root.url())
-        svg.Header__logo-svg.block: use(xlink:href="#svg-logo-light")
+        img.Header__logo-svg.-large(src='/images/global/header/logo.svg')
+        img.Header__logo-svg.-small(src='/images/global/header/logo-small.svg')
         .sr-only The Collective Homepage
     nav.right.-fh
       +mixinHeaderNav()
