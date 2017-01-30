@@ -154,10 +154,10 @@ block content
               h3.pb1 We all have the right to dispute unfair debts.
               p We made these free tools to help us fight back. #[a(href=`${routeMappings.DisputeTools.url()}/#why-file-dispute`) Learn more]
 
-              .pt3.clearfix.mxn2.flex.flex-wrap
+              .clearfix.mxn2.flex.flex-wrap
                 include ../mixins/dispute-tools/tool-card
                 each tool in collective.tools
-                  .col.md-col-4.sm-col-6.col-12.p2
+                  .col.md-col-4.sm-col-6.col-12.px2.py4
                     +toolCardMixin(tool)
 
 block append body

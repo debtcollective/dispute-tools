@@ -1,5 +1,9 @@
 .ToolCard {
-  & h4 {line-height: 1.4em}
+  & hr {
+    height: 2px;
+    background-color: #4A4A4A;
+    border: none;
+  }
 
   &__about-trigger {
     padding: 0;
