@@ -5,9 +5,9 @@
   var facebookAccountURL = "https://www.facebook.com/DebtCollective"
 
 footer.wrapper.mx-auto.px2
-  .max-width-4.mx-auto.py3
+  .max-width-4.mx-auto.pt3
     .clearfix.mxn1
-      .col.md-col-10.col-12.p1
+      .col.md-col-9.col-12.p1.pt3
         ul.list-reset
           li.inline-block.pr3
             a(href=routeMappings.about.url() class="-white -fw-500") About
@@ -20,20 +20,17 @@ footer.wrapper.mx-auto.px2
           li.inline-block.pr3
             a(href=routeMappings.contact.url() class="-white -fw-500") Contact
 
-      .col.md-col-2.col-12.p1.right-align.md-left-align
-        ul.list-reset
-          li.inline-block.pr3
-            a(href=twitterAccountURL class="-white" rel="noopener noreferrer" target="_blank")
-              svg(width="13" height="11"): use(xlink:href="#svg-twitter")
-              .sr-only Twitter
-          li.inline-block
-            a(href=facebookAccountURL class="-white" rel="noopener noreferrer" target="_blank")
-              svg(width="6" height="13"): use(xlink:href="#svg-facebook")
-              .sr-only Facebook
+      .col.md-col-3.col-12.p1.right-align.md-left-align
+        if ((currentURL === routeMappings.about.url()) || (currentURL.indexOf('about') >= 0))
+          a.inline-block(href='//shuttleworthfoundation.org' target='_blank' rel='noopener noreferrer')
+            img(
+              src='/images/global/footer/shuttleworth-logo.svg'
+              title='Shuttleworth Funded'
+            )
 
   .max-width-4.mx-auto.pb2
     .clearfix.mxn1
-      .col.md-col-9.col-12.p1.-caption.-fw-500
+      .col.md-col-10.col-12.p1.-caption.-fw-500
         a.inline-block.mr2(href=routeMappings.root.url())
           svg(width="64" height="31"): use(xlink:href="#svg-logo")
           .sr-only The Collective Homepage
@@ -41,11 +38,14 @@ footer.wrapper.mx-auto.px2
         span.px2 •
         a(href=routeMappings.tos.url() class="-white") Terms and Conditions
 
-      .col.md-col-3.col-12.p1.right-align.md-left-align
-        a(href='//shuttleworthfoundation.org' target='_blank' rel='noopener noreferrer'): img(
-          src="/images/global/footer/shuttleworth-logo.jpg"
-          srcset="/images/global/footer/shuttleworth-logo@2x.jpg"
-          title="Shuttleworth Funded"
-          width="170"
-          height="44"
-        )
+      .col.md-col-2.col-12.p1.right-align.md-left-align
+        ul.list-reset
+          li.inline-block.pr2
+            a.Footer__circle-btn.-white(href=twitterAccountURL rel="noopener noreferrer" target="_blank")
+              svg(width='15' height='13'): use(xlink:href="#svg-twitter")
+              .sr-only Twitter
+          li.inline-block
+            a.Footer__circle-btn.-white(href=facebookAccountURL rel="noopener noreferrer" target="_blank")
+              svg(width='7' height='15'): use(xlink:href="#svg-facebook")
+              .sr-only Facebook
+
