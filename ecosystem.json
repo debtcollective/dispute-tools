@@ -23,7 +23,7 @@
     staging : {
       user : "deploy",
       host : "staging.debtcollective.org",
-      ref  : "origin/sprint-2016.09",
+      ref  : "origin/sprint-2017.01",
       repo : "git@gitlab.com:empathia/debtcollective.git",
       path : "/home/deploy/apps/tdc",
       "post-deploy" : "./scripts/post_deploy_staging"
@@ -33,7 +33,7 @@
       user: "deploy",
       // TODO: move to new.debtcollective.org (then www.)
       host: 'new.debtcollective.org',
-      ref  : "origin/sprint-2016.09",
+      ref  : "origin/sprint-2017.01",
       repo : "git@gitlab.com:empathia/debtcollective.git",
       path : "/home/deploy/apps/tdc",
       "post-deploy" : "./scripts/post_deploy_production"
