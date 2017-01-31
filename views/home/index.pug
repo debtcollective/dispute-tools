@@ -5,21 +5,33 @@ block styles
 
 block content
   .bg-light-pattern.-dark.px2.pt4
-    .max-width-4.mx-auto.center
-      h3.HomeSubheading Welcome to The Debt Collective
-      h2.HomeHeading.pt3 Alone our debts are a burden. Together they make us powerful.
-      img.HomeIllustrationTop.block.fit.pb3(src='/images/home/home-illustration-top.png')
-  .px2
-    .max-width-4.mx-auto.relative
-      .center.relative
-        img#glitch-image.block.fit(src='/images/home/home-illustration-bottom.png')
-      .HomeDescription
-        h4
-          span.inline-block.-neutral-mid This is an organizing space where people in debt gather to
-          span.inline-block.-white Organize, Resist & Reimagine.
-        unless currentUser
-          h4.pt1: a.js-signup-link.underlined-link(href=routeMappings.signup.url() title="Join us"): span(data-hover="Join us") Join us
-        p.pt4.-caption.-fw-500.-neutral-mid This image was made by #[a.-neutral-mid.underline(href='http://angetran.tumblr.com/' target='_blank' rel='noopener noreferrer') Ange Tran], inspired by the Corinthian 200 debt strikers.
+    .max-width-4.mx-auto
+      h2.HomeHeading.pt1.pb3 Organize. Resist. Rebuild.
+      .clearfix.md-flex
+        .col.md-col-4.col-12
+          p.-paragraph.pb3.-gray Corporate elites control our government and by extension our lives. They cheat workers, don’t pay their taxes, and then force us into debt for the basic necessities of life: shelter, food, education, and healthcare. We have the power to change this.
+          p.-paragraph.pb1.-fw-700.-gray Alone our Debts Are a Burden.
+          h4.pb3.-primary Together, They Make Us Powerful.
+          button#home-bottom-anchor.-k-btn.btn-primary.inline-block.sm-hide.xs-hide
+            svg(width='15' height='15')
+              use(xlink:href='#svg-arrow-down')
+        .col.col-1.xs-hide &nbsp;
+        .col.md-col-7.col-12.md-flex.items-end
+          img.block.mx-auto.fit.pb1(src='/images/home/home-illustration-top.png')
+  #home-bottom-section.px2
+    .max-width-4.mx-auto.relative.pb2
+      .clearfix.md-flex.pb4
+        .relative.col.md-col-7.col-12.order-1
+          img#glitch-image.block.mx-auto.fit(src='/images/home/home-illustration-bottom.png')
+          .HomeIllustrationCredits.-neutral-mid
+            p This image was made by #[a.-neutral-mid.underline(href='http://angetran.tumblr.com/' target='_blank' rel='noopener noreferrer') Ange Tran], inspired by the Corinthian 200 debt strikers.
+        .col.md-col-5.col-12
+          blockquote.py4.-accent “If you owe the bank $50k, the bank owns you. But if you owe the bank $100 million, you own the bank.”
+          h4.pb2 Together, We Own The Bank.
+          p.-paragraph.pb3.-fw-500 In recent history workers won the 8-hour workday, the weekend, health and retirement benefits, and more by joining together and organizing at their workplace to challenge employers.
+          p.-paragraph.pb3.-fw-500 This platform is a space where we gather to organize and challenge financial and government elites who have taken over public resources and who profit from our indebtedness.
+          unless currentUser
+            h4.pt1: a.js-signup-link.underlined-link(href=routeMappings.signup.url() title="Join us"): span(data-hover="Join us") Join us
 
 block scripts
   script(src="/build/javascripts/home/index.js" async)
