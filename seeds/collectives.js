@@ -43,7 +43,7 @@ Debt has isolated us and made us feel alone and ashamed. We have come out of the
         {
           id: '44444444-4444-4444-4444-444444444444',
           name: 'Housing Debt Collective',
-          description: 'For anyone who went into debt to buy a house.',
+          description: 'For anyone who went into debt for a place to live.',
           manifest: `### We are working together to plan actions, to develop debt resistance campaigns and to launch coordinated strikes.
 
 We fight because it is wrong that 40 percent of people in debt use credit cards to cover basic living costs including rent, food, and utilities. It is wrong that 62 percent of personal bankruptcies in the U.S. are linked to medical debt. It is wrong that students are leaving college owing an average of $35,000, and millions are in default. It is wrong that payday lenders earn high profits from poverty. And it is wrong that local court systems target poor people, disproportionately black and brown, and load them up with debt.

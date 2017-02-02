@@ -42,6 +42,8 @@ class ViewCollectivesShow extends NodeSupport {
     });
 
     this._setup()._generateShareUrls()._bindEvents();
+
+    this.Tabs.run();
   }
 
   _setup() {

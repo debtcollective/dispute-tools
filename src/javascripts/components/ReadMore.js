@@ -8,7 +8,8 @@ export default class ReadMore extends Widget {
       closeText: 'Hide',
       collapsedHeight: 0,
 
-      _maxHeight: '10000px',
+      _maxHeight: 10000,
+      _registerEvents: true,
     };
   }
 
@@ -22,7 +23,11 @@ export default class ReadMore extends Widget {
     this.collapsedHeight = this.element.dataset.collapsedHeight;
     this.openText = this.togglerElement.textContent;
 
-    this._bindEvents()._setMaxHeight();
+    this._setMaxHeight();
+
+    if (this._registerEvents) {
+      this._bindEvents();
+    }
   }
 
   _bindEvents() {
@@ -41,10 +46,18 @@ export default class ReadMore extends Widget {
 
   _setMaxHeight() {
     this.contentElement.style.maxHeight = '';
-    this._maxHeight = `${this.contentElement.offsetHeight * 2}px`;
+
+    const height = this.contentElement.offsetHeight;
+
+    this._maxHeight = `${(height * 2) || this._maxHeight}px`;
 
     if (!this.expanded) {
       this.contentElement.style.maxHeight = this.collapsedHeight;
+    }
+
+    if (height <= parseInt(this.collapsedHeight.replace('px', ''), 10)) {
+      this._registerEvents = false;
+      this.togglerElement.style.display = 'none';
     }
 
     return this;
