@@ -1,1 +1,38 @@
 @import '../../base';
+
+.dtr-info {
+  margin: 0 var(--space-1);
+
+  & > h4:first-child {
+    border-top: 5px solid var(--k-color-palette-accent);
+    padding-top: var(--space-3);
+  }
+
+  & figure {
+    text-align: center;
+  }
+}
+
+@media (--breakpoint-sm) {
+  .dtr-info {
+    padding-left: 301px;
+
+    & figure {
+      position: absolute;
+      text-align: left;
+      max-width: 271px;
+      left: 0;
+      top: 0;
+    }
+  }
+}
+
+@media (--breakpoint-md) {
+  .dtr-info {
+    padding-left: 401px;
+
+    & figure {
+      max-width: 371px;
+    }
+  }
+}
