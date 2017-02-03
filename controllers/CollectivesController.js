@@ -260,6 +260,9 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
           });
         }
 
+        // ensure default campaigns are shown first
+        query.orderBy('default', 'DESC');
+
         query.then((campaigns) => {
           collective.campaigns = campaigns;
 
