@@ -24,7 +24,9 @@ block content
 
         .py1
           label.block.pb1.-fw-500 Cover
-          if campaign.cover.exists('grayscale')
+          if campaign.cover.exists('original') && campaign.default
+            img(src=campaign.cover.url('original') width='300')
+          else if campaign.cover.exists('grayscale')
             img(src=campaign.cover.url('grayscale') width='300')
           input(name='image' type='file' accept='image/*')
 
