@@ -3,6 +3,33 @@
 const marked = require('marked');
 const Promise = require('bluebird');
 
+// TODO: implement proper services for this; since we cannot reuse code from CampaignsController.js
+// I ported the same method here, ensuring the functionallity is the same:
+
+function joinCampaign(userId, campaignObj, debtAmount) {
+  const knex = Campaign.knex();
+
+  // return as promise
+  return Campaign.transaction((trx) => {
+    knex.table('UsersCampaigns')
+      .transacting(trx)
+      .insert({
+        user_id: userId,
+        campaign_id: campaignObj.id,
+        debt_amount: (debtAmount * 100) || 0,
+      })
+      .then(() => {
+        campaignObj.userCount++;
+
+        return campaignObj
+          .transacting(trx)
+          .save();
+      })
+      .then(trx.commit)
+      .catch(trx.rollback);
+  });
+}
+
 const CollectivesController = Class('CollectivesController').inherits(RestfulController)({
   beforeActions: [
   // Load Collectives
@@ -277,8 +304,26 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
             .transacting(trx)
             .save();
         })
-        .then(trx.commit)
+        .then(() => {
+          const getCampaignIds = () =>
+            knex.table('Campaigns')
+              .select('id')
+              .where('collective_id', req.collective.id)
+              .where('default', true)
+              // retrieve the id only
+              .then(result => result.map(x => x.id));
+
+          return getCampaignIds()
+          .then((ids) => {
+            // join on all default campaigns for this collective,
+            Campaign.query().whereIn('id', ids).then(campaigns =>
+              Promise.all(campaigns.map(c => joinCampaign(req.user.id, c, 0))));
+          })
+          // if any operation fails all the transaction should fail
+          .then(trx.commit)
           .catch(trx.rollback);
+        })
+        .catch(trx.rollback);
       })
       .then(() => {
         req.flash('success', `You have successfully joined ${req.collective.name}`);
