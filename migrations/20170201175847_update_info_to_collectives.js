@@ -31,5 +31,5 @@ We are committed to direct action, mutual aid and campaign support.`,
 };
 
 exports.down = (knex, Promise) => {
-  return Promise.all();
+  return Promise.resolve();
 };
