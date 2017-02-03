@@ -1,31 +1,8 @@
-const ID = '00000000-0000-0000-0000-000000000000';
+const defaultCover = x =>
+  `${process.env.NODE_ENV || 'development'}/badges/${x}/cover/{version}.{ext}`;
 
-const cover = `${process.env.NODE_ENV || 'development'}/Campaign/${ID}/cover/{version}.{ext}`;
-
-const meta = {
-  original: {
-    ext: 'png',
-    size: 251904,
-    width: 550,
-    format: 'PNG',
-    height: 550,
-    mimeType: 'image/png',
-    colorspace: 'RGB',
-    orientation: '',
-    originalFileName: `${ID}.png`,
-  },
-  grayscale: {
-    ext: 'jpeg',
-    size: 58675,
-    width: 500,
-    format: 'JPEG',
-    height: 500,
-    mimeType: 'image/jpeg',
-    colorspace: 'Gray',
-    orientation: '',
-    originalFileName: `${ID}.jpeg`,
-  },
-};
+const defaultMeta = x =>
+  require(`../public/images/badges/${x}/data.json`);
 
 const defaultTitle = x => `${x} Debt Feed`;
 const defaultIntro = x => `This is a space for general posts about ${x} debt`;
@@ -41,8 +18,8 @@ const data = [
     description: defaultDescription('for-profit colleges'),
     active: true,
     published: true,
-    cover_path: cover,
-    cover_meta: JSON.stringify(meta),
+    cover_path: defaultCover('diamond'),
+    cover_meta: defaultMeta('diamond'),
   },
   {
     collective_id: '22222222-2222-2222-2222-222222222222',
@@ -53,8 +30,8 @@ const data = [
     description: defaultDescription('student'),
     active: true,
     published: true,
-    cover_path: cover,
-    cover_meta: JSON.stringify(meta),
+    cover_path: defaultCover('triangle-up'),
+    cover_meta: defaultMeta('triangle-up'),
   },
   {
     collective_id: '33333333-3333-3333-3333-333333333333',
@@ -65,8 +42,8 @@ const data = [
     description: defaultDescription('credit card'),
     active: true,
     published: true,
-    cover_path: cover,
-    cover_meta: JSON.stringify(meta),
+    cover_path: defaultCover('pentagon-up'),
+    cover_meta: defaultMeta('pentagon-up'),
   },
   {
     collective_id: '44444444-4444-4444-4444-444444444444',
@@ -77,8 +54,8 @@ const data = [
     description: defaultDescription('housing'),
     active: true,
     published: true,
-    cover_path: cover,
-    cover_meta: JSON.stringify(meta),
+    cover_path: defaultCover('hexagon'),
+    cover_meta: defaultMeta('hexagon'),
   },
   {
     collective_id: '55555555-5555-5555-5555-555555555555',
@@ -89,8 +66,8 @@ const data = [
     description: defaultDescription('payday loans'),
     active: true,
     published: true,
-    cover_path: cover,
-    cover_meta: JSON.stringify(meta),
+    cover_path: defaultCover('diamond'),
+    cover_meta: defaultMeta('diamond'),
   },
   {
     collective_id: '66666666-6666-6666-6666-666666666666',
@@ -101,8 +78,8 @@ const data = [
     description: defaultDescription('auto loans'),
     active: true,
     published: true,
-    cover_path: cover,
-    cover_meta: JSON.stringify(meta),
+    cover_path: defaultCover('triangle-down'),
+    cover_meta: defaultMeta('triangle-down'),
   },
   {
     collective_id: '77777777-7777-7777-7777-777777777777',
@@ -113,8 +90,8 @@ const data = [
     description: defaultDescription('court fines and fees'),
     active: true,
     published: true,
-    cover_path: cover,
-    cover_meta: JSON.stringify(meta),
+    cover_path: defaultCover('pentagon-up'),
+    cover_meta: defaultMeta('pentagon-up'),
   },
   {
     collective_id: '88888888-8888-8888-8888-888888888888',
@@ -125,8 +102,8 @@ const data = [
     description: defaultDescription('medical'),
     active: true,
     published: true,
-    cover_path: cover,
-    cover_meta: JSON.stringify(meta),
+    cover_path: defaultCover('triangle-down'),
+    cover_meta: defaultMeta('triangle-down'),
   },
   {
     collective_id: '99999999-9999-9999-9999-999999999999',
@@ -137,8 +114,8 @@ const data = [
     description: defaultDescription('solidarity bloc'),
     active: true,
     published: true,
-    cover_path: cover,
-    cover_meta: JSON.stringify(meta),
+    cover_path: defaultCover('solidarity-bloc'),
+    cover_meta: defaultMeta('solidarity-bloc'),
   },
 ];
 
