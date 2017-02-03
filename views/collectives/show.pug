@@ -62,8 +62,8 @@ block content
                     unless campaign.published
                       span.-bg-accent.-caption.-ttu.-fw-700.inline-block.rounded.align-top.px1 staging
 
-                    if campaign.description
-                      .pb2.-neutral-dark!= campaign.description
+                    if campaign.introText
+                      .pb2.-fw-500.-neutral-dark!= campaign.introText
 
                     if campaign.active
                       .relative
