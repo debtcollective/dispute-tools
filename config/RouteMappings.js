@@ -11,6 +11,11 @@ const routeMappings = RouteMappings()
     as: 'tos',
   })
 
+  .get('/dtr', {
+    to: 'Home#dtr',
+    as: 'dtr',
+  })
+
   .get('/about', {
     to: 'Home#about',
     as: 'about',
