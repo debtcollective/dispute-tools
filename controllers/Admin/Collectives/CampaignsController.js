@@ -32,6 +32,24 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
       },
       actions: ['new', 'edit', 'update'],
     },
+    // Collective
+    {
+      before(req, res, next) {
+        Collective.query()
+          .where('id', req.params.collective_id)
+          .then(collective => {
+            if (collective.length === 0) {
+              return next(new NotFoundError('Collective not found'));
+            }
+
+            req.collective = collective[0];
+            res.locals.collective = collective[0];
+            return next();
+          })
+          .catch(next);
+      },
+      actions: ['new'],
+    },
   ],
 
   prototype: {

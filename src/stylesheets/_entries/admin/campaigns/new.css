@@ -3,3 +3,7 @@
 /* view utils */
 .-border-neutral-mid {border-color: var(--k-color-palette-neutral-mid)}
 
+.EditCampaign__image-wrapper {
+  & > img {max-width: 300px}
+}
+

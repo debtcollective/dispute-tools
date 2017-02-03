@@ -236,12 +236,6 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
         query.then((campaigns) => {
           collective.campaigns = campaigns;
 
-          collective.campaigns.forEach(campaign => {
-            if (campaign.description) {
-              campaign.description = marked(`${campaign.description.substring(0, 100)}...`);
-            }
-          });
-
           res.locals.collective = collective;
           req.collective = collective;
           return next();
