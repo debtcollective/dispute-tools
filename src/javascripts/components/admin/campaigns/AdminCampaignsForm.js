@@ -5,13 +5,15 @@ import Button from '../../../components/Button';
 export default class AdminCampaignsForm extends Widget {
   static get constraints() {
     return {
-      collectiveId: ['required'],
       title: ['required'],
     };
   }
 
   constructor(config) {
     super(config);
+
+    this.fileInput = this.element.querySelector('[type="file"]');
+    this.image = this.element.querySelector('.EditCampaign__image-wrapper > img');
 
     this.ui = {};
     Object.keys(this.constructor.constraints).forEach(key => {
@@ -31,6 +33,9 @@ export default class AdminCampaignsForm extends Widget {
   _bindEvents() {
     this._handleFormSubmitRef = this._handleFormSubmit.bind(this);
     this.element.addEventListener('submit', this._handleFormSubmitRef);
+
+    this._handleFileChangeRef = this._handleFileChange.bind(this);
+    this.fileInput.addEventListener('change', this._handleFileChangeRef);
   }
 
   _handleFormSubmit(ev) {
@@ -48,6 +53,21 @@ export default class AdminCampaignsForm extends Widget {
     this.Button.updateText();
 
     return null;
+  }
+
+  _handleFileChange(ev) {
+    const input = ev.currentTarget;
+
+    if (input.files && input.files[0] && input.files[0].type.match('image.*')) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        this.image.src = e.target.result;
+        reader.onload = null;
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
   }
 
   _displayFieldErrors(errors) {
