@@ -2,3 +2,7 @@
 
 /* view utils */
 .-border-neutral-mid {border-color: var(--k-color-palette-neutral-mid)}
+
+.EditCollective__image-wrapper {
+  & > img {max-width: 300px}
+}
