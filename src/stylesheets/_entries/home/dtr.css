@@ -3,10 +3,6 @@
 .dtr-info {
   margin: 0 var(--space-1);
 
-  & > h4:first-child {
-    border-top: 5px solid var(--k-color-palette-accent);
-  }
-
   & figure {
     text-align: center;
   }
