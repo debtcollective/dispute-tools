@@ -9,15 +9,9 @@ cp ./../shared/knexfile.js ./
 cp ./../shared/config.js ./config/
 ln -sf /home/deploy/apps/tdc/shared/uploads /home/deploy/apps/tdc/current/public/
 
-# copy badges for default campaigns
-if [ ! -d /home/deploy/apps/tdc/current/public/uploads/production/badges/ ];
-  mkdir /home/deploy/apps/tdc/current/public/uploads/production/badges/
-fi
-
-cp -r ./public/images/badges/* /home/deploy/apps/tdc/current/public/uploads/production/badges/
-
 yarn build
 
+NODE_ENV=production yarn utils:copybadges
 NODE_ENV=production yarn db:migrate
 
 pm2 startOrRestart ecosystem.json --env production

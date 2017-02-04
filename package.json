@@ -16,6 +16,7 @@
     "test:integration": "scripty",
     "utils:resetdb": "scripty",
     "utils:knexreset": "scripty",
+    "utils:copybadges": "scripty",
     "migrate:dev": "knex migrate:latest --env development",
     "migrate:seed:dev": "knex seed:run --env development",
     "db:migrate": "knex migrate:latest",
