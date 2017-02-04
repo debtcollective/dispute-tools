@@ -5,7 +5,6 @@
 
   & > h4:first-child {
     border-top: 5px solid var(--k-color-palette-accent);
-    padding-top: var(--space-3);
   }
 
   & figure {
