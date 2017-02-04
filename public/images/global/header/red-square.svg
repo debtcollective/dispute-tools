@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>9FEF815C-DF23-48AD-96D4-54B95BCB87F0</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="99.089206%" y2="99.089206%" id="linearGradient-1">
+            <stop stop-color="#F04F37" offset="0%"></stop>
+            <stop stop-color="#C41A00" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="::-top-header-(default)-320" transform="translate(-16.000000, -14.000000)" fill="url(#linearGradient-1)">
+            <g id="::-top-header">
+                <polygon id="red-square" points="16 46 48 46 48 14 16 14"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
