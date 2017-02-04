@@ -27,7 +27,9 @@ block content
           label.block.pb1.-fw-500 Cover
 
           .EditCampaign__image-wrapper.inline-block.align-top.mr2
-            if campaign.cover.exists('grayscale')
+            if campaign.cover.exists('original') && campaign.default
+              img(src=campaign.cover.url('original') width='300')
+            else if campaign.cover.exists('grayscale')
               img.block(src=campaign.cover.url('grayscale'))
             else
               img.block(src='/images/campaigns/cover-placeholder.jpg')
