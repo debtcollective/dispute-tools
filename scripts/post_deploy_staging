@@ -12,7 +12,7 @@ ln -sf /home/deploy/apps/tdc/shared/uploads /home/deploy/apps/tdc/current/public
 # copy badges for default campaigns
 if [ ! -d /home/deploy/apps/tdc/current/public/uploads/staging/badges/ ];
   mkdir /home/deploy/apps/tdc/current/public/uploads/staging/badges/
-fi;
+fi
 
 cp -r ./public/images/badges/* /home/deploy/apps/tdc/current/public/uploads/staging/badges/
 
