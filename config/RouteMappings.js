@@ -11,6 +11,11 @@ const routeMappings = RouteMappings()
     as: 'tos',
   })
 
+  .get('/dispute-tools/defense-to-repayment', {
+    to: 'Home#dtr',
+    as: 'dtr',
+  })
+
   .get('/about', {
     to: 'Home#about',
     as: 'about',

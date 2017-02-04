@@ -85,6 +85,10 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       .catch(next);
     },
 
+    dtr(req, res) {
+      res.render('home/dtr.pug');
+    },
+
     tos(req, res) {
       res.render('home/tos.pug');
     },
