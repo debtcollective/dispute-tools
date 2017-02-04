@@ -69,7 +69,13 @@ block content
                       .relative
                         svg(width='64' height='57' style='position: absolute; right: 10px; top: -28px;'): use(xlink:href='#svg-badge-active')
 
-                    if campaign.cover.exists('grayscale')
+                    if campaign.cover.exists('original') && campaign.default
+                      .center.pb2
+                        img.inline-block.align-top.fit(
+                          src=campaign.cover.url('original')
+                        )
+
+                    else if campaign.cover.exists('grayscale')
                       .center.pb2
                         img.inline-block.align-top.fit(
                           src=campaign.cover.url('grayscale')
