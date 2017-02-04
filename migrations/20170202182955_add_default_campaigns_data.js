@@ -119,5 +119,12 @@ const data = [
   },
 ];
 
-exports.up = (knex) => Promise.all(data.map(c => knex('Campaigns').insert(c)));
-exports.down = (knex) => knex('Campaigns').where('default', true).delete();
+// FIXME: this is not needed on test environment and should be executed manually on production
+if (process.env.NODE_ENV === 'test') {
+  exports.up = () => Promise.resolve();
+  exports.down = () => Promise.resolve();
+} else {
+  exports.up = (knex) => Promise.all(data.map(c => knex('Campaigns').insert(c)));
+  exports.down = (knex) => knex('Campaigns').where('default', true).delete();
+}
+
