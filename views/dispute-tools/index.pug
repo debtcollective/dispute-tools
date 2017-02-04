@@ -32,6 +32,20 @@ block content
           .col.md-col-4.sm-col-6.col-12.px2.py4
             +toolCardMixin(tool)
 
+        .col.md-col-4.sm-col-6.col-12.px2.py4
+          .ToolCard.flex.flex-column.-fh
+            .flex-auto.pb3
+              h3.ToolCard__name.mb2 Defense to Repayment
+              .ToolCard__caption.-caption.-fw-500 (Federal student loans only)
+              p.py1
+                a.ToolCard__about-trigger.-k-btn.btn-link.-primary.-fw-700(href='/dispute-tools/defense-to-repayment') › Read more&hellip;
+              hr.mb2
+              a.-k-btn.btn-primary.-fw.-fw-700(
+                href='https://borrowerdischarge.ed.gov/FormWizard/BDU/BDULanding.aspx' rel='noopener noreferrer'
+                target='_blank'
+                class= !user && 'js-login-link'
+              ) Get started
+
   .px2.pt3.-bg-primary
     #why-file-dispute.py4
       .max-width-4.mx-auto
