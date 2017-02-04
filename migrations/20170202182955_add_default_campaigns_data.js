@@ -4,9 +4,9 @@ const defaultCover = x =>
 const defaultMeta = x =>
   require(`../public/images/badges/${x}/data.json`);
 
-const defaultTitle = x => `${x} Debt Feed`;
-const defaultIntro = x => `This is a space for general posts about ${x} debt`;
-const defaultDescription = x => `This is a space for general posts about ${x} debt`;
+const defaultTitle = x => `${x} Feed`;
+const defaultIntro = x => `This is a space for general posts about ${x}`;
+const defaultDescription = x => `This is a space for general posts about ${x}`;
 
 const data = [
   {
@@ -25,8 +25,8 @@ const data = [
     collective_id: '22222222-2222-2222-2222-222222222222',
     id: '20202020-2020-2020-2020-202020202020',
     default: true,
-    title: defaultTitle('Student'),
-    intro_text: defaultIntro('student'),
+    title: defaultTitle('Student Debt'),
+    intro_text: defaultIntro('student debt'),
     description: defaultDescription('student'),
     active: true,
     published: true,
@@ -37,8 +37,8 @@ const data = [
     collective_id: '33333333-3333-3333-3333-333333333333',
     id: '30303030-3030-3030-3030-303030303030',
     default: true,
-    title: defaultTitle('Credit Card'),
-    intro_text: defaultIntro('credit card'),
+    title: defaultTitle('Credit Card Debt'),
+    intro_text: defaultIntro('credit card debt'),
     description: defaultDescription('credit card'),
     active: true,
     published: true,
@@ -49,8 +49,8 @@ const data = [
     collective_id: '44444444-4444-4444-4444-444444444444',
     id: '40404040-4040-4040-4040-404040404040',
     default: true,
-    title: defaultTitle('Housing'),
-    intro_text: defaultIntro('housing'),
+    title: defaultTitle('Housing Debt'),
+    intro_text: defaultIntro('housing debt'),
     description: defaultDescription('housing'),
     active: true,
     published: true,
@@ -97,8 +97,8 @@ const data = [
     collective_id: '88888888-8888-8888-8888-888888888888',
     id: '80808080-8080-8080-8080-808080808080',
     default: true,
-    title: defaultTitle('Medical'),
-    intro_text: defaultIntro('medical'),
+    title: defaultTitle('Medical Debt'),
+    intro_text: defaultIntro('medical debt'),
     description: defaultDescription('medical'),
     active: true,
     published: true,
