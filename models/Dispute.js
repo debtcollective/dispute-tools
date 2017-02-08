@@ -148,9 +148,7 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
       });
     },
 
-    setForm({ formName, fieldValues }) {
-      this.data.forms = this.data.forms = {};
-
+    setForm({ formName, fieldValues, _isDirty }) {
       if (!formName) {
         throw new Error('The formName is required');
       }
@@ -159,7 +157,14 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
         throw new Error('The form fieldValues are invalid');
       }
 
-      this.data.forms[formName] = fieldValues;
+      if (_isDirty) {
+        this.data._forms = {};
+        this.data._forms[formName] = fieldValues;
+      } else {
+        delete this.data._forms;
+        this.data.forms = {};
+        this.data.forms[formName] = fieldValues;
+      }
 
       return this;
     },
