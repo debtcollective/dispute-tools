@@ -85,6 +85,12 @@ input[data-toggle-radio][value="no"]:checked ~ fieldset {
   }
 }
 
+.CloseAndSaveFormButton {
+  position: fixed;
+  top: 2.3rem;
+  right: 5rem;
+}
+
 /* process */
 .Tool__process-option {
   display: block;
