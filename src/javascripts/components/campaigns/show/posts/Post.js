@@ -30,6 +30,11 @@ export default class Post extends Widget {
 
   getCaptionHTMLString(data) {
     let result = `
+    <form action="${this.deletePostActionUrl}" method="post"
+      onsubmit="return confirm('Are you sure you want to delete this post?')"
+    >
+      <input type="hidden" name="_csrf" value="${this.csrfToken}">
+      <input type="hidden" name="_method" value="delete">
       <p class="pb2">
         <time datetime='${data.createdAt}' class='-caption -neutral-dark'>
           ${new Date(data.createdAt).toDateString()}
@@ -48,7 +53,21 @@ export default class Post extends Widget {
       `;
     }
 
-    result += '</p>';
+    if (this.userIsPostAuthor || this.userIsCollectiveManager) {
+      result += `
+        <span class='inline-block align-top px1'>•</span>
+        <button type='submit' class='inline-block align-middle -danger -caption'
+          style='border:0;background:inherit'
+        >
+          <svg class='inline-block align-top' width='13' height='19'>
+            <use xlink:href="#svg-trash"></use>
+          </svg>
+          <span>Delete</span>
+        </button>
+      `;
+    }
+
+    result += '</p></form>';
 
     return result;
   }

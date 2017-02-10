@@ -420,7 +420,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
     delete(req, res) {
       req.post.destroy()
         .then(() => {
-          res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.params.campaignId));
+          res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id));
         });
     },
   },

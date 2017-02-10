@@ -55,8 +55,11 @@ class ViewCampaignsShow extends NodeSupport {
     this.appendChild(new FeedController({
       name: 'FeedController',
       campaignId: config.campaignId,
+      currentUser: config.currentUser,
       userBelongsToCampaign: config.userBelongsToCampaign,
       element: document.querySelector('.Campaign_Feed'),
+      deletePostActionUrl: config.deletePostActionUrl,
+      userIsAdminOrCollectiveManager: config.userIsAdminOrCollectiveManager,
     }));
 
     const joinCampaingModal = document.querySelector('[data-component-modal="join-to-campaing"]');

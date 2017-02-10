@@ -5,7 +5,7 @@
  * @type {string}
  * @const
  */
-const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+export const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
 // quick helper
 export function req(opts, cb) {

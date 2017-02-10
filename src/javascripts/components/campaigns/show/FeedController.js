@@ -1,5 +1,5 @@
 import Widget from '../../../lib/widget';
-import API from '../../../lib/api';
+import API, { csrfToken } from '../../../lib/api';
 import PostText from './posts/PostText';
 import PostImage from './posts/PostImage';
 import PostPoll from './posts/PostPoll';
@@ -66,7 +66,11 @@ export default class FeedController extends Widget {
       this.appendChild(new PostClass({
         name: post.id,
         data: post,
+        userIsCollectiveManager: this.userIsAdminOrCollectiveManager,
+        userIsPostAuthor: this.currentUser.id === post.userId,
         userBelongsToCampaign: this.userBelongsToCampaign,
+        deletePostActionUrl: this.deletePostActionUrl.replace('{postId}', post.id),
+        csrfToken,
       }));
 
       fragment.appendChild(this[post.id].element);
