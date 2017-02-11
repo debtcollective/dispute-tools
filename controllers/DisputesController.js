@@ -1,7 +1,8 @@
 /* globals Dispute, RestfulController, Class, DisputeTool, CONFIG, DisputeStatus,
-    DisputeMailer, UserMailer, NotFoundError, DisputeRenderer */
-
+    DisputeMailer, UserMailer, NotFoundError, DisputeRenderer, Dispute */
+const AdmZip = require('adm-zip');
 const path = require('path');
+
 const Promise = require('bluebird');
 const marked = require('marked');
 
@@ -252,17 +253,57 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     },
 
     download(req, res, next) {
-      DisputeRenderer.query()
-        .where({
-          dispute_id: req.params.id,
-        })
-        .limit(1)
-        .then((renderer) => {
+      Promise.all([
+        DisputeRenderer.query()
+          .where({
+            dispute_id: req.params.id,
+          })
+          .limit(1),
+        Dispute.query().where('id', req.params.id),
+      ])
+        .then(([renderer, [dispute]]) => {
           if (renderer.length === 0) {
-            return next(new NotFoundError('File not found'));
+            next(new NotFoundError('File not found'));
+            return;
           }
 
-          return res.sendFile(path.join(process.cwd(), 'public', renderer[0].zip.url('original')));
+          const zipFile = path.join(process.cwd(), 'public', renderer[0].zip.url('original'));
+          const zipDest = path.join(process.cwd(), `public/generated_${req.params.id}.zip`);
+
+          const newZip = new AdmZip();
+
+          const info = [];
+
+          // TODO: turn this into an excel doc?
+          Object.keys(dispute.data.forms).forEach((form) => {
+            info.push(`${form}:\n`);
+
+            Object.keys(dispute.data.forms[form]).forEach((key) => {
+              info.push(`- ${key}: ${dispute.data.forms[form][key]}\n`);
+            });
+          });
+
+          Object.keys(dispute.data).forEach((key) => {
+            if (typeof dispute.data[key] === 'string') {
+              info.push(`- ${key}: ${dispute.data[key]}\n`);
+            }
+
+            if (typeof dispute.data[key] === 'boolean') {
+              info.push(`- ${key}: ${dispute.data[key] ? 'yes' : 'no'}\n`);
+            }
+          });
+
+          newZip.addFile('personal-information.txt', new Buffer(info.join('')));
+          newZip.addLocalFile(zipFile);
+          newZip.writeZip(zipDest);
+
+          // res.sendFile(zipDest);
+
+          const data = newZip.toBuffer();
+
+          res.setHeader('Content-Length', data.length);
+          res.write(data, 'binary');
+          res.end();
         });
     },
 
