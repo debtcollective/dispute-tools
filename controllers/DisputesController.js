@@ -269,13 +269,12 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           }
 
           const zipFile = path.join(process.cwd(), 'public', renderer[0].zip.url('original'));
-          const zipDest = path.join(process.cwd(), `public/generated_${req.params.id}.zip`);
 
           const newZip = new AdmZip();
 
           const info = [];
 
-          // TODO: turn this into an excel doc?
+          // TODO: turn this into an excel doc? or even better, several docs per form, etc.
           Object.keys(dispute.data.forms).forEach((form) => {
             info.push(`${form}:\n`);
 
@@ -296,9 +295,15 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
           newZip.addFile('personal-information.txt', new Buffer(info.join('')));
           newZip.addLocalFile(zipFile);
-          newZip.writeZip(zipDest);
 
-          res.redirect(`/${path.basename(zipDest)}`);
+          res.setHeader('Content-type', 'application/zip');
+          res.setHeader('Content-disposition',
+            `attachment; filename=dispute-${req.params.id}.zip`);
+
+          const data = newZip.toBuffer();
+
+          res.setHeader('Content-Length', String(data.length));
+          res.end(data, 'binary');
         });
     },
 
