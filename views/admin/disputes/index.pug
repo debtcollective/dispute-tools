@@ -88,7 +88,9 @@ block content
                 |  / #{_dispute.data.option}
             td.-fw-700(
               class=`-status-${_dispute.statuses[0].status.toLowerCase().replace(/\W/g, '-')}`
-            )= _dispute.statuses[0].status
+            )
+              span=_dispute.statuses[0].status
+              small(class=`${_dispute.statuses[0].pendingSubmission ? 'Tag': ''} ml2` title=`${_dispute.statuses[0].pendingSubmission ? 'Pending submission' : ''}`)=`${(_dispute.statuses[0].pendingSubmission ? 'pending':  '')}`
             td.-fw-500.-wsnw= new Date(_dispute.updatedAt).toDateString()
             td.center
               button.mr2.btn-clear.p1.align-top(data-add-status)
