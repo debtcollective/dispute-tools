@@ -2,6 +2,7 @@
     DisputeMailer, UserMailer, NotFoundError, DisputeRenderer, Dispute */
 const AdmZip = require('adm-zip');
 const path = require('path');
+const fs = require('fs');
 
 const Promise = require('bluebird');
 const marked = require('marked');
@@ -297,13 +298,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           newZip.addLocalFile(zipFile);
           newZip.writeZip(zipDest);
 
-          // res.sendFile(zipDest);
-
-          const data = newZip.toBuffer();
-
-          res.setHeader('Content-Length', data.length);
-          res.write(data, 'binary');
-          res.end();
+          res.redirect(`/${path.basename(zipDest)}`);
         });
     },
 
