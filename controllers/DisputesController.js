@@ -67,7 +67,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           req.dispute = dispute;
 
           const optionData = dispute.disputeTool.data.options[dispute.data.option];
-          if (optionData.more) {
+          if (optionData && optionData.more) {
             optionData.more = marked(optionData.more);
           }
 
