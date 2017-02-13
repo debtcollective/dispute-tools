@@ -39,6 +39,20 @@
         h3.pb3 Now what?
         .-fw-500!= dispute.disputeTool.data.nowWhat
 
+        if lastStatus.status !== 'Documents Sent'
+          .mt2
+            h4.mb2 Do you need assistance?
+
+            if lastStatus.pendingSubmission === false
+              form(method='post' action=routeMappings.Disputes.updateSubmission.url(dispute.id))
+                input(type='hidden' name='_csrf' value=csrfToken)
+                input(type='hidden' name='_method' value='put')
+                button(type='submit' name='pending_submission' value='1').-fw-700.-k-btn.btn-primary Yes, I want to be assisted
+
+              .mt2 Otherwise, just ignore this message.
+            else
+              p Your dispute is being processed, thank you.
+
     if dispute.data.disputeConfirmFollowUp
       .-caption.-neutral-mid.-ttu.-fw-700 Your dispute status:
       h4.Dispute__FollowUp__MainStatus.pb1.mb2.-ttu(

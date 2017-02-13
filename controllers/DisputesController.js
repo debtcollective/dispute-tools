@@ -144,6 +144,30 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         .catch(next);
     },
 
+    updateSubmission(req, res, next) {
+      DisputeStatus.query()
+        .where('dispute_id', req.params.id)
+        .where('status', 'Completed')
+        .then((results) => {
+          if (results.length > 0) {
+            if (req.body.pending_submission === '0') {
+              results[0].pendingSubmission = false;
+            }
+
+            if (req.body.pending_submission === '1') {
+              results[0].pendingSubmission = true;
+            }
+
+            return results[0].save()
+              .then(() => {
+                req.flash('success', 'Your dispute is pending for assistance, thank you!');
+                res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
+              });
+          }
+        })
+        .catch(next);
+    },
+
     updateDisputeData(req, res, next) {
       const dispute = res.locals.dispute;
 

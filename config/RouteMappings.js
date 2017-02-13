@@ -134,6 +134,10 @@ const routeMappings = RouteMappings()
         to: 'Disputes#download',
         as: 'download',
       })
+      .put('/:id/update-submission', {
+        to: 'Disputes#updateSubmission',
+        as: 'updateSubmission',
+      })
       .put('/:id/update-dispute-data', {
         to: 'Disputes#updateDisputeData',
         as: 'updateDisputeData',

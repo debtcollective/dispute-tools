@@ -14,7 +14,15 @@ module.exports = {
 
       return allowed;
     }],
-    ['updateDisputeData', 'addAttachment', 'download', 'setSignature', 'removeAttachment', false],
+    [
+      'updateDisputeData',
+      'updateSubmission',
+      'addAttachment',
+      'download',
+      'setSignature',
+      'removeAttachment',
+      false,
+    ],
   ],
   User: [
     ['index', true],
@@ -23,6 +31,7 @@ module.exports = {
       'edit',
       'update',
       'destroy',
+      'updateSubmission',
       'updateDisputeData',
       'addAttachment',
       'download',
@@ -35,6 +44,14 @@ module.exports = {
   ],
   Admin: [
     [true],
-    ['updateDisputeData', 'addAttachment', 'download', 'setSignature', 'removeAttachment', true],
+    [
+      'updateDisputeData',
+      'updateSubmission',
+      'addAttachment',
+      'download',
+      'setSignature',
+      'removeAttachment',
+      true,
+    ],
   ],
 };
