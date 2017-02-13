@@ -88,6 +88,11 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         }
       })[0];
 
+      if (req.session.finished) {
+        delete req.session.finished;
+        res.locals.pendingSubmission = true;
+      }
+
       if (req.user && req.user.id === req.dispute.userId) {
         res.render('disputes/show');
       } else {
@@ -140,6 +145,30 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         })
         .then(() => {
           return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+        })
+        .catch(next);
+    },
+
+    updateSubmission(req, res, next) {
+      DisputeStatus.query()
+        .where('dispute_id', req.params.id)
+        .where('status', 'Completed')
+        .then((results) => {
+          if (results.length > 0) {
+            if (req.body.pending_submission === '0') {
+              results[0].pending_submission = false;
+            }
+
+            if (req.body.pending_submission === '1') {
+              results[0].pending_submission = true;
+            }
+
+            return results[0].save()
+              .then(() => {
+                req.flash('success', 'Your dispute is pending for assistance, thank you!');
+                res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
+              });
+          }
         })
         .catch(next);
     },
@@ -204,6 +233,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           });
         })
         .then(() => {
+          req.session.finished = true;
           return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
         })
         .catch((e) => {

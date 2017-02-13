@@ -39,6 +39,24 @@
         h3.pb3 Now what?
         .-fw-500!= dispute.disputeTool.data.nowWhat
 
+        if pendingSubmission
+          .mt2
+            h4 Do you need assistance?
+
+            form(method='post' action=routeMappings.Disputes.updateSubmission.url(dispute.id))
+              input(type='hidden' name='_csrf' value=csrfToken)
+              input(type='hidden' name='_method' value='put')
+
+              ul.mt2.list-reset
+                li.mb2
+                  input(type='radio' name='pending_submission' value='1')
+                  span.ml2.-fw-200 Yes, I want to be assisted!
+                li.mb2
+                  input(type='radio' name='pending_submission' value='0')
+                  span.ml2.-fw-200 No thanks, I want finish this myself
+
+              button(type='submit').-fw-700.-k-btn.btn-primary Save changes
+
     if dispute.data.disputeConfirmFollowUp
       .-caption.-neutral-mid.-ttu.-fw-700 Your dispute status:
       h4.Dispute__FollowUp__MainStatus.pb1.mb2.-ttu(
