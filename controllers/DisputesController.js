@@ -2,7 +2,7 @@
     DisputeMailer, UserMailer, NotFoundError, DisputeRenderer, Dispute */
 const AdmZip = require('adm-zip');
 const path = require('path');
-const fs = require('fs');
+const xlsx = require('node-xlsx');
 
 const Promise = require('bluebird');
 const marked = require('marked');
@@ -272,28 +272,31 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
           const newZip = new AdmZip();
 
-          const info = [];
-
-          // TODO: turn this into an excel doc? or even better, several docs per form, etc.
           Object.keys(dispute.data.forms).forEach((form) => {
-            info.push(`${form}:\n`);
+            const data = [];
 
             Object.keys(dispute.data.forms[form]).forEach((key) => {
-              info.push(`- ${key}: ${dispute.data.forms[form][key]}\n`);
+              data.push([key, dispute.data.forms[form][key]]);
             });
+
+            newZip.addFile(`${form}.xlsx`, xlsx.build([{ name: form, data }]));
           });
+
+          const info = [];
 
           Object.keys(dispute.data).forEach((key) => {
             if (typeof dispute.data[key] === 'string') {
-              info.push(`- ${key}: ${dispute.data[key]}\n`);
+              info.push([key, dispute.data[key]]);
             }
 
             if (typeof dispute.data[key] === 'boolean') {
-              info.push(`- ${key}: ${dispute.data[key] ? 'yes' : 'no'}\n`);
+              info.push([key, dispute.data[key] ? 'yes' : 'no']);
             }
           });
 
-          newZip.addFile('personal-information.txt', new Buffer(info.join('')));
+          newZip.addFile('personal-information.xlsx',
+            xlsx.build([{ name: 'personal-information', data: info }]));
+
           newZip.addLocalFile(zipFile);
 
           res.setHeader('Content-type', 'application/zip');

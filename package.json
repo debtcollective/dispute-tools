@@ -82,6 +82,7 @@
     }
   },
   "dependencies": {
+    "adm-zip": "^0.4.7",
     "airbrake": "^1.2.0",
     "archiver": "^1.1.0",
     "autosize": "^3.0.18",
@@ -115,6 +116,7 @@
     "morgan": "^1.7.0",
     "multer": "^1.2.0",
     "neon": "^2.0.0",
+    "node-xlsx": "^0.7.4",
     "nodemailer": "^2.5.0",
     "nodemailer-mandrill-transport": "^1.2.0",
     "passport": "^0.3.2",
