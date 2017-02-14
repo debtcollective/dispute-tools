@@ -41,17 +41,21 @@
 
         if lastStatus.status !== 'Documents Sent'
           .mt2
-            h4.mb2 Do you need assistance?
-
-            if lastStatus.pendingSubmission === false
+            if lastStatus.pendingSubmission === null
               form(method='post' action=routeMappings.Disputes.updateSubmission.url(dispute.id))
                 input(type='hidden' name='_csrf' value=csrfToken)
                 input(type='hidden' name='_method' value='put')
-                button(type='submit' name='pending_submission' value='1').-fw-700.-k-btn.btn-primary Yes, I want to be assisted
-
-              .mt2 Otherwise, just ignore this message.
+                ul.list-reset
+                  li.mb2: label
+                    input(type='radio' name='pending_submission' value='1' required)
+                    span.ml2 I want the Debt Collective to mail a hard copy of my dispute
+                  li.mb2: label
+                    input(type='radio' name='pending_submission' value='0' required)
+                    span.ml2 I prefer to print and mail it myself
+                button(type='submit').-fw-700.-k-btn.btn-primary Save changes
             else
-              p Your dispute is being processed, thank you.
+              if lastStatus.pendingSubmission === true
+                p Your dispute is being processed, thank you.
 
     if dispute.data.disputeConfirmFollowUp
       .-caption.-neutral-mid.-ttu.-fw-700 Your dispute status:
