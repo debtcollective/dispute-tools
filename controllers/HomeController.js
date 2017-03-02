@@ -1,4 +1,4 @@
-/* globals Class, BaseController, logger, CONFIG */
+/* globals Class, BaseController, logger, CONFIG, UserMailer */
 
 const stripe = require('stripe');
 
@@ -27,25 +27,113 @@ const HomeController = Class('HomeController').inherits(BaseController)({
     donate(req, res) {
       const token = req.body.token;
       const amount = Math.floor(Number(req.body.amount));
-      const options = {
-        amount,
-        currency: 'usd',
-        source: token,
-        description: `Donation for Debt Collective: ${amount / 100}`,
-      };
+
+      // recurrent donations requires customers and plans
+      const planId = `monthly-${req.body.amount}c-plan`;
+
+      const createCustomer = () => new Promise((resolve, reject) => {
+        stripeClient.customers.create({
+          email: req.body.email,
+          source: token,
+        }, (err, customer) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(customer);
+          }
+        });
+      });
+
+      const createPlan = () => new Promise((resolve, reject) => {
+        stripeClient.plans.create({
+          name: `Donation for Debt Collective: ${amount / 100}`,
+          id: planId,
+          interval: 'month',
+          currency: 'usd',
+          amount,
+        }, (err) => {
+          // if the plan already exists, just use it
+          if (err) {
+            if (err.message.indexOf('already exists') === -1) {
+              reject(err);
+            } else {
+              resolve();
+            }
+          } else {
+            resolve();
+          }
+        });
+      });
+
+      const subscribe = (customerId) => new Promise((resolve, reject) => {
+        stripeClient.subscriptions.create({
+          customer: customerId,
+          plan: planId,
+        }, (err, subscription) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(subscription);
+          }
+        });
+      });
+
+      const charge = () => new Promise((resolve, reject) => {
+        stripeClient.charges.create({
+          amount,
+          currency: 'usd',
+          source: token,
+          description: `Donation for Debt Collective: ${amount / 100}`,
+        }, (err, _charge) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(_charge);
+          }
+        });
+      });
 
       if (!token) {
-        return res.status(400).json({ error: { message: 'Invalid token' } });
+        res.status(400).json({ error: { message: 'Invalid token' } });
+        return;
       }
 
-      return stripeClient.charges.create(options, (error, charge) => {
-        if (error) {
+      if (req.body.subscribe) {
+        createCustomer()
+          .then((customer) =>
+            createPlan()
+              .then(() => subscribe(customer.id)))
+          .then((subscription) => {
+            // send email for more info
+            UserMailer.sendSubscription(req.body.email, {
+              amount,
+              _options: {
+                subject: 'Your donation - The Debt Collective',
+              },
+            });
+
+            return subscription;
+          })
+          .then((subscription) => {
+            res.status(200).json({
+              success: subscription.status === 'active' && subscription.plan.id === planId,
+            });
+          })
+          .catch((error) => {
+            logger.error(error);
+            res.status(500).json({ error: { message: 'Something went wrong, please try again.' } });
+          });
+      } else {
+        charge()
+        .then((_charge) => {
+          res.status(200).json({
+            success: _charge.captured && _charge.paid && _charge.status === 'succeeded',
+          });
+        }).catch((error) => {
           logger.error(error);
           res.status(500).json({ error: { message: 'Something went wrong, please try again.' } });
-        } else {
-          res.status(200).json({ success: charge.captured && charge.paid && charge.status === 'succeeded' });
-        }
-      });
+        });
+      }
     },
 
     admin(req, res) {
