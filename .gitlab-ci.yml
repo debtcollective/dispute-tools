@@ -30,7 +30,6 @@ test:
     - cp config/knexfile.sample.js knexfile.js
     - apt-get update
     - apt-get install -y postgresql-client
-    - npm i -g yarn
   script:
     - yarn
     - yarn build
