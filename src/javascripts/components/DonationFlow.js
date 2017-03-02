@@ -53,6 +53,8 @@ export default class DonationFlow extends Widget {
     this.sectionPaymentSubmitEl = this.sectionPaymentEl.querySelector('button');
     this.sectionSuccessEl = this.donationFormEl.querySelector('section.Success');
     this.sectionDonateBtn = this.donationFormEl.querySelector('.js-donate-amount');
+    this.sectionDonateValues = this.donationFormEl.querySelectorAll('.js-amount-value');
+    this.sectionDonateMonthly = this.donationFormEl.querySelector('.js-donate-monthly');
     this.sectionErrorEl = this.donationFormEl.querySelector('section.Error');
     this.sectionEls = Array.prototype.slice.call(this.donationFormEl.querySelectorAll('section'));
 
@@ -123,7 +125,10 @@ export default class DonationFlow extends Widget {
   }
   render() {
     const {page, fund, amount, paymentMethod} = this.state;
-    this.sectionDonateBtn.innerHTML = `Donate $${this.customDonationCustomInputEl.value}`;
+
+    this.sectionDonateValues.forEach(node => {
+      node.innerHTML = this.customDonationCustomInputEl.value;
+    });
 
     // Page
     this.sectionEls.forEach(el => el.style.display = 'none'); // hide all
@@ -223,6 +228,7 @@ export default class DonationFlow extends Widget {
     if (this.state.busy) return;
 
     this.setState({busy: true});
+    this.sectionDonateBtn.disabled = true;
 
     Stripe.card.createToken({
       number: this.sectionPaymentInputNumberEl.value,
@@ -234,10 +240,12 @@ export default class DonationFlow extends Widget {
           token: response.id,
           email: this.sectionPaymentInputEmailEl.value.trim(),
           amount: this.state.amount,
+          subscribe: this.sectionDonateMonthly.checked ? 1 : 0,
         };
 
         API.postStripePayment({ body: chargeObject }, (error, result) => {
           this.setState({busy: false});
+          this.sectionDonateBtn.disabled = false;
           if (result && result.body && result.body.error) {
             callback(new Error(result.body.error.message));
           } else {

@@ -92,13 +92,20 @@ script(type="text/javascript").
               .col.col-5
                 input.-k-input.-fw(type="text" name="cvc" maxLength="5")
                 p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid CVC
+
+          .clearfix.mb4
+            h4.mb1 Want to support more than once?
+            label.block
+              input.js-donate-monthly(type='checkbox')
+              span.ml1 Yes, I agree to donate $#[span.js-amount-value 10]/#[b month].
+
           .flex
             .flex-none.mr1
               div.btn-back.btn-primary.-k-btn.-fw-700
                 svg(width=14 height=14)
                   use(xlink:href="#svg-arrow-backward")
             .flex-auto
-              button.-k-btn.btn-primary.-fw.-fw-700.js-donate-amount(type="submit") Donate $10
+              button.-k-btn.btn-primary.-fw.-fw-700.js-donate-amount(type="submit") Donate $#[span.js-amount-value 10]
         section.Success
           .DonationResponse
             img(src="/svg/heart.svg")
