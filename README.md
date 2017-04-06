@@ -69,3 +69,14 @@ Run the server
 ```sh
 npm start
 ```
+
+## Requirements
+
+
+Run redis with `redis-server`
+
+Run database migrations with `scripts/utils/knexreset`
+
+Run postgres.app
+
+
