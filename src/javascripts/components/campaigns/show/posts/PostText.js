@@ -12,7 +12,7 @@ export default class PostText extends Post {
             </div>
             <div class='flex-auto pl2'>
               <p class='-fw-500'>${data.user.account.fullname}</p>
-              <p class='pb2 -caption -neutral-dark'>${new Date(data.createdAt).toDateString()}</p>
+              ${this.getCaptionHTMLString(data)}
               <p class='Campaign_FeedItemText -fw-500'>${data.data.text}</p>
             </div>
           </div>

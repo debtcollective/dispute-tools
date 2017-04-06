@@ -35,8 +35,15 @@
   font-size: 1rem;
 
   &-svg {
-    width: 191px;
+    display: block;
     height: 20px;
+
+    &.-small {display: none}
+
+    @media (max-width: 880px) {
+      &.-small {display: block}
+      &.-large {display: none}
+    }
   }
 }
 

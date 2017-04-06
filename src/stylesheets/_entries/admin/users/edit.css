@@ -4,9 +4,15 @@
 .-border-neutral-mid {border-color: var(--k-color-palette-neutral-mid)}
 
 /* view styles */
-.EditProfile__image-wrapper {
-  padding-top: 100%;
-  background-color: var(--k-color-palette-neutral-mid);
-  background-size: cover;
-  background-position: 50%;
+.EditProfile__image {
+  &-wrapper {
+    padding-top: 100%;
+    background-color: var(--k-color-palette-neutral-mid);
+    background-size: cover;
+    background-position: 50%;
+  }
+  &-placeholder-text {
+    color: #fff;
+    opacity: .3;
+  }
 }

@@ -1,14 +1,25 @@
 @import '../../base';
 
 .About__cover {
-  margin-top: -60px;
   min-height: 300px;
-  background-color: var(--k-color-palette-neutral-dark);
+  background-color: #FFECB4;
   background-image: url('/images/about/cover.jpg');
-  background-size: cover;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: contain;
 
   &-space {
-    padding-top: 53.417%;
+    padding-top: 48.334%;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,.7);
   }
 }
 
@@ -19,13 +30,12 @@
 }
 
 .About__red-square {
- &-content {margin-top: -40px}
-
  &-square {
-   width: 170px;
-   height: 170px;
+   width: 200px;
+   height: 200px;
    bottom: 70px;
    background-color: var(--k-color-palette-primary);
+   background-image: linear-gradient(135deg, #ff705b, #e93b22);
  }
 }
 

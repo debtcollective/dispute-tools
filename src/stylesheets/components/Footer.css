@@ -3,3 +3,19 @@ footer {
   background-color: var(--k-background-color);
   border-top: 3px solid var(--k-color-palette-neutral-dark);
 }
+
+.Footer__circle-btn {
+  display: flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 0 2px #4A4A4A;
+  border-radius: 50%;
+  color: #fff;
+
+  &:hover {
+    opacity: .8;
+    color: inherit;
+  }
+}

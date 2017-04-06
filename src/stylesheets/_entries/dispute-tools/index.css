@@ -2,33 +2,12 @@
 @import '../../components/dispute-tools/TextModal';
 @import '../../components/dispute-tools/ToolCard';
 
-.Tools__intro {
-  /* margin-top: 0; */
-  /* border-bottom: 3px solid color(var(--k-color-palette-neutral-light) alpha(20%)); */
-}
-
-.Tools__title {
-  text-align: center;
-  z-index: 1;
-
-  & br {display: none}
-}
-
-.Tools__offset-text {
-  padding: 1rem 1rem 0;
-}
-
-@media (--breakpoint-md) {
-  .Tools__title {
-    padding-left: 18rem;
-    text-align: left;
-
-    & br {
-      display: initial;
-    }
+.ToolCard {
+  &__name,
+  &__stats {
+    color: var(--k-color-palette-accent);
   }
-
-  .Tools__offset-text {
-    padding: 4rem 0 0 4rem;
+  &__caption {
+    color: var(--k-color-palette-neutral-mid);
   }
 }

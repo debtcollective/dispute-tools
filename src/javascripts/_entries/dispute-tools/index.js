@@ -23,7 +23,7 @@ class ViewDisputeToolsIndex extends NodeSupport {
       },
     });
 
-    this._bindEvents()._applyGlitch();
+    this._bindEvents()._bindScrollTo()._applyGlitch();
   }
 
   _bindEvents() {
@@ -40,12 +40,24 @@ class ViewDisputeToolsIndex extends NodeSupport {
         .addEventListener('click', this.handlers[id]);
     });
 
+    return this;
+  }
+
+  _bindScrollTo() {
     this.pisces = new Pisces();
+
     this.whyFileDisputeAnchor = document.getElementById('why-file-dispute-anchor');
     this.whyFileDisputeSection = document.getElementById('why-file-dispute');
-
     this.whyFileDisputeAnchor.addEventListener('click', () => {
-      this.pisces.scrollToElement(this.whyFileDisputeSection);
+      const y = this.whyFileDisputeSection.offsetTop;
+      this.pisces.scrollToPosition({ y });
+    });
+
+    this.toolsAnchor = document.getElementById('tools-anchor');
+    this.toolsSection = document.getElementById('tools');
+    this.toolsAnchor.addEventListener('click', () => {
+      const y = this.toolsSection.offsetTop;
+      this.pisces.scrollToPosition({ y });
     });
 
     return this;
@@ -66,15 +78,18 @@ class ViewDisputeToolsIndex extends NodeSupport {
     const g3 = new Glitch();
 
     g1.load(i1, () => {
+      i1.style.opacity = 0;
       g1.canvas.className = 'sm-hide xs-hide';
       g1.render(i1.parentElement);
     });
 
     g2.load(i2, () => {
+      i2.style.opacity = 0;
       g2.render(i2.parentElement);
     });
 
     g3.load(i3, () => {
+      i3.style.opacity = 0;
       g3.render(i3.parentElement);
     });
 

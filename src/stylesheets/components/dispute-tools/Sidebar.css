@@ -19,7 +19,6 @@ counter-reset: steps;
   }
 
   &[disabled] {
-    text-decoration: line-through;
     opacity: .5;
   }
 
@@ -33,6 +32,10 @@ counter-reset: steps;
     & .svg-done {
       opacity: 1;
       transform: translate3d(0,.3em,0);
+    }
+
+    &[disabled] {
+      text-decoration: line-through;
     }
   }
 

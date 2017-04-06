@@ -41,7 +41,11 @@ class ViewCampaignsShow extends NodeSupport {
       name: 'Tabs',
       updateHash: true,
       element: document.querySelector('[data-tabs-component]'),
+      defaultTab: 'panel-campaign',
     }));
+
+    this._tabsLen = this.Tabs.tabs.length;
+    this._instantiatedTabChildren = [];
 
     this.appendChild(new FixedTabs({
       name: 'FixedTabs',
@@ -51,8 +55,11 @@ class ViewCampaignsShow extends NodeSupport {
     this.appendChild(new FeedController({
       name: 'FeedController',
       campaignId: config.campaignId,
+      currentUser: config.currentUser,
       userBelongsToCampaign: config.userBelongsToCampaign,
       element: document.querySelector('.Campaign_Feed'),
+      deletePostActionUrl: config.deletePostActionUrl,
+      userIsAdminOrCollectiveManager: config.userIsAdminOrCollectiveManager,
     }));
 
     const joinCampaingModal = document.querySelector('[data-component-modal="join-to-campaing"]');
@@ -64,13 +71,6 @@ class ViewCampaignsShow extends NodeSupport {
         trigger: joinCampaingTriggerElement,
       }));
     }
-
-    Array.prototype.slice.call(document.querySelectorAll('.ReadMore')).forEach((element, i) => {
-      this.appendChild(new ReadMore({
-        name: `ReadMore-${i}`,
-        element,
-      }));
-    });
 
     if (config.nextEvents.length) {
       this.appendChild(new SidebarController({
@@ -90,10 +90,36 @@ class ViewCampaignsShow extends NodeSupport {
       }));
     }
 
-    this._bindShareButtons();
+    this._bindEvents()._bindShareButtons();
 
-    if (!location.hash) {
-      this.Tabs._activateTab('panel-campaign');
+    this.Tabs.run();
+  }
+
+  _bindEvents() {
+    this._tabsChangeHandler = this._tabsChangeHandler.bind(this);
+    this.Tabs.bind('change', this._tabsChangeHandler);
+
+    return this;
+  }
+
+  _tabsChangeHandler(ev) {
+    const id = ev.id;
+    const panel = ev.panel;
+
+    if (this._instantiatedTabChildren.indexOf(id) < 0) {
+      this._instantiatedTabChildren.push(id);
+
+      Array.prototype.slice.call(panel.querySelectorAll('.ReadMore')).forEach((element, i) => {
+        this.appendChild(new ReadMore({
+          name: `ReadMore-${id}-${i}`,
+          element,
+        }));
+      });
+
+      if (this._instantiatedTabChildren.length === this._tabsLen) {
+        this.Tabs.unbind('change', this._tabsChangeHandler);
+        this._tabsChangeHandler = null;
+      }
     }
   }
 

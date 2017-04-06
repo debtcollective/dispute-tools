@@ -56,6 +56,8 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
       actions: ['show'],
     },
     // check if user can create events
+    // we use "canCreateEvents" as alias for "canDeletePosts"
+    // only admins, collective managers and posts owners can delete posts
     {
       before(req, res, next) {
         req.canCreateEvents = false;

@@ -1,7 +1,11 @@
 mixin toolCardMixin(tool)
-  .ToolCard.flex.flex-column.p2.rounded.-fh.-bg-neutral-dark
-    div.flex-auto.pb4
-      h4.pb1.-ttu.-h-sec.-accent.pt2: span= tool.name
+  .ToolCard.flex.flex-column.-fh
+    .flex-auto.pb3
+      h3.ToolCard__name.pb1= tool.name
+      p.py1
+        button.ToolCard__about-trigger.-k-btn.btn-link.-primary.-fw-700(
+          id=`tool-modal-toggler-${tool.id}`
+        ) › About This Dispute
 
       - var _label = '';
       case tool.id
@@ -10,15 +14,11 @@ mixin toolCardMixin(tool)
           - _label = 'Federal student loans only'
         when '11111111-1111-3333-1111-111111111111'
           - _label = 'All debt types except private student loans'
-
-      .-accent.-ttu.-caption= _label
-
-    p.pt1.pb2.center
-      button.ToolCard__about-trigger.-k-btn.btn-link.-primary.-fw-700(
-        id=`tool-modal-toggler-${tool.id}`
-      ) About This Dispute
+      if _label
+        .ToolCard__caption.-caption.-fw-500 (#{_label})
+    hr.mb2
     a.-k-btn.btn-primary.-fw.-fw-700(
       href=routeMappings.DisputeTools.show.url(tool.id)
       class= !user && 'js-login-link'
     ) Get started
-    p.pt2.center.-caption.-ttu.-white #[b= tool.completed] People filled
+    p.ToolCard__stats.pt2.-caption.-ttu.-fw-500 #[b= tool.completed] People filled

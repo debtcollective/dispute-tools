@@ -7,7 +7,7 @@ block styles
   link(href="/build/stylesheets/dispute-tools/index.css" rel="stylesheet")
 
 block content
-  .px2.pb2
+  .px2
     .Tools__intro.py4.wrapper
       .max-width-4.mx-auto
         .clearfix.mxn2.md-flex.items-center
@@ -16,71 +16,82 @@ block content
 
           .relative.col.md-col-7.col-12.px2.pb3
             h2.pb3 Together, we own the bank.
-            h4.pb3 Welcome to The Debt Collective dispute tools page
-            .-fw-500
-              p.pb2 For decades, vulture collectors and the federal government have been garnishing our wages and seizing our tax returns, suing us, and ruining our credit.
-              p We made these free tools to help us fight back.
-              p We all have the right to dispute unfair debts.
+            p.pb2.-fw-500 For decades we have been forced to debt finance basic needs as the cost of living has skyrocketed and wages have flatlined. While we have struggled to keep food on the table and care for our families our wages have been garnished, our tax returns seized, and our credit destroyed.
+            .pt3
+              button#tools-anchor.-k-btn.btn-primary.inline-block.mr2
+                svg(width='15' height='15'): use(xlink:href='#svg-arrow-down')
+              p.inline-block.pb2.-fw-500 We made these tools to fight back.
 
-    .max-width-4.mx-auto.py4
-      .clearfix.mxn2
-        .col.md-col-1.px2 &nbsp;
-        .col.md-col-11.col-12.px2
-          .clearfix.pb3
-            .left: h2 The Tools
-            .right.pt2: button#why-file-dispute-anchor.-k-btn.btn-link.-fw-700.-primary.-h4 Why file a dispute?
-          .clearfix.mxn2.flex.flex-wrap
-            include ../mixins/dispute-tools/tool-card
-            each tool in disputeTools
-              .col.md-col-4.sm-col-6.col-12.p2
-                +toolCardMixin(tool)
+    #tools.max-width-4.mx-auto.py4
+      div
+        .inline-block: h2 The Tools
+        .inline-block.align-bottom: button#why-file-dispute-anchor.-k-btn.btn-link.-fw-700.-primary.-h4 Why file a dispute?
+      .clearfix.mxn2.flex.flex-wrap
+        include ../mixins/dispute-tools/tool-card
+        each tool in disputeTools
+          .col.md-col-4.sm-col-6.col-12.px2.py4
+            +toolCardMixin(tool)
 
-    #why-file-dispute.pt3.pb4.-bg-primary
-      .wrapper
-        h2.Tools__title.relative.-h-sec: span Why file <br/>a Dispute?
+        .col.md-col-4.sm-col-6.col-12.px2.py4
+          .ToolCard.flex.flex-column.-fh
+            .flex-auto.pb3
+              h3.ToolCard__name.mb2 Defense to Repayment
+              .ToolCard__caption.-caption.-fw-500 (Federal student loans only)
+              p.py1
+                a.ToolCard__about-trigger.-k-btn.btn-link.-primary.-fw-700(href='/dispute-tools/defense-to-repayment') › About This Dispute
+            hr.mb2
+            a.-k-btn.btn-primary.-fw.-fw-700(
+              href='https://borrowerdischarge.ed.gov/FormWizard/BDU/BDULanding.aspx' rel='noopener noreferrer'
+              target='_blank'
+              class= !user && 'js-login-link'
+            ) Get started
+            p.ToolCard__stats.pt2.-caption.-ttu.-fw-500 &nbsp;
 
-        .clearfix.mxn2(style="margin-top: -40px;")
-          .col.md-col-6.col-12.px2
-            .center.relative
-              img#glitch-image-2.fit.inline-block(src="/images/tools/video.jpg")
-            .clearfix.mxn2
-              .col.md-col-2.col-12.px2 &nbsp;
-              .col.md-col-10.col-12.px2.pt4
-                .relative.pl4.-h4.-ff-sec.-accent
-                  svg.absolute.left-0(width="32" height="23" style="top: 10px;"): use(xlink:href="#svg-quote")
-                  p By disputing your debt you are joining with others to build collective power and demand access to public goods.
-          .Tools__offset-text.col.md-col-5.col-12
+  .px2.pt3.-bg-primary
+    #why-file-dispute.py4
+      .max-width-4.mx-auto
+        .clearfix.mxn2.md-flex.items-center
+          .col.md-col-5.col-12.px2.order-1.pb3
+            h2.pb3 Why file <br/>a Dispute?
             h4.pb3 As a member of The Debt Collective, you might dispute your debt because:
-            ul.list-reset.-fw-500
-              li.pb2 You were defrauded by your school.
-              li.pb2 You were trapped by a predatory lender.
-              li.pb2 You are being harassed by a debt collector.
-              li.pb2 You borrowed for healthcare, education, or other basic necessities.
-              li.pb2 You can’t afford to pay your debt.
-              li.pb2 You are disputing your debt as an act of economic solidarity with other people.
-              li.pb2 You took out Parent Plus loans to help your child pay for college.
-          .col.col-1 &nbsp;
+            ul.pl0.ml2.-fw-500
+              li You were defrauded by your school.
+              li You were trapped by a predatory lender.
+              li You are being harassed by a debt collector.
+              li You borrowed for healthcare, education, or other basic necessities.
+              li You can’t afford to pay your debt.
+              li You are disputing your debt as an act of economic solidarity with other people.
+              li You took out Parent Plus loans to help your child pay for college.
+          .col.md-col-7.col-12.px2
+            .center.relative
+              img#glitch-image-2.fit.inline-block(src="/images/tools/bullfighter.jpg")
+            .pt3
+              .relative.pl4.-h4.-ff-sec.-accent
+                svg.absolute.left-0(width="32" height="23" style="top: 10px;"): use(xlink:href="#svg-quote")
+                p By disputing your debt you are joining with others to build collective power and demand access to public goods.
 
-    .pt2.pb4.wrapper
-      h2.Tools__title.-h-sec: span What happens <br/>after I file?
-
-      .clearfix.mxn2.mt2
+  .px2.pt4.pb4
+    .max-width-4.mx-auto
+      .clearfix.mxn2.mt2.md-flex.items-center
+        .col.md-col-6.col-12.-fw-500.px2.order-1.pb3
+          h2.pb3 What happens <br/>after I file?
+          p.pb3 The Debt Collective will send hard copies of your dispute if you cannot mail the forms yourself. They will be sent to all relevant parties, including the Department of Education, loan servicers, collectors, and the credit reporting agencies. You will also receive a copy by email.
+          p.pb3 You will receive notifications asking you to provide information about any response you receive from the collector.
+          p.pb3 #[a.js-donate(href='#') Make a donation] to the Debt Collective General Fund to help more people dispute debts of all kinds.
+          p.pb2 Thank you.
+          .my2(style="width: 23px; height: 3px; background-color: #d8d8d8;")
+          p.-caption.-fw-700 The tools we provide here are not the only ways you can dispute your debt.
+          p.-caption.-fw-500.-neutral-mid For a complete list of discharge options, go here: #[a(href="https://studentaid.ed.gov/sa/repay-loans/forgiveness-cancellation" target="_blank" rel="noopener noreferrer") https://studentaid.ed.gov/sa/repay-loans/forgiveness-cancellation]
         .col.md-col-6.col-12.px2
           .center.relative: img#glitch-image-3.fit.inline-block(src="/images/tools/file.jpg")
-        .col.Tools__offset-text.md-col-5.col-12.-fw-500
-          p.pb2 The Debt Collective will send hard copies of your dispute to all relevant parties, including the Department of Education, loan servicers, collectors, and the credit reporting agencies. You will also receive a copy by email.
-          p.pb3 You will receive notifications asking you to provide information about any response you receive from the collector.
-          div.my2(style="width: 23px; height: 3px; background-color: #d8d8d8;")
-          p.-caption.-fw-700 These tools can help individuals dispute debts in particular ways. They do not constitute legal advice, nor are they the only ways to dispute your debts.
-          p.-caption.-fw-500.-neutral-mid For a complete list of discharge options, go here: #[a(href="https://studentaid.ed.gov/sa/repay-loans/forgiveness-cancellation" target="_blank" rel="noopener noreferrer") https://studentaid.ed.gov/sa/repay-loans/forgiveness-cancellation]
-        .col.md-col-1.col-12 &nbsp;
 
+  .px2
     .max-width-4.mx-auto.pt2.pb4
       .p4.-bg-white.-dark
         .max-width-3.mx-auto
           h2.pb3 Data Privacy
           p.pb3.-fw-500 We won't share your information with anyone outside the Debt Collective organizing team or with experts with whom we are consulting. We will only use your data to see who is using our tools and to contact you about opportunities to join debt resistance campaigns in your area. If we decide to use the data you provide here for some other purpose, we will contact you to explain and make sure it is okay with you.
-          p If you have questions about how to use one of these tools, please email: #[a(href="mailto:support@debtcollective.org") support@debtcollective.org].
+          p If you have questions about how to use one of these tools, please email: #[a(href="mailto:disputes@debtcollective.org") disputes@debtcollective.org].
 
 block append body
   each tool in disputeTools

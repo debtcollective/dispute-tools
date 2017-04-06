@@ -14,8 +14,8 @@ block content
           svg.inline-block.align-middle.-sw7.-stroke-accent(width='60' height='60')
             use(xlink:href=`#svg-collective-${collective.id.charAt(0)}`)
               span.pl2.inline-block.align-middle.-accent= collective.name
-        .py2.clearfix
-          .left.flex.items-center
+        .py2.flex
+          .flex.flex-auto.items-center.-ell
             if belongsToCollective
               - var _avatarUrl = '/images/profile/placeholder-small.png';
               if (currentUser.account.image.exists('smallGrayscale'))
@@ -25,9 +25,11 @@ block content
             span.-accent
               span.-fw-700= (belongsToCollective ? `You + ${collective.userCount - 1}` : `+ ${collective.userCount}`)
               span.-fw-500 &nbsp;members
-            span.-fw-700.px2 &middot;
-            span.-fw-700 $#{totalDebtAmount / 100} USD Debt to cancel
-          .right
+            unless collective.id === '99999999-9999-9999-9999-999999999999'
+              // IF NOT Solidarity Bloc
+              span.-fw-700.px2 &middot;
+              span.-fw-700.-ell We have $#{totalDebtAmount / 100} debt to leverage.
+          div
             unless belongsToCollective
               if currentUser
                 form(method='post' action=routeMappings.Collectives.join.url(collective.id))
@@ -60,14 +62,20 @@ block content
                     unless campaign.published
                       span.-bg-accent.-caption.-ttu.-fw-700.inline-block.rounded.align-top.px1 staging
 
-                    if campaign.description
-                      .pb2.-neutral-dark!= campaign.description
+                    if campaign.introText
+                      .pb2.-fw-500.-neutral-dark!= campaign.introText
 
                     if campaign.active
                       .relative
                         svg(width='64' height='57' style='position: absolute; right: 10px; top: -28px;'): use(xlink:href='#svg-badge-active')
 
-                    if campaign.cover.exists('grayscale')
+                    if campaign.cover.exists('original') && campaign.default
+                      .center.pb2
+                        img.inline-block.align-top.fit(
+                          src=campaign.cover.url('original')
+                        )
+
+                    else if campaign.cover.exists('grayscale')
                       .center.pb2
                         img.inline-block.align-top.fit(
                           src=campaign.cover.url('grayscale')
@@ -154,10 +162,10 @@ block content
               h3.pb1 We all have the right to dispute unfair debts.
               p We made these free tools to help us fight back. #[a(href=`${routeMappings.DisputeTools.url()}/#why-file-dispute`) Learn more]
 
-              .pt3.clearfix.mxn2.flex.flex-wrap
+              .clearfix.mxn2.flex.flex-wrap
                 include ../mixins/dispute-tools/tool-card
                 each tool in collective.tools
-                  .col.md-col-4.sm-col-6.col-12.p2
+                  .col.md-col-4.sm-col-6.col-12.px2.py4
                     +toolCardMixin(tool)
 
 block append body

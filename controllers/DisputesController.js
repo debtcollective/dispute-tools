@@ -1,7 +1,9 @@
 /* globals Dispute, RestfulController, Class, DisputeTool, CONFIG, DisputeStatus,
-    DisputeMailer, UserMailer, NotFoundError, DisputeRenderer */
-
+    DisputeMailer, UserMailer, NotFoundError, DisputeRenderer, Dispute */
+const AdmZip = require('adm-zip');
 const path = require('path');
+const xlsx = require('node-xlsx');
+
 const Promise = require('bluebird');
 const marked = require('marked');
 
@@ -65,7 +67,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           req.dispute = dispute;
 
           const optionData = dispute.disputeTool.data.options[dispute.data.option];
-          if (optionData.more) {
+          if (optionData && optionData.more) {
             optionData.more = marked(optionData.more);
           }
 
@@ -138,6 +140,30 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         })
         .then(() => {
           return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+        })
+        .catch(next);
+    },
+
+    updateSubmission(req, res, next) {
+      DisputeStatus.query()
+        .where('dispute_id', req.params.id)
+        .where('status', 'Completed')
+        .then((results) => {
+          if (results.length > 0) {
+            if (req.body.pending_submission === '0') {
+              results[0].pendingSubmission = false;
+            }
+
+            if (req.body.pending_submission === '1') {
+              results[0].pendingSubmission = true;
+            }
+
+            return results[0].save()
+              .then(() => {
+                req.flash('success', 'Your dispute is pending for assistance, thank you!');
+                res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
+              });
+          }
         })
         .catch(next);
     },
@@ -252,17 +278,59 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     },
 
     download(req, res, next) {
-      DisputeRenderer.query()
-        .where({
-          dispute_id: req.params.id,
-        })
-        .limit(1)
-        .then((renderer) => {
+      Promise.all([
+        DisputeRenderer.query()
+          .where({
+            dispute_id: req.params.id,
+          })
+          .limit(1),
+        Dispute.query().where('id', req.params.id),
+      ])
+        .then(([renderer, [dispute]]) => {
           if (renderer.length === 0) {
-            return next(new NotFoundError('File not found'));
+            next(new NotFoundError('File not found'));
+            return;
           }
 
-          return res.sendFile(path.join(process.cwd(), 'public', renderer[0].zip.url('original')));
+          const zipFile = path.join(process.cwd(), 'public', renderer[0].zip.url('original'));
+
+          const newZip = new AdmZip();
+
+          Object.keys(dispute.data.forms).forEach((form) => {
+            const data = [];
+
+            Object.keys(dispute.data.forms[form]).forEach((key) => {
+              data.push([key, dispute.data.forms[form][key]]);
+            });
+
+            newZip.addFile(`${form}.xlsx`, xlsx.build([{ name: form, data }]));
+          });
+
+          const info = [];
+
+          Object.keys(dispute.data).forEach((key) => {
+            if (typeof dispute.data[key] === 'string') {
+              info.push([key, dispute.data[key]]);
+            }
+
+            if (typeof dispute.data[key] === 'boolean') {
+              info.push([key, dispute.data[key] ? 'yes' : 'no']);
+            }
+          });
+
+          newZip.addFile('personal-information.xlsx',
+            xlsx.build([{ name: 'personal-information', data: info }]));
+
+          newZip.addLocalFile(zipFile);
+
+          res.setHeader('Content-type', 'application/zip');
+          res.setHeader('Content-disposition',
+            `attachment; filename=dispute-${req.params.id}.zip`);
+
+          const data = newZip.toBuffer();
+
+          res.setHeader('Content-Length', String(data.length));
+          res.end(data, 'binary');
         });
     },
 

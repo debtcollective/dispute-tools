@@ -75,6 +75,7 @@ block append body
         .Modal(data-component-modal="personal-information-form" aria-hidden="true" role="dialog" aria-labelledby="modalToolPersonalInfoFormTitle")
           button(class="Modal__close" aria-label="close")
             svg(class="-s18"): use(xlink:href="#svg-close")
+          button.CloseAndSaveFormButton.-k-btn.btn-light.-xs.-fw-500 Save and close
           .Modal__body(role="document")
             include ../includes/disputes/information-form
 

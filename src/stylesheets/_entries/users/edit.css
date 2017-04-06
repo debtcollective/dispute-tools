@@ -1,8 +1,13 @@
 @import '../../base';
 
-.EditProfile__image-wrapper {
-  padding-top: 100%;
-  background-color: var(--k-color-palette-neutral-dark);
-  background-size: cover;
-  background-position: 50%;
+.EditProfile__image {
+  &-wrapper {
+    padding-top: 100%;
+    background-color: var(--k-color-palette-neutral-dark);
+    background-size: cover;
+    background-position: 50%;
+  }
+  &-placeholder-text {
+    opacity: .3;
+  }
 }

@@ -126,6 +126,14 @@ body {
 h2 {line-height: 1.194em; /* 80px */}
 h3 {line-height: 1.081em; /* 40px */}
 
+blockquote {
+  font-size: 1.125rem;
+}
+
+.-paragraph {
+  font-size: .9375rem;
+}
+
 a {
   color: var(--k-color-palette-primary);
   text-decoration: none;

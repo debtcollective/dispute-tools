@@ -10,10 +10,10 @@ export default class Tabs extends Widget {
     this.panels = Array.prototype.slice.call(this.element.querySelectorAll('[role="tabpanel"]'));
     this._current = '';
 
-    this._setup()._bindEvents();
+    this._bindEvents();
   }
 
-  _setup() {
+  run() {
     if (this.updateHash) {
       const ids = this.panels.map(p => { return p.id; });
       const hash = `panel-${window.location.hash.replace('#', '')}`;
@@ -77,7 +77,11 @@ export default class Tabs extends Widget {
         }
 
         this._current = id;
-        this.dispatch('change');
+        this.dispatch('change', {
+          id,
+          tab: this.tabs[i],
+          panel: this.panels[i],
+        });
       }
     }
 

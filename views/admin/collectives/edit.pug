@@ -7,78 +7,103 @@ block styles
   link(href="/build/stylesheets/admin/collectives/edit.css" rel="stylesheet")
 
 block content
-  .wrapper.px2.pb3
-    h2.pt4.pb2 Edit Collective
-    h4.pb3= collective.name
+  .px2.pb3
+    .max-width-2.mx-auto
+      h2.pt4 Edit Collective
+      h4.pt1.pb3= collective.name
 
-    form(
-      method='post'
-      action= routeMappings.Admin.Collectives.update.url(collective.id)
-      enctype='multipart/form-data'
-    )
-      input(type='hidden' name='_csrf' value=csrfToken)
-      input(name='_method' type='hidden' value='PUT')
+      form(
+        method='post'
+        action= routeMappings.Admin.Collectives.update.url(collective.id)
+        enctype='multipart/form-data'
+        data-component-editform
+      )
+        input(type='hidden' name='_csrf' value=csrfToken)
+        input(name='_method' type='hidden' value='PUT')
 
-      .py1
-        label.block.pb1.-fw-500 Cover
-        if collective.cover.exists('grayscale')
-          img(src=collective.cover.url('grayscale') width='300')
-        input(name='image' type='file' accept='image/*')
+        .py1
+          label.block.pb1.-fw-500 Cover
+          .EditCollective__image-wrapper.inline-block.align-top.mr2
+            if collective.cover.exists('grayscale')
+              img.block(src=collective.cover.url('grayscale'))
+            else
+              img.block(src='/images/collectives/cover-placeholder.jpg')
+          .relative.-k-btn.btn-link.btn-outline.-primary.-xs
+            input.absolute.top-0.left-0.-fh.-fw(name="image" type="file" accept="image/*" style="opacity: 0;")
+            span.-fw-500.-primary Upload
 
-      .py1
-        label.block.pb1.-fw-500 Name
-        input.-border-neutral-mid.-k-input.-fw(
-          type='text'
-          name='name'
-          value= collective.name
-        )
+        .py1
+          label.block.pb1.-fw-500 Name
+          input.-border-neutral-mid.-k-input.-fw(
+            type='text'
+            name='name'
+            value= collective.name
+          )
+          p(class="-on-error -danger -caption -fw-500 mt1")
 
-      .py1
-        label.block.pb1.-fw-500 Description
-        textarea.-k-textarea.-border-neutral-mid.-fw(
-          name='description'
-          rows='2'
-        )= collective.description
+        .py1
+          label.block.pb1.-fw-500 Description
+          textarea.-k-textarea.-border-neutral-mid.-fw(
+            name='description'
+            rows='2'
+          )= collective.description
 
-      .py1
-        label.block.pb1.-fw-500 Manifest
-        textarea.-k-textarea.-border-neutral-mid.-fw(
-          name='manifest'
-          rows='10'
-        )= collective.manifest
+        .py1
+          label.block.pb1.-fw-500
+            span Manifest
+            span.pl1.-caption.-neutral-mid (Styling with #[a(href='http://commonmark.org/' rel='noopener noreferrer' target='_blank') Markdown] is supported)
+          textarea.-k-textarea.-border-neutral-mid.-fw(
+            name='manifest'
+            rows='10'
+          )= collective.manifest
 
-      .py1
-        label.block.pb1.-fw-500 Goal title
-        input.-border-neutral-mid.-k-input.-fw(
-          type='text'
-          name='goalTitle'
-          value= collective.goalTitle
-        )
+        .py1
+          label.block.pb1.-fw-500 Goal title
+          input.-border-neutral-mid.-k-input.-fw(
+            type='text'
+            name='goalTitle'
+            value= collective.goalTitle
+          )
 
-      .py1
-        label.block.pb1.-fw-500 Goal
-        textarea.-k-textarea.-border-neutral-mid.-fw(
-          name='goal'
-          rows='2'
-        )= collective.goal
+        .py1
+          label.block.pb1.-fw-500 Goal
+          textarea.-k-textarea.-border-neutral-mid.-fw(
+            name='goal'
+            rows='2'
+          )= collective.goal
 
-      .py1
-        p.pb1.-fw-500 Dispute Tools
-        - var toolIds = collective.tools.map(t => t.id)
-        each tool in disputeTools
-          div
-            input(
-              type='checkbox'
-              name='disputeToolIds'
-              value= tool.id
-              id= tool.id
-              checked= toolIds.includes(tool.id)
-            )
-            label.pl1(
-              for= tool.id
-            )= tool.name
+        .py1
+          p.pb1.-fw-500 Dispute Tools
+          - var toolIds = collective.tools.map(t => t.id)
+          each tool in disputeTools
+            div
+              input(
+                type='checkbox'
+                name='disputeToolIds'
+                value= tool.id
+                id= tool.id
+                checked= toolIds.includes(tool.id)
+              )
+              label.pl1(
+                for= tool.id
+              )= tool.name
 
-      .pt3
-        button.-k-btn.btn-primary.-fw-700.-fw(
-          type='submit'
-        ) Update “#{collective.name}”
+        .pt3
+          button.-k-btn.btn-primary.-fw-700.-fw(
+            type='submit'
+          ) Update “#{collective.name}”
+
+block scripts
+  script(src='/build/javascripts/admin/collectives/edit.js' async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      try {
+        new ViewAdminCollectivesEdit(options);
+      } catch(e) {
+        airbrake.notify(e);
+      }
+    }, true);

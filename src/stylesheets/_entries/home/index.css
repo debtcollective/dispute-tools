@@ -1,10 +1,8 @@
 @import '../../base';
 
-/* page styles */
-.HomeSubheading {
-  font-size: 2rem;
-}
+.-gray {color: #4A4A4A}
 
+/* page styles */
 .HomeHeading {
   font-size: 3.5625rem;
   @media (max-width: 400px) {
@@ -12,31 +10,33 @@
   }
 }
 
-.HomeIllustrationTop {
-  margin-top: -2rem;
+#home-bottom-anchor {
+  padding: 12px 13px 11px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
-.HomeDescription {
+.HomeIllustrationCredits {
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate3d(5em, 2em, 0);
-  width: 33.33333%;
+  right: 0;
+  transform: translate3d(0, -100%, 0);
+  width: 25%;
+  font-size: 11px;
+  text-align: left;
 
-  @media (max-width: 730px) {
-    position: static;
-    width: 100%;
-    transform: none;
-    padding-top: var(--space-3);
-    padding-bottom: var(--space-3);
+  @media (max-width: 831px) {
+    left: 0;
+    transform: translate3d(0, 0%, 0);
+  }
+
+  @media (max-width: 500px) {
+    width: 40%;
   }
 }
 
 .bg-light-pattern {
   background-color: var(--k-color-palette-neutral-light);
-  background-image: url(/images/global/bg-white-pattern.gif);
-  background-position: 50% 0;
-  background-repeat: repeat;
 }
 
 .underlined-link {

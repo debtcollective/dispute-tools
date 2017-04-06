@@ -11,6 +11,11 @@ const routeMappings = RouteMappings()
     as: 'tos',
   })
 
+  .get('/dispute-tools/defense-to-repayment', {
+    to: 'Home#dtr',
+    as: 'dtr',
+  })
+
   .get('/about', {
     to: 'Home#about',
     as: 'about',
@@ -128,6 +133,10 @@ const routeMappings = RouteMappings()
       .get('/:id/download', {
         to: 'Disputes#download',
         as: 'download',
+      })
+      .put('/:id/update-submission', {
+        to: 'Disputes#updateSubmission',
+        as: 'updateSubmission',
       })
       .put('/:id/update-dispute-data', {
         to: 'Disputes#updateDisputeData',

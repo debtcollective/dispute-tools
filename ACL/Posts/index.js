@@ -17,20 +17,30 @@ module.exports = {
   ],
   CollectiveManager: [
     ['create', 'index', 'createComment', true],
-    ['edit', 'update', 'delete', (req) =>
-      User.knex().table('CollectiveAdmins')
-        .where({
-          collective_id: req.post.collectiveId,
-          user_id: req.user.id,
-        })
-        .then((results) => {
-          if (results.length === 0) {
-            return false;
-          }
+    ['edit', 'update', 'delete', (req) => {
+      if (req.user.role === 'Admin') {
+        return true;
+      }
 
-          return true;
-        }),
-    ],
+      return User.knex().table('Campaigns')
+        .select('collective_id')
+        .where('id', req.params.campaign_id)
+        .then(([result]) => {
+          return User.knex().table('CollectiveAdmins')
+            .where({
+              collective_id: result.collective_id,
+              user_id: req.user.id,
+            })
+            .then((results) => {
+              if (results.length === 0) {
+                return false;
+              }
+
+              return true;
+            })
+            .catch(() => false);
+        });
+    }],
   ],
   Admin: [
     ['createComment', true],

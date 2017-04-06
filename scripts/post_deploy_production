@@ -11,6 +11,7 @@ ln -sf /home/deploy/apps/tdc/shared/uploads /home/deploy/apps/tdc/current/public
 
 yarn build
 
+NODE_ENV=production yarn utils:copybadges
 NODE_ENV=production yarn db:migrate
 
 pm2 startOrRestart ecosystem.json --env production
