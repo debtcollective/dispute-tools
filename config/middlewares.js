@@ -28,6 +28,10 @@ const middlewares = [
     path: 'middlewares/redis.js',
   },
   {
+    name: 'Locals',
+    path: 'middlewares/locals.js',
+  },
+  {
     name: 'CSRF',
     path: 'middlewares/CSRF.js',
   },
@@ -50,10 +54,6 @@ const middlewares = [
   {
     name: 'Bancheck',
     path: 'middlewares/checkIfBan.js',
-  },
-  {
-    name: 'Locals',
-    path: 'middlewares/locals.js',
   },
   {
     name: 'RestifyACL',
