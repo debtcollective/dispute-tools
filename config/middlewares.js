@@ -40,10 +40,6 @@ const middlewares = [
     path: 'middlewares/CSRFError.js',
   },
   {
-    name: 'CSRF-Locals',
-    path: 'middlewares/CSRFLocals.js',
-  },
-  {
     name: 'Flash Messages',
     path: 'middlewares/flashMessages.js',
   },
@@ -54,6 +50,10 @@ const middlewares = [
   {
     name: 'Passport Session',
     path: 'middlewares/PassportSession.js',
+  },
+  {
+    name: 'SafeLocals',
+    path: 'middlewares/SafeLocals.js',
   },
   {
     name: 'Bancheck',
