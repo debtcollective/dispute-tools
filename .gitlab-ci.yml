@@ -31,6 +31,7 @@ test:
     - apt-get update
     - apt-get install -y postgresql-client
   script:
+    - yarn global add node-gyp
     - yarn
     - yarn build
     - yarn test
