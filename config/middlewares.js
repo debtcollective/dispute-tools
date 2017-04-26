@@ -40,6 +40,10 @@ const middlewares = [
     path: 'middlewares/CSRFError.js',
   },
   {
+    name: 'CSRF-Locals',
+    path: 'middlewares/CSRFLocals.js',
+  },
+  {
     name: 'Flash Messages',
     path: 'middlewares/flashMessages.js',
   },
