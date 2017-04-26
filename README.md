@@ -2,31 +2,9 @@
 
 ![LOGO](images/TDC-large.png)
 
-|   	|   	|
-|---	|---	|
-|Client  	|The Debt Collective   	|
-|Contact   	| [Laura Hanna][243927d5], [Ann Larson][bd3c37c6] |
-|Slack Channel   	|[pr-debt-collective][4cc2794a]  	|
-|Lead Designer   	|[Fernando Machuca][a21d424e]   	|
-|Lead Backend   	|[Sergio de la Garza][62433afc]   	|
-|Lead Frontend   	|[Noel Delgado][948ec1b7]   	|
-|Next Release   	|[MVP 2016-09-06](Product Requirements - MVP)   	|
-
-
-  [4cc2794a]: https://empathia.slack.com/messages/pr-debt-collective/ "pr-debt-collective"
-  [243927d5]: https://empathia.slack.com/messages/laurahanna/ "Laura Hanna"
-  [bd3c37c6]: https://empathia.slack.com/messages/annlarson/ "Ann Larson"
-  [a21d424e]: https://empathia.slack.com/messages/@chuca/ "@chuca"
-  [62433afc]: https://empathia.slack.com/messages/@sgarza/ "@sgarza"
-  [948ec1b7]: https://empathia.slack.com/messages/@noeldelgado/ "@noeldelgado"
-
-
-
 # About
 
-The Debt Collective is a non-profit organization based in New York City. Their goal is to have every American provided with all of basic services without paying for them. Currently, they're focused on organizing and helping people in debt to dispute and reject unfair debt in which they are in. Examples of these types of debt are student loans, medical debt, credit card debt, fines and garnishment.
-
-The Debt Collective is a team of organizers, technologists, media, and legal experts that is building a platform to allow members — whether they are low-wage workers, mortgage holding families, or struggling former college students — to re-negotiate, resist, and refuse unfair debts.
+Corporate elites control our government and by extension our lives. They cheat workers, don’t pay their taxes, and then force us into debt for the basic necessities of life: shelter, food, education, and healthcare. We have the power to change this.
 
 ![TDC-square](/uploads/205015d23aed82f2193fafa86918202e/TDC-square.png)
 
@@ -58,6 +36,11 @@ cp config/config.sample.js config/config.js
 cp knexfile.sample.js knexfile.js
 ```
 
+### config.js 
+
+* `disableActivation`: when truthy, will not require activation before logging in. Good for testing.
+
+
 Build the application assets before starting.
 
 ```sh
@@ -78,5 +61,3 @@ Run redis with `redis-server`
 Run database migrations with `scripts/utils/knexreset`
 
 Run postgres.app
-
-
