@@ -47,7 +47,7 @@ const config = {
 
     airbrake: {
       projectId: 0,
-      projectKey: '',
+      projectKey: 'changeme',
     },
 
     GoogleMaps: {
