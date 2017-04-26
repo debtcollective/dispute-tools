@@ -28,16 +28,26 @@ export function req(opts, cb) {
     delete opts.body;
   }
 
+  function end(error, result) {
+    if (typeof cb === 'function') {
+      try {
+        cb(error, result);
+      } catch (e) {
+        console.log(e.stack);
+      }
+    }
+  }
+
   fetch(opts.url, opts)
   .then((res) =>
     res.json()
       .then((result) => {
-        cb(null, {
+        end(null, {
           body: result,
           headers: res.headers,
         });
       }))
-  .catch((error) => cb && cb(error));
+  .catch(end);
 }
 
 /**

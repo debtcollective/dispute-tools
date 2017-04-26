@@ -67,7 +67,7 @@ export default class FeedController extends Widget {
         name: post.id,
         data: post,
         userIsCollectiveManager: this.userIsAdminOrCollectiveManager,
-        userIsPostAuthor: this.currentUser.id === post.userId,
+        userIsPostAuthor: this.currentUser ? this.currentUser.id === post.userId : false,
         userBelongsToCampaign: this.userBelongsToCampaign,
         deletePostActionUrl: this.deletePostActionUrl.replace('{postId}', post.id),
         csrfToken,
