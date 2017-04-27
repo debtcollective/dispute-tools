@@ -46,7 +46,7 @@ const config = {
     },
 
     airbrake: {
-      projectId: 0,
+      projectId: 10,
       projectKey: 'changeme',
     },
 
