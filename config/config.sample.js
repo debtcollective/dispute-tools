@@ -1,5 +1,3 @@
-const mandrillTransport = require('nodemailer-mandrill-transport');
-
 const env = process.env.NODE_ENV || 'development';
 const path = require('path');
 
@@ -29,10 +27,11 @@ const config = {
     },
 
     nodemailer: {
-      service: 'Gmail',
+      port: 587,
+      host: 'smtp-relay.sendinblue.com',
       auth: {
-        user: '',
-        pass: '',
+        user: 'admin@debtcollective.org',
+        pass: process.env.SENDINBLUE_KEY
       },
     },
 
@@ -77,13 +76,14 @@ const config = {
       disputesBCCAddresses: [process.env.DISPUTES_EMAIL],
     },
 
-    nodemailer: mandrillTransport({
+    nodemailer: {
       port: 587,
-      host: 'smtp.mandrillapp.com',
+      host: 'smtp-relay.sendinblue.com',
       auth: {
-        apiKey: process.env.MANDRILL_KEY,
+        user: 'admin@debtcollective.org',
+        pass: process.env.SENDINBLUE_KEY
       },
-    }),
+    },
 
     loggly: {
       apiKey: process.env.LOGGLY_KEY,
