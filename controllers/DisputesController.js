@@ -289,7 +289,13 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
             return next(new NotFoundError('File not found'));
           }
 
-          return res.sendFile(path.join(process.cwd(), 'public', renderer[0].zip.url('original')));
+          const original = renderer[0].zip.url('original');
+
+          if (!original) {
+            return next(new NotFoundError('File is corrupted'));
+          }
+
+          return res.sendFile(path.join(process.cwd(), 'public', original));
         });
     },
 
