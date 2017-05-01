@@ -254,6 +254,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         req.flash('error', 'A problem occurred trying to process the attachments');
       })
       .finally(() => {
+        req.flash('success', 'Attachment successfully added!');
         return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
       });
     },
