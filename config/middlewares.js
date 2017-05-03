@@ -4,10 +4,6 @@ const middlewares = [
     path: 'middlewares/cors.js',
   },
   {
-    name: 'Cookie Parser',
-    path: 'middlewares/cookieParser.js',
-  },
-  {
     name: 'Body Parser URL',
     path: 'middlewares/bodyParserURL.js',
   },
