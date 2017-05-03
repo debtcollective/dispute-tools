@@ -15,6 +15,7 @@ if (CONFIG.env().sessions !== false) {
   });
 
   const sessionMiddleWare = session({
+    proxy: true,
     resave: false,
     saveUninitialized: true,
     key: CONFIG.env().sessions.key,
