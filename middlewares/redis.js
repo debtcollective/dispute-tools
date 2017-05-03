@@ -18,7 +18,8 @@ if (CONFIG.env().sessions !== false) {
     resave: false,
     saveUninitialized: true,
     key: CONFIG.env().sessions.key,
-    cookie: {secure: CONFIG.environment === 'production'},
+    // FIXME: this is not working as expected behind nginx-proxy
+    // cookie: {secure: CONFIG.environment === 'production'},
     store: redisStoreInstance,
     secret: CONFIG.env().sessions.secret
   });
