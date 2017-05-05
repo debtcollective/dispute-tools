@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+process.env.HEADLESS = 1;
+
+require('../../lib/core');
+
+/* global User */
+
+User.query()
+.include('[account]')
+.whereRaw('activation_token IS NOT NULL')
+.then(results => {
+  Promise.all(
+    results.map(user => {
+      console.log('> Sending activation to:', user.email);
+      return user.sendActivation();
+    })
+  ).then(() => {
+    console.log('OK');
+    process.exit();
+  });
+})
+.catch(error => {
+  console.log(error);
+  process.exit(1);
+});
