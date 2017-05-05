@@ -77,11 +77,12 @@ const config = {
     },
 
     nodemailer: {
-      port: 587,
-      host: 'smtp-relay.sendinblue.com',
+      host: process.env.NODEMAILER_HOST,
+      port: 25,
+      secure: false,
       auth: {
-        user: 'admin@debtcollective.org',
-        pass: process.env.SENDINBLUE_KEY
+        user: process.env.NODEMAILER_USER,
+        pass: process.env.NODEMAILER_PASS,
       },
     },
 

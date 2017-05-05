@@ -119,7 +119,7 @@
     "neon": "^2.0.0",
     "node-xlsx": "^0.7.4",
     "nodemailer": "^2.5.0",
-    "nodemailer-mandrill-transport": "^1.2.0",
+    "nodemailer-mailgun-transport": "^1.3.5",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
