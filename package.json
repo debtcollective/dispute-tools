@@ -28,6 +28,7 @@
     "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
     "post_deploy_staging": "scripty",
     "post_deploy_production": "./scripts/post_deploy_production",
+    "disputes_sendto_admin": "./scripts/tasks/disputes-sendto-admin",
     "resend_activation_links": "./scripts/tasks/resend-activation-links"
   },
   "tarima": {
