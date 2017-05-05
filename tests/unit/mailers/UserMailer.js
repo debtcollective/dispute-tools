@@ -25,7 +25,7 @@ describe('UserMailer', () => {
     .then((response) => {
       const acceptedOrRejected = response.accepted[0] || response.rejected[0];
 
-      expect(acceptedOrRejected.email).to.be.equal('success@simulator.amazonses.com');
+      expect(acceptedOrRejected).to.be.equal('success@simulator.amazonses.com');
     });
   });
 
@@ -48,7 +48,7 @@ describe('UserMailer', () => {
     .then((response) => {
       const acceptedOrRejected = response.accepted[0] || response.rejected[0];
 
-      expect(acceptedOrRejected.email).to.be.equal('success@simulator.amazonses.com');
+      expect(acceptedOrRejected).to.be.equal('success@simulator.amazonses.com');
     });
   });
 });
