@@ -182,7 +182,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       } catch (e) {
         return res.format({
           html() {
-            req.flash('error', e.toString());
+            req.flash('error', `${e.toString()} (on #${req.body.command})`);
             return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
           },
           json() {
@@ -231,7 +231,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
         })
         .catch((e) => {
-          req.flash('error', e.toString());
+          req.flash('error', `${e.toString()} (on #setSignature)`);
           return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
         });
     },
