@@ -105,6 +105,7 @@
     "fs-extra": "^0.30.0",
     "glob": "^7.0.5",
     "gm": "^1.23.0",
+    "helmet": "^3.6.0",
     "im-metadata": "^3.0.0",
     "imagemagick-stream": "^4.1.1",
     "knex": "^0.11.9",
