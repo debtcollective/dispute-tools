@@ -156,6 +156,10 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
           return DisputeMailer.sendStatusToUser({
             dispute,
             disputeStatus: ds,
+          })
+          .catch(e => {
+            console.log('  ---> Failed to send mail to user (on #update)');
+            console.log(e.stack);
           });
         })
         .then(() => {

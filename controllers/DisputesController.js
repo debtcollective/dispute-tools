@@ -133,6 +133,9 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
             dispute,
             user: req.user,
             disputeStatus: ds,
+          }).catch(e => {
+            console.log('  ---> Failed to send mail to admins (on #update)');
+            console.log(e.stack);
           });
         })
         .then(() => {
@@ -225,6 +228,10 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
                 subject: 'New Dispute Completed - The Debt Collective',
               },
             });
+          })
+          .catch(e => {
+            console.log('  ---> Failed to send smail to user (on #setSignature)');
+            console.log(e.stack);
           });
         })
         .then(() => {
