@@ -27,11 +27,12 @@ const config = {
     },
 
     nodemailer: {
-      port: 587,
-      host: 'smtp-relay.sendinblue.com',
+      host: 'smtp.develmail.com',
+      port: 25,
+      secure: false,
       auth: {
-        user: 'admin@debtcollective.org',
-        pass: process.env.SENDINBLUE_KEY
+        user: '',
+        pass: '',
       },
     },
 
@@ -46,7 +47,7 @@ const config = {
 
     airbrake: {
       projectId: 10,
-      projectKey: 'changeme',
+      projectKey: '',
     },
 
     GoogleMaps: {
@@ -78,8 +79,8 @@ const config = {
 
     nodemailer: {
       host: process.env.NODEMAILER_HOST,
-      port: 25,
-      secure: false,
+      port: process.env.NODEMAILER_PORT,
+      secure: process.env.NODEMAILER_SECURE === 'true',
       auth: {
         user: process.env.NODEMAILER_USER,
         pass: process.env.NODEMAILER_PASS,
