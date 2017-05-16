@@ -26,7 +26,8 @@ describe('UserMailer', () => {
       const acceptedOrRejected = response.accepted[0] || response.rejected[0];
 
       expect(acceptedOrRejected).to.be.equal('success@simulator.amazonses.com');
-    });
+    })
+    .then(() => new Promise(ok => setTimeout(ok, 1000)));
   });
 
   it('Should execute a sendResetPasswordLink method', function () {
@@ -49,6 +50,7 @@ describe('UserMailer', () => {
       const acceptedOrRejected = response.accepted[0] || response.rejected[0];
 
       expect(acceptedOrRejected).to.be.equal('success@simulator.amazonses.com');
-    });
+    })
+    .then(() => new Promise(ok => setTimeout(ok, 1000)));
   });
 });

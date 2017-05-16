@@ -57,6 +57,7 @@ describe('DisputeMailer', () => {
       const acceptedOrRejected = response.accepted[0] || response.rejected[0];
 
       expect(acceptedOrRejected).to.be.equal(CONFIG.env().mailers.disputesBCCAddresses[0]);
-    });
+    })
+    .then(() => new Promise(ok => setTimeout(ok, 1000)));
   });
 });
