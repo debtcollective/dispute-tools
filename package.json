@@ -8,7 +8,7 @@
     "node": ">=0.6"
   },
   "scripts": {
-    "build": "npm run svg && tarima -Ofq",
+    "build": "npm run svg && tarima -Ofqe production",
     "lint": "eslint *.js src bin config models controllers middlewares",
     "repl": "node bin/repl.js",
     "test": "scripty",
