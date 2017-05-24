@@ -132,8 +132,7 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
 
         function fail(msg) {
           return err => {
-            console.log('FAILED SAVING', err);
-
+            console.log(msg, err);
             throw err;
           };
         }
