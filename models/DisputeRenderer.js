@@ -64,11 +64,13 @@ const DisputeRenderer = Class('DisputeRenderer')
               const templates = [];
 
               documents[document].templates.forEach((template) => {
+                console.log('TEMPLATE', path.join(process.cwd(), template.path));
                 const templateFile = gm(path.join(process.cwd(), template.path));
 
                 for (const field of Object.keys(template.fields)) {
                   const _field = template.fields[field];
                   if (_.isFunction(_field)) {
+                    console.log('_field', _field);
                     _field(templateFile, dispute.data);
                   } else {
                     const fieldData = field.split('.');
@@ -76,7 +78,7 @@ const DisputeRenderer = Class('DisputeRenderer')
                     if (dispute.data.forms[fieldData[0]] &&
                        dispute.data.forms[fieldData[0]][fieldData[1]]) {
                       const fieldValue = dispute.data.forms[fieldData[0]][fieldData[1]];
-
+                      console.log('_printField', _field);
                       this._printField(templateFile, _field, fieldValue);
                     }
                   }
@@ -85,6 +87,8 @@ const DisputeRenderer = Class('DisputeRenderer')
                 templates.push(templateFile);
               });
 
+              console.log('OK');
+
               return templates;
             })
             .then((templates) => {
@@ -92,6 +96,7 @@ const DisputeRenderer = Class('DisputeRenderer')
 
               return Promise.map(templates, (template) => {
                 const templatePath = path.join(OS.tmpdir(), `${uuid.v4()}.png`);
+                console.log('CONVERT', templatePath);
                 convert.in(templatePath);
 
                 return new Promise((resolve, reject) => {
@@ -99,7 +104,7 @@ const DisputeRenderer = Class('DisputeRenderer')
                     if (err) {
                       return reject(err);
                     }
-
+                    console.log('OK');
                     return resolve(convert);
                   });
                 });
@@ -109,6 +114,7 @@ const DisputeRenderer = Class('DisputeRenderer')
               const filePath = path.join(OS.tmpdir(), `${document}-${uuid.v4()}.pdf`);
 
               return new Promise((resolve, reject) => {
+                console.log('WRITE', filePath);
                 convert
                   .density('300')
                   .write(filePath, (err) => {
@@ -123,6 +129,8 @@ const DisputeRenderer = Class('DisputeRenderer')
                     });
 
                     attachments.push(attachment);
+
+                    console.log('OK');
 
                     return resolve();
                   });
