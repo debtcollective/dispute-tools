@@ -1,6 +1,6 @@
 /* globals Class, Krypton, Campaign */
 
-const gm = require('gm').subClass({ imageMagick: true });
+const gm = require('gm').subClass({ imageMagick: config('image-magick') || false });
 
 const Campaign = Class('Campaign').inherits(Krypton.Model).includes(Krypton.Attachment)({
   tableName: 'Campaigns',

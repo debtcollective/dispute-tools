@@ -1,6 +1,6 @@
 /* global Krypton, Class, CONFIG, AttachmentsProcessor, AWS, S3Uploader */
 const path = require('path');
-const gm = require('gm').subClass({ imageMagick: true });
+const gm = require('gm').subClass({ imageMagick: config('image-magick') || false });
 
 const US_STATES = require('datasets-us-states-names');
 

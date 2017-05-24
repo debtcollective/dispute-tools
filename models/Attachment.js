@@ -1,5 +1,5 @@
 /* global Krypton, Class, CONFIG, AWS, S3Uploader */
-const gm = require('gm').subClass({ imageMagick: true });
+const gm = require('gm').subClass({ imageMagick: config('image-magick') || false });
 
 const Attachment = Class('Attachment').inherits(Krypton.Model)
   .includes(Krypton.Attachment)({
