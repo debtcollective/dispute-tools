@@ -70,7 +70,7 @@ const DisputeRenderer = Class('DisputeRenderer')
                 for (const field of Object.keys(template.fields)) {
                   const _field = template.fields[field];
                   if (_.isFunction(_field)) {
-                    console.log('_field', _field);
+                    console.log('_field', field);
                     _field(templateFile, dispute.data);
                   } else {
                     const fieldData = field.split('.');
@@ -87,7 +87,7 @@ const DisputeRenderer = Class('DisputeRenderer')
                 templates.push(templateFile);
               });
 
-              console.log('OK');
+              console.log('TEMPLATE OK');
 
               return templates;
             })
@@ -104,7 +104,7 @@ const DisputeRenderer = Class('DisputeRenderer')
                     if (err) {
                       return reject(err);
                     }
-                    console.log('OK');
+                    console.log('CONVERT OK');
                     return resolve(convert);
                   });
                 });
@@ -130,7 +130,7 @@ const DisputeRenderer = Class('DisputeRenderer')
 
                     attachments.push(attachment);
 
-                    console.log('OK');
+                    console.log('WRITE OK');
 
                     return resolve();
                   });
