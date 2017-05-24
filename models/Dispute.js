@@ -130,15 +130,25 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
           disputeId: dispute.id,
         });
 
+        function fail(msg) {
+          return err => {
+            console.log('FAILED SAVING', err);
+
+            throw err;
+          };
+        }
+
         return renderer.save()
+          .catch(fail('SAVING'))
           .then(() => {
             return renderer.render(dispute)
+              .catch(fail('RENDERING'))
               .then(() => {
                 return DisputeRenderer.query()
                   .where({ id: renderer.id })
                   .include('attachments')
                   .then(([_disputeRenderer]) => {
-                    return renderer.buildZip(_disputeRenderer);
+                    return renderer.buildZip(_disputeRenderer).catch(fail('BUILDING ZIP'));
                   });
               });
           })
