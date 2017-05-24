@@ -1,6 +1,6 @@
 /* globals Class, Attachment, Krypton */
 
-const gm = require('gm').subClass({ imageMagick: config('image-magick') || false });
+const gm = require('gm').subClass({ imageMagick: process.env.GM === 'true' || false });
 
 const PostImage = Class('PostImage').inherits(Attachment)({
   attachmentStorage: new Krypton.AttachmentStorage.Local({

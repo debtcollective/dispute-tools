@@ -2,7 +2,7 @@
 /* eslint max-len: 0 */
 
 const path = require('path');
-const gm = require('gm').subClass({ imageMagick: config('image-magick') || false });
+const gm = require('gm').subClass({ imageMagick: process.env.GM === 'true' || false });
 const _ = require('lodash');
 const Promise = require('bluebird');
 const uuid = require('uuid');

@@ -3,7 +3,7 @@
 /* eslint arrow-body-style: 0 */
 
 const _ = require('lodash');
-const gm = require('gm').subClass({ imageMagick: config('image-magick') || false });
+const gm = require('gm').subClass({ imageMagick: process.env.GM === 'true' || false });
 const Promise = require('bluebird');
 
 const DisputeAttachment = Class({}, 'DisputeAttachment').inherits(Attachment)({
