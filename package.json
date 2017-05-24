@@ -8,7 +8,7 @@
     "node": ">=0.6"
   },
   "scripts": {
-    "build": "npm run svg && tarima -fq",
+    "build": "npm run svg && tarima -Ofq",
     "lint": "eslint *.js src bin config models controllers middlewares",
     "repl": "node bin/repl.js",
     "test": "scripty",
@@ -24,7 +24,7 @@
     "start": "scripty",
     "iron-node": "scripty",
     "watch": "scripty",
-    "dev": "tarima -wP localhost:3000 -p 3001",
+    "dev": "tarima -wP localhost:3000 -p 3001 -e",
     "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
     "post_deploy_staging": "scripty",
     "post_deploy_production": "./scripts/post_deploy_production",
@@ -32,8 +32,9 @@
     "resend_activation_links": "./scripts/tasks/resend-activation-links"
   },
   "tarima": {
-    "src": "src/**/*",
-    "watch": "views/**/*",
+    "cwd": ".",
+    "src": "src",
+    "watch": "views",
     "dest": "./public/build",
     "cacheFile": "./public/build/index.json",
     "ignoreFiles": [
@@ -168,8 +169,8 @@
     "rollup-plugin-commonjs": "^5.0.4",
     "rollup-plugin-node-resolve": "^2.0.0",
     "svg-sprite": "^1.3.3",
-    "tarima-cli": "^0.3.7",
-    "tarima-lr": "^0.0.8",
+    "tarima": "^2.1.3",
+    "tarima-lr": "^0.2.2",
     "testdouble": "^1.6.0"
   }
 }
