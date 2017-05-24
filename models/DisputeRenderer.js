@@ -116,7 +116,7 @@ const DisputeRenderer = Class('DisputeRenderer')
               return new Promise((resolve, reject) => {
                 console.log('WRITE', filePath);
                 convert
-                  .density('300')
+                  .density('300', '300')
                   .write(filePath, (err) => {
                     if (err) {
                       return reject(err);
