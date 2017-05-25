@@ -1,0 +1,250 @@
+extends ../layouts/application.pug
+
+block title
+  | Vision — The Debt Collective
+
+block styles
+  link(href="/build/stylesheets/home/vision.css" rel="stylesheet")
+
+block content
+
+  -
+    var visions = [
+      {
+        name: 'Job Guarantee',
+        link: 'job-guarantee',
+        what: 'A guarantee from the federal government that everyone who wants a job can get one. Here’s how it works: the government funds jobs so that those of us who need work can do the work that needs doing. Roads, bridges, and schools need fixing. Children and the elderly need care. Public schools need teachers. Rural areas need phone lines. Clean-energy infrastructure, like wind turbines and solar panels, need building. Private businesses don’t do this work because it doesn’t turn a profit. But there’s plenty of work to do and people willing to do it. The government could match workers to jobs and provide training if necessary. The money could be controlled by local communities. Cities and towns could decide on their needs, propose projects, and receive federal money that would then be distributed by local organizations. All government jobs would pay a living wage with benefits and put pressure on private companies to do the same.',
+        why: [
+          {
+            intro: 'A job guarantee fixes two problems at once: lack of public provision and unemployment.',
+            text: 'Underserved areas could finally get the attention they deserve (attention that business won’t provide if they can’t make a profit), and under- or unemployed people could finally get the good jobs they need.'
+          },
+          {
+            intro: 'A guarantee creates better options elsewhere.',
+            text: 'If a private employer doesn’t offer good jobs, we can say, “No thanks, I’ll work for the government.” When good jobs are always available, the only jobs available are good jobs.'
+          },
+          {
+            intro: 'Government employers hire fairly.',
+            text: 'The federal government hires regardless of race, gender, disability, immigration status, religion, or any other characteristic. That reduces the number of unfair discrepancies in hiring and pay that you see in the private sector.'
+          },
+          {
+            intro: 'It’s good for private businesses, too.',
+            text: 'More people with jobs means more people with money to spend. When everyone has a little more in their wallet, private businesses get more customers and sales, which creates better jobs.'
+          }
+        ]
+      },
+      {
+        name: 'Universal Basic Income',
+        link: 'ubi',
+        what: 'Everyone is eligible to receive a sum of money from the federal government on a regular basis. This money would be available anytime a person who is not working as part of the federal job guarantee program described above. Access to a basic income would give everyone freedom to work when they wanted, while always having the option to take time off. Once a UBI recipient chooses to take a job, he or she would no longer receive a basic income. For that reason, a UBI should never be considered a replacement for any of the other public goods – including free education and healthcare – outlined in this platform. Nor should access to UBI replace other anti-poverty measures such as SSI unemployment insurance, the Earned Income Tax Credit, or Temporary Assistance for Needy Families.',
+        why: [
+          {
+            intro: 'Alongside a federal job guarantee, access to a UBI would give people more freedom.',
+            text: 'Most people want to work in a job that contributes to their community. Most people also want and need to spend time not working. Access to a basic income allows people to make the choices that fit their own lives.'
+          },
+          {
+            intro: 'Access to a UBI is a necessity for people who want or need to spend time away from work.',
+            text: 'People should have the option to take time off to care for family or to take care of personal needs without worrying about paying bills.'
+          },
+          {
+            intro: 'People can take time off to try new things, such as starting a small business or learning a new skill.',
+            text: 'Time to explore our interests and expand our knowledge is just as important as the right to a job.'
+          },
+          {
+            intro: 'Access to a UBI means we won’t have to produce things we don’t need.',
+            text: 'Assuring that people can access their basic needs even if they’re not working can help us transition to a more environmentally sustainable economy.'
+          }
+        ]
+      },
+      {
+        name: 'Housing',
+        link: 'housing',
+        what: 'Any decent society must guarantee housing that is safe, stable, affordable, and accessible for everyone. Profit-oriented landlords will not provide all the housing we need; they’d rather endanger the economy trying to make a buck off of our need for housing. To provide affordable housing for all, the federal government must build more affordable housing and to make existing housing more affordable. Expanding subsidies to renters makes the current housing market more accessible to those of us who aren’t rich. Building more mixed-income public housing expands the supply of housing available, which makes housing more affordable for everybody in the long term. And if we take land off the private market to be managed instead by community-owned nonprofit corporations, we make sure that land is used to make our lives better rather than for financial speculation.',
+        why: [
+          {
+            intro: 'Homelessness can be ended immediately.',
+            text: 'Evidence shows that when governments commit to providing housing to everybody, everybody has housing.'
+          },
+          {
+            intro: 'Decent, affordable housing is essential to a good and stable life.',
+            text: 'Housing is more than a roof over your head. Good housing means access to safe drinking water and basic utilities, closeness to good jobs, health-care services, schools, and child-care centers. Without good housing, we have less money to spend on essentials like food and health care. None of us should have to pay more than a third of our income on rent.'
+          },
+          {
+            intro: 'Wall Street destroyed the housing market.',
+            text: 'Rents have soared, and it’s clear why: fallout from the years-long foreclosure crisis. Meanwhile, Wall Street and the banks continue to profit, while the government has done little to regulate their greed and recklessness.'
+          },
+          {
+            intro: 'It helps end segregation in housing.',
+            text: 'The lack of affordable housing affects families across the country, but the legacies of state-enforced housing segregation mean that racial minorities feel its impact most strongly. Housing for all helps people of color get a leg up because housing connects us all to better opportunities for health, education, and employment.'
+          }
+        ]
+      },
+      {
+        name: 'Education',
+        link: 'education',
+        what: 'Free, equally funded, high-quality education from kindergarten through college. Public school is under threat and tuition costs for college are rising. If things continue this way, our kids won’t be able to pay for their kids’ education, no matter how hard they work.',
+        why: [
+          {
+            intro: 'Because quality K–12 public education is a right.',
+            text: 'For years, both Democrats and Republicans have damaged public school systems by trying to profit off education. While corporations get rich, our schools can’t afford teachers, supplies, or even classrooms. Everyone deserves a good education and the chance to go to college. But underfunded schools set millions up to fail.'
+          },
+          {
+            intro: 'Because higher education is a right.',
+            text: 'Students all over the country have been forced to treat college as a high-cost gamble thanks to high tuition costs. The high cost of tuition is unfair and un-American because it keeps money flowing to Wall Street and to student debt lenders while draining resources from students and families.'
+          },
+          {
+            intro: 'Education is about more than just a paycheck.',
+            text: 'Most people seek college degrees to get a better job. But the high cost of tuition means many people can’t afford college. Low-income and middle-class students to go into fields that promise big salaries—even when their passions lie elsewhere. With free higher education, everyone can afford to study what they’re passionate about. Those of us who want to study should be able to study, and those of us who want to work should be able to work. This policy would give more people more freedom in their lives.'
+          },
+          {
+            intro: 'Racial equality depends on it.',
+            text: 'School closings and budget cuts affect majority-black schools most of all. Free, equally funded education through college is essential to ending the legacy of slavery and inequality in America. Everyone deserves a good education, especially those who have been denied it for generations.'
+          }
+        ]
+      },
+      {
+        name: 'Family',
+        link: 'paid-time',
+        what: 'Paid time off from work to care for a new baby or sick family member, paid sick leave, and free childcare. Right now families have limited options when they need child care. They can stay at home, rely on friends and family members, pay for child care out of pocket, or rely on publicly funded programs. The first three aren’t options for many families: households often need multiple breadwinners to stay above water, and many single parents are on their own. The last option—public child care is so underfunded that only a small number of us can access it. Most countries already have paid leave and support early child care programs. It’s time for America to catch up.',
+        why: [
+          {
+            intro: 'Taking care of your health or your family shouldn’t be expensive.',
+            text: 'It also shouldn’t mean losing your job. But today, many of us can’t take time off without the risk of losing a day’s pay, getting penalized, or getting fired. Paid leave and free child care help strengthen families and make them more economically secure.'
+          },
+          {
+            intro: 'All kids deserve quality care, no matter what their parents can pay.',
+            text: 'With paid leave and free child care, everyone can feel safe knowing their kids are in good hands. Newborns can spend essential time with their parents, and toddlers can learn and grow under the supervision of kind, patient, and attentive caregivers. Quality care also gives kids a great start on their education.'
+          },
+          {
+            intro: 'It’s good for moms.',
+            text: 'Since most child care is done by women, having quality care for children means moms don’t have to give up their jobs if they don’t want to. Paid sick days also encourage dads to take time off when a child or other family member is sick. All around, this is especially good for women of color, who are more likely to be sole or primary earners.'
+          },
+          {
+            intro: 'It makes parents’ lives easier.',
+            text: 'Paid leave and free child care save parents money, simplify their busy schedules, and help them balance work and family responsibilities.'
+          }
+        ]
+      },
+      {
+        name: 'Healthcare',
+        link: 'healthcare',
+        what: 'A comprehensive health insurance plan for us all, regardless of age, employment, or income. Our current system rations care based on income: if you can afford care, you get it; if you can’t, too bad. This system is great for the health insurance industry and bad for the rest of us. Health care for all would work a lot like an improved and expanded version of the popular Medicare system. Medicare was originally intended to eventually cover everyone. Enacting this policy would mean doctor visits, hospital care, nursing home care, mental health care, reproductive health care, prescription drugs, medical supplies would all be covered, for everyone.',
+        why: [
+          {
+            intro: 'We would be healthier.',
+            text: 'Millions of us delay going to the doctor when we’re sick because we’re afraid of the bill. That means we stay sick, and risk serious illness. With health care for all, we’d never have to choose between seeing a doctor or paying our rent.'
+          },
+          {
+            intro: 'It’s cheaper.',
+            text: 'Our current system is really expensive—both for the government and for those of us who need care—and yet we aren’t any healthier for it. Health care for all would actually save money because it would cut down on wasteful paperwork. It would also be good for business owners, who would no longer have to pay for coverage. All of the savings would be more than enough to provide coverage to us all.'
+          },
+          {
+            intro: 'We would be free to choose our doctors.',
+            text: 'Our current system forces us to choose our doctors, hospitals, and clinics from a list that our insurance company provides. With health care for all, we regain our freedom to choose, even when we switch jobs.'
+          },
+          {
+            intro: 'It would reduce racial disparities in health care.',
+            text: 'Our current health system keeps health care out of reach for many of us who aren’t white. Black and Brown people are currently much more likely to have no health insurance. They are also expected to live shorter lives and to suffer more from problems like heart disease, trauma, and diabetes. Health care for all would help minimize racial disparities instead of making them worse.'
+          }
+        ]
+      },
+      {
+        name: 'Baby Bonds',
+        link: 'baby-bonds',
+        what: 'A savings account for every child the day he or she is born. The amount of money the child receives would depend on the wealth of his or her family. Children born to the poorest families would receive the most money. The US Treasury would put money in when the child is born, and parents or anyone else could add more. Only the child, beginning at age 18, can take money out. Baby bonds are one way to help make sure all children, no matter how poor their parents are, start out with a chance to get ahead.',
+        why: [
+          {
+            intro: 'Everyone starts out with savings they can rely on.',
+            text: 'Every year, millions of children start out with the deck stacked against them, just because they weren’t born rich. Families with more savings can pay for education, buy homes, and start businesses. Baby bonds help level the playing field.'
+          },
+          {
+            intro: 'It helps close the racial wealth gap.',
+            text: 'Right now, the wealth of the average white household is seven times higher than that of Black and Latino households. The racial inequality that exists today was caused by practices and policies implemented in the past. If we don’t try to address it directly today, the wealth gap will only get bigger.',
+          },
+          {
+            intro: 'It works.',
+            text: 'Everywhere they’ve tried this—including some states in the US—more kids finish high school, get out of low-wage jobs, and go to college.'
+          },
+          {
+            intro: 'The payout is huge, for everyone.',
+            text: 'When we give more to kids to start their adult lives, they have more to give back—to their families, friends, and communities.'
+          }
+        ]
+      },
+      {
+        name: 'Retirement',
+        link: 'retirement',
+        what: 'A savings account that provides income security for everyone once they stop working, either because they have reached retirement age or because they face illness or disability. At birth everyone would get an account that contains a deposit made by the US Treasury. The deposit would earn interest based on a guaranteed rate set and paid for by the central bank. As you get older you can add money to the account (and receive a tax deduction). When you stop working later in life, you can begin to withdraw money freely, but only up to a certain amount each year; if you want to withdraw more money, you just pay a tax—the more you take out, the more tax you pay.',
+        why: [
+          {
+            intro: 'Everyone deserves income security when they stop working.',
+            text: 'Everyone starts out with savings they can rely on. Today more and more of us are working into old age because we can’t afford to stop. But we all deserve an opportunity at the end of our working lives to control how we spend our time, and we all deserve to maintain a dignified standard of living when we do so.',
+          },
+          {
+            intro: 'Our current system is broken.',
+            text: 'Over the last 30 years, defined contribution plans like the 401(k) have replaced more traditional workplace pensions. These plans are confusing and too expensive for many of us to afford. They also shift all the risks and costs onto our shoulders, while Wall Street profits. As the recent economic crash made clear, financial markets are no place for the banks to gamble on our future savings. We need an option where Wall Street can’t take a cut.'
+          },
+          {
+            intro: 'Social Security won’t cut it.',
+            text: 'Almost half of the American workforce cannot afford to retire after work. Social Security only provides people with a fraction of their work-based income—on average $1300 per month—an amount hardly enough to live on, and one expected to decline in coming years. Social Security also excludes people who do work that is not waged, like those who stay home to tend to children while a spouse or partner earns income. Historically this dynamic has hurt women the most.'
+          },
+          {
+            intro: 'A Retirement Savings Account helps those who need it most.',
+            text: 'Many Americans face additional barriers to a dignified retirement. For example, due to decades of racial discrimination, Black families have accumulated far less wealth than white families, in part because Black Americans earn less money than whites for doing the same jobs. A retirement or disability Savings Account can help make up the difference and ensure that Black Americans, and others who face discrimination in the job market and elsewhere, have enough money for when they stop working due to retirement or disability.'
+          }
+        ]
+      },
+      {
+        name: 'Student Debt',
+        link: 'student-debt',
+        what: 'The federal government cancels all outstanding student loans. The Department of Education already has the authority to stop collecting on federal student loans, and it should do so immediately. Congress could also pass a law allocating money to purchase private student loans so that they could be acquired by the federal government and then cancelled. In the meantime, Congress should reinstate bankruptcy protections for student debt. This jubilee should be implemented at the same time as a plan to make public college free so that there would never be a need to cancel student debt again (since there would be no more student debt).',
+        why: [
+          {
+            intro: 'It would immediately make millions of people’s lives better.',
+            text: 'Over forty million people have student debt in the U.S. People with student loans are less happy, less healthy, less likely to start a family or buy a house or a car. The burdens of student debt fall most hard on the least well off. It’s time to lift these burdens.'
+          },
+          {
+            intro: 'It would make the rest of our lives better, too.',
+            text: 'People who no longer have to use their income to pay debt would spend on other things. They can better support their families, support local businesses, and otherwise contribute to our collective wellbeing. Because canceling student loans would put more money in people’s pockets, a jubilee would have benefits even for those of us who don’t have student debt.'
+          },
+          {
+            intro: 'It would emphasize our commitment to the value of education.',
+            text: 'Student debt only exists because not enough public money goes to education. By cancelling student debt, we make a clear break with the idea that education is a private good to be financed with private money.'
+          }
+        ]
+      }
+    ]
+
+  .Vision__cover.relative
+    .wrapper
+      .Vision__cover-space
+      .flex.px2.absolute.top-0.left-0.right-0.bottom-0.items-center.justify-center
+        .max-width-3.center
+          <iframe class="Vision__cover-video" src="https://www.youtube.com/embed/YqyVP5bN7hw" frameborder="0" allowfullscreen></iframe>
+          h3.pt3 Organizing Toward A Positive Future for All
+
+  .Vision__items.wrapper
+    each item in visions
+      .Vision__item.m3.p3.max-width-2
+        video(class="Vision__video",autoplay=true,controls=true,muted=true)
+          source(src=`/videos/${item.link}.mov`)
+        h4.title= item.name
+        p= item.what
+
+        div(id=`modal-${item.link}`).mx-auto.link.hide.max-width-2
+          each w in item.why
+            p.pt2
+              b= w.intro
+              p= w.text
+        .pt1.navlink(data-link=`${item.link}`) Read more
+
+
+block scripts
+  script(src="/build/javascripts/home/vision.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+      new VisionNav(options);
+    }, true);
