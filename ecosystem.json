@@ -21,21 +21,21 @@
 
   deploy: {
     staging : {
-      user : "deploy",
+      user : "ubuntu",
       host : "staging.debtcollective.org",
       ref  : "origin/master",
-      repo : "git@gitlab.com:empathia/debtcollective.git",
+      repo : "git@gitlab.com:debtcollective/debtcollective.git",
       path : "/home/deploy/apps/tdc",
       "post-deploy" : "./scripts/post_deploy_staging"
     },
 
     production : {
-      user: "deploy",
-      // TODO: move to new.debtcollective.org (then www.)
-      host: 'new.debtcollective.org',
-      ref  : "origin/master",
-      repo : "git@gitlab.com:empathia/debtcollective.git",
-      path : "/home/deploy/apps/tdc",
+      user: "ubuntu",
+      host: "34.209.207.52",
+      port: "12345",
+      ref  : "origin/deployment",
+      repo : "git@gitlab.com:debtcollective/debtcollective.git",
+      path : "/home/ubuntu/apps/tdc",
       "post-deploy" : "./scripts/post_deploy_production"
     }
   }

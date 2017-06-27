@@ -50,3 +50,30 @@ Run the server
 npm start
 ```
 
+## Requirements
+
+
+Run redis with `redis-server`
+
+Run database migrations with `scripts/utils/knexreset`
+
+Run postgres.app
+
+## Deployment
+
+Infrastructure setup is handled by [debtcollective-terrraform](https://gitlab.com/debtcollective/debtcollective-terraform). Once you have you environment running, you can deploying using:
+
+1. `pm2 deploy ecosystem.json <environment> setup`
+2. `pm2 deploy ecosystem.json <environment>`
+
+For example to deploy to production run
+
+1. `pm2 deploy ecosystem.json production setup`
+2. `pm2 deploy ecosystem.json production`
+
+If you need to change branches, servers etc, feel free to edit
+`ecosystem.json`
+
+### Configuration Variables
+
+This part is handled by [debtcollective-terrraform](https://gitlab.com/debtcollective/debtcollective-terraform) too, since we are using files for configuration.
