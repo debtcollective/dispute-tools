@@ -27,19 +27,9 @@
   background-color: white;
   color: black;
 }
-.navlink + .navlink-arrow {
+
+.hide {
   display: none;
-}
-.navlink.choice + .navlink-arrow {
-  display: block;
-}
-.navlink-arrow {
-  content: '';
-  width: 0;
-  height: 0;
-  border-top: 32px solid transparent;
-  border-bottom: 32px solid transparent;
-  border-left: 19px solid white;
 }
 
 .hide-button {

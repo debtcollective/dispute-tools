@@ -7,18 +7,17 @@ class VisionNav extends NodeSupport {
   constructor(config) {
     super();
     var self = this
-    // this.backButton = document.createElement('a')
-    // this.backButton.classList.add('close-button')
-    // this.backButton.classList.add('pt4')
-    // this.backButton.setAttribute('href', '#')
-    // this.backButton.innerHTML = 'see all policy positions'
-    // this.backButton.onclick = this._back.bind(this)
-
     self._show(window.location.hash)
     var els = document.querySelectorAll('.navlink')
     els.forEach(function (el) {
       el.onclick = self._readMore(el)
     })
+    var videos = 8
+    window.onscroll = function (e) {
+      var val = Math.round(window.pageYOffset % videos)
+      var el = document.querySelector(`#video-${val}`)
+      if (el) el.classList.remove('hide')
+    }
   }
   _show(hash) {
     window.location.hash = hash
@@ -41,9 +40,7 @@ class VisionNav extends NodeSupport {
   }
   _readMore (el)  {
     var self = this
-    console.log('generated function')
     return function (e) {
-      console.log('calling read more!')
       self._hideAll()
       el.innerHTML = 'Hide'
       self._show(el.getAttribute('data-link'))

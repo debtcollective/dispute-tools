@@ -57,7 +57,7 @@ block content
         ]
       },
       {
-        name: 'Housing',
+        name: 'Housing for All',
         link: 'housing',
         what: 'Any decent society must guarantee housing that is safe, stable, affordable, and accessible for everyone. Profit-oriented landlords will not provide all the housing we need; they’d rather endanger the economy trying to make a buck off of our need for housing. To provide affordable housing for all, the federal government must build more affordable housing and to make existing housing more affordable. Expanding subsidies to renters makes the current housing market more accessible to those of us who aren’t rich. Building more mixed-income public housing expands the supply of housing available, which makes housing more affordable for everybody in the long term. And if we take land off the private market to be managed instead by community-owned nonprofit corporations, we make sure that land is used to make our lives better rather than for financial speculation.',
         why: [
@@ -103,7 +103,7 @@ block content
         ]
       },
       {
-        name: 'Family',
+        name: 'Paid Sick and Family Leave, and Free Childcare for All',
         link: 'paid-time',
         what: 'Paid time off from work to care for a new baby or sick family member, paid sick leave, and free childcare. Right now families have limited options when they need child care. They can stay at home, rely on friends and family members, pay for child care out of pocket, or rely on publicly funded programs. The first three aren’t options for many families: households often need multiple breadwinners to stay above water, and many single parents are on their own. The last option—public child care is so underfunded that only a small number of us can access it. Most countries already have paid leave and support early child care programs. It’s time for America to catch up.',
         why: [
@@ -126,7 +126,7 @@ block content
         ]
       },
       {
-        name: 'Healthcare',
+        name: 'Free Healthcare for All',
         link: 'healthcare',
         what: 'A comprehensive health insurance plan for us all, regardless of age, employment, or income. Our current system rations care based on income: if you can afford care, you get it; if you can’t, too bad. This system is great for the health insurance industry and bad for the rest of us. Health care for all would work a lot like an improved and expanded version of the popular Medicare system. Medicare was originally intended to eventually cover everyone. Enacting this policy would mean doctor visits, hospital care, nursing home care, mental health care, reproductive health care, prescription drugs, medical supplies would all be covered, for everyone.',
         why: [
@@ -149,7 +149,7 @@ block content
         ]
       },
       {
-        name: 'Baby Bonds',
+        name: 'Baby Bonds for All',
         link: 'baby-bonds',
         what: 'A savings account for every child the day he or she is born. The amount of money the child receives would depend on the wealth of his or her family. Children born to the poorest families would receive the most money. The US Treasury would put money in when the child is born, and parents or anyone else could add more. Only the child, beginning at age 18, can take money out. Baby bonds are one way to help make sure all children, no matter how poor their parents are, start out with a chance to get ahead.',
         why: [
@@ -172,7 +172,7 @@ block content
         ]
       },
       {
-        name: 'Retirement',
+        name: 'Retirement or Disability Savings Account for All',
         link: 'retirement',
         what: 'A savings account that provides income security for everyone once they stop working, either because they have reached retirement age or because they face illness or disability. At birth everyone would get an account that contains a deposit made by the US Treasury. The deposit would earn interest based on a guaranteed rate set and paid for by the central bank. As you get older you can add money to the account (and receive a tax deduction). When you stop working later in life, you can begin to withdraw money freely, but only up to a certain amount each year; if you want to withdraw more money, you just pay a tax—the more you take out, the more tax you pay.',
         why: [
@@ -195,7 +195,7 @@ block content
         ]
       },
       {
-        name: 'Student Debt',
+        name: 'Student Debt Jubilee',
         link: 'student-debt',
         what: 'The federal government cancels all outstanding student loans. The Department of Education already has the authority to stop collecting on federal student loans, and it should do so immediately. Congress could also pass a law allocating money to purchase private student loans so that they could be acquired by the federal government and then cancelled. In the meantime, Congress should reinstate bankruptcy protections for student debt. This jubilee should be implemented at the same time as a plan to make public college free so that there would never be a need to cancel student debt again (since there would be no more student debt).',
         why: [
@@ -224,9 +224,9 @@ block content
           h3.pt3 Organizing Toward A Positive Future for All
 
   .Vision__items.wrapper
-    each item in visions
+    each item, index in visions
       .Vision__item.m3.p3.max-width-2
-        video(class="Vision__video",autoplay=true,controls=true,muted=true)
+        video(id=`video-${index}`,class="hide Vision__video",autoplay=true,controls=true,muted=true)
           source(src=`/videos/${item.link}.mov`)
         h4.title= item.name
         p= item.what
