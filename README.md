@@ -1,6 +1,8 @@
 # debt-collective
 
-![LOGO](images/TDC-large.png)
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/debtcollective/Lobby)
+
+Come visit us in the public Debt Collective gitter room 
 
 # About
 
