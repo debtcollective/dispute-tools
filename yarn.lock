@@ -5732,15 +5732,9 @@ tar@^2.2.1:
     fstream "^1.0.2"
     inherits "2"
 
-<<<<<<< HEAD
-tarima-lr@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/tarima-lr/-/tarima-lr-0.2.2.tgz#44b023cf82a7a41f44d6fbd099739f3142b86c8b"
-=======
 tarima-lr@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/tarima-lr/-/tarima-lr-0.3.2.tgz#abb85bbc63184aeb0d2728b5a986f8e8eacdb6d3"
->>>>>>> master
   dependencies:
     connect "^3.5.0"
     connect-livereload "^0.6.0"
