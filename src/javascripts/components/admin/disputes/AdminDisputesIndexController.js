@@ -4,6 +4,7 @@ import AdminDisputesIndexTableControls from './AdminDisputesIndexTableControls';
 import AdminDisputesIndexTable from './AdminDisputesIndexTable';
 import Modal from '../../Modal';
 import AdminDisputesAddStatusForm from './AdminDisputesAddStatusForm';
+import AdminShowDisputePanel from './AdminShowDisputePanel';
 
 export default class AdminDisputesIndexController extends Widget {
   constructor(config) {
@@ -23,6 +24,17 @@ export default class AdminDisputesIndexController extends Widget {
     this.appendChild(new Modal({
       name: 'addStatusModal',
       element: document.querySelector('[data-component-modal="add-status"]'),
+    }));
+
+    this.appendChild(new Modal({
+      name: 'viewDisputeModal',
+      element: document.querySelector('[data-component-modal="show-dispute"]'),
+    }));
+
+
+    this.appendChild(new AdminShowDisputePanel({
+      name: 'AdminShowDisputePanel',
+      element: document.querySelector('[data-component-form="show-dispute"]'),
     }));
 
     this.appendChild(new AdminDisputesAddStatusForm({
@@ -79,6 +91,11 @@ export default class AdminDisputesIndexController extends Widget {
     this.AdminDisputesIndexTable.bind('addStatus', data => {
       this.AdminDisputesAddStatusForm.updateData(data.dispute);
       this.addStatusModal.activate();
+    });
+
+    this.AdminDisputesIndexTable.bind('show', data => {
+      this.AdminShowDisputePanel.updateData(data.dispute)
+      this.viewDisputeModal.activate();
     });
 
     this._handlePaginationClickRef = this._handlePaginationClick.bind(this);

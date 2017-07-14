@@ -77,7 +77,6 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     },
     index(req, res) {
       res.locals.disputes = res.locals.results;
-
       res.render('disputes/index');
     },
 

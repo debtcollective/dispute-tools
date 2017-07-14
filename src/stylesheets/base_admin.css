@@ -2,6 +2,7 @@
 @import './components/Input';
 @import './components/Select';
 @import './components/disputes/StatusItem';
+@import './components/disputes/FormView';
 
 :root {
   /* KABINETT CONFIGURATION */
