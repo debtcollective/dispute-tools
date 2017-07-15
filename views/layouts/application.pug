@@ -64,9 +64,9 @@ html(lang='en')
     script(src="/build/javascripts/airbrake.client.min.js" async)
     script.
       const env = !{JSON.stringify( CONFIG.environment )};
-      if (env === 'production' || env === 'staging') {
+      const airbrakeJs = window.airbrakeJs;
+      if ((env === 'production' || env === 'staging') && airbrakeJs) {
         window.addEventListener('load', function() {
-          const airbrakeJs = window.airbrakeJs;
           const airbrakeConfig = !{JSON.stringify(CONFIG.env().airbrake)};
           window.airbrake = new airbrakeJs.Client(airbrakeConfig);
 
@@ -84,6 +84,7 @@ html(lang='en')
           }(EventTarget.prototype.addEventListener));
         });
       } else {
+        console.log('Airbrake disabled')
         // airbrake is undefined when not in production
         // it is mocked so it can be used as expected
         window.airbrake = {
