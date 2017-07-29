@@ -22,10 +22,11 @@
   deploy: {
     staging : {
       user : "ubuntu",
-      host : "staging.debtcollective.org",
+      host : "34.212.243.114",
+      port: "12345",
       ref  : "origin/master",
       repo : "git@gitlab.com:debtcollective/debtcollective.git",
-      path : "/home/deploy/apps/tdc",
+      path : "/home/ubuntu/apps/tdc",
       "post-deploy" : "./scripts/post_deploy_staging"
     },
 
