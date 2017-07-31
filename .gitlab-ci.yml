@@ -45,7 +45,7 @@ deploy_staging:
     - ssh-keyscan -H 'gitlab.com' >> $HOME/.ssh/known_hosts
     - npm install pm2 -g
   script:
-    - pm2 deploy ecosystem.json --env staging
+    - pm2 deploy ecosystem.json staging
   environment: staging
   only:
     - master
