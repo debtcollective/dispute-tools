@@ -29,16 +29,11 @@ cp config/knexfile.sample.js knexfile.js
 
 * `disableActivation`: when truthy, will not require activation before logging in. Good for testing.
 
-
 Run redis with `redis-server`
 
 Run postgres.app
 
-Run migrations:
-```
-npm run db:migrate
-```
-
+Run migrations with `npm run db:migrate`
 
 Build the application assets before starting.
 
@@ -52,8 +47,18 @@ Run the server
 npm start
 ```
 
-## Requirements
+## Emails in Development
 
+We are using [mailcatcher](https://mailcatcher.me/) to visualize emails
+in development, to install:
+
+* `gem install mailcatcher`
+* Run `mailcatcher`
+* Send mail through `smtp://localhost:1025` (If you copied
+  `config.sample.js` this is already configured for you
+* Go to `http://localhost:1080/`
+
+# Requirements
 
 Run redis with `redis-server`
 
@@ -61,7 +66,7 @@ Run database migrations with `scripts/utils/knexreset`
 
 Run postgres.app
 
-## Deployment
+# Deployment
 
 Infrastructure setup is handled by [debtcollective-terrraform](https://gitlab.com/debtcollective/debtcollective-terraform). Once you have you environment running, you can deploying using:
 
@@ -76,6 +81,12 @@ For example to deploy to production run
 If you need to change branches, servers etc, feel free to edit
 `ecosystem.json`
 
-### Configuration Variables
+## Configuration Variables
 
 This part is handled by [debtcollective-terrraform](https://gitlab.com/debtcollective/debtcollective-terraform) too, since we are using files for configuration.
+
+# How Tos
+
+## Create an admin user
+
+Create an User and change the role to `Admin` in the `Users` table.
