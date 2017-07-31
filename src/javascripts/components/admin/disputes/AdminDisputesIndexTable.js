@@ -46,6 +46,10 @@ export default class AdminDisputesIndexTable extends Widget {
       return this.dispatch('addStatus', { dispute: this.disputes[rowIndex] });
     }
 
+    if (button.dataset.show !== undefined) {
+      return this.dispatch('show', { dispute: this.disputes[rowIndex] });
+    }
+
     if (button.dataset.deleteDispute !== undefined) {
       if (confirm('Are you sure you want to delete this dispute?') === true) {
         button.form.submit();

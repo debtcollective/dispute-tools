@@ -148,6 +148,10 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       res.render('home/about');
     },
 
+    vision(req, res) {
+      res.render('home/vision');
+    },
+
     contact(req, res) {
       res.render('home/contact');
     },

@@ -105,7 +105,6 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         .then(([dispute]) => {
           res.locals.dispute = dispute;
           req.dispute = dispute;
-
           next();
         })
         .catch(next);
