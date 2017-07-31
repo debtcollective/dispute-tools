@@ -17,7 +17,7 @@
       .pb2
         .-k-select
           select.-fw-700.-fw(name='status')
-            option(value='') Status
+            option(value='' disabled hidden) Status
             each status in statuses
               if status !== 'User Update'
                 option(value= status)= status

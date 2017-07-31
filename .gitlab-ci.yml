@@ -1,16 +1,5 @@
 image: node:latest
 
-before_script:
-# install ssh-agent
-- 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-# run ssh-agent
-- eval $(ssh-agent -s)
-# add ssh key stored in SSH_PRIVATE_KEY variable to the agent store
-- ssh-add <(echo "$SSH_PRIVATE_KEY")
-- mkdir -p ~/.ssh
-# - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-
-
 variables:
   REDIS_HOST: "redis"
   POSTGRES_HOST: "postgres"
@@ -18,6 +7,7 @@ variables:
 
 stages:
   - test
+  - deploy
 
 test:
   stage: test
@@ -36,17 +26,26 @@ test:
     - yarn test
     - yarn report
 
-staging:
-  stage: deploy to staging
+deploy_staging:
+  stage: deploy
   before_script:
+    # install ssh-agent
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+      # run ssh-agent
+    - eval $(ssh-agent -s)
+      # add ssh key stored in SSH_PRIVATE_KEY variable to the agent store
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p $HOME/.ssh
+    - chmod 700 $HOME/.ssh
+    # - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    # Staging as well as production are behing ELBs
+    # ELBs don't forward things like ssh (for security reasons)
+    # We are using a non standard port and an Elastic IP for this instead
+    - ssh-keyscan -H -p 12345 34.212.243.114 >> $HOME/.ssh/known_hosts
+    - ssh-keyscan -H 'gitlab.com' >> $HOME/.ssh/known_hosts
     - npm install pm2 -g
   script:
-    - chmod 700 $HOME/.ssh
-    - ssh-keyscan -H 'staging.debtcollective.org' >> $HOME/.ssh/known_hosts
-    - ssh-keyscan -H 'gitlab.com' >> $HOME/.ssh/known_hosts
     - pm2 deploy ecosystem.json staging
   environment: staging
-  except:
+  only:
     - master
-  dependencies:
-    - test
