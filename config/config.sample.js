@@ -27,8 +27,8 @@ const config = {
     },
 
     nodemailer: {
-      host: 'smtp.develmail.com',
-      port: 25,
+      host: 'localhost',
+      port: 1025,
       secure: false,
       auth: {
         user: '',
