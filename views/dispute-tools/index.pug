@@ -116,9 +116,6 @@ block scripts
         currentURL: !{JSON.stringify(currentURL)},
         disputeIds: !{JSON.stringify(disputeIds)}
       };
-      try {
-        new ViewDisputeToolsIndex(options);
-      } catch(e) {
-        airbrake.notify(e);
-      }
+
+      new ViewDisputeToolsIndex(options);
     }, true);

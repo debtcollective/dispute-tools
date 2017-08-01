@@ -28,9 +28,6 @@ block scripts
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
       };
-      try {
-        new ViewPasswordRecover(options);
-      } catch(e) {
-        airbrake.notify(e);
-      }
+
+      new ViewPasswordRecover(options);
     }, true);

@@ -94,9 +94,6 @@ block scripts
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
       };
-      try {
-        new ViewUsersEdit(options);
-      } catch(e) {
-        airbrake.notify(e);
-      }
+
+      new ViewUsersEdit(options);
     }, true);

@@ -41,12 +41,8 @@ block scripts
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
       };
-      try {
-        new ViewHomeIndex(options);
-      } catch(e) {
-        airbrake.notify(e);
-        throw e;
-      }
+
+      new ViewHomeIndex(options);
     }, true);
   script(type="text/javascript").
     (function(w, d, s, u) {

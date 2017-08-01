@@ -103,9 +103,6 @@ block scripts
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
       };
-      try {
-        new ViewAdminCampaignsEdit(options);
-      } catch(e) {
-        airbrake.notify(e);
-      }
+
+      new ViewAdminCampaignsEdit(options);
     }, true);

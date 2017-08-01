@@ -128,9 +128,6 @@ block scripts
         currentURL: !{JSON.stringify(currentURL)},
         isAdmin: true,
       };
-      try {
-        new ViewAdminUsersIndex(options);
-      } catch(e) {
-        airbrake.notify(e);
-      }
+
+      new ViewAdminUsersIndex(options);
     }, true);

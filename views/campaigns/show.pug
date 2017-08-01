@@ -211,10 +211,7 @@ block scripts
         userBelongsToCampaign: !{JSON.stringify(userBelongsToCampaign)},
         deletePostActionUrl: "!{routeMappings.DeletePost.url(campaign.id, '{postId}')}",
       };
-      try {
-        new ViewCampaignsShow(options);
-      } catch(e) {
-        airbrake.notify(e);
-      }
+
+      new ViewCampaignsShow(options);
     }, true);
 

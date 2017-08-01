@@ -61,38 +61,6 @@ html(lang='en')
             svg.-s18(width='32' height='32'): use(xlink:href='#svg-close')
       +mixinHeaderNav(true)
 
-    script(src="/build/javascripts/airbrake.client.min.js" async)
-    script.
-      const env = !{JSON.stringify( CONFIG.environment )};
-      const airbrakeJs = window.airbrakeJs;
-      if ((env === 'production' || env === 'staging') && airbrakeJs) {
-        window.addEventListener('load', function() {
-          const airbrakeConfig = !{JSON.stringify(CONFIG.env().airbrake)};
-          window.airbrake = new airbrakeJs.Client(airbrakeConfig);
-
-          // Wrap addEventListener functions
-          (function(addEventListener){
-            EventTarget.prototype.addEventListener = function(eventName, eventHandler, options) {
-              // Catch errors
-              eventHandler = window.airbrake.wrap(eventHandler);
-
-              // Call original `addEventListener`
-              addEventListener.call(this, eventName, function(event) {
-                eventHandler(event);
-              }, options);
-            };
-          }(EventTarget.prototype.addEventListener));
-        });
-      } else {
-        console.log('Airbrake disabled')
-        // airbrake is undefined when not in production
-        // it is mocked so it can be used as expected
-        window.airbrake = {
-          wrap: function(x){ return x },
-          notify: function(e){ console.log(e); },
-        }
-      }
-
     block body
       include ../includes/donation-flow
 

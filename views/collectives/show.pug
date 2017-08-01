@@ -193,9 +193,6 @@ block scripts
         disputeIds: !{JSON.stringify(disputeIds)},
         collectiveName: !{JSON.stringify(collective.name)},
       };
-      try {
-        new ViewCollectivesShow(options);
-      } catch(e) {
-        airbrake.notify(e);
-      }
+
+      new ViewCollectivesShow(options);
     }, true);
