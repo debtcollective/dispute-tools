@@ -8,6 +8,7 @@ const Promise = require('bluebird');
 const marked = require('marked');
 
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
+const Raven = require('raven');
 
 const DisputesController = Class('DisputesController').inherits(RestfulController)({
   beforeActions: [
@@ -17,6 +18,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         'show',
         'edit',
         'update',
+        'updateSubmission',
         'updateDisputeData',
         'setSignature',
         'download',
@@ -147,8 +149,10 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     },
 
     updateSubmission(req, res, next) {
+      const dispute = res.locals.dispute;
+
       DisputeStatus.query()
-        .where('dispute_id', req.params.id)
+        .where('dispute_id', dispute.id)
         .where('status', 'Completed')
         .then((results) => {
           if (results.length > 0) {
@@ -165,6 +169,10 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
                 req.flash('success', 'Your dispute is pending for assistance, thank you!');
                 res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
               });
+          } else {
+            Raven.captureMessage('DisputeStatus not found', { req: req });
+            req.flash('error', 'There was an error while updating your Dispute status, we have been notified.');
+            res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
           }
         })
         .catch(next);
@@ -231,6 +239,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           .catch(e => {
             console.log('  ---> Failed to send smail to user (on #setSignature)');
             console.log(e.stack);
+            Raven.captureException(e, { req: req });
           });
         })
         .then(() => {

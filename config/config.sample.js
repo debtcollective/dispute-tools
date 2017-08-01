@@ -45,10 +45,7 @@ const config = {
       publishable: '',
     },
 
-    airbrake: {
-      projectId: 10,
-      projectKey: '',
-    },
+    sentry: '',
 
     GoogleMaps: {
       key: '',
@@ -96,10 +93,7 @@ const config = {
       publishable: process.env.STRIPE_PUBLISHABLE,
     },
 
-    airbrake: {
-      projectId: process.env.AIRBRAKE_ID,
-      projectKey: process.env.AIRBRAKE_KEY,
-    },
+    sentry: '',
 
     GoogleMaps: {
       key: process.env.GMAPS_KEY,
