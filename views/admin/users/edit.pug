@@ -169,9 +169,6 @@ block scripts
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
       };
-      try {
-        new ViewAdminUsersEdit(options);
-      } catch(e) {
-        airbrake.notify(e);
-      }
+
+      new ViewAdminUsersEdit(options);
     }, true);

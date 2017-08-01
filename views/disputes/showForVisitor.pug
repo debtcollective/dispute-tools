@@ -36,9 +36,6 @@ block scripts
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
       };
-      try {
-        new ViewDisputesShowForVisitors(options);
-      } catch(e) {
-        airbrake.notify(e);
-      }
+
+      new ViewDisputesShowForVisitors(options);
     }, true);

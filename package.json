@@ -86,7 +86,6 @@
   },
   "dependencies": {
     "adm-zip": "^0.4.7",
-    "airbrake": "^1.2.0",
     "archiver": "^1.1.0",
     "autosize": "^3.0.18",
     "aws-sdk": "^2.4.14",
@@ -132,6 +131,7 @@
     "pluralize": "^3.0.0",
     "pug": "^2.0.0-beta4",
     "query-string": "^4.2.3",
+    "raven": "^2.1.1",
     "redis": "^2.6.2",
     "req-flash": "0.0.3",
     "request": "^2.75.0",

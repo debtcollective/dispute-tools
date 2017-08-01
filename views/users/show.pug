@@ -74,9 +74,6 @@ block scripts
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
       };
-      try {
-        new ViewUsersShow(options);
-      } catch(e) {
-        airbrake.notify(e);
-      }
+
+      new ViewUsersShow(options);
     }, true);

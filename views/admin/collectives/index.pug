@@ -47,9 +47,6 @@ block scripts
         currentURL: !{JSON.stringify(currentURL)},
         isAdmin: true,
       };
-      try {
-        new ViewAdminCollectivesIndex(options);
-      } catch(e) {
-        airbrake.notify(e);
-      }
+
+      new ViewAdminCollectivesIndex(options);
     }, true);

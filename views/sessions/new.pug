@@ -15,9 +15,6 @@ block scripts
         currentUser: !{JSON.stringify(currentUser)},
         currentURL: !{JSON.stringify(currentURL)},
       };
-      try {
-        new ViewSessionsNew(options);
-      } catch(e) {
-        airbrake.notify(e);
-      }
+
+      new ViewSessionsNew(options);
     }, true);

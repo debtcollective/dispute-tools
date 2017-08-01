@@ -62,10 +62,7 @@ block scripts
         currentURL: !{JSON.stringify(currentURL)},
         options: !{JSON.stringify(disputeTool.data.options)},
       };
-      try {
-        new ViewDisputeToolsShow(options);
-      } catch(e) {
-        airbrake.notify(e);
-      }
+
+      new ViewDisputeToolsShow(options);
     }, true);
 

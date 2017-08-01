@@ -147,9 +147,6 @@ block scripts
         disputes: !{JSON.stringify(disputes)},
         isAdmin: true,
       };
-      try {
-        new ViewAdminDisputesIndex(options);
-      } catch(e) {
-        airbrake.notify(e);
-      }
+
+      new ViewAdminDisputesIndex(options);
     }, true);
