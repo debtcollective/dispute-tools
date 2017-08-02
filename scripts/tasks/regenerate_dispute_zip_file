@@ -1,0 +1,54 @@
+#!/usr/bin/env node
+
+process.env.HEADLESS = 1;
+
+require('../../lib/core');
+
+/* global DisputeRenderer */
+
+const disputeId = process.argv[2];
+
+DisputeRenderer.query()
+  .where({ dispute_id: disputeId })
+  .then((results) => {
+    if (results.length) {
+      console.log('Generating... this may take a while');
+    } else {
+      console.log('Dispute not found');
+    }
+
+    Promise.all(
+      results.map((renderer) => {
+        return Dispute.query()
+          .where({ id: renderer.disputeId })
+          .include('attachments')
+          .then(([dispute]) => {
+            return renderer.render(dispute)
+              .then(() => {
+                console.log(`Generating zip file for Dispute ${dispute.id}`)
+
+                return DisputeRenderer.query()
+                  .where({ id: renderer.id })
+                  .include('attachments')
+                  .then(([_disputeRenderer]) => {
+                    return renderer.buildZip(_disputeRenderer)
+                      .then(() => {
+                        console.log(`zip file for Dispute ${dispute.id} generated`);
+                      })
+                      .catch((err) => {
+                        console.log(`Failed to generate zip file for Dispute ${dispute.id}`);
+                        console.log(err);
+                      });
+                  });
+              })
+          })
+      })
+    ).then(() => {
+      console.log('Completed');
+      process.exit();
+    }).catch((err) => {
+      console.log('There was an error while generating zip files');
+      console.log(err);
+      process.exit();
+    });
+  });

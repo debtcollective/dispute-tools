@@ -11,7 +11,7 @@ const Attachment = Class('Attachment').inherits(Krypton.Model)
     attributes: ['id', 'type', 'foreignKey', 'filePath', 'fileMeta', 'createdAt', 'updatedAt'],
     attachmentStorage: new Krypton.AttachmentStorage.Local({
       acceptedMimeTypes: [/image/, /application/],
-      maxFileSize: 10485760, // 10MB
+      maxFileSize: 20971520, // 20MB
     }),
 
     prototype: {

@@ -86,7 +86,7 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
 
             return campaign.attach('cover', image.path, {
               fileSize: image.size,
-              mimeType: image.mimeType,
+              mimeType: image.mimetype || image.mimeType
             })
             .then(() => {
               fs.unlinkSync(image.path);
@@ -132,7 +132,7 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
 
             return req.campaign.attach('cover', image.path, {
               fileSize: image.size,
-              mimeType: image.mimeType,
+              mimeType: image.mimetype || image.mimeType
             })
             .then(() => {
               fs.unlinkSync(image.path);

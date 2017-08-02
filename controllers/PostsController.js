@@ -282,7 +282,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
 
           return attachment.attach('file', image.path, {
             fileSize: image.size,
-            mimeType: image.mimeType,
+            mimeType: image.mimetype || image.mimeType
           })
           .then(() => {
             fs.unlinkSync(image.path);

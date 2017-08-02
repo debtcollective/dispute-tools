@@ -42,7 +42,7 @@
         if lastStatus.status !== 'Documents Sent'
           .mt2
             if lastStatus.pendingSubmission === null
-              form(method='post' action=routeMappings.Disputes.updateSubmission.url(dispute.id))
+              form(method='post' action=routeMappings.Disputes.updateSubmission.url(dispute.id) onsubmit="this.submitButton.disabled = true")
                 input(type='hidden' name='_csrf' value=csrfToken)
                 input(type='hidden' name='_method' value='put')
                 ul.list-reset
@@ -52,7 +52,7 @@
                   li.mb2: label
                     input(type='radio' name='pending_submission' value='0' required)
                     span.ml2 I prefer to print and mail it myself
-                button(type='submit').-fw-700.-k-btn.btn-primary Save changes
+                button(type='submit' name='submitButton').-fw-700.-k-btn.btn-primary Save changes
             else
               if lastStatus.pendingSubmission === true
                 p Your dispute is being processed, thank you.

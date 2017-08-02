@@ -151,7 +151,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulControll
 
               return user.account.attach('image', image.path, {
                 fileSize: image.size,
-                mimeType: image.mimeType,
+                mimeType: image.mimetype || image.mimeType
               })
               .then(() => {
                 fs.unlinkSync(image.path);

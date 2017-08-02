@@ -126,7 +126,7 @@ Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(Res
 
               return req.collective.attach('cover', image.path, {
                 fileSize: image.size,
-                mimeType: image.mimeType,
+                mimeType: image.mimetype || image.mimeType
               })
               .then(() => {
                 fs.unlinkSync(image.path);
