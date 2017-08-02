@@ -20,52 +20,50 @@ block content
       div &nbsp;
       div &nbsp;
 
-      //- Credit Report Dispute Letter
-      if dispute.dispute_tool_id === '11111111-1111-4444-1111-111111111111'
-      div You have selected to mail your forms yourself. Please send a copy to one or more of the following addresses:
-      div &nbsp;
-      div Experian
-      div National Consumer Assistance Center
-      div P.O. Box 2002
-      div Allen, TX 75013
-      div &nbsp;
-      div Equifax Credit Information Services, Inc.
-      div P.O. Box 740241
-      div Atlanta, GA 30374
-      div &nbsp;
-      div TransUnion LLC
-      div Consumer Disclosure Center
-      div P.O. Box 1000
-      div Chester, PA 19022
-      div &nbsp;
-      div Please let us know whether you got a response from the credit reporting agencies so we can continue organizing together.
-      div &nbsp;
-      div &nbsp;
+      // Only show information about how to send documents if the status is 'Completed'
+      if (disputeStatus.status === 'Completed')
+        div You have selected to mail your forms yourself. Please send a copy to one or more of the following addresses:
+        div &nbsp;
+        div
+          strong CREDIT REPORT DISPUTE
+        div Experian
+        div National Consumer Assistance Center
+        div P.O. Box 2002
+        div Allen, TX 75013
+        div &nbsp;
+        div Equifax Credit Information Services, Inc.
+        div P.O. Box 740241
+        div Atlanta, GA 30374
+        div &nbsp;
+        div TransUnion LLC
+        div Consumer Disclosure Center
+        div P.O. Box 1000
+        div Chester, PA 19022
+        div &nbsp;
+        div Please let us know whether you got a response from the credit reporting agencies so we can continue organizing together.
+        div &nbsp;
 
-      //- Wage Garnishment Dispute
-      if dispute.dispute_tool_id === '11111111-1111-1111-1111-111111111111'
-      div You have selected to mail your forms yourself. Please send a copy of the wage garnishment dispute form attached to this email to:
-      div &nbsp;
-      div US DEPARTMENT OF EDUCATION
-      div ATTN: AWG HEARINGS BRANCH
-      div PO BOX 5227
-      div GREENVILLE TX 75403-5227
-      div &nbsp;
-      div If you have a FFEL loan, you should also send a copy to your guarantor. If you do not know the name and address of your guarantor, please call the DOE hotline: 1800-621-3115.
-      div &nbsp;
-      div Once you get a response from the DOE, please log back into your Debt Collective profile to let us know so we can continue organizing together.
-      div &nbsp;
-      div &nbsp;
+        //- Wage Garnishment Dispute
+        div
+          strong WAGE GARNISHMENT DISPUTE
+        div US DEPARTMENT OF EDUCATION
+        div ATTN: AWG HEARINGS BRANCH
+        div PO BOX 5227
+        div GREENVILLE TX 75403-5227
+        div &nbsp;
+        div If you have a FFEL loan, you should also send a copy to your guarantor. If you do not know the name and address of your guarantor, please call the DOE hotline: 1800-621-3115.
+        div &nbsp;
+        div Once you get a response from the DOE, please log back into your Debt Collective profile to let us know so we can continue organizing together.
+        div &nbsp;
 
-      //- Tax Offset Dispute
-      if dispute.dispute_tool_id === '11111111-1111-2222-1111-111111111111'
-      div You have selected to mail your forms yourself. Please send a copy of the tax offset dispute form attached to this email to:
-      div &nbsp;
-      div US DEPARTMENT OF EDUCATION
-      div FEDERAL OFFSET UNIT
-      div PO BOX PO Box 5227
-      div GREENVILLE TX 75403-5227
-      div &nbsp;
-      div Once you get a response from the DOE, please log back into your Debt Collective profile to let us know so we can continue organizing together.
-      div &nbsp;
-      div &nbsp;
+        //- Tax Offset Dispute
+        div
+          strong TAX OFFSET DISPUTE
+        div US DEPARTMENT OF EDUCATION
+        div FEDERAL OFFSET UNIT
+        div PO BOX PO Box 5227
+        div GREENVILLE TX 75403-5227
+        div &nbsp;
+        div Once you get a response from the DOE, please log back into your Debt Collective profile to let us know so we can continue organizing together.
+        div &nbsp;
+        div &nbsp;
