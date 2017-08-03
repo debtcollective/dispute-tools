@@ -103,13 +103,24 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
 
         dispute.data.signature = signature;
 
+        dispute.save()
+          .then(resolve)
+          .catch(reject);
+      });
+    },
+
+    markAsCompleted(pendingSubmission) {
+      const dispute = this;
+
+      return new Promise((resolve, reject) => {
         const disputeStatus = new DisputeStatus({
           status: 'Completed',
           disputeId: dispute.id,
+          pendingSubmission: pendingSubmission
         });
 
         return DisputeTool.query()
-          .where('id', dispute.disputeToolId)
+          .where({ id: dispute.disputeToolId })
           .then(([tool]) => {
             return DisputeTool.transaction((trx) => {
               return dispute.transacting(trx).save()

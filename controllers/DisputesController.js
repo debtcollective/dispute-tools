@@ -68,6 +68,10 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           res.locals.dispute = dispute;
           req.dispute = dispute;
 
+          // sort Dispute Status DESC
+          debugger;
+          dispute.statuses = dispute.statuses.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
           const optionData = dispute.disputeTool.data.options[dispute.data.option];
           if (optionData && optionData.more) {
             optionData.more = marked(optionData.more);
@@ -150,30 +154,35 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
     updateSubmission(req, res, next) {
       const dispute = res.locals.dispute;
+      const pendingSubmission = req.body.pending_submission === '1'
 
-      DisputeStatus.query()
-        .where('dispute_id', dispute.id)
-        .where('status', 'Completed')
-        .then((results) => {
-          if (results.length > 0) {
-            if (req.body.pending_submission === '0') {
-              results[0].pendingSubmission = false;
-            }
-
-            if (req.body.pending_submission === '1') {
-              results[0].pendingSubmission = true;
-            }
-
-            return results[0].save()
-              .then(() => {
-                req.flash('success', 'Your dispute is pending for assistance, thank you!');
-                res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
-              });
-          } else {
-            Raven.captureMessage('DisputeStatus not found', { req: req });
-            req.flash('error', 'There was an error while updating your Dispute status, we have been notified.');
-            res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
-          }
+      dispute.markAsCompleted(pendingSubmission)
+        .then((renderer) => {
+          return UserMailer.sendDispute(req.user.email, {
+            user: req.user,
+            renderer,
+            _options: {
+              subject: 'Dispute Documents - The Debt Collective',
+            },
+          })
+          .then(() => {
+            return UserMailer.sendDisputeToAdmin({
+              user: req.user,
+              renderer,
+              _options: {
+                subject: 'New Dispute Completed - The Debt Collective',
+              },
+            });
+          })
+          .catch(e => {
+            console.log('  ---> Failed to send smail to user (on #setSignature)');
+            console.log(e.stack);
+            Raven.captureException(e, { req: req });
+          });
+        })
+        .then(() => {
+          req.flash('success', 'Your dispute is pending for assistance, thank you!');
+          res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
         })
         .catch(next);
     },
@@ -219,29 +228,6 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       const dispute = res.locals.dispute;
 
       dispute.setSignature(req.body.signature)
-        .then((renderer) => {
-          return UserMailer.sendDispute(req.user.email, {
-            user: req.user,
-            renderer,
-            _options: {
-              subject: 'Dispute Documents - The Debt Collective',
-            },
-          })
-          .then(() => {
-            return UserMailer.sendDisputeToAdmin({
-              user: req.user,
-              renderer,
-              _options: {
-                subject: 'New Dispute Completed - The Debt Collective',
-              },
-            });
-          })
-          .catch(e => {
-            console.log('  ---> Failed to send smail to user (on #setSignature)');
-            console.log(e.stack);
-            Raven.captureException(e, { req: req });
-          });
-        })
         .then(() => {
           return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
         })

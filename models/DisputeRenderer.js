@@ -25,7 +25,7 @@ const DisputeRenderer = Class('DisputeRenderer')
     attributes: ['id', 'disputeId', 'zipPath', 'zipMeta', 'createdAt', 'updatedAt'],
     attachmentStorage: new Krypton.AttachmentStorage.Local({
       acceptedMimeTypes: ['application/zip', 'application/octet-stream', /application/],
-      maxFileSize: 20971520, // 20MB
+      maxFileSize: 41943040, // 40MB
     }),
 
     prototype: {

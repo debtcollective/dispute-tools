@@ -2,7 +2,7 @@
 
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/debtcollective/Lobby)
 
-Come visit us in the public Debt Collective gitter room 
+Come visit us in the public Debt Collective gitter room
 
 # About
 
@@ -47,6 +47,14 @@ Run the server
 npm start
 ```
 
+## Dependencies
+
+You will need to install the following libraries/packages in order for
+the app to work correctly
+
+* GraphicsMagick (`brew install graphicsmagick` if you are on macOS)
+* ImageMagick (`brew install imagemagick` if you are on macOS)
+
 ## Emails in Development
 
 We are using [mailcatcher](https://mailcatcher.me/) to visualize emails
@@ -57,6 +65,21 @@ in development, to install:
 * Send mail through `smtp://localhost:1025` (If you copied
   `config.sample.js` this is already configured for you
 * Go to `http://localhost:1080/`
+
+# Tasks
+
+We have some tasks to do some manual process in the app, here are some
+of them (Feel free to document the others)
+
+## regenerate_dispute_zip_file
+
+This task will try to regenerate the zip file of a Dispute, this can
+fail for a number of reason ranging from missing attachments to server
+being out of memory, the cool thing is that you can see the output of
+the error for easier debugging. You execute this task with the following
+command
+
+`./scripts/tasks/regenerate_dispute_zip_file <dispute_id>`
 
 # Requirements
 

@@ -166,7 +166,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
               return user.account.attach('image', image.path, {
                 fileSize: image.size,
-                mimeType: image.mimeType,
+                mimeType: image.mimetype || image.mimeType,
               })
               .then(() => {
                 fs.unlinkSync(image.path);

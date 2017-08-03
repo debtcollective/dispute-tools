@@ -95,9 +95,7 @@ describe('Dispute', () => {
       expect(dispute.data.disputeProcess).to.be.equal(1);
     });
 
-    // FIXME: suddendly this fires an un-catched promise
-    // TODO: this seems to be a WIP, fix later
-    xit('Should set a signature', () => {
+    it('Should set a signature', () => {
       dispute.setSignature('Example Signature');
 
       expect(dispute.data.signature).to.be.equal('Example Signature');

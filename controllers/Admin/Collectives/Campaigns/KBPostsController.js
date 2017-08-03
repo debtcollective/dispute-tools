@@ -61,7 +61,7 @@ const KBPostsController = Class(Admin.Collectives.Campaigns, 'KBPostsController'
 
             return kbpost.attach('file', resource.path, {
               fileSize: resource.size,
-              mimeType: resource.mimeType,
+              mimeType: image.mimetype || image.mimeType
             })
             .then(() => {
               fs.unlinkSync(resource.path);
