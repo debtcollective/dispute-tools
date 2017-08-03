@@ -5,9 +5,22 @@ variables:
   POSTGRES_HOST: "postgres"
   POSTGRES_USER: "postgres"
 
+cache:
+  untracked: true
+  key: "$CI_BUILD_REF_NAME"
+  paths:
+    - node_modules/
+
 stages:
+  - setup
   - test
   - deploy
+
+setup:
+  stage: setup
+  script:
+    - yarn global add node-gyp pm2
+    - yarn
 
 test:
   stage: test
@@ -20,7 +33,6 @@ test:
     - apt-get update
     - apt-get install -y postgresql-client
   script:
-    - yarn global add node-gyp
     - yarn
     - yarn build
     - yarn test
@@ -43,9 +55,34 @@ deploy_staging:
     # We are using a non standard port and an Elastic IP for this instead
     - ssh-keyscan -H -p 12345 34.212.243.114 >> $HOME/.ssh/known_hosts
     - ssh-keyscan -H 'gitlab.com' >> $HOME/.ssh/known_hosts
-    - npm install pm2 -g
+    - yarn global add pm2
   script:
     - pm2 deploy ecosystem.json staging
   environment: staging
+  only:
+    - master
+
+deploy_production:
+  stage: deploy
+  before_script:
+    # install ssh-agent
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+      # run ssh-agent
+    - eval $(ssh-agent -s)
+      # add ssh key stored in SSH_PRIVATE_KEY variable to the agent store
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p $HOME/.ssh
+    - chmod 700 $HOME/.ssh
+    # - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    # Staging as well as production are behing ELBs
+    # ELBs don't forward things like ssh (for security reasons)
+    # We are using a non standard port and an Elastic IP for this instead
+    - ssh-keyscan -H -p 12345 34.209.207.52 >> $HOME/.ssh/known_hosts
+    - ssh-keyscan -H 'gitlab.com' >> $HOME/.ssh/known_hosts
+    - yarn global add pm2
+  script:
+    - pm2 deploy ecosystem.json production
+  environment: production
+  when: manual
   only:
     - master
