@@ -25,7 +25,7 @@ block content
                   h4.CampaignTitle.inline-block.pr1= campaign.title
                   a.-fw-700.xs-hide(href=routeMappings.Collectives.show.url(campaign.collective.id))= campaign.collective.name
                 p.-ell.-caption.-fw-500.xs-hide
-                  | #{(userBelongsToCampaign ? `You + ${campaign.userCount - 1}` : campaign.userCount) + ` people joined with $${totalDebtAmount / 100} USD in debt`}
+                  | #{(userBelongsToCampaign ? `You + ${campaign.userCount - 1}` : campaign.userCount) + ` people joined with $${totalDebtAmount} USD in debt`}
                   if canCreateEvents
                     span.-fw-700.px1 •
                     a.-fw-700(href=routeMappings.Admin.Collectives.Campaigns.edit.url(campaign.collective.id, campaign.id)) Edit campaign
@@ -214,4 +214,3 @@ block scripts
 
       new ViewCampaignsShow(options);
     }, true);
-

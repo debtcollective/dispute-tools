@@ -2,6 +2,7 @@
 
 const marked = require('marked');
 const Promise = require('bluebird');
+const humanize = require('humanize-num');
 
 // TODO: implement proper services for this; since we cannot reuse code from CampaignsController.js
 // I ported the same method here, ensuring the functionallity is the same:
@@ -77,7 +78,6 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
   {
     before(req, res, next) {
       const campaingsIds = req.collective.campaigns.map(c => c.id);
-      res.locals.totalDebtAmount = 0;
 
       return Campaign.knex()
         .select('debt_amount')
@@ -87,7 +87,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
           const total = results.reduce((p, c) =>
             ({ debt_amount: (p.debt_amount + c.debt_amount) }), { debt_amount: 0 });
 
-          res.locals.totalDebtAmount = total.debt_amount || 0;
+          res.locals.totalDebtAmount = humanize(total.debt_amount || 0);
 
           return next();
         })
