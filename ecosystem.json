@@ -34,7 +34,7 @@
       user: "ubuntu",
       host: "34.209.207.52",
       port: "12345",
-      ref  : "origin/deployment",
+      ref  : "origin/master",
       repo : "git@gitlab.com:debtcollective/debtcollective.git",
       path : "/home/ubuntu/apps/tdc",
       "post-deploy" : "./scripts/post_deploy_production"
