@@ -6,6 +6,7 @@ const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 
 const marked = require('marked');
 const Promise = require('bluebird');
+const humanize = require('humanize-num');
 
 const CampaignsController = Class('CampaignsController').inherits(RestfulController)({
   beforeActions: [
@@ -16,7 +17,6 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
     // Sum totalDebtAmount for Campaign
     {
       before(req, res, next) {
-        res.locals.totalDebtAmount = 0;
         res.locals.search = req.query.search || '';
         res.locals.topicId = req.query.topicId;
 
@@ -28,7 +28,7 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
             const total = results.reduce((p, c) =>
               ({ debt_amount: (p.debt_amount + c.debt_amount) }), { debt_amount: 0 });
 
-            res.locals.totalDebtAmount = total.debt_amount || 0;
+            res.locals.totalDebtAmount = humanize(total.debt_amount || 0);
 
             return next();
           })
