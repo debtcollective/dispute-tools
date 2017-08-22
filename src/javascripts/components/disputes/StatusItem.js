@@ -46,9 +46,8 @@ export default class StatusItem extends Widget {
               </p>
             </div>
           </div>
-          <div class="-fw-500">
-            ${data.status.comment || ''}
-          </div>
+          <div class="-fw-500">${data.status.comment || ''}</div>
+          <div class="StatusItem-Note p2 mt1">${data.status.note || ''}</div>
         </div>
       </div>
     `;
