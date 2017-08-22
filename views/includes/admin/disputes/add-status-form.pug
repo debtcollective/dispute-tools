@@ -31,10 +31,19 @@
         )
         p(class='-on-error -danger -caption -fw-500 mt1')
 
+      .pb2
+        textarea.-k-textarea.block.-fw(
+          name='note'
+          rows='5'
+          placeholder='Note for Admins'
+        )
+        p(class='-on-error -danger -caption -fw-500 mt1')
+
       label.-ff-sec.block.pb2
         input.mr1(
           name='notify'
           type='checkbox'
+          checked
         )
         | Notify the user?
 

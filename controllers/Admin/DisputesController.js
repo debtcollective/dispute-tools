@@ -134,11 +134,12 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     update(req, res, next) {
       const dispute = res.locals.dispute;
 
-      const { comment, status, notify } = req.body;
+      const { comment, status, note, notify } = req.body;
 
       const ds = new DisputeStatus({
         comment,
         status,
+        note,
         disputeId: dispute.id,
       });
 

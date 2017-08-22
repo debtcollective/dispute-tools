@@ -15,4 +15,16 @@
   &-Text {
     margin-left: 65px;
   }
+
+  &-Note {
+    -webkit-font-smoothing: antialiased;
+    background-color: #FFFAC0;
+    color: var(--k-color);
+    font-size: 14px;
+    white-space: pre;
+
+    &:empty {
+      display: none;
+    }
+  }
 }

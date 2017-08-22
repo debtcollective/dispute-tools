@@ -69,7 +69,6 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           req.dispute = dispute;
 
           // sort Dispute Status DESC
-          debugger;
           dispute.statuses = dispute.statuses.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
           const optionData = dispute.disputeTool.data.options[dispute.data.option];

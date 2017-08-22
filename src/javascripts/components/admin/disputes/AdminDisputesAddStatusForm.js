@@ -4,10 +4,13 @@ import Button from '../../../components/Button';
 import DisputeStatusItem from '../../../components/disputes/StatusItem';
 
 export default class AdminDisputesAddStatusForm extends Widget {
+  static get fields() {
+    return ['comment', 'notify', 'status'];
+  }
+
   static get constraints() {
     return {
-      status: ['required'],
-      comment: ['required'],
+      status: ['required']
     };
   }
 
@@ -21,11 +24,10 @@ export default class AdminDisputesAddStatusForm extends Widget {
     this.ui = {};
 
     let query = '';
-    Object.keys(AdminDisputesAddStatusForm.constraints).forEach(key => {
+    AdminDisputesAddStatusForm.fields.forEach(key => {
       query = `[name="${key}"]`;
       this.ui[key] = this.element.querySelector(query);
     });
-    this._checkit = new Checkit(AdminDisputesAddStatusForm.constraints);
 
     this.appendChild(new Button({
       name: 'ButtonSubmit',
@@ -41,6 +43,16 @@ export default class AdminDisputesAddStatusForm extends Widget {
     this.statusesWrapper = this.element.querySelector('[data-statuses-wrapper]');
 
     this._bindEvents();
+    this._initCheckit();
+  }
+
+  _initCheckit() {
+    let checkit = new Checkit(AdminDisputesAddStatusForm.constraints);
+
+    // Only require comment if notify is true
+    checkit.maybe({ comment: ['required'] }, (input) => input.notify);
+
+    this._checkit = checkit;
   }
 
   _bindEvents() {
@@ -89,7 +101,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
 
   _clearFieldErrors() {
     let parent;
-    Object.keys(AdminDisputesAddStatusForm.constraints).forEach(key => {
+    AdminDisputesAddStatusForm.fields.forEach(key => {
       parent = this.ui[key].parentNode;
       parent.classList.remove('error');
     });
@@ -97,9 +109,13 @@ export default class AdminDisputesAddStatusForm extends Widget {
 
   _getFieldsData() {
     const data = {};
-    Object.keys(AdminDisputesAddStatusForm.constraints).forEach(key => {
+    AdminDisputesAddStatusForm.fields.forEach(key => {
       data[key] = this.ui[key].value;
     });
+
+    // For checkboxes we need to use the checked attribute
+    data['notify'] = this.ui['notify'].checked;
+
     return data;
   }
 
