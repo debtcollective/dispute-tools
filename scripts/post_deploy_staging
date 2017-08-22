@@ -8,7 +8,7 @@ ln -sf /home/ubuntu/apps/tdc/shared/uploads /home/ubuntu/apps/tdc/current/public
 yarn build
 
 NODE_ENV=production yarn utils:copybadges
-NODE_ENV=production yarn db:migrate
+NODE_ENV=staging yarn db:migrate
 
 export NODE_ENV=staging
 
