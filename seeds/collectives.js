@@ -103,7 +103,7 @@ Debt has isolated us and made us feel alone and ashamed. We have come out of the
         {
           id: '99999999-9999-9999-9999-999999999999',
           name: 'Solidarity Bloc',
-          description: 'For non-debtors organizing in solidarity with people in debt.',
+          description: 'For anyone organizing in solidarity with people in debt.',
           manifest: `We organize in solidarity with those who are struggling under the weight of indebtedness for simply trying to access basic needs like healthcare, education and housing.
 
 We are committed to direct action, mutual aid and campaign support.`,
