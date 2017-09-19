@@ -227,7 +227,7 @@ block content
     each item, index in visions
       .Vision__item.m3.p3.max-width-2
         video(id=`video-${index}`,class="hide Vision__video",autoplay=true,controls=true,muted=true)
-          source(src=`/videos/${item.link}.mov`)
+          source(src=`https://s3-us-west-2.amazonaws.com/debtcollective-videos/${item.link}.mov`)
         h4.title= item.name
         p= item.what
 
