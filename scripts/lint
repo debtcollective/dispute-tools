@@ -4,12 +4,10 @@
 # ignore the public folder, for example, as it'll never show up in "git diff"
 files=$(
   git diff --name-only origin/master | \
-    grep '\.js$' | \
-    grep -v '^scripts'
+    grep '\.js$'
 )
 
-if [ "$files" == "" ]
-then
+if [ -z "$files" ]; then
   exit 0
 fi
 

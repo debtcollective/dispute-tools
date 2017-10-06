@@ -1,11 +1,10 @@
 /* globals Dispute, RestfulController, Class, DisputeTool, CONFIG, DisputeStatus,
     DisputeMailer, UserMailer, NotFoundError, DisputeRenderer, Dispute */
-const AdmZip = require('adm-zip');
 const path = require('path');
-const xlsx = require('node-xlsx');
 
 const Promise = require('bluebird');
 const marked = require('marked');
+const _ = require('lodash');
 
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 const Raven = require('raven');
@@ -121,8 +120,8 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         option: req.body.option,
         user: req.user,
       })
-      .then((disputeId) => res.redirect(CONFIG.router.helpers.Disputes.show.url(disputeId)))
-      .catch(next);
+        .then((disputeId) => res.redirect(CONFIG.router.helpers.Disputes.show.url(disputeId)))
+        .catch(next);
     },
 
     update(req, res, next) {
@@ -235,15 +234,16 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
       }
 
-      return Promise.each(req.files.attachment, (attachment) => dispute.addAttachment(req.body.name, attachment.path))
-      .then(() => dispute.save())
-      .catch(() => {
-        req.flash('error', 'A problem occurred trying to process the attachments');
-      })
-      .finally(() => {
-        req.flash('success', 'Attachment successfully added!');
-        return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
-      });
+      return Promise.each(req.files.attachment, (attachment) =>
+        dispute.addAttachment(req.body.name, attachment.path))
+        .then(() => dispute.save())
+        .catch(() => {
+          req.flash('error', 'A problem occurred trying to process the attachments');
+        })
+        .finally(() => {
+          req.flash('success', 'Attachment successfully added!');
+          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+        });
     },
 
     removeAttachment(req, res) {
@@ -266,23 +266,70 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     },
 
     download(req, res, next) {
+      const { dispute } = res.locals;
+
+      const getUrl = renderer => {
+        if (Array.isArray(renderer)) renderer = renderer[0];
+
+        const original = renderer.zip.url('original');
+
+        if (!original) {
+          return next(new NotFoundError('File is corrupted'));
+        }
+
+        return res.redirect(original);
+      };
+
+      /**
+       * True if {@param renderer} is <code>undefined</code>, if the current status
+       * is <code>'Incomplete'</code>; false otherwise as the dispute, upon being
+       * moved to the <code>'Completed'</code> status, will immediately trigger its
+       * own rendering (so if its <code>'Completed'</code> then the most recent render
+       * will always have occurred after the status changed to <code>'Completed'</code>).
+       *
+       * @param {any|undefined} renderer The most recent render
+       * @return {boolean}
+       */
+      const shouldRender = renderer => {
+        if (!renderer) {
+          return true;
+        }
+
+        const currentStatus = _.sortBy(dispute.statuses, 'updatedAt').slice(-1)[0];
+
+        return currentStatus.status !== 'Completed' || currentStatus.updatedAt > renderer.updatedAt;
+      };
+
       DisputeRenderer.query()
         .where({
-          dispute_id: req.params.id,
+          dispute_id: dispute.id,
         })
+        .orderBy('updated_at', 'desc')
         .limit(1)
-        .then((renderer) => {
-          if (renderer.length === 0) {
-            return next(new NotFoundError('File not found'));
+        .then(([renderer]) => {
+          if (shouldRender(renderer)) {
+            const newRenderer = new DisputeRenderer({
+              disputeId: dispute.id,
+            });
+
+            return newRenderer.save()
+              .catch(next)
+              .then(() => newRenderer.render(dispute)
+                .then(() => DisputeRenderer.query()
+                  .where({ id: newRenderer.id })
+                  .include('attachments')
+                  .then(([_disputeRenderer]) =>
+                    newRenderer.buildZip(_disputeRenderer)
+                      .catch(next)
+                      .then(id => DisputeRenderer.query()
+                        .where({ id })
+                        .limit(1)
+                        .orderBy('updated_at', 'desc')
+                        .then(getUrl))))
+              );
           }
 
-          const original = renderer[0].zip.url('original');
-
-          if (!original) {
-            return next(new NotFoundError('File is corrupted'));
-          }
-
-          return res.sendFile(path.join(process.cwd(), 'public', original));
+          return getUrl(renderer);
         });
     },
 

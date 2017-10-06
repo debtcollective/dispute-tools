@@ -1,6 +1,7 @@
 /* global Krypton, Class, CONFIG, AttachmentsProcessor, AWS, S3Uploader */
 const path = require('path');
 const gm = require('gm').subClass({ imageMagick: process.env.GM === 'true' || false });
+const { assignDefaultConfig, buildFullPaths } = require('../lib/AWS');
 
 const { US_STATES } = require('../lib/data');
 
@@ -50,10 +51,10 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
     'createdAt',
     'updatedAt',
   ],
-  attachmentStorage: new Krypton.AttachmentStorage.Local({
+  attachmentStorage: new Krypton.AttachmentStorage.S3(assignDefaultConfig({
     maxFileSize: 5242880,
     acceptedMimeTypes: [/image/],
-  }),
+  })),
 
   prototype: {
     bio: '',
@@ -129,14 +130,7 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
         },
       });
 
-      this.image.urls = {};
-      Object.keys(this.image.versions).forEach(version => {
-        if (this.image.exists(version)) {
-          this.image.urls[version] = this.image.url(version);
-        }
-      });
-
-      return this;
+      this.image.urls = buildFullPaths(this.image);
     },
   },
 });

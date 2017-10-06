@@ -6,7 +6,7 @@ const path = require('path');
 const Promise = require('bluebird');
 
 const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
-const { createUser } = require('../../utils/helpers.js');
+const { createUser, awsIntegration } = require('../../utils/helpers.js');
 
 const agent = sa.agent();
 const url = CONFIG.env().siteURL;
@@ -358,32 +358,38 @@ describe('DisputesController', () => {
       });
   });
 
-  it('Should allow a User to add an attachment to its dispute', (done) => {
-    agent.post(`${url}${urls.Disputes.addAttachment.url(data.disputeId)}`)
-      .field('_csrf', _csrf)
-      .field('name', 'uploader-1')
-      .attach('attachment', path.join(process.cwd(), 'tests/assets/hubble.jpg'))
-      .end((err, res) => {
-        expect(res.redirects.length).to.equal(1);
-        expect(res.redirects[0]).to.have.string(data.disputeId);
-        expect(res.status).to.equal(200);
-        done();
-      });
-  });
+  describe('attachments', () => {
+    it('should allow adding to a dispute by its user', awsIntegration(() =>
+      new Promise(resolve => {
+        agent.post(`${url}${urls.Disputes.addAttachment.url(data.disputeId)}`)
+          .field('_csrf', _csrf)
+          .field('name', 'uploader-1')
+          .attach('attachment', path.join(process.cwd(), 'tests/assets/hubble.jpg'))
+          .end((err, res) => {
+            expect(res.redirects.length).to.equal(1);
+            expect(res.redirects[0]).to.have.string(data.disputeId);
+            expect(res.status).to.equal(200);
+            resolve();
+          });
+      })
+    ));
 
-  it('Should allow a User to add multiple attachments to its dispute', (done) => {
-    agent.post(`${url}${urls.Disputes.addAttachment.url(data.disputeId)}`)
-      .field('_csrf', _csrf)
-      .field('name', 'uploader-1')
-      .attach('attachment', path.join(process.cwd(), 'tests/assets/hubble.jpg'))
-      .attach('attachment', path.join(process.cwd(), 'tests/assets/hubble.jpg'))
-      .attach('attachment', path.join(process.cwd(), 'tests/assets/hubble.jpg'))
-      .end((err, res) => {
-        expect(res.redirects.length).to.equal(1);
-        expect(res.redirects[0]).to.have.string(data.disputeId);
-        expect(res.status).to.equal(200);
-        done();
-      });
+    it('should allow adding multiple files to a dispute by its user', awsIntegration(() =>
+      new Promise(resolve => {
+        agent.post(`${url}${urls.Disputes.addAttachment.url(data.disputeId)}`)
+          .field('_csrf', _csrf)
+          .field('name', 'uploader-1')
+          .attach('attachment', path.join(process.cwd(), 'tests/assets/hubble.jpg'))
+          .attach('attachment', path.join(process.cwd(), 'tests/assets/hubble.jpg'))
+          .attach('attachment', path.join(process.cwd(), 'tests/assets/hubble.jpg'))
+          .end((err, res) => {
+            expect(res.redirects.length).to.equal(1);
+            expect(res.redirects[0]).to.have.string(data.disputeId);
+            expect(res.status).to.equal(200);
+            resolve();
+          });
+      })
+    ));
   });
 
   it('Should fail if a User does not provide an attachment to upload to its dispute', (done) => {

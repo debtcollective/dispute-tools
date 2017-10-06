@@ -1,10 +1,12 @@
 /* globals CONFIG, Class, Krypton, Post */
 
+const { assignDefaultConfig } = require('../lib/AWS');
+
 const KBPost = Class('KBPost').inherits(Krypton.Model).includes(Krypton.Attachment)({
-  attachmentStorage: new Krypton.AttachmentStorage.Local({
+  attachmentStorage: new Krypton.AttachmentStorage.S3(assignDefaultConfig({
     maxFileSize: 5242880,
     acceptedMimeTypes: [/.+/],
-  }),
+  })),
 
   tableName: 'KBPosts',
   validations: {
@@ -34,11 +36,7 @@ const KBPost = Class('KBPost').inherits(Krypton.Model).includes(Krypton.Attachme
     }
 
     return query
-      .then((results) => {
-        return results.map((item) => {
-          return item.id;
-        });
-      });
+      .then((results) => results.map((item) => item.id));
   },
 
   prototype: {

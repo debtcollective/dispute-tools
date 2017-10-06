@@ -3,30 +3,11 @@
 /* eslint arrow-body-style: 0 */
 
 const _ = require('lodash');
-const gm = require('gm').subClass({ imageMagick: process.env.GM === 'true' || false });
 const Promise = require('bluebird');
+const { basePath } = require('../lib/AWS');
+const DisputeAttachment = require('./DisputeAttachment');
 
-const DisputeAttachment = Class({}, 'DisputeAttachment').inherits(Attachment)({
-  init(config) {
-    Krypton.Model.prototype.init.call(this, config);
-
-    this.fileMeta = this.fileMeta || {};
-
-    this.hasAttachment({
-      name: 'file',
-      versions: {
-        thumb(readStream) {
-          return gm(readStream)
-            .resize(40, 40)
-            .stream();
-        },
-      },
-    });
-  },
-});
-
-
-const Dispute = Class('Dispute').inherits(Krypton.Model)({
+const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attachment)({
   tableName: 'Disputes',
   validations: {
     userId: ['required'],
@@ -177,36 +158,36 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
           .then(resolve)
           .catch(reject);
       })
-      .then(() => {
-        const renderer = new DisputeRenderer({
-          disputeId: dispute.id,
-        });
-
-        function fail(msg) {
-          return err => {
-            console.log(msg, err);
-            throw err;
-          };
-        }
-
-        return renderer.save()
-          .catch(fail('SAVING'))
-          .then(() => {
-            return renderer.render(dispute)
-              .catch(fail('RENDERING'))
-              .then(() => {
-                return DisputeRenderer.query()
-                  .where({ id: renderer.id })
-                  .include('attachments')
-                  .then(([_disputeRenderer]) => {
-                    return renderer.buildZip(_disputeRenderer).catch(fail('BUILDING ZIP'));
-                  });
-              });
-          })
-          .then(() => {
-            return renderer;
+        .then(() => {
+          const renderer = new DisputeRenderer({
+            disputeId: dispute.id,
           });
-      });
+
+          function fail(msg) {
+            return err => {
+              console.log(msg, err);
+              throw err;
+            };
+          }
+
+          return renderer.save()
+            .catch(fail('SAVING'))
+            .then(() => {
+              return renderer.render(dispute)
+                .catch(fail('RENDERING'))
+                .then(() => {
+                  return DisputeRenderer.query()
+                    .where({ id: renderer.id })
+                    .include('attachments')
+                    .then(([_disputeRenderer]) => {
+                      return renderer.buildZip(_disputeRenderer).catch(fail('BUILDING ZIP'));
+                    });
+                });
+            })
+            .then(() => {
+              return renderer;
+            });
+        });
     },
 
     setForm({ formName, fieldValues, _isDirty }) {
@@ -262,24 +243,27 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
       return da.save().then(() => {
         return da.attach('file', filePath);
       })
-      .then(() => {
-        return da.save();
-      })
-      .then(() => {
-        const attachment = {
-          id: da.id,
-          name,
-          path: da.file.url('original'),
-        };
+        .then(() => {
+          return da.save();
+        })
+        .then(() => {
+          const path = da.file.url('original');
+          const fullPath = basePath + path;
+          const attachment = {
+            id: da.id,
+            name,
+            path: da.file.url('original'),
+            fullPath,
+          };
 
-        if (da.file.exists('thumb')) {
-          attachment.thumb = da.file.url('thumb');
-        }
+          if (da.file.exists('thumb')) {
+            attachment.thumb = da.file.url('thumb');
+          }
 
-        dispute.data.attachments.push(attachment);
+          dispute.data.attachments.push(attachment);
 
-        return dispute.save();
-      });
+          return dispute.save();
+        });
     },
 
     removeAttachment(id) {

@@ -51,6 +51,15 @@ const config = {
     GoogleMaps: {
       key: '',
     },
+
+    aws: {
+      bucket: 'debt-collective',
+      secrets: {
+        accessKeyId: 'AKIAJO5HNPJQ36HVNWPA',
+        secretAccessKey: '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',
+        region: 'us-east-2',
+      },
+    },
   },
 
   production: {},
@@ -98,6 +107,16 @@ const config = {
 
     GoogleMaps: {
       key: process.env.GMAPS_KEY,
+    },
+
+    aws: {
+      bucket: process.env.AWS_BUCKET,
+      secrets: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        // Region is required so we can request signed urls that expire for downloads
+        region: process.env.AWS_REGION || 'us-east-2',
+      },
     },
   },
 };

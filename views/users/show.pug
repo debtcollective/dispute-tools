@@ -17,7 +17,7 @@ block content
       .clearfix
         .Profile__image-wrapper.relative.right.sm-col-4.col-12
           if (user.account.image.exists('mediumGrayscale'))
-            img.block.-fw(src=user.account.image.url('mediumGrayscale') alt=user.account.fullname)
+            img.block.-fw(src=user.account.image.urls['mediumGrayscale'] alt=user.account.fullname)
           else
             img.block.-fw(src='/images/profile/placeholder.png')
         .col.sm-col-8.col-12

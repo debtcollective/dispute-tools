@@ -1,6 +1,7 @@
 /* globals Class, Krypton, Campaign */
 
 const gm = require('gm').subClass({ imageMagick: process.env.GM === 'true' || false });
+const { assignDefaultConfig, buildFullPaths } = require('../lib/AWS');
 
 const Campaign = Class('Campaign').inherits(Krypton.Model).includes(Krypton.Attachment)({
   tableName: 'Campaigns',
@@ -21,10 +22,10 @@ const Campaign = Class('Campaign').inherits(Krypton.Model).includes(Krypton.Atta
     'createdAt',
     'updatedAt',
   ],
-  attachmentStorage: new Krypton.AttachmentStorage.Local({
+  attachmentStorage: new Krypton.AttachmentStorage.S3(assignDefaultConfig({
     maxFileSize: 5242880,
     acceptedMimeTypes: [/image/],
-  }),
+  })),
 
   prototype: {
     userCount: 0,
@@ -48,6 +49,8 @@ const Campaign = Class('Campaign').inherits(Krypton.Model).includes(Krypton.Atta
           },
         },
       });
+
+      this.cover.urls = buildFullPaths(this.cover);
 
       return this;
     },

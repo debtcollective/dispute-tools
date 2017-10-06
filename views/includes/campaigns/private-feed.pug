@@ -9,7 +9,7 @@
     .flex
       - var _avatarUrl = '/images/profile/placeholder-small.png';
       if (currentUser.account.image.exists('smallRedSquare'))
-        - _avatarUrl = currentUser.account.image.url('smallRedSquare')
+        - _avatarUrl = currentUser.account.image.urls['smallRedSquare']
       img.mr1(
         src=_avatarUrl
         alt=currentUser.account.fullname

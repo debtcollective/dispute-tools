@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect;
 const path = require('path');
-const uuid = require('uuid');
+const { awsIntegration } = require('../../utils/helpers');
 
 const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 
@@ -125,7 +125,8 @@ describe('Dispute', () => {
 
     describe('attachments', () => {
       let disputeId = '';
-      it('should be added', () => {
+
+      it('should be added', awsIntegration(() => {
         disputeId = dispute.id;
         dispute.userId = user.id;
         dispute.disputeToolId = tool.id;
@@ -143,7 +144,7 @@ describe('Dispute', () => {
             expect(dispute.data.attachments[0].thumb).to.exists;
             expect(dispute.data.attachments[0].name).to.be.equal('single-uploader');
           }));
-      });
+      }));
 
       it('should be removed', () => {
         dispute.userId = user.id;
@@ -182,7 +183,8 @@ describe('Dispute', () => {
           .then(containsDispute));
 
       describe('when given a readable id should ignore', () => {
-        const withreadableId = q => Object.assign({ filters: { readable_id: dispute.readableId } }, q);
+        const withreadableId = q =>
+          Object.assign({ filters: { readable_id: dispute.readableId } }, q);
         it('the name', () =>
           Dispute.search(withreadableId({ name: 'bogus bogus' }))
             .then(containsDispute));

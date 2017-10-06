@@ -31,13 +31,13 @@ block content
               if collective.cover.exists('grayscale')
                 .center.pb2
                   img.inline-block.align-top.fit(
-                    src=collective.cover.url('grayscale')
+                    src=collective.cover.url['grayscale']
                   )
 
               if collective.userBelongsToCollective
                 - var _avatarUrl = '/images/profile/placeholder-small.png';
                 if (currentUser.account.image.exists('smallRedSquare'))
-                  - _avatarUrl = currentUser.account.image.url('smallRedSquare')
+                  - _avatarUrl = currentUser.account.image.urls['smallRedSquare']
                 .flex.items-center.pb2
                   img.mr1(src=_avatarUrl alt=currentUser.account.fullname width='40' height='40')
                   p.-caption.-fw-700.-accent You + #{collective.userCount - 1} members · #{collective.campaignCount} campaign#{collective.campaignCount === 1 ? '' : 's'}
