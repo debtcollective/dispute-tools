@@ -7,15 +7,11 @@ block content
   div(style="font-size: 16px; line-height: 142%;")
     div(style="font-family: monospace; color: #000000;")
       div Hi #{user.account.fullname},
-      div Your <b>#{dispute.disputeTool.name}</b> has been updated.
+      div An admin has written a new comment for you about your <b>#{dispute.disputeTool.name}</b>.
       div &nbsp;
 
-      div <b>Comment:</b>
       div= disputeStatus.comment
       div &nbsp;
-
-      div <b>Current Status:</b>
-      div= disputeStatus.status
 
       div &nbsp;
       div &nbsp;
