@@ -140,8 +140,13 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       res.render('home/admin.pug');
     },
 
+    startpage(req, res) {
+      res.render('home/startpage.pug');
+    },
+
     index(req, res) {
-      res.render('home/index.pug');
+      if (!req.user) res.render('home/index.pug');
+      else res.redirect(CONFIG.router.helpers.Collectives.url());
     },
 
     about(req, res) {

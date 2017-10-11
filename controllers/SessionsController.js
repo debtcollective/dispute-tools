@@ -41,7 +41,7 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
 
           req.flash('success', 'Welcome to The Debt Collective');
 
-          return res.redirect(CONFIG.router.helpers.root.url());
+          return res.redirect(CONFIG.router.helpers.Collectives.url());
         });
       })(req, res, next);
     },
