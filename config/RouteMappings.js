@@ -21,6 +21,11 @@ const routeMappings = RouteMappings()
     as: 'about',
   })
 
+  .get('/startpage', {
+    to: 'Home#startpage',
+    as: 'startpage',
+  })
+
   .get('/vision', {
     to: 'Home#vision',
     as: 'vision',
