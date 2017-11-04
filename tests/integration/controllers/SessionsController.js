@@ -1,4 +1,4 @@
-/* globals User, CONFIG, Collective */
+/* globals User, CONFIG, Collective, Account */
 const sa = require('superagent');
 const bcrypt = require('bcrypt-node');
 const path = require('path');
@@ -44,19 +44,13 @@ describe('SessionsController', () => {
       zip: '73301',
     });
 
-    return Collective.first().then((res) => {
-      return User.transaction((trx) => {
-        return user.transacting(trx).save()
-          .then(() => {
-            return user.transacting(trx).activate().save()
-          })
+    return Collective.first().then((res) => User.transaction((trx) => user.transacting(trx).save()
+          .then(() => user.transacting(trx).activate().save())
           .then(() => {
             account.userId = user.id;
             account.collectiveId = res.id;
             return account.transacting(trx).save();
-          });
-      });
-    });
+          })));
   });
 
   after(() => {
@@ -107,9 +101,9 @@ describe('SessionsController', () => {
             password: '123456',
             _csrf,
           })
-          .end((err, res) => {
-            expect(err.toString()).to.be.equal('Error: Bad Request');
-            expect(res.status).to.be.equal(400);
+          .end((badRequestErr, badRequestRes) => {
+            expect(badRequestErr.toString()).to.be.equal('Error: Bad Request');
+            expect(badRequestRes.status).to.be.equal(400);
             done();
           });
       });
@@ -150,7 +144,7 @@ describe('SessionsController', () => {
     agent.post(`${url}${urls.resetPassword.url()}`)
     .send({
       _csrf,
-      email: user.email
+      email: user.email,
     })
     .set('Accept', 'text/html')
     .end((err, res) => {

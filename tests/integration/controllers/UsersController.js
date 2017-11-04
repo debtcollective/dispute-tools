@@ -1,12 +1,14 @@
 /* globals User, CONFIG, Collective, Account */
 
 const sa = require('superagent');
-const agent = sa.agent();
 const expect = require('chai').expect;
 const Promise = require('bluebird');
 const path = require('path');
+const uuid = require('uuid');
 
+const agent = sa.agent();
 const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
+const helpers = require(path.join(process.cwd(), 'tests', 'utils', 'helpers'));
 const url = CONFIG.env().siteURL;
 const urls = CONFIG.router.helpers;
 
@@ -61,11 +63,11 @@ describe('UsersController', () => {
     return truncate(User);
   });
 
-  it(`As a Visitor, should 403 index ${urls.Users.url()}`, (done) => {
+  it(`As a Visitor, should 404 index ${urls.Users.url()}`, (done) => {
     agent.get(`${url}${urls.Users.url()}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
-        expect(res.status).to.equal(403);
+        expect(res.status).to.equal(404);
         done();
       });
   });
@@ -82,45 +84,42 @@ describe('UsersController', () => {
       });
   });
 
-  it(`As a Visitor, should render 200 on show ${urls.Users.show.url(':id')}`, (done) => {
+  it(`As a Visitor, should render 404 on show ${urls.Users.show.url(':id')}`, (done) => {
     agent.get(`${url}${urls.Users.show.url(user.id)}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
-        expect(err).to.not.exists;
-        expect(res.status).to.equal(200);
+        expect(res.status).to.equal(404);
         done();
       });
   });
 
-  // it(`Should render show 404 ${urls.Users.show.url(':id')}`, (done) => {
-  //   agent.get(`${url}${urls.Users.show.url(uuid.v4())}`)
-  //     .set('Accept', 'text/html')
-  //     .end((err, res) => {
-  //       expect(err.toString()).to.be.equal('Error: Not Found');
-  //       expect(res.status).to.equal(404);
-  //       done();
-  //     });
-  // });
+  it(`Should render show 404 ${urls.Users.show.url(':id')}`, (done) => {
+    agent.get(`${url}${urls.Users.show.url(uuid.v4())}`)
+      .set('Accept', 'text/html')
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        done();
+      });
+  });
 
-  it(`As a Visitor, should render 403 on edit ${urls.Users.edit.url(':id')}`, (done) => {
+  it(`As a Visitor, should render 404 on edit ${urls.Users.edit.url(':id')}`, (done) => {
     agent.get(`${url}${urls.Users.edit.url(user.id)}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
-        expect(err.toString()).to.be.equal('Error: Forbidden');
-        expect(res.status).to.equal(403);
+        expect(err.toString()).to.be.equal('Error: Not Found');
+        expect(res.status).to.equal(404);
         done();
       });
   });
 
-  // it(`Should render show 404 ${urls.Users.edit.url(':id')}`, (done) => {
-  //   agent.get(`${url}${urls.Users.edit.url(uuid.v4())}`)
-  //     .set('Accept', 'text/html')
-  //     .end((err, res) => {
-  //       expect(err.toString()).to.be.equal('Error: Not Found');
-  //       expect(res.status).to.equal(404);
-  //       done();
-  //     });
-  // });
+  it(`Should render show 404 ${urls.Users.edit.url(':id')}`, (done) => {
+    agent.get(`${url}${urls.Users.edit.url(uuid.v4())}`)
+      .set('Accept', 'text/html')
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        done();
+      });
+  });
 
   it(`As A Visitor, should render activaton ${urls.Users.activation.url()}`, (done) => {
     agent.get(`${url}${urls.Users.activation.url()}`)
@@ -188,7 +187,7 @@ describe('UsersController', () => {
   });
 
   describe('#update', () => {
-    it('As a Visitor, it should 403 on update a user', (done) => {
+    it('As a Visitor, it should 404 on update a user', (done) => {
       agent.post(`${url}${urls.Users.update.url(user.id)}`)
         .set('Accept', 'text/html')
         .send({
@@ -197,8 +196,8 @@ describe('UsersController', () => {
           _csrf,
         })
         .end((err, res) => {
-          expect(err.toString()).to.be.equal('Error: Forbidden');
-          expect(res.status).to.be.equal(403);
+          expect(err.toString()).to.be.equal('Error: Not Found');
+          expect(res.status).to.be.equal(404);
           done();
         });
     });

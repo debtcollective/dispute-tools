@@ -83,6 +83,24 @@ block content
             input.-k-input.-fw.-ff-sec(name="website-url" value=user.account.socialLinks.website placeholder="http://website.com")
             p(class="-on-error -danger -caption -fw-500 mt1")
 
+        div
+          .pt2.pb1.-fw-500 Privacy
+            label.-ff-sec.block.pb2
+              input.mr1(
+                name="private"
+                type="checkbox"
+                checked=user.account.private
+              )
+              | Make my profile private
+
+            label.-ff-sec.block.pb2
+              input.mr1(
+                name="disputesPrivate"
+                type="checkbox"
+                checked=user.account.disputesPrivate
+              )
+              | Make my disputes private
+
         .pt3
           button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Save changes
 

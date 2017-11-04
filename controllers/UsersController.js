@@ -6,7 +6,7 @@ const fs = require('fs-extra');
 const UsersController = Class('UsersController').inherits(RestfulController)({
   beforeActions: [
     {
-      before: '_loadUser',
+      before: ['_loadUser'],
       actions: ['show', 'edit', 'update', 'destroy'],
     },
   ],
@@ -24,8 +24,14 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
           }
 
           return req.restifyACL(result)
-            .then((_result) => {
-              res.locals.user = _result[0];
+            .then(([_result]) => {
+              if (!_result) {
+                const err = new Error();
+                err.name = 'ForbiddenError';
+                return next(err);
+              }
+
+              res.locals.user = _result;
 
               return Promise.each(res.locals.user.disputes, (dispute) =>
                 DisputeTool.first({ id: dispute.disputeToolId })
@@ -46,14 +52,16 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
     },
 
     show(req, res) {
-      if (!req.user || (req.user && req.user.id !== res.locals.user.id)) {
+      if (req.user.id !== res.locals.user.id) {
         const _disputes = [];
 
-        res.locals.user.disputes.forEach((dispute) => {
-          if (dispute.statuses[0].status !== 'Incomplete') {
-            _disputes.push(dispute);
-          }
-        });
+        if (!res.locals.user.account.disputesPrivate) {
+          res.locals.user.disputes.forEach((dispute) => {
+            if (dispute.statuses[0].status !== 'Incomplete') {
+              _disputes.push(dispute);
+            }
+          });
+        }
 
         res.locals.user.disputes = _disputes;
       }
@@ -97,15 +105,15 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
               .insert(userCollectives);
           })
           .then(() => Promise.each(req.body.collectiveIds, (collectiveId) => Collective.query()
-                .transacting(trx)
-                .where('id', collectiveId)
-                .then(([collective]) => {
-                  collective.userCount++;
+            .transacting(trx)
+            .where('id', collectiveId)
+            .then(([collective]) => {
+              collective.userCount++;
 
-                  return collective
-                    .transacting(trx)
-                    .save();
-                })))
+              return collective
+                .transacting(trx)
+                .save();
+            })))
           .then(trx.commit)
           .catch(trx.rollback)).then(() => {
             user.account = account;
@@ -141,6 +149,13 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       const user = res.locals.user;
 
       delete req.body.role;
+
+      // The front-end tends to send back "on" instead of a boolean primitive
+      // for when the checkbox is selected and nothing if it's not selected so
+      // this is the most consistent way to get the boolean primitive Knex is
+      // expecting
+      req.body.private = req.body.private !== undefined;
+      req.body.disputesPrivate = req.body.disputesPrivate !== undefined;
 
       user.updateAttributes(req.body);
       user.account.updateAttributes(req.body);

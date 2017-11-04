@@ -5,13 +5,19 @@ block title
 
 block content
   .max-width-3.mx-auto.py4
-    .clearfix.md-flex.items-center
+    .clearfix.flex.items-center
       .col.md-col-6.col-12.center
         img(src='/images/global/tdc-hand.png')
       .col.md-col-6.col-12
         h2.pb3.-ttu.-h-sec.-accent: span 404
-        h4.pb2.-ff-sec.-fw-300 The page you are looking for can’t be found.
+        h4.pb2.-ff-sec.-fw-300 Looks like you followed a bad link or something went wrong.
+        //- h4.pb2.-ff-sec.-fw-300.-accent= message
         p
           a.button-clear.-fw-700(href='/')
             svg(width='14' height='14'): use(xlink:href='#svg-arrow-backward')
             span.pl1 Go to homepage.
+
+        if showLogin
+          p.pt3
+            button.-k-btn.btn-primary.-fw.-fw-700.js-login-link Login
+

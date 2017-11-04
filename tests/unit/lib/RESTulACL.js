@@ -103,12 +103,12 @@ describe('RESTfulACL', () => {
     });
   });
 
-  it('Should load all if Visitor', () => {
+  it('Should not load any if Visitor', () => {
     req.role = 'Visitor';
     // req.user.id = user.id;
 
     return req.restifyACL(usersResult).then((result) => {
-      expect(result.length).to.be.equal(3);
+      expect(result.length).to.be.equal(0);
     });
   });
 });

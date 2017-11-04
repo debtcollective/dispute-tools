@@ -45,6 +45,8 @@ const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attach
     'socialLinks',
     'imagePath',
     'imageMeta',
+    'private',
+    'disputesPrivate',
     'createdAt',
     'updatedAt',
   ],

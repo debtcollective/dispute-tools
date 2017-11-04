@@ -65,18 +65,23 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         .where({ id: req.params.id })
         .include('[user.account, statuses, attachments, disputeTool]')
         .then(([dispute]) => {
-          res.locals.dispute = dispute;
-          req.dispute = dispute;
+          if (!dispute) {
+            next(new NotFoundError());
+          } else {
+            res.locals.dispute = dispute;
+            req.dispute = dispute;
 
-          // sort Dispute Status DESC
-          dispute.statuses = dispute.statuses.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            // sort Dispute Status DESC
+            dispute.statuses = dispute.statuses
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-          const optionData = dispute.disputeTool.data.options[dispute.data.option];
-          if (optionData && optionData.more) {
-            optionData.more = marked(optionData.more);
+            const optionData = dispute.disputeTool.data.options[dispute.data.option];
+            if (optionData && optionData.more) {
+              optionData.more = marked(optionData.more);
+            }
+
+            next();
           }
-
-          next();
         })
         .catch(next);
     },
@@ -90,6 +95,8 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         if (status.status !== 'User Update') {
           return true;
         }
+
+        return false;
       })[0];
 
       if (req.user && req.user.id === req.dispute.userId) {
@@ -114,9 +121,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         option: req.body.option,
         user: req.user,
       })
-      .then((disputeId) => {
-        return res.redirect(CONFIG.router.helpers.Disputes.show.url(disputeId));
-      })
+      .then((disputeId) => res.redirect(CONFIG.router.helpers.Disputes.show.url(disputeId)))
       .catch(next);
     },
 
@@ -132,53 +137,43 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       });
 
       ds.save()
-        .then(() => {
-          return DisputeMailer.sendToAdmins({
-            dispute,
-            user: req.user,
-            disputeStatus: ds,
-          }).catch(e => {
-            console.log('  ---> Failed to send mail to admins (on #update)');
-            console.log(e.stack);
-          });
-        })
-        .then(() => {
-          return dispute.save();
-        })
-        .then(() => {
-          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
-        })
+        .then(() => DisputeMailer.sendToAdmins({
+          dispute,
+          user: req.user,
+          disputeStatus: ds,
+        }).catch(e => {
+          console.log('  ---> Failed to send mail to admins (on #update)');
+          console.log(e.stack);
+        }))
+        .then(() => dispute.save())
+        .then(() => res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)))
         .catch(next);
     },
 
     updateSubmission(req, res, next) {
       const dispute = res.locals.dispute;
-      const pendingSubmission = req.body.pending_submission === '1'
+      const pendingSubmission = req.body.pending_submission === '1';
 
       dispute.markAsCompleted(pendingSubmission)
-        .then((renderer) => {
-          return UserMailer.sendDispute(req.user.email, {
+        .then((renderer) => UserMailer.sendDispute(req.user.email, {
+          user: req.user,
+          renderer,
+          _options: {
+            subject: 'Dispute Documents - The Debt Collective',
+          },
+        })
+          .then(() => UserMailer.sendDisputeToAdmin({
             user: req.user,
             renderer,
             _options: {
-              subject: 'Dispute Documents - The Debt Collective',
+              subject: 'New Dispute Completed - The Debt Collective',
             },
-          })
-          .then(() => {
-            return UserMailer.sendDisputeToAdmin({
-              user: req.user,
-              renderer,
-              _options: {
-                subject: 'New Dispute Completed - The Debt Collective',
-              },
-            });
-          })
+          }))
           .catch(e => {
             console.log('  ---> Failed to send smail to user (on #setSignature)');
             console.log(e.stack);
-            Raven.captureException(e, { req: req });
-          });
-        })
+            Raven.captureException(e, { req });
+          }))
         .then(() => {
           req.flash('success', 'Your dispute is pending for assistance, thank you!');
           res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
@@ -210,16 +205,14 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       }
 
       return dispute.save()
-        .then(() => {
-          return res.format({
-            html() {
-              return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
-            },
-            json() {
-              return res.json({ status: 'confirmed' });
-            },
-          });
-        })
+        .then(() => res.format({
+          html() {
+            return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+          },
+          json() {
+            return res.json({ status: 'confirmed' });
+          },
+        }))
         .catch(next);
     },
 
@@ -227,9 +220,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       const dispute = res.locals.dispute;
 
       dispute.setSignature(req.body.signature)
-        .then(() => {
-          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
-        })
+        .then(() => res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)))
         .catch((e) => {
           req.flash('error', `${e.toString()} (on #setSignature)`);
           return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
@@ -244,12 +235,8 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
       }
 
-      return Promise.each(req.files.attachment, (attachment) => {
-        return dispute.addAttachment(req.body.name, attachment.path);
-      })
-      .then(() => {
-        return dispute.save();
-      })
+      return Promise.each(req.files.attachment, (attachment) => dispute.addAttachment(req.body.name, attachment.path))
+      .then(() => dispute.save())
       .catch(() => {
         req.flash('error', 'A problem occurred trying to process the attachments');
       })

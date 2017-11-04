@@ -19,27 +19,21 @@ describe('DisputesController', () => {
   before(function before() {
     this.timeout(5000);
 
-    return Promise.each(['User', 'Admin'], (role) => {
-      return createUser(role)
+    return Promise.each(['User', 'Admin'], (role) => createUser(role)
         .then((res) => {
           data[role] = res;
-        });
+        }))
+    .then(() => DisputeTool.first({
+      id: '11111111-1111-1111-1111-111111111111',
     })
-    .then(() => {
-      return DisputeTool.first({
-        id: '11111111-1111-1111-1111-111111111111'
-      })
-        .then((tool) => {
-          return tool.createDispute({
-            user: data.User,
-            option: tool.data.options.A ? 'A' : 'none',
-          })
+        .then((tool) => tool.createDispute({
+          user: data.User,
+          option: tool.data.options.A ? 'A' : 'none',
+        })
           .then((disputeId) => {
             data.disputeTool = tool;
             data.disputeId = disputeId;
-          });
-        });
-    });
+          })));
   });
 
   after(() => {
@@ -51,7 +45,7 @@ describe('DisputesController', () => {
       .set('Accept', 'text/html')
       .end((err, res) => {
         _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
-        expect(res.status).to.equal(403);
+        expect(res.status).to.equal(404);
         done();
       });
   });
@@ -61,7 +55,7 @@ describe('DisputesController', () => {
       .set('Accept', 'text/html')
       .end((err, res) => {
         _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
-        expect(res.status).to.equal(403);
+        expect(res.status).to.equal(404);
         done();
       });
   });
@@ -71,7 +65,7 @@ describe('DisputesController', () => {
       .set('Accept', 'text/html')
       .end((err, res) => {
         _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
-        expect(res.status).to.equal(403);
+        expect(res.status).to.equal(404);
         done();
       });
   });
@@ -81,7 +75,7 @@ describe('DisputesController', () => {
       .set('Accept', 'text/html')
       .end((err, res) => {
         _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
-        expect(res.status).to.equal(403);
+        expect(res.status).to.equal(404);
         done();
       });
   });
@@ -95,7 +89,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
-        expect(res.status).to.equal(403);
+        expect(res.status).to.equal(404);
         done();
       });
   });
@@ -123,7 +117,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
-        expect(res.status).to.equal(403);
+        expect(res.status).to.equal(404);
         done();
       });
   });
@@ -136,7 +130,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
-        expect(res.status).to.equal(403);
+        expect(res.status).to.equal(404);
         done();
       });
   });
@@ -149,7 +143,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
-        expect(res.status).to.equal(403);
+        expect(res.status).to.equal(404);
         done();
       });
   });
@@ -162,7 +156,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
-        expect(res.status).to.equal(403);
+        expect(res.status).to.equal(404);
         done();
       });
   });
@@ -212,7 +206,7 @@ describe('DisputesController', () => {
     agent.get(`${url}${urls.Disputes.new.url(data.disputeId)}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
-        expect(res.status).to.equal(403);
+        expect(res.status).to.equal(404);
         done();
       });
   });
@@ -405,5 +399,4 @@ describe('DisputesController', () => {
         done();
       });
   });
-
 });
