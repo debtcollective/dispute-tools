@@ -1,10 +1,10 @@
-extends ../layouts/placeholder.pug
+extends ../layouts/application.pug
 
 block styles
   link(href="/build/stylesheets/home/index.css" rel="stylesheet")
 
 block content
-  .bg-light-pattern.-dark.px2.pt4
+  .bg-light-pattern.-dark.px2.pt3
     .max-width-4.mx-auto
       h2.HomeHeading.pt1.pb3 Organize. Resist. Rebuild.
       .clearfix.md-flex
@@ -17,3 +17,15 @@ block content
         .col.col-1.xs-hide &nbsp;
         .col.md-col-7.col-12.md-flex.items-end
           img.block.mx-auto.fit.pb1(src='/images/home/home-illustration-top.png')
+
+block scripts
+  script(src="/build/javascripts/home/index.js" async)
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(currentUser)},
+        currentURL: !{JSON.stringify(currentURL)},
+      };
+
+      new ViewHomeIndex(options);
+    }, true);

@@ -18,42 +18,32 @@ Corporate elites control our government and by extension our lives. They cheat w
   * [Views](Documentation#views)
   * [UI](Documentation#ui)
 
-# Installation
-
-Create `config.js` and `knexfile.js`, edit them as needed.
-
-```sh
-cp config/config.sample.js config/config.js
-cp config/knexfile.sample.js knexfile.js
-```
-
-* `disableActivation`: when truthy, will not require activation before logging in. Good for testing.
-
-Run redis with `redis-server`
-
-Run postgres.app
-
-Run migrations with `npm run db:migrate`
-
-Build the application assets before starting.
-
-```sh
-npm run build
-```
-
-Run the server
-
-```sh
-npm start
-```
-
-## Dependencies
+# Dependencies
 
 You will need to install the following libraries/packages in order for
 the app to work correctly
 
+* Node 8.9.1
+* Redis
+* Postgresql
 * GraphicsMagick (`brew install graphicsmagick` if you are on macOS)
 * ImageMagick (`brew install imagemagick` if you are on macOS)
+
+# Installation
+
+1. Copy config files and edit them as needed
+```sh
+cp config/config.sample.js config/config.js
+cp config/knexfile.sample.js knexfile.js
+```
+2. Run migrations `yarn db:migrate`
+3. Run seeds `yarn db:seed`
+4. Build assets `yarn build`
+5. Run app `yarn start`
+
+## config.js parameters
+
+* `disableActivation`: when truthy, will not require activation before logging in. Good for testing.
 
 ## Emails in Development
 
@@ -64,9 +54,25 @@ in development, to install:
 * Run `mailcatcher`
 * Send mail through `smtp://localhost:1025` (If you copied
   `config.sample.js` this is already configured for you
-* Go to `http://localhost:1080/`
+* Go to `http://localhost:1080/` to see emails
 
-# Tasks
+# Database Tasks
+
+We are using [Knex](https://github.com/tgriesser/knex) to handle our
+migrations. Check their documentation in order to see how to create
+migrations and seed files.
+
+## Seeds
+
+To generate seeds you can run `yarn run knex seeds:make <seed_name>`.
+Since some seeds need to be executed in order (Collectives before
+Campaings for example), we are prepending timestamp to the seeds name. To
+generate a timestamp the same way Knex does for migrations, we are using
+the [same code from the Knex repo](https://github.com/tgriesser/knex/blob/f66b524af71adf434cddc1830fd9b369d2f48a32/src/migrate/index.js#L411-L426)
+
+Just copy that code and run it in the Node terminal or a browser console
+
+# App Tasks
 
 We have some tasks to do some manual process in the app, here are some
 of them (Feel free to document the others)
@@ -81,14 +87,6 @@ command
 
 `./scripts/tasks/regenerate_dispute_zip_file <dispute_id>`
 
-# Requirements
-
-Run redis with `redis-server`
-
-Run database migrations with `scripts/utils/knexreset`
-
-Run postgres.app
-
 # Deployment
 
 Infrastructure setup is handled by [debtcollective-terrraform](https://gitlab.com/debtcollective/debtcollective-terraform). Once you have you environment running, you can deploying using:
@@ -101,8 +99,7 @@ For example to deploy to production run
 1. `pm2 deploy ecosystem.json production setup`
 2. `pm2 deploy ecosystem.json production`
 
-If you need to change branches, servers etc, feel free to edit
-`ecosystem.json`
+If you need to change branches, servers etc, feel free to edit `ecosystem.json`
 
 ## Configuration Variables
 
