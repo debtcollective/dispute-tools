@@ -20,6 +20,7 @@
     "migrate:dev": "knex migrate:latest --env development",
     "migrate:seed:dev": "knex seed:run --env development",
     "db:migrate": "knex migrate:latest",
+    "db:seed": "knex seed:run",
     "report": "scripty",
     "start": "scripty",
     "iron-node": "scripty",

@@ -11,6 +11,7 @@ const config = {
 
   development: {
     port: process.env.PORT || 3000,
+    disableActivation: true,
 
     sessions: {
       key: 'session',
@@ -61,26 +62,26 @@ const config = {
   test: {
     port: process.env.PORT || 3000,
     sessions: {
-      key: process.env.SESSION_NAME,
-      secret: process.env.SESSION_SECRET,
+      key: process.env.SESSION_NAME || 'session',
+      secret: process.env.SESSION_SECRET || 'SECRET',
     },
     siteURL: `http${process.env.SECURE === 'true' ? 's' : ''}://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}`,
     enableLithium: false,
 
     // Mailer
     mailers: {
-      contactEmail: process.env.CONTACT_EMAIL,
-      senderEmail: process.env.SENDER_EMAIL,
-      disputesBCCAddresses: [process.env.DISPUTES_EMAIL],
+      contactEmail: process.env.CONTACT_EMAIL || 'contact@example.com',
+      senderEmail: process.env.SENDER_EMAIL || 'no-reply@example.com',
+      disputesBCCAddresses: [(process.env.DISPUTES_EMAIL || 'disputes@example.com')],
     },
 
     nodemailer: {
-      host: process.env.NODEMAILER_HOST,
-      port: process.env.NODEMAILER_PORT,
+      host: process.env.NODEMAILER_HOST || 'localhost',
+      port: process.env.NODEMAILER_PORT || 1025,
       secure: process.env.NODEMAILER_SECURE === 'true',
       auth: {
-        user: process.env.NODEMAILER_USER,
-        pass: process.env.NODEMAILER_PASS,
+        user: process.env.NODEMAILER_USER || '',
+        pass: process.env.NODEMAILER_PASS || '',
       },
     },
 
