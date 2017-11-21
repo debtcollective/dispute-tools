@@ -107,6 +107,7 @@
     "fs-extra": "^0.30.0",
     "glob": "^7.0.5",
     "gm": "^1.23.0",
+    "hashids": "^1.1.4",
     "helmet": "^3.6.0",
     "humanize-num": "^1.1.5",
     "im-metadata": "^3.0.0",

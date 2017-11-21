@@ -45,6 +45,7 @@ export default class AdminDisputesIndexController extends Widget {
     this.originalQuery = {
       filters: {
         dispute_tool_id: this.AdminDisputesIndexTableControls.toolsSelect.value,
+        readable_id: this.AdminDisputesIndexTableControls.readableIdInput.value,
       },
       name: this.AdminDisputesIndexTableControls.searchInput.value,
       status: this.AdminDisputesIndexTableControls.statusSelect.value,
@@ -61,6 +62,11 @@ export default class AdminDisputesIndexController extends Widget {
   _bindEvents() {
     this.AdminDisputesIndexTableControls.bind('searchInput', data => {
       this._query.name = data.value;
+      this._enableButtons();
+    });
+
+    this.AdminDisputesIndexTableControls.bind('readableIdInput', data => {
+      this._query.filters.readable_id = data.value;
       this._enableButtons();
     });
 
@@ -94,7 +100,7 @@ export default class AdminDisputesIndexController extends Widget {
     });
 
     this.AdminDisputesIndexTable.bind('show', data => {
-      this.AdminShowDisputePanel.updateData(data.dispute)
+      this.AdminShowDisputePanel.updateData(data.dispute);
       this.viewDisputeModal.activate();
     });
 
@@ -117,7 +123,8 @@ export default class AdminDisputesIndexController extends Widget {
       (this._query.name !== this.originalQuery.name) ||
       (this._query.status !== this.originalQuery.status) ||
       (this._query.filters.dispute_tool_id !== this.originalQuery.filters.dispute_tool_id) ||
-      (this._query.order !== this.originalQuery.order)
+      (this._query.order !== this.originalQuery.order) ||
+      (this._query.filters.readable_id !== this.originalQuery.filters.readable_id)
     ) {
       return this.AdminDisputesIndexTableControls.enableApplyButton();
     }

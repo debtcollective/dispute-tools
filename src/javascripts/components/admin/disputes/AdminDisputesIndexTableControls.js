@@ -5,6 +5,7 @@ export default class AdminDisputesIndexTableControls extends Widget {
     super(config);
 
     this.searchInput = this.element.querySelector('[name="disputesListValue[search]"]');
+    this.readableIdInput = this.element.querySelector('[name="disputesListValue[readableId]"]');
     this.toolsSelect = this.element.querySelector('[name="disputesListValue[tools]"]');
     this.statusSelect = this.element.querySelector('[name="disputesListValue[status]"]');
     this.orderSelect = this.element.querySelector('[name="disputesListValue[order]"]');
@@ -39,6 +40,12 @@ export default class AdminDisputesIndexTableControls extends Widget {
         value: ev.target.value,
       });
     });
+
+    this.readableIdInput.oninput = ev => {
+      this.dispatch('readableIdInput', {
+        value: ev.target.value,
+      });
+    };
 
     this.applyFiltersBtn.addEventListener('click', () => {
       this.dispatch('applyFilters');

@@ -32,11 +32,30 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
     userId: ['required'],
     disputeToolId: ['required'],
   },
-  attributes: ['id', 'userId', 'disputeToolId', 'data', 'deleted', 'createdAt', 'updatedAt'],
+  attributes: [
+    'id',
+    'readableId',
+    'userId',
+    'disputeToolId',
+    'data',
+    'deleted',
+    'createdAt',
+    'updatedAt',
+  ],
 
   search(qs) {
+    // If we're passed a human readable id just search by that and ignore everything else
+    if (qs.filters && qs.filters.readable_id) {
+      return this.query()
+        .where(qs.filters)
+        .include('[user.account, statuses]')
+        .then(records => records.map(r => r.id));
+    }
+
     const query = this.query()
-      .where('deleted', false)
+      .where(Object.assign(
+        { deleted: false },
+        qs.filters && qs.filters.dispute_tool_id ? qs.filters : {}))
       .include('[user.account, statuses]');
 
     const results = [];
@@ -68,11 +87,7 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
         }
       });
     })
-    .then(() => {
-      return results.map((item) => {
-        return item.id;
-      });
-    });
+      .then(() => results.map((item) => item.id));
   },
 
   prototype: {
@@ -85,6 +100,32 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
       this.data = this.data || {};
 
       return this;
+    },
+
+    // Krypton's default _getAttributes will replace any undefined
+    // attributes with null, causing our default valued columns
+    // to get null inserted into them (thereby telling Postgres to
+    // not use the default...) We can override that to prevent it for
+    // any given property (in this case, readableId)
+
+    // @Override
+    _getAttributes() {
+      const model = this;
+
+      const values = _.clone(model);
+
+      const sanitizedData = {};
+
+      model.constructor.attributes.forEach((attribute) => {
+        // We skip readableId so that Krypton doesn't try to insert null into the database
+        if (_.isUndefined(values[attribute]) && attribute !== 'readableId') {
+          sanitizedData[attribute] = null;
+        } else {
+          sanitizedData[attribute] = values[attribute];
+        }
+      });
+
+      return sanitizedData;
     },
 
     setOption(option) {
@@ -116,7 +157,7 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
         const disputeStatus = new DisputeStatus({
           status: 'Completed',
           disputeId: dispute.id,
-          pendingSubmission: pendingSubmission
+          pendingSubmission,
         });
 
         return DisputeTool.query()

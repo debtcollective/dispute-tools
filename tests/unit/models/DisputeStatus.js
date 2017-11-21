@@ -1,9 +1,6 @@
 /* globals User, Account, CONFIG, Collective, Dispute, DisputeTool, DisputeStatus */
 
-const expect = require('chai').expect;
-const path = require('path');
-
-const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
+const { expect } = require('chai');
 
 describe('Dispute Status', () => {
   let dispute;
@@ -31,13 +28,11 @@ describe('Dispute Status', () => {
       return Collective.first().then((result) => {
         collective = result;
 
-        return User.transaction((trx) => {
-          return user.transacting(trx).save().then(() => {
-            account.userId = user.id;
-            account.collectiveId = collective.id;
-            return account.transacting(trx).save();
-          });
-        });
+        return User.transaction((trx) => user.transacting(trx).save().then(() => {
+          account.userId = user.id;
+          account.collectiveId = collective.id;
+          return account.transacting(trx).save();
+        }));
       });
     })
     .then(() => {
