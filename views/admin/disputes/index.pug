@@ -27,6 +27,13 @@ block content
                 value= queryName
               )
           th
+            .-input
+              input.-k-input.-clean.-fw-700(
+                name='disputesListValue[readableId]'
+                placeholder='Search ids...'
+                value= queryFilters && queryFilters.readable_id
+              )
+          th
             .-k-select.-clean
               select.-fw-700.-fw(name='disputesListValue[tools]')
                 option(value="") Tools
@@ -82,6 +89,8 @@ block content
               .flex.items-center
                 img(src=_dispute.user.account.imageURL alt=_dispute.user.account.fullname width="50" height="50")
                 p.pl2.-fw-700= _dispute.user.account.fullname
+            td.-fw-400
+              | #{_dispute.readableId}
             td.-fw-500
               | #{_dispute.disputeTool.name}
               if _dispute.data.option !== 'none'

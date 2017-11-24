@@ -81,11 +81,7 @@ const User = Class('User').inherits(Krypton.Model)({
     }
 
     return query
-      .then((results) => {
-        return results.map((item) => {
-          return item.id;
-        });
-      });
+      .then((results) => results.map((item) => item.id));
   },
 
   getCampaigns(id, collectiveId) {

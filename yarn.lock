@@ -2349,6 +2349,10 @@ hasha@~2.2.0:
     is-stream "^1.0.1"
     pinkie-promise "^2.0.0"
 
+hashids@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/hashids/-/hashids-1.1.4.tgz#e4ff92ad66b684a3bd6aace7c17d66618ee5fa21"
+
 hashmap@^2.0.1:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/hashmap/-/hashmap-2.1.0.tgz#fe163aa781db4665bbd76f554e390c8c55ce920a"

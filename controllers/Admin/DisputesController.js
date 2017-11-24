@@ -11,9 +11,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
   beforeActions: [
     {
       before: [
-        (req, res, next) => {
-          return neonode.controllers.Home._authenticate(req, res, next);
-        },
+        (req, res, next) => neonode.controllers.Home._authenticate(req, res, next),
       ],
       actions: ['index', 'show', 'edit', 'update', 'destroy'],
     },
@@ -38,11 +36,6 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
             queryBuilder: query
               .where('deleted', false)
               .include('[user.account, attachments, disputeTool]'),
-            filters: {
-              allowedFields: [
-                'dispute_tool_id',
-              ],
-            },
             order: {
               default: '-updated_at',
               allowedFields: [
@@ -63,12 +56,10 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         DisputeTool.query()
           .orderBy('created_at', 'ASC')
           .then((disputeTools) => {
-            res.locals.disputeTools = disputeTools.map(dispute => {
-              return {
-                id: dispute.id,
-                name: dispute.name,
-              };
-            });
+            res.locals.disputeTools = disputeTools.map(dispute => ({
+              id: dispute.id,
+              name: dispute.name,
+            }));
             next();
           })
           .catch(next);
@@ -77,8 +68,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     },
     {
       before(req, res, next) {
-        Promise.mapSeries(res.locals.results, (result) => {
-          return DisputeStatus.query()
+        Promise.mapSeries(res.locals.results, (result) => DisputeStatus.query()
             .where({
               dispute_id: result.id,
             })
@@ -86,8 +76,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
             .then((statuses) => {
               result.statuses = statuses;
               return Promise.resolve();
-            });
-        })
+            }))
         .then(() => {
           next();
         })
@@ -113,6 +102,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     index(req, res) {
       res.locals.disputes = res.locals.results;
       res.locals.statuses = DisputeStatus.statuses;
+
       res.locals.headers = {
         total_count: ~~res._headers.total_count,
         total_pages: ~~res._headers.total_pages,
@@ -162,9 +152,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
             console.log(e.stack);
           });
         })
-        .then(() => {
-          return dispute.save();
-        })
+        .then(() => dispute.save())
         .then(() => {
           req.flash('success', 'The dispute status has been updated.');
           return res.redirect(CONFIG.router.helpers.Admin.Disputes.url());

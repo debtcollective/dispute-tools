@@ -27,17 +27,13 @@ const DisputeTool = Class('DisputeTool').inherits(Krypton.Model)({
 
       dispute.setOption(config.option);
 
-      return Dispute.transaction((trx) => {
-        return dispute.transacting(trx).save()
-          .then(() => {
-            status.disputeId = dispute.id;
+      return Dispute.transaction((trx) => dispute.transacting(trx).save()
+        .then(() => {
+          status.disputeId = dispute.id;
 
-            return status.transacting(trx).save()
-              .then(() => {
-                return dispute.id;
-              });
-          });
-      });
+          return status.transacting(trx).save()
+            .then(() => dispute.id);
+        }));
     },
   },
 });
