@@ -1,9 +1,27 @@
 #!/usr/bin/env sh
 
-psql -h ${POSTGRES_HOST:-localhost} -U ${POSTGRES_USER:-$(whoami)} -c 'DROP DATABASE IF EXISTS "debtcollective_test"'
+RED='\033[0;31m'
+GREEN='\033[1;32m'
+NC='\033[0m'
 
-psql -h ${POSTGRES_HOST:-localhost} -U ${POSTGRES_USER:-$(whoami)} -c 'CREATE DATABASE "debtcollective_test"'
+psqlInstalled=$(which psql)
 
-psql -h ${POSTGRES_HOST:-localhost} -U ${POSTGRES_USER:-$(whoami)} -c 'DROP DATABASE IF EXISTS "debtcollective_development"'
+if [ "$psqlInstalled" != "psql not found" ]
+then
+  if [ "$NODE_ENV" = "test" ]
+  then
+    echo "${GREEN}Resetting test database${NC}"
+    psql -h ${POSTGRES_HOST:-localhost} -U ${POSTGRES_USER:-$(whoami)} -c 'DROP DATABASE IF EXISTS "debtcollective_test"'
 
-psql -h ${POSTGRES_HOST:-localhost} -U ${POSTGRES_USER:-$(whoami)} -c 'CREATE DATABASE "debtcollective_development"'
+    psql -h ${POSTGRES_HOST:-localhost} -U ${POSTGRES_USER:-$(whoami)} -c 'CREATE DATABASE "debtcollective_test"'
+  else
+    echo "${GREEN}Resetting development database${NC}"
+    psql -h ${POSTGRES_HOST:-localhost} -U ${POSTGRES_USER:-$(whoami)} -c 'DROP DATABASE IF EXISTS "debtcollective_development"'
+
+    psql -h ${POSTGRES_HOST:-localhost} -U ${POSTGRES_USER:-$(whoami)} -c 'CREATE DATABASE "debtcollective_development"'
+  fi
+  exit 0
+else
+  echo "${RED}Please install psql${NC}"
+  exit 1
+fi

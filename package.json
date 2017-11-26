@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "npm run svg && tarima -fqe production",
-    "lint": "eslint *.js src bin config models controllers middlewares",
+    "lint": "scripty",
     "repl": "node bin/repl.js",
     "test": "scripty",
     "test:unit": "scripty",
@@ -30,7 +30,8 @@
     "post_deploy_staging": "scripty",
     "post_deploy_production": "./scripts/post_deploy_production",
     "disputes_sendto_admin": "./scripts/tasks/disputes-sendto-admin",
-    "resend_activation_links": "./scripts/tasks/resend-activation-links"
+    "resend_activation_links": "./scripts/tasks/resend-activation-links",
+    "prepush": "npm run lint"
   },
   "tarima": {
     "cwd": ".",
@@ -160,6 +161,7 @@
     "eslint-config-airbnb-base": "^5.0.1",
     "eslint-plugin-import": "^1.12.0",
     "eslint-plugin-mocha": "^4.3.0",
+    "husky": "^0.14.3",
     "istanbul": "^0.4.4",
     "istanbul-combine": "^0.3.0",
     "mocha": "^3.0.2",
