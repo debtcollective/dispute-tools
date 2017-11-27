@@ -1,51 +1,53 @@
-# debt-collective
-
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/debtcollective/Lobby)
-
-Come visit us in the public Debt Collective gitter room
-
-# About
+# The Debt Collective
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/debtcollective/Lobby)  
 
 Corporate elites control our government and by extension our lives. They cheat workers, don’t pay their taxes, and then force us into debt for the basic necessities of life: shelter, food, education, and healthcare. We have the power to change this.
-
-* [Guides](Guides)
-
-* [Documentation](Documentation)
-  * [Models](Documentation#models)
-  * [Mailers](Documentation#mailers)
-  * [Controllers](Documentation#controllers)
-  * [Libraries](Documentation#libraries)
-  * [Views](Documentation#views)
-  * [UI](Documentation#ui)
 
 # Dependencies
 
 You will need to install the following libraries/packages in order for
 the app to work correctly
 
-* Node 8.9.1
-* Redis
-* Postgresql
+* [Node](https://nodejs.org/) 8.9.1
+* [Redis Server](https://redis.io/) 4.0 or greater
+* [PostgreSQL](https://www.postgresql.org/) 9.5 or greater
 * GraphicsMagick (`brew install graphicsmagick` if you are on macOS)
 * ImageMagick (`brew install imagemagick` if you are on macOS)
+4. [Yarn](https://yarnpkg.com/) 1.3 or greater
 
 # Installation
 
-1. Copy config files and edit them as needed
+1. Clone the repo
+```
+git clone git@gitlab.com:debtcollective/debtcollective.git
+cd debtcollective
+```
+
+2. Copy config files and edit them as needed
 ```sh
 cp config/config.sample.js config/config.js
 cp config/knexfile.sample.js knexfile.js
 ```
-2. Run migrations `yarn db:migrate`
-3. Run seeds `yarn db:seed`
+3. (optional, recommended) Disable account activation
+Update `./debtcollective/config/config.js` to include `disableActivation` attribute
+```javascript
+development: {
+  disableActivation: true,
+  ...
+}
+
+# Run server
+
+Ensure Redis and Postgres are running.
+
+1. Run migrations `yarn db:migrate`
+2. Run seeds `yarn db:seed`
+3. Install dependencies `yarn`
 4. Build assets `yarn build`
 5. Run app `yarn start`
 
-## config.js parameters
 
-* `disableActivation`: when truthy, will not require activation before logging in. Good for testing.
-
-## Emails in Development
+# Emails in Development
 
 We are using [mailcatcher](https://mailcatcher.me/) to visualize emails
 in development, to install:
