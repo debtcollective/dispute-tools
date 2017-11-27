@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# We only need to exclude things tracked by git, meaning we can safely
+# ignore the public folder, for example, as it'll never show up in "git diff"
+files=$(
+  git diff --name-only origin/master | \
+    grep '\.js$' | \
+    grep -v '^scripts'
+)
+
+if [ ! -z $files ]
+then
+  ./node_modules/.bin/eslint --fix $files
+fi
