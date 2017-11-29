@@ -205,6 +205,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
           req.flash('error', 'Invalid activation token');
           return res.redirect(CONFIG.router.helpers.login.url());
         }
+
         const user = users[0];
 
         user.activationToken = null;
