@@ -1,7 +1,6 @@
 /* globals Class, BaseController, CONFIG, User, UserMailer */
 
 const path = require('path');
-const bcrypt = require('bcrypt-node');
 const Promise = require('bluebird');
 const uuid = require('uuid');
 
@@ -17,33 +16,33 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
       if (req.user) {
         req.flash('info', 'You are already logged in');
 
-        return res.redirect(CONFIG.router.helpers.login.url());
-      }
-
-      passport.authenticate('local', (err, user) => {
-        if (err) {
-          return res.status(400).render('sessions/new', {
-            error: err.message,
-            _formData: req.body,
-          });
-        }
-
-        if (user.banned) {
-          req.flash('warning', 'This account is currently suspended. <a href="/contact">Contact us</a> if you think this is a mistake.');
-          res.redirect(CONFIG.router.helpers.login.url());
-          next();
-        }
-
-        req.login(user, (err) => {
-          if (err) {
-            return next(err);
+        res.redirect(CONFIG.router.helpers.login.url());
+      } else {
+        passport.authenticate('local', (authenticationError, user) => {
+          if (authenticationError) {
+            return res.status(400).render('sessions/new', {
+              error: authenticationError.message,
+              _formData: req.body,
+            });
           }
 
-          req.flash('success', 'Welcome to The Debt Collective');
+          if (user.banned) {
+            req.flash('warning', 'This account is currently suspended. <a href="/contact">Contact us</a> if you think this is a mistake.'); // eslint-disable-line
+            res.redirect(CONFIG.router.helpers.login.url());
+            return next();
+          }
 
-          return res.redirect(CONFIG.router.helpers.Collectives.url());
-        });
-      })(req, res, next);
+          return req.login(user, (loginError) => {
+            if (loginError) {
+              return next(loginError);
+            }
+
+            req.flash('success', 'Welcome to The Debt Collective');
+
+            return res.redirect(CONFIG.router.helpers.Collectives.url());
+          });
+        })(req, res, next);
+      }
     },
 
     destroy(req, res) {
@@ -72,18 +71,16 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
 
         user[0].resetPasswordToken = uuid.v4();
 
-        return user[0].save().then(() => {
-          return UserMailer.sendResetPasswordLink(user[0].email, {
-            user: user[0],
-            _options: {
-              subject: 'Reset your password - The Debt Collective',
-            },
-          })
+        return user[0].save().then(() => UserMailer.sendResetPasswordLink(user[0].email, {
+          user: user[0],
+          _options: {
+            subject: 'Reset your password - The Debt Collective',
+          },
+        })
           .then(() => {
             req.flash('success', 'Check your email to reset your password');
             return res.redirect(CONFIG.router.helpers.login.url());
-          });
-        });
+          }));
       })()
       .catch(next);
     },

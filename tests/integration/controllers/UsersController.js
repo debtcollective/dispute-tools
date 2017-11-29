@@ -45,15 +45,13 @@ describe('UsersController', () => {
     return Collective.first().then((res) => {
       collective = res;
 
-      return User.transaction((trx) => {
-        return user.transacting(trx).save()
+      return User.transaction((trx) => user.transacting(trx).save()
           .then(() => {
             account.userId = user.id;
             account.collectiveId = collective.id;
 
             return account.transacting(trx).save();
-          });
-      });
+          }));
     });
   });
 
@@ -140,7 +138,14 @@ describe('UsersController', () => {
       .end((err, res) => {
         expect(err).to.be.equal(null);
         expect(res.status).to.be.equal(200);
-        done();
+        agent.delete(`${url}${urls.logout.url()}`)
+          .set('Accept', 'text/html')
+          .send({
+            _csrf,
+          })
+          .end(() => {
+            done();
+          });
       });
   });
 

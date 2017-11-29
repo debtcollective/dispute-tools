@@ -27,17 +27,14 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             .then((_result) => {
               res.locals.user = _result[0];
 
-              return Promise.each(res.locals.user.disputes, (dispute) => {
-                return DisputeTool.first({ id: dispute.disputeToolId })
+              return Promise.each(res.locals.user.disputes, (dispute) =>
+                DisputeTool.first({ id: dispute.disputeToolId })
                   .then((disputeTool) => {
                     dispute.disputeTool = disputeTool;
                     return true;
-                  });
-              });
+                  }));
             })
-            .finally(() => {
-              return next();
-            });
+            .finally(() => next());
         })
         .catch((err) => {
           next(err);
@@ -78,35 +75,28 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
         req.body.collectiveIds = [req.body.collectiveIds];
       }
 
-      User.transaction((trx) => {
-        return user.transacting(trx).save()
+      User.transaction((trx) => user.transacting(trx).save()
           .then(() => {
             account.userId = user.id;
             return account.transacting(trx).save();
           })
-          .then(() => {
-            return User.knex()
+          .then(() => User.knex()
               .table('UsersCollectives')
               .where('user_id', user.id)
               .transacting(trx)
-              .del();
-          })
+              .del())
           .then(() => {
-            const userCollectives = req.body.collectiveIds.map((collectiveId) => {
-              return {
-                user_id: user.id,
-                collective_id: collectiveId,
-              };
-            });
+            const userCollectives = req.body.collectiveIds.map((collectiveId) => ({
+              user_id: user.id,
+              collective_id: collectiveId,
+            }));
 
             return User.knex()
               .table('UsersCollectives')
               .transacting(trx)
               .insert(userCollectives);
           })
-          .then(() => {
-            return Promise.each(req.body.collectiveIds, (collectiveId) => {
-              return Collective.query()
+          .then(() => Promise.each(req.body.collectiveIds, (collectiveId) => Collective.query()
                 .transacting(trx)
                 .where('id', collectiveId)
                 .then(([collective]) => {
@@ -115,15 +105,12 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
                   return collective
                     .transacting(trx)
                     .save();
-                });
-            });
-          })
+                })))
           .then(trx.commit)
-          .catch(trx.rollback);
-      }).then(() => {
-        user.account = account;
-        return user.sendActivation();
-      })
+          .catch(trx.rollback)).then(() => {
+            user.account = account;
+            return user.sendActivation();
+          })
       .then(() => {
         res.render('users/activation.pug', {
           email: user.email,
@@ -158,8 +145,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       user.updateAttributes(req.body);
       user.account.updateAttributes(req.body);
 
-      User.transaction((trx) => {
-        return user.transacting(trx).save()
+      User.transaction((trx) => user.transacting(trx).save()
           .then(() => {
             if (req.files && req.files.image && req.files.image.length > 0) {
               const image = req.files.image[0];
@@ -178,8 +164,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             return user.account.transacting(trx).save();
           })
           .finally(trx.commit)
-          .catch(trx.rollback);
-      })
+          .catch(trx.rollback))
       .then(() => {
         if (!user.activationToken) {
           req.flash('success', 'Profile updated succesfully');
@@ -220,12 +205,19 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
           req.flash('error', 'Invalid activation token');
           return res.redirect(CONFIG.router.helpers.login.url());
         }
+        const user = users[0];
 
-        users[0].activationToken = null;
+        user.activationToken = null;
 
-        return users[0].save().then(() => {
-          req.flash('success', 'Your account was succesfully activated');
-          res.redirect(CONFIG.router.helpers.login.url());
+        return user.save().then(() => {
+          req.login(user, (err) => {
+            if (err) {
+              return next(err);
+            }
+
+            req.flash('success', 'Welcome! Your account was succesfully activated.');
+            return res.redirect(CONFIG.router.helpers.Collectives.url());
+          });
         });
       })()
       .catch(next);
