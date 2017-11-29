@@ -8,7 +8,9 @@ files=$(
     grep -v '^scripts'
 )
 
-if [ ! -z $files ]
+if [ "$files" == "" ]
 then
-  ./node_modules/.bin/eslint --fix $files
+  exit 0
 fi
+
+./node_modules/.bin/eslint --fix "$files"
