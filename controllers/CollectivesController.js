@@ -34,52 +34,50 @@ function joinCampaign(userId, campaignObj, debtAmount) {
 const CollectivesController = Class('CollectivesController').inherits(RestfulController)({
   beforeActions: [
   // Load Collectives
-  {
-    before(req, res, next) {
-      Collective.query()
+    {
+      before(req, res, next) {
+        Collective.query()
         .orderBy('created_at', 'DESC')
-        .then((collectives) => {
-          return Promise.all(collectives.map((c) => {
-            const subquery = Campaign.query()
+        .then((collectives) => Promise.all(collectives.map((c) => {
+          const subquery = Campaign.query()
               .count('*')
               .where('collective_id', c.id);
 
-            if (!req.user) {
-              subquery
+          if (!req.user) {
+            subquery
                 .where('published', true)
                 .where('active', true);
-            } else {
-              subquery.where('published', true);
-            }
+          } else {
+            subquery.where('published', true);
+          }
 
-            return subquery.then(([result]) => {
-              c.campaignCount = parseInt(result.count, 10);
-              return c;
-            });
-          })).then(() => {
-            req.collectives = collectives;
-            res.locals.collectives = collectives;
-            next();
+          return subquery.then(([result]) => {
+            c.campaignCount = parseInt(result.count, 10);
+            return c;
           });
-        })
+        })).then(() => {
+          req.collectives = collectives;
+          res.locals.collectives = collectives;
+          next();
+        }))
       .catch(next);
+      },
+      actions: ['index'],
     },
-    actions: ['index'],
-  },
   // Load Collective
-  {
-    before: '_loadCollective',
-    actions: [
-      'show',
-      'join',
-    ],
-  },
+    {
+      before: '_loadCollective',
+      actions: [
+        'show',
+        'join',
+      ],
+    },
   // Sum totalDebtAmount for all campaigns
-  {
-    before(req, res, next) {
-      const campaingsIds = req.collective.campaigns.map(c => c.id);
+    {
+      before(req, res, next) {
+        const campaingsIds = req.collective.campaigns.map(c => c.id);
 
-      return Campaign.knex()
+        return Campaign.knex()
         .select('debt_amount')
         .from('UsersCampaigns')
         .whereIn('campaign_id', campaingsIds)
@@ -92,20 +90,20 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
           return next();
         })
         .catch(next);
+      },
+      actions: ['show'],
     },
-    actions: ['show'],
-  },
   // Check if user can create campaigns
-  {
-    before(req, res, next) {
-      req.canCreateCampaigns = false;
-      res.locals.canCreateCampaigns = false;
+    {
+      before(req, res, next) {
+        req.canCreateCampaigns = false;
+        res.locals.canCreateCampaigns = false;
 
-      if (!req.user) {
-        return next();
-      }
+        if (!req.user) {
+          return next();
+        }
 
-      return User.knex()
+        return User.knex()
         .table('CollectiveAdmins')
         .where({
           collective_id: req.params.id,
@@ -120,19 +118,19 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
         return next();
       })
       .catch(next);
+      },
+      actions: ['show'],
     },
-    actions: ['show'],
-  },
   // Check if user belongs to collective
-  {
-    before(req, res, next) {
-      res.locals.belongsToCollective = false;
+    {
+      before(req, res, next) {
+        res.locals.belongsToCollective = false;
 
-      if (!req.user) {
-        return next();
-      }
+        if (!req.user) {
+          return next();
+        }
 
-      return User.knex().table('UsersCollectives')
+        return User.knex().table('UsersCollectives')
         .where({
           user_id: req.user.id,
           collective_id: req.params.id,
@@ -143,37 +141,34 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
         }
         next();
       });
+      },
+      actions: ['show'],
     },
-    actions: ['show'],
-  },
   // Attach accounts to users
-  {
-    before(req, res, next) {
-      return Promise.each(req.collective.users, (user) => {
-        return Account.query()
+    {
+      before(req, res, next) {
+        return Promise.each(req.collective.users, (user) => Account.query()
           .where('user_id', user.id)
           .then(([account]) => {
             user.account = account;
-          });
-      })
+          }))
       .then(() => {
         next();
       })
       .catch(next);
+      },
+      actions: ['show'],
     },
-    actions: ['show'],
-  },
   // Check if user belongs to campaigns
-  {
-    before(req, res, next) {
-      if (!req.user) {
-        return next();
-      }
+    {
+      before(req, res, next) {
+        if (!req.user) {
+          return next();
+        }
 
-      const knex = Campaign.knex();
+        const knex = Campaign.knex();
 
-      return Promise.each(req.collective.campaigns, (campaign) => {
-        return knex.table('UsersCampaigns')
+        return Promise.each(req.collective.campaigns, (campaign) => knex.table('UsersCampaigns')
           .where({
             user_id: req.user.id,
             campaign_id: campaign.id,
@@ -186,28 +181,25 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
           }
 
           return Promise.resolve();
-        });
-      })
-      .then(() => {
-        return next();
-      })
+        }))
+      .then(() => next())
       .catch(next);
+      },
+      actions: ['show'],
     },
-    actions: ['show'],
-  },
   // Check if user belongs to collectives
-  {
-    before(req, res, next) {
-      if (!req.user) {
-        return next();
-      }
+    {
+      before(req, res, next) {
+        if (!req.user) {
+          return next();
+        }
 
-      const knex = Collective.knex();
+        const knex = Collective.knex();
 
-      return Promise.each(req.collectives, (collective) => {
-        collective.userBelongsToCollective = false;
+        return Promise.each(req.collectives, (collective) => {
+          collective.userBelongsToCollective = false;
 
-        return knex.table('UsersCollectives')
+          return knex.table('UsersCollectives')
           .where({
             user_id: req.user.id,
             collective_id: collective.id,
@@ -219,14 +211,12 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
             collective.userBelongsToCollective = true;
           }
         });
-      })
-      .then(() => {
-        return next();
-      })
+        })
+      .then(() => next())
       .catch(next);
+      },
+      actions: ['index'],
     },
-    actions: ['index'],
-  },
   ],
   prototype: {
     _loadCollective(req, res, next) {
@@ -286,8 +276,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
     join(req, res, next) {
       const knex = User.knex();
 
-      Collective.transaction((trx) => {
-        return knex
+      Collective.transaction((trx) => knex
           .table('UsersCollectives')
           .transacting(trx)
           .insert({
@@ -320,8 +309,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
           .then(trx.commit)
           .catch(trx.rollback);
         })
-        .catch(trx.rollback);
-      })
+        .catch(trx.rollback))
       .then(() => {
         req.flash('success', `You have successfully joined ${req.collective.name}`);
         res.redirect(CONFIG.router.helpers.Collectives.show.url(req.params.id));

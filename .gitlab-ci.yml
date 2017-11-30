@@ -33,7 +33,7 @@ test:
     - apt-get update
     - apt-get install -y postgresql-client
   script:
-    - yarn
+    - yarn 
     - yarn build
     - yarn test
     - yarn report

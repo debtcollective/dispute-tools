@@ -16,33 +16,37 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
       if (req.user) {
         req.flash('info', 'You are already logged in');
 
-        res.redirect(CONFIG.router.helpers.login.url());
-      } else {
-        passport.authenticate('local', (authenticationError, user) => {
-          if (authenticationError) {
-            return res.status(400).render('sessions/new', {
-              error: authenticationError.message,
-              _formData: req.body,
-            });
-          }
-
-          if (user.banned) {
-            req.flash('warning', 'This account is currently suspended. <a href="/contact">Contact us</a> if you think this is a mistake.'); // eslint-disable-line
-            res.redirect(CONFIG.router.helpers.login.url());
-            return next();
-          }
-
-          return req.login(user, (loginError) => {
-            if (loginError) {
-              return next(loginError);
-            }
-
-            req.flash('success', 'Welcome to The Debt Collective');
-
-            return res.redirect(CONFIG.router.helpers.Collectives.url());
-          });
-        })(req, res, next);
+        return res.redirect(CONFIG.router.helpers.login.url());
       }
+
+      return passport.authenticate('local', (err, user) => {
+        if (err) {
+          return res.status(400).render('sessions/new', {
+            error: err.message,
+            _formData: req.body,
+          });
+        }
+
+        if (user.banned) {
+          req.flash('warning', 'This account is currently suspended. <a href="/contact">Contact us</a> if you think this is a mistake.'); // eslint-disable-line
+          res.redirect(CONFIG.router.helpers.login.url());
+          next();
+        }
+
+        return req.login(user, (loginError) => {
+          if (loginError) {
+            return next(loginError);
+          }
+
+          req.flash('success', 'Welcome to The Debt Collective');
+
+          if (req.headers.referer) {
+            return res.redirect(req.headers.referer);
+          }
+
+          return res.redirect(CONFIG.router.helpers.Collectives.url());
+        });
+      })(req, res, next);
     },
 
     destroy(req, res) {

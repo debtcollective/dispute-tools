@@ -8,6 +8,8 @@ export default class UsersEditForm extends Widget {
       fullname: ['required'],
       email: ['required', 'email'],
       state: ['required'],
+      private: ['required'],
+      disputesPrivate: ['required'],
       zip: ['required', {
         rule(val) {
           if (/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(val) === false) {

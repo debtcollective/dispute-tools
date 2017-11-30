@@ -55,7 +55,7 @@ block content
               ul.list-reset
                 each dispute in user.disputes
                   li
-                    a.block.clearfix.py1.mxn1.-white(href=routeMappings.Disputes.show.url(dispute.id))
+                    a.block.clearfix.py1.mxn1.-white(href=(currentUser.id === user.id ? routeMappings.Disputes.show.url(dispute.id) : '#'))
                       .col.col-8.px1
                         .-fw-700
                           | #{dispute.disputeTool.name}

@@ -74,7 +74,7 @@ const middlewares = [
   {
     name: 'Error',
     path: 'middlewares/Error.js',
-  }
+  },
 ];
 
 module.exports = middlewares;

@@ -1,17 +1,23 @@
+/* globals Account */
+
 module.exports = {
   Visitor: [
     [false],
-    ['activation', 'activate', 'create', 'new', 'show', true],
+    ['activation', 'activate', 'create', 'new', true],
   ],
   User: [
     [false],
-    ['activation', 'show', true],
-    ['edit', 'update', (req) => {
+    ['activation', true],
+    ['edit', 'update', req => req.params.id === req.user.id],
+    ['show', req => {
       if (req.params.id === req.user.id) {
         return true;
       }
 
-      return false;
+      return Account.query()
+        .where({ user_id: req.params.id })
+        .limit(1)
+        .then(([account]) => !account.private);
     }],
   ],
   Admin: [
