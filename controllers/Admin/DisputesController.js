@@ -1,7 +1,8 @@
 /* globals neonode, Class, Admin, RestfulController, DisputeTool, CONFIG, Dispute,
- DisputeMailer, DisputeStatus */
+ DisputeMailer, DisputeStatus, logger, User */
 const path = require('path');
 const Promise = require('bluebird');
+const Dispute = require('../../models/Dispute');
 
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 
@@ -21,6 +22,8 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         'show',
         'update',
         'destroy',
+        'updateAdmins',
+        'getAvailableAdmins',
       ],
     },
     {
@@ -35,7 +38,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
           RESTfulAPI.createMiddleware({
             queryBuilder: query
               .where('deleted', false)
-              .include('[user.account, attachments, disputeTool]'),
+              .include('[user.account, attachments, disputeTool, admins]'),
             order: {
               default: '-updated_at',
               allowedFields: [
@@ -69,28 +72,27 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     {
       before(req, res, next) {
         Promise.mapSeries(res.locals.results, (result) => DisputeStatus.query()
-            .where({
-              dispute_id: result.id,
-            })
-            .orderBy('created_at', 'DESC')
-            .then((statuses) => {
-              result.statuses = statuses;
-              return Promise.resolve();
-            }))
-        .then(() => {
-          next();
-        })
-        .catch(next);
+          .where({
+            dispute_id: result.id,
+          })
+          .orderBy('created_at', 'DESC')
+          .then((statuses) => {
+            result.statuses = statuses;
+            return Promise.resolve();
+          }))
+          .then(() => {
+            next();
+          })
+          .catch(next);
       },
       actions: ['index'],
     },
-
   ],
   prototype: {
     _loadDispute(req, res, next) {
       Dispute.query()
         .where({ id: req.params.id })
-        .include('[statuses, attachments, disputeTool]')
+        .include('[statuses, attachments, disputeTool, admins.[account]]')
         .then(([dispute]) => {
           res.locals.dispute = dispute;
           req.dispute = dispute;
@@ -147,15 +149,30 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
             dispute,
             disputeStatus: ds,
           })
-          .catch(e => {
-            console.log('  ---> Failed to send mail to user (on #update)');
-            console.log(e.stack);
-          });
+            .catch(e => {
+              logger.log('  ---> Failed to send mail to user (on #update)');
+              logger.log(e.stack);
+            });
         })
         .then(() => dispute.save())
         .then(() => {
           req.flash('success', 'The dispute status has been updated.');
           return res.redirect(CONFIG.router.helpers.Admin.Disputes.url());
+        })
+        .catch(next);
+    },
+
+    getAvailableAdmins(req, res, next) {
+      req.dispute.getAssignedAndAvailableAdmins()
+        .then(res.send)
+        .catch(next);
+    },
+
+    updateAdmins(req, res, next) {
+      req.dispute.updateAdmins(req.body)
+        .then(() => {
+          req.flash('success', 'The list of administrators assigned as been updated.');
+          res.send({});
         })
         .catch(next);
     },

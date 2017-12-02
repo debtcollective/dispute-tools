@@ -1,6 +1,6 @@
 import autosize from 'autosize';
 import Widget from '../../../../../lib/widget';
-import API from '../../../../../lib/api';
+import { postCreateComment } from '../../../../../lib/api';
 import currentUser from '../../../../../lib/currentUser';
 import Button from '../../../../../components/Button';
 
@@ -79,7 +79,7 @@ export default class NewComment extends Widget {
 
     this.buttonWidget.disable().updateText();
 
-    API.postCreateComment({
+    postCreateComment({
       campaignId: this.data.campaignId,
       postId: this.data.id,
       body: { text, parentId },

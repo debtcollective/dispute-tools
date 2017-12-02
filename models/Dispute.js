@@ -1,5 +1,5 @@
 /* globals Class, Krypton, Attachment, DisputeTool, DisputeStatus, DisputeRenderer, UserMailer
- Account */
+ Account, User, logger */
 /* eslint arrow-body-style: 0 */
 
 const _ = require('lodash');
@@ -43,51 +43,69 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
     'updatedAt',
   ],
 
-  search(qs) {
-    // If we're passed a human readable id just search by that and ignore everything else
-    if (qs.filters && qs.filters.readable_id) {
-      return this.query()
-        .where(qs.filters)
-        .include('[user.account, statuses]')
-        .then(records => records.map(r => r.id));
+  defaultIncludes: '[user.account, statuses]',
+
+  async search(qs) {
+    const query = this.query()
+      .where({ deleted: false });
+
+    if (qs.filters) {
+      // If we're passed a human readable id just search by that and ignore everything else
+      if (qs.filters.readable_id) {
+        return query
+          .where('readable_id', qs.filters.readable_id)
+          .include(Dispute.defaultIncludes)
+          .then(records => records.map(r => r.id));
+      }
+
+      if (qs.filters.admin_id) {
+        const disputeIds = await Dispute.knex()('AdminsDisputes')
+          .select('dispute_id')
+          .where('admin_id', qs.filters.admin_id);
+
+        query
+          .whereIn('id', disputeIds.map(d => d.dispute_id));
+      }
+
+      if (qs.filters.dispute_tool_id) {
+        query
+          .andWhere('dispute_tool_id', qs.filters.dispute_tool_id);
+      }
     }
 
-    const query = this.query()
-      .where(Object.assign(
-        { deleted: false },
-        qs.filters && qs.filters.dispute_tool_id ? qs.filters : {}))
-      .include('[user.account, statuses]');
+    query.include(Dispute.defaultIncludes);
 
     const results = [];
 
-    return query.then((records) => {
-      records.forEach((record) => {
-        let nameFound = false;
-        let statusFound = false;
+    const records = await query;
 
-        if (qs.name && record.user.account.fullname.toLowerCase()
-          .search(qs.name.toLowerCase()) !== -1) {
-          nameFound = true;
-        }
+    records.forEach((record) => {
+      let nameFound = false;
+      let statusFound = false;
 
-        if (qs.status && record.statuses.length > 0 && record.statuses[0].status === qs.status) {
-          statusFound = true;
-        }
+      if (qs.name && record.user.account.fullname.toLowerCase()
+        .search(qs.name.toLowerCase()) !== -1) {
+        nameFound = true;
+      }
 
-        if (!qs.name) {
-          nameFound = true;
-        }
+      if (qs.status && record.statuses.length > 0 && record.statuses[0].status === qs.status) {
+        statusFound = true;
+      }
 
-        if (!qs.status) {
-          statusFound = true;
-        }
+      if (!qs.name) {
+        nameFound = true;
+      }
 
-        if (nameFound && statusFound) {
-          results.push(record);
-        }
-      });
-    })
-      .then(() => results.map((item) => item.id));
+      if (!qs.status) {
+        statusFound = true;
+      }
+
+      if (nameFound && statusFound) {
+        results.push(record);
+      }
+    });
+
+    return results.map((item) => item.id);
   },
 
   prototype: {
@@ -177,36 +195,36 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
           .then(resolve)
           .catch(reject);
       })
-      .then(() => {
-        const renderer = new DisputeRenderer({
-          disputeId: dispute.id,
-        });
-
-        function fail(msg) {
-          return err => {
-            console.log(msg, err);
-            throw err;
-          };
-        }
-
-        return renderer.save()
-          .catch(fail('SAVING'))
-          .then(() => {
-            return renderer.render(dispute)
-              .catch(fail('RENDERING'))
-              .then(() => {
-                return DisputeRenderer.query()
-                  .where({ id: renderer.id })
-                  .include('attachments')
-                  .then(([_disputeRenderer]) => {
-                    return renderer.buildZip(_disputeRenderer).catch(fail('BUILDING ZIP'));
-                  });
-              });
-          })
-          .then(() => {
-            return renderer;
+        .then(() => {
+          const renderer = new DisputeRenderer({
+            disputeId: dispute.id,
           });
-      });
+
+          function fail(msg) {
+            return err => {
+              logger.log(msg, err);
+              throw err;
+            };
+          }
+
+          return renderer.save()
+            .catch(fail('SAVING'))
+            .then(() => {
+              return renderer.render(dispute)
+                .catch(fail('RENDERING'))
+                .then(() => {
+                  return DisputeRenderer.query()
+                    .where({ id: renderer.id })
+                    .include('attachments')
+                    .then(([_disputeRenderer]) => {
+                      return renderer.buildZip(_disputeRenderer).catch(fail('BUILDING ZIP'));
+                    });
+                });
+            })
+            .then(() => {
+              return renderer;
+            });
+        });
     },
 
     setForm({ formName, fieldValues, _isDirty }) {
@@ -262,24 +280,24 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
       return da.save().then(() => {
         return da.attach('file', filePath);
       })
-      .then(() => {
-        return da.save();
-      })
-      .then(() => {
-        const attachment = {
-          id: da.id,
-          name,
-          path: da.file.url('original'),
-        };
+        .then(() => {
+          return da.save();
+        })
+        .then(() => {
+          const attachment = {
+            id: da.id,
+            name,
+            path: da.file.url('original'),
+          };
 
-        if (da.file.exists('thumb')) {
-          attachment.thumb = da.file.url('thumb');
-        }
+          if (da.file.exists('thumb')) {
+            attachment.thumb = da.file.url('thumb');
+          }
 
-        dispute.data.attachments.push(attachment);
+          dispute.data.attachments.push(attachment);
 
-        return dispute.save();
-      });
+          return dispute.save();
+        });
     },
 
     removeAttachment(id) {
@@ -307,6 +325,61 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
 
           return dispute.save();
         });
+    },
+
+    /**
+     * Update the list of admins assigned to this dispute. Removes all admins
+     * who are not present in the array of ids and assigns new ones.
+     * @param {string[]} adminIds Array of admin ids
+     * @return {Promise<void>}
+     */
+    updateAdmins(adminIds) {
+      const knex = Dispute.knex();
+
+      return Dispute.transaction(trx => {
+        knex.table('AdminsDisputes')
+          .transacting(trx)
+          .whereNotIn('admin_id', adminIds)
+          .andWhere('dispute_id', this.id)
+          .delete()
+          .then(() => knex.table('AdminsDisputes')
+            .transacting(trx)
+            .insert(adminIds.map(id => ({
+              dispute_id: this.id,
+              admin_id: id,
+            }))))
+          .then(trx.commit)
+          .catch(trx.rollback);
+      });
+    },
+
+    /**
+     * @typedef {{ name: string, id: string }} AdminInfo
+     */
+    /**
+     * Compiles a two lists of the administrators on the platform,
+     * those already assigned to the dispute and those unassigned,
+     * or "available" to be assigned.
+     * @return {Promise<{ assigned: AdminInfo[], available: AdminInfo[] }>}
+     */
+    getAssignedAndAvailableAdmins() {
+      const assigned = this.admins.reduce((acc, a) => {
+        acc[a.id] = a;
+        return acc;
+      }, {});
+
+      return User.query()
+        .include('[account]')
+        .where('role', 'Admin')
+        .then(allAdmin =>
+          allAdmin.reduce((acc, { id, account: { fullname: name } }) => {
+            if (assigned[id] !== undefined) {
+              acc.assigned.push({ id, name });
+            } else {
+              acc.available.push({ id, name });
+            }
+            return acc;
+          }, { assigned: [], available: [] }));
     },
 
     destroy() {

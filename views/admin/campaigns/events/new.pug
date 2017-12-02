@@ -73,7 +73,6 @@ block content
 
 block scripts
   script(src=`https://maps.googleapis.com/maps/api/js?key=${CONFIG.env().GoogleMaps.key}&libraries=places`)
-  script(src='/build/javascripts/admin/campaigns/events/new.js' async)
   script.
     window.addEventListener('load', function() {
       var options = {

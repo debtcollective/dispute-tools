@@ -1,4 +1,4 @@
-import API from '../../lib/api';
+import { updateDisputeData } from '../../lib/api';
 import Widget from '../../lib/widget';
 import DisputesInformationForm from './InformationForm';
 import Modal from '../../components/Modal';
@@ -18,7 +18,8 @@ export default class DisputesInformation extends Widget {
       element: document.querySelector('[data-component-form="dispute-personal-information"]'),
     }));
 
-    this.saveAndCloseModalButton = this.ModalInformationForm.element.querySelector('.CloseAndSaveFormButton');
+    this.saveAndCloseModalButton =
+      this.ModalInformationForm.element.querySelector('.CloseAndSaveFormButton');
 
     this.personalInfoButton = this.element.querySelector('.js-trigger-personal-modal');
     this.informationSubmitButton = document.getElementById('js-information-next-step');
@@ -30,7 +31,8 @@ export default class DisputesInformation extends Widget {
 
   _bindEvents() {
     this._handleSaveAndCloseModalButtonClick = this._handleSaveAndCloseModalButtonClick.bind(this);
-    this.saveAndCloseModalButton.addEventListener('click', this._handleSaveAndCloseModalButtonClick);
+    this.saveAndCloseModalButton.addEventListener(
+      'click', this._handleSaveAndCloseModalButtonClick);
 
     this._handleButtonClickRef = this._handleButtonClick.bind(this);
     this.personalInfoButton.addEventListener('click', this._handleButtonClickRef);
@@ -48,7 +50,7 @@ export default class DisputesInformation extends Widget {
     const data = new FormData(this.DisputesInformationForm.form);
     data.set('_isDirty', true);
 
-    API.updateDisputeData({
+    updateDisputeData({
       disputeId: this.dispute.id,
       body: data,
     });

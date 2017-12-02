@@ -26,166 +26,194 @@ export function req(opts, cb) {
   }
 
   function end(error, result) {
-    if (typeof cb === 'function') {
-      try {
-        cb(error, result);
-      } catch (e) {
-        console.log(e.stack);
-      }
+    try {
+      cb(error, result);
+    } catch (e) {
+      console.log(e.stack);
     }
   }
 
-  fetch(opts.url, opts)
-  .then((res) =>
-    res.json()
-      .then((result) => {
-        end(null, {
-          body: result,
-          headers: res.headers,
-        });
+  const request = fetch(opts.url, opts)
+    .then(res => res.json());
+
+  if (typeof cb === 'function') {
+    request
+      .then(body => end(null, {
+        body,
+        headers: body.headers,
       }))
-  .catch(end);
+      .catch(end);
+    return undefined;
+  }
+
+  // Allows for not passing in `cb` and getting a promise back.
+  return request;
 }
 
 /**
  * Collection of 'application/json' endpoints we are allowed to use to
  * communicate with the server.
  */
-export default {
-  /**
-   * Updates a dispute data.
-   * @param {Object} args - the arguments needed to hit an endpoint.
-   * @param {string} args.disputeId - dispute’s id to update its data.
-   * @param {Object} [args.body={}] - the request body.
-   * @param {string} args.body.command - one of
-   *  ['setForm', 'setDisputeProcess', 'setConfirmFollowUp']
-   * @param {function} [callback] - the callback that handles the response.
-   */
-  updateDisputeData(args, callback) {
-    if (!args || !args.disputeId) {
-      throw new Error('Missing required params');
+
+/**
+ * Updates a dispute data.
+ * @param {Object} args - the arguments needed to hit an endpoint.
+ * @param {string} args.disputeId - dispute’s id to update its data.
+ * @param {Object} [args.body={}] - the request body.
+ * @param {string} args.body.command - one of
+ *  ['setForm', 'setDisputeProcess', 'setConfirmFollowUp']
+ * @param {function} [callback] - the callback that handles the response.
+ */
+export function updateDisputeData(args, callback) {
+  if (!args || !args.disputeId) {
+    throw new Error('Missing required params');
+  }
+
+  req({
+    url: `/disputes/${args.disputeId}/update-dispute-data`,
+    method: 'put',
+    body: args.body || {},
+  }, (err, res) => {
+    if (typeof callback === 'function') {
+      callback(err, res);
     }
+  });
+}
 
-    req({
-      url: `/disputes/${args.disputeId}/update-dispute-data`,
-      method: 'put',
-      body: args.body || {},
-    }, (err, res) => {
-      if (typeof callback === 'function') {
-        callback(err, res);
-      }
-    });
-  },
+/**
+ * Creates a new Post related to a Campaign.
+ * @param {Object} args - the arguments needed to hit the endpoint.
+ * @param {string} args.campaignId - the campaign id to which the post will be related.
+ * @param {Object} [args.body={}] - the request body to be send to the server.
+ * @property {string} args.body.type - one of ['Text', 'Image', 'Poll']
+ * @param {function} [callback] - the callback to handle the server response.
+ */
+export function createCampaignPost(args, callback) {
+  if (!args || !args.campaignId) {
+    throw new Error('Missing required params');
+  }
 
-  /**
-   * Creates a new Post related to a Campaign.
-   * @param {Object} args - the arguments needed to hit the endpoint.
-   * @param {string} args.campaignId - the campaign id to which the post will be related.
-   * @param {Object} [args.body={}] - the request body to be send to the server.
-   * @property {string} args.body.type - one of ['Text', 'Image', 'Poll']
-   * @param {function} [callback] - the callback to handle the server response.
-   */
-  createCampaignPost(args, callback) {
-    if (!args || !args.campaignId) {
-      throw new Error('Missing required params');
+  req({
+    url: `/campaigns/${args.campaignId}/posts`,
+    method: 'post',
+    body: args.body,
+  }, (err, res) => {
+    if (typeof callback === 'function') {
+      callback(err, res);
     }
+  });
+}
 
-    req({
-      url: `/campaigns/${args.campaignId}/posts`,
-      method: 'post',
-      body: args.body,
-    }, (err, res) => {
-      if (typeof callback === 'function') {
-        callback(err, res);
-      }
-    });
-  },
+/**
+ * Returns a page of n* number of posts for a specific campaign.
+ * The number of posts is defined by PostsController PAGE_SIZE constant.
+ * @param {Object} args - the arguments needed to hit the endpoint.
+ * @param {string} args.campaignId - the campaign id to which the post will be related.
+ * @param {number} [args.page=1] - the page to request
+ * @return {Object} response object
+ * @property {Array<Object>} body - the posts data
+ * @property {string} headers.total_count - campaign’s total number of posts
+ * @property {string} headers.total_pages - the total number of pages
+ * @param {function} [callback] - the callback to handle the server response.
+ */
+export function getCampaignPosts(args, callback) {
+  if (!args || !args.campaignId) {
+    throw new Error('Missing required params');
+  }
 
-  /**
-   * Returns a page of n* number of posts for a specific campaign.
-   * The number of posts is defined by PostsController PAGE_SIZE constant.
-   * @param {Object} args - the arguments needed to hit the endpoint.
-   * @param {string} args.campaignId - the campaign id to which the post will be related.
-   * @param {number} [args.page=1] - the page to request
-   * @return {Object} response object
-   * @property {Array<Object>} body - the posts data
-   * @property {string} headers.total_count - campaign’s total number of posts
-   * @property {string} headers.total_pages - the total number of pages
-   * @param {function} [callback] - the callback to handle the server response.
-   */
-  getCampaignPosts(args, callback) {
-    if (!args || !args.campaignId) {
-      throw new Error('Missing required params');
+  req({
+    url: `/campaigns/${args.campaignId}/posts?page=${args.page || 1}`,
+    method: 'get',
+  }, (err, res) => {
+    if (typeof callback === 'function') {
+      callback(err, res);
     }
+  });
+}
 
-    req({
-      url: `/campaigns/${args.campaignId}/posts?page=${args.page || 1}`,
-      method: 'get',
-    }, (err, res) => {
-      if (typeof callback === 'function') {
-        callback(err, res);
-      }
-    });
-  },
+/**
+ * Registers a new vote for a Post of type Poll.
+ * @param {Object} args - the arguments needed to hit the endpoint.
+ * @param {string} args.campaignId - the campaign id to which the post is associated with.
+ * @param {string} args.postId - the post id to cast the vote.
+ * @param {function} [callback] - the callback to handle the server response.
+ */
+export function campaignPostVote(args, callback) {
+  if (!args || !args.campaignId || !args.postId) {
+    throw new Error('Missing required params');
+  }
 
-  /**
-   * Registers a new vote for a Post of type Poll.
-   * @param {Object} args - the arguments needed to hit the endpoint.
-   * @param {string} args.campaignId - the campaign id to which the post is associated with.
-   * @param {string} args.postId - the post id to cast the vote.
-   * @param {function} [callback] - the callback to handle the server response.
-   */
-  campaignPostVote(args, callback) {
-    if (!args || !args.campaignId || !args.postId) {
-      throw new Error('Missing required params');
+  req({
+    url: `/campaigns/${args.campaignId}/posts/${args.postId}/vote`,
+    method: 'post',
+    body: args.body || {},
+  }, (err, res) => {
+    if (typeof callback === 'function') {
+      callback(err, res);
     }
+  });
+}
 
-    req({
-      url: `/campaigns/${args.campaignId}/posts/${args.postId}/vote`,
-      method: 'post',
-      body: args.body || {},
-    }, (err, res) => {
-      if (typeof callback === 'function') {
-        callback(err, res);
-      }
-    });
-  },
+/**
+ * Creates a new comment for a specific post.
+ * @param {Object} args - the arguments needed to hit the endpoint.
+ * @param {string} args.campaignId - the campaign id to which the post is associated with.
+ * @param {string} args.postId - the post id to cast the vote.
+ * @param {function} [callback] - the callback to handle the server response.
+ */
+export function postCreateComment(args, callback) {
+  if (!args || !args.campaignId || !args.postId) {
+    throw new Error('Missing required params');
+  }
 
-  /**
-   * Creates a new comment for a specific post.
-   * @param {Object} args - the arguments needed to hit the endpoint.
-   * @param {string} args.campaignId - the campaign id to which the post is associated with.
-   * @param {string} args.postId - the post id to cast the vote.
-   * @param {function} [callback] - the callback to handle the server response.
-   */
-  postCreateComment(args, callback) {
-    if (!args || !args.campaignId || !args.postId) {
-      throw new Error('Missing required params');
+  req({
+    url: `/campaigns/${args.campaignId}/posts/${args.postId}`,
+    method: 'post',
+    body: args.body || {},
+  }, (err, res) => {
+    if (typeof callback === 'function') {
+      callback(err, res);
     }
+  });
+}
 
-    req({
-      url: `/campaigns/${args.campaignId}/posts/${args.postId}`,
-      method: 'post',
-      body: args.body || {},
-    }, (err, res) => {
-      if (typeof callback === 'function') {
-        callback(err, res);
-      }
-    });
-  },
+/**
+* Charges a creditcard using a token generated by Stripe.
+*/
+export function postStripePayment(args, callback) {
+  req({
+    url: '/donate',
+    method: 'post',
+    body: args.body || {},
+  }, (err, res) => {
+    if (typeof callback === 'function') {
+      callback(err, res);
+    }
+  });
+}
 
-  /**
-  * Charges a creditcard using a token generated by Stripe.
-  */
-  postStripePayment(args, callback) {
-    req({
-      url: '/donate',
-      method: 'post',
-      body: args.body || {},
-    }, (err, res) => {
-      if (typeof callback === 'function') {
-        callback(err, res);
-      }
-    });
-  },
-};
+/**
+ * @typedef {{ name: string, id: string }} AdminInfo
+ */
+
+/**
+ * Get the list of admins (with id and name) not currently assigned to
+ * the passed in dispute
+ * @param {string} disputeId ID of the dispute to get the admins not assigned to
+ * @return {Promise<{ available: AdminInfo[], assigned: AdminInfo[] }>}
+ *      List of admins with name and id
+ */
+export function getAvailableAndAssignedAdmins(disputeId) {
+  return req({
+    url: `/admin/disputes/${disputeId}/admins`,
+    method: 'get',
+  });
+}
+
+export function updateAdmins(disputeId, adminIds) {
+  return req({
+    url: `/admin/disputes/${disputeId}/admins`,
+    method: 'post',
+    body: adminIds,
+  });
+}

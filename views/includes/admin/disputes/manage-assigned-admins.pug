@@ -1,0 +1,23 @@
+.max-width-2.mx-auto.flex-auto(data-component-form='dispute-manage-admins')
+  #manage-assigned-admins-alerts-container
+  h3.pb3 Assign Admins
+
+  input(type='hidden' name='_csrf' value=csrfToken)
+
+  .flex.flex-column
+    .pb2.flex
+      .mr2.flex-auto
+        h5 Available
+        #available-admin-container
+
+      .ml2.flex-auto
+        h5.right-align Assigned
+        #assigned-admin-container.right-align
+
+    .pb2.flex
+      .mr2.flex-auto
+        button#assign-admin-button.-fw.-k-btn.btn-dark.-fw-700.mr5(type='button') Assign
+      .ml2.flex-auto 
+        button#unassign-admin-button.-fw.-k-btn.btn-dark.-fw-700.ml5(type='button') Unassign
+
+  button#save-dispute-admin-button.-fw.-k-btn.btn-primary.-fw-700(type='button') Save

@@ -1,7 +1,7 @@
-if (CONFIG[CONFIG.environment].sessions !== false) {
-  module.exports =  require('req-flash')({ locals: 'flash' });
+const { sessions } = require('../config/config').env();
+
+if (sessions) {
+  module.exports = require('req-flash')({ locals: 'flash' });
 } else {
-  module.exports = function(req, res, next) {
-    next();
-  }
+  module.exports = (req, res, next) => next();
 }
