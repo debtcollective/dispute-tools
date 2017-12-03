@@ -58,7 +58,7 @@ block scripts
   script.
     window.addEventListener('load', function() {
       var options = {
-        currentUser: !{JSON.stringify(currentUser)},
+        currentUser: !{JSON.stringify(UserRenderer(currentUser))},
         currentURL: !{JSON.stringify(currentURL)},
         options: !{JSON.stringify(disputeTool.data.options)},
       };

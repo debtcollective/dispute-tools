@@ -1,0 +1,8 @@
+-
+  var UserRenderer = function(user) {
+    if (!user) return user
+    delete user.encryptedPassword
+    delete user.resetPasswordToken
+    delete user.activationToken
+    return user
+  }

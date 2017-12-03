@@ -56,7 +56,7 @@ html(lang='en')
     script.
       window.addEventListener('load', function() {
         var options = {
-          currentUser: !{JSON.stringify(currentUser)},
+          currentUser: !{JSON.stringify(UserRenderer(currentUser))},
           currentURL: !{JSON.stringify(currentURL)},
         };
 
