@@ -2,6 +2,7 @@ mixin toolCardMixin(tool)
   .ToolCard.flex.flex-column.-fh
     .flex-auto.pb3
       h3.ToolCard__name.pb1= tool.name
+      p.pb1.-fw-500= tool.excerpt
       p.py1
         button.ToolCard__about-trigger.-k-btn.btn-link.-primary.-fw-700(
           id=`tool-modal-toggler-${tool.id}`
