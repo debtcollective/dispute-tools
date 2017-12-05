@@ -7,5 +7,5 @@ exports.up = knex => knex.schema
   `);
 
 exports.down = knex => knex.schema
-  .raw('drop sequence readable_id_seq')
-  .table('Disputes', d => d.dropColumn('readable_id'));
+  .table('Disputes', d => d.dropColumn('readable_id'))
+  .then(() => knex.schema.raw('drop sequence readable_id_seq'));
