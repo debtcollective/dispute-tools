@@ -1,6 +1,6 @@
 /* globals CONFIG, Collective */
 
-const US_STATES = require('datasets-us-states-names');
+const { US_STATES } = require('../lib/data');
 
 module.exports = function locals(req, res, next) {
   res.locals.routeMappings = CONFIG.router.mappings;

@@ -2,7 +2,7 @@
 const path = require('path');
 const gm = require('gm').subClass({ imageMagick: process.env.GM === 'true' || false });
 
-const US_STATES = require('datasets-us-states-names');
+const { US_STATES } = require('../lib/data');
 
 const Account = Class('Account').inherits(Krypton.Model).includes(Krypton.Attachment)({
   tableName: 'Accounts',
