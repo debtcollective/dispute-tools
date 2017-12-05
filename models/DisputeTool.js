@@ -4,12 +4,26 @@ const path = require('path');
 
 const DisputeTool = Class('DisputeTool').inherits(Krypton.Model)({
   tableName: 'DisputeTools',
-  attributes: ['id', 'name', 'about', 'completed', 'createdAt', 'updatedAt'],
+  attributes: [
+    'id',
+    'name',
+    'about',
+    'excerpt',
+    'completed',
+    'createdAt',
+    'updatedAt',
+  ],
   prototype: {
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
 
-      const dataFile = path.join(process.cwd(), '/lib/data/dispute-tools/', `${this.id}.js`);
+      const dataFile = path.join(
+        process.cwd(),
+        'lib',
+        'data',
+        'dispute-tools',
+        `${this.id}.js`
+      );
 
       delete require.cache[require.resolve(dataFile)];
 
@@ -27,13 +41,19 @@ const DisputeTool = Class('DisputeTool').inherits(Krypton.Model)({
 
       dispute.setOption(config.option);
 
-      return Dispute.transaction((trx) => dispute.transacting(trx).save()
-        .then(() => {
-          status.disputeId = dispute.id;
+      return Dispute.transaction(trx =>
+        dispute
+          .transacting(trx)
+          .save()
+          .then(() => {
+            status.disputeId = dispute.id;
 
-          return status.transacting(trx).save()
-            .then(() => dispute.id);
-        }));
+            return status
+              .transacting(trx)
+              .save()
+              .then(() => dispute.id);
+          })
+      );
     },
   },
 });
