@@ -68,7 +68,7 @@ migrations and seed files.
 
 To generate seeds you can run `yarn run knex seeds:make <seed_name>`.
 Since some seeds need to be executed in order (Collectives before
-Campaings for example), we are prepending timestamp to the seeds name. To
+Campaigns for example), we are prepending timestamp to the seeds name. To
 generate a timestamp the same way Knex does for migrations, we are using
 the [same code from the Knex repo](https://github.com/tgriesser/knex/blob/f66b524af71adf434cddc1830fd9b369d2f48a32/src/migrate/index.js#L411-L426)
 
