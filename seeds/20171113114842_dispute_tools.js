@@ -196,7 +196,7 @@ The number is: 1-800-304-3107.`,
           id: '11111111-1111-2222-1111-111111111111',
           name: 'Dispute Your Tax Return Being Taken',
           excerpt:
-            'Use this tool if your tax tax return is being seized for an unpaid federal student loan.',
+            'Use this tool if your tax return is being seized for an unpaid federal student loan.',
           about: `### Dispute Your Tax Return Being Taken
 
 If your taxes are being seized ("offset") or if you have been threatened with offset, you have a lot in common with thousands of other people whose taxes are offset each year. This is wrong, since no one should have to go into debt for education!
@@ -213,15 +213,16 @@ The Department of Education usually sends offset notices once per year in the su
           name: 'Dispute Any Debt in Collections',
           excerpt:
             'Use this tool to dispute any debt (except a student loan) that has been sent to collections. Make them prove it!',
-          about: `### Dispute Any Debt in Collections
+          about:
+            `### General Debt Dispute Letter
 
-#### For any defaulted personal debt
+#### For any personal debt except student loans
 
-Debt collectors are shady. They often try to collect on debts that they do not have the right to collect on because they do not have the right paperwork or because they are committing outright fraud. This tool generates a dispute letter that the Debt Collective will send to the collector on your behalf. The letter demands that the collector prove they own your debt or stop collecting. You can only use this tool if your debt is in collections, which means you haven’t paid in a while and the person trying to collect from you is not the original lender.
+This tool generates a dispute letter demanding that the creditor or collector send documentation to you proving that they own the debt and have the right to collect it. There is no risk to you in filing this dispute. Creditors and collectors are required by law to provide you with this information.
 
-Before you begin to use this tool, you should make sure you have the name and address of the collections agency that is attempting to collect from you.
+If you are not in default on the debt you wish to dispute, this tool will assist you to ask the creditor for the original contract or promissory note. If you are in default on the debt, this tool will assist you to demand that the collector send a series of documents called the "chain of title." If you are not sure whether or not you are in default, you can still use this dispute.
 
-**If you don't have the name and address of the collection agency, you will not be able to file this dispute.**`,
+Before you begin you will need the name and address of the creditor or the collector that is billing you. After you complete the dispute, you will receive a copy of the dispute by email which you can print and mail the yourself. You will also be given a chance to ask us to mail it for you. We also encourage all debt disputers to use our online system to report the responses you get from the collector. The more information we have about how creditors and collectors are responding to individual disputes, the better we can organize collectively against them.`,
           completed: 0,
         },
 
