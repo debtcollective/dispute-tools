@@ -93,7 +93,7 @@
                     <svg class="inline-block" width="13" height="11">
                       <use xlink:href="#svg-reply"></use>
                     </svg>
-                    .ml1.inline-block.-fw-700= new Date(status.createdAt).toDateString()
+                    .ml1.inline-block.-fw-700= new Date(status.createdAt).toString()
                 .right
                   p.-caption.-fw-700.-ttu(
                     class=`-status-${status.status.toLowerCase().replace(/\W/g, '-')}`
