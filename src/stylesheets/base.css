@@ -1,14 +1,3 @@
-@import './components/Header';
-@import './components/Footer';
-@import './components/Modal';
-@import './components/Dropdown';
-@import './components/DonationFlow';
-@import './components/Alert';
-@import './components/Button';
-@import './components/Popover';
-@import './components/ResponsiveMenu';
-@import './components/users/NewForm';
-
 /* BASSCSS */
 @import 'basscss-align';
 @import 'basscss-border';
@@ -38,6 +27,18 @@
 
 @import './utils';
 
+@import './components/Header';
+@import './components/Footer';
+@import './components/Modal';
+@import './components/Dropdown';
+@import './components/DonationFlow';
+@import './components/Alert';
+@import './components/Button';
+@import './components/Popover';
+@import './components/ResponsiveMenu';
+@import './components/Button';
+@import './components/users/NewForm';
+
 :root {
   /* KABINETT CONFIGURATION */
   --k-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -46,7 +47,7 @@
 
   --k-color-palette-primary: #f04c34;
   --k-color-palette-danger: #d0021b;
-  --k-color-palette-success: #417505;
+  --k-color-palette-success: #bae88b;
   --k-color-palette-accent: #FEFAC0;
   --k-color-palette-neutral-dark: #242424;
   --k-color-palette-neutral-mid: #9b9b9b;

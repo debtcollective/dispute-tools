@@ -40,4 +40,16 @@ User.relations = {
       relatedCol: 'collective_id',
     },
   },
+
+  disputeAdmin: {
+    type: 'HasManyThrough',
+    relatedModel: Dispute,
+    ownerCol: 'id',
+    relatedCol: 'id',
+    through: {
+      tableName: 'AdminsDisputes',
+      ownerCol: 'admin_id',
+      relatedCol: 'dispute_id',
+    },
+  },
 };

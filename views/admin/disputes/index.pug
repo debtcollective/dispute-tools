@@ -14,7 +14,9 @@ block content
     var queryOrder = headers.query && headers.query.order
 
   .wrapper.px2.pb3
-    h2.pt4.pb2 Disputes
+    h2.pt4.pb2.flex.justify-between.items-end
+      span Disputes
+      #assigned-to-me-button.flex(data-current-user-id=currentUser.id)
     table.-fw(cellpadding='0' cellspacing='0')
       thead
         tr
@@ -144,10 +146,10 @@ block body
     button(class="Modal__close" aria-label="close")
       svg(class="-s18"): use(xlink:href="#svg-close")
     .Modal__body(role="document")
-      include ../../includes/admin/disputes/add-status-form.pug
+      .px2.flex
+        include ../../includes/admin/disputes/add-status-form.pug
 
 block scripts
-  script(src="/build/javascripts/admin/disputes/index.js" async)
   script.
     window.addEventListener('load', function() {
       var options = {

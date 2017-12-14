@@ -78,8 +78,7 @@ html(lang='en')
             .Modal__body(role='document')
               include ../includes/sessions/new-form.pug
 
-    script(src='/build/javascripts/application.js')
-    script(src='/build/javascripts/polyfills.js' async)
+    script(src='/build/index.js')
     script(src='https://js.stripe.com/v2/' async)
     include ../mixins/utils.pug
     block scripts

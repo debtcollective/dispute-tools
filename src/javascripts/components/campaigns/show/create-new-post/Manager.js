@@ -1,5 +1,5 @@
 import autosize from 'autosize';
-import API from '../../../../lib/api';
+import { createCampaignPost } from '../../../../lib/api';
 import Widget from '../../../../lib/widget';
 import Button from '../../../../components/Button';
 import Poll from './Poll';
@@ -185,7 +185,7 @@ export default class CreateNewPost extends Widget {
         throw new Error('Invalid post type');
     }
 
-    return API.createCampaignPost({
+    return createCampaignPost({
       campaignId: this.campaignId,
       body: data,
     }, () => {

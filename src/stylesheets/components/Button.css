@@ -48,6 +48,10 @@
 .btn-dark {
   background-color: #000;
   color: var(--k-color-palette-accent);
+
+  &:hover:not([disabled]):not(:active) {
+    background-color: #111;
+  }
 }
 
 .btn-outline {
