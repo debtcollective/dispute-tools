@@ -4,6 +4,7 @@ import Widget from '../../../lib/widget';
 export default class AdminDisputesIndexTable extends Widget {
   constructor(config) {
     super(config);
+
     this._bindEvents();
   }
 

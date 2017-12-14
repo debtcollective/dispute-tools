@@ -14,6 +14,7 @@ describe('Dispute', () => {
 
   before(function before() {
     this.timeout(5000);
+    console.error('creating user');
     user = new User({
       email: 'user@example.com',
       password: '12345678',
@@ -88,6 +89,7 @@ describe('Dispute', () => {
       return dispute.save()
         .then(([id]) => Dispute.query()
           .where({ id })
+          .include('admins')
           .then(([d]) => {
             dispute = d;
           }));
@@ -192,6 +194,36 @@ describe('Dispute', () => {
         it('the status', () =>
           Dispute.search(withreadableId({ status: 'not a real status beep boop beeeeeeep' }))
             .then(containsDispute));
+      });
+    });
+
+    describe('admins', () => {
+      describe('updateAdmin', () => {
+        it('should assign the admin to the dispute', async () => {
+          await dispute.updateAdmins([user.id]);
+          const disputeAdmins = await Dispute.knex()('AdminsDisputes')
+            .where({
+              admin_id: user.id,
+              dispute_id: dispute.id,
+            });
+
+          expect(disputeAdmins).to.be.truthy;
+          expect(disputeAdmins.length).to.eq(1);
+          expect(disputeAdmins.find(da => da.admin_id === user.id)).to.be.defined;
+        });
+
+        it('should remove the admin from being assigned to the dispute', async () => {
+          await dispute.updateAdmins([user.id]);
+          await dispute.updateAdmins([]);
+          const disputeAdmins = await Dispute.knex()('AdminsDisputes')
+            .where({
+              admin_id: user.id,
+              dispute_id: dispute.id,
+            });
+
+          expect(disputeAdmins.length).to.eq(0);
+          expect(disputeAdmins.find(da => da.admin_id === user.id)).to.be.undefined;
+        });
       });
     });
   });

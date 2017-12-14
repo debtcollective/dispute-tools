@@ -2,7 +2,9 @@
 /* eslint max-len: 0 */
 
 const path = require('path');
-const gm = require('gm').subClass({ imageMagick: process.env.GM === 'true' || false });
+const gm = require('gm').subClass({
+  imageMagick: process.env.GM === 'true' || false,
+});
 const _ = require('lodash');
 const Promise = require('bluebird');
 const uuid = require('uuid');
@@ -13,8 +15,10 @@ const archiver = require('archiver');
 const { assignDefaultConfig, basePath } = require('../lib/AWS');
 const PrivateAttachmentStorage = require('./PrivateAttachmentStorage');
 
-const disputeRendererData = require(path
-  .join(process.cwd(), '/lib/data/dispute-renderer/index.js'));
+const disputeRendererData = require(path.join(
+  process.cwd(),
+  '/lib/data/dispute-renderer/index.js'
+));
 
 const DisputeRenderer = Class('DisputeRenderer')
   .inherits(Krypton.Model)
@@ -68,15 +72,16 @@ const DisputeRenderer = Class('DisputeRenderer')
               for (const field of Object.keys(template.fields)) {
                 const _field = template.fields[field];
                 if (_.isFunction(_field)) {
-                  // console.log('_field', field);
                   _field(templateFile, dispute.data);
                 } else {
                   const fieldData = field.split('.');
 
-                  if (dispute.data.forms[fieldData[0]] &&
-                    dispute.data.forms[fieldData[0]][fieldData[1]]) {
-                    const fieldValue = dispute.data.forms[fieldData[0]][fieldData[1]];
-                    // console.log('_printField', _field);
+                  if (
+                    dispute.data.forms[fieldData[0]] &&
+                    dispute.data.forms[fieldData[0]][fieldData[1]]
+                  ) {
+                    const fieldValue =
+                      dispute.data.forms[fieldData[0]][fieldData[1]];
                     this._printField(templateFile, _field, fieldValue);
                   }
                 }
@@ -85,58 +90,50 @@ const DisputeRenderer = Class('DisputeRenderer')
               templates.push(templateFile);
             });
 
-            // console.log('TEMPLATE OK');
-
             return templates;
           })
-          .then((templates) => {
+          .then(templates => {
             const convert = gm();
 
-            return Promise.map(templates, (template) => {
+            return Promise.map(templates, template => {
               const templatePath = path.join(OS.tmpdir(), `${uuid.v4()}.png`);
-              // console.log('CONVERT', templatePath);
               convert.in(templatePath);
 
               return new Promise((resolve, reject) => {
-                template.write(templatePath, (err) => {
+                template.write(templatePath, err => {
                   if (err) {
                     return reject(err);
                   }
-                  // console.log('CONVERT OK');
                   return resolve(convert);
                 });
               });
             });
           })
           .then(([convert]) => {
-            const filePath = path.join(OS.tmpdir(), `${document}-${uuid.v4()}.pdf`);
+            const filePath = path.join(
+              OS.tmpdir(),
+              `${document}-${uuid.v4()}.pdf`
+            );
 
             return new Promise((resolve, reject) => {
-              // console.log('WRITE', filePath);
-              convert
-                .density('300', '300')
-                .write(filePath, (err) => {
-                  if (err) {
-                    return reject(err);
-                  }
+              convert.density('300', '300').write(filePath, err => {
+                if (err) {
+                  return reject(err);
+                }
 
-                  const attachment = new Attachment({
-                    type: 'DisputeRenderer',
-                    foreignKey: renderer.id,
-                    _filePath: filePath,
-                  });
-
-                  attachments.push(attachment);
-
-                  // console.log('WRITE OK');
-
-                  return resolve();
+                const attachment = new Attachment({
+                  type: 'DisputeRenderer',
+                  foreignKey: renderer.id,
+                  _filePath: filePath,
                 });
+
+                attachments.push(attachment);
+
+                return resolve();
+              });
             });
-          }))
-          .then(() => Promise.map(attachments, (attachment) => attachment.save()
-            .then(() => attachment.attach('file', attachment._filePath)
-              .then(() => attachment.save()))));
+          })
+          .then(() => Promise.map(attachments, attachment => attachment.save().then(() => attachment.attach('file', attachment._filePath).then(() => attachment.save())))));
       },
 
       buildZip(_renderer) {

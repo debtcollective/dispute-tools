@@ -1,5 +1,5 @@
 import Widget from '../../../lib/widget';
-import API, { csrfToken } from '../../../lib/api';
+import { getCampaignPosts, csrfToken } from '../../../lib/api';
 import PostText from './posts/PostText';
 import PostImage from './posts/PostImage';
 import PostPoll from './posts/PostPoll';
@@ -36,7 +36,7 @@ export default class FeedController extends Widget {
   }
 
   _loadPosts() {
-    API.getCampaignPosts({
+    getCampaignPosts({
       campaignId: this.campaignId,
       page: this._currentPage,
     }, this._handlePostLoadResponse);

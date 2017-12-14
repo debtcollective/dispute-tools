@@ -108,7 +108,6 @@ block append body
             .Tools__Text-Modal!= tool.about
 
 block scripts
-  script(src="/build/javascripts/dispute-tools/index.js" async)
   - var disputeIds = disputeTools.map(dispute => dispute.id);
   script.
     window.addEventListener('load', function() {

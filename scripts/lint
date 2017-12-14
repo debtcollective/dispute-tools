@@ -11,4 +11,5 @@ if [ -z "$files" ]; then
   exit 0
 fi
 
-./node_modules/.bin/eslint --fix "$files"
+# Wrap in parnes so it handles the line-breaks from git diff w/o complaining
+ (./node_modules/.bin/eslint --fix $files)

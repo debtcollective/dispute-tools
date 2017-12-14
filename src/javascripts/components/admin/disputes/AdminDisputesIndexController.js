@@ -5,6 +5,8 @@ import AdminDisputesIndexTable from './AdminDisputesIndexTable';
 import Modal from '../../Modal';
 import AdminDisputesAddStatusForm from './AdminDisputesAddStatusForm';
 import AdminShowDisputePanel from './AdminShowDisputePanel';
+import AssignedToMeButton from './AssignedToMeButton';
+import mountManageDisputeAdmins from './ManageDisputeAdmins';
 
 export default class AdminDisputesIndexController extends Widget {
   constructor(config) {
@@ -31,7 +33,6 @@ export default class AdminDisputesIndexController extends Widget {
       element: document.querySelector('[data-component-modal="show-dispute"]'),
     }));
 
-
     this.appendChild(new AdminShowDisputePanel({
       name: 'AdminShowDisputePanel',
       element: document.querySelector('[data-component-form="show-dispute"]'),
@@ -42,17 +43,31 @@ export default class AdminDisputesIndexController extends Widget {
       element: document.querySelector('[data-component-form="dispute-add-status"]'),
     }));
 
+    const searchAdminId = /admin_id\]=([\d\w-]*)/.exec(decodeURIComponent(window.location.search));
+
     this.originalQuery = {
       filters: {
         dispute_tool_id: this.AdminDisputesIndexTableControls.toolsSelect.value,
         readable_id: this.AdminDisputesIndexTableControls.readableIdInput.value,
+        admin_id: searchAdminId !== null ? searchAdminId[1] : undefined,
       },
       name: this.AdminDisputesIndexTableControls.searchInput.value,
       status: this.AdminDisputesIndexTableControls.statusSelect.value,
       order: this.AdminDisputesIndexTableControls.orderSelect.value,
     };
 
+    // Why do we stringify then parse?
     this._query = JSON.parse(JSON.stringify(this.originalQuery));
+
+    // Not sure why this button isn't within the scope of `this.element` but this works anyway
+    this.assignedToMeButtonContainer = document.querySelector('#assigned-to-me-button');
+    // Has to happen after this._query is populated
+    this.assignedToMeButton = new AssignedToMeButton({
+      queryReference: this._query,
+      adminId: this.assignedToMeButtonContainer.dataset.currentUserId,
+      applyFilters: () => this.AdminDisputesIndexTableControls.dispatch('applyFilters'),
+    });
+    this.assignedToMeButtonContainer.appendChild(this.assignedToMeButton.element);
 
     this.pagination = document.querySelector('.Pagination ul');
 
@@ -96,6 +111,11 @@ export default class AdminDisputesIndexController extends Widget {
 
     this.AdminDisputesIndexTable.bind('addStatus', data => {
       this.AdminDisputesAddStatusForm.updateData(data.dispute);
+      if (this.manageDisputeAdmins) {
+        this.manageDisputeAdmins.setDisputeId(data.dispute.id);
+      } else {
+        this.manageDisputeAdmins = mountManageDisputeAdmins(data.dispute.id);
+      }
       this.addStatusModal.activate();
     });
 

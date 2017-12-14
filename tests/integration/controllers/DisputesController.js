@@ -20,12 +20,12 @@ describe('DisputesController', () => {
     this.timeout(5000);
 
     return Promise.each(['User', 'Admin'], (role) => createUser(role)
-        .then((res) => {
-          data[role] = res;
-        }))
-    .then(() => DisputeTool.first({
-      id: '11111111-1111-1111-1111-111111111111',
-    })
+      .then((res) => {
+        data[role] = res;
+      }))
+      .then(() => DisputeTool.first({
+        id: '11111111-1111-1111-1111-111111111111',
+      })
         .then((tool) => tool.createDispute({
           user: data.User,
           option: tool.data.options.A ? 'A' : 'none',

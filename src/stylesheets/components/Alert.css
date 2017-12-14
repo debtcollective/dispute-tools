@@ -1,5 +1,5 @@
 .AlertWrapper {
-  z-index: 2;
+  z-index: 5;
   position: fixed;
   top: var(--header-height);
   left: 0;

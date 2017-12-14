@@ -1,3 +1,3 @@
-#!/usr/bin/env sh
+nm="./node_modules/.bin"
 
-./node_modules/.bin/tarima -wP localhost:3000 -p 3001
+NODE_ENV=development concurrently "$nm/webpack --watch --progress" "$nm/tarima -wP localhost:3000 -p 3001"

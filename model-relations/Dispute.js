@@ -8,6 +8,18 @@ Dispute.relations = {
     relatedCol: 'id',
   },
 
+  admins: {
+    type: 'HasManyThrough',
+    relatedModel: User,
+    ownerCol: 'id',
+    relatedCol: 'id',
+    through: {
+      tableName: 'AdminsDisputes',
+      ownerCol: 'dispute_id',
+      relatedCol: 'admin_id',
+    },
+  },
+
   disputeTool: {
     type: 'HasOne',
     relatedModel: DisputeTool,

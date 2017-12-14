@@ -1,6 +1,6 @@
 import Widget from '../../lib/widget';
 import Popover from '../Popover';
-import API from '../../lib/api';
+import { updateDisputeData } from '../../lib/api';
 
 export default class DisputesFollowUp extends Widget {
   /**
@@ -64,7 +64,7 @@ export default class DisputesFollowUp extends Widget {
     this._handlePopoverDestroyedRef = null;
     this.Popover = null;
 
-    API.updateDisputeData({
+    updateDisputeData({
       disputeId: this.dispute.id,
       body: {
         command: 'setConfirmFollowUp',

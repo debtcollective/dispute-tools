@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+NODE_ENV=production
+npx rimraf public/build
+
+yarn svg
+tarima -fqe production
+webpack --progress -p --config webpack.config.js

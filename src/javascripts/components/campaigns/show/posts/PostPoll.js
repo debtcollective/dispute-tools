@@ -1,5 +1,5 @@
 import Post from './Post';
-import API from '../../../../lib/api';
+import { campaignPostVote } from '../../../../lib/api';
 import Button from '../../../../components/Button';
 import currentUser from '../../../../lib/currentUser';
 
@@ -54,7 +54,7 @@ export default class PostPoll extends Post {
       return `
         <div class='pb2'>
           ${data.data.options.map((option, index) =>
-            this._renderPollResults(option, index, data, totalVotes, mostVotedIndex))
+          this._renderPollResults(option, index, data, totalVotes, mostVotedIndex))
           .join('')}
         </div>
       `;
@@ -166,7 +166,7 @@ export default class PostPoll extends Post {
     index = this.optionsElements.indexOf(selectedOption);
 
     if (index >= 0) {
-      API.campaignPostVote({
+      campaignPostVote({
         campaignId: this.data.campaignId,
         postId: this.data.id,
         body: { index },

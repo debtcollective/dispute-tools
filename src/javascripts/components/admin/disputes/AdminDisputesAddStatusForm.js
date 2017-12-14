@@ -10,7 +10,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
 
   static get constraints() {
     return {
-      status: ['required']
+      status: ['required'],
     };
   }
 
@@ -47,7 +47,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
   }
 
   _initCheckit() {
-    let checkit = new Checkit(AdminDisputesAddStatusForm.constraints);
+    const checkit = new Checkit(AdminDisputesAddStatusForm.constraints);
 
     // Only require comment if notify is true
     checkit.maybe({ comment: ['required'] }, (input) => input.notify);
@@ -114,7 +114,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
     });
 
     // For checkboxes we need to use the checked attribute
-    data['notify'] = this.ui['notify'].checked;
+    data.notify = this.ui.notify.checked;
 
     return data;
   }
@@ -129,9 +129,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
     this._clearFieldErrors();
 
     const lastStatus = dispute.statuses[0].status;
-    const selectedStatus = this.statusOptions.filter(option => {
-      return (option.value === lastStatus);
-    });
+    const selectedStatus = this.statusOptions.filter(option => (option.value === lastStatus));
     const fragmentStatus = document.createDocumentFragment();
     let disputeToolName = dispute.disputeTool.name;
 
