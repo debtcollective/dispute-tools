@@ -99,6 +99,7 @@
     "humanize-num": "^1.1.5",
     "im-metadata": "^3.0.0",
     "imagemagick-stream": "^4.1.1",
+    "jstransformer-verbatim": "^1.1.1",
     "knex": "^0.11.9",
     "krypton-orm": "git://github.com/sgarza/krypton.git#dev",
     "lodash": "^4.14.2",
