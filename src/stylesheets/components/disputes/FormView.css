@@ -1,3 +1,19 @@
 .FormView {
+  background: white;
   color: black;
+  padding: 1rem;
+}
+
+.FormView dt {
+  font-weight: 700;
+  float: left;
+  width: 100px;
+  overflow: hidden;
+  clear: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.FormView dd {
+  margin-left: 120px;
 }
