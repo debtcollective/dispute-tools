@@ -29,10 +29,12 @@ export default class AdminDisputesAddStatusForm extends Widget {
       this.ui[key] = this.element.querySelector(query);
     });
 
-    this.appendChild(new Button({
-      name: 'ButtonSubmit',
-      element: this.element.querySelector('button[type="submit"]'),
-    }));
+    this.appendChild(
+      new Button({
+        name: 'ButtonSubmit',
+        element: this.element.querySelector('button[type="submit"]'),
+      })
+    );
 
     this.formElement = this.element.getElementsByTagName('form')[0];
     this.statusElement = this.formElement.querySelector('[name="status"]');
@@ -40,7 +42,9 @@ export default class AdminDisputesAddStatusForm extends Widget {
     this.userNameElement = this.element.querySelector('[data-user-name]');
     this.disputeNameElement = this.element.querySelector('[data-dispute-name]');
     this.userAvatarElement = this.element.querySelector('[data-user-avatar]');
-    this.statusesWrapper = this.element.querySelector('[data-statuses-wrapper]');
+    this.statusesWrapper = this.element.querySelector(
+      '[data-statuses-wrapper]'
+    );
 
     this._bindEvents();
     this._initCheckit();
@@ -50,14 +54,16 @@ export default class AdminDisputesAddStatusForm extends Widget {
     const checkit = new Checkit(AdminDisputesAddStatusForm.constraints);
 
     // Only require comment if notify is true
-    checkit.maybe({ comment: ['required'] }, (input) => input.notify);
+    checkit.maybe({ comment: ['required'] }, input => input.notify);
 
     this._checkit = checkit;
   }
 
   _bindEvents() {
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
-    this.element.querySelector('form').addEventListener('submit', this._handleFormSubmit);
+    this.element
+      .querySelector('form')
+      .addEventListener('submit', this._handleFormSubmit);
   }
 
   _handleFormSubmit(ev) {
@@ -129,7 +135,9 @@ export default class AdminDisputesAddStatusForm extends Widget {
     this._clearFieldErrors();
 
     const lastStatus = dispute.statuses[0].status;
-    const selectedStatus = this.statusOptions.filter(option => (option.value === lastStatus));
+    const selectedStatus = this.statusOptions.filter(
+      option => option.value === lastStatus
+    );
     const fragmentStatus = document.createDocumentFragment();
     let disputeToolName = dispute.disputeTool.name;
 
@@ -141,7 +149,10 @@ export default class AdminDisputesAddStatusForm extends Widget {
       disputeToolName += ` / ${dispute.data.option}`;
     }
 
-    this.formElement.action = this.constructor.updateUrlString.replace('${id}', dispute.id);
+    this.formElement.action = this.constructor.updateUrlString.replace(
+      '${id}',
+      dispute.id
+    );
     this.userNameElement.textContent = dispute.user.account.fullname;
     this.disputeNameElement.textContent = disputeToolName;
     this.userAvatarElement.src = dispute.user.account.imageURL;
@@ -161,4 +172,3 @@ export default class AdminDisputesAddStatusForm extends Widget {
     this.statusesWrapper.appendChild(fragmentStatus);
   }
 }
-
