@@ -17,13 +17,13 @@ module.exports = function runTests(testDir) {
   };
 
   glob.sync('*.js', globOptions)
-  .filter((filePath) => {
-    const fileName = path.parse(filePath).base;
-    return (fileName.indexOf(process.argv[2]) !== -1);
-  })
-  .forEach((file) => {
-    mocha.addFile(path.join(testDir, file));
-  });
+    .filter((filePath) => {
+      const fileName = path.parse(filePath).base;
+      return (fileName.indexOf(process.argv[2]) !== -1);
+    })
+    .forEach((file) => {
+      mocha.addFile(path.join(testDir, file));
+    });
 
   // run Mocha
   mocha.run((failures) => {

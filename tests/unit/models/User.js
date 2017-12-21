@@ -4,9 +4,18 @@ const expect = require('chai').expect;
 const Promise = require('bluebird');
 const path = require('path');
 const _ = require('lodash');
-const { createUser, createPost, createEvent } = require('../../utils/helpers.js');
+const {
+  createUser,
+  createPost,
+  createEvent,
+} = require('../../utils/helpers.js');
 
-const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
+const truncate = require(path.join(
+  process.cwd(),
+  'tests',
+  'utils',
+  'truncate'
+));
 
 global.UserMailer = {
   sendActivation() {
@@ -14,14 +23,7 @@ global.UserMailer = {
   },
 };
 
-
 describe('User', () => {
-  let collective;
-
-  before(() => Collective.first().then((res) => {
-    collective = res;
-  }));
-
   describe('Validations', () => {
     beforeEach(() => truncate(User));
 
@@ -47,11 +49,12 @@ describe('User', () => {
           .then(() => {
             expect.fail('should have rejected');
           })
-          .catch((err) => {
+          .catch(err => {
             expect(err.message).to.be.equal('1 invalid values');
-            expect(err.errors.email.message).to.be.equal('The User\'s email already exists.');
-          })
-      );
+            expect(err.errors.email.message).to.be.equal(
+              "The User's email already exists."
+            );
+          }));
 
       it('Should fail if the email is undefined', () =>
         Promise.resolve()
@@ -64,11 +67,12 @@ describe('User', () => {
           .then(() => {
             expect.fail('should have rejected');
           })
-          .catch((err) => {
+          .catch(err => {
             expect(err.message).to.be.equal('1 invalid values');
-            expect(err.errors.email.message).to.be.equal('The email is required');
-          })
-      );
+            expect(err.errors.email.message).to.be.equal(
+              'The email is required'
+            );
+          }));
 
       it('Should fail if the email is invalid', () =>
         Promise.resolve()
@@ -82,11 +86,12 @@ describe('User', () => {
           .then(() => {
             expect.fail('should have rejected');
           })
-          .catch((err) => {
+          .catch(err => {
             expect(err.message).to.be.equal('1 invalid values');
-            expect(err.errors.email.message).to.be.equal('The email must be a valid email address');
-          })
-      );
+            expect(err.errors.email.message).to.be.equal(
+              'The email must be a valid email address'
+            );
+          }));
 
       it('Should fail if the email is longer than 255 characters', () =>
         Promise.resolve()
@@ -100,12 +105,12 @@ describe('User', () => {
           .then(() => {
             expect.fail('should have rejected');
           })
-          .catch((err) => {
+          .catch(err => {
             expect(err.message).to.be.equal('1 invalid values');
-            expect(err.errors.email.message)
-              .to.be.equal('The email must not exceed 255 characters long');
-          })
-      );
+            expect(err.errors.email.message).to.be.equal(
+              'The email must not exceed 255 characters long'
+            );
+          }));
     });
 
     describe('password', () => {
@@ -121,12 +126,12 @@ describe('User', () => {
           .then(() => {
             expect.fail('should have rejected');
           })
-          .catch((err) => {
+          .catch(err => {
             expect(err.message).to.be.equal('1 invalid values');
-            expect(err.errors.password.message)
-              .to.be.equal('The password must be at least 8 characters long');
-          })
-      );
+            expect(err.errors.password.message).to.be.equal(
+              'The password must be at least 8 characters long'
+            );
+          }));
     });
 
     describe('role', () => {
@@ -142,11 +147,12 @@ describe('User', () => {
           .then(() => {
             expect.fail('should have rejected');
           })
-          .catch((err) => {
+          .catch(err => {
             expect(err.message).to.be.equal('1 invalid values');
-            expect(err.errors.role.message).to.be.equal('The User\'s role is invalid.');
-          })
-      );
+            expect(err.errors.role.message).to.be.equal(
+              "The User's role is invalid."
+            );
+          }));
     });
   });
 
@@ -172,46 +178,58 @@ describe('User', () => {
   describe('Relations', () => {
     let user;
     before(() =>
-           createUser('Admin')
-      .then((result) => {
-        user = result;
-        return createPost(user);
-      })
-      .then(() => createPost(user))
-      .then(() => createEvent(user)));
+      createUser({ role: 'Admin' })
+        .then(result => {
+          user = result;
+          return createPost(user);
+        })
+        .then(() => createPost(user))
+        .then(() => createEvent(user))
+    );
 
     after(() => truncate(User));
 
     describe('account', () => {
       it('should return a valid Account model', () =>
-        User.query().include('account')
-        .then((result) => { expect(result[0].account).to.be.instanceof(Account); }));
+        User.query()
+          .include('account')
+          .then(result => {
+            expect(result[0].account).to.be.instanceof(Account);
+          }));
     });
 
     describe('posts', () => {
       it('should return a list of posts by the user', () =>
-        User.query().where({ id: user.id }).include('posts')
-        .then((result) => {
-          expect(result[0].posts.length).to.equal(2);
-          return Promise.each(result[0].posts, (post) => expect(post).to.be.instanceof(Post));
-        }));
+        User.query()
+          .where({ id: user.id })
+          .include('posts')
+          .then(result => {
+            expect(result[0].posts.length).to.equal(2);
+            return Promise.each(result[0].posts, post =>
+              expect(post).to.be.instanceof(Post)
+            );
+          }));
     });
 
     describe('eventsOwner', () => {
       it('should return a list of events owned by the user', () =>
-        User.query().where({ id: user.id }).include('eventsOwner')
-        .then((result) => {
-          expect(result[0].eventsOwner.length).to.equal(1);
-          expect(result[0].eventsOwner[0]).to.be.instanceof(Event);
-        }));
+        User.query()
+          .where({ id: user.id })
+          .include('eventsOwner')
+          .then(result => {
+            expect(result[0].eventsOwner.length).to.equal(1);
+            expect(result[0].eventsOwner[0]).to.be.instanceof(Event);
+          }));
     });
 
     describe('campaigns', () => {
       it('should return a list of campaigns that the user is a member of', () =>
-        User.query().where({ id: user.id }).include('campaigns')
-        .then((result) => {
-          expect(result[0].campaigns.length).to.equal(0);
-        }));
+        User.query()
+          .where({ id: user.id })
+          .include('campaigns')
+          .then(result => {
+            expect(result[0].campaigns.length).to.equal(0);
+          }));
     });
   });
 });
