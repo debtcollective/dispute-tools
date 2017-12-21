@@ -12,7 +12,7 @@ const OS = require('os');
 const fs = require('fs-extra');
 const request = require('request');
 const archiver = require('archiver');
-const { assignDefaultConfig, basePath } = require('../lib/AWS');
+const { assignDefaultConfig, getSignedURL } = require('../lib/AWS');
 const PrivateAttachmentStorage = require('./PrivateAttachmentStorage');
 
 const disputeRendererData = require(path.join(
@@ -148,7 +148,7 @@ const DisputeRenderer = Class('DisputeRenderer')
         return Promise.resolve()
           .then(() => Promise.map(_renderer.attachments, (attachment) => new Promise((resolve) => {
             const url = attachment.file.url('original');
-            const readStream = request.get(basePath + url);
+            const readStream = request.get(getSignedURL(url));
 
             return Promise.resolve()
               .then(() => zip.append(readStream, {
@@ -161,7 +161,7 @@ const DisputeRenderer = Class('DisputeRenderer')
             .include('attachments')
             .then(([dispute]) => Promise.map(dispute.attachments, (attachment) => new Promise((resolve) => {
               const url = attachment.file.url('original');
-              const readStream = request.get(basePath + url);
+              const readStream = request.get(getSignedURL(url));
 
               return Promise.resolve()
                 .then(() => zip.append(readStream, {
