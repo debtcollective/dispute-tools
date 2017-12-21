@@ -1,19 +1,9 @@
-require('./_vendor/polyfills');
+require('./shared');
 
 require('./_entries/sessions/new');
 require('./_entries/sessions/changePassword');
 require('./_entries/sessions/passwordRecover');
 require('./_entries/dispute-tools');
-require('./_entries/admin/collectives');
-require('./_entries/admin/campaigns/events/edit');
-require('./_entries/admin/campaigns/events/new');
-require('./_entries/admin/campaigns/edit');
-require('./_entries/admin/campaigns/new');
-require('./_entries/admin/collectives/users');
-require('./_entries/admin/collectives/edit');
-require('./_entries/admin/disputes');
-require('./_entries/admin/users/edit');
-require('./_entries/admin/users');
 require('./_entries/campaigns/show');
 require('./_entries/collectives/show');
 require('./_entries/collectives');
@@ -28,5 +18,3 @@ require('./_entries/home');
 require('./_entries/users/edit');
 require('./_entries/users/new');
 require('./_entries/users/show');
-require('./_entries/application');
-require('./_entries/default');
