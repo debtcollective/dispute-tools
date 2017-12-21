@@ -1,49 +1,49 @@
-/* global Checkit */
-import Widget from '../../../lib/widget';
-import DisputeStatusItem from '../../../components/disputes/StatusItem';
-import DisputeFormView from '../../../components/disputes/FormView';
+import Vue from 'vue';
+import _ from 'lodash';
 
-export default class AdminShowDisputePanel extends Widget {
-  constructor(config) {
-    super(config);
-    this.disputeElement = this.element.querySelector('[data-dispute-wrapper]');
+export default (dispute = {}) =>
+  new Vue({
+    el: '[data-dispute-wrapper]',
+    data: {
+      dispute,
+    },
+    computed: {
+      personalInformation() {
+        const { forms } = this.dispute.data;
+        const personalInformationForm = forms['personal-information-form'];
 
-    this._bindEvents();
-  }
+        return {
+          Name: personalInformationForm.name,
+          Address:
+            personalInformationForm.address || personalInformationForm.address1,
+          'Address 2': personalInformationForm.address2,
+          City: personalInformationForm.city,
+          State: personalInformationForm.state,
+          Zip: personalInformationForm['zip-code'],
+          Email: personalInformationForm.email,
+          Phone: personalInformationForm.phone,
+          'Phone 2': personalInformationForm.phone2,
+          Creditor: personalInformationForm['agency-name'],
+        };
+      },
+    },
+    render() {
+      if (!this.dispute.data || !this.dispute.data.forms) {
+        return <div>No saved form data</div>;
+      }
 
-  _bindEvents() {
-  }
-
-  /**
-   * Resets the form fields and replace the dynamic form data using `disputeData`.
-   * @param {Object} dispute - the dispute data to render
-   */
-  updateData(dispute) {
-    this.dispute = dispute
-    while (this.disputeElement.firstChild) {
-      this.disputeElement.removeChild(this.disputeElement.firstChild);
-    }
-
-    if (!this.dispute.data || !this.dispute.data.forms) {
-      var blankMessage = document.createElement('div')
-      blankMessage.innerHTML = 'No saved form data.'
-      this.disputeElement.appendChild(blankMessage)
-      return
-    }
-
-    const disputeTable = document.createDocumentFragment();
-
-    var forms = this.dispute.data.forms
-    for (var name in forms) {
-      var form = forms[name]
-      disputeTable.appendChild(
-        new DisputeFormView({
-          data: {form, name}
-        }).element
-      )
-    }
-
-
-    this.disputeElement.appendChild(disputeTable);
-  }
-}
+      return (
+        <div class="max-width-2 mx-auto">
+          <h3 class="pb3">Personal Information</h3>
+          <dl class="FormView">
+            {_.map(this.personalInformation, (value, key) => (
+              <span key={key}>
+                <dt>{key}</dt>
+                <dd>{value || '-'}</dd>
+              </span>
+            ))}
+          </dl>
+        </div>
+      );
+    },
+  });
