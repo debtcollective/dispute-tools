@@ -3,30 +3,11 @@
 /* eslint arrow-body-style: 0 */
 
 const _ = require('lodash');
-const gm = require('gm').subClass({ imageMagick: process.env.GM === 'true' || false });
 const Promise = require('bluebird');
+const { basePath } = require('../lib/AWS');
+const DisputeAttachment = require('./DisputeAttachment');
 
-const DisputeAttachment = Class({}, 'DisputeAttachment').inherits(Attachment)({
-  init(config) {
-    Krypton.Model.prototype.init.call(this, config);
-
-    this.fileMeta = this.fileMeta || {};
-
-    this.hasAttachment({
-      name: 'file',
-      versions: {
-        thumb(readStream) {
-          return gm(readStream)
-            .resize(40, 40)
-            .stream();
-        },
-      },
-    });
-  },
-});
-
-
-const Dispute = Class('Dispute').inherits(Krypton.Model)({
+const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attachment)({
   tableName: 'Disputes',
   validations: {
     userId: ['required'],
@@ -284,10 +265,13 @@ const Dispute = Class('Dispute').inherits(Krypton.Model)({
           return da.save();
         })
         .then(() => {
+          const path = da.file.url('original');
+          const fullPath = basePath + path;
           const attachment = {
             id: da.id,
             name,
             path: da.file.url('original'),
+            fullPath,
           };
 
           if (da.file.exists('thumb')) {

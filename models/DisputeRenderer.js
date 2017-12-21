@@ -12,9 +12,8 @@ const OS = require('os');
 const fs = require('fs-extra');
 const request = require('request');
 const archiver = require('archiver');
-
-const LOCAL_URI_REGEXP = /^\//;
-const REMOTE_URI_REGEXP = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/;
+const { assignDefaultConfig, basePath } = require('../lib/AWS');
+const PrivateAttachmentStorage = require('./PrivateAttachmentStorage');
 
 const disputeRendererData = require(path.join(
   process.cwd(),
@@ -24,62 +23,50 @@ const disputeRendererData = require(path.join(
 const DisputeRenderer = Class('DisputeRenderer')
   .inherits(Krypton.Model)
   .includes(Krypton.Attachment)({
-  tableName: 'DisputeRenderers',
-  data: disputeRendererData,
-  attributes: [
-    'id',
-    'disputeId',
-    'zipPath',
-    'zipMeta',
-    'createdAt',
-    'updatedAt',
-  ],
-  attachmentStorage: new Krypton.AttachmentStorage.Local({
-    acceptedMimeTypes: [
-      'application/zip',
-      'application/octet-stream',
-      /application/,
-    ],
-    maxFileSize: 41943040, // 40MB
-  }),
+    tableName: 'DisputeRenderers',
+    data: disputeRendererData,
+    attributes: ['id', 'disputeId', 'zipPath', 'zipMeta', 'createdAt', 'updatedAt'],
+    attachmentStorage: new PrivateAttachmentStorage(assignDefaultConfig({
+      acceptedMimeTypes: ['application/zip', 'application/octet-stream', /application/],
+      maxFileSize: 41943040, // 40MB
+    })),
 
-  prototype: {
-    init(config) {
-      Krypton.Model.prototype.init.call(this, config);
+    prototype: {
+      init(config) {
+        Krypton.Model.prototype.init.call(this, config);
 
-      this.hasAttachment({
-        name: 'zip',
-      });
+        this.hasAttachment({
+          name: 'zip',
+        });
 
-      return this;
-    },
-    _getDocuments(dispute) {
-      return this.constructor.data[dispute.disputeToolId][dispute.data.option]
-        .documents;
-    },
+        return this;
+      },
+      _getDocuments(dispute) {
+        return this.constructor.data[dispute.disputeToolId][dispute.data.option].documents;
+      },
 
-    _printField(template, field, value) {
-      const font = field.font || 'Arial';
-      const size = field.fontSize || 38;
+      _printField(template, field, value) {
+        const font = field.font || 'Arial';
+        const size = field.fontSize || 38;
 
-      template
-        .font(font)
-        .fontSize(size)
-        .drawText(field.x, field.y, value);
-    },
+        template
+          .font(font)
+          .fontSize(size)
+          .drawText(field.x, field.y, value);
+      },
 
-    render(dispute) {
-      const renderer = this;
-      const documents = this._getDocuments(dispute);
+      render(dispute) {
+        const renderer = this;
+        const documents = this._getDocuments(dispute);
 
-      const attachments = [];
+        const attachments = [];
 
-      return Promise.each(Object.keys(documents), document => {
-        return Promise.resolve()
+        return Promise.each(Object.keys(documents), (document) => Promise.resolve()
           .then(() => {
             const templates = [];
 
-            documents[document].templates.forEach(template => {
+            documents[document].templates.forEach((template) => {
+              // console.log('TEMPLATE', path.join(process.cwd(), template.path));
               const templateFile = gm(path.join(process.cwd(), template.path));
 
               for (const field of Object.keys(template.fields)) {
@@ -145,102 +132,45 @@ const DisputeRenderer = Class('DisputeRenderer')
                 return resolve();
               });
             });
-          });
-      }).then(() => {
-        return Promise.map(attachments, attachment => {
-          return attachment.save().then(() => {
-            return attachment.attach('file', attachment._filePath).then(() => {
-              return attachment.save();
-            });
-          });
-        });
-      });
-    },
+          })
+          .then(() => Promise.map(attachments, attachment => attachment.save().then(() => attachment.attach('file', attachment._filePath).then(() => attachment.save())))));
+      },
 
-    buildZip(_renderer) {
-      const renderer = this;
+      buildZip(_renderer) {
+        const renderer = this;
 
-      const zip = archiver.create('zip', {});
-      const zipPath = path.join(OS.tmpdir(), `${uuid.v4()}.zip`);
-      const writer = fs.createWriteStream(zipPath);
+        const zip = archiver.create('zip', {});
+        const zipPath = path.join(OS.tmpdir(), `${uuid.v4()}.zip`);
+        const writer = fs.createWriteStream(zipPath);
 
-      zip.pipe(writer);
+        zip.pipe(writer);
 
-      return Promise.resolve()
-        .then(() => {
-          return Promise.map(
-            _renderer.attachments,
-            attachment => {
-              return new Promise(resolve => {
-                let readStream;
+        return Promise.resolve()
+          .then(() => Promise.map(_renderer.attachments, (attachment) => new Promise((resolve) => {
+            const url = attachment.file.url('original');
+            const readStream = request.get(basePath + url);
 
-                const url = attachment.file.url('original');
-
-                if (LOCAL_URI_REGEXP.test(url)) {
-                  readStream = fs.createReadStream(
-                    path.join(process.cwd(), 'public', url)
-                  );
-                } else if (REMOTE_URI_REGEXP.test(url)) {
-                  readStream = request.get(url);
-                }
-
-                return Promise.resolve()
-                  .then(() => {
-                    return zip.append(readStream, {
-                      name: `debt-collective-dispute/${
-                        attachment.file.meta('original').originalFileName
-                      }`,
-                    });
-                  })
-                  .then(() => {
-                    return resolve();
-                  });
-              });
-            },
-            { concurrency: 1 }
-          );
-        })
-        .then(() => {
-          return Dispute.query()
+            return Promise.resolve()
+              .then(() => zip.append(readStream, {
+                name: `debt-collective-dispute/${attachment.file.meta('original').originalFileName}`,
+              }))
+              .then(() => resolve());
+          }), { concurrency: 1 }))
+          .then(() => Dispute.query()
             .where('id', _renderer.disputeId)
             .include('attachments')
-            .then(([dispute]) => {
-              return Promise.map(
-                dispute.attachments,
-                attachment => {
-                  return new Promise(resolve => {
-                    let readStream;
+            .then(([dispute]) => Promise.map(dispute.attachments, (attachment) => new Promise((resolve) => {
+              const url = attachment.file.url('original');
+              const readStream = request.get(basePath + url);
 
-                    const url = attachment.file.url('original');
-
-                    if (LOCAL_URI_REGEXP.test(url)) {
-                      readStream = fs.createReadStream(
-                        path.join(process.cwd(), 'public', url)
-                      );
-                    } else if (REMOTE_URI_REGEXP.test(url)) {
-                      readStream = request.get(url);
-                    }
-
-                    return Promise.resolve()
-                      .then(() => {
-                        return zip.append(readStream, {
-                          name: `debt-collective-dispute/${
-                            attachment.file.meta('original').originalFileName
-                          }`,
-                        });
-                      })
-                      .then(() => {
-                        return resolve();
-                      });
-                  });
-                },
-                { concurrency: 1 }
-              );
-            });
-        })
-        .then(() => {
-          return new Promise((resolve, reject) => {
-            writer.on('close', err => {
+              return Promise.resolve()
+                .then(() => zip.append(readStream, {
+                  name: `debt-collective-dispute/${attachment.file.meta('original').originalFileName}`,
+                }))
+                .then(() => resolve());
+            }), { concurrency: 1 })))
+          .then(() => new Promise((resolve, reject) => {
+            writer.on('close', (err) => {
               if (err) {
                 return reject(err);
               }
@@ -249,17 +179,11 @@ const DisputeRenderer = Class('DisputeRenderer')
             });
 
             return zip.finalize();
-          });
-        })
-        .then(() => {
-          return renderer.attach('zip', zipPath).then(() => {
-            return renderer.save().then(([id]) => {
-              return id;
-            });
-          });
-        });
+          }))
+          .then(() => renderer.attach('zip', zipPath)
+            .then(() => renderer.save().then(([id]) => id)));
+      },
     },
-  },
-});
+  });
 
 module.exports = DisputeRenderer;

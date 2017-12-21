@@ -2,6 +2,7 @@
 
 const expect = require('chai').expect;
 const path = require('path');
+const { awsIntegration } = require('../../utils/helpers');
 
 const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 
@@ -126,7 +127,8 @@ describe('Dispute', () => {
 
     describe('attachments', () => {
       let disputeId = '';
-      it('should be added', () => {
+
+      it('should be added', awsIntegration(() => {
         disputeId = dispute.id;
         dispute.userId = user.id;
         dispute.disputeToolId = tool.id;
@@ -144,7 +146,7 @@ describe('Dispute', () => {
             expect(dispute.data.attachments[0].thumb).to.exists;
             expect(dispute.data.attachments[0].name).to.be.equal('single-uploader');
           }));
-      });
+      }));
 
       it('should be removed', () => {
         dispute.userId = user.id;

@@ -71,7 +71,7 @@ block content
                   var _avatarUrl = '/images/profile/placeholder-small.png';
 
                   if (user.account.image.exists('small'))
-                    _avatarUrl = user.account.image.url('small');
+                    _avatarUrl = user.account.image.urls['small'];
 
                 div: img.block(src= _avatarUrl alt=user.account.fullname width="50" height="50")
                 div
