@@ -51,8 +51,8 @@ export default class AdminDisputesIndexTable extends Widget {
       return this.dispatch('show', { dispute: this.disputes[rowIndex] });
     }
 
-    if (button.dataset.deleteDispute !== undefined) {
-      if (confirm('Are you sure you want to delete this dispute?') === true) {
+    if (button.dataset.deactivateDispute !== undefined) {
+      if (confirm('Are you sure you want to deactivate this dispute?') === true) {
         button.form.submit();
       }
     }

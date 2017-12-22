@@ -20,7 +20,6 @@ Class('Post').inherits(Krypton.Model)({
       },
     ],
     campaignId: ['required'],
-    userId: ['required'],
   },
 
   attributes: [
@@ -45,6 +44,12 @@ Class('Post').inherits(Krypton.Model)({
 
       return this;
     },
+
+    unsetUser() {
+      this.userId = null;
+      return this.save();
+    },
+
   },
 });
 

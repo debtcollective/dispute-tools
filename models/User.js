@@ -214,7 +214,20 @@ const User = Class('User').inherits(Krypton.Model)({
         },
       });
     },
+
   },
+
+  destroy() {
+    // anonymize the user's posts
+    Promise.all(this.posts.map((post) => post.unsetUser()))
+    // reduce the userCount of collectives and campaigns
+    .then(Promise.all(this.debtTypes.concat(this.campaigns).map((collpaign) => {
+      collpaign.userCount -= 1;
+      return collpaign.save();
+    })))
+    .then(super.destroy());
+  },
+
 });
 
 module.exports = User;

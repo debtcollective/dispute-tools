@@ -1,10 +1,10 @@
-/* globals User, Account, Collective */
+/* globals User, Account, Collective, Post, Campaign, Dispute, */
 
 const expect = require('chai').expect;
 const Promise = require('bluebird');
 const path = require('path');
 const _ = require('lodash');
-const uuid = require('uuid');
+const { createUser, createPost, createEvent } = require('../../utils/helpers.js');
 
 const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 
@@ -18,20 +18,14 @@ global.UserMailer = {
 describe('User', () => {
   let collective;
 
-  before(() => {
-    return Collective.first().then((res) => {
-      collective = res;
-    });
-  });
+  before(() => Collective.first().then((res) => {
+    collective = res;
+  }));
 
   describe('Validations', () => {
-    beforeEach(() => {
-      truncate(User);
-    });
+    beforeEach(() => truncate(User));
 
-    after(() => {
-      truncate(User);
-    });
+    after(() => truncate(User));
 
     describe('email', () => {
       it('Should fail if the email already exists', () =>
@@ -176,36 +170,48 @@ describe('User', () => {
   });
 
   describe('Relations', () => {
+    let user;
+    before(() =>
+           createUser('Admin')
+      .then((result) => {
+        user = result;
+        return createPost(user);
+      })
+      .then(() => createPost(user))
+      .then(() => createEvent(user)));
+
+    after(() => truncate(User));
+
     describe('account', () => {
-      it('Should return a valid Account model', () => {
-        const user = new User({
-          email: 'user@example.com',
-          password: '12345678',
-          role: 'Admin',
-        });
+      it('should return a valid Account model', () =>
+        User.query().include('account')
+        .then((result) => { expect(result[0].account).to.be.instanceof(Account); }));
+    });
 
-        const account = new Account({
-          fullname: 'Example Account Name',
-          bio: '',
-          state: 'Texas',
-          zip: '73301',
-        });
-
-        return User.transaction((trx) => {
-          return user.transacting(trx).save()
-            .then(() => {
-              account.userId = user.id;
-
-              return account.transacting(trx).save();
-            });
-        }).then(() => {
-          // return User.query().include('[account.debtType]');
-          return User.query().include('account');
-        })
+    describe('posts', () => {
+      it('should return a list of posts by the user', () =>
+        User.query().where({ id: user.id }).include('posts')
         .then((result) => {
-          expect(result[0].account).to.be.instanceof(Account);
-        });
-      });
+          expect(result[0].posts.length).to.equal(2);
+          return Promise.each(result[0].posts, (post) => expect(post).to.be.instanceof(Post));
+        }));
+    });
+
+    describe('eventsOwner', () => {
+      it('should return a list of events owned by the user', () =>
+        User.query().where({ id: user.id }).include('eventsOwner')
+        .then((result) => {
+          expect(result[0].eventsOwner.length).to.equal(1);
+          expect(result[0].eventsOwner[0]).to.be.instanceof(Event);
+        }));
+    });
+
+    describe('campaigns', () => {
+      it('should return a list of campaigns that the user is a member of', () =>
+        User.query().where({ id: user.id }).include('campaigns')
+        .then((result) => {
+          expect(result[0].campaigns.length).to.equal(0);
+        }));
     });
   });
 });

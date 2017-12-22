@@ -48,7 +48,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       before(req, res, next) {
         RESTfulAPI.createMiddleware({
           queryBuilder: Dispute.query()
-            .where('deleted', false)
+            .where('deactivated', false)
             .include('[statuses, attachments, disputeTool]'),
           filters: {
             allowedFields: [],
@@ -337,7 +337,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       res.locals.dispute
         .destroy()
         .then(() => {
-          req.flash('warning', 'The Dispute you started has been deleted.');
+          req.flash('warning', 'The Dispute you started has been deactivated.');
           return res.redirect(CONFIG.router.helpers.DisputeTools.url());
         })
         .catch(next);

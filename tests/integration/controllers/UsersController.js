@@ -1,4 +1,4 @@
-/* globals User, CONFIG, Collective, Account */
+/* globals User, CONFIG, Collective, Account, Dispute, Post */
 
 const sa = require('superagent');
 const expect = require('chai').expect;
@@ -8,7 +8,6 @@ const uuid = require('uuid');
 
 const agent = sa.agent();
 const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
-const helpers = require(path.join(process.cwd(), 'tests', 'utils', 'helpers'));
 const url = CONFIG.env().siteURL;
 const urls = CONFIG.router.helpers;
 
@@ -32,7 +31,7 @@ describe('UsersController', () => {
     };
 
     user = new User({
-      email: 'user@example.com',
+      email: `user-${uuid.v4()}@example.com`,
       password: '12345678',
       role: 'User',
     });
@@ -48,12 +47,12 @@ describe('UsersController', () => {
       collective = res;
 
       return User.transaction((trx) => user.transacting(trx).save()
-          .then(() => {
-            account.userId = user.id;
-            account.collectiveId = collective.id;
+        .then(() => {
+          account.userId = user.id;
+          account.collectiveId = collective.id;
 
-            return account.transacting(trx).save();
-          }));
+          return account.transacting(trx).save();
+        }));
     });
   });
 
@@ -201,20 +200,20 @@ describe('UsersController', () => {
           done();
         });
     });
-
-    // it('Should not validate when updating a user', (done) => {
-    //   agent.post(`${url}${urls.Users.update.url(user.id)}`)
-    //     .set('Accept', 'text/html')
-    //     .send({
-    //       _method : 'PUT',
-    //       password: '1234567',
-    //       _csrf,
-    //     })
-    //     .end((err, res) => {
-    //       expect(err.toString()).to.be.equal('Error: Bad Request');
-    //       expect(res.status).to.be.equal(400);
-    //       done();
-    //     });
-    // });
   });
+
+  // it('Should not validate when updating a user', (done) => {
+  //   agent.post(`${url}${urls.Users.update.url(user.id)}`)
+  //     .set('Accept', 'text/html')
+  //     .send({
+  //       _method : 'PUT',
+  //       password: '1234567',
+  //       _csrf,
+  //     })
+  //     .end((err, res) => {
+  //       expect(err.toString()).to.be.equal('Error: Bad Request');
+  //       expect(res.status).to.be.equal(400);
+  //       done();
+  //     });
+  // });
 });

@@ -23,7 +23,6 @@ export default class DisputesInformation extends Widget {
 
     this.personalInfoButton = this.element.querySelector('.js-trigger-personal-modal');
     this.informationSubmitButton = document.getElementById('js-information-next-step');
-    this.destroyDisputeForm = this.element.querySelector('[data-component-form="delete-dispute"]');
 
     this._bindMoreInfoModal();
     this._bindEvents();
@@ -36,9 +35,6 @@ export default class DisputesInformation extends Widget {
 
     this._handleButtonClickRef = this._handleButtonClick.bind(this);
     this.personalInfoButton.addEventListener('click', this._handleButtonClickRef);
-
-    this._handleDeleteDisputeRef = this._handleDeleteDispute.bind(this);
-    this.DisputesInformationForm.bind('deleteDispute', this._handleDeleteDisputeRef);
 
     if (this.informationSubmitButton) {
       this._displayNextStepRef = this._displayNextStep.bind(this);
@@ -56,16 +52,6 @@ export default class DisputesInformation extends Widget {
     });
 
     this.ModalInformationForm.deactivate();
-  }
-
-  /**
-   * Submits the `delete-dispute` form.
-   * @private
-   * @listens @module:DisputesInformationForm~event:deleteDispute
-   * @return undefined
-   */
-  _handleDeleteDispute() {
-    this.destroyDisputeForm.submit();
   }
 
   _bindMoreInfoModal() {

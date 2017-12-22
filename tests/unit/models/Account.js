@@ -15,9 +15,7 @@ describe('Account', () => {
     });
   });
 
-  after(() => {
-    truncate([Account, User]);
-  });
+  after(() => truncate([Account, User]));
 
   describe('Validations', () => {
     describe('userId', () => {
