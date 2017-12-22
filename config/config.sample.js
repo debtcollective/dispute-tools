@@ -53,11 +53,11 @@ const config = {
     },
 
     aws: {
-      bucket: 'debt-collective',
+      bucket: '',
       secrets: {
-        accessKeyId: 'AKIAJO5HNPJQ36HVNWPA',
-        secretAccessKey: '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',
-        region: 'us-east-2',
+        accessKeyId: '',
+        secretAccessKey: '',
+        region: '',
       },
     },
   },
