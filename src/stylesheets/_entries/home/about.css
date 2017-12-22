@@ -29,16 +29,6 @@
   background-color: var(--k-color-palette-neutral-light);
 }
 
-.About__red-square {
- &-square {
-   width: 200px;
-   height: 200px;
-   bottom: 70px;
-   background-color: var(--k-color-palette-primary);
-   background-image: linear-gradient(135deg, #ff705b, #e93b22);
- }
-}
-
 .About__press-item-image {
   border: 1px solid var(--k-color-palette-neutral-light);
 }
