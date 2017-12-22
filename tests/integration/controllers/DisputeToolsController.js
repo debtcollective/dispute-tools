@@ -3,6 +3,7 @@
 const sa = require('superagent');
 const expect = require('chai').expect;
 const path = require('path');
+const { createUser } = require('../../utils/helpers');
 
 const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 
@@ -17,37 +18,13 @@ describe('DisputeToolsController', () => {
   before(function before() {
     this.timeout(5000);
 
-    user = new User({
-      email: 'user@example.com',
-      password: '12345678',
-      role: 'User',
-    });
-
-    const account = new Account({
-      fullname: 'Example Account Name',
-      bio: '',
-      state: 'Texas',
-      zip: '73301',
-    });
-
-    return Collective.first().then((res) => {
-      return User.transaction((trx) => {
-        return user.transacting(trx).save()
-          .then(() => {
-            return user.transacting(trx).activate().save();
-          })
-          .then(() => {
-            account.userId = user.id;
-            account.collectiveId = res.id;
-            return account.transacting(trx).save();
-          });
+    return createUser('User')
+      .then(u => {
+        user = u;
       });
-    });
   });
 
-  after(() => {
-    truncate([User, Account]);
-  });
+  after(() => truncate([User, Account]));
 
   it('Should render the index view', (done) => {
     agent.get(`${url}${urls.DisputeTools.url()}`)

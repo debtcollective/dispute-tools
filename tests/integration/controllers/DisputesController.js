@@ -2,11 +2,12 @@
 
 const sa = require('superagent');
 const expect = require('chai').expect;
+const assert = require('chai').assert;
 const path = require('path');
 const Promise = require('bluebird');
+const { createUser, signInAs, createDispute, awsIntegration } = require('../../utils/helpers.js');
 
 const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
-const { createUser, awsIntegration } = require('../../utils/helpers.js');
 
 const agent = sa.agent();
 const url = CONFIG.env().siteURL;
@@ -36,9 +37,7 @@ describe('DisputesController', () => {
           })));
   });
 
-  after(() => {
-    truncate([User, Account]);
-  });
+  after(() => truncate([User, Account]));
 
   it('Should forbid Visitor access to index', (done) => {
     agent.get(`${url}${urls.Disputes.url()}`)
@@ -405,4 +404,18 @@ describe('DisputesController', () => {
         done();
       });
   });
+
+  it('Should deactivate the dispute', () =>
+     signInAs(data.Admin, agent)
+     .then((csrf) => {
+       createDispute(data.User)
+        .then((dispute) => agent.post(`${url}${urls.Disputes.destroy.url(dispute.id)}`)
+        .field('_csrf', csrf)
+        .field('name', 'deactivater-1')
+        .then(result => {
+          assert.isTrue(Dispute.query().where('id', dispute.id).deactivated);
+          expect(result.status).to.equal(200);
+        }));
+     })
+  );
 });

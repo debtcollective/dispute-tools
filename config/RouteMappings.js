@@ -1,6 +1,8 @@
 const RouteMappings = require('route-mappings');
 
 const routeMappings = RouteMappings()
+  // Information, content
+
   .get('/', {
     to: 'Home#index',
     as: 'root',
@@ -45,6 +47,8 @@ const routeMappings = RouteMappings()
     as: 'tool',
   })
 
+  // Users and Sessions
+
   .get('/signup', {
     to: 'Users#new',
     as: 'signup',
@@ -87,6 +91,7 @@ const routeMappings = RouteMappings()
     as: 'acl',
   })
 
+  // Admin
   .namespace('/Admin', (mapAdmins) =>
     mapAdmins()
       .resources('/Disputes', mapAdminDisputes =>
@@ -129,6 +134,8 @@ const routeMappings = RouteMappings()
             as: 'unban',
           })))
 
+  // Users
+
   .resources('/Users', (mapUsers) =>
     mapUsers()
       .get('/activation', {
@@ -140,7 +147,11 @@ const routeMappings = RouteMappings()
         as: 'activate',
       }))
 
+  // Dispute Tools
+
   .resources('/DisputeTools')
+
+  // Disputes
 
   .resources('/Disputes', (mapDisputes) =>
     mapDisputes()
@@ -169,12 +180,16 @@ const routeMappings = RouteMappings()
         as: 'removeAttachment',
       }))
 
+  // Collectives
+
   .resources('/Collectives', (mapCollectives) =>
     mapCollectives()
       .post('/:id/join', {
         to: 'Collectives#join',
         as: 'join',
       }))
+
+  // Campaigns
 
   .resources('/Campaigns', (mapCampaigns) =>
     mapCampaigns()
@@ -187,6 +202,8 @@ const routeMappings = RouteMappings()
         to: 'Campaigns#join',
         as: 'join',
       }))
+
+  // Posts
 
   .get('/campaigns/:id/posts', {
     to: 'Posts#index',

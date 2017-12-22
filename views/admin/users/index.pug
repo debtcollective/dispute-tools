@@ -108,6 +108,8 @@ block content
                   onsubmit="return confirm('Are you sure you want to ban or unban this user?')"
                   title='Ban/unban user'
                 )
+                // Ban button
+                form.inline-block(action=routeMappings.Admin.Users.ban.url(user.id) method='post')
                   input(type='hidden' name='_csrf' value=csrfToken)
                   input(type='hidden' name='_backUrl' value=routeMappings.Admin.Users.url())
 
@@ -121,6 +123,21 @@ block content
                     button.p1.ml2.align-top.btn-clear(type='submit')
                       svg.-pen.-dark.block.align-top(width='15' height='15')
                         use(xlink:href='#svg-flag')
+
+              // Delete button
+              form.inline-block(
+                onsubmit="return confirm('Are you sure you want to permanently delete this user?')"
+                action=routeMappings.Admin.Users.destroy.url(user.id)
+                method="post"
+                data-component-form="delete-user"
+              )
+                input(name="_csrf" type="hidden" value=csrfToken)
+                input(type="hidden" name="_method" value="DELETE")
+                button.p1.ml2.align-top.btn-clear(
+                  type="submit"
+                )
+                  svg.-pen.block.align-top(width='15' height='15'): use(xlink:href='#svg-thrash')
+
     include ../../mixins/pagination
     +mixinPagination(headers.current_page, headers.total_pages)(class='pt3')
 

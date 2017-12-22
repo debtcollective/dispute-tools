@@ -10,16 +10,12 @@ const { createUser } = require('../../utils/helpers.js');
 describe('DisputeMailer', () => {
   let admin;
 
-  before(() => {
-    return createUser('Admin')
+  before(() => createUser('Admin')
       .then((res) => {
         admin = res;
-      });
-  });
+      }));
 
-  after(() => {
-    truncate([User, Account]);
-  });
+  after(() => truncate([User, Account]));
 
   it('Should execute a sendToAdmins method', function () {
     this.timeout(5000);
@@ -36,7 +32,7 @@ describe('DisputeMailer', () => {
         id: 1,
         userId: admin.id,
         disputeToolId: '11111111-1111-1111-1111-111111111111',
-        deleted: false,
+        deactivated: false,
         createdAt: new Date(),
         updatedAt: new Date(),
         disputeTool: {

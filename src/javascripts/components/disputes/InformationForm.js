@@ -130,7 +130,7 @@ export default class DisputesInformationForm extends Widget {
     });
 
     this.ConfirmInline.bind('onOk', () => {
-      this.dispatch('deleteDispute');
+      this.dispatch('deactivateDispute');
     });
 
     this.ConfirmInline.render(parentElement).activate();

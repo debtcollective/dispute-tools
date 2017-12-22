@@ -37,7 +37,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         })().then(() => {
           RESTfulAPI.createMiddleware({
             queryBuilder: query
-              .where('deleted', false)
+              .where('deactivated', false)
               .include('[user.account, attachments, disputeTool, admins]'),
             order: {
               default: '-updated_at',
@@ -181,7 +181,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       res.locals.dispute
         .destroy()
         .then(() => {
-          req.flash('warning', 'The Dispute has been deleted.');
+          req.flash('warning', 'The Dispute has been deactivated.');
           return res.redirect(CONFIG.router.helpers.Admin.Disputes.url());
         })
         .catch(next);

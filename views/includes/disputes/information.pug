@@ -86,12 +86,12 @@ mixin _uploadCard(step, _completed)
   aria-hidden= (currentSection !== 'information').toString()
 )
   .pt3.pr3.pl3.pb2.-bg-neutral-dark
-    - var _deleteDisputeButtonText = '← This is not my case (delete dispute)';
+    - var _deactivateDisputeButtonText = '← This is not my case (deactivate dispute)';
 
     if dispute.data.option !== 'none'
       h2.-accent= dispute.data.option
     else
-      - _deleteDisputeButtonText = '← Return to the beginning (delete dispute)'
+      - _deactivateDisputeButtonText = '← Return to the beginning (deactivate dispute)'
 
     h4.pb1= optionData.title
     -
@@ -103,11 +103,11 @@ mixin _uploadCard(step, _completed)
       form(
         action=routeMappings.Disputes.destroy.url(dispute.id)
         method='post'
-        data-component-form='delete-dispute'
+        data-component-form='deactivate-dispute'
       )
         input(name='_csrf' type='hidden' value=csrfToken)
         input(type='hidden' name='_method' value='DELETE')
-        button.-k-btn.btn-link.-primary.-fw-700(type='submit')= _deleteDisputeButtonText
+        button.-k-btn.btn-link.-primary.-fw-700(type='submit')= _deactivateDisputeButtonText
     hr.my2
 
     if optionData.steps

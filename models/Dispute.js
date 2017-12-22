@@ -19,7 +19,7 @@ const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attach
     'userId',
     'disputeToolId',
     'data',
-    'deleted',
+    'deactivated',
     'createdAt',
     'updatedAt',
   ],
@@ -28,7 +28,7 @@ const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attach
 
   async search(qs) {
     const query = this.query()
-      .where({ deleted: false });
+      .where({ deactivated: false });
 
     if (qs.filters) {
       // If we're passed a human readable id just search by that and ignore everything else
@@ -91,7 +91,7 @@ const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attach
 
   prototype: {
     data: null,
-    deleted: false,
+    deactivated: false,
 
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
@@ -367,7 +367,7 @@ const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attach
     },
 
     destroy() {
-      this.deleted = true;
+      this.deactivated = true;
 
       return this.save();
     },

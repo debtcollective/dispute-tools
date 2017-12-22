@@ -7,14 +7,14 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
   beforeActions: [
     {
       before: ['_loadUser'],
-      actions: ['show', 'edit', 'update', 'destroy'],
+      actions: ['show', 'edit', 'update'],
     },
   ],
 
   prototype: {
     _loadUser(req, res, next) {
       const query = User.query()
-        .include('[account, disputes.statuses.disputeTool]');
+      .include('[account, disputes.statuses.disputeTool]');
 
       query
         .where('id', req.params.id)
@@ -105,15 +105,15 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
               .insert(userCollectives);
           })
           .then(() => Promise.each(req.body.collectiveIds, (collectiveId) => Collective.query()
-            .transacting(trx)
-            .where('id', collectiveId)
-            .then(([collective]) => {
-              collective.userCount++;
-
-              return collective
                 .transacting(trx)
-                .save();
-            })))
+                .where('id', collectiveId)
+                .then(([collective]) => {
+                  collective.userCount++;
+
+                  return collective
+                    .transacting(trx)
+                    .save();
+                })))
           .then(trx.commit)
           .catch(trx.rollback)).then(() => {
             user.account = account;

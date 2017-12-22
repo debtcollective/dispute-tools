@@ -139,7 +139,7 @@
     "share-url": "^1.0.0",
     "stream-mmmagic": "^2.0.0",
     "stripe": "^4.14.0",
-    "superagent": "^1.7.2",
+    "superagent": "^3.8.2",
     "uuid": "^2.0.2",
     "vue": "^2.5.9",
     "vue-multiselect": "^2.0.8",
