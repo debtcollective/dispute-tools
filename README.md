@@ -15,6 +15,12 @@ the app to work correctly
 * ImageMagick (`brew install imagemagick` if you are on macOS)
 4. [Yarn](https://yarnpkg.com/) 1.3 or greater
 
+## Optional Dependencies
+
+You may need to install the following for certain parts of the app to work correctly
+
+* GhostScript
+
 # Installation
 
 1. Clone the repo
