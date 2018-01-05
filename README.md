@@ -13,6 +13,7 @@ the app to work correctly
 * [PostgreSQL](https://www.postgresql.org/) 9.5 or greater
 * GraphicsMagick (`brew install graphicsmagick` if you are on macOS)
 * ImageMagick (`brew install imagemagick` if you are on macOS)
+* PDFtk (`brew cask install pdftk` if you are on macOS)
 4. [Yarn](https://yarnpkg.com/) 1.3 or greater
 
 ## Optional Dependencies
@@ -24,16 +25,17 @@ You may need to install the following for certain parts of the app to work corre
 # Installation
 
 1. Clone the repo
-```
+```bash
 git clone git@gitlab.com:debtcollective/debtcollective.git
 cd debtcollective
 ```
 
 2. Copy config files and edit them as needed
-```sh
+```bash
 cp config/config.sample.js config/config.js
 cp config/knexfile.sample.js knexfile.js
 ```
+
 3. (optional, recommended) Disable account activation
 Update `./debtcollective/config/config.js` to include `disableActivation` attribute
 ```javascript
@@ -41,6 +43,7 @@ development: {
   disableActivation: true,
   ...
 }
+```
 
 # Run server
 
@@ -60,8 +63,7 @@ in development, to install:
 
 * `gem install mailcatcher`
 * Run `mailcatcher`
-* Send mail through `smtp://localhost:1025` (If you copied
-  `config.sample.js` this is already configured for you
+* Send mail through `smtp://localhost:1025` (If you copied `config.sample.js` this is already configured for you)
 * Go to `http://localhost:1080/` to see emails
 
 # Database Tasks
@@ -118,3 +120,7 @@ This part is handled by [debtcollective-terrraform](https://gitlab.com/debtcolle
 ## Create an admin user
 
 Create an User and change the role to `Admin` in the `Users` table.
+
+## Create a new dispute tool template
+
+Please refer to `services/renderers/README.md` for a description of our rendering pipeline and also guidelines on creating new templates.

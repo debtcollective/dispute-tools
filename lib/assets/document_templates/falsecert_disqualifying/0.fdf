@@ -1,0 +1,438 @@
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page1[0].CheckBox1[0]
+FieldNameAlt: Check this box if any of your information has changed.
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 1
+FieldStateOption: Off
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].#area[0].SSN1[0]
+FieldNameAlt: Social Security Number. Enter first 3 digits.
+FieldFlags: 25165824
+FieldValue: 
+FieldJustification: Left
+FieldMaxLength: 3
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].#area[0].SSN3[0]
+FieldNameAlt: Social Security Number. Enter last 4 digits.
+FieldFlags: 25165824
+FieldValue: 
+FieldJustification: Left
+FieldMaxLength: 4
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].#area[0].SSN2[0]
+FieldNameAlt: Social Security Number. Enter middle 2 digits.
+FieldFlags: 25165824
+FieldValue: 
+FieldJustification: Left
+FieldMaxLength: 2
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].Phone2[0]
+FieldNameAlt: Telephone &#8211; Alternate. Enter 10 digit telephone number including area code. If applicable, enter country code.
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].Name[0]
+FieldNameAlt: Name.
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].Address[0]
+FieldNameAlt: Address.
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].CityStateZipCode[0]
+FieldNameAlt: City, State, Zip Code.
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].Email[0]
+FieldNameAlt: E-mail (optional).
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].Phone1[0]
+FieldNameAlt: Telephone &#8211; Primary. Enter 10 digit telephone number including area code. If applicable, enter country code.
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page1[0].Applying[0]
+FieldNameAlt: 1. You are applying for this loan discharge as a Parent borrower &#8211; Continue to Item 2.
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 2
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page1[0].Status[0]
+FieldNameAlt: 8. Indicate your disqualifying status by checking the appropriate box(es) below. Age.
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 1
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page1[0].Status[1]
+FieldNameAlt: 8. Physical condition.
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 1
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page1[0].Status[2]
+FieldNameAlt: 8. Mental condition.
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 1
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page1[0].Status[3]
+FieldNameAlt: 8. Criminal record.
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 1
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page1[0].Status[4]
+FieldNameAlt: 8. Other (specify).
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 1
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page1[0].Applying[1]
+FieldNameAlt: 1. You are applying for this loan discharge as a Student borrower &#8211; Skip to Item 4.
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 1
+FieldStateOption: Off
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].StudentName[0]
+FieldNameAlt: 2. Student Name (Last, First, Middle Initial).
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].SpecifyOther[0]
+FieldNameAlt: 8. Specify other.
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].SchoolName[0]
+FieldNameAlt: 4. School Name.
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].ProgramName[0]
+FieldNameAlt: 7. Name of the program of study that you (or, for a parent PLUS borrower, the student) were enrolled in when the school certified or originated the loan that you are requesting to have discharged.
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].SchoolAddress[0]
+FieldNameAlt: 5. School Address (street, city, state, zip code).
+FieldFlags: 8392704
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].SchoolAddress[1]
+FieldNameAlt: 9. You must provide documentation to prove that you (or, for a parent PLUS borrower, the student) had the disqualifying status indicated in Item 8. You must also document the state legal requirements for employment that you (or, for a parent PLUS borrower, the student) could not meet. Provide a citation to the specific state law or regulation below, or attach a copy of the law or regulation to your application.
+FieldFlags: 8392704
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].#area[1].StudentSSN1[0]
+FieldNameAlt: 3. Student Social Security Number. Enter first 3 digits.
+FieldFlags: 25165824
+FieldValue: 
+FieldJustification: Left
+FieldMaxLength: 3
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].#area[1].StudentSSN3[0]
+FieldNameAlt: 3. Student Social Security Number. Enter last 4 digits.
+FieldFlags: 25165824
+FieldValue: 
+FieldJustification: Left
+FieldMaxLength: 4
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].#area[1].StudentSSN2[0]
+FieldNameAlt: 3. Student Social Security Number. Enter middle 2 digits.
+FieldFlags: 25165824
+FieldValue: 
+FieldJustification: Left
+FieldMaxLength: 2
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].DateFrom[0]
+FieldNameAlt: 6. Dates of attendance at the school. Date From. Enter 2 digit month, 2 digit day and 4 digit year, or press down arrow to activate the calendar.
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].DateTo[0]
+FieldNameAlt: 6. Dates of attendance at the school. Date To. Enter 2 digit month, 2 digit day and 4 digit year, or press down arrow to activate the calendar.
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page1[0].Existed[0]
+FieldNameAlt: 10. No &#8211; Continue to Item 11. 
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 2
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page1[0].Existed[1]
+FieldNameAlt: 10. Don&#8217;t Know &#8211; Continue to Item 11. 
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 3
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page1[0].Existed[2]
+FieldNameAlt: 10. Before certifying or originating the loan, did the school ask you (or, for a parent PLUS borrower, the student) if the disqualifying status in Item 8 existed? Yes &#8211; Skip to Item 12. 
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 1
+FieldStateOption: Off
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page2[0].BorrowerName[0]
+FieldNameAlt: Borrower Name.
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page2[0].#area[0].BorrowerSSN1[0]
+FieldNameAlt: Borrower Social Security Number. Enter first 3 digits.
+FieldFlags: 25165824
+FieldValue: 
+FieldJustification: Left
+FieldMaxLength: 3
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page2[0].#area[0].BorrowerSSN3[0]
+FieldNameAlt: Borrower Social Security Number. Enter last 4 digits.
+FieldFlags: 25165824
+FieldValue: 
+FieldJustification: Left
+FieldMaxLength: 4
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page2[0].#area[0].BorrowerSSN2[0]
+FieldNameAlt: Borrower Social Security Number. Enter middle 2 digits.
+FieldFlags: 25165824
+FieldValue: 
+FieldJustification: Left
+FieldMaxLength: 2
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page2[0].YesNo1[0]
+FieldNameAlt: 11. No.
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 2
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page2[0].YesNo2[0]
+FieldNameAlt: 12. Did you (or, for a parent PLUS borrower, the student) make any monetary claim with, or receive any payment from, the school or any third party (see definition in Section 5) in connection with enrollment or attendance at the school? Yes &#8211; Continue to Item 13. 
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 1
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page2[0].YesNo2[1]
+FieldNameAlt: 12. No &#8211; Skip to Item 16. 
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 2
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page2[0].YesNo2[2]
+FieldNameAlt: 12. Don&#8217;t Know &#8211; Skip to Item 16. 
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 3
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page2[0].YesNo1[1]
+FieldNameAlt: 11. Did you (or, for a parent PLUS borrower, the student) inform the school of the disqualifying status before the loan was certified or originated? Yes.
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 1
+FieldStateOption: Off
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page2[0].DateSigned1[0]
+FieldNameAlt: Date of Signature. Enter 2 digit month, 2 digit day and 4 digit year, or press down arrow to activate the calendar.
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page2[0].BorrowerSignature[0]
+FieldNameAlt: Borrower's Signature. Please click field to insert image.
+FieldFlags: 65536
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page2[0].PartyName[0]
+FieldNameAlt: 13. Provide the following about the party with whom the claim was made or from whom payment was received. a. Name.
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page2[0].Status[0]
+FieldNameAlt: 14b. What is the status of the claim?
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page2[0].Address[0]
+FieldNameAlt: 13b. Address (street, city, state, zip code).
+FieldFlags: 8392704
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page2[0].Explain[0]
+FieldNameAlt: 18. Explain why the money was refunded.
+FieldFlags: 8392704
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page2[0].Phone1[0]
+FieldNameAlt: 13c. Telephone number. Enter 10 digit telephone number including area code. If applicable, enter country code.
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page2[0].AmountofClaim[0]
+FieldNameAlt: 14 A. What is the amount of the claim? 
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page2[0].YesNo3[0]
+FieldNameAlt: 16. Don&#8217;t Know &#8211; Sign and date the form in  Section 3. Submit the form and  documentation to the loan holder in Section 7.
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 3
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page2[0].YesNo3[1]
+FieldNameAlt: 16. No &#8211; Sign and date the form in Section 3. Submit the form and documentation to the loan holder in Section 7.
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 2
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: topmostSubform[0].Page2[0].YesNo3[2]
+FieldNameAlt: 16. Did the holder of your loan receive any money back (a refund) from the school on your behalf? Yes &#8211; Continue to Items 17-18. 
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left
+FieldStateOption: 1
+FieldStateOption: Off
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page2[0].RefundAmount[0]
+FieldNameAlt: 17. What was the amount of the refund? 
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page2[0].AmountofPayment[0]
+FieldNameAlt: 15. What was the amount of any payment received? If none, write &#8220;none&#8221;. 
+FieldFlags: 8388608
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page3[0].TelephoneNumber[0]
+FieldNameAlt: If you need help completing this form, call. If no telephone number is shown, call your loan holder.
+FieldFlags: 8388609
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page3[0].Address[0]
+FieldNameAlt: Return the completed form and any documentation to. If no address is shown, return to your loan holder.
+FieldFlags: 8392705
+FieldValue: 
+FieldJustification: Left
+---
+FieldType: 
+FieldName: topmostSubform[0]
+FieldFlags: 0
+FieldValue: 
+FieldJustification: Left

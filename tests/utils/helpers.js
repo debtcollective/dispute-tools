@@ -30,22 +30,22 @@ module.exports = {
     });
 
     return Collective.first()
-    .then((collective) =>
-      User.transaction((trx) =>
-        user.transacting(trx).save()
-        .then(() => user.transacting(trx).activate().save())
-        .then(() => {
-          account.userId = user.id;
-          return account.transacting(trx).save();
-        })
-        .then(() =>
-          User.knex().table('UsersCollectives').transacting(trx)
-          .insert([{ user_id: user.id, collective_id: collective.id }]))
-        .then(() => {
-          collective.userCount++;
-          return collective.transacting(trx).save();
-        })))
-    .then(() => user);
+      .then((collective) =>
+        User.transaction((trx) =>
+          user.transacting(trx).save()
+            .then(() => user.transacting(trx).activate().save())
+            .then(() => {
+              account.userId = user.id;
+              return account.transacting(trx).save();
+            })
+            .then(() =>
+              User.knex().table('UsersCollectives').transacting(trx)
+                .insert([{ user_id: user.id, collective_id: collective.id }]))
+            .then(() => {
+              collective.userCount++;
+              return collective.transacting(trx).save();
+            })))
+      .then(() => user);
   },
 
   createDispute(user) {
@@ -55,7 +55,7 @@ module.exports = {
           user,
           option: tool.data.options.A ? 'A' : 'none',
         })
-        .then((disputeId) => Dispute.query().where('id', disputeId)));
+          .then((disputeId) => Dispute.query().where('id', disputeId)));
   },
   createPost(user) {
     return Campaign.first()
@@ -66,7 +66,7 @@ module.exports = {
           userId: user.id,
         });
         return Post.transaction((trx) => post.transacting(trx).save())
-        .then(() => post);
+          .then(() => post);
       });
   },
   createEvent(user) {
@@ -88,19 +88,19 @@ module.exports = {
     // assumes password '12345678'; returns csrf token
 
     return agent.get(`${url}`)
-    .set('Accept', 'text/html')
-    .then((getResult) =>
-      agent.post(`${url}${urls.login.url()}`)
       .set('Accept', 'text/html')
-      .send({
-        email: user.email,
-        password: '12345678',
-        _csrf: getCSRF(getResult),
-      }))
-    .then((postResult) => getCSRF(postResult))
-    .catch((err) => {
-      throw new Error(`Error while logging in: ${err.stack}`);
-    });
+      .then((getResult) =>
+        agent.post(`${url}${urls.login.url()}`)
+          .set('Accept', 'text/html')
+          .send({
+            email: user.email,
+            password: '12345678',
+            _csrf: getCSRF(getResult),
+          }))
+      .then((postResult) => getCSRF(postResult))
+      .catch((err) => {
+        throw new Error(`Error while logging in: ${err.stack}`);
+      });
   },
 
   awsIntegration(test, timeout = 50000) {

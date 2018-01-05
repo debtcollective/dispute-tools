@@ -1,0 +1,50 @@
+#letter
+  .address
+    .to
+      p To:
+      p #{agency.name}
+      p #{agency.address1}
+      p #{agency.address2}
+    .from
+      p From:
+      p #{user.name}
+      p #{user.address1}
+      p #{user.address2}
+      p #{date}
+
+  p Dear #{agency.name},
+  p I am writing with regard to account number #{accountNumber}. You most recently contacted me about this account on #{lastCorrespondence} (copy enclosed). I am disputing the alleged debt.
+  p Please provide me with the following documentation, to which I am legally entitled under the Fair Debt Collection Practices Act and similar state law:
+
+  ul
+    li Proof that I signed the promissor note and/or contact associated with this debt;
+    li Proof that you are the present owner or holder of the note, including the entire chain of title tracing your possession to the original issuance;
+    li Proof that the note is in default.
+
+  p Because I am disputing this debt, you should not report it to any credit reporting agency. If you have already reported it, please notify any credit reporting agencies to which you or any of the previous holders of this debt have furnished information concerning it that the debt is disputed and/or delete the trade-line from my credit report. As you know, reporting information that you know to be inaccurate, or failing to report information correctly, violates the Fair Debt Collection Practices Act, the Fair Credit Reporting Act, and other pertinent state and federal laws.
+  p Aside from verifying the debt, #[u do not contact me about this debt]. As you know, the Fair Debt Collection Practices Act and applicable state law requires that you honor this request.
+  p Nothing in this letter should be read as a waiver of any of my rights under state or federal law.
+  p Be advised that I have documented all correspondence with respect to this debt and will not hesitate to report any violates of the law to my State Attorney General, the Federal Trade Commission, and the Better Business Bureau. Nor will I hesitate to contact my attourny if necessary. I am a member of the Debt Collective.
+
+  br
+
+  p Sincerely,
+  p #{user.name}
+
+style.
+  .address {
+    display: -webkit-flex;
+    -webkit-flex-flow: row nowrap;
+    margin-bottom: 25px;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .to, .from {
+    width: 50%;
+    max-width: 50%;
+  }
+
+  .address > div > p {
+    margin: 0;
+  }
