@@ -40,7 +40,8 @@
     "watch": "views",
     "dest": "./public/build",
     "ignoreFiles": [
-      ".gitignore"
+      ".gitignore",
+      "*.js"
     ],
     "bundle": [
       "src/stylesheets/_entries/**"

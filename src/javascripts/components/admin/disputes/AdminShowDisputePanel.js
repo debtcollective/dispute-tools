@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import _ from 'lodash';
+import map from 'lodash/map';
 
 export default (dispute = {}) =>
   new Vue({
@@ -36,7 +36,7 @@ export default (dispute = {}) =>
         <div class="max-width-2 mx-auto">
           <h3 class="pb3">Personal Information</h3>
           <dl class="FormView">
-            {_.map(this.personalInformation, (value, key) => (
+            {map(this.personalInformation, (value, key) => (
               <span key={key}>
                 <dt>{key}</dt>
                 <dd>{value || '-'}</dd>
