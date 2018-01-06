@@ -124,3 +124,50 @@ Create an User and change the role to `Admin` in the `Users` table.
 ## Create a new dispute tool template
 
 Please refer to `services/renderers/README.md` for a description of our rendering pipeline and also guidelines on creating new templates.
+
+## Workers
+
+We are using [bee-queue](https://github.com/bee-queue/bee-queue) as our
+background jobs processing library. This will run as a separated app
+along with the application. The idea with this is to take out time
+consuming processes from the request/response and move them here. Things
+like emails, dispute renderers or any other process that can be done in
+the background should be done here.
+
+### Create a worker
+
+To create a worker follow, first add a new file in the `workers` directory. This file should expose a function with this interface
+
+```js
+function worker(job <Bee-queue Object>, done <Callback) {}
+```
+
+`job` is an object that has information about the job, but it has all
+the parameters in the `job.data` key.
+
+Then add this function to the `workers/worker.js` file, follow the same
+structure there, binding all the events and creating a queue.
+
+The naming convention we are using for workers and queues is the
+following one:
+
+* worker = `<workerName>Worker`
+* queue = `<workerName>`
+
+### Enqueue a job
+
+You enqueue a job like this
+
+```js
+// Define the Queue
+const createQueue = require('./workers/utils').createQueue;
+const userLocationQueue = createQueue('userLocation');
+
+
+// Enqueue a Job
+userLocationQueue
+  .createJob({
+    accountId: account.id,
+  })
+  .save();
+```

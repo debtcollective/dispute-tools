@@ -2,15 +2,18 @@
 const sa = require('superagent');
 const bcrypt = require('bcrypt-node');
 const path = require('path');
-const uuid = require('uuid');
 const { createUser } = require('../../utils/helpers.js');
 
 const agent = sa.agent();
 
 const expect = require('chai').expect;
 
-
-const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
+const truncate = require(path.join(
+  process.cwd(),
+  'tests',
+  'utils',
+  'truncate'
+));
 const url = CONFIG.env().siteURL;
 const urls = CONFIG.router.helpers;
 
@@ -33,8 +36,7 @@ describe('SessionsController', () => {
       },
     };
 
-    return createUser('User')
-    .then((newUser) => {
+    return createUser({ role: 'User' }).then(newUser => {
       user = newUser;
     });
   });
@@ -45,11 +47,14 @@ describe('SessionsController', () => {
     return truncate(User);
   });
 
-  it('Should render the login form', (done) => {
-    agent.get(`${url}${urls.login.url()}`)
+  it('Should render the login form', done => {
+    agent
+      .get(`${url}${urls.login.url()}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
-        _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
+        _csrf = unescape(
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+        );
 
         expect(err).to.be.equal(null);
         expect(res.status).to.be.equal(200);
@@ -57,8 +62,9 @@ describe('SessionsController', () => {
       });
   });
 
-  it('Should login with existing credentials', (done) => {
-    agent.post(`${url}${urls.login.url()}`)
+  it('Should login with existing credentials', done => {
+    agent
+      .post(`${url}${urls.login.url()}`)
       .set('Accept', 'text/html')
       .send({
         email: user.email,
@@ -72,15 +78,19 @@ describe('SessionsController', () => {
       });
   });
 
-  it('Should fail login with invalid credentials', (done) => {
+  it('Should fail login with invalid credentials', done => {
     const _agent = sa.agent();
 
-    _agent.get(`${url}${urls.login.url()}`)
+    _agent
+      .get(`${url}${urls.login.url()}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
-        _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
+        _csrf = unescape(
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+        );
 
-        _agent.post(`${url}${urls.login.url()}`)
+        _agent
+          .post(`${url}${urls.login.url()}`)
           .set('Accept', 'text/html')
           .send({
             email: user.email,
@@ -95,13 +105,17 @@ describe('SessionsController', () => {
       });
   });
 
-  it('Should logout a logged in user', (done) => {
-    agent.get(`${url}${urls.login.url()}`)
+  it('Should logout a logged in user', done => {
+    agent
+      .get(`${url}${urls.login.url()}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
-        _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
+        _csrf = unescape(
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+        );
 
-        agent.delete(`${url}${urls.logout.url()}`)
+        agent
+          .delete(`${url}${urls.logout.url()}`)
           .set('Accept', 'text/html')
           .send({
             _csrf,
@@ -114,8 +128,9 @@ describe('SessionsController', () => {
       });
   });
 
-  it('Should show the enter your email to reset password form', (done) => {
-    agent.get(`${url}${urls.resetPassword.url()}`)
+  it('Should show the enter your email to reset password form', done => {
+    agent
+      .get(`${url}${urls.resetPassword.url()}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
         expect(err).to.be.equal(null);
@@ -127,7 +142,8 @@ describe('SessionsController', () => {
   it('Should accept a valid email to reset the password', function handler(done) {
     this.timeout(10000);
 
-    agent.post(`${url}${urls.resetPassword.url()}`)
+    agent
+      .post(`${url}${urls.resetPassword.url()}`)
       .send({
         _csrf,
         email: user.email,
@@ -140,8 +156,9 @@ describe('SessionsController', () => {
       });
   });
 
-  it('Should fail if the email to reset the password is invalid', (done) => {
-    agent.post(`${url}${urls.resetPassword.url()}`)
+  it('Should fail if the email to reset the password is invalid', done => {
+    agent
+      .post(`${url}${urls.resetPassword.url()}`)
       .send({
         _csrf,
         email: 'invalid@example.com',
@@ -154,13 +171,21 @@ describe('SessionsController', () => {
       });
   });
 
-  it('Should show the form to enter the new password if a valid token is provided', (done) => {
-    User.query().where('email', user.email)
-      .then((result) => {
-        agent.get(`${url}${urls.resetPasswordWithToken.url(encodeURIComponent(result[0].resetPasswordToken))}`)
+  it('Should show the form to enter the new password if a valid token is provided', done => {
+    User.query()
+      .where('email', user.email)
+      .then(result => {
+        agent
+          .get(
+            `${url}${urls.resetPasswordWithToken.url(
+              encodeURIComponent(result[0].resetPasswordToken)
+            )}`
+          )
           .set('Accept', 'text/html')
           .end((err, res) => {
-            _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
+            _csrf = unescape(
+              /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+            );
             expect(err).to.be.equal(null);
             expect(res.status).to.be.equal(200);
             done();
@@ -171,9 +196,15 @@ describe('SessionsController', () => {
   it('Should update the user password', function handler(done) {
     this.timeout(5000);
 
-    User.query().where('email', user.email)
-      .then((result) => {
-        agent.put(`${url}${urls.resetPasswordWithToken.url(encodeURIComponent(result[0].resetPasswordToken))}`)
+    User.query()
+      .where('email', user.email)
+      .then(result => {
+        agent
+          .put(
+            `${url}${urls.resetPasswordWithToken.url(
+              encodeURIComponent(result[0].resetPasswordToken)
+            )}`
+          )
           .send({
             password: '87654321',
             confirmPassword: '87654321',
@@ -185,12 +216,16 @@ describe('SessionsController', () => {
             expect(res.status).to.be.equal(200);
             User.query()
               .where('email', user.email)
-              .then((_user) => {
-                bcrypt.compare('87654321', _user[0].encryptedPassword, (err, valid) => {
-                  expect(err).to.be.equal(null);
-                  expect(valid).to.be.equal(true);
-                  done();
-                });
+              .then(_user => {
+                bcrypt.compare(
+                  '87654321',
+                  _user[0].encryptedPassword,
+                  (err, valid) => {
+                    expect(err).to.be.equal(null);
+                    expect(valid).to.be.equal(true);
+                    done();
+                  }
+                );
               });
           });
       });
@@ -199,9 +234,15 @@ describe('SessionsController', () => {
   it('Should fail update the user passwords mismatch', function handler(done) {
     this.timeout(5000);
 
-    User.query().where('email', user.email)
-      .then((result) => {
-        agent.put(`${url}${urls.resetPasswordWithToken.url(encodeURIComponent(result[0].resetPasswordToken))}`)
+    User.query()
+      .where('email', user.email)
+      .then(result => {
+        agent
+          .put(
+            `${url}${urls.resetPasswordWithToken.url(
+              encodeURIComponent(result[0].resetPasswordToken)
+            )}`
+          )
           .send({
             password: '87654321',
             confirmPassword: '8765432',
@@ -219,9 +260,15 @@ describe('SessionsController', () => {
   it('Should fail update the user password does not validate', function handler(done) {
     this.timeout(5000);
 
-    User.query().where('email', user.email)
-      .then((result) => {
-        agent.put(`${url}${urls.resetPasswordWithToken.url(encodeURIComponent(result[0].resetPasswordToken))}`)
+    User.query()
+      .where('email', user.email)
+      .then(result => {
+        agent
+          .put(
+            `${url}${urls.resetPasswordWithToken.url(
+              encodeURIComponent(result[0].resetPasswordToken)
+            )}`
+          )
           .send({
             password: '8765432',
             confirmPassword: '8765432',

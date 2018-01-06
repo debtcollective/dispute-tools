@@ -1,5 +1,8 @@
-import NodeSupport from '../lib/widget/NodeSupport';
-import Common from '../components/Common';
+import Checkit from 'checkit';
+import NodeSupport from './lib/widget/NodeSupport';
+import Common from './components/Common';
+
+require('./_vendor/polyfills');
 
 class ViewDefault extends NodeSupport {
   constructor(config) {
@@ -15,3 +18,5 @@ class ViewDefault extends NodeSupport {
 
 window.ViewDefault = ViewDefault;
 
+
+window.Checkit = Checkit;
