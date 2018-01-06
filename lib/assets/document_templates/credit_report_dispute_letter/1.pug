@@ -1,0 +1,15 @@
+#letter
+  p Send to:
+  br
+  each address in agencies
+    each line in address
+      p.address #{line}
+    br
+
+style.
+  p {
+    margin: 0;
+  }
+  p.address {
+    margin: 0 0 0 20px;
+  }

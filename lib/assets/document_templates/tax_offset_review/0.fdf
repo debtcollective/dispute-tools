@@ -1,0 +1,258 @@
+---
+FieldType: Button
+FieldName: Check Box18
+FieldNameAlt: I want a review of my objection based on this written statement and the records in my loan file. COMPLETE PARTS II AND IV OF THIS FORM. 
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box19
+FieldNameAlt: I want an in-person hearing in the city shown on the Loan Statement to present my objection.  I understand that I must pay my own expenses to appear for this hearing. COMPLETE PARTS II, III, AND IV OF THIS FORM. Provide a telephone number where you can be reached during the day:
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box20
+FieldNameAlt: I want a hearing by telephone. COMPLETE PARTS II, III, AND IV OF THIS FORM. Provide a telephone number where you can be reached during the day: 
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box21
+FieldNameAlt: I do not owe the full amount shown because I repaid some or all of this loan. ENCLOSE copies of front and back of checks, and copies of money orders and receipts for payments made onthe loan.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box22
+FieldNameAlt: I am making payments on this loan as required under the repayment agreement I reached with the holder of the loan. ENCLOSE copies of repayment agreement and front and back of payment checks.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box23
+FieldNameAlt:  I filed for bankruptcy and my case is still open. ENCLOSE copies of any court document showing name of court and case number.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box24
+FieldNameAlt: This loan was discharged in bankruptcy. ENCLOSE copies of discharge order and the schedule of debts filed with the court.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box25
+FieldNameAlt: I am totally and permanently disabled and I submitted a completed Discharge Application: Total and Permanent Disability to the U. S. Department of Education&#8217;s Total and permanent Disability Servicer on 
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box26
+FieldNameAlt: This is not my Social Security Number, and I do not owe this loan. ENCLOSE copies of your Driver's License or other identification issued by a government agency and your Social Security Card.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box27
+FieldNameAlt: I believe that this loan is not an enforceable debt in the amount stated for the reasons explained in the attached letter.  [Attach a letter explaining any reason (for example, the loan was obtained by another person through the crime of theft of your identity, or any other reason not listed above) for your objection to collection of this loan amount by offset of your Federal and/or State tax refunds and other payments.  Be as specific as possible. ENCLOSE any records that support your reasons.]
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box28
+FieldNameAlt: I used this loan to enroll in  (school) on or about    /   /   , and I withdrew from school on or about    /   /   . I believe that I am owed, but have not been paid, a refund from the school of $____________ . ENCLOSE any records you have showing your withdrawal.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box29
+FieldNameAlt:  I used this guaranteed student loan to enroll in                              (school) on or about     /   /   , and I was unable to complete my education because the school closed. 
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box30
+FieldNameAlt: I had no high school diploma or GED when I enrolled at                                         (school) with this guaranteed student loan.  The school improperly determined my ability to benefit from the training offered.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box31
+FieldNameAlt: When I borrowed this guaranteed student loan to attend                             (school), I had a condition (physical, mental, age, criminal record) that prevented me from meeting State requirements for performing the occupation for which it trained me.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box32
+FieldNameAlt: I believe that (school) without my permission signed my name on the loan application, promissory note, loan check or electronic funds transfer (EFT) authorization.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Text
+FieldName: Name
+FieldNameAlt: Name
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: SSN
+FieldNameAlt: SSN
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Current Address
+FieldNameAlt: Current Address
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Telephone 1
+FieldNameAlt: Telephone number
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Telephone 2
+FieldNameAlt: Telephone Number
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Date 1
+FieldNameAlt: Date 
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: School 1
+FieldNameAlt: School Name
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Amont 1
+FieldNameAlt: Amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: School 2
+FieldNameAlt: School Name
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: School 3
+FieldNameAlt: School Name
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: School 4
+FieldNameAlt: School Name
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: School 5
+FieldNameAlt: School Name
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Date 6
+FieldNameAlt: Date
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: mm1
+FieldNameAlt: Month (MM)
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: dd1
+FieldNameAlt: Day (DD)
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: yy1
+FieldNameAlt: Year (YY)
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: mm2
+FieldNameAlt: Day (DD)
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: dd2
+FieldNameAlt: Year (YY)
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: yy2
+FieldNameAlt: Month (MM)
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: mm3
+FieldNameAlt: Month (MM)
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: dd3
+FieldNameAlt: Day (DD)
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: yy4
+FieldNameAlt: Year (YY)
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: number1
+FieldNameAlt: WRITE HERE the number of the objection in which you described these facts
+FieldFlags: 0
+FieldJustification: Left

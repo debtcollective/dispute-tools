@@ -1,0 +1,55 @@
+-
+  var date = UTILS.currDateFormatted
+
+#letter
+  header
+    div
+      p #{user.name}
+      
+      p #{user.address1}
+      p #{user.address2}
+      p #{agency.address1}
+      p #{agency.address2}
+      p #{date}
+
+  section#body
+    p Dear #{agency.name},
+    p I am writing in response to your #{contactType} dated #{date}, (copy enclosed) because I am disputing the alleged debt.
+    p If you are the original creditor, please send a copy of the contract or promissory note that I signed to initiate this debt.
+    p.mb0 If you are not the original creditor, please send the following documentation as required by the FDCPA 15 U.S.C. §1692g:
+      ul
+        li name of original creditor or entity from whom you purchased this debt;
+        li proof that you own the debt or are authorized to collect this debt on behalf of the current owner;
+        li proof of the amount owed;
+        li proof that the debt was actually incurred by me with respect to the original creditor;
+        li a copy of any judgment (if applicable);
+        li proof that you are licensed to collect debts in my state.
+    p If you cannot produce the above materials, please send confirmation that you will no longer be collecting on the above debt as well as confirmation that you have removed any negative the tradeline from my credit report.
+    p Reporting information that you know to be inaccurate, or failing to report information correctly, violates the FDCPA and the Fair Credit Reporting Act. I will report any violations to the CFPB as well as to state authorities and the FTC.
+    p Aside from verifying the debt, #[u do not contact me about this debt]. The FDCPA requires that you honor this request.
+    p
+      | Sincerely,
+      br
+      | #{user.name}
+
+style.
+  #letter {
+    font-size: 10pt;
+    font-family: 'Times';
+    font-variant-ligatures: common-ligatures;
+  }
+  div > p:nth-child(1) {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  div > p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  ul {
+    padding-left: 1em;
+    margin-top: 0;
+  }
+  .mb0 {
+    margin-bottom: 0;
+  }

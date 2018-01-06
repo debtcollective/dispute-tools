@@ -31,7 +31,7 @@ test:
     - cp config/config.sample.js config/config.js
     - cp config/knexfile.sample.js knexfile.js
     - apt-get update
-    - apt-get install -y postgresql-client
+    - apt-get install -y postgresql-client graphicsmagick imagemagick pdftk
   script:
     - yarn
     - yarn build
