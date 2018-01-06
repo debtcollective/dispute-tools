@@ -174,7 +174,10 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
             Raven.captureException(e, { req });
           }))
         .then(() => {
-          req.flash('success', 'Your dispute is pending for assistance, thank you!');
+          req.flash(
+            'success',
+            'Thank you for disputing your debt. A copy of your dispute has been sent to your email.'
+          );
           res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
         })
         .catch(next);
