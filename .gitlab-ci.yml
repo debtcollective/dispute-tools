@@ -25,15 +25,15 @@ setup:
 test:
   stage: test
   services:
-    - redis:latest
-    - postgres:latest
+    - redis:3.0.6
+    - postgres:9.6.2
   before_script:
     - cp config/config.sample.js config/config.js
     - cp config/knexfile.sample.js knexfile.js
     - apt-get update
     - apt-get install -y postgresql-client
   script:
-    - yarn 
+    - yarn
     - yarn build
     - yarn test
     - yarn report

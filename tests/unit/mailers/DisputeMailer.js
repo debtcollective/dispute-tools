@@ -3,17 +3,27 @@
 const expect = require('chai').expect;
 const path = require('path');
 
-const DisputeMailer = require(path.join(process.cwd(), 'mailers', 'DisputeMailer'));
-const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
+const DisputeMailer = require(path.join(
+  process.cwd(),
+  'mailers',
+  'DisputeMailer'
+));
+const truncate = require(path.join(
+  process.cwd(),
+  'tests',
+  'utils',
+  'truncate'
+));
 const { createUser } = require('../../utils/helpers.js');
 
 describe('DisputeMailer', () => {
   let admin;
 
-  before(() => createUser('Admin')
-      .then((res) => {
-        admin = res;
-      }));
+  before(() =>
+    createUser({ role: 'Admin' }).then(res => {
+      admin = res;
+    })
+  );
 
   after(() => truncate([User, Account]));
 
@@ -49,11 +59,13 @@ describe('DisputeMailer', () => {
         updatedAt: new Date(),
       }, // mock the dispute status data here,
     })
-    .then((response) => {
-      const acceptedOrRejected = response.accepted[0] || response.rejected[0];
+      .then(response => {
+        const acceptedOrRejected = response.accepted[0] || response.rejected[0];
 
-      expect(acceptedOrRejected).to.be.equal(CONFIG.env().mailers.disputesBCCAddresses[0]);
-    })
-    .then(() => new Promise(ok => setTimeout(ok, 1000)));
+        expect(acceptedOrRejected).to.be.equal(
+          CONFIG.env().mailers.disputesBCCAddresses[0]
+        );
+      })
+      .then(() => new Promise(ok => setTimeout(ok, 1000)));
   });
 });

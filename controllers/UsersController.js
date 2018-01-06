@@ -2,6 +2,9 @@
 CONFIG, Collective, Account, DisputeTool */
 const Promise = require('bluebird');
 const fs = require('fs-extra');
+const createQueue = require('../workers/utils').createQueue;
+
+const userLocationQueue = createQueue('userLocation');
 
 const UsersController = Class('UsersController').inherits(RestfulController)({
   beforeActions: [
@@ -13,17 +16,19 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
   prototype: {
     _loadUser(req, res, next) {
-      const query = User.query()
-      .include('[account, disputes.statuses.disputeTool]');
+      const query = User.query().include(
+        '[account, disputes.statuses.disputeTool]'
+      );
 
       query
         .where('id', req.params.id)
-        .then((result) => {
+        .then(result => {
           if (result.length === 0) {
             return next(new NotFoundError(`User ${req.params.id}  not found)`));
           }
 
-          return req.restifyACL(result)
+          return req
+            .restifyACL(result)
             .then(([_result]) => {
               if (!_result) {
                 const err = new Error();
@@ -33,16 +38,18 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
               res.locals.user = _result;
 
-              return Promise.each(res.locals.user.disputes, (dispute) =>
-                DisputeTool.first({ id: dispute.disputeToolId })
-                  .then((disputeTool) => {
+              return Promise.each(res.locals.user.disputes, dispute =>
+                DisputeTool.first({ id: dispute.disputeToolId }).then(
+                  disputeTool => {
                     dispute.disputeTool = disputeTool;
                     return true;
-                  }));
+                  }
+                )
+              );
             })
             .finally(() => next());
         })
-        .catch((err) => {
+        .catch(err => {
           next(err);
         });
     },
@@ -56,7 +63,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
         const _disputes = [];
 
         if (!res.locals.user.account.disputesPrivate) {
-          res.locals.user.disputes.forEach((dispute) => {
+          res.locals.user.disputes.forEach(dispute => {
             if (dispute.statuses[0].status !== 'Incomplete') {
               _disputes.push(dispute);
             }
@@ -83,62 +90,80 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
         req.body.collectiveIds = [req.body.collectiveIds];
       }
 
-      User.transaction((trx) => user.transacting(trx).save()
+      User.transaction(trx =>
+        user
+          .transacting(trx)
+          .save()
           .then(() => {
             account.userId = user.id;
             return account.transacting(trx).save();
           })
-          .then(() => User.knex()
+          .then(() =>
+            User.knex()
               .table('UsersCollectives')
               .where('user_id', user.id)
               .transacting(trx)
-              .del())
+              .del()
+          )
           .then(() => {
-            const userCollectives = req.body.collectiveIds.map((collectiveId) => ({
-              user_id: user.id,
-              collective_id: collectiveId,
-            }));
+            const userCollectives = req.body.collectiveIds.map(
+              collectiveId => ({
+                user_id: user.id,
+                collective_id: collectiveId,
+              })
+            );
 
             return User.knex()
               .table('UsersCollectives')
               .transacting(trx)
               .insert(userCollectives);
           })
-          .then(() => Promise.each(req.body.collectiveIds, (collectiveId) => Collective.query()
+          .then(() =>
+            Promise.each(req.body.collectiveIds, collectiveId =>
+              Collective.query()
                 .transacting(trx)
                 .where('id', collectiveId)
                 .then(([collective]) => {
                   collective.userCount++;
 
-                  return collective
-                    .transacting(trx)
-                    .save();
-                })))
+                  return collective.transacting(trx).save();
+                })
+            )
+          )
           .then(trx.commit)
-          .catch(trx.rollback)).then(() => {
-            user.account = account;
-            return user.sendActivation();
-          })
-      .then(() => {
-        res.render('users/activation.pug', {
-          email: user.email,
+          .catch(trx.rollback)
+      )
+        .then(() => {
+          user.account = account;
+          return user.sendActivation();
+        })
+        .then(() => {
+          res.render('users/activation.pug', {
+            email: user.email,
+          });
+        })
+        .then(() => {
+          userLocationQueue
+            .createJob({
+              accountId: account.id,
+            })
+            .save();
+        })
+        .catch(err => {
+          res.status(400);
+
+          if (err.message === 'Must provide a password') {
+            err.errors = err.errors || {
+              password: `password: ${err.message}`,
+            };
+          }
+
+          res.locals.errors = err.errors || err;
+
+          res.render('users/new.pug', {
+            _formData: req.body,
+          });
         });
-      })
-      .catch((err) => {
-        res.status(400);
-
-        if (err.message === 'Must provide a password') {
-          err.errors = err.errors || {
-            password: `password: ${err.message}`,
-          };
-        }
-
-        res.locals.errors = err.errors || err;
-
-        res.render('users/new.pug', {
-          _formData: req.body,
-        });
-      });
     },
 
     edit(req, res) {
@@ -160,48 +185,61 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       user.updateAttributes(req.body);
       user.account.updateAttributes(req.body);
 
-      User.transaction((trx) => user.transacting(trx).save()
+      User.transaction(trx =>
+        user
+          .transacting(trx)
+          .save()
           .then(() => {
             if (req.files && req.files.image && req.files.image.length > 0) {
               const image = req.files.image[0];
 
-              return user.account.attach('image', image.path, {
-                fileSize: image.size,
-                mimeType: image.mimetype || image.mimeType,
-              })
-              .then(() => {
-                fs.unlinkSync(image.path);
+              return user.account
+                .attach('image', image.path, {
+                  fileSize: image.size,
+                  mimeType: image.mimetype || image.mimeType,
+                })
+                .then(() => {
+                  fs.unlinkSync(image.path);
 
-                return user.account.transacting(trx).save();
-              });
+                  return user.account.transacting(trx).save();
+                });
             }
 
             return user.account.transacting(trx).save();
           })
           .finally(trx.commit)
-          .catch(trx.rollback))
-      .then(() => {
-        if (!user.activationToken) {
-          req.flash('success', 'Profile updated succesfully');
-          return res.redirect(CONFIG.router.helpers.Users.show.url(req.params.id));
-        }
+          .catch(trx.rollback)
+      )
+        .then(() => {
+          if (!user.activationToken) {
+            req.flash('success', 'Profile updated succesfully');
+            return res.redirect(
+              CONFIG.router.helpers.Users.show.url(req.params.id)
+            );
+          }
 
-        return user.sendActivation()
-          .then(() => {
+          return user.sendActivation().then(() => {
             req.logout();
 
             res.render('users/activation.pug', {
               email: user.email,
             });
           });
-      })
-      .catch((err) => {
-        res.status(400);
+        })
+        .then(() => {
+          userLocationQueue
+            .createJob({
+              accountId: user.account.id,
+            })
+            .save();
+        })
+        .catch(err => {
+          res.status(400);
 
-        res.locals.errors = err.errors || err;
+          res.locals.errors = err.errors || err;
 
-        res.render('users/edit.pug');
-      });
+          res.render('users/edit.pug');
+        });
     },
 
     destroy(req, res) {
@@ -214,7 +252,10 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
     activate(req, res, next) {
       Promise.coroutine(function* activateCoroutine() {
-        const users = yield User.query().where('activation_token', req.params.token);
+        const users = yield User.query().where(
+          'activation_token',
+          req.params.token
+        );
 
         if (users.length !== 1) {
           req.flash('error', 'Invalid activation token');
@@ -226,17 +267,19 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
         user.activationToken = null;
 
         return user.save().then(() => {
-          req.login(user, (err) => {
+          req.login(user, err => {
             if (err) {
               return next(err);
             }
 
-            req.flash('success', 'Welcome! Your account was succesfully activated.');
+            req.flash(
+              'success',
+              'Welcome! Your account was succesfully activated.'
+            );
             return res.redirect(CONFIG.router.helpers.Collectives.url());
           });
         });
-      })()
-      .catch(next);
+      })().catch(next);
     },
   },
 });

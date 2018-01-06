@@ -17,6 +17,19 @@
         NODE_ENV: 'production'
       }
     },
+    {
+      name: 'TDC Workers',
+      script: 'workers/worker.js',
+      watch: false,
+      instances: 1,
+      exec_mode: 'fork',
+      env_staging: {
+        NODE_ENV: 'staging'
+      },
+      env_production: {
+        NODE_ENV: 'production'
+      }
+    }
   ],
 
   deploy: {
