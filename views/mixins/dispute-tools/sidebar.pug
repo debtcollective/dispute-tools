@@ -23,6 +23,9 @@ mixin toolsSidebarMixin(disputeTool, currentStep = 1, steps = _toolSteps)
           var _className = ''
           var _disabled = true
 
+          // _disabled will strikethrough
+          // '-done' will gray out the text
+
           if (_index === 1) {
             _className = '-done';
             _disabled = true;
@@ -31,6 +34,8 @@ mixin toolsSidebarMixin(disputeTool, currentStep = 1, steps = _toolSteps)
             _disabled = false;
           } else if (currentStep > _index) {
             _className = '-done';
+            _disabled = true;
+          } else if (currentStep < _index) {
             _disabled = false;
           }
 
