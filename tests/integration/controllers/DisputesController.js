@@ -2,13 +2,10 @@
 
 const sa = require('superagent');
 const expect = require('chai').expect;
-const assert = require('chai').assert;
 const path = require('path');
 const Promise = require('bluebird');
 const {
   createUser,
-  signInAs,
-  createDispute,
 } = require('../../utils/helpers.js');
 const PrivateAttachmentStorage = require('../../../models/PrivateAttachmentStorage');
 const sinon = require('sinon');
@@ -28,28 +25,23 @@ describe('DisputesController', () => {
   const data = {};
   let _csrf;
 
-  before(function before() {
+  before(async function before() {
     this.timeout(5000);
 
-    return Promise.each(['User', 'Admin'], role =>
+    await Promise.each(['User', 'Admin'], role =>
       createUser({ role }).then(res => {
         data[role] = res;
-      })
-    ).then(() =>
-      DisputeTool.first({
-        id: '11111111-1111-1111-1111-111111111111',
-      }).then(tool =>
-        tool
-          .createDispute({
-            user: data.User,
-            option: tool.data.options.A ? 'A' : 'none',
-          })
-          .then(disputeId => {
-            data.disputeTool = tool;
-            data.disputeId = disputeId;
-          })
-      )
-    );
+      }));
+
+    data.disputeTool = await DisputeTool.first({
+      id: '11111111-1111-1111-1111-111111111111',
+    });
+
+    data.disputeId = await data.disputeTool
+      .createDispute({
+        user: data.User,
+        option: data.disputeTool.data.options.A ? 'A' : 'none',
+      });
   });
 
   after(() => truncate([User, Account]));
@@ -431,25 +423,25 @@ describe('DisputesController', () => {
       });
   });
 
+
   describe('attachments', () => {
-    before(() => {
+    before(async () => {
       // Prevent uploading files to S3
       sinon.stub(PrivateAttachmentStorage.prototype, 'saveStream').returns(
-        new Promise(resolve => {
-          const response = {
-            original: {
-              ext: 'jpeg',
-              mimeType: 'image/jpeg',
-              width: 1280,
-              height: 1335,
-              key:
-                'test/DisputeAttachment/6595579a-b170-4ffd-87b3-2439f3d032fc/file/original.jpeg',
-            },
-          };
-
-          resolve(response);
+        Promise.resolve({
+          original: {
+            ext: 'jpeg',
+            mimeType: 'image/jpeg',
+            width: 1280,
+            height: 1335,
+            key:
+              'test/DisputeAttachment/6595579a-b170-4ffd-87b3-2439f3d032fc/file/original.jpeg',
+          },
         })
       );
+
+      // await signInAs(data.User, agent);
+      // attachableDispute = await createDispute(data.User);
     });
 
     after(() => {
@@ -463,8 +455,8 @@ describe('DisputesController', () => {
           .field('_csrf', _csrf)
           .field('name', 'uploader-1')
           .attach(
-            'attachment',
-            path.join(process.cwd(), 'tests/assets/hubble.jpg')
+          'attachment',
+          path.join(process.cwd(), 'tests/assets/hubble.jpg')
           )
           .end((err, res) => {
             expect(res.redirects.length).to.equal(1);
@@ -481,16 +473,16 @@ describe('DisputesController', () => {
           .field('_csrf', _csrf)
           .field('name', 'uploader-1')
           .attach(
-            'attachment',
-            path.join(process.cwd(), 'tests/assets/hubble.jpg')
+          'attachment',
+          path.join(process.cwd(), 'tests/assets/hubble.jpg')
           )
           .attach(
-            'attachment',
-            path.join(process.cwd(), 'tests/assets/hubble.jpg')
+          'attachment',
+          path.join(process.cwd(), 'tests/assets/hubble.jpg')
           )
           .attach(
-            'attachment',
-            path.join(process.cwd(), 'tests/assets/hubble.jpg')
+          'attachment',
+          path.join(process.cwd(), 'tests/assets/hubble.jpg')
           )
           .end((err, res) => {
             expect(res.redirects.length).to.equal(1);
@@ -499,34 +491,36 @@ describe('DisputesController', () => {
             resolve();
           });
       }));
+
+    it('Should fail if a User does not provide an attachment to upload to its dispute', done => {
+      agent
+        .post(`${url}${urls.Disputes.addAttachment.url(data.disputeId)}`)
+        .field('_csrf', _csrf)
+        .field('name', 'uploader-1')
+        // .attach('attachment', path.join(process.cwd(), 'tests/assets/hubble.jpg'))
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.redirects.length).to.equal(1);
+          expect(res.redirects[0]).to.have.string(data.disputeId);
+          expect(res.text).to.have.string('There is no file to process');
+          done();
+        });
+    });
   });
 
-  it('Should fail if a User does not provide an attachment to upload to its dispute', done => {
-    agent
-      .post(`${url}${urls.Disputes.addAttachment.url(data.disputeId)}`)
-      .field('_csrf', _csrf)
-      .field('name', 'uploader-1')
-      // .attach('attachment', path.join(process.cwd(), 'tests/assets/hubble.jpg'))
-      .end((err, res) => {
-        expect(res.status).to.equal(200);
-        expect(res.redirects.length).to.equal(1);
-        expect(res.redirects[0]).to.have.string(data.disputeId);
-        expect(res.text).to.have.string('There is no file to process');
-        done();
-      });
+  describe('deactivation', () => {
+    it('Should deactivate the dispute', () =>
+      agent
+        .delete(`${url}${urls.Disputes.destroy.url(data.disputeId)}`)
+        .field('_csrf', _csrf)
+        .field('name', 'deactivater-1')
+        .then(result => {
+          expect(result.status).to.equal(200);
+          Dispute.query().where('id', data.disputeId)
+            .then(([dispute]) => {
+              expect(dispute.deactivated).to.be.true;
+            });
+        })
+    );
   });
-
-  it('Should deactivate the dispute', () =>
-    signInAs(data.Admin, agent).then(csrf => {
-      createDispute(data.User).then(dispute =>
-        agent
-          .post(`${url}${urls.Disputes.destroy.url(dispute.id)}`)
-          .field('_csrf', csrf)
-          .field('name', 'deactivater-1')
-          .then(result => {
-            assert.isTrue(Dispute.query().where('id', dispute.id).deactivated);
-            expect(result.status).to.equal(200);
-          })
-      );
-    }));
 });

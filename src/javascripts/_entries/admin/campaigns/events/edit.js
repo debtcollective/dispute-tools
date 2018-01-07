@@ -1,24 +1,13 @@
-import NodeSupport from '../../../../lib/widget/NodeSupport';
-import Common from '../../../../components/Common';
-import EditForm from '../../../../components/admin/campaigns/events/AdminEventsForm';
+import Vue from 'vue';
+import AdminEventsFormVue from '../../../../components/admin/campaigns/events/AdminEventsForm.vue';
 
-class ViewAdminEventsEdit extends NodeSupport {
-  constructor(config) {
-    super();
-
-    this.appendChild(new Common({
-      name: 'Common',
-      currentUser: config.currentUser,
-      currentURL: config.currentURL,
-      isAdmin: true,
-    }));
-
-    this.appendChild(new EditForm({
-      name: 'EditForm',
-      element: document.querySelector('[data-component-form]'),
-    }));
+window.EditAdminEventsFormController = class EditAdminEventsFormController {
+  constructor({ campaign, event, gmapsKey }) {
+    return new Vue({
+      el: '#edit-event-vue',
+      render() {
+        return <AdminEventsFormVue campaign={campaign} event={event} gmapsKey={gmapsKey} />;
+      },
+    });
   }
-}
-
-window.ViewAdminEventsEdit = ViewAdminEventsEdit;
-
+};

@@ -39,6 +39,8 @@
 @import './components/Button';
 @import './components/users/NewForm';
 
+@import 'flatpickr/dist/flatpickr';
+
 :root {
   /* KABINETT CONFIGURATION */
   --k-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;

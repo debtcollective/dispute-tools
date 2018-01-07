@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import Widget from '../../../lib/widget';
 import { serialize } from '../../../lib/AdminUtils';
 import AdminDisputesIndexTableControls from './AdminDisputesIndexTableControls';
@@ -6,7 +7,21 @@ import Modal from '../../Modal';
 import AdminDisputesAddStatusForm from './AdminDisputesAddStatusForm';
 import adminShowDisputePanel from './AdminShowDisputePanel';
 import AssignedToMeButton from './AssignedToMeButton';
-import mountManageDisputeAdmins from './ManageDisputeAdmins';
+import ManageDisputeAdmins from './ManageDisputeAdmins.vue';
+
+/**
+ * @param {string} disputeId The initial dispute id for which the component
+ * will load assigned admins
+ * @returns {ManageDisputeAdmins} the manage dispute admins instance
+ * for calling setDisputeId on later whenever the edit dispute modal changes
+ */
+const mountManageDisputeAdmins = disputeId =>
+  new Vue({
+    el: '#manage-assigned-admin-vue',
+    render() {
+      return <ManageDisputeAdmins initialDisputeId={disputeId} />;
+    },
+  }).$children[0];
 
 export default class AdminDisputesIndexController extends Widget {
   constructor(config) {
@@ -137,6 +152,7 @@ export default class AdminDisputesIndexController extends Widget {
         this.manageDisputeAdmins = mountManageDisputeAdmins(data.dispute.id);
       }
 
+
       this.addStatusModal.activate();
     });
 
@@ -164,7 +180,7 @@ export default class AdminDisputesIndexController extends Widget {
       this._query.name !== this.originalQuery.name ||
       this._query.status !== this.originalQuery.status ||
       this._query.filters.dispute_tool_id !==
-        this.originalQuery.filters.dispute_tool_id ||
+      this.originalQuery.filters.dispute_tool_id ||
       this._query.order !== this.originalQuery.order ||
       this._query.filters.readable_id !== this.originalQuery.filters.readable_id
     ) {
