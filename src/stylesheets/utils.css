@@ -89,6 +89,22 @@ h4.-h-sec > span {padding: 0 .5rem}
   }
 }
 
+/* status colors */
+.-status {
+  &-incomplete {color: #F8E71C}
+  &-completed {color: #7ED321}
+  &-in-review {color: #268AFF}
+  &-documents-sent {color: #F04C34}
+  &-update {color: #50E3C2}
+}
+
+.-status-bg {
+  &-incomplete {background-color: #F8E71C}
+  &-completed {background-color: #7ED321}
+  &-in-review {background-color: #268AFF}
+  &-documents-sent {background-color: #F04C34}
+  &-update {background-color: #50E3C2}
+}
 
 @media (max-width: 52em) {
   .md-left-align {text-align: left}

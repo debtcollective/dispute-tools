@@ -1,4 +1,4 @@
-/* globals Class, BaseController, logger, CONFIG, UserMailer */
+/* globals Class, BaseController, logger, CONFIG, UserMailer, ContactMailer */
 
 const stripe = require('stripe');
 
@@ -94,7 +94,11 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       });
 
       if (!token) {
-        res.status(400).json({ error: { message: 'Invalid token' } });
+        res.status(400).json({
+          error: {
+            message: 'Invalid token',
+          },
+        });
         return;
       }
 
@@ -102,7 +106,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
         createCustomer()
           .then((customer) =>
             createPlan()
-              .then(() => subscribe(customer.id)))
+            .then(() => subscribe(customer.id)))
           .then((subscription) => {
             // send email for more info
             UserMailer.sendSubscription(req.body.email, {
@@ -121,18 +125,26 @@ const HomeController = Class('HomeController').inherits(BaseController)({
           })
           .catch((error) => {
             logger.error(error);
-            res.status(500).json({ error: { message: 'Something went wrong, please try again.' } });
+            res.status(500).json({
+              error: {
+                message: 'Something went wrong, please try again.',
+              },
+            });
           });
       } else {
         charge()
-        .then((_charge) => {
-          res.status(200).json({
-            success: _charge.captured && _charge.paid && _charge.status === 'succeeded',
+          .then((_charge) => {
+            res.status(200).json({
+              success: _charge.captured && _charge.paid && _charge.status === 'succeeded',
+            });
+          }).catch((error) => {
+            logger.error(error);
+            res.status(500).json({
+              error: {
+                message: 'Something went wrong, please try again.',
+              },
+            });
           });
-        }).catch((error) => {
-          logger.error(error);
-          res.status(500).json({ error: { message: 'Something went wrong, please try again.' } });
-        });
       }
     },
 
@@ -146,7 +158,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
 
     index(req, res) {
       if (!req.user) res.render('home/index.pug');
-      else res.redirect(CONFIG.router.helpers.Collectives.url());
+      else res.redirect(CONFIG.router.helpers.dashboard.url());
     },
 
     about(req, res) {
@@ -162,24 +174,28 @@ const HomeController = Class('HomeController').inherits(BaseController)({
     },
 
     sendContact(req, res, next) {
-      const {email, message, name} = req.body;
+      const {
+        email,
+        message,
+        name,
+      } = req.body;
       const emailerOptions = {
-        email: email,
-        message: message,
-        name: name,
+        email,
+        message,
+        name,
         _options: {
           from: `${name} <${email}>`,
         },
       };
 
       ContactMailer.sendMessage(CONTACT_EMAIL, emailerOptions)
-      .then((result) => {
+        .then((result) => {
           logger.info('ContactMailer.sendMessage result', result);
           req.flash('success', 'Your message has been sent, thank you for contacting us.');
           res.redirect(CONFIG.router.helpers.contact.url());
           next();
-      })
-      .catch(next);
+        })
+        .catch(next);
     },
 
     dtr(req, res) {

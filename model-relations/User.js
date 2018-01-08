@@ -30,7 +30,7 @@ User.relations = {
   },
 
   campaigns: {
-    type: 'HasMany',
+    type: 'HasManyThrough',
     relatedModel: Campaign,
     ownerCol: 'id',
     relatedCol: 'id',

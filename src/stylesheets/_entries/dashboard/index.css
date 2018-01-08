@@ -1,0 +1,160 @@
+@import '../../base';
+@import '../../components/Tabs';
+@import '../../components/Masonry';
+@import '../../components/dispute-tools/TextModal';
+@import '../../components/dispute-tools/ToolCard';
+@import '../../components/AvatarList';
+@import '../../components/GridButton';
+
+/* page utils */
+.-bg-neutral-light {background-color: var(--k-color-palette-neutral-light)}
+.-neutral-dark {color: var(--k-color-palette-neutral-dark)}
+
+/* page styles */
+.bg-light-pattern {
+  background-color: var(--k-color-palette-neutral-light);
+  background-image: url(/images/global/bg-white-pattern.gif);
+  background-position: 50% 0;
+  background-repeat: repeat;
+}
+
+hr {
+  height: 2px;
+  background-color: #E3E3E3;
+  border: none;
+  transition: background-color 260ms;
+}
+
+.dashboard-campaign-container {
+  background: #FEFAC0;
+  padding: 15px;
+  margin-bottom: 10px;
+
+  & p {
+    font-size: 14px;
+    font-color:
+  }
+
+  & a {
+    outline: 0;
+    color: #000000;
+    background-color: transparent;
+
+    &:hover {
+      color: #F04C34;
+    }
+  }
+}
+
+.dashboard-campaign {
+  display: flex;
+
+  &-image {
+    margin-right: 1rem;
+  }
+
+  &-title {
+    font-size: 24px;
+    line-height: 28px;
+    margin-bottom: 10px;
+  }
+}
+
+.dashboard-block {
+  background-color: white;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.dashboard-title {
+  font-size: 18px;
+}
+
+.collectives-list {
+  list-style: none;
+  padding: 0;
+}
+
+.collectives-list-item a {
+  color: #000000;
+}
+
+.collectives-list-item svg {
+  stroke: black;
+  transition: stroke 260ms;
+}
+
+.collectives-list-item:hover a {
+  color: #f04c34
+}
+
+.collectives-list-item:hover svg {
+  stroke: #f04c34;
+}
+
+.collectives-list-item:hover hr {
+  background-color: #f04c34;
+}
+
+.collective-list-item-name {
+  font-size: 24px;
+}
+
+.collectives-see-more {
+  font-size: 14px;
+  color: #000000;
+}
+
+.dispute-progress {
+  display: flex;
+  height: 2rem;
+  overflow: hidden;
+  background-color: #9B9B9B;
+
+  &-bar {
+    display: flex;
+    position: relative;
+    align-items: center;
+    font-weight: 700;
+    color: white;
+    padding: 0 1.875rem 0 .9375rem;
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      border-left: 1.5rem solid transparent;
+      border-bottom: 2rem solid #9B9B9B;
+    }
+  }
+}
+
+.dispute-status {
+  &-title {
+    font-size: 24px;
+  }
+
+  &-comment {
+    padding-left: 10px;
+    border-left: 4px solid white;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  &-value {
+    padding: 5px 8px;
+    color: white;
+    font-weight: 700;
+  }
+
+  & p {
+    font-size: 14px;
+  }
+}
+
+.dispute-actions {
+  display: flex;
+  justify-content: space-between;
+}

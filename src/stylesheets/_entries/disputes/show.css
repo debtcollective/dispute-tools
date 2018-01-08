@@ -153,11 +153,3 @@ input[data-toggle-radio][value="no"]:checked ~ fieldset {
   padding-left: 4em;
   padding-right: 4em;
 }
-
-.-status {
-  &-incomplete {color: #F8E71C}
-  &-completed {color: #7ED321}
-  &-in-review {color: #268AFF}
-  &-documents-sent {color: #F04C34}
-  &-update {color: #50E3C2}
-}

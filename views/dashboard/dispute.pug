@@ -1,0 +1,46 @@
+- var disputeDate = new Date(dispute.createdAt)
+- var latestStatusClassname = latestStatus.status.toLowerCase().replace(/\s+/g, '-')
+- var isDisputeIncomplete = latestStatus.status === 'Incomplete'
+- var hasComment = !!latestStatus.comment
+- var disputeToolName = dispute.disputeTool.readableName;
+- var prettyDate = `${disputeDate.toLocaleString('en', {month: 'long'})} ${disputeDate.getDate()}`
+
+.-bg-accent.overflow-hidden.mb2.border-top.-bw5
+  .dispute-status.p2
+    h4.pt1.mb2.dispute-status-title
+      if isDisputeIncomplete
+        | You began a #{disputeToolName} on #{prettyDate}
+      else 
+        | You completed a #{disputeToolName} on #{prettyDate}
+
+    .mb2
+      p
+        | Your dispute status is 
+        span(class=`dispute-status-value -status-bg-${latestStatusClassname}`)=latestStatus.status
+        
+      if !isDisputeIncomplete
+        p.-caption.mt1
+          | No futher action is required
+
+    if hasComment
+      div
+        p.
+          | Message from the Debt Collective:
+        blockquote.mt1.mb2.dispute-status-comment=latestStatus.comment
+
+    .dispute-actions
+      if isDisputeIncomplete
+        a.-k-btn.btn-primary.-fw-700(href=`/disputes/${dispute.id}`)
+          | Complete Dispute
+        form(
+          action=routeMappings.Disputes.destroy.url(dispute.id)
+          method='post'
+          onsubmit="return confirm('Are you sure?');"
+        )
+          input(name='_csrf' type='hidden' value=csrfToken)
+          input(type='hidden' name='_method' value='DELETE')
+          button.-k-btn.btn-link.-primary.-dark.-fw-500(type='submit')
+            | Delete Dispute
+      else
+        a.-k-btn.btn-gray.-fw-700(href=`/disputes/${dispute.id}`)
+          | View Dispute
