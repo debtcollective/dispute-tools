@@ -7,9 +7,7 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(
   beforeActions: [
     {
       before: [
-        (req, res, next) => {
-          return neonode.controllers.Home._authenticate(req, res, next);
-        },
+        (req, res, next) => neonode.controllers.Home._authenticate(req, res, next),
         (req, res, next) => {
           DisputeTool.query()
             .where({
@@ -48,7 +46,7 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(
         .catch(next);
     },
 
-    show(req, res, next) {
+    show(req, res) {
       const disputeTool = res.locals.disputeTool;
 
       Object.keys(disputeTool.data.options).forEach(option => {
@@ -59,18 +57,10 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(
         }
       });
 
+      // In case the DisputeTool has just one option ('none')
+      // render the show-no-options view
       if (Object.keys(disputeTool.data.options).length === 1) {
-        return disputeTool
-          .createDispute({
-            option: 'none',
-            user: req.user,
-          })
-          .then(disputeId => {
-            return res.redirect(
-              CONFIG.router.helpers.Disputes.show.url(disputeId)
-            );
-          })
-          .catch(next);
+        return res.render('dispute-tools/show-optionless');
       }
 
       return res.render('dispute-tools/show');

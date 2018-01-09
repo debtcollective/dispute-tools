@@ -19,5 +19,7 @@
   user-select: none;
   touch-action: manipulation;
 
+  cursor: pointer;
+
   &[disabled] {opacity: .2}
 }

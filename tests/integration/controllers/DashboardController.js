@@ -15,7 +15,8 @@ describe('DashboardController', () => {
   let page;
   let user;
 
-  before(async () => {
+  before(async function before() {
+    this.timeout(10000);
     browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     page = await browser.newPage();
   });
