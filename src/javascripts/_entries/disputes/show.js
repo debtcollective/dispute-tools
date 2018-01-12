@@ -7,17 +7,21 @@ class ViewDisputesShow extends NodeSupport {
   constructor(config) {
     super();
 
-    this.appendChild(new Common({
-      name: 'Common',
-      currentUser: config.currentUser,
-      currentURL: config.currentURL,
-    }));
+    this.appendChild(
+      new Common({
+        name: 'Common',
+        currentUser: config.currentUser,
+        currentURL: config.currentURL,
+      }),
+    );
 
-    this.appendChild(new DisputesController({
-      name: 'DisputesController',
-      dispute: config.dispute,
-      currentStep: config.currentStep,
-    }));
+    this.appendChild(
+      new DisputesController({
+        name: 'DisputesController',
+        dispute: config.dispute,
+        currentStep: config.currentStep,
+      }),
+    );
 
     WebFont.load({
       google: {
@@ -28,4 +32,3 @@ class ViewDisputesShow extends NodeSupport {
 }
 
 window.ViewDisputesShow = ViewDisputesShow;
-

@@ -1,3 +1,5 @@
+/* globals logger */
+const CONFIG = require('../config/config');
 const Raven = require('raven');
 
 if (CONFIG[CONFIG.environment].sentry) {

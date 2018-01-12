@@ -1,16 +1,18 @@
-
-exports.seed = (knex) => {
-  return knex('Campaigns').del()
+exports.seed = knex =>
+  knex('Campaigns')
+    .del()
     .then(() => {
       const defaultCover = x =>
-        `${process.env.NODE_ENV || 'development'}/badges/${x}/cover/{version}.{ext}`;
+        `${process.env.NODE_ENV ||
+          'development'}/badges/${x}/cover/{version}.{ext}`;
 
       const defaultMeta = x =>
         require(`../public/images/badges/${x}/data.json`);
 
       const defaultTitle = x => `${x} Feed`;
       const defaultIntro = x => `This is a space for general posts about ${x}`;
-      const defaultDescription = x => `This is a space for general posts about ${x}`;
+      const defaultDescription = x =>
+        `This is a space for general posts about ${x}`;
 
       const campaigns = [
         {
@@ -123,11 +125,12 @@ exports.seed = (knex) => {
         },
       ];
 
-      return knex('Campaigns').insert(campaigns.map((campaign) => {
-        return Object.assign(campaign, {
-          created_at: new Date(),
-          updated_at: new Date(),
-        });
-      }));
+      return knex('Campaigns').insert(
+        campaigns.map(campaign =>
+          Object.assign(campaign, {
+            created_at: new Date(),
+            updated_at: new Date(),
+          }),
+        ),
+      );
     });
-};

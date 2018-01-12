@@ -14,8 +14,8 @@ export default class Modal extends Widget {
   }
 
   /**
-  * @override
-  */
+   * @override
+   */
   _activate() {
     this.active = true;
 
@@ -35,8 +35,8 @@ export default class Modal extends Widget {
   }
 
   /**
-  * @override
-  */
+   * @override
+   */
   _deactivate() {
     this.active = false;
 

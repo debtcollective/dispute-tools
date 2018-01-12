@@ -34,7 +34,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
 
         const knex = Post.knex();
 
-        const restifyPosts = (onlyPublic) => {
+        const restifyPosts = onlyPublic => {
           // if not, display only public posts
           if (onlyPublic) {
             query.where('public', true);
@@ -47,9 +47,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
             },
             order: {
               default: '-created_at',
-              allowedFields: [
-                'created_at',
-              ],
+              allowedFields: ['created_at'],
             },
             paginate: {
               pageSize: PAGE_SIZE,
@@ -69,7 +67,8 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
             user_id: req.user.id,
             campaign_id: req.params.id,
           })
-          .then(result => restifyPosts(!result.length)).catch(next);
+          .then(result => restifyPosts(!result.length))
+          .catch(next);
       },
       actions: ['index'],
     },
@@ -100,13 +99,17 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
             });
         }
 
-        Promise.all(function* getCommentsAccount() {
-          for (const post of req.posts) {
-            for (const comment of post.comments) {
-              yield getAccount(comment);
+        Promise.all(
+          (function* getCommentsAccount() {
+            for (const post of req.posts) {
+              for (const comment of post.comments) {
+                yield getAccount(comment);
+              }
             }
-          }
-        }()).then(() => next()).catch(next);
+          })(),
+        )
+          .then(() => next())
+          .catch(next);
       },
       actions: ['index'],
     },
@@ -114,7 +117,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       before(req, res, next) {
         Post.query()
           .where('id', req.params.id)
-          .then((result) => {
+          .then(result => {
             if (result.length === 0) {
               return next(new NotFoundError('Post not found'));
             }
@@ -132,7 +135,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
 
   prototype: {
     index(req, res, next) {
-      Promise.each(req.posts, (post) => {
+      Promise.each(req.posts, post => {
         if (post.type !== 'Image') {
           return Promise.resolve();
         }
@@ -142,7 +145,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
             type: 'Post',
             foreign_key: post.id,
           })
-          .then((result) => {
+          .then(result => {
             if (result.length !== 0) {
               post.image = result[0];
 
@@ -154,10 +157,10 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
             return Promise.resolve();
           });
       })
-      .then(() => {
-        res.json(req.posts);
-      })
-      .catch(next);
+        .then(() => {
+          res.json(req.posts);
+        })
+        .catch(next);
     },
 
     create(req, res) {
@@ -182,10 +185,10 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       }
 
       builder
-        .then((post) => {
+        .then(post => {
           res.json(post);
         })
-        .catch((err) => {
+        .catch(err => {
           res.status = 400;
 
           res.json(err.errors || { error: err });
@@ -210,8 +213,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         text,
       };
 
-      return post.save()
-        .then(() => post);
+      return post.save().then(() => post);
     },
 
     _createPollPost(req) {
@@ -223,11 +225,11 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         public: req.body.public,
       });
 
-      const sanitizedOptions = req.body.options.map((option) =>
+      const sanitizedOptions = req.body.options.map(option =>
         sanitize(option, {
           allowedTags: [],
           allowedAttributes: [],
-        })
+        }),
       );
 
       post.data.title = sanitize(req.body.title, {
@@ -238,8 +240,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       post.data.options = sanitizedOptions;
       post.data.votes = sanitizedOptions.map(() => []);
 
-      return post.save()
-        .then(() => post);
+      return post.save().then(() => post);
     },
 
     _createImagePost(req, text) {
@@ -264,40 +265,41 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         type: 'Post',
       });
 
-      return Post.transaction((trx) =>
-        post.transacting(trx).save()
+      return Post.transaction(trx =>
+        post
+          .transacting(trx)
+          .save()
           .then(() => {
             attachment.foreignKey = post.id;
 
-            return attachment
-              .transacting(trx)
-              .save();
+            return attachment.transacting(trx).save();
           })
           .then(trx.commit)
-          .catch(trx.rollback)
+          .catch(trx.rollback),
       )
-      .then(() => {
-        if (req.files && req.files.image && req.files.image.length > 0) {
-          const image = req.files.image[0];
+        .then(() => {
+          if (req.files && req.files.image && req.files.image.length > 0) {
+            const image = req.files.image[0];
 
-          return attachment.attach('file', image.path, {
-            fileSize: image.size,
-            mimeType: image.mimetype || image.mimeType
-          })
-          .then(() => {
-            fs.unlinkSync(image.path);
+            return attachment
+              .attach('file', image.path, {
+                fileSize: image.size,
+                mimeType: image.mimetype || image.mimeType,
+              })
+              .then(() => {
+                fs.unlinkSync(image.path);
 
-            return attachment.save();
-          });
-        }
+                return attachment.save();
+              });
+          }
 
-        return Promise.resolve();
-      })
-      .then(() => {
-        post.data.image = attachment;
+          return Promise.resolve();
+        })
+        .then(() => {
+          post.data.image = attachment;
 
-        return post;
-      });
+          return post;
+        });
     },
 
     createComment(req, res) {
@@ -318,7 +320,8 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         text,
       };
 
-      return post.save()
+      return post
+        .save()
         .then(() => {
           res.json(post);
         })
@@ -349,18 +352,19 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       if (!foundUser) {
         post.data.votes[index].push(req.user.id);
 
-        return post.save()
+        return post
+          .save()
           .then(() => {
             res.json(post);
           })
-          .catch((err) => {
+          .catch(err => {
             res.status = 400;
 
             res.json(err.errors || { error: err });
           });
       }
 
-      return Promise.reject(new Error('You\'ve already voted in this poll'));
+      return Promise.reject(new Error("You've already voted in this poll"));
     },
 
     update(req, res) {
@@ -390,7 +394,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         .then(() => {
           res.json(post);
         })
-        .catch((err) => {
+        .catch(err => {
           res.status = 400;
 
           res.json(err.errors || { error: err });
@@ -403,8 +407,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         allowedAttributes: [],
       });
 
-      return post.save()
-        .then(() => post);
+      return post.save().then(() => post);
     },
 
     _updatePollPost(req, post, body) {
@@ -413,15 +416,15 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         allowedAttributes: [],
       });
 
-      return post.save()
-        .then(() => post);
+      return post.save().then(() => post);
     },
 
     delete(req, res) {
-      req.post.destroy()
-        .then(() => {
-          res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id));
-        });
+      req.post.destroy().then(() => {
+        res.redirect(
+          CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id),
+        );
+      });
     },
   },
 });

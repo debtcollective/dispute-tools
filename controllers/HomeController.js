@@ -1,4 +1,4 @@
-/* globals Class, BaseController, logger, CONFIG, UserMailer */
+/* globals Class, BaseController, logger, CONFIG, UserMailer, ContactMailer */
 
 const stripe = require('stripe');
 
@@ -31,67 +31,83 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       // recurrent donations requires customers and plans
       const planId = `monthly-${req.body.amount}c-plan`;
 
-      const createCustomer = () => new Promise((resolve, reject) => {
-        stripeClient.customers.create({
-          email: req.body.email,
-          source: token,
-        }, (err, customer) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(customer);
-          }
+      const createCustomer = () =>
+        new Promise((resolve, reject) => {
+          stripeClient.customers.create(
+            {
+              email: req.body.email,
+              source: token,
+            },
+            (err, customer) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(customer);
+              }
+            },
+          );
         });
-      });
 
-      const createPlan = () => new Promise((resolve, reject) => {
-        stripeClient.plans.create({
-          name: `Donation for Debt Collective: ${amount / 100}`,
-          id: planId,
-          interval: 'month',
-          currency: 'usd',
-          amount,
-        }, (err) => {
-          // if the plan already exists, just use it
-          if (err) {
-            if (err.message.indexOf('already exists') === -1) {
-              reject(err);
-            } else {
-              resolve();
-            }
-          } else {
-            resolve();
-          }
+      const createPlan = () =>
+        new Promise((resolve, reject) => {
+          stripeClient.plans.create(
+            {
+              name: `Donation for Debt Collective: ${amount / 100}`,
+              id: planId,
+              interval: 'month',
+              currency: 'usd',
+              amount,
+            },
+            err => {
+              // if the plan already exists, just use it
+              if (err) {
+                if (err.message.indexOf('already exists') === -1) {
+                  reject(err);
+                } else {
+                  resolve();
+                }
+              } else {
+                resolve();
+              }
+            },
+          );
         });
-      });
 
-      const subscribe = (customerId) => new Promise((resolve, reject) => {
-        stripeClient.subscriptions.create({
-          customer: customerId,
-          plan: planId,
-        }, (err, subscription) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(subscription);
-          }
+      const subscribe = customerId =>
+        new Promise((resolve, reject) => {
+          stripeClient.subscriptions.create(
+            {
+              customer: customerId,
+              plan: planId,
+            },
+            (err, subscription) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(subscription);
+              }
+            },
+          );
         });
-      });
 
-      const charge = () => new Promise((resolve, reject) => {
-        stripeClient.charges.create({
-          amount,
-          currency: 'usd',
-          source: token,
-          description: `Donation for Debt Collective: ${amount / 100}`,
-        }, (err, _charge) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(_charge);
-          }
+      const charge = () =>
+        new Promise((resolve, reject) => {
+          stripeClient.charges.create(
+            {
+              amount,
+              currency: 'usd',
+              source: token,
+              description: `Donation for Debt Collective: ${amount / 100}`,
+            },
+            (err, _charge) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(_charge);
+              }
+            },
+          );
         });
-      });
 
       if (!token) {
         res.status(400).json({ error: { message: 'Invalid token' } });
@@ -100,10 +116,8 @@ const HomeController = Class('HomeController').inherits(BaseController)({
 
       if (req.body.subscribe) {
         createCustomer()
-          .then((customer) =>
-            createPlan()
-              .then(() => subscribe(customer.id)))
-          .then((subscription) => {
+          .then(customer => createPlan().then(() => subscribe(customer.id)))
+          .then(subscription => {
             // send email for more info
             UserMailer.sendSubscription(req.body.email, {
               amount,
@@ -114,25 +128,35 @@ const HomeController = Class('HomeController').inherits(BaseController)({
 
             return subscription;
           })
-          .then((subscription) => {
+          .then(subscription => {
             res.status(200).json({
-              success: subscription.status === 'active' && subscription.plan.id === planId,
+              success:
+                subscription.status === 'active' &&
+                subscription.plan.id === planId,
             });
           })
-          .catch((error) => {
+          .catch(error => {
             logger.error(error);
-            res.status(500).json({ error: { message: 'Something went wrong, please try again.' } });
+            res.status(500).json({
+              error: { message: 'Something went wrong, please try again.' },
+            });
           });
       } else {
         charge()
-        .then((_charge) => {
-          res.status(200).json({
-            success: _charge.captured && _charge.paid && _charge.status === 'succeeded',
+          .then(_charge => {
+            res.status(200).json({
+              success:
+                _charge.captured &&
+                _charge.paid &&
+                _charge.status === 'succeeded',
+            });
+          })
+          .catch(error => {
+            logger.error(error);
+            res.status(500).json({
+              error: { message: 'Something went wrong, please try again.' },
+            });
           });
-        }).catch((error) => {
-          logger.error(error);
-          res.status(500).json({ error: { message: 'Something went wrong, please try again.' } });
-        });
       }
     },
 
@@ -162,24 +186,27 @@ const HomeController = Class('HomeController').inherits(BaseController)({
     },
 
     sendContact(req, res, next) {
-      const {email, message, name} = req.body;
+      const { email, message, name } = req.body;
       const emailerOptions = {
-        email: email,
-        message: message,
-        name: name,
+        email,
+        message,
+        name,
         _options: {
           from: `${name} <${email}>`,
         },
       };
 
       ContactMailer.sendMessage(CONTACT_EMAIL, emailerOptions)
-      .then((result) => {
+        .then(result => {
           logger.info('ContactMailer.sendMessage result', result);
-          req.flash('success', 'Your message has been sent, thank you for contacting us.');
+          req.flash(
+            'success',
+            'Your message has been sent, thank you for contacting us.',
+          );
           res.redirect(CONFIG.router.helpers.contact.url());
           next();
-      })
-      .catch(next);
+        })
+        .catch(next);
     },
 
     dtr(req, res) {

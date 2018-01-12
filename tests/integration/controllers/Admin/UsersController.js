@@ -37,7 +37,7 @@ describe('Admin/UsersController', () => {
       .then(admin => signInAs(admin, agent))
       .then(csrf => {
         _csrf = csrf;
-      })
+      }),
   );
 
   after(() => {
@@ -65,7 +65,7 @@ describe('Admin/UsersController', () => {
       beforeEach(() =>
         createUser({ role: 'User' }).then(created => {
           immortalUser = created;
-        })
+        }),
       );
 
       it('if the user owns an event', () =>
@@ -84,7 +84,7 @@ describe('Admin/UsersController', () => {
             .then(() => User.query().where('id', admin.id))
             .then(([user]) => {
               expect(user).to.be.defined;
-            })
+            }),
         ));
     });
 
@@ -109,13 +109,13 @@ describe('Admin/UsersController', () => {
           .then(() =>
             User.query()
               .where('id', mortalUser.id)
-              .include('debtTypes')
+              .include('debtTypes'),
           )
           .then(([user]) => {
             collect = user.debtTypes[0];
           })
           // delete the user
-          .then(() => deletionRequest(mortalUser))
+          .then(() => deletionRequest(mortalUser)),
       );
 
       after(() => truncate(Post));
@@ -150,7 +150,7 @@ describe('Admin/UsersController', () => {
           .then(posts => {
             expect(posts.length).to.be.equal(1);
             return Promise.all(
-              posts.map(post => expect(post.userId).to.be.null)
+              posts.map(post => expect(post.userId).to.be.null),
             );
           }));
 
@@ -159,7 +159,7 @@ describe('Admin/UsersController', () => {
           .where('id', collect.id)
           .include('userCount')
           .then(([updated]) =>
-            expect(updated.userCount).to.be.equal(collect.userCount - 1)
+            expect(updated.userCount).to.be.equal(collect.userCount - 1),
           ));
     });
   });

@@ -1,7 +1,6 @@
 import Widget from '../../lib/widget';
 
 export default class DisputeFormView extends Widget {
-
   template(data) {
     const keys = Object.keys(data.form);
 
@@ -10,16 +9,19 @@ export default class DisputeFormView extends Widget {
         <h4>${data.name}</h4>
         <table class='FormView'>
           <tbody>
-          ${keys.map((key) => `<tr>
+          ${keys
+            .map(
+              key => `<tr>
               <td>
                 ${key}: ${data.form[key]}
               </td>
             </tr>
-            `).join('')}
+            `,
+            )
+            .join('')}
         </tbody>
       </table>
     </div>
     `;
   }
-
 }

@@ -9,4 +9,3 @@ if (sessions === false) {
     next(err);
   };
 }
-

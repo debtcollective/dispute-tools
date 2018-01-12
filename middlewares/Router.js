@@ -17,12 +17,13 @@ const table = new Table({
   // colWidths: [40, 7, ],
 });
 
-routeMapper.routes.forEach((route) => {
+routeMapper.routes.forEach(route => {
   const _handler = route.handler.slice();
 
   const verbs = [route.verb];
   const action = route._actionName || _handler[_handler.length - 1];
-  let controller = route._resourceName || _handler.slice(0, _handler.length - 1).join('.');
+  let controller =
+    route._resourceName || _handler.slice(0, _handler.length - 1).join('.');
 
   if (_handler.indexOf(controller) > -1) {
     // action
@@ -35,27 +36,28 @@ routeMapper.routes.forEach((route) => {
     controller = _handler.join('.');
   }
 
-  verbs.forEach((verb) => {
-    table.push(
-      [
-        route.path,
-        verb.toUpperCase(),
-        controller,
-        action,
-      ]
-    );
+  verbs.forEach(verb => {
+    table.push([route.path, verb.toUpperCase(), controller, action]);
 
     const controllerObject = neonode.controllers[controller];
     const controllerMethod = controllerObject && controllerObject[action];
-    const beforeActions = (controllerObject
-      && controllerObject.constructor.beforeActions) || [];
+    const beforeActions =
+      (controllerObject && controllerObject.constructor.beforeActions) || [];
 
     if (!controllerObject) {
-      throw new Error(`Controller '${controller}' is missing. Handler: ${route.handler.join('.')}`);
+      throw new Error(
+        `Controller '${controller}' is missing. Handler: ${route.handler.join(
+          '.',
+        )}`,
+      );
     }
 
     if (!controllerMethod) {
-      throw new Error(`Action '${action}' for '${controller}' is missing. Handler: ${route.handler.join('.')}`);
+      throw new Error(
+        `Action '${action}' for '${controller}' is missing. Handler: ${route.handler.join(
+          '.',
+        )}`,
+      );
     }
 
     const args = [];
@@ -63,24 +65,30 @@ routeMapper.routes.forEach((route) => {
     /* Get the beforeActions from the controller and filter the ones that
        match the current route.action and flatten the result*/
     if (beforeActions.length > 0) {
-      const filters = _.flatten(beforeActions.filter((item) => {
-        if (item.actions.indexOf(action) !== -1) {
-          return true;
-        }
+      const filters = _.flatten(
+        beforeActions
+          .filter(item => {
+            if (item.actions.indexOf(action) !== -1) {
+              return true;
+            }
 
-        return false;
-      }).map((item) => {
-        return item.before;
-      }));
+            return false;
+          })
+          .map(item => item.before),
+      );
 
-      filters.forEach((filter) => {
-        if (_.isString(filter)) { // if is string look for the method in the same controller
+      filters.forEach(filter => {
+        if (_.isString(filter)) {
+          // if is string look for the method in the same controller
           if (neonode.controllers[controller][filter]) {
             args.push(neonode.controllers[controller][filter]);
           } else {
-            throw new Error(`BeforeActions Error: Unknown method ${filter} in ${controller}`);
+            throw new Error(
+              `BeforeActions Error: Unknown method ${filter} in ${controller}`,
+            );
           }
-        } else if (_.isFunction(filter)) { // if is a function just add it to the middleware stack
+        } else if (_.isFunction(filter)) {
+          // if is a function just add it to the middleware stack
           args.push(filter);
         } else {
           throw new Error(`Invalid BeforeAction ${filter}`);
@@ -89,8 +97,11 @@ routeMapper.routes.forEach((route) => {
     }
 
     // append built middleware for this resource
-    if (ACL && ACL.middlewares[controller]
-      && ACL.middlewares[controller][action]) {
+    if (
+      ACL &&
+      ACL.middlewares[controller] &&
+      ACL.middlewares[controller][action]
+    ) {
       args.push(ACL.middlewares[controller][action]);
     }
 
@@ -106,7 +117,7 @@ logger.info('---------------------------------\n');
 
 logger.info('Route Helpers:');
 
-_helpers.forEach((fn) => {
+_helpers.forEach(fn => {
   logger.info(`  ${fn}.url()`);
 });
 

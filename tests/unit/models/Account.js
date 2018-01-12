@@ -4,16 +4,21 @@ const expect = require('chai').expect;
 const uuid = require('uuid');
 const path = require('path');
 
-const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
+const truncate = require(path.join(
+  process.cwd(),
+  'tests',
+  'utils',
+  'truncate',
+));
 
 describe('Account', () => {
-  let collective;
+  // let collective;
 
-  before(() => {
-    return Collective.first().then((res) => {
-      collective = res;
-    });
-  });
+  // before(() =>
+  //   Collective.first().then(res => {
+  //     collective = res;
+  //   }),
+  // );
 
   after(() => truncate([Account, User]));
 
@@ -22,12 +27,15 @@ describe('Account', () => {
       it('Sould fail if userId is not set', () => {
         const account = new Account({});
 
-        return account.save()
+        return account
+          .save()
           .then(() => {
             expect.fail('Should have rejected');
           })
-          .catch((err) => {
-            expect(err.errors.userId.message).to.be.equal('The userId is required');
+          .catch(err => {
+            expect(err.errors.userId.message).to.be.equal(
+              'The userId is required',
+            );
           });
       });
 
@@ -36,11 +44,12 @@ describe('Account', () => {
           userId: uuid.v4(),
         });
 
-        return account.save()
+        return account
+          .save()
           .then(() => {
             expect.fail('Should have rejected');
           })
-          .catch((err) => {
+          .catch(err => {
             expect(err.errors.userId).to.be.undefined;
           });
       });
@@ -50,12 +59,15 @@ describe('Account', () => {
       it('Sould fail if fullname is not set', () => {
         const account = new Account({});
 
-        return account.save()
+        return account
+          .save()
           .then(() => {
             expect.fail('Should have rejected');
           })
-          .catch((err) => {
-            expect(err.errors.fullname.message).to.be.equal('The fullname is required');
+          .catch(err => {
+            expect(err.errors.fullname.message).to.be.equal(
+              'The fullname is required',
+            );
           });
       });
 
@@ -64,11 +76,12 @@ describe('Account', () => {
           fullname: 'Example Account Fullname',
         });
 
-        return account.save()
+        return account
+          .save()
           .then(() => {
             expect.fail('Should have rejected');
           })
-          .catch((err) => {
+          .catch(err => {
             expect(err.errors.fullname).to.be.undefined;
           });
       });
@@ -78,12 +91,15 @@ describe('Account', () => {
       it('Sould fail if state is not set', () => {
         const account = new Account({});
 
-        return account.save()
+        return account
+          .save()
           .then(() => {
             expect.fail('Should have rejected');
           })
-          .catch((err) => {
-            expect(err.errors.state.message).to.be.equal('The state is required');
+          .catch(err => {
+            expect(err.errors.state.message).to.be.equal(
+              'The state is required',
+            );
           });
       });
 
@@ -92,12 +108,15 @@ describe('Account', () => {
           state: 'Jalisco',
         });
 
-        return account.save()
+        return account
+          .save()
           .then(() => {
             expect.fail('Should have rejected');
           })
-          .catch((err) => {
-            expect(err.errors.state.message).to.be.equal('The Account\'s state is invalid.');
+          .catch(err => {
+            expect(err.errors.state.message).to.be.equal(
+              "The Account's state is invalid.",
+            );
           });
       });
 
@@ -106,11 +125,12 @@ describe('Account', () => {
           state: 'Texas',
         });
 
-        return account.save()
+        return account
+          .save()
           .then(() => {
             expect.fail('Should have rejected');
           })
-          .catch((err) => {
+          .catch(err => {
             expect(err.errors.state).to.be.undefined;
           });
       });
@@ -120,11 +140,12 @@ describe('Account', () => {
       it('Sould fail if zip is not set', () => {
         const account = new Account({});
 
-        return account.save()
+        return account
+          .save()
           .then(() => {
             expect.fail('Should have rejected');
           })
-          .catch((err) => {
+          .catch(err => {
             expect(err.errors.zip.message).to.be.equal('The zip is required');
           });
       });
@@ -134,12 +155,15 @@ describe('Account', () => {
           zip: '123456',
         });
 
-        return account.save()
+        return account
+          .save()
           .then(() => {
             expect.fail('Should have rejected');
           })
-          .catch((err) => {
-            expect(err.errors.zip.message).to.be.equal('The Account\'s zip code is invalid.');
+          .catch(err => {
+            expect(err.errors.zip.message).to.be.equal(
+              "The Account's zip code is invalid.",
+            );
           });
       });
 
@@ -148,11 +172,12 @@ describe('Account', () => {
           zip: '90210',
         });
 
-        return account.save()
+        return account
+          .save()
           .then(() => {
             expect.fail('Should have rejected');
           })
-          .catch((err) => {
+          .catch(err => {
             expect(err.errors.zip).to.be.undefined;
           });
       });
@@ -175,19 +200,20 @@ describe('Account', () => {
           zip: '73301',
         });
 
-        return User.transaction((trx) => {
-          return user.transacting(trx).save()
+        return User.transaction(trx =>
+          user
+            .transacting(trx)
+            .save()
             .then(() => {
               account.userId = user.id;
 
               return account.transacting(trx).save();
-            });
-        })
-        .then(() => {
-          return Account.query().include('[user, debtType]');
-        }).then((result) => {
-          expect(result[0].user).to.be.instanceof(User);
-        });
+            }),
+        )
+          .then(() => Account.query().include('[user, debtType]'))
+          .then(result => {
+            expect(result[0].user).to.be.instanceof(User);
+          });
       });
     });
   });

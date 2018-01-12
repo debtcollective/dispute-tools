@@ -9,24 +9,22 @@ Class(Admin, 'Collective').inherits(Collective)({
   resourceName: 'Admin.Collectives',
 });
 
-Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(RestfulController)({
+Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(
+  RestfulController,
+)({
   beforeActions: [
     // Authenticate first
     {
       before: [
-        (req, res, next) => {
-          return neonode.controllers.Home._authenticate(req, res, next);
-        },
+        (req, res, next) =>
+          neonode.controllers.Home._authenticate(req, res, next),
       ],
       actions: ['index', 'edit', 'update'],
     },
     // Load Collective
     {
       before: '_loadCollective',
-      actions: [
-        'edit',
-        'update',
-      ],
+      actions: ['edit', 'update'],
     },
     // Load Collectives
     {
@@ -34,10 +32,8 @@ Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(Res
         Admin.Collective.query()
           .include('tools')
           .orderBy('created_at', 'DESC')
-          .then((collectives) => {
-            return req.restifyACL(collectives);
-          })
-          .then((collectives) => {
+          .then(collectives => req.restifyACL(collectives))
+          .then(collectives => {
             req.collectives = collectives;
             res.locals.collectives = collectives;
             next();
@@ -51,7 +47,7 @@ Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(Res
       before(req, res, next) {
         DisputeTool.query()
           .orderBy('created_at', 'ASC')
-          .then((tools) => {
+          .then(tools => {
             req.disputeTools = tools;
             res.locals.disputeTools = tools;
             next();
@@ -90,8 +86,10 @@ Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(Res
 
       const knex = Collective.knex();
 
-      Collective.transaction((trx) => {
-        return req.collective.transacting(trx).save()
+      Collective.transaction(trx =>
+        req.collective
+          .transacting(trx)
+          .save()
           .then(() => {
             if (!disputeToolIds) {
               return Promise.resolve();
@@ -111,40 +109,41 @@ Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(Res
               disputeToolIds = [disputeToolIds];
             }
 
-            return Promise.each(disputeToolIds, (id) => {
-              return knex('CollectivesTools')
+            return Promise.each(disputeToolIds, id =>
+              knex('CollectivesTools')
                 .transacting(trx)
                 .insert({
                   collective_id: req.collective.id,
                   tool_id: id,
-                });
-            });
+                }),
+            );
           })
           .then(() => {
             if (req.files && req.files.image && req.files.image.length > 0) {
               const image = req.files.image[0];
 
-              return req.collective.attach('cover', image.path, {
-                fileSize: image.size,
-                mimeType: image.mimetype || image.mimeType
-              })
-              .then(() => {
-                fs.unlinkSync(image.path);
+              return req.collective
+                .attach('cover', image.path, {
+                  fileSize: image.size,
+                  mimeType: image.mimetype || image.mimeType,
+                })
+                .then(() => {
+                  fs.unlinkSync(image.path);
 
-                return req.collective.transacting(trx).save();
-              });
+                  return req.collective.transacting(trx).save();
+                });
             }
 
             return Promise.resolve();
           })
           .then(trx.commit)
-          .catch(trx.rollback);
-      })
-      .then(() => {
-        req.flash('success', 'The collective has been updated.');
-        res.redirect(CONFIG.router.helpers.Admin.Collectives.url());
-      })
-      .catch(next);
+          .catch(trx.rollback),
+      )
+        .then(() => {
+          req.flash('success', 'The collective has been updated.');
+          res.redirect(CONFIG.router.helpers.Admin.Collectives.url());
+        })
+        .catch(next);
     },
   },
 });

@@ -4,9 +4,7 @@ const sa = require('superagent');
 const expect = require('chai').expect;
 const path = require('path');
 const Promise = require('bluebird');
-const {
-  createUser,
-} = require('../../utils/helpers.js');
+const { createUser } = require('../../utils/helpers.js');
 const PrivateAttachmentStorage = require('../../../models/PrivateAttachmentStorage');
 const sinon = require('sinon');
 
@@ -14,7 +12,7 @@ const truncate = require(path.join(
   process.cwd(),
   'tests',
   'utils',
-  'truncate'
+  'truncate',
 ));
 
 const agent = sa.agent();
@@ -31,17 +29,17 @@ describe('DisputesController', () => {
     await Promise.each(['User', 'Admin'], role =>
       createUser({ role }).then(res => {
         data[role] = res;
-      }));
+      }),
+    );
 
     data.disputeTool = await DisputeTool.first({
       id: '11111111-1111-1111-1111-111111111111',
     });
 
-    data.disputeId = await data.disputeTool
-      .createDispute({
-        user: data.User,
-        option: data.disputeTool.data.options.A ? 'A' : 'none',
-      });
+    data.disputeId = await data.disputeTool.createDispute({
+      user: data.User,
+      option: data.disputeTool.data.options.A ? 'A' : 'none',
+    });
   });
 
   after(() => truncate([User, Account]));
@@ -52,7 +50,7 @@ describe('DisputesController', () => {
       .set('Accept', 'text/html')
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.status).to.equal(404);
         done();
@@ -65,7 +63,7 @@ describe('DisputesController', () => {
       .set('Accept', 'text/html')
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.status).to.equal(404);
         done();
@@ -78,7 +76,7 @@ describe('DisputesController', () => {
       .set('Accept', 'text/html')
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.status).to.equal(404);
         done();
@@ -91,7 +89,7 @@ describe('DisputesController', () => {
       .set('Accept', 'text/html')
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.status).to.equal(404);
         done();
@@ -108,7 +106,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.status).to.equal(404);
         done();
@@ -126,7 +124,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.status).to.equal(500);
         done();
@@ -142,7 +140,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.status).to.equal(404);
         done();
@@ -158,7 +156,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.status).to.equal(404);
         done();
@@ -174,7 +172,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.status).to.equal(404);
         done();
@@ -190,14 +188,14 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.status).to.equal(404);
         done();
       });
   });
 
-  it('Should allow a User to view index', function (done) {
+  it('Should allow a User to view index', function(done) {
     this.timeout(10000);
 
     agent
@@ -262,7 +260,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.status).to.equal(200);
         expect(res.redirects.length).to.be.equal(1);
@@ -281,7 +279,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.status).to.equal(200);
         done();
@@ -303,7 +301,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.status).to.equal(200);
         done();
@@ -325,7 +323,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.redirects.length).to.equal(1);
         expect(res.redirects[0]).to.have.string(data.disputeId);
@@ -345,7 +343,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.status).to.equal(200);
         done();
@@ -363,7 +361,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.redirects.length).to.equal(1);
         expect(res.redirects[0]).to.have.string(data.disputeId);
@@ -382,7 +380,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.status).to.equal(200);
         done();
@@ -399,7 +397,7 @@ describe('DisputesController', () => {
       })
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
         expect(res.redirects.length).to.equal(1);
         expect(res.redirects[0]).to.have.string(data.disputeId);
@@ -423,7 +421,6 @@ describe('DisputesController', () => {
       });
   });
 
-
   describe('attachments', () => {
     before(async () => {
       // Prevent uploading files to S3
@@ -437,7 +434,7 @@ describe('DisputesController', () => {
             key:
               'test/DisputeAttachment/6595579a-b170-4ffd-87b3-2439f3d032fc/file/original.jpeg',
           },
-        })
+        }),
       );
 
       // await signInAs(data.User, agent);
@@ -455,8 +452,8 @@ describe('DisputesController', () => {
           .field('_csrf', _csrf)
           .field('name', 'uploader-1')
           .attach(
-          'attachment',
-          path.join(process.cwd(), 'tests/assets/hubble.jpg')
+            'attachment',
+            path.join(process.cwd(), 'tests/assets/hubble.jpg'),
           )
           .end((err, res) => {
             expect(res.redirects.length).to.equal(1);
@@ -473,16 +470,16 @@ describe('DisputesController', () => {
           .field('_csrf', _csrf)
           .field('name', 'uploader-1')
           .attach(
-          'attachment',
-          path.join(process.cwd(), 'tests/assets/hubble.jpg')
+            'attachment',
+            path.join(process.cwd(), 'tests/assets/hubble.jpg'),
           )
           .attach(
-          'attachment',
-          path.join(process.cwd(), 'tests/assets/hubble.jpg')
+            'attachment',
+            path.join(process.cwd(), 'tests/assets/hubble.jpg'),
           )
           .attach(
-          'attachment',
-          path.join(process.cwd(), 'tests/assets/hubble.jpg')
+            'attachment',
+            path.join(process.cwd(), 'tests/assets/hubble.jpg'),
           )
           .end((err, res) => {
             expect(res.redirects.length).to.equal(1);
@@ -516,11 +513,11 @@ describe('DisputesController', () => {
         .field('name', 'deactivater-1')
         .then(result => {
           expect(result.status).to.equal(200);
-          Dispute.query().where('id', data.disputeId)
+          Dispute.query()
+            .where('id', data.disputeId)
             .then(([dispute]) => {
               expect(dispute.deactivated).to.be.true;
             });
-        })
-    );
+        }));
   });
 });

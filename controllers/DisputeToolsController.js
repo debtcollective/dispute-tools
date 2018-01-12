@@ -2,14 +2,13 @@
 const marked = require('marked');
 
 const DisputeToolsController = Class('DisputeToolsController').inherits(
-  RestfulController
+  RestfulController,
 )({
   beforeActions: [
     {
       before: [
-        (req, res, next) => {
-          return neonode.controllers.Home._authenticate(req, res, next);
-        },
+        (req, res, next) =>
+          neonode.controllers.Home._authenticate(req, res, next),
         (req, res, next) => {
           DisputeTool.query()
             .where({
@@ -65,11 +64,9 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(
             option: 'none',
             user: req.user,
           })
-          .then(disputeId => {
-            return res.redirect(
-              CONFIG.router.helpers.Disputes.show.url(disputeId)
-            );
-          })
+          .then(disputeId =>
+            res.redirect(CONFIG.router.helpers.Disputes.show.url(disputeId)),
+          )
           .catch(next);
       }
 

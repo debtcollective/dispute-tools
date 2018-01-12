@@ -29,15 +29,19 @@ export default class JoinCampaignModal extends NodeSupport {
     this.ui = {};
     this._checkit = {};
 
-    this.appendChild(new Modal({
-      name: 'Modal',
-      element: this.modal,
-    }));
+    this.appendChild(
+      new Modal({
+        name: 'Modal',
+        element: this.modal,
+      }),
+    );
 
-    this.appendChild(new Button({
-      name: 'ButtonSubmit',
-      element: this.modal.querySelector('button[type="submit"]'),
-    })).disable();
+    this.appendChild(
+      new Button({
+        name: 'ButtonSubmit',
+        element: this.modal.querySelector('button[type="submit"]'),
+      }),
+    ).disable();
 
     let query = '';
     Object.keys(this.constructor.constraints).forEach(key => {
@@ -60,7 +64,9 @@ export default class JoinCampaignModal extends NodeSupport {
     this.ui.debt_amount.addEventListener('input', this._handleAmountInputKeyUp);
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
-    this.modal.querySelector('form').addEventListener('submit', this._handleFormSubmit);
+    this.modal
+      .querySelector('form')
+      .addEventListener('submit', this._handleFormSubmit);
   }
 
   _handleTriggerClick() {

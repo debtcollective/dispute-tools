@@ -44,8 +44,7 @@ The Department of Education usually sends offset notices once per year in the su
           name: 'Dispute Any Debt in Collections',
           excerpt:
             'Use this tool to dispute any debt (except a student loan) that has been sent to collections. Make them prove it!',
-          about:
-            `### Dispute Any Debt in Collections
+          about: `### Dispute Any Debt in Collections
 
 #### For any personal debt except student loans
 
@@ -114,6 +113,6 @@ If you don't have the name and address of the collection agency, you will not be
           completed: tool.completed,
           created_at: new Date(),
           updated_at: new Date(),
-        }))
+        })),
       );
     });

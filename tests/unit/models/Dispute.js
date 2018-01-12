@@ -9,7 +9,7 @@ const truncate = require(path.join(
   process.cwd(),
   'tests',
   'utils',
-  'truncate'
+  'truncate',
 ));
 
 describe('Dispute', () => {
@@ -46,7 +46,7 @@ describe('Dispute', () => {
               account.collectiveId = collective.id;
               user.account = account;
               return account.transacting(trx).save();
-            })
+            }),
         );
       });
     });
@@ -83,7 +83,7 @@ describe('Dispute', () => {
 
       return dispute.save().catch(err => {
         expect(err.errors.disputeToolId.message).to.be.equal(
-          'The disputeToolId is required'
+          'The disputeToolId is required',
         );
       });
     });
@@ -104,7 +104,7 @@ describe('Dispute', () => {
           .include('admins')
           .then(([d]) => {
             dispute = d;
-          })
+          }),
       );
     });
 
@@ -150,7 +150,7 @@ describe('Dispute', () => {
           process.cwd(),
           'tests',
           'assets',
-          'hubble.jpg'
+          'hubble.jpg',
         );
 
         // Prevent uploading files to S3
@@ -168,7 +168,7 @@ describe('Dispute', () => {
             };
 
             resolve(response);
-          })
+          }),
         );
 
         return dispute.save().then(() =>
@@ -178,11 +178,11 @@ describe('Dispute', () => {
             expect(dispute.data.attachments[0].path).to.exists;
             expect(dispute.data.attachments[0].thumb).to.exists;
             expect(dispute.data.attachments[0].name).to.be.equal(
-              'single-uploader'
+              'single-uploader',
             );
 
             PrivateAttachmentStorage.prototype.saveStream.restore();
-          })
+          }),
         );
       });
 
@@ -211,7 +211,7 @@ describe('Dispute', () => {
 
       it('should search by the dispute human readable id', () =>
         Dispute.search({ filters: { readable_id: dispute.readableId } }).then(
-          containsDispute
+          containsDispute,
         ));
 
       it('should search by the dispute status', () =>
@@ -227,12 +227,12 @@ describe('Dispute', () => {
           Object.assign({ filters: { readable_id: dispute.readableId } }, q);
         it('the name', () =>
           Dispute.search(withreadableId({ name: 'bogus bogus' })).then(
-            containsDispute
+            containsDispute,
           ));
 
         it('the status', () =>
           Dispute.search(
-            withreadableId({ status: 'not a real status beep boop beeeeeeep' })
+            withreadableId({ status: 'not a real status beep boop beeeeeeep' }),
           ).then(containsDispute));
       });
     });

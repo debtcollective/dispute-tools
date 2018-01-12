@@ -15,7 +15,9 @@ export default class ToggleCommentsButton extends Widget {
         <svg class='inline-block align-middle' width='20' height='20'>
           <use xlink:href='#svg-comment'></use>
         </svg>
-        <span class='inline-block align-middle pl1'>${post.comments.length}</span>
+        <span class='inline-block align-middle pl1'>${
+          post.comments.length
+        }</span>
       </button>
     `;
   }

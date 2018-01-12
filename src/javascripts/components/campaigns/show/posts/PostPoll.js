@@ -14,10 +14,12 @@ export default class PostPoll extends Post {
     this.mainElement = this.element.querySelector('[data-main-content]');
     this.optionsElements = this.element.querySelectorAll('[type="radio"]');
     this.optionsElements = Array.prototype.slice.call(this.optionsElements);
-    this.appendChild(new Button({
-      name: 'voteButton',
-      element: this.element.querySelector('[data-vote-btn]'),
-    })).disable();
+    this.appendChild(
+      new Button({
+        name: 'voteButton',
+        element: this.element.querySelector('[data-vote-btn]'),
+      }),
+    ).disable();
 
     this._bindPrivateEvents();
   }
@@ -47,33 +49,49 @@ export default class PostPoll extends Post {
 
   _renderPollContent(data) {
     if (this._userAlreadyVoted(data)) {
-      const totalVotes = data.data.votes.reduce((p, c) => p.concat(c), []).length;
-      const mostVoted = data.data.votes.reduce((a, b) => (a.length > b.length ? a : b), []);
+      const totalVotes = data.data.votes.reduce((p, c) => p.concat(c), [])
+        .length;
+      const mostVoted = data.data.votes.reduce(
+        (a, b) => (a.length > b.length ? a : b),
+        [],
+      );
       const mostVotedIndex = data.data.votes.indexOf(mostVoted);
 
       return `
         <div class='pb2'>
-          ${data.data.options.map((option, index) =>
-          this._renderPollResults(option, index, data, totalVotes, mostVotedIndex))
-          .join('')}
+          ${data.data.options
+            .map((option, index) =>
+              this._renderPollResults(
+                option,
+                index,
+                data,
+                totalVotes,
+                mostVotedIndex,
+              ),
+            )
+            .join('')}
         </div>
       `;
     }
 
     if (currentUser.get('id')) {
       return `
-        ${data.data.options.map(option => this._renderPollOption(option, data)).join('')}
+        ${data.data.options
+          .map(option => this._renderPollOption(option, data))
+          .join('')}
         <button class='-k-btn btn-dark -sm -fw-700 mt2' data-vote-btn>Vote</button>
       `;
     }
 
     return `
-      ${data.data.options.map(option => this._renderPollOption(option, data)).join('')}
+      ${data.data.options
+        .map(option => this._renderPollOption(option, data))
+        .join('')}
     `;
   }
 
   _renderPollResults(label, index, data, totalVotes, mostVotedIndex) {
-    let percentage = (data.data.votes[index].length * 100) / totalVotes;
+    let percentage = data.data.votes[index].length * 100 / totalVotes;
     let color = '-bg-neutral-dark';
 
     percentage = percentage ? `${percentage}%` : '10px';
@@ -91,7 +109,7 @@ export default class PostPoll extends Post {
               return `<img src='${avatarUrl}' width='25' height='25'/>`;
             }
             return '';
-          }())}
+          })()}
         </div>
         <div class='flex-auto'>
           <div class='pb1' style='line-height: 1;'>
@@ -166,18 +184,21 @@ export default class PostPoll extends Post {
     index = this.optionsElements.indexOf(selectedOption);
 
     if (index >= 0) {
-      campaignPostVote({
-        campaignId: this.data.campaignId,
-        postId: this.data.id,
-        body: { index },
-      }, (err, res) => {
-        if (err) {
-          return this.voteButton.enable().restoreText();
-        }
+      campaignPostVote(
+        {
+          campaignId: this.data.campaignId,
+          postId: this.data.id,
+          body: { index },
+        },
+        (err, res) => {
+          if (err) {
+            return this.voteButton.enable().restoreText();
+          }
 
-        this.mainElement.innerHTML = this._renderPollContent(res.body);
-        return null;
-      });
+          this.mainElement.innerHTML = this._renderPollContent(res.body);
+          return null;
+        },
+      );
     }
   }
 }

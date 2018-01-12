@@ -1,15 +1,17 @@
 import Widget from '../../../../lib/widget';
-import { serialize } from '../../../../lib/AdminUtils';
+import serialize from '../../../../lib/serialize';
 import AdminUsersIndexTableControls from './AdminUsersIndexTableControls';
 
 export default class AdminUsersIndexController extends Widget {
   constructor(config) {
     super(config);
 
-    this.appendChild(new AdminUsersIndexTableControls({
-      name: 'AdminUsersIndexTableControls',
-      element: document.querySelector('thead'),
-    }));
+    this.appendChild(
+      new AdminUsersIndexTableControls({
+        name: 'AdminUsersIndexTableControls',
+        element: document.querySelector('thead'),
+      }),
+    );
 
     this.originalQuery = {
       filters: {
@@ -63,10 +65,10 @@ export default class AdminUsersIndexController extends Widget {
 
   _updateApplyButton() {
     if (
-      (this._query.filters.role !== this.originalQuery.filters.role) ||
-      (this._query.search !== this.originalQuery.search) ||
-      (this._query.state !== this.originalQuery.state) ||
-      (this._query.order !== this.originalQuery.order)
+      this._query.filters.role !== this.originalQuery.filters.role ||
+      this._query.search !== this.originalQuery.search ||
+      this._query.state !== this.originalQuery.state ||
+      this._query.order !== this.originalQuery.order
     ) {
       return this.AdminUsersIndexTableControls.enableApplyButton();
     }

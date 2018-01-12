@@ -3,35 +3,46 @@
 
 const { assignDefaultConfig } = require('../lib/AWS');
 
-const Attachment = Class('Attachment').inherits(Krypton.Model)
+const Attachment = Class('Attachment')
+  .inherits(Krypton.Model)
   .includes(Krypton.Attachment)({
-    tableName: 'Attachments',
-    validations: {
-      foreignKey: ['required'],
-      type: ['required'],
-    },
-    attributes: ['id', 'type', 'foreignKey', 'filePath', 'fileMeta', 'createdAt', 'updatedAt'],
-    attachmentStorage: new Krypton.AttachmentStorage.S3(assignDefaultConfig({
+  tableName: 'Attachments',
+  validations: {
+    foreignKey: ['required'],
+    type: ['required'],
+  },
+  attributes: [
+    'id',
+    'type',
+    'foreignKey',
+    'filePath',
+    'fileMeta',
+    'createdAt',
+    'updatedAt',
+  ],
+  attachmentStorage: new Krypton.AttachmentStorage.S3(
+    assignDefaultConfig({
       acceptedMimeTypes: [/image/, /application/],
       maxFileSize: 20971520, // 20MB
-    })),
+    }),
+  ),
 
-    prototype: {
-      type: null,
-      foreignKey: null,
+  prototype: {
+    type: null,
+    foreignKey: null,
 
-      init(config) {
-        Krypton.Model.prototype.init.call(this, config);
+    init(config) {
+      Krypton.Model.prototype.init.call(this, config);
 
-        this.fileMeta = this.fileMeta || {};
+      this.fileMeta = this.fileMeta || {};
 
-        this.hasAttachment({
-          name: 'file',
-        });
+      this.hasAttachment({
+        name: 'file',
+      });
 
-        return this;
-      },
+      return this;
     },
-  });
+  },
+});
 
 module.exports = Attachment;

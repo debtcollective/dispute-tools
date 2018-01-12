@@ -5,18 +5,19 @@
     "mocha": true,
     "browser": true
   },
-  "plugins": [
-    "mocha",
-  ],
+  "plugins": ["mocha"],
   "extends": [
     "airbnb-base",
-    "plugin:vue/recommended"
+    "plugin:vue/recommended",
+    "plugin:prettier/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": 8,
     "sourceType": "module"
   },
   "rules": {
+    "comma-dangle": [2, "always-multiline"],
+    "arrow-body-style": 0,
     "new-cap": [
       1,
       {
@@ -30,39 +31,15 @@
         ]
       }
     ],
-    "mocha/no-exclusive-tests": [
-      0,
-      {}
-    ],
-    "no-param-reassign": [
-      0,
-      {}
-    ],
-    "no-underscore-dangle": [
-      0,
-      {}
-    ],
-    "global-require": [
-      0
-    ],
-    "arrow-body-style": [
-      1,
-      "as-needed"
-    ],
-    "no-global-assign": [
-      0
-    ],
+    "mocha/no-exclusive-tests": [0, {}],
+    "no-param-reassign": [0, {}],
+    "no-underscore-dangle": [0, {}],
+    "global-require": [0],
+    "no-global-assign": [0],
     "no-shadow": [
       0,
       {
-        "allow": [
-          "done",
-          "err",
-          "res",
-          "req",
-          "resolve",
-          "reject"
-        ]
+        "allow": ["done", "err", "res", "req", "resolve", "reject"]
       }
     ],
     "jsx-uses-vars": 0

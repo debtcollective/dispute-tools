@@ -9,11 +9,13 @@ class ViewDisputeToolsIndex extends NodeSupport {
   constructor(config) {
     super();
 
-    this.appendChild(new Common({
-      name: 'Common',
-      currentUser: config.currentUser,
-      currentURL: config.currentURL,
-    }));
+    this.appendChild(
+      new Common({
+        name: 'Common',
+        currentUser: config.currentUser,
+        currentURL: config.currentURL,
+      }),
+    );
 
     this.disputeIds = config.disputeIds;
 
@@ -23,20 +25,30 @@ class ViewDisputeToolsIndex extends NodeSupport {
       },
     });
 
-    this._bindEvents()._bindScrollTo()._applyGlitch();
+    this._bindEvents()
+      ._bindScrollTo()
+      ._applyGlitch();
   }
 
   _bindEvents() {
     this.handlers = {};
 
     this.disputeIds.forEach(id => {
-      this.appendChild(new Modal({
-        name: `modal-${id}`,
-        element: document.querySelector(`[data-component-modal="tool-modal-${id}"]`),
-      }));
+      this.appendChild(
+        new Modal({
+          name: `modal-${id}`,
+          element: document.querySelector(
+            `[data-component-modal="tool-modal-${id}"]`,
+          ),
+        }),
+      );
 
-      this.handlers[id] = this._aboutClickHandler.bind(this, this[`modal-${id}`]);
-      document.getElementById(`tool-modal-toggler-${id}`)
+      this.handlers[id] = this._aboutClickHandler.bind(
+        this,
+        this[`modal-${id}`],
+      );
+      document
+        .getElementById(`tool-modal-toggler-${id}`)
         .addEventListener('click', this.handlers[id]);
     });
 
@@ -46,7 +58,9 @@ class ViewDisputeToolsIndex extends NodeSupport {
   _bindScrollTo() {
     this.pisces = new Pisces();
 
-    this.whyFileDisputeAnchor = document.getElementById('why-file-dispute-anchor');
+    this.whyFileDisputeAnchor = document.getElementById(
+      'why-file-dispute-anchor',
+    );
     this.whyFileDisputeSection = document.getElementById('why-file-dispute');
     this.whyFileDisputeAnchor.addEventListener('click', () => {
       const y = this.whyFileDisputeSection.offsetTop;

@@ -7,7 +7,12 @@ const path = require('path');
 const uuid = require('uuid');
 
 const agent = sa.agent();
-const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
+const truncate = require(path.join(
+  process.cwd(),
+  'tests',
+  'utils',
+  'truncate',
+));
 const url = CONFIG.env().siteURL;
 const urls = CONFIG.router.helpers;
 
@@ -43,16 +48,20 @@ describe('UsersController', () => {
       phone: '123456-789',
     });
 
-    return Collective.first().then((res) => {
+    return Collective.first().then(res => {
       collective = res;
 
-      return User.transaction((trx) => user.transacting(trx).save()
-        .then(() => {
-          account.userId = user.id;
-          account.collectiveId = collective.id;
+      return User.transaction(trx =>
+        user
+          .transacting(trx)
+          .save()
+          .then(() => {
+            account.userId = user.id;
+            account.collectiveId = collective.id;
 
-          return account.transacting(trx).save();
-        }));
+            return account.transacting(trx).save();
+          }),
+      );
     });
   });
 
@@ -62,8 +71,9 @@ describe('UsersController', () => {
     return truncate(User);
   });
 
-  it(`As a Visitor, should 404 index ${urls.Users.url()}`, (done) => {
-    agent.get(`${url}${urls.Users.url()}`)
+  it(`As a Visitor, should 404 index ${urls.Users.url()}`, done => {
+    agent
+      .get(`${url}${urls.Users.url()}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
         expect(res.status).to.equal(404);
@@ -71,11 +81,14 @@ describe('UsersController', () => {
       });
   });
 
-  it(`As a Visitor, should render new ${urls.Users.new.url()}`, (done) => {
-    agent.get(`${url}${urls.Users.new.url()}`)
+  it(`As a Visitor, should render new ${urls.Users.new.url()}`, done => {
+    agent
+      .get(`${url}${urls.Users.new.url()}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
-        _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
+        _csrf = unescape(
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
+        );
 
         expect(err).to.be.equal(null);
         expect(res.status).to.equal(200);
@@ -83,8 +96,11 @@ describe('UsersController', () => {
       });
   });
 
-  it(`As a Visitor, should render 404 on show ${urls.Users.show.url(':id')}`, (done) => {
-    agent.get(`${url}${urls.Users.show.url(user.id)}`)
+  it(`As a Visitor, should render 404 on show ${urls.Users.show.url(
+    ':id',
+  )}`, done => {
+    agent
+      .get(`${url}${urls.Users.show.url(user.id)}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
         expect(res.status).to.equal(404);
@@ -92,8 +108,9 @@ describe('UsersController', () => {
       });
   });
 
-  it(`Should render show 404 ${urls.Users.show.url(':id')}`, (done) => {
-    agent.get(`${url}${urls.Users.show.url(uuid.v4())}`)
+  it(`Should render show 404 ${urls.Users.show.url(':id')}`, done => {
+    agent
+      .get(`${url}${urls.Users.show.url(uuid.v4())}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
         expect(res.status).to.equal(404);
@@ -101,8 +118,11 @@ describe('UsersController', () => {
       });
   });
 
-  it(`As a Visitor, should render 404 on edit ${urls.Users.edit.url(':id')}`, (done) => {
-    agent.get(`${url}${urls.Users.edit.url(user.id)}`)
+  it(`As a Visitor, should render 404 on edit ${urls.Users.edit.url(
+    ':id',
+  )}`, done => {
+    agent
+      .get(`${url}${urls.Users.edit.url(user.id)}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
         expect(err.toString()).to.be.equal('Error: Not Found');
@@ -111,8 +131,9 @@ describe('UsersController', () => {
       });
   });
 
-  it(`Should render show 404 ${urls.Users.edit.url(':id')}`, (done) => {
-    agent.get(`${url}${urls.Users.edit.url(uuid.v4())}`)
+  it(`Should render show 404 ${urls.Users.edit.url(':id')}`, done => {
+    agent
+      .get(`${url}${urls.Users.edit.url(uuid.v4())}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
         expect(res.status).to.equal(404);
@@ -120,8 +141,9 @@ describe('UsersController', () => {
       });
   });
 
-  it(`As A Visitor, should render activaton ${urls.Users.activation.url()}`, (done) => {
-    agent.get(`${url}${urls.Users.activation.url()}`)
+  it(`As A Visitor, should render activaton ${urls.Users.activation.url()}`, done => {
+    agent
+      .get(`${url}${urls.Users.activation.url()}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
         expect(err).to.be.equal(null);
@@ -130,13 +152,19 @@ describe('UsersController', () => {
       });
   });
 
-  it('As A Visitor it Should activate a user with a valid token', (done) => {
-    agent.get(`${url}${urls.Users.activate.url(encodeURIComponent(user.activationToken))}`)
+  it('As A Visitor it Should activate a user with a valid token', done => {
+    agent
+      .get(
+        `${url}${urls.Users.activate.url(
+          encodeURIComponent(user.activationToken),
+        )}`,
+      )
       .set('Accept', 'text/html')
       .end((err, res) => {
         expect(err).to.be.equal(null);
         expect(res.status).to.be.equal(200);
-        agent.delete(`${url}${urls.logout.url()}`)
+        agent
+          .delete(`${url}${urls.logout.url()}`)
           .set('Accept', 'text/html')
           .send({
             _csrf,
@@ -148,8 +176,9 @@ describe('UsersController', () => {
   });
 
   describe('#create', () => {
-    it('As a Visitor, it should create a user', (done) => {
-      agent.post(`${url}${urls.Users.create.url()}`)
+    it('As a Visitor, it should create a user', done => {
+      agent
+        .post(`${url}${urls.Users.create.url()}`)
         .set('Accept', 'text/html')
         .send({
           email: 'test@example.com',
@@ -169,8 +198,9 @@ describe('UsersController', () => {
         });
     });
 
-    it('As a Visitor, it should not validate when creating a user', (done) => {
-      agent.post(`${url}${urls.Users.create.url()}`)
+    it('As a Visitor, it should not validate when creating a user', done => {
+      agent
+        .post(`${url}${urls.Users.create.url()}`)
         .set('Accept', 'text/html')
         .send({
           email: 'test@example.com',
@@ -186,8 +216,9 @@ describe('UsersController', () => {
   });
 
   describe('#update', () => {
-    it('As a Visitor, it should 404 on update a user', (done) => {
-      agent.post(`${url}${urls.Users.update.url(user.id)}`)
+    it('As a Visitor, it should 404 on update a user', done => {
+      agent
+        .post(`${url}${urls.Users.update.url(user.id)}`)
         .set('Accept', 'text/html')
         .send({
           _method: 'PUT',

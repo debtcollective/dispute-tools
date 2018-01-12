@@ -17,7 +17,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
   prototype: {
     _loadUser(req, res, next) {
       const query = User.query().include(
-        '[account, disputes.statuses.disputeTool]'
+        '[account, disputes.statuses.disputeTool]',
       );
 
       query
@@ -43,8 +43,8 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
                   disputeTool => {
                     dispute.disputeTool = disputeTool;
                     return true;
-                  }
-                )
+                  },
+                ),
               );
             })
             .finally(() => next());
@@ -103,14 +103,14 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
               .table('UsersCollectives')
               .where('user_id', user.id)
               .transacting(trx)
-              .del()
+              .del(),
           )
           .then(() => {
             const userCollectives = req.body.collectiveIds.map(
               collectiveId => ({
                 user_id: user.id,
                 collective_id: collectiveId,
-              })
+              }),
             );
 
             return User.knex()
@@ -127,11 +127,11 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
                   collective.userCount++;
 
                   return collective.transacting(trx).save();
-                })
-            )
+                }),
+            ),
           )
           .then(trx.commit)
-          .catch(trx.rollback)
+          .catch(trx.rollback),
       )
         .then(() => {
           user.account = account;
@@ -208,13 +208,13 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             return user.account.transacting(trx).save();
           })
           .finally(trx.commit)
-          .catch(trx.rollback)
+          .catch(trx.rollback),
       )
         .then(() => {
           if (!user.activationToken) {
             req.flash('success', 'Profile updated succesfully');
             return res.redirect(
-              CONFIG.router.helpers.Users.show.url(req.params.id)
+              CONFIG.router.helpers.Users.show.url(req.params.id),
             );
           }
 
@@ -254,7 +254,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
       Promise.coroutine(function* activateCoroutine() {
         const users = yield User.query().where(
           'activation_token',
-          req.params.token
+          req.params.token,
         );
 
         if (users.length !== 1) {
@@ -274,7 +274,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
             req.flash(
               'success',
-              'Welcome! Your account was succesfully activated.'
+              'Welcome! Your account was succesfully activated.',
             );
             return res.redirect(CONFIG.router.helpers.Collectives.url());
           });

@@ -1,5 +1,5 @@
 /* globals Dispute, RestfulController, Class, DisputeTool, CONFIG, DisputeStatus,
-    DisputeMailer, UserMailer, NotFoundError, DisputeRenderer, Dispute */
+    DisputeMailer, UserMailer, NotFoundError, DisputeRenderer, Dispute, logger */
 const path = require('path');
 
 const Promise = require('bluebird');
@@ -9,7 +9,9 @@ const _ = require('lodash');
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 const Raven = require('raven');
 
-const DisputesController = Class('DisputesController').inherits(RestfulController)({
+const DisputesController = Class('DisputesController').inherits(
+  RestfulController,
+)({
   beforeActions: [
     {
       before: '_loadDispute',
@@ -33,9 +35,8 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           return next(new Error('Invalid parameters'));
         }
 
-        return DisputeTool
-          .first({ id: req.body.disputeToolId })
-          .then((disputeTool) => {
+        return DisputeTool.first({ id: req.body.disputeToolId })
+          .then(disputeTool => {
             res.locals.disputeTool = disputeTool;
 
             return next();
@@ -71,10 +72,12 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
             req.dispute = dispute;
 
             // sort Dispute Status DESC
-            dispute.statuses = dispute.statuses
-              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            dispute.statuses = dispute.statuses.sort(
+              (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+            );
 
-            const optionData = dispute.disputeTool.data.options[dispute.data.option];
+            const optionData =
+              dispute.disputeTool.data.options[dispute.data.option];
             if (optionData && optionData.more) {
               optionData.more = marked(optionData.more);
             }
@@ -90,7 +93,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     },
 
     show(req, res) {
-      res.locals.lastStatus = req.dispute.statuses.filter((status) => {
+      res.locals.lastStatus = req.dispute.statuses.filter(status => {
         if (status.status !== 'User Update') {
           return true;
         }
@@ -116,11 +119,14 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     create(req, res, next) {
       const disputeTool = res.locals.disputeTool;
 
-      disputeTool.createDispute({
-        option: req.body.option,
-        user: req.user,
-      })
-        .then((disputeId) => res.redirect(CONFIG.router.helpers.Disputes.show.url(disputeId)))
+      disputeTool
+        .createDispute({
+          option: req.body.option,
+          user: req.user,
+        })
+        .then(disputeId =>
+          res.redirect(CONFIG.router.helpers.Disputes.show.url(disputeId)),
+        )
         .catch(next);
     },
 
@@ -135,17 +141,22 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         status: 'User Update',
       });
 
-      ds.save()
-        .then(() => DisputeMailer.sendToAdmins({
-          dispute,
-          user: req.user,
-          disputeStatus: ds,
-        }).catch(e => {
-          console.log('  ---> Failed to send mail to admins (on #update)');
-          console.log(e.stack);
-        }))
+      ds
+        .save()
+        .then(() =>
+          DisputeMailer.sendToAdmins({
+            dispute,
+            user: req.user,
+            disputeStatus: ds,
+          }).catch(e => {
+            logger.error('  ---> Failed to send mail to admins (on #update)');
+            logger.error(e.stack);
+          }),
+        )
         .then(() => dispute.save())
-        .then(() => res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)))
+        .then(() =>
+          res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)),
+        )
         .catch(next);
     },
 
@@ -153,30 +164,37 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       const dispute = res.locals.dispute;
       const pendingSubmission = req.body.pending_submission === '1';
 
-      dispute.markAsCompleted(pendingSubmission)
-        .then((renderer) => UserMailer.sendDispute(req.user.email, {
-          user: req.user,
-          renderer,
-          _options: {
-            subject: 'Dispute Documents - The Debt Collective',
-          },
-        })
-          .then(() => UserMailer.sendDisputeToAdmin({
+      dispute
+        .markAsCompleted(pendingSubmission)
+        .then(renderer =>
+          UserMailer.sendDispute(req.user.email, {
             user: req.user,
             renderer,
             _options: {
-              subject: 'New Dispute Completed - The Debt Collective',
+              subject: 'Dispute Documents - The Debt Collective',
             },
-          }))
-          .catch(e => {
-            console.log('  ---> Failed to send smail to user (on #setSignature)');
-            console.log(e.stack);
-            Raven.captureException(e, { req });
-          }))
+          })
+            .then(() =>
+              UserMailer.sendDisputeToAdmin({
+                user: req.user,
+                renderer,
+                _options: {
+                  subject: 'New Dispute Completed - The Debt Collective',
+                },
+              }),
+            )
+            .catch(e => {
+              logger.error(
+                '  ---> Failed to send smail to user (on #setSignature)',
+              );
+              logger.error(e.stack);
+              Raven.captureException(e, { req });
+            }),
+        )
         .then(() => {
           req.flash(
             'success',
-            'Thank you for disputing your debt. A copy of your dispute has been sent to your email.'
+            'Thank you for disputing your debt. A copy of your dispute has been sent to your email.',
           );
           res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
         })
@@ -198,7 +216,9 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         return res.format({
           html() {
             req.flash('error', `${e.toString()} (on #${req.body.command})`);
-            return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+            return res.redirect(
+              CONFIG.router.helpers.Disputes.show.url(dispute.id),
+            );
           },
           json() {
             return res.json({ error: e.toString() });
@@ -206,26 +226,36 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         });
       }
 
-      return dispute.save()
-        .then(() => res.format({
-          html() {
-            return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
-          },
-          json() {
-            return res.json({ status: 'confirmed' });
-          },
-        }))
+      return dispute
+        .save()
+        .then(() =>
+          res.format({
+            html() {
+              return res.redirect(
+                CONFIG.router.helpers.Disputes.show.url(dispute.id),
+              );
+            },
+            json() {
+              return res.json({ status: 'confirmed' });
+            },
+          }),
+        )
         .catch(next);
     },
 
     setSignature(req, res) {
       const dispute = res.locals.dispute;
 
-      dispute.setSignature(req.body.signature)
-        .then(() => res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)))
-        .catch((e) => {
+      dispute
+        .setSignature(req.body.signature)
+        .then(() =>
+          res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)),
+        )
+        .catch(e => {
           req.flash('error', `${e.toString()} (on #setSignature)`);
-          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+          return res.redirect(
+            CONFIG.router.helpers.Disputes.show.url(dispute.id),
+          );
         });
     },
 
@@ -234,18 +264,26 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
       if (!req.files.attachment) {
         req.flash('error', 'There is no file to process');
-        return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+        return res.redirect(
+          CONFIG.router.helpers.Disputes.show.url(dispute.id),
+        );
       }
 
-      return Promise.each(req.files.attachment, (attachment) =>
-        dispute.addAttachment(req.body.name, attachment.path))
+      return Promise.each(req.files.attachment, attachment =>
+        dispute.addAttachment(req.body.name, attachment.path),
+      )
         .then(() => dispute.save())
         .catch(() => {
-          req.flash('error', 'A problem occurred trying to process the attachments');
+          req.flash(
+            'error',
+            'A problem occurred trying to process the attachments',
+          );
         })
         .finally(() => {
           req.flash('success', 'Attachment successfully added!');
-          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+          return res.redirect(
+            CONFIG.router.helpers.Disputes.show.url(dispute.id),
+          );
         });
     },
 
@@ -254,17 +292,24 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
       if (!req.params.attachment_id) {
         req.flash('error', 'Missing attachment id');
-        return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+        return res.redirect(
+          CONFIG.router.helpers.Disputes.show.url(dispute.id),
+        );
       }
 
-      return dispute.removeAttachment(req.params.attachment_id)
+      return dispute
+        .removeAttachment(req.params.attachment_id)
         .then(() => {
           req.flash('success', 'Attachment removed');
-          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+          return res.redirect(
+            CONFIG.router.helpers.Disputes.show.url(dispute.id),
+          );
         })
-        .catch((err) => {
+        .catch(err => {
           req.flash('error', err.message);
-          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+          return res.redirect(
+            CONFIG.router.helpers.Disputes.show.url(dispute.id),
+          );
         });
     },
 
@@ -298,9 +343,14 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           return true;
         }
 
-        const currentStatus = _.sortBy(dispute.statuses, 'updatedAt').slice(-1)[0];
+        const currentStatus = _.sortBy(dispute.statuses, 'updatedAt').slice(
+          -1,
+        )[0];
 
-        return currentStatus.status !== 'Completed' || currentStatus.updatedAt > renderer.updatedAt;
+        return (
+          currentStatus.status !== 'Completed' ||
+          currentStatus.updatedAt > renderer.updatedAt
+        );
       };
 
       DisputeRenderer.query()
@@ -315,20 +365,27 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
               disputeId: dispute.id,
             });
 
-            return newRenderer.save()
+            return newRenderer
+              .save()
               .catch(next)
-              .then(() => newRenderer.render(dispute)
-                .then(() => DisputeRenderer.query()
-                  .where({ id: newRenderer.id })
-                  .include('attachments')
-                  .then(([_disputeRenderer]) =>
-                    newRenderer.buildZip(_disputeRenderer)
-                      .catch(next)
-                      .then(id => DisputeRenderer.query()
-                        .where({ id })
-                        .limit(1)
-                        .orderBy('updated_at', 'desc')
-                        .then(getUrl))))
+              .then(() =>
+                newRenderer.render(dispute).then(() =>
+                  DisputeRenderer.query()
+                    .where({ id: newRenderer.id })
+                    .include('attachments')
+                    .then(([_disputeRenderer]) =>
+                      newRenderer
+                        .buildZip(_disputeRenderer)
+                        .catch(next)
+                        .then(id =>
+                          DisputeRenderer.query()
+                            .where({ id })
+                            .limit(1)
+                            .orderBy('updated_at', 'desc')
+                            .then(getUrl),
+                        ),
+                    ),
+                ),
               );
           }
 

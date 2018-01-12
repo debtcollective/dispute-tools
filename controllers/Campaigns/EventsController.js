@@ -1,8 +1,10 @@
 /* global Class, CONFIG, RestfulController, Event, EventAssistant */
 
-const Campaigns = global.Campaigns = global.Campaigns || {};
+const Campaigns = (global.Campaigns = global.Campaigns || {});
 
-const EventsController = Class(Campaigns, 'EventsController').inherits(RestfulController)({
+const EventsController = Class(Campaigns, 'EventsController').inherits(
+  RestfulController,
+)({
   beforeActions: [
     {
       before: '_loadEvent',
@@ -16,9 +18,11 @@ const EventsController = Class(Campaigns, 'EventsController').inherits(RestfulCo
 
     Model.query()
       .where({ user_id: userId, event_id: eventId })
-      .then((results) => results.length || new Model({ userId, eventId }).save())
+      .then(results => results.length || new Model({ userId, eventId }).save())
       .then(() => {
-        res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.event.campaignId));
+        res.redirect(
+          CONFIG.router.helpers.Campaigns.show.url(req.event.campaignId),
+        );
       });
   },
 
@@ -26,7 +30,7 @@ const EventsController = Class(Campaigns, 'EventsController').inherits(RestfulCo
     _loadEvent(req, res, next) {
       Event.query()
         .where({ id: req.params.id })
-        .then((results) => {
+        .then(results => {
           req.event = results[0];
           next();
         })
@@ -40,9 +44,11 @@ const EventsController = Class(Campaigns, 'EventsController').inherits(RestfulCo
     undoRSVP(req, res) {
       EventAssistant.query()
         .where({ user_id: req.user.id, event_id: req.params.id })
-        .then((results) => results.length && results[0].destroy())
+        .then(results => results.length && results[0].destroy())
         .then(() => {
-          res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.event.campaignId));
+          res.redirect(
+            CONFIG.router.helpers.Campaigns.show.url(req.event.campaignId),
+          );
         });
     },
   },

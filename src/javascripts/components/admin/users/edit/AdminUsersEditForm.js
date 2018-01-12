@@ -9,25 +9,34 @@ export default class AdminUsersEditForm extends Widget {
       fullname: ['required'],
       email: ['required', 'email'],
       state: ['required'],
-      zip: ['required', {
-        rule(val) {
-          if (/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(val) === false) {
-            throw new Error('The zip code is invalid.');
-          }
+      zip: [
+        'required',
+        {
+          rule(val) {
+            if (/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(val) === false) {
+              throw new Error('The zip code is invalid.');
+            }
+          },
         },
-      }],
-      'twitter-url': [{
-        rule: 'url',
-        message: 'The twitter address is not valid',
-      }],
-      'facebook-url': [{
-        rule: 'url',
-        message: 'The facebook address is not valid',
-      }],
-      'website-url': [{
-        rule: 'url',
-        message: 'The website address is not valid',
-      }],
+      ],
+      'twitter-url': [
+        {
+          rule: 'url',
+          message: 'The twitter address is not valid',
+        },
+      ],
+      'facebook-url': [
+        {
+          rule: 'url',
+          message: 'The facebook address is not valid',
+        },
+      ],
+      'website-url': [
+        {
+          rule: 'url',
+          message: 'The website address is not valid',
+        },
+      ],
     };
   }
 
@@ -37,7 +46,9 @@ export default class AdminUsersEditForm extends Widget {
     this.fileInput = this.element.querySelector('[type="file"]');
     this.image = this.element.querySelector('.EditProfile__image-wrapper');
     this.roleSelect = this.element.querySelector('[name="role"]');
-    this.collectiveManagerWrapper = this.element.querySelector('[data-collective-manager]');
+    this.collectiveManagerWrapper = this.element.querySelector(
+      '[data-collective-manager]',
+    );
     this.socialLinks = this.element.querySelector('[name="socialLinks"]');
 
     this.ui = {};
@@ -47,10 +58,12 @@ export default class AdminUsersEditForm extends Widget {
     });
     this._checkit = new Checkit(this.constructor.constraints);
 
-    this.appendChild(new Button({
-      name: 'Button',
-      element: this.element.querySelector('button[type="submit"]'),
-    }));
+    this.appendChild(
+      new Button({
+        name: 'Button',
+        element: this.element.querySelector('button[type="submit"]'),
+      }),
+    );
 
     this._bindEvents();
   }
@@ -90,7 +103,7 @@ export default class AdminUsersEditForm extends Widget {
     if (input.files && input.files[0] && input.files[0].type.match('image.*')) {
       const reader = new FileReader();
 
-      reader.onload = (e) => {
+      reader.onload = e => {
         this.image.style.backgroundImage = `url(${e.target.result})`;
         reader.onload = null;
       };

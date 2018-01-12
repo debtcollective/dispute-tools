@@ -1,18 +1,21 @@
 import Widget from '../../../../../lib/widget';
-import { serialize } from '../../../../../lib/AdminUtils';
+import serialize from '../../../../../lib/serialize';
 import AdminCollectiveUsersIndexTableControls from './AdminCollectiveUsersIndexTableControls';
 
 export default class AdminCollectiveUsersIndexController extends Widget {
   constructor(config) {
     super(config);
 
-    this.appendChild(new AdminCollectiveUsersIndexTableControls({
-      name: 'AdminCollectiveUsersIndexTableControls',
-      element: document.querySelector('thead'),
-    }));
+    this.appendChild(
+      new AdminCollectiveUsersIndexTableControls({
+        name: 'AdminCollectiveUsersIndexTableControls',
+        element: document.querySelector('thead'),
+      }),
+    );
 
     this.originalQuery = {
-      campaign: this.AdminCollectiveUsersIndexTableControls.campaignSelect.value,
+      campaign: this.AdminCollectiveUsersIndexTableControls.campaignSelect
+        .value,
       search: this.AdminCollectiveUsersIndexTableControls.searchInput.value,
       order: this.AdminCollectiveUsersIndexTableControls.orderSelect.value,
     };
@@ -55,9 +58,9 @@ export default class AdminCollectiveUsersIndexController extends Widget {
 
   _updateApplyButton() {
     if (
-      (this._query.campaign !== this.originalQuery.campaign) ||
-      (this._query.search !== this.originalQuery.search) ||
-      (this._query.order !== this.originalQuery.order)
+      this._query.campaign !== this.originalQuery.campaign ||
+      this._query.search !== this.originalQuery.search ||
+      this._query.order !== this.originalQuery.order
     ) {
       return this.AdminCollectiveUsersIndexTableControls.enableApplyButton();
     }

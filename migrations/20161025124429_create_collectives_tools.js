@@ -1,12 +1,13 @@
-
-exports.up = (knex) => {
-  return knex.schema.createTable('CollectivesTools', (t) => {
-    t.uuid('collective_id')
+exports.up = knex =>
+  knex.schema.createTable('CollectivesTools', t => {
+    t
+      .uuid('collective_id')
       .notNullable()
       .references('id')
       .inTable('Collectives')
       .onDelete('CASCADE');
-    t.uuid('tool_id')
+    t
+      .uuid('tool_id')
       .notNullable()
       .references('id')
       .inTable('DisputeTools')
@@ -14,8 +15,5 @@ exports.up = (knex) => {
     t.index(['collective_id', 'tool_id'], 'collectives_tools');
     t.timestamps();
   });
-};
 
-exports.down = (knex) => {
-  return knex.schema.dropTable('CollectivesTools');
-};
+exports.down = knex => knex.schema.dropTable('CollectivesTools');

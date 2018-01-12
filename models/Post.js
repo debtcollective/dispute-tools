@@ -2,11 +2,7 @@
 
 Class('Post').inherits(Krypton.Model)({
   tableName: 'Posts',
-  types: [
-    'Text',
-    'Image',
-    'Poll',
-  ],
+  types: ['Text', 'Image', 'Poll'],
   validations: {
     type: [
       'required',
@@ -49,7 +45,6 @@ Class('Post').inherits(Krypton.Model)({
       this.userId = null;
       return this.save();
     },
-
   },
 });
 

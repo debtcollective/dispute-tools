@@ -8,11 +8,14 @@ const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 
 global.Admin = global.Admin || {};
 
-Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulController)({
+Admin.DisputesController = Class(Admin, 'DisputesController').inherits(
+  RestfulController,
+)({
   beforeActions: [
     {
       before: [
-        (req, res, next) => neonode.controllers.Home._authenticate(req, res, next),
+        (req, res, next) =>
+          neonode.controllers.Home._authenticate(req, res, next),
       ],
       actions: ['index', 'show', 'edit', 'update', 'destroy'],
     },
@@ -41,10 +44,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
               .include('[user.account, attachments, disputeTool, admins]'),
             order: {
               default: '-updated_at',
-              allowedFields: [
-                'created_at',
-                'updated_at',
-              ],
+              allowedFields: ['created_at', 'updated_at'],
             },
             paginate: {
               pageSize: 50,
@@ -58,7 +58,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       before(req, res, next) {
         DisputeTool.query()
           .orderBy('created_at', 'ASC')
-          .then((disputeTools) => {
+          .then(disputeTools => {
             res.locals.disputeTools = disputeTools.map(dispute => ({
               id: dispute.id,
               name: dispute.name,
@@ -71,15 +71,17 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     },
     {
       before(req, res, next) {
-        Promise.mapSeries(res.locals.results, (result) => DisputeStatus.query()
-          .where({
-            dispute_id: result.id,
-          })
-          .orderBy('created_at', 'DESC')
-          .then((statuses) => {
-            result.statuses = statuses;
-            return Promise.resolve();
-          }))
+        Promise.mapSeries(res.locals.results, result =>
+          DisputeStatus.query()
+            .where({
+              dispute_id: result.id,
+            })
+            .orderBy('created_at', 'DESC')
+            .then(statuses => {
+              result.statuses = statuses;
+              return Promise.resolve();
+            }),
+        )
           .then(() => {
             next();
           })
@@ -139,7 +141,8 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         ds.notify = false;
       }
 
-      ds.save()
+      ds
+        .save()
         .then(() => {
           if (!ds.notify) {
             return Promise.resolve();
@@ -148,11 +151,10 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
           return DisputeMailer.sendStatusToUser({
             dispute,
             disputeStatus: ds,
-          })
-            .catch(e => {
-              logger.log('  ---> Failed to send mail to user (on #update)');
-              logger.log(e.stack);
-            });
+          }).catch(e => {
+            logger.log('  ---> Failed to send mail to user (on #update)');
+            logger.log(e.stack);
+          });
         })
         .then(() => dispute.save())
         .then(() => {
@@ -163,15 +165,20 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     },
 
     getAvailableAdmins(req, res, next) {
-      req.dispute.getAssignedAndAvailableAdmins()
+      req.dispute
+        .getAssignedAndAvailableAdmins()
         .then(res.send)
         .catch(next);
     },
 
     updateAdmins(req, res, next) {
-      req.dispute.updateAdmins(req.body)
+      req.dispute
+        .updateAdmins(req.body)
         .then(() => {
-          req.flash('success', 'The list of administrators assigned as been updated.');
+          req.flash(
+            'success',
+            'The list of administrators assigned as been updated.',
+          );
           res.send({});
         })
         .catch(next);
