@@ -56,7 +56,9 @@ class DisputeTemplate {
     if (post === null) {
       this.post = null;
     } else {
-      this.post = (Array.isArray(post) ? post : [post]).map(fn => fn.bind(this));
+      this.post = (Array.isArray(post) ? post : [post]).map(fn =>
+        fn.bind(this),
+      );
     }
     this.data = data;
   }
@@ -87,6 +89,11 @@ DisputeTemplate.RENDER_TYPE = {
   PDF: 'pdf',
 };
 
-DisputeTemplate.templatesRoot = join(process.cwd(), 'lib', 'assets', 'document_templates');
+DisputeTemplate.templatesRoot = join(
+  process.cwd(),
+  'lib',
+  'assets',
+  'document_templates',
+);
 
 module.exports = DisputeTemplate;

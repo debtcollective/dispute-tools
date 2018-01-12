@@ -13,8 +13,9 @@ module.exports = {
                 dob: form.dob,
                 ssn: form.ssn,
                 address: form.address,
-                address2: form.address2 // Retain the old address format
-                  || `${form.city}, ${form.state} ${form['zip-code']}`,
+                address2:
+                  form.address2 || // Retain the old address format
+                  `${form.city}, ${form.state} ${form['zip-code']}`,
                 email: form.email,
                 phone: form.phone,
                 name: form.name,
@@ -43,7 +44,9 @@ module.exports = {
                 'Chester, PA 19022',
               ],
             },
-            normalize({ forms: { 'personal-information-form': { agencies } } }) {
+            normalize({
+              forms: { 'personal-information-form': { agencies } },
+            }) {
               if (!Array.isArray(agencies)) {
                 agencies = [agencies];
               }

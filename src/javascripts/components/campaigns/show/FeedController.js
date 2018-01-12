@@ -13,7 +13,9 @@ export default class FeedController extends Widget {
     this._currentPage = 1;
 
     this._loader = document.querySelector('.Campaign_FeedLoader');
-    this._loadMoreBtn = document.querySelector('.Campaign_FeedLoadMore > button');
+    this._loadMoreBtn = document.querySelector(
+      '.Campaign_FeedLoadMore > button',
+    );
 
     if (!this._loadMoreBtn) return;
 
@@ -22,9 +24,14 @@ export default class FeedController extends Widget {
 
   _bindEvents() {
     this._handlePostLoadResponse = this._handlePostLoadResponse.bind(this);
-    this._handleLoadMoreButtonClick = this._handleLoadMoreButtonClick.bind(this);
+    this._handleLoadMoreButtonClick = this._handleLoadMoreButtonClick.bind(
+      this,
+    );
 
-    this._loadMoreBtn.addEventListener('click', this._handleLoadMoreButtonClick);
+    this._loadMoreBtn.addEventListener(
+      'click',
+      this._handleLoadMoreButtonClick,
+    );
     return this;
   }
 
@@ -36,10 +43,13 @@ export default class FeedController extends Widget {
   }
 
   _loadPosts() {
-    getCampaignPosts({
-      campaignId: this.campaignId,
-      page: this._currentPage,
-    }, this._handlePostLoadResponse);
+    getCampaignPosts(
+      {
+        campaignId: this.campaignId,
+        page: this._currentPage,
+      },
+      this._handlePostLoadResponse,
+    );
   }
 
   _handlePostLoadResponse(err, res) {
@@ -62,18 +72,26 @@ export default class FeedController extends Widget {
         case 'Poll':
           PostClass = PostPoll;
           break;
-        default: throw new Error(`${post.type} not valid`);
+        default:
+          throw new Error(`${post.type} not valid`);
       }
 
-      this.appendChild(new PostClass({
-        name: post.id,
-        data: post,
-        userIsCollectiveManager: this.userIsAdminOrCollectiveManager,
-        userIsPostAuthor: this.currentUser ? this.currentUser.id === post.userId : false,
-        userBelongsToCampaign: this.userBelongsToCampaign,
-        deletePostActionUrl: this.deletePostActionUrl.replace('{postId}', post.id),
-        csrfToken,
-      }));
+      this.appendChild(
+        new PostClass({
+          name: post.id,
+          data: post,
+          userIsCollectiveManager: this.userIsAdminOrCollectiveManager,
+          userIsPostAuthor: this.currentUser
+            ? this.currentUser.id === post.userId
+            : false,
+          userBelongsToCampaign: this.userBelongsToCampaign,
+          deletePostActionUrl: this.deletePostActionUrl.replace(
+            '{postId}',
+            post.id,
+          ),
+          csrfToken,
+        }),
+      );
 
       fragment.appendChild(this[post.id].element);
     });
@@ -82,7 +100,10 @@ export default class FeedController extends Widget {
     this._loader.classList.add('hide');
 
     if (this._currentPage >= this._totalPages) {
-      this._loadMoreBtn.removeEventListener('click', this._handleLoadMoreButtonClick);
+      this._loadMoreBtn.removeEventListener(
+        'click',
+        this._handleLoadMoreButtonClick,
+      );
       this._loadMoreBtn.parentElement.removeChild(this._loadMoreBtn);
       this._handleLoadMoreButtonClick = null;
     } else {

@@ -2,7 +2,17 @@
 
 const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
   tableName: 'DisputeStatuses',
-  attributes: ['id', 'disputeId', 'status', 'note', 'comment', 'notify', 'pendingSubmission', 'createdAt', 'updatedAt'],
+  attributes: [
+    'id',
+    'disputeId',
+    'status',
+    'note',
+    'comment',
+    'notify',
+    'pendingSubmission',
+    'createdAt',
+    'updatedAt',
+  ],
   statuses: [
     'Incomplete',
     'Completed',

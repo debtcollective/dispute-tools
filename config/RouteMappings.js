@@ -92,7 +92,7 @@ const routeMappings = RouteMappings()
   })
 
   // Admin
-  .namespace('/Admin', (mapAdmins) =>
+  .namespace('/Admin', mapAdmins =>
     mapAdmins()
       .resources('/Disputes', mapAdminDisputes =>
         mapAdminDisputes()
@@ -103,11 +103,12 @@ const routeMappings = RouteMappings()
           .post('/:id/admins', {
             to: 'Disputes#updateAdmins',
             as: 'updateAdmins',
-          }))
-      .resources('/Collectives', (mapAdminCollectives) =>
+          }),
+      )
+      .resources('/Collectives', mapAdminCollectives =>
         mapAdminCollectives()
           .resources('/Users')
-          .resources('/Campaigns', (mapAdminCampaigns) =>
+          .resources('/Campaigns', mapAdminCampaigns =>
             mapAdminCampaigns()
               .resources('/KBPosts')
               .resources('/Events')
@@ -122,8 +123,10 @@ const routeMappings = RouteMappings()
               .post('/files', {
                 to: 'Campaigns#uploadFiles',
                 as: 'uploadFiles',
-              })))
-      .resources('/Users', (mapAdminUsers) =>
+              }),
+          ),
+      )
+      .resources('/Users', mapAdminUsers =>
         mapAdminUsers()
           .post('/:id/ban', {
             to: 'Users#ban',
@@ -132,11 +135,13 @@ const routeMappings = RouteMappings()
           .delete('/:id/ban', {
             to: 'Users#unban',
             as: 'unban',
-          })))
+          }),
+      ),
+  )
 
   // Users
 
-  .resources('/Users', (mapUsers) =>
+  .resources('/Users', mapUsers =>
     mapUsers()
       .get('/activation', {
         to: 'Users#activation',
@@ -145,7 +150,8 @@ const routeMappings = RouteMappings()
       .get('/:token/activate', {
         to: 'Users#activate',
         as: 'activate',
-      }))
+      }),
+  )
 
   // Dispute Tools
 
@@ -153,7 +159,7 @@ const routeMappings = RouteMappings()
 
   // Disputes
 
-  .resources('/Disputes', (mapDisputes) =>
+  .resources('/Disputes', mapDisputes =>
     mapDisputes()
       .get('/:id/download', {
         to: 'Disputes#download',
@@ -178,30 +184,32 @@ const routeMappings = RouteMappings()
       .put('/:id/remove-attachment/:attachment_id', {
         to: 'Disputes#removeAttachment',
         as: 'removeAttachment',
-      }))
+      }),
+  )
 
   // Collectives
 
-  .resources('/Collectives', (mapCollectives) =>
-    mapCollectives()
-      .post('/:id/join', {
-        to: 'Collectives#join',
-        as: 'join',
-      }))
+  .resources('/Collectives', mapCollectives =>
+    mapCollectives().post('/:id/join', {
+      to: 'Collectives#join',
+      as: 'join',
+    }),
+  )
 
   // Campaigns
 
-  .resources('/Campaigns', (mapCampaigns) =>
+  .resources('/Campaigns', mapCampaigns =>
     mapCampaigns()
-      .resources('/Events', (mapCampaignEvents) =>
+      .resources('/Events', mapCampaignEvents =>
         mapCampaignEvents()
           .post('/:id/rsvp', { as: 'doRSVP' })
-          .delete('/:id/rsvp', { as: 'undoRSVP' })
+          .delete('/:id/rsvp', { as: 'undoRSVP' }),
       )
       .post('/:id/join', {
         to: 'Campaigns#join',
         as: 'join',
-      }))
+      }),
+  )
 
   // Posts
 

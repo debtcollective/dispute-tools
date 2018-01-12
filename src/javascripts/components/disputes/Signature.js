@@ -19,17 +19,21 @@ export default class DisputesSignature extends Widget {
     });
     this._checkit = new Checkit(DisputesSignature.constraints);
 
-    this.appendChild(new Button({
-      name: 'Button',
-      element: this.element.querySelector('[type="submit"]'),
-    }));
+    this.appendChild(
+      new Button({
+        name: 'Button',
+        element: this.element.querySelector('[type="submit"]'),
+      }),
+    );
 
     this._bindEvents();
   }
 
   _bindEvents() {
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
-    this.element.querySelector('form').addEventListener('submit', this._handleFormSubmit);
+    this.element
+      .querySelector('form')
+      .addEventListener('submit', this._handleFormSubmit);
   }
 
   _handleFormSubmit(ev) {

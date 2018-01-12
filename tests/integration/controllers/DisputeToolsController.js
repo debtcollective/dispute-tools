@@ -9,7 +9,7 @@ const truncate = require(path.join(
   process.cwd(),
   'tests',
   'utils',
-  'truncate'
+  'truncate',
 ));
 
 const agent = sa.agent();
@@ -47,7 +47,7 @@ describe('DisputeToolsController', () => {
         .set('Accept', 'text/html')
         .end((err, res) => {
           _csrf = unescape(
-            /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+            /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
           );
 
           expect(res.status).to.equal(200);
@@ -76,7 +76,7 @@ describe('DisputeToolsController', () => {
               expect(res.status).to.equal(200);
               expect(res.redirects.length).to.be.equal(0);
               expect(res.req.path).to.be.equal(
-                urls.DisputeTools.show.url(tool.id)
+                urls.DisputeTools.show.url(tool.id),
               );
               done();
             });

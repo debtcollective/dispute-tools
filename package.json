@@ -9,13 +9,12 @@
   },
   "scripts": {
     "build": "scripty",
-    "lint": "scripty",
-    "repl": "node bin/repl.js",
     "test": "scripty",
     "test:unit": "scripty",
     "test:integration": "scripty",
     "test:debug:unit": "node --inspect=9220 --inspect-brk tests/unit.js",
-    "test:debug:integration": "node --inspect=9220 --inspect-brk tests/integration.js",
+    "test:debug:integration":
+      "node --inspect=9220 --inspect-brk tests/integration.js",
     "utils:resetdb": "scripty",
     "utils:knexreset": "scripty",
     "utils:copybadges": "scripty",
@@ -30,25 +29,25 @@
     "iron-node": "scripty",
     "watch": "scripty",
     "dev": "tarima -wP localhost:3000 -p 3001 -e",
-    "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
+    "svg":
+      "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
     "post_deploy_staging": "scripty",
     "post_deploy_production": "./scripts/post_deploy_production",
     "disputes_sendto_admin": "./scripts/tasks/disputes-sendto-admin",
     "resend_activation_links": "./scripts/tasks/resend-activation-links",
-    "prepush": "npm run lint"
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": ["prettier --write", "eslint --fix", "git add"],
+    "*.vue": ["eslint --fix", "git add"]
   },
   "tarima": {
     "cwd": ".",
     "src": "src",
     "watch": "views",
     "dest": "./public/build",
-    "ignoreFiles": [
-      ".gitignore",
-      "*.js"
-    ],
-    "bundle": [
-      "src/stylesheets/_entries/**"
-    ],
+    "ignoreFiles": [".gitignore", "*.js"],
+    "bundle": ["src/stylesheets/_entries/**"],
     "filter": [
       "!node_modules/**",
       "!**/{components,lib}/**",
@@ -58,9 +57,7 @@
       "**/_vendor/*:{filepath/1/_vendor}/{filename}.{extname}",
       "**/_entries/**:{filepath/1/_entries}/{filename}.{extname}"
     ],
-    "devPlugins": [
-      "tarima-lr"
-    ],
+    "devPlugins": ["tarima-lr"],
     "bundleOptions": {
       "bundleCache": true,
       "entryCache": true,
@@ -68,10 +65,7 @@
         "css": "post"
       },
       "postcss": {
-        "plugins": [
-          "postcss-import",
-          "postcss-cssnext"
-        ]
+        "plugins": ["postcss-import", "postcss-cssnext"]
       }
     }
   },
@@ -180,12 +174,15 @@
     "css-loader": "^0.28.8",
     "eslint": "^3.2.2",
     "eslint-config-airbnb-base": "^5.0.1",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "^1.12.0",
     "eslint-plugin-mocha": "^4.3.0",
+    "eslint-plugin-prettier": "^2.4.0",
     "eslint-plugin-vue": "^4.0.0-beta.2",
     "husky": "^0.14.3",
     "istanbul": "^1.1.0-alpha.1",
     "istanbul-combine": "^0.3.0",
+    "lint-staged": "^6.0.0",
     "mocha": "^3.0.2",
     "nock": "^9.1.5",
     "node-notifier": "^4.6.1",
@@ -195,6 +192,7 @@
     "postcss-cssnext": "^2.7.0",
     "postcss-import": "^8.1.2",
     "postcss-loader": "^2.0.9",
+    "prettier": "1.10.2",
     "sinon": "^4.1.3",
     "style-loader": "^0.19.1",
     "svg-sprite": "^1.3.3",

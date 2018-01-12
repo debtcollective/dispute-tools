@@ -5,13 +5,14 @@ class ViewUsersShow extends NodeSupport {
   constructor(config) {
     super();
 
-    this.appendChild(new Common({
-      name: 'Common',
-      currentUser: config.currentUser,
-      currentURL: config.currentURL,
-    }));
+    this.appendChild(
+      new Common({
+        name: 'Common',
+        currentUser: config.currentUser,
+        currentURL: config.currentURL,
+      }),
+    );
   }
 }
 
 window.ViewUsersShow = ViewUsersShow;
-

@@ -6,12 +6,16 @@ export default class Post extends Widget {
     super(config);
 
     if (this.userBelongsToCampaign) {
-      this.appendChild(new CommentsManager({
-        name: 'CommentsManager',
-        data: this.data,
-        element: this.element,
-        toogleButtonCotainer: this.element.querySelector('[data-campaing-post-container]'),
-      }));
+      this.appendChild(
+        new CommentsManager({
+          name: 'CommentsManager',
+          data: this.data,
+          element: this.element,
+          toogleButtonCotainer: this.element.querySelector(
+            '[data-campaing-post-container]',
+          ),
+        }),
+      );
     }
   }
 
@@ -20,12 +24,18 @@ export default class Post extends Widget {
       return '';
     }
 
-    return `<span class='Post_Topic -bg-accent -caption -ttu -fw-700'>${topic.title}</span>`;
+    return `<span class='Post_Topic -bg-accent -caption -ttu -fw-700'>${
+      topic.title
+    }</span>`;
   }
 
   getAvatarHTMLString(account, size = 50) {
-    const url = account.image.urls.smallRedSquare || '/images/profile/placeholder-small.png';
-    return `<img src='${url}' alt='${account.fullname}' width='${size}' height='${size}'/>`;
+    const url =
+      account.image.urls.smallRedSquare ||
+      '/images/profile/placeholder-small.png';
+    return `<img src='${url}' alt='${
+      account.fullname
+    }' width='${size}' height='${size}'/>`;
   }
 
   getCaptionHTMLString(data) {

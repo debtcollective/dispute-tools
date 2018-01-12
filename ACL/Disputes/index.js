@@ -25,10 +25,8 @@ module.exports = {
       'download',
       'setSignature',
       'removeAttachment',
-      (req) => (req.dispute.userId === req.user.id),
+      req => req.dispute.userId === req.user.id,
     ],
   ],
-  Admin: [
-    ['download', true],
-  ],
+  Admin: [['download', true]],
 };

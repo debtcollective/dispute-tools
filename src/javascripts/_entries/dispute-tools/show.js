@@ -7,11 +7,13 @@ class ViewDisputeToolsShow extends NodeSupport {
   constructor(config) {
     super();
 
-    this.appendChild(new Common({
-      name: 'Common',
-      currentUser: config.currentUser,
-      currentURL: config.currentURL,
-    }));
+    this.appendChild(
+      new Common({
+        name: 'Common',
+        currentUser: config.currentUser,
+        currentURL: config.currentURL,
+      }),
+    );
 
     WebFont.load({
       google: {
@@ -30,13 +32,21 @@ class ViewDisputeToolsShow extends NodeSupport {
       _option = config.options[option];
 
       if (_option.more) {
-        this.appendChild(new Modal({
-          name: `common-cases-${option}`,
-          element: document.querySelector(`[data-component-modal="common-cases-modal-${option}"]`),
-        }));
+        this.appendChild(
+          new Modal({
+            name: `common-cases-${option}`,
+            element: document.querySelector(
+              `[data-component-modal="common-cases-modal-${option}"]`,
+            ),
+          }),
+        );
 
-        this.handlers[option] = this._aboutClickHandler.bind(this, this[`common-cases-${option}`]);
-        document.getElementById(`common-cases-toggler-${option}`)
+        this.handlers[option] = this._aboutClickHandler.bind(
+          this,
+          this[`common-cases-${option}`],
+        );
+        document
+          .getElementById(`common-cases-toggler-${option}`)
           .addEventListener('click', this.handlers[option]);
       }
     });

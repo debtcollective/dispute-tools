@@ -23,26 +23,32 @@ describe('Dispute Status', () => {
       zip: '73301',
     });
 
-    return DisputeTool.first().then((dt) => {
-      tool = dt;
-      return Collective.first().then((result) => {
-        collective = result;
+    return DisputeTool.first()
+      .then(dt => {
+        tool = dt;
+        return Collective.first().then(result => {
+          collective = result;
 
-        return User.transaction((trx) => user.transacting(trx).save().then(() => {
-          account.userId = user.id;
-          account.collectiveId = collective.id;
-          return account.transacting(trx).save();
-        }));
-      });
-    })
-    .then(() => {
-      dispute = new Dispute({
-        userId: user.id,
-        disputeToolId: tool.id,
-      });
+          return User.transaction(trx =>
+            user
+              .transacting(trx)
+              .save()
+              .then(() => {
+                account.userId = user.id;
+                account.collectiveId = collective.id;
+                return account.transacting(trx).save();
+              }),
+          );
+        });
+      })
+      .then(() => {
+        dispute = new Dispute({
+          userId: user.id,
+          disputeToolId: tool.id,
+        });
 
-      return dispute.save();
-    });
+        return dispute.save();
+      });
   });
 
   it('Should create an new status', () => {
@@ -52,7 +58,7 @@ describe('Dispute Status', () => {
       disputeId: dispute.id,
     });
 
-    return status.save().then((id) => {
+    return status.save().then(id => {
       expect(id[0]).to.be.equal(status.id);
     });
   });
@@ -65,7 +71,7 @@ describe('Dispute Status', () => {
         disputeId: dispute.id,
       });
 
-      return status.save().catch((err) => {
+      return status.save().catch(err => {
         expect(err.errors.status.message).to.be.equal('Invalid status');
       });
     });
@@ -76,8 +82,10 @@ describe('Dispute Status', () => {
         comment: 'Incomplete status',
       });
 
-      return status.save().catch((err) => {
-        expect(err.errors.disputeId.message).to.be.equal('The disputeId is required');
+      return status.save().catch(err => {
+        expect(err.errors.disputeId.message).to.be.equal(
+          'The disputeId is required',
+        );
       });
     });
   });

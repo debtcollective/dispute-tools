@@ -6,7 +6,7 @@ const path = require('path');
 const UserMailer = require(path.join(process.cwd(), 'mailers', 'UserMailer'));
 
 describe('UserMailer', () => {
-  it('Should execute a sendActivation method', function () {
+  it('Should execute a sendActivation method', function() {
     this.timeout(5000);
 
     UserMailer.transport(CONFIG.env().mailers.transport);
@@ -22,15 +22,17 @@ describe('UserMailer', () => {
         subject: 'Activate your account - The Debt Collective',
       },
     })
-    .then((response) => {
-      const acceptedOrRejected = response.accepted[0] || response.rejected[0];
+      .then(response => {
+        const acceptedOrRejected = response.accepted[0] || response.rejected[0];
 
-      expect(acceptedOrRejected).to.be.equal('success@simulator.amazonses.com');
-    })
-    .then(() => new Promise(ok => setTimeout(ok, 1000)));
+        expect(acceptedOrRejected).to.be.equal(
+          'success@simulator.amazonses.com',
+        );
+      })
+      .then(() => new Promise(ok => setTimeout(ok, 1000)));
   });
 
-  it('Should execute a sendResetPasswordLink method', function () {
+  it('Should execute a sendResetPasswordLink method', function() {
     this.timeout(5000);
 
     UserMailer.transport(CONFIG.env().mailers.transport);
@@ -46,11 +48,13 @@ describe('UserMailer', () => {
         subject: 'Reset your password - The Debt Collective',
       },
     })
-    .then((response) => {
-      const acceptedOrRejected = response.accepted[0] || response.rejected[0];
+      .then(response => {
+        const acceptedOrRejected = response.accepted[0] || response.rejected[0];
 
-      expect(acceptedOrRejected).to.be.equal('success@simulator.amazonses.com');
-    })
-    .then(() => new Promise(ok => setTimeout(ok, 1000)));
+        expect(acceptedOrRejected).to.be.equal(
+          'success@simulator.amazonses.com',
+        );
+      })
+      .then(() => new Promise(ok => setTimeout(ok, 1000)));
   });
 });

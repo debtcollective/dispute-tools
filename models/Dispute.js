@@ -7,7 +7,9 @@ const Promise = require('bluebird');
 const { basePath } = require('../lib/AWS');
 const DisputeAttachment = require('./DisputeAttachment');
 
-const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attachment)({
+const Dispute = Class('Dispute')
+  .inherits(Krypton.Model)
+  .includes(Krypton.Attachment)({
   tableName: 'Disputes',
   validations: {
     userId: ['required'],
@@ -27,8 +29,7 @@ const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attach
   defaultIncludes: '[user.account, statuses]',
 
   async search(qs) {
-    const query = this.query()
-      .where({ deactivated: false });
+    const query = this.query().where({ deactivated: false });
 
     if (qs.filters) {
       // If we're passed a human readable id just search by that and ignore everything else
@@ -44,13 +45,11 @@ const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attach
           .select('dispute_id')
           .where('admin_id', qs.filters.admin_id);
 
-        query
-          .whereIn('id', disputeIds.map(d => d.dispute_id));
+        query.whereIn('id', disputeIds.map(d => d.dispute_id));
       }
 
       if (qs.filters.dispute_tool_id) {
-        query
-          .andWhere('dispute_tool_id', qs.filters.dispute_tool_id);
+        query.andWhere('dispute_tool_id', qs.filters.dispute_tool_id);
       }
     }
 
@@ -60,16 +59,24 @@ const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attach
 
     const records = await query;
 
-    records.forEach((record) => {
+    records.forEach(record => {
       let nameFound = false;
       let statusFound = false;
 
-      if (qs.name && record.user.account.fullname.toLowerCase()
-        .search(qs.name.toLowerCase()) !== -1) {
+      if (
+        qs.name &&
+        record.user.account.fullname
+          .toLowerCase()
+          .search(qs.name.toLowerCase()) !== -1
+      ) {
         nameFound = true;
       }
 
-      if (qs.status && record.statuses.length > 0 && record.statuses[0].status === qs.status) {
+      if (
+        qs.status &&
+        record.statuses.length > 0 &&
+        record.statuses[0].status === qs.status
+      ) {
         statusFound = true;
       }
 
@@ -86,7 +93,7 @@ const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attach
       }
     });
 
-    return results.map((item) => item.id);
+    return results.map(item => item.id);
   },
 
   prototype: {
@@ -115,7 +122,7 @@ const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attach
 
       const sanitizedData = {};
 
-      model.constructor.attributes.forEach((attribute) => {
+      model.constructor.attributes.forEach(attribute => {
         // We skip readableId so that Krypton doesn't try to insert null into the database
         if (_.isUndefined(values[attribute]) && attribute !== 'readableId') {
           sanitizedData[attribute] = null;
@@ -143,7 +150,8 @@ const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attach
 
         dispute.data.signature = signature;
 
-        dispute.save()
+        dispute
+          .save()
           .then(resolve)
           .catch(reject);
       });
@@ -162,8 +170,10 @@ const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attach
         return DisputeTool.query()
           .where({ id: dispute.disputeToolId })
           .then(([tool]) => {
-            return DisputeTool.transaction((trx) => {
-              return dispute.transacting(trx).save()
+            return DisputeTool.transaction(trx => {
+              return dispute
+                .transacting(trx)
+                .save()
                 .then(() => {
                   tool.completed++;
                   return tool.transacting(trx).save();
@@ -175,37 +185,40 @@ const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attach
           })
           .then(resolve)
           .catch(reject);
-      })
-        .then(() => {
-          const renderer = new DisputeRenderer({
-            disputeId: dispute.id,
-          });
-
-          function fail(msg) {
-            return err => {
-              logger.log(msg, err);
-              throw err;
-            };
-          }
-
-          return renderer.save()
-            .catch(fail('SAVING'))
-            .then(() => {
-              return renderer.render(dispute)
-                .catch(fail('RENDERING'))
-                .then(() => {
-                  return DisputeRenderer.query()
-                    .where({ id: renderer.id })
-                    .include('attachments')
-                    .then(([_disputeRenderer]) => {
-                      return renderer.buildZip(_disputeRenderer).catch(fail('BUILDING ZIP'));
-                    });
-                });
-            })
-            .then(() => {
-              return renderer;
-            });
+      }).then(() => {
+        const renderer = new DisputeRenderer({
+          disputeId: dispute.id,
         });
+
+        function fail(msg) {
+          return err => {
+            logger.log(msg, err);
+            throw err;
+          };
+        }
+
+        return renderer
+          .save()
+          .catch(fail('SAVING'))
+          .then(() => {
+            return renderer
+              .render(dispute)
+              .catch(fail('RENDERING'))
+              .then(() => {
+                return DisputeRenderer.query()
+                  .where({ id: renderer.id })
+                  .include('attachments')
+                  .then(([_disputeRenderer]) => {
+                    return renderer
+                      .buildZip(_disputeRenderer)
+                      .catch(fail('BUILDING ZIP'));
+                  });
+              });
+          })
+          .then(() => {
+            return renderer;
+          });
+      });
     },
 
     setForm({ formName, fieldValues, _isDirty }) {
@@ -258,9 +271,11 @@ const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attach
         foreignKey: this.id,
       });
 
-      return da.save().then(() => {
-        return da.attach('file', filePath);
-      })
+      return da
+        .save()
+        .then(() => {
+          return da.attach('file', filePath);
+        })
         .then(() => {
           return da.save();
         })
@@ -288,27 +303,28 @@ const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attach
       const dispute = this;
 
       if (!dispute.attachments) {
-        throw new Error('Dispute doesn\'t have any attachments');
+        throw new Error("Dispute doesn't have any attachments");
       }
 
-      const attachments = dispute.attachments
-        .filter((attachment) => attachment.id === id);
+      const attachments = dispute.attachments.filter(
+        attachment => attachment.id === id,
+      );
 
       if (attachments.length === 0) {
         throw new Error('Attachment not found');
       }
 
-      return attachments[0].destroy()
-        .then(() => {
-          const dataAttachment = dispute.data.attachments
-            .filter((attachment) => attachment.id === id)[0];
+      return attachments[0].destroy().then(() => {
+        const dataAttachment = dispute.data.attachments.filter(
+          attachment => attachment.id === id,
+        )[0];
 
-          const index = dispute.data.attachments.indexOf(dataAttachment);
+        const index = dispute.data.attachments.indexOf(dataAttachment);
 
-          dispute.data.attachments.splice(index, 1);
+        dispute.data.attachments.splice(index, 1);
 
-          return dispute.save();
-        });
+        return dispute.save();
+      });
     },
 
     /**
@@ -321,17 +337,23 @@ const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attach
       const knex = Dispute.knex();
 
       return Dispute.transaction(trx => {
-        knex.table('AdminsDisputes')
+        knex
+          .table('AdminsDisputes')
           .transacting(trx)
           .whereNotIn('admin_id', adminIds)
           .andWhere('dispute_id', this.id)
           .delete()
-          .then(() => knex.table('AdminsDisputes')
-            .transacting(trx)
-            .insert(adminIds.map(id => ({
-              dispute_id: this.id,
-              admin_id: id,
-            }))))
+          .then(() =>
+            knex
+              .table('AdminsDisputes')
+              .transacting(trx)
+              .insert(
+                adminIds.map(id => ({
+                  dispute_id: this.id,
+                  admin_id: id,
+                })),
+              ),
+          )
           .then(trx.commit)
           .catch(trx.rollback);
       });
@@ -356,14 +378,18 @@ const Dispute = Class('Dispute').inherits(Krypton.Model).includes(Krypton.Attach
         .include('[account]')
         .where('role', 'Admin')
         .then(allAdmin =>
-          allAdmin.reduce((acc, { id, account: { fullname: name } }) => {
-            if (assigned[id] !== undefined) {
-              acc.assigned.push({ id, name });
-            } else {
-              acc.available.push({ id, name });
-            }
-            return acc;
-          }, { assigned: [], available: [] }));
+          allAdmin.reduce(
+            (acc, { id, account: { fullname: name } }) => {
+              if (assigned[id] !== undefined) {
+                acc.assigned.push({ id, name });
+              } else {
+                acc.available.push({ id, name });
+              }
+              return acc;
+            },
+            { assigned: [], available: [] },
+          ),
+        );
     },
 
     destroy() {

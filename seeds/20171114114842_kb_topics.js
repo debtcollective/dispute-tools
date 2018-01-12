@@ -1,6 +1,6 @@
 const uuid = require('uuid');
 
-exports.seed = (knex) => {
+exports.seed = knex => {
   const topics = [
     'Politics',
     'Wall Street',
@@ -21,17 +21,16 @@ exports.seed = (knex) => {
     'Action',
   ];
 
-  return knex('KBTopics').del()
-    .then(() => {
-      return knex('KBTopics').insert(
-        topics.map((topic) => {
-          return {
-            id: uuid.v4(),
-            title: topic,
-            created_at: new Date(),
-            updated_at: new Date(),
-          };
-        })
-      );
-    });
+  return knex('KBTopics')
+    .del()
+    .then(() =>
+      knex('KBTopics').insert(
+        topics.map(topic => ({
+          id: uuid.v4(),
+          title: topic,
+          created_at: new Date(),
+          updated_at: new Date(),
+        })),
+      ),
+    );
 };

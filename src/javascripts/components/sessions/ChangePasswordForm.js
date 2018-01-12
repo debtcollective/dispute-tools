@@ -20,17 +20,21 @@ export default class SessionsChangePasswordForm extends Widget {
     });
     this._checkit = new Checkit(SessionsChangePasswordForm.constraints);
 
-    this.appendChild(new Button({
-      name: 'Button',
-      element: this.element.querySelector('button'),
-    }));
+    this.appendChild(
+      new Button({
+        name: 'Button',
+        element: this.element.querySelector('button'),
+      }),
+    );
 
     this._bindEvents();
   }
 
   _bindEvents() {
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
-    this.element.querySelector('form').addEventListener('submit', this._handleFormSubmit);
+    this.element
+      .querySelector('form')
+      .addEventListener('submit', this._handleFormSubmit);
   }
 
   _handleFormSubmit(ev) {

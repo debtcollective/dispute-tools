@@ -23,7 +23,7 @@ userLocationQueue.on('stalled', jobId => {
 });
 userLocationQueue.on('retrying', (job, err) => {
   console.log(
-    `Job ${job.id} failed with error ${err.message} but is being retried!`
+    `Job ${job.id} failed with error ${err.message} but is being retried!`,
   );
 });
 

@@ -6,9 +6,11 @@ export default class StatusItem extends Widget {
   }
 
   template(data) {
-    const userUpdate = (data.status.status === 'User Update');
+    const userUpdate = data.status.status === 'User Update';
     const date = new Date(data.status.createdAt).toDateString();
-    const statusClass = `-status-${data.status.status.toLowerCase().replace(/\W/g, '-')}`;
+    const statusClass = `-status-${data.status.status
+      .toLowerCase()
+      .replace(/\W/g, '-')}`;
 
     let name = 'The Debt Collective';
     let nameClass = '-primary';

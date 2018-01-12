@@ -11,23 +11,29 @@ class ViewCollectivesShow extends NodeSupport {
   constructor(config) {
     super();
 
-    this.appendChild(new Common({
-      name: 'Common',
-      currentUser: config.currentUser,
-      currentURL: config.currentURL,
-    }));
+    this.appendChild(
+      new Common({
+        name: 'Common',
+        currentUser: config.currentUser,
+        currentURL: config.currentURL,
+      }),
+    );
 
-    this.appendChild(new Tabs({
-      name: 'Tabs',
-      element: document.querySelector('[data-tabs-component]'),
-      updateHash: true,
-      defaultTab: 'panel-manifest',
-    }));
+    this.appendChild(
+      new Tabs({
+        name: 'Tabs',
+        element: document.querySelector('[data-tabs-component]'),
+        updateHash: true,
+        defaultTab: 'panel-manifest',
+      }),
+    );
 
-    this.appendChild(new CollectiveStickyTabs({
-      name: 'HandleStickyHeader',
-      element: document.querySelector('[role="tablist"]'),
-    }));
+    this.appendChild(
+      new CollectiveStickyTabs({
+        name: 'HandleStickyHeader',
+        element: document.querySelector('[role="tablist"]'),
+      }),
+    );
 
     this.disputeIds = config.disputeIds;
     this.collectiveName = config.collectiveName;
@@ -41,7 +47,9 @@ class ViewCollectivesShow extends NodeSupport {
       },
     });
 
-    this._setup()._generateShareUrls()._bindEvents();
+    this._setup()
+      ._generateShareUrls()
+      ._bindEvents();
 
     this.Tabs.run();
   }
@@ -59,7 +67,9 @@ class ViewCollectivesShow extends NodeSupport {
       via: '0debtzone',
     });
 
-    document.querySelector('[data-share-url-facebook]').href = shareUrl.facebook({
+    document.querySelector(
+      '[data-share-url-facebook]',
+    ).href = shareUrl.facebook({
       u: location.href,
     });
 
@@ -81,13 +91,21 @@ class ViewCollectivesShow extends NodeSupport {
 
     this.modalHandlers = {};
     this.disputeIds.forEach(id => {
-      this.appendChild(new Modal({
-        name: `modal-${id}`,
-        element: document.querySelector(`[data-component-modal="tool-modal-${id}"]`),
-      }));
+      this.appendChild(
+        new Modal({
+          name: `modal-${id}`,
+          element: document.querySelector(
+            `[data-component-modal="tool-modal-${id}"]`,
+          ),
+        }),
+      );
 
-      this.modalHandlers[id] = this._aboutClickHandler.bind(this, this[`modal-${id}`]);
-      document.getElementById(`tool-modal-toggler-${id}`)
+      this.modalHandlers[id] = this._aboutClickHandler.bind(
+        this,
+        this[`modal-${id}`],
+      );
+      document
+        .getElementById(`tool-modal-toggler-${id}`)
         .addEventListener('click', this.modalHandlers[id]);
     });
   }

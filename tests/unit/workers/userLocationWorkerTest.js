@@ -4,33 +4,33 @@ const expect = require('chai').expect;
 const path = require('path');
 const nock = require('nock');
 const userLocationWorker = require('../../../workers/userLocationWorker');
-const {
-  createUser,
-} = require('../../utils/helpers.js');
+const { createUser } = require('../../utils/helpers.js');
 
 const truncate = require(path.join(
   process.cwd(),
   'tests',
   'utils',
-  'truncate'
+  'truncate',
 ));
 
 describe('userLocationWorker', () => {
   let user;
 
-  before(() => createUser({
-    account: {
-      fullname: 'Orlando Del Aguila',
-      state: 'California',
-      zip: '94115',
-    },
-  }).then(u => {
-    user = u;
-  }));
+  before(() =>
+    createUser({
+      account: {
+        fullname: 'Orlando Del Aguila',
+        state: 'California',
+        zip: '94115',
+      },
+    }).then(u => {
+      user = u;
+    }),
+  );
 
   after(() => truncate([Account, User]));
 
-  it('should update Account city and location from zip code', (done) => {
+  it('should update Account city and location from zip code', done => {
     const account = user.account;
 
     nock('https://maps.googleapis.com', {
@@ -41,14 +41,15 @@ describe('userLocationWorker', () => {
       .replyWithFile(
         200,
         `${process.cwd()}/tests/fixtures/userLocationWorker-update-success.json`,
-        ['Content-Type', 'application/json; charset=UTF-8']
+        ['Content-Type', 'application/json; charset=UTF-8'],
       );
 
-    userLocationWorker({
-      data: {
-        accountId: account.id,
+    userLocationWorker(
+      {
+        data: {
+          accountId: account.id,
+        },
       },
-    },
       (err, savedAccount) => {
         expect(err).to.be.null;
         expect(savedAccount).to.not.be.null;
@@ -58,11 +59,11 @@ describe('userLocationWorker', () => {
         expect(savedAccount.longitude).to.equal(-122.4382307);
 
         done();
-      }
+      },
     );
   });
 
-  it('should return an error if no results found', (done) => {
+  it('should return an error if no results found', done => {
     const account = user.account;
 
     nock('https://maps.googleapis.com', {
@@ -73,20 +74,21 @@ describe('userLocationWorker', () => {
       .replyWithFile(
         200,
         `${process.cwd()}/tests/fixtures/userLocationWorker-update-not-found.json`,
-        ['Content-Type', 'application/json; charset=UTF-8']
+        ['Content-Type', 'application/json; charset=UTF-8'],
       );
 
-    userLocationWorker({
-      data: {
-        accountId: account.id,
+    userLocationWorker(
+      {
+        data: {
+          accountId: account.id,
+        },
       },
-    },
       (err, savedAccount) => {
         expect(err).to.not.be.null;
         expect(savedAccount).to.be.null;
 
         done();
-      }
+      },
     );
   });
 });

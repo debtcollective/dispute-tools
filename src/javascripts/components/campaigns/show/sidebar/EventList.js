@@ -5,18 +5,20 @@ export default class EventList extends Widget {
     super(config);
 
     this.eventElements = Array.prototype.slice.call(
-      this.element.querySelectorAll('.CampaignEvent')
+      this.element.querySelectorAll('.CampaignEvent'),
     );
 
     this._bindEvents();
   }
 
   _bindEvents() {
-    this.eventTitleElements = this.eventElements.map(event => event.querySelector('a'));
+    this.eventTitleElements = this.eventElements.map(event =>
+      event.querySelector('a'),
+    );
 
     this._handleTitleClick = this._handleTitleClick.bind(this);
     this.eventTitleElements.forEach(event =>
-      event.addEventListener('click', this._handleTitleClick)
+      event.addEventListener('click', this._handleTitleClick),
     );
 
     return this;

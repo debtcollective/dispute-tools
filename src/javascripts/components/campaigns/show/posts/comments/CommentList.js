@@ -13,7 +13,9 @@ export default class CommentList extends Widget {
         aria-expanded='false'
       >
         <div data-posts-wrapper>
-          ${post.comments.map(comment => this._getCommentHTMLString(comment)).join('')}
+          ${post.comments
+            .map(comment => this._getCommentHTMLString(comment))
+            .join('')}
         </div>
       </div>
     `;
@@ -28,7 +30,10 @@ export default class CommentList extends Widget {
    * @chainable
    */
   appendComment(comment) {
-    this.postsWrapper.insertAdjacentHTML('beforeend', this._getCommentHTMLString(comment));
+    this.postsWrapper.insertAdjacentHTML(
+      'beforeend',
+      this._getCommentHTMLString(comment),
+    );
     return this;
   }
 
@@ -41,7 +46,9 @@ export default class CommentList extends Widget {
           </div>
           <div class='flex-auto pl2'>
             <p class='-fw-500'>${comment.user.account.fullname}</p>
-            <p class='pb2 -caption -neutral-dark'>${new Date(comment.createdAt).toDateString()}</p>
+            <p class='pb2 -caption -neutral-dark'>${new Date(
+              comment.createdAt,
+            ).toDateString()}</p>
             <p>${comment.data.text}</p>
           </div>
         </div>
@@ -50,7 +57,11 @@ export default class CommentList extends Widget {
   }
 
   _getAvatarHTMLString(account) {
-    const url = account.image.urls.smallRedSquare || '/images/profile/placeholder-small.png';
-    return `<img src='${url}' alt='${account.fullname}' width='50' height='50'/>`;
+    const url =
+      account.image.urls.smallRedSquare ||
+      '/images/profile/placeholder-small.png';
+    return `<img src='${url}' alt='${
+      account.fullname
+    }' width='50' height='50'/>`;
   }
 }

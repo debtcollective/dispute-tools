@@ -6,16 +6,22 @@ class ViewPasswordRecover extends NodeSupport {
   constructor(config) {
     super();
 
-    this.appendChild(new Common({
-      name: 'Common',
-      currentUser: config.currentUser,
-      currentURL: config.currentURL,
-    }));
+    this.appendChild(
+      new Common({
+        name: 'Common',
+        currentUser: config.currentUser,
+        currentURL: config.currentURL,
+      }),
+    );
 
-    this.appendChild(new SessionsPasswordRecoverForm({
-      name: 'SessionsPasswordRecoverForm',
-      element: document.querySelector('[data-component-sessions-password-recover]'),
-    }));
+    this.appendChild(
+      new SessionsPasswordRecoverForm({
+        name: 'SessionsPasswordRecoverForm',
+        element: document.querySelector(
+          '[data-component-sessions-password-recover]',
+        ),
+      }),
+    );
   }
 }
 

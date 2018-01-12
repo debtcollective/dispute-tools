@@ -1,12 +1,9 @@
-
-exports.up = (knex) => {
-  return knex.schema.table('Posts', (t) => {
+exports.up = knex =>
+  knex.schema.table('Posts', t => {
     t.boolean('public').defaultTo(false);
   });
-};
 
-exports.down = (knex) => {
-  return knex.schema.table('Posts', (t) => {
+exports.down = knex =>
+  knex.schema.table('Posts', t => {
     t.dropColumn('public');
   });
-};

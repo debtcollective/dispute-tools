@@ -9,10 +9,12 @@ export default class NewComment extends Widget {
     super(config);
 
     this.textareaElement = this.element.querySelector('textarea');
-    this.appendChild(new Button({
-      name: 'buttonWidget',
-      element: this.element.querySelector('button'),
-    }));
+    this.appendChild(
+      new Button({
+        name: 'buttonWidget',
+        element: this.element.querySelector('button'),
+      }),
+    );
 
     this._bindEvents();
   }
@@ -58,7 +60,10 @@ export default class NewComment extends Widget {
 
   _bindEvents() {
     this._handleNewCommentSubmit = this._handleNewCommentSubmit.bind(this);
-    this.buttonWidget.element.addEventListener('click', this._handleNewCommentSubmit);
+    this.buttonWidget.element.addEventListener(
+      'click',
+      this._handleNewCommentSubmit,
+    );
 
     this._handleInputKeyUp = this._handleInputKeyUp.bind(this);
     this.textareaElement.addEventListener('keyup', this._handleInputKeyUp);
@@ -79,17 +84,20 @@ export default class NewComment extends Widget {
 
     this.buttonWidget.disable().updateText();
 
-    postCreateComment({
-      campaignId: this.data.campaignId,
-      postId: this.data.id,
-      body: { text, parentId },
-    }, (err, res) => {
-      res.body.user = currentUser.get();
-      this.textareaElement.value = '';
-      this.buttonWidget.restoreText();
+    postCreateComment(
+      {
+        campaignId: this.data.campaignId,
+        postId: this.data.id,
+        body: { text, parentId },
+      },
+      (err, res) => {
+        res.body.user = currentUser.get();
+        this.textareaElement.value = '';
+        this.buttonWidget.restoreText();
 
-      this.dispatch('newComment', { err, res });
-    });
+        this.dispatch('newComment', { err, res });
+      },
+    );
   }
 
   _handleInputKeyUp() {

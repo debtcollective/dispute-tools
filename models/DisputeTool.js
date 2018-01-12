@@ -22,7 +22,7 @@ const DisputeTool = Class('DisputeTool').inherits(Krypton.Model)({
         'lib',
         'data',
         'dispute-tools',
-        `${this.id}.js`
+        `${this.id}.js`,
       );
 
       delete require.cache[require.resolve(dataFile)];
@@ -52,7 +52,7 @@ const DisputeTool = Class('DisputeTool').inherits(Krypton.Model)({
               .transacting(trx)
               .save()
               .then(() => dispute.id);
-          })
+          }),
       );
     },
   },

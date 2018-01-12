@@ -4,13 +4,25 @@ export default class AdminUsersIndexTableControls extends Widget {
   constructor(config) {
     super(config);
 
-    this.searchInput = this.element.querySelector('[name="usersListValue[search]"]');
-    this.stateSelect = this.element.querySelector('[name="usersListValue[state]"]');
-    this.roleSelect = this.element.querySelector('[name="usersListValue[role]"]');
-    this.orderSelect = this.element.querySelector('[name="usersListValue[order]"]');
+    this.searchInput = this.element.querySelector(
+      '[name="usersListValue[search]"]',
+    );
+    this.stateSelect = this.element.querySelector(
+      '[name="usersListValue[state]"]',
+    );
+    this.roleSelect = this.element.querySelector(
+      '[name="usersListValue[role]"]',
+    );
+    this.orderSelect = this.element.querySelector(
+      '[name="usersListValue[order]"]',
+    );
 
-    this.applyFiltersBtn = this.element.querySelector('[name="usersListValue[applyFilters]"]');
-    this.resetFiltersBtn = this.element.querySelector('[name="usersListValue[resetFilters]"]');
+    this.applyFiltersBtn = this.element.querySelector(
+      '[name="usersListValue[applyFilters]"]',
+    );
+    this.resetFiltersBtn = this.element.querySelector(
+      '[name="usersListValue[resetFilters]"]',
+    );
 
     this._bindEvents();
   }

@@ -4,14 +4,28 @@ export default class AdminDisputesIndexTableControls extends Widget {
   constructor(config) {
     super(config);
 
-    this.searchInput = this.element.querySelector('[name="disputesListValue[search]"]');
-    this.readableIdInput = this.element.querySelector('[name="disputesListValue[readableId]"]');
-    this.toolsSelect = this.element.querySelector('[name="disputesListValue[tools]"]');
-    this.statusSelect = this.element.querySelector('[name="disputesListValue[status]"]');
-    this.orderSelect = this.element.querySelector('[name="disputesListValue[order]"]');
+    this.searchInput = this.element.querySelector(
+      '[name="disputesListValue[search]"]',
+    );
+    this.readableIdInput = this.element.querySelector(
+      '[name="disputesListValue[readableId]"]',
+    );
+    this.toolsSelect = this.element.querySelector(
+      '[name="disputesListValue[tools]"]',
+    );
+    this.statusSelect = this.element.querySelector(
+      '[name="disputesListValue[status]"]',
+    );
+    this.orderSelect = this.element.querySelector(
+      '[name="disputesListValue[order]"]',
+    );
 
-    this.applyFiltersBtn = this.element.querySelector('[name="disputesListValue[applyFilters]"]');
-    this.resetFiltersBtn = this.element.querySelector('[name="disputesListValue[resetFilters]"]');
+    this.applyFiltersBtn = this.element.querySelector(
+      '[name="disputesListValue[applyFilters]"]',
+    );
+    this.resetFiltersBtn = this.element.querySelector(
+      '[name="disputesListValue[resetFilters]"]',
+    );
 
     this._bindEvents();
   }

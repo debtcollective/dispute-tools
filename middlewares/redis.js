@@ -11,7 +11,7 @@ if (CONFIG.env().sessions !== false) {
   const RedisStore = require('connect-redis')(session);
 
   const redisStoreInstance = new RedisStore({
-    client: redisClient
+    client: redisClient,
   });
 
   const sessionMiddleWare = session({
@@ -21,12 +21,12 @@ if (CONFIG.env().sessions !== false) {
     // FIXME: this is not working as expected behind nginx-proxy
     // cookie: {secure: CONFIG.environment === 'production'},
     store: redisStoreInstance,
-    secret: CONFIG.env().sessions.secret
+    secret: CONFIG.env().sessions.secret,
   });
 
   module.exports = sessionMiddleWare;
 } else {
-  module.exports = function(req, res, next) {
+  module.exports = (req, res, next) => {
     next();
-  }
+  };
 }

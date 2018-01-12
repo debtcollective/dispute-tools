@@ -39,7 +39,8 @@ const { RENDER_TYPE } = require('./renderers/DisputeTemplate');
  * @type {{ [disputeToolId: string]: DisputeToolConfig }}
  */
 
-const _configurations = Object.assign({},
+const _configurations = Object.assign(
+  {},
   require('./renderers/tool-configurations/credit-report-dispute-letter'),
   require('./renderers/tool-configurations/general-dispute-letter'),
   require('./renderers/tool-configurations/private-student-loan-dispute-letter'),

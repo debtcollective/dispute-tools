@@ -9,16 +9,18 @@ export default class DisputesInformationForm extends Widget {
   constructor(config) {
     super(config);
 
-    this.appendChild(new Button({
-      name: 'Button',
-      element: this.element.querySelector('button'),
-    }));
+    this.appendChild(
+      new Button({
+        name: 'Button',
+        element: this.element.querySelector('button'),
+      }),
+    );
 
     const _this = this;
-    const data = this.dispute.disputeTool.data.options[this.dispute.data.option];
-    const formData = data.steps.filter(step => {
-      return step.type === 'form';
-    })[0];
+    const data = this.dispute.disputeTool.data.options[
+      this.dispute.data.option
+    ];
+    const formData = data.steps.filter(step => step.type === 'form')[0];
 
     this.constraints = {};
     this._constraintsAll = {};
@@ -56,7 +58,7 @@ export default class DisputesInformationForm extends Widget {
     this.form.addEventListener('submit', this._handleFormSubmitRef);
 
     this.togglers = [].slice.call(
-      document.querySelectorAll('[data-toggle-radio]')
+      document.querySelectorAll('[data-toggle-radio]'),
     );
     this._handleContentToggleRef = this._handleContentToggle.bind(this);
     this.togglers.forEach(t => {
@@ -68,7 +70,7 @@ export default class DisputesInformationForm extends Widget {
     });
 
     this.toogleRadios = [].slice.call(
-      document.querySelectorAll('[data-partial-toggle-radio]')
+      document.querySelectorAll('[data-partial-toggle-radio]'),
     );
     this._toogleRadiosRefs = {};
     this._handlePartialTogglerRef = this._handlePartialToggler.bind(this);
@@ -83,7 +85,9 @@ export default class DisputesInformationForm extends Widget {
       }
     });
 
-    this.handleAlertRadios = [].slice.call(document.querySelectorAll('[data-alert]'));
+    this.handleAlertRadios = [].slice.call(
+      document.querySelectorAll('[data-alert]'),
+    );
     if (this.handleAlertRadios.length) {
       this._handleAlertRadioChangeRef = this._handleAlertRadioChange.bind(this);
       this.handleAlertRadios.forEach(t => {
@@ -113,20 +117,24 @@ export default class DisputesInformationForm extends Widget {
       return;
     }
 
-    const opossiteAction = (target.value === 'yes') ? 'no' : 'yes';
+    const opossiteAction = target.value === 'yes' ? 'no' : 'yes';
 
-    this.appendChild(new ConfirmInline({
-      name: 'ConfirmInline',
-      className: '-warning mt2',
-      data: {
-        text: `▲ ${matched.message}`,
-        cancelButtonText: `Select ${opossiteAction}`,
-        okButtonText: 'Exit form',
-      },
-    }));
+    this.appendChild(
+      new ConfirmInline({
+        name: 'ConfirmInline',
+        className: '-warning mt2',
+        data: {
+          text: `▲ ${matched.message}`,
+          cancelButtonText: `Select ${opossiteAction}`,
+          okButtonText: 'Exit form',
+        },
+      }),
+    );
 
     this.ConfirmInline.bind('onCancel', () => {
-      parentElement.querySelector(`[name="${ev.target.name}"][value="${opossiteAction}"]`).click();
+      parentElement
+        .querySelector(`[name="${ev.target.name}"][value="${opossiteAction}"]`)
+        .click();
     });
 
     this.ConfirmInline.bind('onOk', () => {
@@ -142,9 +150,9 @@ export default class DisputesInformationForm extends Widget {
 
     if (fieldset) {
       const whitelist = 'input, select, textarea';
-      const names = [].slice.call(fieldset.querySelectorAll(whitelist)).map(i => {
-        return i.dataset.name;
-      });
+      const names = [].slice
+        .call(fieldset.querySelectorAll(whitelist))
+        .map(i => i.dataset.name);
 
       if (target.value === 'no') {
         names.forEach(name => {
@@ -277,13 +285,16 @@ export default class DisputesInformationForm extends Widget {
       const parent = element.parentElement;
       let y = parent.getBoundingClientRect().top;
 
-      y = (y >= 0) ? `+${y}` : y.toString();
+      y = y >= 0 ? `+${y}` : y.toString();
 
-      this.pisces.scrollToPosition({ y }, {
-        onComplete: () => {
-          element.focus();
+      this.pisces.scrollToPosition(
+        { y },
+        {
+          onComplete: () => {
+            element.focus();
+          },
         },
-      });
+      );
     }
   }
 

@@ -47,15 +47,27 @@ describe('render', () => {
 
       it('b: should render the pdf', basicRenderTest(taxOffsetReview_b));
 
-      it('c: should render the pdfs', basicRenderTest(taxOffsetReview_c, [1, 1]));
+      it(
+        'c: should render the pdfs',
+        basicRenderTest(taxOffsetReview_c, [1, 1]),
+      );
 
-      it('d: should render the pdfs', basicRenderTest(taxOffsetReview_d, [1, 1]));
+      it(
+        'd: should render the pdfs',
+        basicRenderTest(taxOffsetReview_d, [1, 1]),
+      );
 
-      it('e: should render the pdfs', basicRenderTest(taxOffsetReview_e, [1, 1]));
+      it(
+        'e: should render the pdfs',
+        basicRenderTest(taxOffsetReview_e, [1, 1]),
+      );
     });
   });
 
   describe('graphicsmagick', async () => {
-    it('should render the pdf', basicRenderTest(studentDebtDispute, [6], 10000));
+    it(
+      'should render the pdf',
+      basicRenderTest(studentDebtDispute, [6], 10000),
+    );
   });
 });
