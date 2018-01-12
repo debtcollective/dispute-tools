@@ -10,7 +10,7 @@
   ],
   "extends": [
     "airbnb-base",
-    "plugin:vue/essential"
+    "plugin:vue/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": 8,
@@ -25,7 +25,8 @@
           "Module",
           "Interface",
           "RouteMappings",
-          "Knex"
+          "Knex",
+          "Vue"
         ]
       }
     ],
@@ -53,9 +54,17 @@
     ],
     "no-shadow": [
       0,
-      { "allow": ["done", "err", "res", "req", "resolve", "reject"] }
+      {
+        "allow": [
+          "done",
+          "err",
+          "res",
+          "req",
+          "resolve",
+          "reject"
+        ]
+      }
     ],
-    "jsx-uses-vars": 0,
-    "vue/no-unused-vars": 1
+    "jsx-uses-vars": 0
   }
 }

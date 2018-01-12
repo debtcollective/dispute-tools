@@ -46,8 +46,10 @@ export default class FeedController extends Widget {
     const fragment = document.createDocumentFragment();
     let PostClass;
 
-    this._totalCount = parseInt(res.headers.get('total_count'), 10);
-    this._totalPages = parseInt(res.headers.get('total_pages'), 10);
+    if (res.headers) {
+      this._totalCount = parseInt(res.headers.get('total_count'), 10);
+      this._totalPages = parseInt(res.headers.get('total_pages'), 10);
+    }
 
     res.body.forEach(post => {
       switch (post.type) {

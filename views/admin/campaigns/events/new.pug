@@ -14,62 +14,7 @@ block content
       h4= campaign.collective.name
       h4.pb3 Campaign: #{campaign.title}
 
-      form(
-        method='post'
-        action=routeMappings.Admin.Collectives.Campaigns.Events.create.url(campaign.collective.id, campaign.id)
-        data-component-form
-      )
-        input(type='hidden' name='_csrf' value=csrfToken)
-
-        .py1
-          label.block.pb1.-fw-500 Event Name
-          input.-k-input.-fw.-border-neutral-mid(
-            type='text'
-            name='name'
-            placeholder='A short, clear name'
-          )
-          p(class="-on-error -danger -caption -fw-500 mt1")
-
-        .py1
-          label.block.pb1.-fw-500 Date
-          input.-k-input.-fw.-border-neutral-mid(
-            type='date'
-            name='date'
-          )
-          p(class="-on-error -danger -caption -fw-500 mt1")
-
-        .py1
-          label.block.pb1.-fw-500 Timespan
-          input.-k-input.-fw.-border-neutral-mid(
-            type='text'
-            name='timespan'
-            placeholder='e.g: 6:30 pm - 8:30 pm PST'
-          )
-          p(class='-on-error -danger -caption -fw-500 mt1')
-
-        .py1
-          label.block.pb1.-fw-500 Description
-          textarea.-k-textarea.-fw.-ff-sec.-border-neutral-mid(
-            name='description'
-            rows='6'
-            placeholder='Tell people more about the event'
-          )
-          p(class="-on-error -danger -caption -fw-500 mt1")
-
-        .py1
-          label.block.pb1.-fw-500 Location
-          input.-k-input.-fw.-border-neutral-mid(
-            type='text'
-            name='locationName'
-            placeholder='Include a place or address'
-          )
-          p(class="-on-error -danger -caption -fw-500 mt1")
-
-        iframe(id='iframeMap' width='100%' height='100%' frameborder='0' allowfullscreen
-          src=`https://www.google.com/maps/embed/v1/place?key=${CONFIG.env().GoogleMaps.key}&q=new+york`)
-
-        .pt3
-          button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Create
+      #new-event-vue                              
 
 block scripts
   script(src=`https://maps.googleapis.com/maps/api/js?key=${CONFIG.env().GoogleMaps.key}&libraries=places`)
@@ -78,7 +23,9 @@ block scripts
       var options = {
         currentUser: !{JSON.stringify(UserRenderer(currentUser))},
         currentURL: !{JSON.stringify(currentURL)},
+        campaign: !{JSON.stringify(campaign)},
+        gmapsKey: '!{CONFIG.env().GoogleMaps.key}'
       };
-
-      new ViewAdminEventsNew(options);
+      
+      new NewAdminEventsFormController(options);
     }, true);
