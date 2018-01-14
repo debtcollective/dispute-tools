@@ -25,6 +25,10 @@ class ViewDisputeToolsIndex extends NodeSupport {
       },
     });
 
+    this.DTRlink = document.getElementById('defense-to-repayment-link');
+    this.DTRstayButton = document.getElementById('stay-button');
+    this.DTRcontinueButton = document.getElementById('continue-button');
+
     this._bindEvents()
       ._bindScrollTo()
       ._applyGlitch();
@@ -51,6 +55,29 @@ class ViewDisputeToolsIndex extends NodeSupport {
         .getElementById(`tool-modal-toggler-${id}`)
         .addEventListener('click', this.handlers[id]);
     });
+
+    this.appendChild(
+      new Modal({
+        name: 'DTRmodal',
+        element: document.querySelector(
+          '[data-component-modal="defense-to-repayment-link-warning"]',
+        ),
+      }),
+    );
+
+    this.DTRlink.addEventListener('click', e => {
+      e.preventDefault();
+      this.DTRmodal.activate();
+    });
+
+    this.DTRstayButton.addEventListener('click', e => {
+      e.preventDefault();
+      this.DTRmodal.deactivate();
+    });
+
+    this.DTRcontinueButton.addEventListener('click', () =>
+      this.DTRmodal.deactivate(),
+    );
 
     return this;
   }
