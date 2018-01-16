@@ -157,4 +157,8 @@ hr {
 .dispute-actions {
   display: flex;
   justify-content: space-between;
+
+  &-delete {
+    font-size: 14px;
+  }
 }

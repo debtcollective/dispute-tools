@@ -16,7 +16,7 @@ files=$(
 )
 
 if [ "x$files" != "x" ]; then
-  # Wrap in parnes so it handles the line-breaks from git diff w/o complaining
+  # Wrap in parens so it handles the line-breaks from git diff w/o complaining
   (./node_modules/.bin/eslint --fix $files)
 fi
 

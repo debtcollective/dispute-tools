@@ -72,7 +72,7 @@ h4.-h-sec > span {padding: 0 .5rem}
 
 /* secondary font */
 .-ff-sec {
-  font-family: monospace;
+  font-family: 'Space Mono', monospace;
 
   &.-h4 {
     font-size: 22px;
@@ -99,11 +99,11 @@ h4.-h-sec > span {padding: 0 .5rem}
 }
 
 .-status-bg {
-  &-incomplete {background-color: #F8E71C}
-  &-completed {background-color: #7ED321}
-  &-in-review {background-color: #268AFF}
-  &-documents-sent {background-color: #F04C34}
-  &-update {background-color: #50E3C2}
+  &-incomplete {background-color: #F5A623}
+  &-completed {background-color: #F04C34}
+  &-in-review {background-color: #267DE2}
+  &-documents-sent {background-color: #D0021B}
+  &-update {background-color: #4D9900}
 }
 
 @media (max-width: 52em) {

@@ -38,7 +38,9 @@ describe('DashboardController', () => {
 
   describe('with session', () => {
     // login user
-    before(async () => {
+    before(async function before() {
+      this.timeout(10000);
+
       await page.goto('http://localhost:3000/login');
 
       await page.type('input[name="email"]', user.email);

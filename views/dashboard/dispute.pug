@@ -39,7 +39,7 @@
         )
           input(name='_csrf' type='hidden' value=csrfToken)
           input(type='hidden' name='_method' value='DELETE')
-          button.-k-btn.btn-link.-primary.-dark.-fw-500(type='submit')
+          button.-k-btn.btn-link.-primary.-dark.-fw-500.dispute-actions-delete(type='submit')
             | Delete Dispute
       else
         a.-k-btn.btn-gray.-fw-700(href=`/disputes/${dispute.id}`)

@@ -439,9 +439,6 @@ describe('DisputesController', () => {
           },
         })
       );
-
-      // await signInAs(data.User, agent);
-      // attachableDispute = await createDispute(data.User);
     });
 
     after(() => {

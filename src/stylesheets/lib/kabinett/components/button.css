@@ -10,6 +10,7 @@
   padding: calc(var(--k-font-size) - 1px) 1em calc(var(--k-font-size) - 2px);
   white-space: nowrap;
   border-width: 0;
+  cursor: pointer;
 
   text-align: center;
   text-decoration: none;
