@@ -1,5 +1,6 @@
 /* global Krypton, Class, CONFIG, AttachmentsProcessor, AWS, S3Uploader */
 const path = require('path');
+const stream = require('stream');
 const gm = require('gm').subClass({
   imageMagick: process.env.GM === 'true' || false,
 });
@@ -77,7 +78,7 @@ const Account = Class('Account')
           versions: {
             small(readStream) {
               return gm(readStream)
-              .resize('64x64^')
+              .resize(64, null)
               .gravity('Center')
               .crop(64, 64, 0, 0)
               .setFormat('jpg')
@@ -85,7 +86,7 @@ const Account = Class('Account')
             },
             smallGrayscale(readStream) {
               return gm(readStream)
-              .resize('64x64^')
+              .resize(64, null)
               .type('Grayscale')
               .gravity('Center')
               .crop(64, 64, 0, 0)
@@ -93,21 +94,24 @@ const Account = Class('Account')
               .stream();
             },
             smallRedSquare(readStream) {
-              return gm(readStream)
-              .resize('64x64^')
+              const passThrough = new stream.PassThrough();
+
+              gm(readStream)
+              .resize(64, null)
               .type('Grayscale')
-              .gravity('Center')
               .crop(64, 64, 0, 0)
-              .type('TrueColor')
-              .out(path.join(process.cwd(), 'lib/assets', '64_red-square.png'))
-              .out('-compose', 'Multiply')
-              .out('-composite')
+              .stream()
+              .pipe(passThrough);
+
+              return gm(passThrough)
+              .gravity('Center')
+              .composite(path.join(process.cwd(), 'lib/assets', '64_red-square.png'))
               .setFormat('jpg')
               .stream();
             },
             medium(readStream) {
               return gm(readStream)
-              .resize('256x256^')
+              .resize(256, null)
               .gravity('Center')
               .crop(256, 256, 0, 0)
               .setFormat('jpg')
@@ -115,7 +119,7 @@ const Account = Class('Account')
             },
             mediumGrayscale(readStream) {
               return gm(readStream)
-              .resize('256x256^')
+              .resize(256, null)
               .type('Grayscale')
               .gravity('Center')
               .crop(256, 256, 0, 0)
@@ -123,15 +127,18 @@ const Account = Class('Account')
               .stream();
             },
             mediumRedSquare(readStream) {
-              return gm(readStream)
-              .resize('256x256^')
+              const passThrough = new stream.PassThrough();
+
+              gm(readStream)
+              .resize(256, null)
               .type('Grayscale')
-              .gravity('Center')
               .crop(256, 256, 0, 0)
-              .type('TrueColor')
-              .out(path.join(process.cwd(), 'lib/assets', '256_red-square.png'))
-              .out('-compose', 'Multiply')
-              .out('-composite')
+              .stream()
+              .pipe(passThrough);
+
+              return gm(passThrough)
+              .gravity('Center')
+              .composite(path.join(process.cwd(), 'lib/assets', '256_red-square.png'))
               .setFormat('jpg')
               .stream();
             },

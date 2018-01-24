@@ -1,5 +1,7 @@
 import Post from './Post';
-import { campaignPostVote } from '../../../../lib/api';
+import {
+  campaignPostVote,
+} from '../../../../lib/api';
 import Button from '../../../../components/Button';
 import currentUser from '../../../../lib/currentUser';
 
@@ -32,7 +34,6 @@ export default class PostPoll extends Post {
               ${this.getAvatarHTMLString(data.user.account)}
             </div>
             <div class='flex-auto pl2'>
-              <p class='-fw-500'>${data.user.account.fullname}</p>
               ${this.getCaptionHTMLString(data)}
               <p class='Campaign_FeedItemText pb3'>${data.data.title}</p>
               <div data-main-content>
@@ -169,7 +170,9 @@ export default class PostPoll extends Post {
       campaignPostVote({
         campaignId: this.data.campaignId,
         postId: this.data.id,
-        body: { index },
+        body: {
+          index,
+        },
       }, (err, res) => {
         if (err) {
           return this.voteButton.enable().restoreText();

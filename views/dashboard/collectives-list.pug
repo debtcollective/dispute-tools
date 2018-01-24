@@ -1,0 +1,21 @@
+.dashboard-block.collectives-container
+  h4.dashboard-title
+    | My Collectives
+    
+  if collectives.length
+    ul.collectives-list.mt2
+      each collective, index in collectives
+        li.collectives-list-item.mb2
+          a.block(
+            href=routeMappings.Collectives.show.url(collective.id)
+            title=collective.name
+          )
+            div.flex.items-center
+              svg.-sw5(width='56' height='56')
+                use(xlink:href=`#svg-collective-${collective.id.charAt(0)}`)
+              - var name = collective.name.replace(/\sCollective$/, '').replace(/\s\and\s/g, ' & ')
+              div
+                h3.collective-list-item-name.pl2=name
+                p.-caption.pl2.-fw-700 #{collective.userCount} members · #{collective.campaignCount} campaign#{collective.campaignCount === 1 ? '' : 's'}
+  hr.my2
+  a.-fw-700.collectives-see-more(href=routeMappings.Collectives.url()) See more collectives

@@ -1,4 +1,3 @@
-import WebFont from 'webfontloader';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
 import DisputesController from '../../components/disputes/Controller';
@@ -18,12 +17,6 @@ class ViewDisputesShow extends NodeSupport {
       dispute: config.dispute,
       currentStep: config.currentStep,
     }));
-
-    WebFont.load({
-      google: {
-        families: ['Space Mono'],
-      },
-    });
   }
 }
 

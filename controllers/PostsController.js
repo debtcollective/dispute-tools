@@ -1,6 +1,7 @@
 /* global Class, CONFIG, RestfulController, NotFoundError, Post, PostsController,
 PostImage, neonode, Campaign, Account */
 
+const _ = require('lodash');
 const sanitize = require('sanitize-html');
 const Promise = require('bluebird');
 const fs = require('fs-extra');
@@ -10,109 +11,108 @@ const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 const PAGE_SIZE = 15;
 
 const PostsController = Class('PostsController').inherits(RestfulController)({
-  beforeActions: [
-    {
-      before(req, res, next) {
-        Campaign.query()
+  beforeActions: [{
+    before(req, res, next) {
+      Campaign.query()
           .where('id', req.params.id)
           .then(([campaign]) => {
             req.campaign = campaign;
             next();
           })
           .catch(next);
-      },
-      actions: ['index'],
     },
-    {
-      before(req, res, next) {
-        const query = Post.query()
+    actions: ['index'],
+  },
+  {
+    before(req, res, next) {
+      const query = Post.query()
           .where({
             campaign_id: req.params.id,
             parent_id: null,
           })
           .include('[comments, topic, user.account]');
 
-        const knex = Post.knex();
+      const knex = Post.knex();
 
-        const restifyPosts = (onlyPublic) => {
+      const restifyPosts = (onlyPublic) => {
           // if not, display only public posts
-          if (onlyPublic) {
-            query.where('public', true);
-          }
-
-          RESTfulAPI.createMiddleware({
-            queryBuilder: query,
-            filters: {
-              allowedFields: [],
-            },
-            order: {
-              default: '-created_at',
-              allowedFields: [
-                'created_at',
-              ],
-            },
-            paginate: {
-              pageSize: PAGE_SIZE,
-            },
-          })(req, res, next);
-        };
-
-        // only public posts
-        if (!req.user) {
-          restifyPosts(true);
-          return;
+        if (onlyPublic) {
+          query.where('public', true);
         }
 
+        RESTfulAPI.createMiddleware({
+          queryBuilder: query,
+          filters: {
+            allowedFields: [],
+          },
+          order: {
+            default: '-created_at',
+            allowedFields: [
+              'created_at',
+            ],
+          },
+          paginate: {
+            pageSize: PAGE_SIZE,
+          },
+        })(req, res, next);
+      };
+
+        // only public posts
+      if (!req.user) {
+        restifyPosts(true);
+        return;
+      }
+
         // the user belongs to the campaign?
-        knex('UsersCampaigns')
+      knex('UsersCampaigns')
           .where({
             user_id: req.user.id,
             campaign_id: req.params.id,
           })
           .then(result => restifyPosts(!result.length)).catch(next);
-      },
-      actions: ['index'],
     },
-    {
-      before(req, res, next) {
-        req.posts = res.locals.results;
+    actions: ['index'],
+  },
+  {
+    before(req, res, next) {
+      req.posts = res.locals.results;
 
-        res.locals.headers = {
-          total_count: parseInt(res._headers.total_count, 10),
-          total_pages: parseInt(res._headers.total_pages, 10),
-          current_page: parseInt(req.query.page || 1, 10),
-          query: req.query,
-        };
+      res.locals.headers = {
+        total_count: parseInt(res._headers.total_count, 10),
+        total_pages: parseInt(res._headers.total_pages, 10),
+        current_page: parseInt(req.query.page || 1, 10),
+        query: req.query,
+      };
 
-        next();
-      },
-      actions: ['index'],
+      next();
     },
+    actions: ['index'],
+  },
     // add user account to comments
-    {
-      before(req, res, next) {
-        function getAccount(comment) {
-          return Account.query()
+  {
+    before(req, res, next) {
+      function getAccount(comment) {
+        return Account.query()
             .where('user_id', comment.userId)
             .then(([account]) => {
               comment.user = comment.user || {};
               comment.user.account = account;
             });
-        }
+      }
 
-        Promise.all(function* getCommentsAccount() {
-          for (const post of req.posts) {
-            for (const comment of post.comments) {
-              yield getAccount(comment);
-            }
+      Promise.all(function* getCommentsAccount() {
+        for (const post of req.posts) {
+          for (const comment of post.comments) {
+            yield getAccount(comment);
           }
-        }()).then(() => next()).catch(next);
-      },
-      actions: ['index'],
+        }
+      }()).then(() => next()).catch(next);
     },
-    {
-      before(req, res, next) {
-        Post.query()
+    actions: ['index'],
+  },
+  {
+    before(req, res, next) {
+      Post.query()
           .where('id', req.params.id)
           .then((result) => {
             if (result.length === 0) {
@@ -125,9 +125,9 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
             return next();
           })
           .catch(next);
-      },
-      actions: ['update', 'delete', 'votePoll'],
     },
+    actions: ['update', 'delete', 'votePoll'],
+  },
   ],
 
   prototype: {
@@ -138,26 +138,34 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         }
 
         return PostImage.query()
-          .where({
-            type: 'Post',
-            foreign_key: post.id,
-          })
-          .then((result) => {
-            if (result.length !== 0) {
-              post.image = result[0];
+            .where({
+              type: 'Post',
+              foreign_key: post.id,
+            })
+            .then((result) => {
+              if (result.length !== 0) {
+                post.image = result[0];
 
-              if (post.image.file.exists('thumb')) {
-                post.imageURL = post.image.file.url('thumb');
+                if (post.image.file.exists('thumb')) {
+                  post.imageURL = post.image.file.url('thumb');
+                }
               }
-            }
 
-            return Promise.resolve();
+              return Promise.resolve();
+            });
+      })
+        .then(() => {
+          const posts = req.posts;
+
+          // Filter user private fields
+          // This needs to be added to the ORM itself
+          _.forEach(posts, (post) => {
+            post.user = _.pick(post.user, ['id', 'role', 'account']);
           });
-      })
-      .then(() => {
-        res.json(req.posts);
-      })
-      .catch(next);
+
+          res.json(posts);
+        })
+        .catch(next);
     },
 
     create(req, res) {
@@ -188,7 +196,9 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         .catch((err) => {
           res.status = 400;
 
-          res.json(err.errors || { error: err });
+          res.json(err.errors || {
+            error: err,
+          });
         });
     },
 
@@ -265,7 +275,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       });
 
       return Post.transaction((trx) =>
-        post.transacting(trx).save()
+          post.transacting(trx).save()
           .then(() => {
             attachment.foreignKey = post.id;
 
@@ -275,29 +285,29 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
           })
           .then(trx.commit)
           .catch(trx.rollback)
-      )
-      .then(() => {
-        if (req.files && req.files.image && req.files.image.length > 0) {
-          const image = req.files.image[0];
+        )
+        .then(() => {
+          if (req.files && req.files.image && req.files.image.length > 0) {
+            const image = req.files.image[0];
 
-          return attachment.attach('file', image.path, {
-            fileSize: image.size,
-            mimeType: image.mimetype || image.mimeType
-          })
-          .then(() => {
-            fs.unlinkSync(image.path);
+            return attachment.attach('file', image.path, {
+              fileSize: image.size,
+              mimeType: image.mimetype || image.mimeType,
+            })
+              .then(() => {
+                fs.unlinkSync(image.path);
 
-            return attachment.save();
-          });
-        }
+                return attachment.save();
+              });
+          }
 
-        return Promise.resolve();
-      })
-      .then(() => {
-        post.data.image = attachment;
+          return Promise.resolve();
+        })
+        .then(() => {
+          post.data.image = attachment;
 
-        return post;
-      });
+          return post;
+        });
     },
 
     createComment(req, res) {
@@ -325,7 +335,9 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         .catch(err => {
           res.status = 400;
 
-          res.json(err.errors || { error: err });
+          res.json(err.errors || {
+            error: err,
+          });
         });
     },
 
@@ -356,7 +368,9 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
           .catch((err) => {
             res.status = 400;
 
-            res.json(err.errors || { error: err });
+            res.json(err.errors || {
+              error: err,
+            });
           });
       }
 
@@ -393,7 +407,9 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         .catch((err) => {
           res.status = 400;
 
-          res.json(err.errors || { error: err });
+          res.json(err.errors || {
+            error: err,
+          });
         });
     },
 

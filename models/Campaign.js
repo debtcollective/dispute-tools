@@ -40,6 +40,23 @@ const Campaign = Class('Campaign').inherits(Krypton.Model).includes(Krypton.Atta
       this.hasAttachment({
         name: 'cover',
         versions: {
+          small(readStream) {
+            return gm(readStream)
+            .resize(100, 100)
+            .gravity('Center')
+            .crop(100, 100, 0, 0)
+            .setFormat('jpg')
+            .stream();
+          },
+          smallGrayscale(readStream) {
+            return gm(readStream)
+            .resize(100, 100)
+            .type('Grayscale')
+            .gravity('Center')
+            .crop(100, 100, 0, 0)
+            .setFormat('jpg')
+            .stream();
+          },
           grayscale(readStream) {
             return gm(readStream)
               .resize(500, null, '>')

@@ -1,4 +1,3 @@
-import WebFont from 'webfontloader';
 import Pisces from 'pisces';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
@@ -16,12 +15,6 @@ class ViewDisputeToolsIndex extends NodeSupport {
     }));
 
     this.disputeIds = config.disputeIds;
-
-    WebFont.load({
-      google: {
-        families: ['Space Mono'],
-      },
-    });
 
     this._bindEvents()._bindScrollTo()._applyGlitch();
   }

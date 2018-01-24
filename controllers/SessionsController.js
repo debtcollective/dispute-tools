@@ -3,6 +3,7 @@
 const path = require('path');
 const Promise = require('bluebird');
 const uuid = require('uuid');
+const includes = require('lodash/includes');
 
 const passport = require(path.join(process.cwd(), 'lib', 'passport', 'local_strategy'));
 
@@ -40,11 +41,14 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
 
           req.flash('success', 'Welcome to The Debt Collective');
 
-          if (req.headers.referer) {
+          const referer = req.headers.referer;
+
+          // Ignore if referer is login page
+          if (referer && !includes(referer, CONFIG.router.helpers.login.url())) {
             return res.redirect(req.headers.referer);
           }
 
-          return res.redirect(CONFIG.router.helpers.Collectives.url());
+          return res.redirect(CONFIG.router.helpers.dashboard.url());
         });
       })(req, res, next);
     },
@@ -64,8 +68,8 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
     sendResetEmail(req, res, next) {
       Promise.coroutine(function* sendResetEmailCoroutine() {
         const user = yield User.query()
-          .include('account')
-          .where('email', req.body.email);
+            .include('account')
+            .where('email', req.body.email);
 
         if (user.length !== 1) {
           return res.status(400).render('sessions/showEmailForm', {
@@ -81,12 +85,12 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
             subject: 'Reset your password - The Debt Collective',
           },
         })
-          .then(() => {
-            req.flash('success', 'Check your email to reset your password');
-            return res.redirect(CONFIG.router.helpers.login.url());
-          }));
+            .then(() => {
+              req.flash('success', 'Check your email to reset your password');
+              return res.redirect(CONFIG.router.helpers.login.url());
+            }));
       })()
-      .catch(next);
+        .catch(next);
     },
 
     showPasswordForm(req, res, next) {

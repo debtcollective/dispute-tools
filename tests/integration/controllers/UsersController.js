@@ -201,19 +201,4 @@ describe('UsersController', () => {
         });
     });
   });
-
-  // it('Should not validate when updating a user', (done) => {
-  //   agent.post(`${url}${urls.Users.update.url(user.id)}`)
-  //     .set('Accept', 'text/html')
-  //     .send({
-  //       _method : 'PUT',
-  //       password: '1234567',
-  //       _csrf,
-  //     })
-  //     .end((err, res) => {
-  //       expect(err.toString()).to.be.equal('Error: Bad Request');
-  //       expect(res.status).to.be.equal(400);
-  //       done();
-  //     });
-  // });
 });

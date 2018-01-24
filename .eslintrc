@@ -17,6 +17,7 @@
     "sourceType": "module"
   },
   "rules": {
+    "consistent-return": 0,
     "new-cap": [
       1,
       {

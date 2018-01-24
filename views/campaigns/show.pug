@@ -103,9 +103,9 @@ block content
                       a.KBPost--action(href=kbPost.fixedURL rel='noopener noreferrer')=kbPost.fixedExt
 
                     if kbPost.type === 'link'
-                        a.KBPost--action.-mini(href=kbPost.fixedURL rel='noopener noreferrer')
-                          svg.-sw7.-stroke-dark(width='20' height='20')
-                            use(xlink:href='#svg-chain')
+                      a.KBPost--action.-mini(href=kbPost.fixedURL rel='noopener noreferrer')
+                        svg.-sw7.-stroke-dark(width='20' height='20')
+                          use(xlink:href='#svg-chain')
 
                     if kbPost.type === 'video' || kbPost.type === 'audio'
                       a.KBPost--action.-mini(href=kbPost.fixedURL rel='noopener noreferrer')
