@@ -128,7 +128,7 @@ Admin.UsersController = Class(Admin.Collectives, 'UsersController').inherits(
     },
     {
       before(req, res, next) {
-        Collective.query()
+        Collective.queryVisible()
           .where('id', req.params.collective_id)
           .then(([collective]) => {
             req.collective = collective;

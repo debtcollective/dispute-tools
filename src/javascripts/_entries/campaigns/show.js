@@ -1,11 +1,10 @@
-import WebFont from 'webfontloader';
 import shareUrl from 'share-url';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
 import Tabs from '../../components/Tabs';
 import FixedTabs from '../../components/campaigns/show/FixedTabs';
 import FeedController from '../../components/campaigns/show/FeedController';
-import JoinCampaingModal from '../../components/campaigns/show/JoinCampaingModal';
+import JoinCampaignModal from '../../components/campaigns/show/JoinCampaingModal';
 import CreateNewPost from '../../components/campaigns/show/create-new-post/Manager';
 import SidebarController from '../../components/campaigns/show/sidebar/SidebarController';
 import ReadMore from '../../components/ReadMore';
@@ -32,12 +31,6 @@ class ViewCampaignsShow extends NodeSupport {
         currentURL: config.currentURL,
       }),
     );
-
-    WebFont.load({
-      google: {
-        families: ['Space Mono'],
-      },
-    });
 
     this.appendChild(
       new Tabs({
@@ -78,7 +71,7 @@ class ViewCampaignsShow extends NodeSupport {
     );
     if (joinCampaingModal && joinCampaingTriggerElement) {
       this.appendChild(
-        new JoinCampaingModal({
+        new JoinCampaignModal({
           name: 'JoinCampaingModal',
           modal: joinCampaingModal,
           trigger: joinCampaingTriggerElement,

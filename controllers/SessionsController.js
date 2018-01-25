@@ -3,6 +3,7 @@
 const path = require('path');
 const Promise = require('bluebird');
 const uuid = require('uuid');
+const includes = require('lodash/includes');
 
 const passport = require(path.join(
   process.cwd(),
@@ -46,16 +47,25 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
             if (loginError) {
               return next(loginError);
             }
-
             req.flash('success', 'Welcome to The Debt Collective');
 
-            if (req.headers.referer) {
+            const referer = req.headers.referer;
+
+            // Ignore if referer is login page
+            if (
+              referer &&
+              !includes(referer, CONFIG.router.helpers.login.url())
+            ) {
               return res.redirect(req.headers.referer);
             }
 
-            return res.redirect(CONFIG.router.helpers.Collectives.url());
+            return res.redirect(CONFIG.router.helpers.dashboard.url());
           });
         })(req, res, next);
+      },
+
+      showEmailForm(req, res) {
+        res.render('sessions/showEmailForm');
       },
 
       destroy(req, res) {
@@ -64,10 +74,6 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
         req.flash('success', 'Signed off');
 
         res.redirect(CONFIG.router.helpers.root.url());
-      },
-
-      showEmailForm(req, res) {
-        res.render('sessions/showEmailForm');
       },
 
       sendResetEmail(req, res, next) {

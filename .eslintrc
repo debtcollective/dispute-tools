@@ -17,6 +17,7 @@
   },
   "rules": {
     "comma-dangle": [2, "always-multiline"],
+    "consistent-return": 0,
     "new-cap": [
       1,
       {
@@ -34,7 +35,6 @@
     "no-param-reassign": [0, {}],
     "no-underscore-dangle": [0, {}],
     "global-require": [0],
-    "arrow-body-style": [1, "as-needed"],
     "no-global-assign": [0],
     "no-shadow": [
       0,

@@ -11,7 +11,7 @@ block content
     .max-width-2.mx-auto
 
       h2.pt4 New Campaign
-      h4.pt1.pb3.-neutral-mid= collective.name
+      h4.pt1.pb3.-neutral-mid= (typeof collective === 'undefined' ? 'Agnostic' : collective.name)
 
       form(
         method='post'

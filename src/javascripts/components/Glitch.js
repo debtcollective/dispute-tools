@@ -48,6 +48,7 @@ export default class Glitch {
   }
 
   static get vertices() {
+    // prettier-ignore
     return new Float32Array([
       // X, Y U, V
       -1,

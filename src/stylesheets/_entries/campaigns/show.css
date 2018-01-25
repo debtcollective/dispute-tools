@@ -109,12 +109,20 @@
   &Comment {margin-bottom: 2px}
 }
 
+.Post_Header {
+  font-size: 14px;
+}
+
 .Post_Topic {
   position: absolute;
   top: 0;
   right: 0;
   padding: 0 .5em;
   color: #785616;
+}
+
+.Post_CampaignName {
+  font-size: 14px;
 }
 
 .PostPoll_result-bar {

@@ -1,4 +1,3 @@
-import WebFont from 'webfontloader';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
 
@@ -13,12 +12,6 @@ class ViewHomeAbout extends NodeSupport {
         currentURL: config.currentURL,
       }),
     );
-
-    WebFont.load({
-      google: {
-        families: ['Space Mono'],
-      },
-    });
   }
 }
 

@@ -31,6 +31,7 @@ const Collective = Class('Collective')
       acceptedMimeTypes: [/image/],
     }),
   ),
+  invisibleId: '00000000-0000-0000-0000-000000000000',
 
   prototype: {
     init(config) {
@@ -55,6 +56,12 @@ const Collective = Class('Collective')
 
       return this;
     },
+  },
+
+  queryVisible(...args) {
+    return Krypton.Model.query
+      .call(this, ...args)
+      .whereNot('id', this.invisibleId);
   },
 });
 

@@ -8,6 +8,11 @@ const routeMappings = RouteMappings()
     as: 'root',
   })
 
+  .get('/dashboard', {
+    to: 'Dashboard#index',
+    as: 'dashboard',
+  })
+
   .get('/terms', {
     to: 'Home#tos',
     as: 'tos',

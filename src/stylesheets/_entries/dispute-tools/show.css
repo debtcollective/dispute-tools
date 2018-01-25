@@ -8,3 +8,19 @@
   background-color: #fff;
   color: #000;
 }
+
+.Tool__Optionless {
+  &__Content {
+    & h3 {
+      margin-bottom: 15px;
+    }
+
+    & p {
+      margin-bottom: 10px;
+    }
+
+    & p:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

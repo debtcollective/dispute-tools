@@ -76,7 +76,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(
           res.locals._backUrl = req.query._backUrl;
         }
 
-        Collective.query()
+        Collective.queryVisible()
           .orderBy('created_at', 'ASC')
           .then(collectives => {
             req.collectives = collectives;
