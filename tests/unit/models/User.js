@@ -24,6 +24,7 @@ global.UserMailer = {
 };
 
 describe('User', () => {
+
   describe('Validations', () => {
     beforeEach(() => truncate(User));
 

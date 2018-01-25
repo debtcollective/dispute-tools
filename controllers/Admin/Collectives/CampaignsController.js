@@ -1,5 +1,5 @@
 /* globals neonode, CONFIG, Class, Admin, RestfulController, Collective, DisputeTool,
-NotFoundError, Campaign */
+NotFoundError, Campaign, logger */
 
 const fs = require('fs-extra');
 
@@ -28,6 +28,7 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
     {
       before(req, res, next) {
         res.locals.selectedCollective = req.params.collective_id;
+        logger.debug(`Identified selectedCollective (${res.locals.selectedCollective})`);
         next();
       },
       actions: ['new', 'edit', 'update'],
@@ -54,6 +55,8 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
 
   prototype: {
     _loadCampaign(req, res, next) {
+      logger.debug(`Loading campaign ${req.params.id}`);
+
       Admin.Collectives.Campaign.query()
         .where('id', req.params.id)
         .include('collective')
@@ -64,6 +67,7 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
 
           req.campaign = campaign[0];
           res.locals.campaign = campaign[0];
+          logger.debug(`Campaign ${req.params.id} loaded from db`);
           return next();
         })
         .catch(next);
@@ -79,6 +83,8 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
       campaign.collectiveId = req.params.collective_id;
       campaign.active = true;
 
+      logger.debug(`Creating new campaign ${campaign.title}`);
+
       campaign.save()
         .then(() => {
           if (req.files && req.files.image && req.files.image.length > 0) {
@@ -86,7 +92,7 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
 
             return campaign.attach('cover', image.path, {
               fileSize: image.size,
-              mimeType: image.mimetype || image.mimeType
+              mimeType: image.mimetype || image.mimeType,
             })
             .then(() => {
               fs.unlinkSync(image.path);
@@ -104,6 +110,7 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
           );
         })
         .catch((err) => {
+          logger.error(`Unable to create campaign ${campaign.title}: ${err} ${err.stack}`);
           res.status(400);
 
           res.locals.errors = err.errors || err;
@@ -113,10 +120,13 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
     },
 
     edit(req, res) {
+      logger.debug(`Someone is updating campaign ${req.campaign.title}`);
       res.render('admin/campaigns/edit');
     },
 
     update(req, res) {
+      logger.debug(`Updating campaign ${req.campaign.title}`);
+
       req.campaign.updateAttributes(req.body);
 
       const active = req.body.active === 'true';
@@ -132,7 +142,7 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
 
             return req.campaign.attach('cover', image.path, {
               fileSize: image.size,
-              mimeType: image.mimetype || image.mimeType
+              mimeType: image.mimetype || image.mimeType,
             })
             .then(() => {
               fs.unlinkSync(image.path);
@@ -161,8 +171,11 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
     activate(req, res, next) {
       req.campaign.active = true;
 
+      logger.debug('Activating campaign ${req.campaign.title}');
+
       req.campaign.save()
         .then(() => {
+          logger.debug(`Successfully activated campaign ${req.campaign.title}`);
           req.flash('success', 'The campaign is now active.');
           res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.campaign.id));
         })

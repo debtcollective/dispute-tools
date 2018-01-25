@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 
-exports.seed = (knex) => {
-  return knex('Collectives').del()
+exports.seed = (knex) =>
+  knex('Collectives').del()
     .then(() => {
       const collectives = [
         {
@@ -108,13 +108,17 @@ Debt has isolated us and made us feel alone and ashamed. We have come out of the
 
 We are committed to direct action, mutual aid and campaign support.`,
         },
+        {
+          id: '00000000-0000-0000-0000-000000000000',
+          name: 'Invisible Collective',
+          description: 'This collective is a placeholder for agnostic campaigns, and is invisible to users. All users are "members" of this invisible, non-collective collective.',
+        },
       ];
 
-      return knex('Collectives').insert(collectives.map((collective) => {
-        return Object.assign(collective, {
+      return knex('Collectives').insert(collectives.map((collective) =>
+        Object.assign(collective, {
           created_at: new Date(),
           updated_at: new Date(),
-        });
-      }));
+        })
+      ));
     });
-};

@@ -2,6 +2,7 @@
 User, Event, EventAssistant, KBTopic, KBPost */
 
 const path = require('path');
+
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 
 const marked = require('marked');
@@ -303,6 +304,10 @@ const CampaignsController = Class('CampaignsController').inherits(RestfulControl
 
     show(req, res) {
       res.render('campaigns/show');
+    },
+
+    index(req, res) {
+      res.render('campaigns/index');
     },
 
     join(req, res, next) {

@@ -31,7 +31,7 @@ Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(Res
     // Load Collectives
     {
       before(req, res, next) {
-        Admin.Collective.query()
+        Admin.Collective.queryVisible()
           .include('tools')
           .orderBy('created_at', 'DESC')
           .then((collectives) => {
@@ -63,7 +63,7 @@ Admin.CollectivesController = Class(Admin, 'CollectivesController').inherits(Res
   ],
   prototype: {
     _loadCollective(req, res, next) {
-      Collective.query()
+      Collective.queryVisible()
         .where({ id: req.params.id })
         .include('tools')
         .then(([collective]) => {

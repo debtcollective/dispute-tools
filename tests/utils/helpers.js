@@ -2,16 +2,8 @@
 const uuid = require('uuid');
 const _ = require('lodash');
 
-const url = CONFIG.env().siteURL;
-const urls = CONFIG.router.helpers;
-
-const getCSRF = function getCSRF(res) {
-  return unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
-};
-
 // create objects helper
 module.exports = {
-  getCSRF,
   createUser(params = {}) {
     _.defaults(params, {
       role: 'User',
@@ -29,8 +21,8 @@ module.exports = {
 
     const account = new Account(params.account);
 
-    return Collective.first()
-      .then(collective =>
+    return Collective.queryVisible()
+      .then(([collective]) =>
         User.transaction(trx =>
           user
             .transacting(trx)
@@ -98,25 +90,18 @@ module.exports = {
       return Event.transaction(trx => event.transacting(trx).save());
     });
   },
-  signInAs(user, agent) {
-    // assumes password '12345678'; returns csrf token
 
-    return agent
-      .get(`${url}`)
-      .set('Accept', 'text/html')
-      .then(getResult =>
-        agent
-          .post(`${url}${urls.login.url()}`)
-          .set('Accept', 'text/html')
-          .send({
-            email: user.email,
-            password: '12345678',
-            _csrf: getCSRF(getResult),
-          })
-      )
-      .then(postResult => getCSRF(postResult))
-      .catch(err => {
-        throw new Error(`Error while logging in: ${err.stack}`);
-      });
+  createCampaign(params = {}) {
+    _.defaults(params, {
+      collectiveId: Collective.invisibleId,
+      title: 'A Campaign',
+      active: true,
+      published: true
+    });
+
+    const campaign = new Campaign(params);
+
+    return Campaign.transaction(trx => campaign.transacting(trx).save())
+      .then(() => campaign);
   },
 };
