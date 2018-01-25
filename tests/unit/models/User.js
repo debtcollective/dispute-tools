@@ -14,7 +14,7 @@ const truncate = require(path.join(
   process.cwd(),
   'tests',
   'utils',
-  'truncate'
+  'truncate',
 ));
 
 global.UserMailer = {
@@ -24,7 +24,6 @@ global.UserMailer = {
 };
 
 describe('User', () => {
-
   describe('Validations', () => {
     beforeEach(() => truncate(User));
 
@@ -38,14 +37,14 @@ describe('User', () => {
               email: 'user@example.com',
               password: '12345678',
               role: 'User',
-            }).save()
+            }).save(),
           )
           .then(() =>
             new User({
               email: 'user@example.com',
               password: '12345678',
               role: 'User',
-            }).save()
+            }).save(),
           )
           .then(() => {
             expect.fail('should have rejected');
@@ -53,7 +52,7 @@ describe('User', () => {
           .catch(err => {
             expect(err.message).to.be.equal('1 invalid values');
             expect(err.errors.email.message).to.be.equal(
-              "The User's email already exists."
+              "The User's email already exists.",
             );
           }));
 
@@ -63,7 +62,7 @@ describe('User', () => {
             new User({
               password: '12345678',
               role: 'User',
-            }).save()
+            }).save(),
           )
           .then(() => {
             expect.fail('should have rejected');
@@ -71,7 +70,7 @@ describe('User', () => {
           .catch(err => {
             expect(err.message).to.be.equal('1 invalid values');
             expect(err.errors.email.message).to.be.equal(
-              'The email is required'
+              'The email is required',
             );
           }));
 
@@ -82,7 +81,7 @@ describe('User', () => {
               email: '1',
               password: '12345678',
               role: 'User',
-            }).save()
+            }).save(),
           )
           .then(() => {
             expect.fail('should have rejected');
@@ -90,7 +89,7 @@ describe('User', () => {
           .catch(err => {
             expect(err.message).to.be.equal('1 invalid values');
             expect(err.errors.email.message).to.be.equal(
-              'The email must be a valid email address'
+              'The email must be a valid email address',
             );
           }));
 
@@ -101,7 +100,7 @@ describe('User', () => {
               email: `user@${_.repeat('a', 255)}.com`,
               password: '12345678',
               role: 'User',
-            }).save()
+            }).save(),
           )
           .then(() => {
             expect.fail('should have rejected');
@@ -109,7 +108,7 @@ describe('User', () => {
           .catch(err => {
             expect(err.message).to.be.equal('1 invalid values');
             expect(err.errors.email.message).to.be.equal(
-              'The email must not exceed 255 characters long'
+              'The email must not exceed 255 characters long',
             );
           }));
     });
@@ -122,7 +121,7 @@ describe('User', () => {
               email: 'user@example.com',
               password: '1234567',
               role: 'User',
-            }).save()
+            }).save(),
           )
           .then(() => {
             expect.fail('should have rejected');
@@ -130,7 +129,7 @@ describe('User', () => {
           .catch(err => {
             expect(err.message).to.be.equal('1 invalid values');
             expect(err.errors.password.message).to.be.equal(
-              'The password must be at least 8 characters long'
+              'The password must be at least 8 characters long',
             );
           }));
     });
@@ -143,7 +142,7 @@ describe('User', () => {
               email: 'user@example.com',
               password: '12345678',
               role: 'Master',
-            }).save()
+            }).save(),
           )
           .then(() => {
             expect.fail('should have rejected');
@@ -151,7 +150,7 @@ describe('User', () => {
           .catch(err => {
             expect(err.message).to.be.equal('1 invalid values');
             expect(err.errors.role.message).to.be.equal(
-              "The User's role is invalid."
+              "The User's role is invalid.",
             );
           }));
     });
@@ -185,7 +184,7 @@ describe('User', () => {
           return createPost(user);
         })
         .then(() => createPost(user))
-        .then(() => createEvent(user))
+        .then(() => createEvent(user)),
     );
 
     after(() => truncate(User));
@@ -207,7 +206,7 @@ describe('User', () => {
           .then(result => {
             expect(result[0].posts.length).to.equal(2);
             return Promise.each(result[0].posts, post =>
-              expect(post).to.be.instanceof(Post)
+              expect(post).to.be.instanceof(Post),
             );
           }));
     });

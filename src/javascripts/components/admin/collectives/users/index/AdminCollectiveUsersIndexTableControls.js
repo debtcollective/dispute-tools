@@ -4,12 +4,22 @@ export default class AdminCollectiveUsersIndexTableControls extends Widget {
   constructor(config) {
     super(config);
 
-    this.campaignSelect = this.element.querySelector('[name="usersListValue[campaign]"]');
-    this.searchInput = this.element.querySelector('[name="usersListValue[search]"]');
-    this.orderSelect = this.element.querySelector('[name="usersListValue[order]"]');
+    this.campaignSelect = this.element.querySelector(
+      '[name="usersListValue[campaign]"]',
+    );
+    this.searchInput = this.element.querySelector(
+      '[name="usersListValue[search]"]',
+    );
+    this.orderSelect = this.element.querySelector(
+      '[name="usersListValue[order]"]',
+    );
 
-    this.applyFiltersBtn = this.element.querySelector('[name="usersListValue[applyFilters]"]');
-    this.resetFiltersBtn = this.element.querySelector('[name="usersListValue[resetFilters]"]');
+    this.applyFiltersBtn = this.element.querySelector(
+      '[name="usersListValue[applyFilters]"]',
+    );
+    this.resetFiltersBtn = this.element.querySelector(
+      '[name="usersListValue[resetFilters]"]',
+    );
 
     this._bindEvents();
   }

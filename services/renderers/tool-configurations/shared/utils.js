@@ -8,13 +8,9 @@ exports.formatDate = d => {
   return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
 };
 
-exports.normalizeSsn = (ssn) => {
+exports.normalizeSsn = ssn => {
   ssn = ssn.replace(/[-_ .]/g, '');
-  return [
-    ssn.substr(0, 3),
-    ssn.substr(3, 2),
-    ssn.substr(5, 4),
-  ];
+  return [ssn.substr(0, 3), ssn.substr(3, 2), ssn.substr(5, 4)];
 };
 
 exports.getAddress2 = ({
@@ -25,5 +21,5 @@ exports.getAddress2 = ({
   state = 'state',
   prefix = '',
 }) =>
-  form[prefix + address2] // default to the old form style
-  || `${form[prefix + city]}, ${form[prefix + state]}, ${form[prefix + zipCode]}`;
+  form[prefix + address2] || // default to the old form style
+  `${form[prefix + city]}, ${form[prefix + state]}, ${form[prefix + zipCode]}`;

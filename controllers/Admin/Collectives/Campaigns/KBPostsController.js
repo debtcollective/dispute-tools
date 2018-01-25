@@ -6,8 +6,10 @@ global.Admin = global.Admin || {};
 global.Admin.Collectives = global.Admin.Collectives || {};
 global.Admin.Collectives.Campaigns = global.Admin.Collectives.Campaigns || {};
 
-const KBPostsController = Class(Admin.Collectives.Campaigns, 'KBPostsController')
-.inherits(RestfulController)({
+const KBPostsController = Class(
+  Admin.Collectives.Campaigns,
+  'KBPostsController',
+).inherits(RestfulController)({
   beforeActions: [
     // campaign
     {
@@ -28,7 +30,7 @@ const KBPostsController = Class(Admin.Collectives.Campaigns, 'KBPostsController'
     {
       before(req, res, next) {
         KBTopic.query()
-          .then((result) => {
+          .then(result => {
             req.topic = result;
             res.locals.topics = result;
             next();
@@ -54,20 +56,26 @@ const KBPostsController = Class(Admin.Collectives.Campaigns, 'KBPostsController'
         campaignId: req.params.campaign_id,
       });
 
-      kbpost.save()
+      kbpost
+        .save()
         .then(() => {
-          if (req.files && req.files.resource && req.files.resource.length > 0) {
+          if (
+            req.files &&
+            req.files.resource &&
+            req.files.resource.length > 0
+          ) {
             const resource = req.files.resource[0];
 
-            return kbpost.attach('file', resource.path, {
-              fileSize: resource.size,
-              mimeType: image.mimetype || image.mimeType
-            })
-            .then(() => {
-              fs.unlinkSync(resource.path);
+            return kbpost
+              .attach('file', resource.path, {
+                fileSize: resource.size,
+                mimeType: resource.mimetype || resource.mimeType,
+              })
+              .then(() => {
+                fs.unlinkSync(resource.path);
 
-              return kbpost.save();
-            });
+                return kbpost.save();
+              });
           }
 
           return Promise.resolve();
@@ -75,10 +83,12 @@ const KBPostsController = Class(Admin.Collectives.Campaigns, 'KBPostsController'
         .then(() => {
           req.flash('success', 'The resource has been created.');
           res.redirect(
-            `${CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id)}#resources`
+            `${CONFIG.router.helpers.Campaigns.show.url(
+              req.params.campaign_id,
+            )}#resources`,
           );
         })
-        .catch((err) => {
+        .catch(err => {
           res.status(400);
 
           res.locals.errors = err.errors || err;
@@ -94,7 +104,10 @@ const KBPostsController = Class(Admin.Collectives.Campaigns, 'KBPostsController'
         .then(([found]) => found && found.destroy())
         .then(() => {
           req.flash('success', 'The resource was been deleted.');
-          res.redirect(req.body._backUrl || CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id));
+          res.redirect(
+            req.body._backUrl ||
+              CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id),
+          );
         });
     },
   },

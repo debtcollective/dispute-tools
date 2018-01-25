@@ -6,18 +6,18 @@ const gm = require('gm').subClass({
   imageMagick: process.env.GM === 'true' || false,
 });
 
-const printField = (template, { x, y, font = 'Arial', fontSize = 38 }, value) => {
+const printField = (
+  template,
+  { x, y, font = 'Arial', fontSize = 38 },
+  value,
+) => {
   template
     .font(font)
     .fontSize(fontSize)
     .drawText(x, y, value);
 };
 
-const render = (
-  { path: file, fields },
-  data,
-  documentName
-) => {
+const render = ({ path: file, fields }, data, documentName) => {
   const templateFile = gm(join(process.cwd(), file));
 
   mapValues(fields, (field, fieldName) => {

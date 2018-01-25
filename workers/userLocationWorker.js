@@ -82,7 +82,7 @@ const userLocationWorker = (job, done) => {
             .catch(accountErr => {
               done(accountErr, null);
             });
-        }
+        },
       );
     });
 };

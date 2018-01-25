@@ -48,6 +48,7 @@ export default class Glitch {
   }
 
   static get vertices() {
+    // prettier-ignore
     return new Float32Array([
       // X, Y U, V
       -1, -1, 0, 0,
@@ -63,7 +64,7 @@ export default class Glitch {
   static run(ts) {
     Glitch._raf = requestAnimationFrame(Glitch._draw);
 
-    const now = (ts || performance.now());
+    const now = ts || performance.now();
     for (let i = 0, len = Glitch.instances.length; i < len; i++) {
       Glitch.instances[i].draw(now);
     }
@@ -81,7 +82,9 @@ export default class Glitch {
     Object.assign(this, Glitch._defaults, config);
 
     this.canvas = this._createCanvas();
-    this.gl = this.canvas.getContext('webgl') || this.canvas.getContext('experimental-webgl');
+    this.gl =
+      this.canvas.getContext('webgl') ||
+      this.canvas.getContext('experimental-webgl');
 
     this._elapsed = 0;
 
@@ -122,19 +125,16 @@ export default class Glitch {
 
   draw(now) {
     this.now = now;
-    this.delta = (this.now - this.then);
+    this.delta = this.now - this.then;
 
     if (this.delta > this.delay) {
       this._elapsed++;
 
-      this._paint(
-        Math.random() * Math.PI,
-        Math.random() * 0.02
-      );
+      this._paint(Math.random() * Math.PI, Math.random() * 0.02);
 
       if (this._elapsed > this.times) {
         this._elapsed = 0;
-        this.then = this.now - (this.delta % this.delay);
+        this.then = this.now - this.delta % this.delay;
         this.delay = Math.random() * 5000;
         this.times = Math.random() * 30;
         this._paint();
@@ -174,14 +174,33 @@ export default class Glitch {
     this.texture = this.gl.createTexture();
     this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
     this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, true);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+    this.gl.texParameteri(
+      this.gl.TEXTURE_2D,
+      this.gl.TEXTURE_WRAP_S,
+      this.gl.CLAMP_TO_EDGE,
+    );
+    this.gl.texParameteri(
+      this.gl.TEXTURE_2D,
+      this.gl.TEXTURE_WRAP_T,
+      this.gl.CLAMP_TO_EDGE,
+    );
+    this.gl.texParameteri(
+      this.gl.TEXTURE_2D,
+      this.gl.TEXTURE_MIN_FILTER,
+      this.gl.LINEAR,
+    );
+    this.gl.texParameteri(
+      this.gl.TEXTURE_2D,
+      this.gl.TEXTURE_MAG_FILTER,
+      this.gl.LINEAR,
+    );
     this.gl.texImage2D(
       this.gl.TEXTURE_2D,
-      0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE,
-      texture
+      0,
+      this.gl.RGBA,
+      this.gl.RGBA,
+      this.gl.UNSIGNED_BYTE,
+      texture,
     );
     this.gl.bindTexture(this.gl.TEXTURE_2D, null);
 
@@ -207,10 +226,17 @@ export default class Glitch {
 
     const buffer = this.gl.createBuffer();
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buffer);
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, Glitch.vertices, this.gl.STATIC_DRAW);
+    this.gl.bufferData(
+      this.gl.ARRAY_BUFFER,
+      Glitch.vertices,
+      this.gl.STATIC_DRAW,
+    );
 
     this.program.position = this.gl.getAttribLocation(this.program, 'position');
-    this.program.vertTexCoord = this.gl.getAttribLocation(this.program, 'vertTexCoord');
+    this.program.vertTexCoord = this.gl.getAttribLocation(
+      this.program,
+      'vertTexCoord',
+    );
     this.program.amount = this.gl.getUniformLocation(this.program, 'amount');
     this.program.angle = this.gl.getUniformLocation(this.program, 'angle');
 
@@ -221,16 +247,18 @@ export default class Glitch {
     this.gl.vertexAttribPointer(
       this.program.position,
       2,
-      this.gl.FLOAT, this.gl.FALSE,
+      this.gl.FLOAT,
+      this.gl.FALSE,
       4 * BPE,
-      0
+      0,
     );
     this.gl.vertexAttribPointer(
       this.program.vertTexCoord,
       2,
-      this.gl.FLOAT, this.gl.FALSE,
+      this.gl.FLOAT,
+      this.gl.FALSE,
       4 * BPE,
-      2 * BPE
+      2 * BPE,
     );
   }
 
@@ -249,8 +277,9 @@ export default class Glitch {
 
 Glitch._supported = (function _supported() {
   const canvas = document.createElement('canvas');
-  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-  return (gl && gl instanceof WebGLRenderingContext);
-}());
+  const gl =
+    canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  return gl && gl instanceof WebGLRenderingContext;
+})();
 Glitch.instances = [];
 Glitch._draw = Glitch.run.bind(Glitch);

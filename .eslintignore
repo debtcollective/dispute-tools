@@ -1,0 +1,4 @@
+coverage/*
+public/build/*
+src/javascripts/_vendor/*
+lib/core/vendor/*

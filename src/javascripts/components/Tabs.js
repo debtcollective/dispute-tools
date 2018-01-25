@@ -5,9 +5,13 @@ export default class Tabs extends Widget {
     super(config);
 
     this.initialSearch = location.search;
-    this.panelPrefixRef = new RegExp(/^panel\-/);
-    this.tabs = Array.prototype.slice.call(this.element.querySelectorAll('[role="tab"]'));
-    this.panels = Array.prototype.slice.call(this.element.querySelectorAll('[role="tabpanel"]'));
+    this.panelPrefixRef = new RegExp(/^panel-/);
+    this.tabs = Array.prototype.slice.call(
+      this.element.querySelectorAll('[role="tab"]'),
+    );
+    this.panels = Array.prototype.slice.call(
+      this.element.querySelectorAll('[role="tabpanel"]'),
+    );
     this._current = '';
 
     this._bindEvents();
@@ -15,7 +19,7 @@ export default class Tabs extends Widget {
 
   run() {
     if (this.updateHash) {
-      const ids = this.panels.map(p => { return p.id; });
+      const ids = this.panels.map(p => p.id);
       const hash = `panel-${window.location.hash.replace('#', '')}`;
 
       if (ids.indexOf(hash) >= 0) {
@@ -65,13 +69,19 @@ export default class Tabs extends Widget {
           let q = '';
 
           if (typeof this.tabs[i].dataset.keepParams !== 'undefined') {
-            this.tabs[i].dataset._search = this.tabs[i].dataset._search || this.initialSearch;
+            this.tabs[i].dataset._search =
+              this.tabs[i].dataset._search || this.initialSearch;
           }
 
-          q = this.tabs[i].dataset.keepParams === 'undefined'
-            ? '' : (this.tabs[i].dataset._search || '');
+          q =
+            this.tabs[i].dataset.keepParams === 'undefined'
+              ? ''
+              : this.tabs[i].dataset._search || '';
 
-          const url = `${location.pathname}${q}#${id.replace(this.panelPrefixRef, '')}`;
+          const url = `${location.pathname}${q}#${id.replace(
+            this.panelPrefixRef,
+            '',
+          )}`;
 
           history.replaceState({ path: url }, '', url);
         }

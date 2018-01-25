@@ -13,9 +13,9 @@ export default class Post extends Widget {
           data: this.data,
           element: this.element,
           toogleButtonCotainer: this.element.querySelector(
-            '[data-campaing-post-container]'
+            '[data-campaing-post-container]',
           ),
-        })
+        }),
       );
     }
   }
@@ -40,9 +40,7 @@ export default class Post extends Widget {
   }
 
   getCaptionHTMLString(data) {
-    const {
-      campaign,
-    } = data;
+    const { campaign } = data;
     let result = `
     <form action="${this.deletePostActionUrl}" method="post"
       onsubmit="return confirm('Are you sure you want to delete this post?')"
@@ -52,9 +50,7 @@ export default class Post extends Widget {
       <div class='Post_Header'>
         <p class='-fw-500'>
           ${data.user.account.fullname}
-          <time datetime='${
-            data.createdAt
-          }' class='-fw-400'>
+          <time datetime='${data.createdAt}' class='-fw-400'>
           · ${moment(data.updatedAt).fromNow()}
           </time>
       `;
@@ -70,7 +66,6 @@ export default class Post extends Widget {
         </span>
       `;
     }
-
 
     if (this.userIsPostAuthor || this.userIsCollectiveManager) {
       result += `

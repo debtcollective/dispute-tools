@@ -16,7 +16,7 @@ describe('BaseMailer', () => {
     },
   };
 
-  beforeEach((done) => {
+  beforeEach(done => {
     Class('FooMailer').inherits(BaseMailer)({
       sendBarBaz(...args) {
         return this._send('sendBarBaz', ...args);
@@ -28,38 +28,35 @@ describe('BaseMailer', () => {
     done();
   });
 
-  it('Should set the transport static property', (done) => {
+  it('Should set the transport static property', done => {
     FooMailer.transport(transport);
 
     expect(FooMailer.transport()).to.be.equal(transport);
     done();
   });
 
-  it('Should get the transport from an ancestor', (done) => {
+  it('Should get the transport from an ancestor', done => {
     BaseMailer.transport(transport);
 
     expect(FooMailer.transport()).to.be.equal(transport);
     done();
   });
 
-  it('Should fail if there is no transport set', (done) => {
+  it('Should fail if there is no transport set', done => {
     expect(() => {
-      FooMailer.transport()
-        .to.throw('FooMailer can\'t find a nodemailer transport');
+      FooMailer.transport().to.throw(
+        "FooMailer can't find a nodemailer transport",
+      );
     });
     done();
   });
 
-  it('Should set a custom method template', (done) => {
+  it('Should set a custom method template', done => {
     FooMailer.setMethodTemplate('sendBarBaz', 'test');
 
-    expect(FooMailer._templates.sendBarBaz.template).to.be.equal(path.join(
-      process.cwd(),
-      'views',
-      'mailers',
-      'FooMailer',
-      'test.pug'
-    ));
+    expect(FooMailer._templates.sendBarBaz.template).to.be.equal(
+      path.join(process.cwd(), 'views', 'mailers', 'FooMailer', 'test.pug'),
+    );
     done();
   });
 
@@ -70,7 +67,7 @@ describe('BaseMailer', () => {
       user: {
         email: 'user@example.com',
       },
-    }).then((response) => {
+    }).then(response => {
       expect(response).to.be.equal(mailResponse);
     });
   });

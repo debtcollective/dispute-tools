@@ -10,25 +10,34 @@ export default class UsersEditForm extends Widget {
       state: ['required'],
       private: ['required'],
       disputesPrivate: ['required'],
-      zip: ['required', {
-        rule(val) {
-          if (/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(val) === false) {
-            throw new Error('The zip code is invalid.');
-          }
+      zip: [
+        'required',
+        {
+          rule(val) {
+            if (/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(val) === false) {
+              throw new Error('The zip code is invalid.');
+            }
+          },
         },
-      }],
-      'twitter-url': [{
-        rule: 'url',
-        message: 'The twitter address is not valid',
-      }],
-      'facebook-url': [{
-        rule: 'url',
-        message: 'The facebook address is not valid',
-      }],
-      'website-url': [{
-        rule: 'url',
-        message: 'The website address is not valid',
-      }],
+      ],
+      'twitter-url': [
+        {
+          rule: 'url',
+          message: 'The twitter address is not valid',
+        },
+      ],
+      'facebook-url': [
+        {
+          rule: 'url',
+          message: 'The facebook address is not valid',
+        },
+      ],
+      'website-url': [
+        {
+          rule: 'url',
+          message: 'The website address is not valid',
+        },
+      ],
     };
   }
 
@@ -46,10 +55,12 @@ export default class UsersEditForm extends Widget {
     });
     this._checkit = new Checkit(UsersEditForm.constraints);
 
-    this.appendChild(new Button({
-      name: 'Button',
-      element: this.element.querySelector('button[type="submit"]'),
-    }));
+    this.appendChild(
+      new Button({
+        name: 'Button',
+        element: this.element.querySelector('button[type="submit"]'),
+      }),
+    );
 
     this._bindEvents();
   }
@@ -86,7 +97,7 @@ export default class UsersEditForm extends Widget {
     if (input.files && input.files[0] && input.files[0].type.match('image.*')) {
       const reader = new FileReader();
 
-      reader.onload = (e) => {
+      reader.onload = e => {
         this.image.style.backgroundImage = `url(${e.target.result})`;
         reader.onload = null;
       };

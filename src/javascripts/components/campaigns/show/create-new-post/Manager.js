@@ -14,26 +14,48 @@ export default class CreateNewPost extends Widget {
 
     this.type = 'Text';
 
-    this._closeElement = this.element.querySelector('[data-create-new-post-close]');
-    this._backdropdElement = this.element.querySelector('.CreateNewPost_Backdrop');
+    this._closeElement = this.element.querySelector(
+      '[data-create-new-post-close]',
+    );
+    this._backdropdElement = this.element.querySelector(
+      '.CreateNewPost_Backdrop',
+    );
     this._inputElement = this.element.querySelector('.CreateNewPost_Input');
-    this._topicElement = this.element.querySelector('[create-new-post-topic-select]');
-    this._imageInputElement = this.element.querySelector('[data-create-new-post-image-input]');
-    this._imagePreviewElement = this.element.querySelector('[data-create-new-post-image-preview]');
-    this._postTypeIcons = this.element.querySelectorAll('[data-post-type-icon]');
+    this._topicElement = this.element.querySelector(
+      '[create-new-post-topic-select]',
+    );
+    this._imageInputElement = this.element.querySelector(
+      '[data-create-new-post-image-input]',
+    );
+    this._imagePreviewElement = this.element.querySelector(
+      '[data-create-new-post-image-preview]',
+    );
+    this._postTypeIcons = this.element.querySelectorAll(
+      '[data-post-type-icon]',
+    );
     this._postTypeIcons = Array.prototype.slice.call(this._postTypeIcons);
-    this._postTypeContents = this.element.querySelectorAll('[data-post-type-content]');
+    this._postTypeContents = this.element.querySelectorAll(
+      '[data-post-type-content]',
+    );
     this._postTypeContents = Array.prototype.slice.call(this._postTypeContents);
-    this._publicElement = this.element.querySelector('[data-create-new-post-public-checkbox]');
-    this.appendChild(new Button({
-      name: 'SubmitButton',
-      element: this.element.querySelector('button[type="submit"]'),
-    }));
+    this._publicElement = this.element.querySelector(
+      '[data-create-new-post-public-checkbox]',
+    );
+    this.appendChild(
+      new Button({
+        name: 'SubmitButton',
+        element: this.element.querySelector('button[type="submit"]'),
+      }),
+    );
 
-    this.appendChild(new Poll({
-      name: 'Poll',
-      element: this.element.querySelector('[data-post-type-content][data-type="Poll"]'),
-    }));
+    this.appendChild(
+      new Poll({
+        name: 'Poll',
+        element: this.element.querySelector(
+          '[data-post-type-content][data-type="Poll"]',
+        ),
+      }),
+    );
 
     this.setPostType(this.type)._bindEvents();
   }
@@ -83,7 +105,10 @@ export default class CreateNewPost extends Widget {
     });
 
     this._handleImageInputChangeRef = this._handleImageInputChange.bind(this);
-    this._imageInputElement.addEventListener('change', this._handleImageInputChangeRef);
+    this._imageInputElement.addEventListener(
+      'change',
+      this._handleImageInputChangeRef,
+    );
 
     this._handleSubmitRef = this._handleSubmit.bind(this);
     this.SubmitButton.element.addEventListener('click', this._handleSubmitRef);
@@ -102,11 +127,10 @@ export default class CreateNewPost extends Widget {
   _handleCloseClick(ev) {
     ev.stopPropagation();
 
-    const dirty = (
+    const dirty =
       this._inputElement.value.length ||
       (this.type === 'Image' && this._imageInputElement.files.length) ||
-      (this.type === 'Poll')
-    );
+      this.type === 'Poll';
 
     if (dirty) {
       if (confirm('If you leave now, your post won’t be saved.')) {
@@ -133,7 +157,7 @@ export default class CreateNewPost extends Widget {
     if (input.files && input.files[0]) {
       const reader = new FileReader();
 
-      reader.onload = (e) => {
+      reader.onload = e => {
         this._imagePreviewElement.src = e.target.result;
       };
 
@@ -148,10 +172,14 @@ export default class CreateNewPost extends Widget {
 
     const valid = (() => {
       switch (this.type) {
-        case 'Text': return this._inputElement.value.length;
-        case 'Image': return this._imageInputElement.files.length;
-        case 'Poll': return this.Poll.getOptionValues().length;
-        default: return false;
+        case 'Text':
+          return this._inputElement.value.length;
+        case 'Image':
+          return this._imageInputElement.files.length;
+        case 'Poll':
+          return this.Poll.getOptionValues().length;
+        default:
+          return false;
       }
     })();
 
@@ -185,12 +213,15 @@ export default class CreateNewPost extends Widget {
         throw new Error('Invalid post type');
     }
 
-    return createCampaignPost({
-      campaignId: this.campaignId,
-      body: data,
-    }, () => {
-      window.location.reload();
-    });
+    return createCampaignPost(
+      {
+        campaignId: this.campaignId,
+        body: data,
+      },
+      () => {
+        window.location.reload();
+      },
+    );
   }
 
   _displayImage() {

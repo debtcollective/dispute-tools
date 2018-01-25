@@ -1,8 +1,8 @@
-
-exports.up = (knex) => {
-  return knex.schema.createTable('DisputeRenderers', (t) => {
+exports.up = knex =>
+  knex.schema.createTable('DisputeRenderers', t => {
     t.uuid('id').primary();
-    t.uuid('dispute_id')
+    t
+      .uuid('dispute_id')
       .notNullable()
       .references('id')
       .inTable('Disputes')
@@ -12,8 +12,5 @@ exports.up = (knex) => {
     t.jsonb('zip_meta').defaultTo('{}');
     t.timestamps();
   });
-};
 
-exports.down = (knex) => {
-  return knex.schema.dropTable('DisputeRenderers');
-};
+exports.down = knex => knex.schema.dropTable('DisputeRenderers');

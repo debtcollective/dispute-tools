@@ -1,8 +1,8 @@
-
-exports.up = (knex) => {
-  return knex.schema.createTable('KBPosts', (t) => {
+exports.up = knex =>
+  knex.schema.createTable('KBPosts', t => {
     t.uuid('id').primary();
-    t.uuid('collective_id')
+    t
+      .uuid('collective_id')
       .notNullable()
       .references('id')
       .inTable('Collectives')
@@ -13,8 +13,5 @@ exports.up = (knex) => {
 
     t.index('collective_id');
   });
-};
 
-exports.down = (knex) => {
-  return knex.schema.dropTable('KBPosts');
-};
+exports.down = knex => knex.schema.dropTable('KBPosts');

@@ -12,7 +12,7 @@ const truncate = require(path.join(
   process.cwd(),
   'tests',
   'utils',
-  'truncate'
+  'truncate',
 ));
 const url = CONFIG.env().siteURL;
 const urls = CONFIG.router.helpers;
@@ -53,7 +53,7 @@ describe('SessionsController', () => {
       .set('Accept', 'text/html')
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
 
         expect(err).to.be.equal(null);
@@ -86,7 +86,7 @@ describe('SessionsController', () => {
       .set('Accept', 'text/html')
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
 
         _agent
@@ -111,7 +111,7 @@ describe('SessionsController', () => {
       .set('Accept', 'text/html')
       .end((err, res) => {
         _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
         );
 
         agent
@@ -178,13 +178,13 @@ describe('SessionsController', () => {
         agent
           .get(
             `${url}${urls.resetPasswordWithToken.url(
-              encodeURIComponent(result[0].resetPasswordToken)
-            )}`
+              encodeURIComponent(result[0].resetPasswordToken),
+            )}`,
           )
           .set('Accept', 'text/html')
           .end((err, res) => {
             _csrf = unescape(
-              /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+              /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
             );
             expect(err).to.be.equal(null);
             expect(res.status).to.be.equal(200);
@@ -202,8 +202,8 @@ describe('SessionsController', () => {
         agent
           .put(
             `${url}${urls.resetPasswordWithToken.url(
-              encodeURIComponent(result[0].resetPasswordToken)
-            )}`
+              encodeURIComponent(result[0].resetPasswordToken),
+            )}`,
           )
           .send({
             password: '87654321',
@@ -224,7 +224,7 @@ describe('SessionsController', () => {
                     expect(err).to.be.equal(null);
                     expect(valid).to.be.equal(true);
                     done();
-                  }
+                  },
                 );
               });
           });
@@ -240,8 +240,8 @@ describe('SessionsController', () => {
         agent
           .put(
             `${url}${urls.resetPasswordWithToken.url(
-              encodeURIComponent(result[0].resetPasswordToken)
-            )}`
+              encodeURIComponent(result[0].resetPasswordToken),
+            )}`,
           )
           .send({
             password: '87654321',
@@ -266,8 +266,8 @@ describe('SessionsController', () => {
         agent
           .put(
             `${url}${urls.resetPasswordWithToken.url(
-              encodeURIComponent(result[0].resetPasswordToken)
-            )}`
+              encodeURIComponent(result[0].resetPasswordToken),
+            )}`,
           )
           .send({
             password: '8765432',

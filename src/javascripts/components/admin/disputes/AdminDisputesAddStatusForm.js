@@ -33,7 +33,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
       new Button({
         name: 'ButtonSubmit',
         element: this.element.querySelector('button[type="submit"]'),
-      })
+      }),
     );
 
     this.formElement = this.element.getElementsByTagName('form')[0];
@@ -43,7 +43,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
     this.disputeNameElement = this.element.querySelector('[data-dispute-name]');
     this.userAvatarElement = this.element.querySelector('[data-user-avatar]');
     this.statusesWrapper = this.element.querySelector(
-      '[data-statuses-wrapper]'
+      '[data-statuses-wrapper]',
     );
 
     this._bindEvents();
@@ -136,7 +136,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
 
     const lastStatus = dispute.statuses[0].status;
     const selectedStatus = this.statusOptions.filter(
-      option => option.value === lastStatus
+      option => option.value === lastStatus,
     );
     const fragmentStatus = document.createDocumentFragment();
     let disputeToolName = dispute.disputeTool.name;
@@ -151,7 +151,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
 
     this.formElement.action = this.constructor.updateUrlString.replace(
       '${id}',
-      dispute.id
+      dispute.id,
     );
     this.userNameElement.textContent = dispute.user.account.fullname;
     this.disputeNameElement.textContent = disputeToolName;
@@ -165,7 +165,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
       fragmentStatus.appendChild(
         new DisputeStatusItem({
           data: { dispute, status },
-        }).element
+        }).element,
       );
     });
 

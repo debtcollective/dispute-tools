@@ -23,7 +23,7 @@ EventAssistant.relations = {
     trough: {
       tableName: 'EventAssistants',
       ownerCol: 'event_id',
-      relatedCol: 'user_id'
-    }
+      relatedCol: 'user_id',
+    },
   },
 };

@@ -13,7 +13,9 @@ export default class AdminCampaignsForm extends Widget {
     super(config);
 
     this.fileInput = this.element.querySelector('[type="file"]');
-    this.image = this.element.querySelector('.EditCampaign__image-wrapper > img');
+    this.image = this.element.querySelector(
+      '.EditCampaign__image-wrapper > img',
+    );
 
     this.ui = {};
     Object.keys(this.constructor.constraints).forEach(key => {
@@ -22,10 +24,12 @@ export default class AdminCampaignsForm extends Widget {
     });
     this._checkit = new Checkit(this.constructor.constraints);
 
-    this.appendChild(new Button({
-      name: 'Button',
-      element: this.element.querySelector('button[type="submit"]'),
-    }));
+    this.appendChild(
+      new Button({
+        name: 'Button',
+        element: this.element.querySelector('button[type="submit"]'),
+      }),
+    );
 
     this._bindEvents();
   }
@@ -61,7 +65,7 @@ export default class AdminCampaignsForm extends Widget {
     if (input.files && input.files[0] && input.files[0].type.match('image.*')) {
       const reader = new FileReader();
 
-      reader.onload = (e) => {
+      reader.onload = e => {
         this.image.src = e.target.result;
         reader.onload = null;
       };

@@ -1,1 +1,1 @@
-module.exports =  require('body-parser').json();
+module.exports = require('body-parser').json();

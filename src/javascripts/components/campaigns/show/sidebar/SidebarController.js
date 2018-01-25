@@ -9,21 +9,23 @@ export default class SidebarController extends Widget {
     this.index = 0;
 
     this.carouselItems = Array.prototype.slice.call(
-      this.element.querySelectorAll('.CampaignSidebarCarouselItem')
+      this.element.querySelectorAll('.CampaignSidebarCarouselItem'),
     );
 
     this.prevButtons = Array.prototype.slice.call(
-      this.element.querySelectorAll('[data-sidebar-prev-btn]')
+      this.element.querySelectorAll('[data-sidebar-prev-btn]'),
     );
     this.nextButtons = Array.prototype.slice.call(
-      this.element.querySelectorAll('[data-sidebar-next-btn]')
+      this.element.querySelectorAll('[data-sidebar-next-btn]'),
     );
 
-    this.appendChild(new EventList({
-      name: 'EventList',
-      element: this.element.querySelector('.CampaignEventList'),
-      events: this.nextEvents,
-    }));
+    this.appendChild(
+      new EventList({
+        name: 'EventList',
+        element: this.element.querySelector('.CampaignEventList'),
+        events: this.nextEvents,
+      }),
+    );
 
     this._bindEvents();
   }
@@ -32,10 +34,16 @@ export default class SidebarController extends Widget {
     this._handlePrevBtnClick = this._handlePrevBtnClick.bind(this);
     this._handleNextBtnClick = this._handleNextBtnClick.bind(this);
 
-    this.prevButtons.forEach(btn => btn.addEventListener('click', this._handlePrevBtnClick));
-    this.nextButtons.forEach(btn => btn.addEventListener('click', this._handleNextBtnClick));
+    this.prevButtons.forEach(btn =>
+      btn.addEventListener('click', this._handlePrevBtnClick),
+    );
+    this.nextButtons.forEach(btn =>
+      btn.addEventListener('click', this._handleNextBtnClick),
+    );
 
-    this._handleEventListClickHandler = this._handleEventListClickHandler.bind(this);
+    this._handleEventListClickHandler = this._handleEventListClickHandler.bind(
+      this,
+    );
     this.EventList.bind('clicked', this._handleEventListClickHandler);
 
     return this;
@@ -46,7 +54,8 @@ export default class SidebarController extends Widget {
     this.index--;
     this.carouselItems[this.index].setAttribute('aria-hidden', false);
 
-    this.element.style.transform = `translate3d(-${this.index * (100 / 3)}%, 0, 0)`;
+    this.element.style.transform = `translate3d(-${this.index *
+      (100 / 3)}%, 0, 0)`;
   }
 
   _handleNextBtnClick() {
@@ -54,7 +63,8 @@ export default class SidebarController extends Widget {
     this.index++;
     this.carouselItems[this.index].setAttribute('aria-hidden', false);
 
-    this.element.style.transform = `translate3d(-${this.index * (100 / 3)}%, 0, 0)`;
+    this.element.style.transform = `translate3d(-${this.index *
+      (100 / 3)}%, 0, 0)`;
   }
 
   _handleEventListClickHandler(ev) {
@@ -75,10 +85,12 @@ export default class SidebarController extends Widget {
       }
     }
 
-    this.EventList.appendChild(new Event({
-      name: 'Event',
-      data: ev.data,
-      googleMapsKey: this.googleMapsKey,
-    })).render(this.element.querySelector('[data-component-event]'));
+    this.EventList.appendChild(
+      new Event({
+        name: 'Event',
+        data: ev.data,
+        googleMapsKey: this.googleMapsKey,
+      }),
+    ).render(this.element.querySelector('[data-component-event]'));
   }
 }

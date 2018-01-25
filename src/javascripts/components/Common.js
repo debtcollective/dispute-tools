@@ -11,22 +11,26 @@ export default class Common extends Widget {
 
     currentUser.set(config.currentUser);
 
-    this.appendChild(new Header({
-      name: 'Header',
-      currentUser: this.currentUser,
-      currentURL: this.currentURL,
-      element: document.querySelector('[data-component-header]'),
-      isAdmin: this.isAdmin,
-    }));
+    this.appendChild(
+      new Header({
+        name: 'Header',
+        currentUser: this.currentUser,
+        currentURL: this.currentURL,
+        element: document.querySelector('[data-component-header]'),
+        isAdmin: this.isAdmin,
+      }),
+    );
 
     const alertElements = [].slice.call(document.querySelectorAll('.Alert'));
 
     if (alertElements.length) {
       alertElements.forEach((el, index) => {
-        this.appendChild(new Alert({
-          name: `Alert__${index}`,
-          element: el,
-        }));
+        this.appendChild(
+          new Alert({
+            name: `Alert__${index}`,
+            element: el,
+          }),
+        );
       });
     }
 
@@ -37,23 +41,32 @@ export default class Common extends Widget {
       return;
     }
 
-    this.appendChild(new Modal({
-      name: 'donationFlowModal',
-      element: donationFlowModal,
-    })).appendChild(new DonationFlow({
-      name: 'donationFlow',
-      element: donationFlowModal.querySelector('[data-component-donationform]'),
-    }));
+    this.appendChild(
+      new Modal({
+        name: 'donationFlowModal',
+        element: donationFlowModal,
+      }),
+    ).appendChild(
+      new DonationFlow({
+        name: 'donationFlow',
+        element: donationFlowModal.querySelector(
+          '[data-component-donationform]',
+        ),
+      }),
+    );
 
     this.donationFlowModal.bind('activate', () => {
       this.donationFlowModal.donationFlow.reset();
     });
 
     // Activate DonationFlow triggers
-    Array.prototype.slice.call(document.querySelectorAll('.js-donate'))
-    .forEach(trigger => trigger.addEventListener('click', (ev) => {
-      ev.preventDefault();
-      this.donationFlowModal.activate();
-    }));
+    Array.prototype.slice
+      .call(document.querySelectorAll('.js-donate'))
+      .forEach(trigger =>
+        trigger.addEventListener('click', ev => {
+          ev.preventDefault();
+          this.donationFlowModal.activate();
+        }),
+      );
   }
 }

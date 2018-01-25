@@ -15,7 +15,9 @@ export default class FixedTabs extends Widget {
     this.stickyElementHeight = 0;
     this.stickyElementWidth = 0;
 
-    this._setup()._bindEvents()._setFixedState();
+    this._setup()
+      ._bindEvents()
+      ._setFixedState();
   }
 
   /**
@@ -44,7 +46,9 @@ export default class FixedTabs extends Widget {
   }
 
   _resizeHandler() {
-    this._setDefaultState()._setup()._setFixedState();
+    this._setDefaultState()
+      ._setup()
+      ._setFixedState();
   }
 
   /**

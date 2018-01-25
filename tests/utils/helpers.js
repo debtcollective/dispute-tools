@@ -31,7 +31,7 @@ module.exports = {
               user
                 .transacting(trx)
                 .activate()
-                .save()
+                .save(),
             )
             .then(() => {
               account.userId = user.id;
@@ -41,13 +41,13 @@ module.exports = {
               User.knex()
                 .table('UsersCollectives')
                 .transacting(trx)
-                .insert([{ user_id: user.id, collective_id: collective.id }])
+                .insert([{ user_id: user.id, collective_id: collective.id }]),
             )
             .then(() => {
               collective.userCount++;
               return collective.transacting(trx).save();
-            })
-        )
+            }),
+        ),
       )
       .then(() => {
         user.account = account;
@@ -61,7 +61,7 @@ module.exports = {
           user,
           option: tool.data.options.A ? 'A' : 'none',
         })
-        .then(disputeId => Dispute.query().where('id', disputeId))
+        .then(disputeId => Dispute.query().where('id', disputeId)),
     );
   },
   createPost(user) {
@@ -72,7 +72,7 @@ module.exports = {
         userId: user.id,
       });
       return Post.transaction(trx => post.transacting(trx).save()).then(
-        () => post
+        () => post,
       );
     });
   },
@@ -96,12 +96,13 @@ module.exports = {
       collectiveId: Collective.invisibleId,
       title: 'A Campaign',
       active: true,
-      published: true
+      published: true,
     });
 
     const campaign = new Campaign(params);
 
-    return Campaign.transaction(trx => campaign.transacting(trx).save())
-      .then(() => campaign);
+    return Campaign.transaction(trx => campaign.transacting(trx).save()).then(
+      () => campaign,
+    );
   },
 };

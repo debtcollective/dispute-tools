@@ -1,8 +1,12 @@
 /* globals Post, Dispute, Account, Collective */
 const sa = require('superagent');
 const { expect } = require('chai');
-const { createUser, createEvent, createPost,
-        createDispute } = require('../../../utils/helpers');
+const {
+  createUser,
+  createEvent,
+  createPost,
+  createDispute,
+} = require('../../../utils/helpers');
 const { signInAs } = require('../../../utils/csrf');
 const truncate = require('../../../utils/truncate');
 const config = require('../../../../config/config');
@@ -33,7 +37,7 @@ describe('Admin/UsersController', () => {
       .then(admin => signInAs(admin, agent))
       .then(csrf => {
         _csrf = csrf;
-      })
+      }),
   );
 
   after(() => {
@@ -59,7 +63,7 @@ describe('Admin/UsersController', () => {
       beforeEach(() =>
         createUser({ role: 'User' }).then(created => {
           immortalUser = created;
-        })
+        }),
       );
 
       it('if the user owns an event', () =>
@@ -78,7 +82,7 @@ describe('Admin/UsersController', () => {
             .then(() => User.query().where('id', admin.id))
             .then(([user]) => {
               expect(user).to.be.defined;
-            })
+            }),
         ));
     });
 
@@ -104,16 +108,18 @@ describe('Admin/UsersController', () => {
           .then(() =>
             User.query()
               .where('id', mortalUser.id)
-              .include('debtTypes')
+              .include('debtTypes'),
           )
           .then(([user]) => {
             collectives = [];
             collectives.concat(user.debtTypes[0]);
           })
           .then(() => Collective.query().where('id', Collective.invisibleId))
-          .then(([invisibleCollective]) => collectives.concat(invisibleCollective))
+          .then(([invisibleCollective]) =>
+            collectives.concat(invisibleCollective),
+          )
           // delete the user
-          .then(() => deletionRequest(mortalUser))
+          .then(() => deletionRequest(mortalUser)),
       );
 
       after(() => truncate(Post));
@@ -148,19 +154,23 @@ describe('Admin/UsersController', () => {
           .then(posts => {
             expect(posts.length).to.be.equal(1);
             return Promise.all(
-              posts.map(post => expect(post.userId).to.be.null)
+              posts.map(post => expect(post.userId).to.be.null),
             );
           }));
 
       it('decreases the collective member count, including the invisible collective', () =>
-        Promise.all(collectives.map(collective =>
-          Collective.query()
-            .where('id', Collective.invisibleId)
-            .include('userCount')
-            .then(([updated]) =>
-              expect(updated[0].userCount).to.be.equal(collective.userCount - 1)
-          )))
-        );
+        Promise.all(
+          collectives.map(collective =>
+            Collective.query()
+              .where('id', Collective.invisibleId)
+              .include('userCount')
+              .then(([updated]) =>
+                expect(updated[0].userCount).to.be.equal(
+                  collective.userCount - 1,
+                ),
+              ),
+          ),
+        ));
     });
   });
 });

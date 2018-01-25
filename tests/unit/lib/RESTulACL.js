@@ -4,7 +4,12 @@ const expect = require('chai').expect;
 const Promise = require('bluebird');
 const path = require('path');
 
-const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
+const truncate = require(path.join(
+  process.cwd(),
+  'tests',
+  'utils',
+  'truncate',
+));
 
 describe('RESTfulACL', () => {
   let usersResult;
@@ -20,14 +25,9 @@ describe('RESTfulACL', () => {
       role: 'Admin',
     };
 
-    require(path.join(
-        process.cwd(),
-        'lib',
-        'ACL',
-        'restify_acl'
-      ))(req);
+    require(path.join(process.cwd(), 'lib', 'ACL', 'restify_acl'))(req);
 
-      // Mock ACL object;
+    // Mock ACL object;
     const getHandler = ACL.getHandler;
 
     global.ACL = {
@@ -35,18 +35,18 @@ describe('RESTfulACL', () => {
       middlewares: {},
       resources: {
         Users: {
-          Visitor: [
-            [false],
-            ['activation', true],
-          ],
+          Visitor: [[false], ['activation', true]],
           User: [
-            ['show', (request) => {
-              if (request.params.id === request.user.id) {
-                return true;
-              }
+            [
+              'show',
+              request => {
+                if (request.params.id === request.user.id) {
+                  return true;
+                }
 
-              return false;
-            }],
+                return false;
+              },
+            ],
           ],
           Admin: [true],
         },
@@ -72,23 +72,21 @@ describe('RESTfulACL', () => {
       }).save(),
     ];
 
-    return Promise.all(users).then((ids) => {
-      ids = ids.map((id) => {
-        return id[0];
-      });
+    return Promise.all(users).then(ids => {
+      ids = ids.map(id => id[0]);
 
-      return User.query().whereIn('id', ids).then((result) => {
-        usersResult = result;
-      });
+      return User.query()
+        .whereIn('id', ids)
+        .then(result => {
+          usersResult = result;
+        });
     });
   });
 
-  afterEach(() => {
-    return truncate(User);
-  });
+  afterEach(() => truncate(User));
 
   it('Should load all users if Admin', () => {
-    const admin = usersResult.filter((user) => {
+    const admin = usersResult.filter(user => {
       if (user.role === 'Admin') {
         return true;
       }
@@ -98,7 +96,7 @@ describe('RESTfulACL', () => {
 
     req.user.id = admin.id;
 
-    return req.restifyACL(usersResult).then((result) => {
+    return req.restifyACL(usersResult).then(result => {
       expect(result.length).to.be.equal(usersResult.length);
     });
   });
@@ -107,7 +105,7 @@ describe('RESTfulACL', () => {
     req.role = 'Visitor';
     // req.user.id = user.id;
 
-    return req.restifyACL(usersResult).then((result) => {
+    return req.restifyACL(usersResult).then(result => {
       expect(result.length).to.be.equal(0);
     });
   });

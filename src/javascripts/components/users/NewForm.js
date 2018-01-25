@@ -8,13 +8,16 @@ export default class UsersNewForm extends Widget {
       fullname: ['required'],
       collectiveIds: ['required', 'array', 'minLength:1'],
       state: ['required'],
-      zip: ['required', {
-        rule(val) {
-          if (/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(val) === false) {
-            throw new Error('Invalid zip code.');
-          }
+      zip: [
+        'required',
+        {
+          rule(val) {
+            if (/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(val) === false) {
+              throw new Error('Invalid zip code.');
+            }
+          },
         },
-      }],
+      ],
       email: ['required', 'email'],
       password: ['required', 'minLength:8'],
     };
@@ -36,37 +39,46 @@ export default class UsersNewForm extends Widget {
     });
     this._checkit = new Checkit(UsersNewForm.constraints);
 
-    this.appendChild(new Button({
-      name: 'ButtonSubmit',
-      element: this.element.querySelector('button[type="submit"]'),
-    }));
+    this.appendChild(
+      new Button({
+        name: 'ButtonSubmit',
+        element: this.element.querySelector('button[type="submit"]'),
+      }),
+    );
 
     this.collectivesOptions = [].slice.call(
-      this.element.querySelectorAll('[name="collectiveIds"]')
+      this.element.querySelectorAll('[name="collectiveIds"]'),
     );
-    this.collectivesWithDebt = this.collectivesOptions.filter(option => {
-      return (option.dataset.hasDebt === 'true');
-    });
-    this.collectivesWithoutDebt = this.collectivesOptions.filter(option => {
-      return (option.dataset.hasDebt === 'false');
-    });
+    this.collectivesWithDebt = this.collectivesOptions.filter(
+      option => option.dataset.hasDebt === 'true',
+    );
+    this.collectivesWithoutDebt = this.collectivesOptions.filter(
+      option => option.dataset.hasDebt === 'false',
+    );
     this.step1Layer = this.element.querySelector('.js-step-1');
     this.step2Layer = this.element.querySelector('.js-step-2');
     this.nextBtn = this.element.querySelector('#sign-up-btn-next');
     this.prevBtn = this.element.querySelector('#sign-up-btn-back');
 
-    this.appendChild(new Button({
-      name: 'ButtonContinue',
-      element: this.nextBtn,
-    }));
+    this.appendChild(
+      new Button({
+        name: 'ButtonContinue',
+        element: this.nextBtn,
+      }),
+    );
 
     this._bindEvents();
   }
 
   _bindEvents() {
-    this._handleCollectiveOptionsChangeRef = this._handleCollectiveOptionsChange.bind(this);
+    this._handleCollectiveOptionsChangeRef = this._handleCollectiveOptionsChange.bind(
+      this,
+    );
     for (let i = 0, len = this.collectivesOptions.length; i < len; i++) {
-      this.collectivesOptions[i].addEventListener('change', this._handleCollectiveOptionsChangeRef);
+      this.collectivesOptions[i].addEventListener(
+        'change',
+        this._handleCollectiveOptionsChangeRef,
+      );
     }
 
     this._hadnleShowNextStepRef = this._handleShowNextStep.bind(this);
@@ -76,22 +88,20 @@ export default class UsersNewForm extends Widget {
     this.prevBtn.addEventListener('click', this._handleShowPrevStepRef);
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
-    this.element.querySelector('form').addEventListener('submit', this._handleFormSubmit);
+    this.element
+      .querySelector('form')
+      .addEventListener('submit', this._handleFormSubmit);
   }
 
   _handleCollectiveOptionsChange(ev) {
     const selected = this.collectivesOptions
-      .filter(c => { return c.checked; })
-      .map(v => { return v.value; });
+      .filter(c => c.checked)
+      .map(v => v.value);
 
     if (ev.target.dataset.hasDebt === 'true') {
-      this.collectivesWithoutDebt.map(option => {
-        return (option.checked = false);
-      });
+      this.collectivesWithoutDebt.map(option => (option.checked = false));
     } else {
-      this.collectivesWithDebt.map(option => {
-        return (option.checked = false);
-      });
+      this.collectivesWithDebt.map(option => (option.checked = false));
     }
 
     this.ButtonContinue[selected.length ? 'enable' : 'disable']();
@@ -158,9 +168,7 @@ export default class UsersNewForm extends Widget {
     const data = {};
     Object.keys(UsersNewForm.constraints).forEach(key => {
       if (this.ui[key] instanceof Array) {
-        data[key] = this.ui[key]
-          .filter(c => { return c.checked; })
-          .map(v => { return v.value; });
+        data[key] = this.ui[key].filter(c => c.checked).map(v => v.value);
       } else {
         data[key] = this.ui[key].value;
       }

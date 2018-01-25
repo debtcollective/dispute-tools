@@ -14,36 +14,33 @@ const User = Class('User').inherits(Krypton.Model)({
         rule(val) {
           const target = this.target;
 
-          const query = User.query()
-            .where({
-              email: val,
-            });
+          const query = User.query().where({
+            email: val,
+          });
 
           if (target.id) {
             query.andWhere('id', '!=', target.id);
           }
 
-          return query.then((result) => {
+          return query.then(result => {
             if (result.length > 0) {
-              throw new Error('The User\'s email already exists.');
+              throw new Error("The User's email already exists.");
             }
           });
         },
-        message: 'The User\'s email already exists.',
+        message: "The User's email already exists.",
       },
     ],
-    password: [
-      'minLength:8',
-    ],
+    password: ['minLength:8'],
     role: [
       'required',
       {
         rule(val) {
           if (User.roles.indexOf(val) === -1) {
-            throw new Error('The User\'s role is invalid.');
+            throw new Error("The User's role is invalid.");
           }
         },
-        message: 'The User\'s role is invalid.',
+        message: "The User's role is invalid.",
       },
     ],
   },
@@ -76,22 +73,20 @@ const User = Class('User').inherits(Krypton.Model)({
     }
 
     if (qs.state && qs.state !== '') {
-      query
-        .andWhere('Accounts.state', '=', qs.state);
+      query.andWhere('Accounts.state', '=', qs.state);
     }
 
-    return query
-      .then((results) => results.map((item) => item.id));
+    return query.then(results => results.map(item => item.id));
   },
 
   getCampaigns(id, collectiveId) {
-    const myCampaigns = (ids) => {
+    const myCampaigns = ids => {
       const query = User.knex()
-      .select('UsersCampaigns.*')
-      .select('Campaigns.*')
-      .from('UsersCampaigns')
-      .where('UsersCampaigns.user_id', id)
-      .join('Campaigns', 'UsersCampaigns.campaign_id', 'Campaigns.id');
+        .select('UsersCampaigns.*')
+        .select('Campaigns.*')
+        .from('UsersCampaigns')
+        .where('UsersCampaigns.user_id', id)
+        .join('Campaigns', 'UsersCampaigns.campaign_id', 'Campaigns.id');
 
       if (ids.length) {
         query.whereIn('UsersCampaigns.campaign_id', ids);
@@ -100,7 +95,7 @@ const User = Class('User').inherits(Krypton.Model)({
       return query;
     };
 
-    const myCampaignsLength = (ids) => {
+    const myCampaignsLength = ids => {
       const query = User.knex()
         .count('UsersCampaigns.*')
         .from('UsersCampaigns')
@@ -121,12 +116,12 @@ const User = Class('User').inherits(Krypton.Model)({
       return query;
     };
 
-    return Promise.resolve(collectiveId ? getCollectiveCampaignIds() : [])
-      .then((ids) =>
-        Promise.all([
-          myCampaigns(ids),
-          myCampaignsLength(ids),
-        ]).then(([results, res]) => ({ results, count: parseInt(res.count, 10) })));
+    return Promise.resolve(collectiveId ? getCollectiveCampaignIds() : []).then(
+      ids =>
+        Promise.all([myCampaigns(ids), myCampaignsLength(ids)]).then(
+          ([results, res]) => ({ results, count: parseInt(res.count, 10) }),
+        ),
+    );
   },
 
   prototype: {
@@ -143,7 +138,7 @@ const User = Class('User').inherits(Krypton.Model)({
 
       this._oldEmail = model.email;
 
-      model.on('beforeValidation', (done) => {
+      model.on('beforeValidation', done => {
         if (!model.id && (!model.password || model.password.length === 0)) {
           return done(new Error('Must provide a password'));
         }
@@ -152,42 +147,47 @@ const User = Class('User').inherits(Krypton.Model)({
       });
 
       // If password is present hash password and set it as encryptedPassword
-      model.on('beforeSave', (done) => {
+      model.on('beforeSave', done => {
         if (!model.password) {
           return done();
         }
 
-        return bcrypt.hash(model.password, bcrypt.genSaltSync(10), null, (err, hash) => {
-          if (err) {
-            return done(err);
-          }
+        return bcrypt.hash(
+          model.password,
+          bcrypt.genSaltSync(10),
+          null,
+          (err, hash) => {
+            if (err) {
+              return done(err);
+            }
 
-          model.encryptedPassword = hash;
+            model.encryptedPassword = hash;
 
-          model.password = null;
-          return done();
-        });
+            model.password = null;
+            return done();
+          },
+        );
       });
 
       // Updates old email when record saves
-      model.on('afterSave', (done) => {
+      model.on('afterSave', done => {
         this._oldEmail = model.email;
         done();
       });
 
       // setActivationToken helper function
-      const setActivationToken = (done) => {
+      const setActivationToken = done => {
         model.activationToken = uuid.v4();
         return done();
       };
 
       // Create a hash and set it as activationToken
-      model.on('beforeCreate', (done) => {
+      model.on('beforeCreate', done => {
         setActivationToken(done);
       });
 
       // If email changes, set activationToken again
-      model.on('beforeUpdate', (done) => {
+      model.on('beforeUpdate', done => {
         if (model._oldEmail === model.email) {
           return done();
         }
@@ -214,20 +214,22 @@ const User = Class('User').inherits(Krypton.Model)({
         },
       });
     },
-
   },
 
   destroy() {
     // anonymize the user's posts
-    Promise.all(this.posts.map((post) => post.unsetUser()))
-    // reduce the userCount of collectives and campaigns
-    .then(Promise.all(this.debtTypes.concat(this.campaigns).map((collpaign) => {
-      collpaign.userCount -= 1;
-      return collpaign.save();
-    })))
-    .then(super.destroy());
+    Promise.all(this.posts.map(post => post.unsetUser()))
+      // reduce the userCount of collectives and campaigns
+      .then(
+        Promise.all(
+          this.debtTypes.concat(this.campaigns).map(collpaign => {
+            collpaign.userCount -= 1;
+            return collpaign.save();
+          }),
+        ),
+      )
+      .then(super.destroy());
   },
-
 });
 
 module.exports = User;

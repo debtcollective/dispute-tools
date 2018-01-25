@@ -6,7 +6,13 @@ window.EditAdminEventsFormController = class EditAdminEventsFormController {
     return new Vue({
       el: '#edit-event-vue',
       render() {
-        return <AdminEventsFormVue campaign={campaign} event={event} gmapsKey={gmapsKey} />;
+        return (
+          <AdminEventsFormVue
+            campaign={campaign}
+            event={event}
+            gmapsKey={gmapsKey}
+          />
+        );
       },
     });
   }

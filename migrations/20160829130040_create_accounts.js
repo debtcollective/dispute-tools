@@ -1,8 +1,8 @@
-
-exports.up = (knex) => {
-  return knex.schema.createTable('Accounts', (t) => {
+exports.up = knex =>
+  knex.schema.createTable('Accounts', t => {
     t.uuid('id').primary();
-    t.uuid('user_id')
+    t
+      .uuid('user_id')
       .notNullable()
       .references('id')
       .inTable('Users')
@@ -17,8 +17,5 @@ exports.up = (knex) => {
     t.jsonb('image_meta').defaultTo('{}');
     t.timestamps();
   });
-};
 
-exports.down = (knex) => {
-  return knex.schema.dropTable('Accounts');
-};
+exports.down = knex => knex.schema.dropTable('Accounts');

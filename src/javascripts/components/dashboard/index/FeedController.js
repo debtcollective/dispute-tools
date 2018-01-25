@@ -2,10 +2,7 @@ import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 import flatten from 'lodash/flatten';
 import Widget from '../../../lib/widget';
-import {
-  getCampaignPosts,
-  csrfToken,
-} from '../../../lib/api';
+import { getCampaignPosts, csrfToken } from '../../../lib/api';
 import PostText from '../../campaigns/show/posts/PostText';
 import PostImage from '../../campaigns/show/posts/PostImage';
 import PostPoll from '../../campaigns/show/posts/PostPoll';
@@ -16,7 +13,7 @@ export default class FeedController extends Widget {
 
     this._loader = document.querySelector('.Campaign_FeedLoader');
     this._loadMoreBtn = document.querySelector(
-      '.Campaign_FeedLoadMore > button'
+      '.Campaign_FeedLoadMore > button',
     );
 
     this._loadPosts();
@@ -33,27 +30,35 @@ export default class FeedController extends Widget {
   _loadPosts() {
     const campaignIds = map(this.campaigns, campaign => campaign.id);
 
-    Promise.all(map(campaignIds, campaignId => new Promise((resolve, reject) => {
-      getCampaignPosts({
-        campaignId,
-      },
-          (err, results) => {
-            if (err) {
-              return reject(err);
-            }
+    Promise.all(
+      map(
+        campaignIds,
+        campaignId =>
+          new Promise((resolve, reject) => {
+            getCampaignPosts(
+              {
+                campaignId,
+              },
+              (err, results) => {
+                if (err) {
+                  return reject(err);
+                }
 
-            // add campaign to each post
-            const posts = results.body.map(post => {
-              post.campaign = this.campaigns.filter(
-                campaign => campaign.id === post.campaignId
-              )[0];
+                // add campaign to each post
+                const posts = results.body.map(post => {
+                  post.campaign = this.campaigns.filter(
+                    campaign => campaign.id === post.campaignId,
+                  )[0];
 
-              return post;
-            });
+                  return post;
+                });
 
-            resolve(posts);
-          });
-    }))).then((posts) => {
+                resolve(posts);
+              },
+            );
+          }),
+      ),
+    ).then(posts => {
       let sortedPosts = flatten(posts);
 
       // sort posts by updatedAt DESC
@@ -90,7 +95,7 @@ export default class FeedController extends Widget {
           userIsPostAuthor: false,
           userBelongsToCampaign: true,
           csrfToken,
-        })
+        }),
       );
 
       fragment.appendChild(this[post.id].element);

@@ -13,11 +13,16 @@ export default class DisputesFollowUp extends Widget {
   constructor(config) {
     super(config);
 
-    if (!this.dispute.data.signature || this.dispute.data.disputeConfirmFollowUp) {
+    if (
+      !this.dispute.data.signature ||
+      this.dispute.data.disputeConfirmFollowUp
+    ) {
       return null;
     }
 
-    this.popoverElement = document.querySelector('[data-component-popover="dispute-completed"]');
+    this.popoverElement = document.querySelector(
+      '[data-component-popover="dispute-completed"]',
+    );
 
     if (!this.popoverElement) {
       return null;
@@ -40,15 +45,19 @@ export default class DisputesFollowUp extends Widget {
 
     this._handlePopoverDestroyedRef = this._handlePopoverDestroyed.bind(this);
 
-    this.appendChild(new Popover({
-      name: 'Popover',
-      element: this.popoverElement,
-    })).bind('destroy', this._handlePopoverDestroyedRef);
+    this.appendChild(
+      new Popover({
+        name: 'Popover',
+        element: this.popoverElement,
+      }),
+    ).bind('destroy', this._handlePopoverDestroyedRef);
 
     if (header.offsetParent) {
       this.Popover.appendTo(header);
     } else {
-      this.Popover.appendTo(document.querySelector('.js-hamburger-menu').parentElement);
+      this.Popover.appendTo(
+        document.querySelector('.js-hamburger-menu').parentElement,
+      );
     }
 
     this.Popover.activate();

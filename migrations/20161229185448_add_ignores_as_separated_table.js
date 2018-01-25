@@ -1,13 +1,14 @@
-
-exports.up = (knex) => {
-  return knex.schema.createTable('EventIgnores', (t) => {
+exports.up = knex =>
+  knex.schema.createTable('EventIgnores', t => {
     t.uuid('id').primary();
-    t.uuid('event_id')
+    t
+      .uuid('event_id')
       .notNullable()
       .references('id')
       .inTable('Events')
       .onDelete('CASCADE');
-    t.uuid('user_id')
+    t
+      .uuid('user_id')
       .notNullable()
       .references('id')
       .inTable('Users')
@@ -16,8 +17,5 @@ exports.up = (knex) => {
     t.index('event_id');
     t.index(['event_id', 'user_id'], 'user_ignored_events');
   });
-};
 
-exports.down = (knex) => {
-  return knex.schema.dropTable('EventIgnores');
-};
+exports.down = knex => knex.schema.dropTable('EventIgnores');

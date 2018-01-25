@@ -108,7 +108,7 @@ const routeMappings = RouteMappings()
           .post('/:id/admins', {
             to: 'Disputes#updateAdmins',
             as: 'updateAdmins',
-          })
+          }),
       )
       .resources('/Collectives', mapAdminCollectives =>
         mapAdminCollectives()
@@ -128,8 +128,8 @@ const routeMappings = RouteMappings()
               .post('/files', {
                 to: 'Campaigns#uploadFiles',
                 as: 'uploadFiles',
-              })
-          )
+              }),
+          ),
       )
       .resources('/Users', mapAdminUsers =>
         mapAdminUsers()
@@ -140,8 +140,8 @@ const routeMappings = RouteMappings()
           .delete('/:id/ban', {
             to: 'Users#unban',
             as: 'unban',
-          })
-      )
+          }),
+      ),
   )
 
   // Users
@@ -155,7 +155,7 @@ const routeMappings = RouteMappings()
       .get('/:token/activate', {
         to: 'Users#activate',
         as: 'activate',
-      })
+      }),
   )
 
   // Dispute Tools
@@ -189,7 +189,7 @@ const routeMappings = RouteMappings()
       .put('/:id/remove-attachment/:attachment_id', {
         to: 'Disputes#removeAttachment',
         as: 'removeAttachment',
-      })
+      }),
   )
 
   // Collectives
@@ -198,7 +198,7 @@ const routeMappings = RouteMappings()
     mapCollectives().post('/:id/join', {
       to: 'Collectives#join',
       as: 'join',
-    })
+    }),
   )
 
   // Campaigns
@@ -208,12 +208,12 @@ const routeMappings = RouteMappings()
       .resources('/Events', mapCampaignEvents =>
         mapCampaignEvents()
           .post('/:id/rsvp', { as: 'doRSVP' })
-          .delete('/:id/rsvp', { as: 'undoRSVP' })
+          .delete('/:id/rsvp', { as: 'undoRSVP' }),
       )
       .post('/:id/join', {
         to: 'Campaigns#join',
         as: 'join',
-      })
+      }),
   )
 
   // Posts

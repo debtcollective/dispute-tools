@@ -23,18 +23,22 @@ class ViewHomeContact extends NodeSupport {
 
     this._checkit = new Checkit(ViewHomeContact.constraints);
 
-    this.appendChild(new Button({
-      name: 'Button',
-      element: this.formElement.querySelector('button'),
-    }));
+    this.appendChild(
+      new Button({
+        name: 'Button',
+        element: this.formElement.querySelector('button'),
+      }),
+    );
 
-    this.appendChild(new Common({
-      name: 'Common',
-      currentUser: config.currentUser,
-      currentURL: config.currentURL,
-    }));
+    this.appendChild(
+      new Common({
+        name: 'Common',
+        currentUser: config.currentUser,
+        currentURL: config.currentURL,
+      }),
+    );
 
-    this.formElement.addEventListener('submit', (ev) => {
+    this.formElement.addEventListener('submit', ev => {
       this.Button.disable();
       this._clearFieldErrors();
 
