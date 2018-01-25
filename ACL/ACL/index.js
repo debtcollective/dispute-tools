@@ -1,5 +1,3 @@
 module.exports = {
-  Visitor: [
-    [true],
-  ],
+  Visitor: [[true]],
 };

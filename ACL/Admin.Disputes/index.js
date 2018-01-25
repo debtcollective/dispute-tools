@@ -1,11 +1,5 @@
 module.exports = {
-  Visitor: [
-    [false],
-  ],
-  User: [
-    [false],
-  ],
-  Admin: [
-    [true],
-  ],
+  Visitor: [[false]],
+  User: [[false]],
+  Admin: [[true]],
 };

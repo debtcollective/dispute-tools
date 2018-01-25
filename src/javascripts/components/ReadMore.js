@@ -49,7 +49,7 @@ export default class ReadMore extends Widget {
 
     const height = this.contentElement.offsetHeight;
 
-    this._maxHeight = `${(height * 2) || this._maxHeight}px`;
+    this._maxHeight = `${height * 2 || this._maxHeight}px`;
 
     if (!this.expanded) {
       this.contentElement.style.maxHeight = this.collapsedHeight;

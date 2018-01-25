@@ -8,8 +8,9 @@ const url = CONFIG.env().siteURL;
 const urls = CONFIG.router.helpers;
 
 describe('ACLController', () => {
-  it('Should return a object with Resources and capabilities', (done) => {
-    agent.get(`${url}${urls.acl.url()}`)
+  it('Should return a object with Resources and capabilities', done => {
+    agent
+      .get(`${url}${urls.acl.url()}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         expect(res.status).to.equal(200);

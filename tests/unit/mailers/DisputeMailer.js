@@ -6,13 +6,13 @@ const path = require('path');
 const DisputeMailer = require(path.join(
   process.cwd(),
   'mailers',
-  'DisputeMailer'
+  'DisputeMailer',
 ));
 const truncate = require(path.join(
   process.cwd(),
   'tests',
   'utils',
-  'truncate'
+  'truncate',
 ));
 const { createUser } = require('../../utils/helpers.js');
 
@@ -22,12 +22,12 @@ describe('DisputeMailer', () => {
   before(() =>
     createUser({ role: 'Admin' }).then(res => {
       admin = res;
-    })
+    }),
   );
 
   after(() => truncate([User, Account]));
 
-  it('Should execute a sendToAdmins method', function () {
+  it('Should execute a sendToAdmins method', function() {
     this.timeout(5000);
 
     DisputeMailer.transport(CONFIG.env().mailers.transport);
@@ -63,7 +63,7 @@ describe('DisputeMailer', () => {
         const acceptedOrRejected = response.accepted[0] || response.rejected[0];
 
         expect(acceptedOrRejected).to.be.equal(
-          CONFIG.env().mailers.disputesBCCAddresses[0]
+          CONFIG.env().mailers.disputesBCCAddresses[0],
         );
       })
       .then(() => new Promise(ok => setTimeout(ok, 1000)));

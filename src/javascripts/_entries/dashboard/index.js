@@ -13,7 +13,7 @@ class ViewDashboardIndex extends NodeSupport {
         name: 'Common',
         currentUser: config.currentUser,
         currentURL: config.currentURL,
-      })
+      }),
     );
 
     this.appendChild(
@@ -26,7 +26,7 @@ class ViewDashboardIndex extends NodeSupport {
         element: document.querySelector('.Campaign_Feed'),
         deletePostActionUrl: config.deletePostActionUrl,
         userIsAdminOrCollectiveManager: config.userIsAdminOrCollectiveManager,
-      })
+      }),
     );
   }
 }

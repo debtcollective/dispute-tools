@@ -13,9 +13,12 @@ export default class AssignedToMeButton extends Widget {
       if (this.currentlyFiltering) {
         delete this.queryReference.filters.admin_id;
       } else {
-        this.queryReference.filters = Object.assign(this.queryReference.filters, {
-          admin_id: this.adminId,
-        });
+        this.queryReference.filters = Object.assign(
+          this.queryReference.filters,
+          {
+            admin_id: this.adminId,
+          },
+        );
       }
 
       this.applyFilters();

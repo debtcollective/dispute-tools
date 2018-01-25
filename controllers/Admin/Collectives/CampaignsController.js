@@ -28,7 +28,9 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
     {
       before(req, res, next) {
         res.locals.selectedCollective = req.params.collective_id;
-        logger.debug(`Identified selectedCollective (${res.locals.selectedCollective})`);
+        logger.debug(
+          `Identified selectedCollective (${res.locals.selectedCollective})`,
+        );
         next();
       },
       actions: ['new', 'edit', 'update'],
@@ -60,7 +62,7 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
       Admin.Collectives.Campaign.query()
         .where('id', req.params.id)
         .include('collective')
-        .then((campaign) => {
+        .then(campaign => {
           if (campaign.length === 0) {
             return next(new NotFoundError('Campaign not found'));
           }
@@ -85,20 +87,22 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
 
       logger.debug(`Creating new campaign ${campaign.title}`);
 
-      campaign.save()
+      campaign
+        .save()
         .then(() => {
           if (req.files && req.files.image && req.files.image.length > 0) {
             const image = req.files.image[0];
 
-            return campaign.attach('cover', image.path, {
-              fileSize: image.size,
-              mimeType: image.mimetype || image.mimeType,
-            })
-            .then(() => {
-              fs.unlinkSync(image.path);
+            return campaign
+              .attach('cover', image.path, {
+                fileSize: image.size,
+                mimeType: image.mimetype || image.mimeType,
+              })
+              .then(() => {
+                fs.unlinkSync(image.path);
 
-              return campaign.save();
-            });
+                return campaign.save();
+              });
           }
 
           return Promise.resolve();
@@ -106,11 +110,15 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
         .then(() => {
           req.flash('success', 'The campaign has been created.');
           res.redirect(
-            `${CONFIG.router.helpers.Collectives.show.url(campaign.collectiveId)}#campaigns`
+            `${CONFIG.router.helpers.Collectives.show.url(
+              campaign.collectiveId,
+            )}#campaigns`,
           );
         })
-        .catch((err) => {
-          logger.error(`Unable to create campaign ${campaign.title}: ${err} ${err.stack}`);
+        .catch(err => {
+          logger.error(
+            `Unable to create campaign ${campaign.title}: ${err} ${err.stack}`,
+          );
           res.status(400);
 
           res.locals.errors = err.errors || err;
@@ -135,20 +143,22 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
       req.campaign.active = active;
       req.campaign.published = published;
 
-      req.campaign.save()
+      req.campaign
+        .save()
         .then(() => {
           if (req.files && req.files.image && req.files.image.length > 0) {
             const image = req.files.image[0];
 
-            return req.campaign.attach('cover', image.path, {
-              fileSize: image.size,
-              mimeType: image.mimetype || image.mimeType,
-            })
-            .then(() => {
-              fs.unlinkSync(image.path);
+            return req.campaign
+              .attach('cover', image.path, {
+                fileSize: image.size,
+                mimeType: image.mimetype || image.mimeType,
+              })
+              .then(() => {
+                fs.unlinkSync(image.path);
 
-              return req.campaign.save();
-            });
+                return req.campaign.save();
+              });
           }
 
           return Promise.resolve();
@@ -156,10 +166,12 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
         .then(() => {
           req.flash('success', 'The campaign has been updated.');
           res.redirect(
-            `${CONFIG.router.helpers.Collectives.show.url(req.campaign.collectiveId)}#campaigns`
+            `${CONFIG.router.helpers.Collectives.show.url(
+              req.campaign.collectiveId,
+            )}#campaigns`,
           );
         })
-        .catch((err) => {
+        .catch(err => {
           res.status(400);
 
           res.locals.errors = err.errors || err;
@@ -173,11 +185,14 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
 
       logger.debug('Activating campaign ${req.campaign.title}');
 
-      req.campaign.save()
+      req.campaign
+        .save()
         .then(() => {
           logger.debug(`Successfully activated campaign ${req.campaign.title}`);
           req.flash('success', 'The campaign is now active.');
-          res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.campaign.id));
+          res.redirect(
+            CONFIG.router.helpers.Campaigns.show.url(req.campaign.id),
+          );
         })
         .catch(next);
     },
@@ -185,10 +200,13 @@ Class(Admin.Collectives, 'CampaignsController').inherits(RestfulController)({
     deactivate(req, res, next) {
       req.campaign.active = false;
 
-      req.campaign.save()
+      req.campaign
+        .save()
         .then(() => {
           req.flash('success', 'The campaign is now inactive.');
-          res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.campaign.id));
+          res.redirect(
+            CONFIG.router.helpers.Campaigns.show.url(req.campaign.id),
+          );
         })
         .catch(next);
     },

@@ -1,14 +1,15 @@
-
-exports.up = (knex) => {
-  return knex.schema.createTable('Disputes', (t) => {
+exports.up = knex =>
+  knex.schema.createTable('Disputes', t => {
     t.uuid('id').primary();
-    t.uuid('user_id')
+    t
+      .uuid('user_id')
       .notNullable()
       .references('id')
       .inTable('Users')
       .onDelete('CASCADE')
       .index();
-    t.uuid('dispute_tool_id')
+    t
+      .uuid('dispute_tool_id')
       .notNullable()
       .references('id')
       .inTable('DisputeTools')
@@ -18,8 +19,5 @@ exports.up = (knex) => {
     t.boolean('deleted').defaultTo(false);
     t.timestamps();
   });
-};
 
-exports.down = (knex) => {
-  return knex.schema.dropTable('Disputes');
-};
+exports.down = knex => knex.schema.dropTable('Disputes');

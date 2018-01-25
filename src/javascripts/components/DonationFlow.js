@@ -18,10 +18,12 @@ const PAGE_ERROR = 'PAGE_ERROR';
 const PAYMENT_METHOD_CREDIT_CARD = 'PAYMENT_METHOD_CREDIT_CARD';
 const PAYMENT_METHOD_PAYPAL = 'PAYMENT_METHOD_PAYPAL';
 
-const formatCurrency = (amount) => `${(amount).toFixed(2)}`;
+const formatCurrency = amount => `${amount.toFixed(2)}`;
 
 export default class DonationFlow extends Widget {
-  static get constraints() { return { email: ['required', 'email'] }; }
+  static get constraints() {
+    return { email: ['required', 'email'] };
+  }
   constructor(config) {
     super(config);
     this.state = {
@@ -38,26 +40,62 @@ export default class DonationFlow extends Widget {
     this.donationFormEl = this.element;
     this.sectionDonateEl = this.donationFormEl.querySelector('section.Donate');
     this.sectionDonateSubmitEl = this.sectionDonateEl.querySelector('button');
-    this.sectionDonateFundOptionGeneralEl = this.sectionDonateEl.querySelector('.DonateOption[data-fund-option-general]');
-    this.sectionDonateFundOptionStrikeEl = this.sectionDonateEl.querySelector('.DonateOption[data-fund-option-strike]');
-    this.sectionDonateAmountPickerEl = this.sectionDonateEl.querySelector('.AmountPicker');
-    this.customDonationCustomInputEl = this.sectionDonateAmountPickerEl.querySelector('[data-donation-custom-input]');
-    this.sectionPaymentEl = this.donationFormEl.querySelector('section.Payment');
-    this.sectionPaymentMethodsEl = this.donationFormEl.querySelector('.PaymentMethods');
-    this.sectionPaymentMethodCreditCardEl = this.donationFormEl.querySelector('.PaymentMethod[data-payment-method="credit-card"]');
-    this.sectionPaymentMethodPayPalEl = this.donationFormEl.querySelector('.PaymentMethod[data-payment-method="paypal"]');
-    this.sectionPaymentPayPalFormEl = this.sectionPaymentMethodPayPalEl.querySelector('form');
-    this.sectionPaymentInputEmailEl = this.donationFormEl.querySelector('[name="email"]');
-    this.sectionPaymentInputNumberEl = this.donationFormEl.querySelector('[name="number"]');
-    this.sectionPaymentInputExpEl = this.donationFormEl.querySelector('[name="exp"]');
-    this.sectionPaymentInputCvcEl = this.donationFormEl.querySelector('[name="cvc"]');
+    this.sectionDonateFundOptionGeneralEl = this.sectionDonateEl.querySelector(
+      '.DonateOption[data-fund-option-general]',
+    );
+    this.sectionDonateFundOptionStrikeEl = this.sectionDonateEl.querySelector(
+      '.DonateOption[data-fund-option-strike]',
+    );
+    this.sectionDonateAmountPickerEl = this.sectionDonateEl.querySelector(
+      '.AmountPicker',
+    );
+    this.customDonationCustomInputEl = this.sectionDonateAmountPickerEl.querySelector(
+      '[data-donation-custom-input]',
+    );
+    this.sectionPaymentEl = this.donationFormEl.querySelector(
+      'section.Payment',
+    );
+    this.sectionPaymentMethodsEl = this.donationFormEl.querySelector(
+      '.PaymentMethods',
+    );
+    this.sectionPaymentMethodCreditCardEl = this.donationFormEl.querySelector(
+      '.PaymentMethod[data-payment-method="credit-card"]',
+    );
+    this.sectionPaymentMethodPayPalEl = this.donationFormEl.querySelector(
+      '.PaymentMethod[data-payment-method="paypal"]',
+    );
+    this.sectionPaymentPayPalFormEl = this.sectionPaymentMethodPayPalEl.querySelector(
+      'form',
+    );
+    this.sectionPaymentInputEmailEl = this.donationFormEl.querySelector(
+      '[name="email"]',
+    );
+    this.sectionPaymentInputNumberEl = this.donationFormEl.querySelector(
+      '[name="number"]',
+    );
+    this.sectionPaymentInputExpEl = this.donationFormEl.querySelector(
+      '[name="exp"]',
+    );
+    this.sectionPaymentInputCvcEl = this.donationFormEl.querySelector(
+      '[name="cvc"]',
+    );
     this.sectionPaymentSubmitEl = this.sectionPaymentEl.querySelector('button');
-    this.sectionSuccessEl = this.donationFormEl.querySelector('section.Success');
-    this.sectionDonateBtn = this.donationFormEl.querySelector('.js-donate-amount');
-    this.sectionDonateValues = this.donationFormEl.querySelectorAll('.js-amount-value');
-    this.sectionDonateMonthly = this.donationFormEl.querySelector('.js-donate-monthly');
+    this.sectionSuccessEl = this.donationFormEl.querySelector(
+      'section.Success',
+    );
+    this.sectionDonateBtn = this.donationFormEl.querySelector(
+      '.js-donate-amount',
+    );
+    this.sectionDonateValues = this.donationFormEl.querySelectorAll(
+      '.js-amount-value',
+    );
+    this.sectionDonateMonthly = this.donationFormEl.querySelector(
+      '.js-donate-monthly',
+    );
     this.sectionErrorEl = this.donationFormEl.querySelector('section.Error');
-    this.sectionEls = Array.prototype.slice.call(this.donationFormEl.querySelectorAll('section'));
+    this.sectionEls = Array.prototype.slice.call(
+      this.donationFormEl.querySelectorAll('section'),
+    );
 
     // Continue button
     this.sectionDonateSubmitEl.addEventListener('click', () => {
@@ -66,11 +104,16 @@ export default class DonationFlow extends Widget {
     });
 
     // Toggle fund to donate to
-    this.sectionDonateFundOptionGeneralEl.addEventListener('click', () => this.setState({ fund: FUND_GENERAL }));
-    this.sectionDonateFundOptionStrikeEl.addEventListener('click', () => this.setState({ fund: FUND_STRIKE }));
+    this.sectionDonateFundOptionGeneralEl.addEventListener('click', () =>
+      this.setState({ fund: FUND_GENERAL }),
+    );
+    this.sectionDonateFundOptionStrikeEl.addEventListener('click', () =>
+      this.setState({ fund: FUND_STRIKE }),
+    );
 
     // Pick donation amount (using presets)
-    Array.prototype.slice.call(this.sectionDonateAmountPickerEl.querySelectorAll('.AmountOption'))
+    Array.prototype.slice
+      .call(this.sectionDonateAmountPickerEl.querySelectorAll('.AmountOption'))
       .forEach(el => {
         const amount = parseInt(el.getAttribute('data-donation-amount'), 10);
         el.addEventListener('click', () => {
@@ -80,7 +123,9 @@ export default class DonationFlow extends Widget {
       });
 
     this.customDonationCustomInputEl.addEventListener('input', () => {
-      const match = /[\d.]+/.exec(this.customDonationCustomInputEl.value.trim());
+      const match = /[\d.]+/.exec(
+        this.customDonationCustomInputEl.value.trim(),
+      );
       const amountParsed = parseFloat(match && match[0], 10);
       const amount = Math.round(amountParsed * 100); // rounded in cents
       this.setState({ amount });
@@ -88,7 +133,7 @@ export default class DonationFlow extends Widget {
 
     // Make Payment
     this.sectionPaymentSubmitEl.addEventListener('click', () => {
-      this.donate((error) => {
+      this.donate(error => {
         if (error) {
           console.error(error); // eslint-disable-line
           this.setState({ page: PAGE_ERROR });
@@ -99,17 +144,23 @@ export default class DonationFlow extends Widget {
     });
 
     // Return to Donation options
-    this.sectionPaymentEl.querySelector('.btn-back').addEventListener('click', () => this.setState({ page: PAGE_DONATE }));
+    this.sectionPaymentEl
+      .querySelector('.btn-back')
+      .addEventListener('click', () => this.setState({ page: PAGE_DONATE }));
 
     // Toggle Payment option (paypal will trigger redirect, other will enable form inputs)
-    this.sectionPaymentMethodCreditCardEl.addEventListener('click', () => this.setState({ paymentMethod: PAYMENT_METHOD_CREDIT_CARD }));
+    this.sectionPaymentMethodCreditCardEl.addEventListener('click', () =>
+      this.setState({ paymentMethod: PAYMENT_METHOD_CREDIT_CARD }),
+    );
     this.sectionPaymentMethodPayPalEl.addEventListener('click', () => {
       this.setState({ paymentMethod: PAYMENT_METHOD_PAYPAL });
       this.sectionPaymentPayPalFormEl.submit();
     });
 
     // Initial render
-    this.customDonationCustomInputEl.value = formatCurrency(this.state.amount / 100);
+    this.customDonationCustomInputEl.value = formatCurrency(
+      this.state.amount / 100,
+    );
     this.render();
 
     // Render on any change
@@ -184,9 +235,13 @@ export default class DonationFlow extends Widget {
     }
 
     // Data: AmountPicker
-    const amountOptActive = this.sectionDonateAmountPickerEl.querySelector('.AmountOption.active');
+    const amountOptActive = this.sectionDonateAmountPickerEl.querySelector(
+      '.AmountOption.active',
+    );
     if (amountOptActive) amountOptActive.classList.remove('active');
-    const matchingPreset = this.sectionDonateAmountPickerEl.querySelector(`.AmountOption[data-donation-amount="${amount}"]`);
+    const matchingPreset = this.sectionDonateAmountPickerEl.querySelector(
+      `.AmountOption[data-donation-amount="${amount}"]`,
+    );
     if (matchingPreset) matchingPreset.classList.add('active');
 
     // Data: Fund to donate to
@@ -204,10 +259,20 @@ export default class DonationFlow extends Widget {
     }
 
     // Data: Credit Card Inputs
-    const emailIsValid = Checkit.checkSync('email', this.sectionPaymentInputEmailEl.value, ['required', 'email'])[1];
-    const numberIsValid = Stripe.card.validateCardNumber(this.sectionPaymentInputNumberEl.value);
-    const expiryIsValid = Stripe.card.validateExpiry(this.sectionPaymentInputExpEl.value);
-    const cvcIsValid = Stripe.card.validateCVC(this.sectionPaymentInputCvcEl.value);
+    const emailIsValid = Checkit.checkSync(
+      'email',
+      this.sectionPaymentInputEmailEl.value,
+      ['required', 'email'],
+    )[1];
+    const numberIsValid = Stripe.card.validateCardNumber(
+      this.sectionPaymentInputNumberEl.value,
+    );
+    const expiryIsValid = Stripe.card.validateExpiry(
+      this.sectionPaymentInputExpEl.value,
+    );
+    const cvcIsValid = Stripe.card.validateCVC(
+      this.sectionPaymentInputCvcEl.value,
+    );
 
     if (emailIsValid) {
       this.sectionPaymentInputNumberEl.removeAttribute('disabled');
@@ -233,32 +298,35 @@ export default class DonationFlow extends Widget {
     this.setState({ busy: true });
     this.sectionDonateBtn.disabled = true;
 
-    Stripe.card.createToken({
-      number: this.sectionPaymentInputNumberEl.value,
-      cvc: this.sectionPaymentInputCvcEl.value,
-      exp: this.sectionPaymentInputExpEl.value,
-    }, (status, response) => {
-      if (status === 200 && response.type === 'card') {
-        const chargeObject = {
-          token: response.id,
-          email: this.sectionPaymentInputEmailEl.value.trim(),
-          amount: this.state.amount,
-          subscribe: this.sectionDonateMonthly.checked ? 1 : 0,
-        };
+    Stripe.card.createToken(
+      {
+        number: this.sectionPaymentInputNumberEl.value,
+        cvc: this.sectionPaymentInputCvcEl.value,
+        exp: this.sectionPaymentInputExpEl.value,
+      },
+      (status, response) => {
+        if (status === 200 && response.type === 'card') {
+          const chargeObject = {
+            token: response.id,
+            email: this.sectionPaymentInputEmailEl.value.trim(),
+            amount: this.state.amount,
+            subscribe: this.sectionDonateMonthly.checked ? 1 : 0,
+          };
 
-        postStripePayment({ body: chargeObject }, (error, result) => {
-          this.setState({ busy: false });
-          this.sectionDonateBtn.disabled = false;
-          if (result && result.body && result.body.error) {
-            callback(new Error(result.body.error.message));
-          } else {
-            callback(error, result);
-          }
-        });
-      } else {
-        callback(new Error('Could not create Stripe token'));
-      }
-    });
+          postStripePayment({ body: chargeObject }, (error, result) => {
+            this.setState({ busy: false });
+            this.sectionDonateBtn.disabled = false;
+            if (result && result.body && result.body.error) {
+              callback(new Error(result.body.error.message));
+            } else {
+              callback(error, result);
+            }
+          });
+        } else {
+          callback(new Error('Could not create Stripe token'));
+        }
+      },
+    );
   }
   reset() {
     this.setState({

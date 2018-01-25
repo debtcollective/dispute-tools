@@ -4,11 +4,11 @@ import Common from '../../components/Common';
 import Tabs from '../../components/Tabs';
 import FixedTabs from '../../components/campaigns/show/FixedTabs';
 import FeedController from '../../components/campaigns/show/FeedController';
-import JoinCampaingModal from '../../components/campaigns/show/JoinCampaingModal';
+import JoinCampaignModal from '../../components/campaigns/show/JoinCampaingModal';
 import CreateNewPost from '../../components/campaigns/show/create-new-post/Manager';
 import SidebarController from '../../components/campaigns/show/sidebar/SidebarController';
 import ReadMore from '../../components/ReadMore';
-import { popupCenter } from '../../lib/utils';
+import popupCenter from '../../_vendor/popupCenter';
 
 class ViewCampaignsShow extends NodeSupport {
   /**
@@ -24,63 +24,85 @@ class ViewCampaignsShow extends NodeSupport {
 
     Object.assign(this, config);
 
-    this.appendChild(new Common({
-      name: 'Common',
-      currentUser: config.currentUser,
-      currentURL: config.currentURL,
-    }));
+    this.appendChild(
+      new Common({
+        name: 'Common',
+        currentUser: config.currentUser,
+        currentURL: config.currentURL,
+      }),
+    );
 
-    this.appendChild(new Tabs({
-      name: 'Tabs',
-      updateHash: true,
-      element: document.querySelector('[data-tabs-component]'),
-      defaultTab: 'panel-campaign',
-    }));
+    this.appendChild(
+      new Tabs({
+        name: 'Tabs',
+        updateHash: true,
+        element: document.querySelector('[data-tabs-component]'),
+        defaultTab: 'panel-campaign',
+      }),
+    );
 
     this._tabsLen = this.Tabs.tabs.length;
     this._instantiatedTabChildren = [];
 
-    this.appendChild(new FixedTabs({
-      name: 'FixedTabs',
-      element: document.querySelector('[data-fixed-tabs-component]'),
-    }));
+    this.appendChild(
+      new FixedTabs({
+        name: 'FixedTabs',
+        element: document.querySelector('[data-fixed-tabs-component]'),
+      }),
+    );
 
-    this.appendChild(new FeedController({
-      name: 'FeedController',
-      campaignId: config.campaignId,
-      currentUser: config.currentUser,
-      userBelongsToCampaign: config.userBelongsToCampaign,
-      element: document.querySelector('.Campaign_Feed'),
-      deletePostActionUrl: config.deletePostActionUrl,
-      userIsAdminOrCollectiveManager: config.userIsAdminOrCollectiveManager,
-    }));
+    this.appendChild(
+      new FeedController({
+        name: 'FeedController',
+        campaignId: config.campaignId,
+        currentUser: config.currentUser,
+        userBelongsToCampaign: config.userBelongsToCampaign,
+        element: document.querySelector('.Campaign_Feed'),
+        deletePostActionUrl: config.deletePostActionUrl,
+        userIsAdminOrCollectiveManager: config.userIsAdminOrCollectiveManager,
+      }),
+    );
 
-    const joinCampaingModal = document.querySelector('[data-component-modal="join-to-campaing"]');
-    const joinCampaingTriggerElement = document.querySelector('.js-join-campaign-link');
+    const joinCampaingModal = document.querySelector(
+      '[data-component-modal="join-to-campaing"]',
+    );
+    const joinCampaingTriggerElement = document.querySelector(
+      '.js-join-campaign-link',
+    );
     if (joinCampaingModal && joinCampaingTriggerElement) {
-      this.appendChild(new JoinCampaingModal({
-        name: 'JoinCampaingModal',
-        modal: joinCampaingModal,
-        trigger: joinCampaingTriggerElement,
-      }));
+      this.appendChild(
+        new JoinCampaignModal({
+          name: 'JoinCampaingModal',
+          modal: joinCampaingModal,
+          trigger: joinCampaingTriggerElement,
+        }),
+      );
     }
 
     if (config.nextEvents.length) {
-      this.appendChild(new SidebarController({
-        name: 'SidebarController',
-        element: document.querySelector('[data-component="campaign-sidebar"]'),
-        nextEvents: config.nextEvents,
-        googleMapsKey: config.googleMapsKey,
-      }));
+      this.appendChild(
+        new SidebarController({
+          name: 'SidebarController',
+          element: document.querySelector(
+            '[data-component="campaign-sidebar"]',
+          ),
+          nextEvents: config.nextEvents,
+          googleMapsKey: config.googleMapsKey,
+        }),
+      );
     }
 
-    const createNewPostElement = document.querySelector('[data-create-new-post]');
+    const createNewPostElement = document.querySelector(
+      '[data-create-new-post]',
+    );
     if (createNewPostElement) {
-      this.appendChild(new CreateNewPost({
-        name: 'CreateNewPost',
-        element: createNewPostElement,
-        campaignId: config.campaignId,
-      }));
+      this.appendChild(
+        new CreateNewPost({
+          name: 'CreateNewPost',
+          element: createNewPostElement,
+          campaignId: config.campaignId,
+        }),
+      );
     }
 
     this._bindEvents()._bindShareButtons();
@@ -102,12 +124,16 @@ class ViewCampaignsShow extends NodeSupport {
     if (this._instantiatedTabChildren.indexOf(id) < 0) {
       this._instantiatedTabChildren.push(id);
 
-      Array.prototype.slice.call(panel.querySelectorAll('.ReadMore')).forEach((element, i) => {
-        this.appendChild(new ReadMore({
-          name: `ReadMore-${id}-${i}`,
-          element,
-        }));
-      });
+      Array.prototype.slice
+        .call(panel.querySelectorAll('.ReadMore'))
+        .forEach((element, i) => {
+          this.appendChild(
+            new ReadMore({
+              name: `ReadMore-${id}-${i}`,
+              element,
+            }),
+          );
+        });
 
       if (this._instantiatedTabChildren.length === this._tabsLen) {
         this.Tabs.unbind('change', this._tabsChangeHandler);

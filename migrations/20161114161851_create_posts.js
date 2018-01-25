@@ -1,13 +1,14 @@
-
-exports.up = (knex) => {
-  return knex.schema.createTable('Posts', (t) => {
+exports.up = knex =>
+  knex.schema.createTable('Posts', t => {
     t.uuid('id').primary();
-    t.uuid('campaign_id')
+    t
+      .uuid('campaign_id')
       .notNullable()
       .references('id')
       .inTable('Campaigns')
       .onDelete('CASCADE');
-    t.uuid('user_id')
+    t
+      .uuid('user_id')
       .notNullable()
       .references('id')
       .inTable('Users')
@@ -19,8 +20,5 @@ exports.up = (knex) => {
     t.index('campaign_id');
     t.index(['campaign_id', 'user_id'], 'posts_by_user');
   });
-};
 
-exports.down = (knex) => {
-  return knex.schema.dropTable('Posts');
-};
+exports.down = knex => knex.schema.dropTable('Posts');

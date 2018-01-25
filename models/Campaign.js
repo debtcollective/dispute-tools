@@ -1,9 +1,13 @@
 /* globals Class, Krypton, Campaign */
 
-const gm = require('gm').subClass({ imageMagick: process.env.GM === 'true' || false });
+const gm = require('gm').subClass({
+  imageMagick: process.env.GM === 'true' || false,
+});
 const { assignDefaultConfig, buildFullPaths } = require('../lib/AWS');
 
-const Campaign = Class('Campaign').inherits(Krypton.Model).includes(Krypton.Attachment)({
+const Campaign = Class('Campaign')
+  .inherits(Krypton.Model)
+  .includes(Krypton.Attachment)({
   tableName: 'Campaigns',
   validations: {
     title: ['required'],
@@ -22,10 +26,12 @@ const Campaign = Class('Campaign').inherits(Krypton.Model).includes(Krypton.Atta
     'createdAt',
     'updatedAt',
   ],
-  attachmentStorage: new Krypton.AttachmentStorage.S3(assignDefaultConfig({
-    maxFileSize: 5242880,
-    acceptedMimeTypes: [/image/],
-  })),
+  attachmentStorage: new Krypton.AttachmentStorage.S3(
+    assignDefaultConfig({
+      maxFileSize: 5242880,
+      acceptedMimeTypes: [/image/],
+    }),
+  ),
 
   prototype: {
     userCount: 0,
@@ -42,20 +48,20 @@ const Campaign = Class('Campaign').inherits(Krypton.Model).includes(Krypton.Atta
         versions: {
           small(readStream) {
             return gm(readStream)
-            .resize(100, 100)
-            .gravity('Center')
-            .crop(100, 100, 0, 0)
-            .setFormat('jpg')
-            .stream();
+              .resize(100, 100)
+              .gravity('Center')
+              .crop(100, 100, 0, 0)
+              .setFormat('jpg')
+              .stream();
           },
           smallGrayscale(readStream) {
             return gm(readStream)
-            .resize(100, 100)
-            .type('Grayscale')
-            .gravity('Center')
-            .crop(100, 100, 0, 0)
-            .setFormat('jpg')
-            .stream();
+              .resize(100, 100)
+              .type('Grayscale')
+              .gravity('Center')
+              .crop(100, 100, 0, 0)
+              .setFormat('jpg')
+              .stream();
           },
           grayscale(readStream) {
             return gm(readStream)

@@ -1,11 +1,13 @@
-exports.up = knex => knex.schema
-  .createTable('AdminsDisputes', t => {
-    t.uuid('admin_id')
+exports.up = knex =>
+  knex.schema.createTable('AdminsDisputes', t => {
+    t
+      .uuid('admin_id')
       .notNullable()
       .references('id')
       .inTable('Users')
       .onDelete('CASCADE');
-    t.uuid('dispute_id')
+    t
+      .uuid('dispute_id')
       .notNullable()
       .references('id')
       .inTable('Disputes')

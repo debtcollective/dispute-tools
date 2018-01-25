@@ -11,7 +11,8 @@ export default class Poll extends Widget {
   }
 
   getOptionValues() {
-    return Array.prototype.slice.call(this._pollOptions)
+    return Array.prototype.slice
+      .call(this._pollOptions)
       .filter(option => option.value)
       .map(option => option.value);
   }
@@ -37,8 +38,10 @@ export default class Poll extends Widget {
   }
 
   _appendNewInput() {
-    this.appendChild(new PollOption({
-      name: `Option-${this._pollOptions.length + 1}`,
-    })).render(this.element);
+    this.appendChild(
+      new PollOption({
+        name: `Option-${this._pollOptions.length + 1}`,
+      }),
+    ).render(this.element);
   }
 }

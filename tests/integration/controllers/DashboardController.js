@@ -2,13 +2,15 @@
 
 const expect = require('chai').expect;
 const path = require('path');
-const {
-  createUser,
-  createDispute,
-} = require('../../utils/helpers');
+const { createUser, createDispute } = require('../../utils/helpers');
 const puppeteer = require('puppeteer');
 
-const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
+const truncate = require(path.join(
+  process.cwd(),
+  'tests',
+  'utils',
+  'truncate',
+));
 
 describe('DashboardController', () => {
   let browser;
@@ -17,11 +19,17 @@ describe('DashboardController', () => {
 
   before(async function before() {
     this.timeout(10000);
-    browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+    browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
     page = await browser.newPage();
   });
 
-  before(() => createUser({ role: 'User' }).then(u => { user = u; }));
+  before(() =>
+    createUser({ role: 'User' }).then(u => {
+      user = u;
+    }),
+  );
 
   after(() => truncate([User, Account, DisputeStatus, Dispute]));
 
@@ -56,7 +64,10 @@ describe('DashboardController', () => {
     it('shows collectives', async () => {
       await page.goto('http://localhost:3000/dashboard');
 
-      const collectivesCount = await page.$$eval('.collectives-list-item', items => items.length);
+      const collectivesCount = await page.$$eval(
+        '.collectives-list-item',
+        items => items.length,
+      );
 
       expect(collectivesCount).to.eq(1);
     });
@@ -67,7 +78,10 @@ describe('DashboardController', () => {
       it('shows dispute status message', async () => {
         await page.goto('http://localhost:3000/dashboard');
 
-        const title = await page.$eval('.dispute-status-title', e => e.innerHTML);
+        const title = await page.$eval(
+          '.dispute-status-title',
+          e => e.innerHTML,
+        );
 
         expect(title).to.match(/You began a Wage Garnishment Dispute on/);
       });

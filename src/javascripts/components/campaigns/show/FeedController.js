@@ -14,7 +14,7 @@ export default class FeedController extends Widget {
 
     this._loader = document.querySelector('.Campaign_FeedLoader');
     this._loadMoreBtn = document.querySelector(
-      '.Campaign_FeedLoadMore > button'
+      '.Campaign_FeedLoadMore > button',
     );
 
     if (!this._loadMoreBtn) return;
@@ -25,12 +25,12 @@ export default class FeedController extends Widget {
   _bindEvents() {
     this._handlePostLoadResponse = this._handlePostLoadResponse.bind(this);
     this._handleLoadMoreButtonClick = this._handleLoadMoreButtonClick.bind(
-      this
+      this,
     );
 
     this._loadMoreBtn.addEventListener(
       'click',
-      this._handleLoadMoreButtonClick
+      this._handleLoadMoreButtonClick,
     );
     return this;
   }
@@ -48,7 +48,7 @@ export default class FeedController extends Widget {
         campaignId: this.campaignId,
         page: this._currentPage,
       },
-      this._handlePostLoadResponse
+      this._handlePostLoadResponse,
     );
   }
 
@@ -87,10 +87,10 @@ export default class FeedController extends Widget {
           userBelongsToCampaign: this.userBelongsToCampaign,
           deletePostActionUrl: this.deletePostActionUrl.replace(
             '{postId}',
-            post.id
+            post.id,
           ),
           csrfToken,
-        })
+        }),
       );
 
       fragment.appendChild(this[post.id].element);
@@ -102,7 +102,7 @@ export default class FeedController extends Widget {
     if (this._currentPage >= this._totalPages) {
       this._loadMoreBtn.removeEventListener(
         'click',
-        this._handleLoadMoreButtonClick
+        this._handleLoadMoreButtonClick,
       );
       this._loadMoreBtn.parentElement.removeChild(this._loadMoreBtn);
       this._handleLoadMoreButtonClick = null;

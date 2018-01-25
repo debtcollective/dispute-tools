@@ -1,6 +1,7 @@
 /* globals logger, CONFIG */
 
-module.exports = (err, req, res, next) => {
+// prettier-ignore
+module.exports = (err, req, res, next) => { // eslint-disable-line
   logger.error(err);
 
   let status;

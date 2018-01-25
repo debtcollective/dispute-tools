@@ -1,9 +1,13 @@
 /* globals Class, Krypton, Collective */
 
-const gm = require('gm').subClass({ imageMagick: process.env.GM === 'true' || false });
+const gm = require('gm').subClass({
+  imageMagick: process.env.GM === 'true' || false,
+});
 const { assignDefaultConfig, buildFullPaths } = require('../lib/AWS');
 
-const Collective = Class('Collective').inherits(Krypton.Model).includes(Krypton.Attachment)({
+const Collective = Class('Collective')
+  .inherits(Krypton.Model)
+  .includes(Krypton.Attachment)({
   tableName: 'Collectives',
   validations: {
     name: ['required'],
@@ -21,10 +25,12 @@ const Collective = Class('Collective').inherits(Krypton.Model).includes(Krypton.
     'createdAt',
     'updatedAt',
   ],
-  attachmentStorage: new Krypton.AttachmentStorage.S3(assignDefaultConfig({
-    maxFileSize: 5242880,
-    acceptedMimeTypes: [/image/],
-  })),
+  attachmentStorage: new Krypton.AttachmentStorage.S3(
+    assignDefaultConfig({
+      maxFileSize: 5242880,
+      acceptedMimeTypes: [/image/],
+    }),
+  ),
   invisibleId: '00000000-0000-0000-0000-000000000000',
 
   prototype: {
@@ -53,10 +59,10 @@ const Collective = Class('Collective').inherits(Krypton.Model).includes(Krypton.
   },
 
   queryVisible(...args) {
-    return Krypton.Model.query.call(this, ...args)
-        .whereNot('id', this.invisibleId);
-  }
-
+    return Krypton.Model.query
+      .call(this, ...args)
+      .whereNot('id', this.invisibleId);
+  },
 });
 
 module.exports = Collective;

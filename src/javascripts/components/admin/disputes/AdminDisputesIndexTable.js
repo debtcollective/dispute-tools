@@ -52,7 +52,9 @@ export default class AdminDisputesIndexTable extends Widget {
     }
 
     if (button.dataset.deactivateDispute !== undefined) {
-      if (confirm('Are you sure you want to deactivate this dispute?') === true) {
+      if (
+        confirm('Are you sure you want to deactivate this dispute?') === true
+      ) {
         button.form.submit();
       }
     }

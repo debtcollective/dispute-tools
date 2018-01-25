@@ -35,5 +35,4 @@ Collective.relations = {
     relatedCol: 'collective_id',
     orderBy: ['created_at', 'DESC'],
   },
-
 };

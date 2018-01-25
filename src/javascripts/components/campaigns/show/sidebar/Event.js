@@ -12,7 +12,18 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 export default class Event extends Widget {
   template(data) {
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
 
     const date = new Date(data.date);
@@ -38,11 +49,15 @@ export default class Event extends Widget {
               aria-expanded='false'
               style='max-height: 60px;'>
               ${(function _printDescription() {
-                return data.description.split(/\n/g).map(line => {
-                  if (line.trim()) return `<p class="pb1 -caption -fw-500">${line}</p>`;
-                  return '';
-                }).join('');
-              }())}
+                return data.description
+                  .split(/\n/g)
+                  .map(line => {
+                    if (line.trim())
+                      return `<p class="pb1 -caption -fw-500">${line}</p>`;
+                    return '';
+                  })
+                  .join('');
+              })()}
             </div>
             <div class='center'>
               <a class='-caption inline-block -fw-500' href='#'
@@ -51,7 +66,9 @@ export default class Event extends Widget {
             </div>
           </div>
           <div class="CampaignEventMapWrapper mt2 mxn3">
-            <iframe width="100%" height="100%" frameborder="0" allowfullscreen="" src="https://www.google.com/maps/embed/v1/place?key=${this.googleMapsKey}&amp;q=${encodeURIComponent(data.locationName)}"></iframe>
+            <iframe width="100%" height="100%" frameborder="0" allowfullscreen="" src="https://www.google.com/maps/embed/v1/place?key=${
+              this.googleMapsKey
+            }&amp;q=${encodeURIComponent(data.locationName)}"></iframe>
           </div>
           <div class="pt3 -caption -fw-500 mr1">
             <div class="flex pb2">
@@ -113,7 +130,9 @@ export default class Event extends Widget {
     return `
         <div class='pt2'>
           <ul class='AvatarList'>
-            ${this.data.attendees.map(attendee => _renderAttendee(attendee)).join('')}
+            ${this.data.attendees
+              .map(attendee => _renderAttendee(attendee))
+              .join('')}
           </ul>
         </div>
     `;
@@ -129,7 +148,9 @@ export default class Event extends Widget {
     if (this.data.imAttendee) {
       // Not going button
       buttons += `
-        <form class='inline-block mr2' action="/campaigns/events/${this.data.id}/rsvp" method='post'>
+        <form class='inline-block mr2' action="/campaigns/events/${
+          this.data.id
+        }/rsvp" method='post'>
           <input type='hidden' name='_method' value='delete'>
           <input type='hidden' name='_destroy' value=1>
           <input type='hidden' name='_csrf' value=${csrfToken}>
@@ -139,7 +160,9 @@ export default class Event extends Widget {
     } else {
       // Attend button
       buttons += `
-        <form class="inline-block mr2" action="/campaigns/events/${this.data.id}/rsvp" method="post">
+        <form class="inline-block mr2" action="/campaigns/events/${
+          this.data.id
+        }/rsvp" method="post">
           <input type="hidden" name="_method" value="post">
           <input type="hidden" name="_csrf" value="${csrfToken}">
           <button class="-k-btn btn-primary -sm -fw-700" type="submit">Attend</button>
@@ -156,11 +179,15 @@ export default class Event extends Widget {
   _render(el, beforeElement) {
     super._render(el, beforeElement);
 
-    Array.prototype.slice.call(this.element.querySelectorAll('.ReadMore')).forEach((element, i) => {
-      this.appendChild(new ReadMore({
-        name: `ReadMore-${i}`,
-        element,
-      }));
-    });
+    Array.prototype.slice
+      .call(this.element.querySelectorAll('.ReadMore'))
+      .forEach((element, i) => {
+        this.appendChild(
+          new ReadMore({
+            name: `ReadMore-${i}`,
+            element,
+          }),
+        );
+      });
   }
 }

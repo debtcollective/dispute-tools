@@ -15,21 +15,25 @@ export default class DisputesProcess extends Widget {
     super(config);
 
     this.ui = {};
-    this.ui.radioOptions = [].slice.call(this.element.querySelectorAll('[type="radio"]'));
+    this.ui.radioOptions = [].slice.call(
+      this.element.querySelectorAll('[type="radio"]'),
+    );
     this.ui.processCity = this.element.querySelector('[name="processCity"]');
 
     this.constraints = DisputesProcess.constraints;
     this._checkit = new Checkit(this.constraints);
 
-    this.appendChild(new Button({
-      name: 'Button',
-      element: this.element.querySelector('[type="submit"]'),
-    }));
+    this.appendChild(
+      new Button({
+        name: 'Button',
+        element: this.element.querySelector('[type="submit"]'),
+      }),
+    );
 
     this._bindEvents();
 
     const selected = this._getSelectedProcessOption();
-    if (selected && (selected.value === IN_PERSON_HEARING_ID)) {
+    if (selected && selected.value === IN_PERSON_HEARING_ID) {
       selected.checked = false;
       selected.click();
     }
@@ -42,7 +46,9 @@ export default class DisputesProcess extends Widget {
     });
 
     this._handleFormSubmitRef = this._handleFormSubmit.bind(this);
-    this.element.querySelector('form').addEventListener('submit', this._handleFormSubmitRef);
+    this.element
+      .querySelector('form')
+      .addEventListener('submit', this._handleFormSubmitRef);
   }
 
   _handleProcessChange(ev) {
@@ -96,9 +102,7 @@ export default class DisputesProcess extends Widget {
   }
 
   _getSelectedProcessOption() {
-    return this.ui.radioOptions.filter(option => {
-      return option.checked;
-    })[0];
+    return this.ui.radioOptions.filter(option => option.checked)[0];
   }
 
   _getSelectedProcessValue() {

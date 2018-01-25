@@ -11,110 +11,114 @@ const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 const PAGE_SIZE = 15;
 
 const PostsController = Class('PostsController').inherits(RestfulController)({
-  beforeActions: [{
-    before(req, res, next) {
-      Campaign.query()
+  beforeActions: [
+    {
+      before(req, res, next) {
+        Campaign.query()
           .where('id', req.params.id)
           .then(([campaign]) => {
             req.campaign = campaign;
             next();
           })
           .catch(next);
+      },
+      actions: ['index'],
     },
-    actions: ['index'],
-  },
-  {
-    before(req, res, next) {
-      const query = Post.query()
+    {
+      before(req, res, next) {
+        const query = Post.query()
           .where({
             campaign_id: req.params.id,
             parent_id: null,
           })
           .include('[comments, topic, user.account]');
 
-      const knex = Post.knex();
+        const knex = Post.knex();
 
-      const restifyPosts = (onlyPublic) => {
+        const restifyPosts = onlyPublic => {
           // if not, display only public posts
-        if (onlyPublic) {
-          query.where('public', true);
-        }
+          if (onlyPublic) {
+            query.where('public', true);
+          }
 
-        RESTfulAPI.createMiddleware({
-          queryBuilder: query,
-          filters: {
-            allowedFields: [],
-          },
-          order: {
-            default: '-created_at',
-            allowedFields: [
-              'created_at',
-            ],
-          },
-          paginate: {
-            pageSize: PAGE_SIZE,
-          },
-        })(req, res, next);
-      };
+          RESTfulAPI.createMiddleware({
+            queryBuilder: query,
+            filters: {
+              allowedFields: [],
+            },
+            order: {
+              default: '-created_at',
+              allowedFields: ['created_at'],
+            },
+            paginate: {
+              pageSize: PAGE_SIZE,
+            },
+          })(req, res, next);
+        };
 
         // only public posts
-      if (!req.user) {
-        restifyPosts(true);
-        return;
-      }
+        if (!req.user) {
+          restifyPosts(true);
+          return;
+        }
 
         // the user belongs to the campaign?
-      knex('UsersCampaigns')
+        knex('UsersCampaigns')
           .where({
             user_id: req.user.id,
             campaign_id: req.params.id,
           })
-          .then(result => restifyPosts(!result.length)).catch(next);
+          .then(result => restifyPosts(!result.length))
+          .catch(next);
+      },
+      actions: ['index'],
     },
-    actions: ['index'],
-  },
-  {
-    before(req, res, next) {
-      req.posts = res.locals.results;
+    {
+      before(req, res, next) {
+        req.posts = res.locals.results;
 
-      res.locals.headers = {
-        total_count: parseInt(res._headers.total_count, 10),
-        total_pages: parseInt(res._headers.total_pages, 10),
-        current_page: parseInt(req.query.page || 1, 10),
-        query: req.query,
-      };
+        res.locals.headers = {
+          total_count: parseInt(res._headers.total_count, 10),
+          total_pages: parseInt(res._headers.total_pages, 10),
+          current_page: parseInt(req.query.page || 1, 10),
+          query: req.query,
+        };
 
-      next();
+        next();
+      },
+      actions: ['index'],
     },
-    actions: ['index'],
-  },
     // add user account to comments
-  {
-    before(req, res, next) {
-      function getAccount(comment) {
-        return Account.query()
+    {
+      before(req, res, next) {
+        function getAccount(comment) {
+          return Account.query()
             .where('user_id', comment.userId)
             .then(([account]) => {
               comment.user = comment.user || {};
               comment.user.account = account;
             });
-      }
-
-      Promise.all(function* getCommentsAccount() {
-        for (const post of req.posts) {
-          for (const comment of post.comments) {
-            yield getAccount(comment);
-          }
         }
-      }()).then(() => next()).catch(next);
+
+        Promise.all(
+          (function* getCommentsAccount() {
+            for (const post of req.posts) {
+              for (const comment of post.comments) {
+                yield getAccount(comment);
+              }
+            }
+          })(),
+        )
+          .then(() => next())
+          .catch(next);
+      },
+      actions: ['index'],
     },
-    actions: ['index'],
-  },
-  {
-    before(req, res, next) {
-      Post.query()
+    {
+      before(req, res, next) {
+        Post.query()
           .where('id', req.params.id)
-          .then((result) => {
+          .then(result => {
             if (result.length === 0) {
               return next(new NotFoundError('Post not found'));
             }
@@ -125,41 +129,40 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
             return next();
           })
           .catch(next);
+      },
+      actions: ['update', 'delete', 'votePoll'],
     },
-    actions: ['update', 'delete', 'votePoll'],
-  },
   ],
 
   prototype: {
     index(req, res, next) {
-      Promise.each(req.posts, (post) => {
+      Promise.each(req.posts, post => {
         if (post.type !== 'Image') {
           return Promise.resolve();
         }
 
         return PostImage.query()
-            .where({
-              type: 'Post',
-              foreign_key: post.id,
-            })
-            .then((result) => {
-              if (result.length !== 0) {
-                post.image = result[0];
+          .where({
+            type: 'Post',
+            foreign_key: post.id,
+          })
+          .then(result => {
+            if (result.length !== 0) {
+              post.image = result[0];
 
-                if (post.image.file.exists('thumb')) {
-                  post.imageURL = post.image.file.url('thumb');
-                }
+              if (post.image.file.exists('thumb')) {
+                post.imageURL = post.image.file.url('thumb');
               }
-
-              return Promise.resolve();
-            });
+            }
+            return Promise.resolve();
+          });
       })
         .then(() => {
           const posts = req.posts;
 
           // Filter user private fields
           // This needs to be added to the ORM itself
-          _.forEach(posts, (post) => {
+          _.forEach(posts, post => {
             post.user = _.pick(post.user, ['id', 'role', 'account']);
           });
 
@@ -188,20 +191,24 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       }
 
       if (!builder) {
-        logger.debug(`New post by ${req.user.id} had invalid post type ${req.body.type}`);
+        logger.debug(
+          `New post by ${req.user.id} had invalid post type ${req.body.type}`,
+        );
         return Promise.reject(new Error('Invalid post type'));
       }
 
       return builder
-        .then((post) => {
+        .then(post => {
           res.json(post);
         })
-        .catch((err) => {
+        .catch(err => {
           res.status = 400;
 
-          res.json(err.errors || {
-            error: err,
-          });
+          res.json(
+            err.errors || {
+              error: err,
+            },
+          );
         });
     },
 
@@ -223,8 +230,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         text,
       };
 
-      return post.save()
-        .then(() => post);
+      return post.save().then(() => post);
     },
 
     _createPollPost(req) {
@@ -236,11 +242,11 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         public: req.body.public,
       });
 
-      const sanitizedOptions = req.body.options.map((option) =>
+      const sanitizedOptions = req.body.options.map(option =>
         sanitize(option, {
           allowedTags: [],
           allowedAttributes: [],
-        })
+        }),
       );
 
       post.data.title = sanitize(req.body.title, {
@@ -251,8 +257,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       post.data.options = sanitizedOptions;
       post.data.votes = sanitizedOptions.map(() => []);
 
-      return post.save()
-        .then(() => post);
+      return post.save().then(() => post);
     },
 
     _createImagePost(req, text) {
@@ -277,26 +282,27 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         type: 'Post',
       });
 
-      return Post.transaction((trx) =>
-          post.transacting(trx).save()
+      return Post.transaction(trx =>
+        post
+          .transacting(trx)
+          .save()
           .then(() => {
             attachment.foreignKey = post.id;
 
-            return attachment
-              .transacting(trx)
-              .save();
+            return attachment.transacting(trx).save();
           })
           .then(trx.commit)
-          .catch(trx.rollback)
-        )
+          .catch(trx.rollback),
+      )
         .then(() => {
           if (req.files && req.files.image && req.files.image.length > 0) {
             const image = req.files.image[0];
 
-            return attachment.attach('file', image.path, {
-              fileSize: image.size,
-              mimeType: image.mimetype || image.mimeType,
-            })
+            return attachment
+              .attach('file', image.path, {
+                fileSize: image.size,
+                mimeType: image.mimetype || image.mimeType,
+              })
               .then(() => {
                 fs.unlinkSync(image.path);
 
@@ -331,16 +337,19 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         text,
       };
 
-      return post.save()
+      return post
+        .save()
         .then(() => {
           res.json(post);
         })
         .catch(err => {
           res.status = 400;
 
-          res.json(err.errors || {
-            error: err,
-          });
+          res.json(
+            err.errors || {
+              error: err,
+            },
+          );
         });
     },
 
@@ -364,20 +373,23 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       if (!foundUser) {
         post.data.votes[index].push(req.user.id);
 
-        return post.save()
+        return post
+          .save()
           .then(() => {
             res.json(post);
           })
-          .catch((err) => {
+          .catch(err => {
             res.status = 400;
 
-            res.json(err.errors || {
-              error: err,
-            });
+            res.json(
+              err.errors || {
+                error: err,
+              },
+            );
           });
       }
 
-      return Promise.reject(new Error('You\'ve already voted in this poll'));
+      return Promise.reject(new Error("You've already voted in this poll"));
     },
 
     update(req, res) {
@@ -407,12 +419,14 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         .then(() => {
           res.json(post);
         })
-        .catch((err) => {
+        .catch(err => {
           res.status = 400;
 
-          res.json(err.errors || {
-            error: err,
-          });
+          res.json(
+            err.errors || {
+              error: err,
+            },
+          );
         });
     },
 
@@ -422,8 +436,7 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         allowedAttributes: [],
       });
 
-      return post.save()
-        .then(() => post);
+      return post.save().then(() => post);
     },
 
     _updatePollPost(req, post, body) {
@@ -432,15 +445,15 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         allowedAttributes: [],
       });
 
-      return post.save()
-        .then(() => post);
+      return post.save().then(() => post);
     },
 
     delete(req, res) {
-      req.post.destroy()
-        .then(() => {
-          res.redirect(CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id));
-        });
+      req.post.destroy().then(() => {
+        res.redirect(
+          CONFIG.router.helpers.Campaigns.show.url(req.params.campaign_id),
+        );
+      });
     },
   },
 });

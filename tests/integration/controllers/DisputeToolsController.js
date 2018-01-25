@@ -4,13 +4,13 @@ const sa = require('superagent');
 const expect = require('chai').expect;
 const path = require('path');
 const { createUser } = require('../../utils/helpers');
-const { signInAs } = require('../../utils/csrf')
+const { signInAs } = require('../../utils/csrf');
 
 const truncate = require(path.join(
   process.cwd(),
   'tests',
   'utils',
-  'truncate'
+  'truncate',
 ));
 
 const agent = sa.agent();
@@ -48,7 +48,7 @@ describe('DisputeToolsController', () => {
         .set('Accept', 'text/html')
         .end((err, res) => {
           _csrf = unescape(
-            /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]
+            /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
           );
 
           expect(res.status).to.equal(200);
@@ -77,7 +77,7 @@ describe('DisputeToolsController', () => {
               expect(res.status).to.equal(200);
               expect(res.redirects.length).to.be.equal(0);
               expect(res.req.path).to.be.equal(
-                urls.DisputeTools.show.url(tool.id)
+                urls.DisputeTools.show.url(tool.id),
               );
               done();
             });
@@ -90,17 +90,15 @@ describe('DisputeToolsController', () => {
     // 11111111-1111-3333-1111-111111111111 == Dispute Any Debt in Collections
     const toolId = '11111111-1111-3333-1111-111111111111';
 
-    return signInAs(user, agent)
-      .then(() => agent
+    return signInAs(user, agent).then(() =>
+      agent
         .get(`${url}${urls.DisputeTools.show.url(toolId)}`)
         .set('Accept', 'text/html')
-        .then((res) => {
+        .then(res => {
           expect(res.status).to.equal(200);
           expect(res.redirects.length).to.be.equal(0);
-          expect(res.req.path).to.be.equal(
-            urls.DisputeTools.show.url(toolId)
-          );
-        })
+          expect(res.req.path).to.be.equal(urls.DisputeTools.show.url(toolId));
+        }),
     );
   });
 });

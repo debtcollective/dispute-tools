@@ -30,7 +30,6 @@ module.exports = {
     },
   },
 
-
   studentDebtDispute: {
     disputeToolId: ids.student,
     data: {
@@ -48,7 +47,8 @@ module.exports = {
           schoolName: 'University of Phoenix',
           'school-city': 'San Francisco',
           'school-state': 'California',
-          'school-address': '1234 Long Address for a School Under Normal Conditions',
+          'school-address':
+            '1234 Long Address for a School Under Normal Conditions',
           'school-zip-code': '90434',
           'school-attended-to': '2017-12-28',
           'school-attended-from': '2017-12-12',
@@ -64,7 +64,6 @@ module.exports = {
       disputeConfirmFollowUp: true,
     },
   },
-
 
   privateStudentLoanDispute: {
     disputeToolId: ids.privateStudent,
@@ -91,7 +90,6 @@ module.exports = {
     },
   },
 
-
   creditReportDispute: {
     disputeToolId: ids.creditReport,
     data: {
@@ -116,7 +114,6 @@ module.exports = {
     },
   },
 
-
   taxOffsetReview_a: {
     disputeToolId: ids.taxOffsetReview,
     data: {
@@ -134,7 +131,8 @@ module.exports = {
           schoolName: 'University of Phoenix',
           'school-city': 'San Francisco',
           'school-state': 'California',
-          'school-address': '1234 Long Address for a School Under Normal Conditions',
+          'school-address':
+            '1234 Long Address for a School Under Normal Conditions',
           'school-zip-code': '90434',
           'school-attended-to': '2016-12-31',
           'school-attended-from': '2013-11-30',
@@ -146,7 +144,6 @@ module.exports = {
       disputeConfirmFollowUp: true,
     },
   },
-
 
   taxOffsetReview_b: {
     disputeToolId: ids.taxOffsetReview,
@@ -165,7 +162,8 @@ module.exports = {
           schoolName: 'University of Phoenix',
           'school-city': 'San Francisco',
           'school-state': 'Alaska',
-          'school-address': '1234 Long Address for a School Under Normal Conditions',
+          'school-address':
+            '1234 Long Address for a School Under Normal Conditions',
           'school-zip-code': '90434',
           'school-attended-to': '2015-11-30',
           'school-attended-from': '2011-11-30',
@@ -224,7 +222,16 @@ module.exports = {
       },
       option: 'C',
       signature: 'This is a SIGNATURE',
-      attachments: [{ id: 'f24d3a21-bdbe-4d6e-ac77-ad658a58b947', name: 'personal-statement-uploader', path: 'https://debt-collective.s3.amazonaws.com/development/DisputeAttachment/f24d3a21-bdbe-4d6e-ac77-ad658a58b947/file/original.pdf?AWSAccessKeyId=AKIAIXYXF5LUYYVPY23A&Expires=1514945209&Signature=zNd4n6Ua9pxe2wNFyhKy2rxDqEc%3D', fullPath: 'https://s3.amazonaws.com/debt-collective/https://debt-collective.s3.amazonaws.com/development/DisputeAttachment/f24d3a21-bdbe-4d6e-ac77-ad658a58b947/file/original.pdf?AWSAccessKeyId=AKIAIXYXF5LUYYVPY23A&Expires=1514945209&Signature=zNd4n6Ua9pxe2wNFyhKy2rxDqEc%3D' }],
+      attachments: [
+        {
+          id: 'f24d3a21-bdbe-4d6e-ac77-ad658a58b947',
+          name: 'personal-statement-uploader',
+          path:
+            'https://debt-collective.s3.amazonaws.com/development/DisputeAttachment/f24d3a21-bdbe-4d6e-ac77-ad658a58b947/file/original.pdf?AWSAccessKeyId=AKIAIXYXF5LUYYVPY23A&Expires=1514945209&Signature=zNd4n6Ua9pxe2wNFyhKy2rxDqEc%3D',
+          fullPath:
+            'https://s3.amazonaws.com/debt-collective/https://debt-collective.s3.amazonaws.com/development/DisputeAttachment/f24d3a21-bdbe-4d6e-ac77-ad658a58b947/file/original.pdf?AWSAccessKeyId=AKIAIXYXF5LUYYVPY23A&Expires=1514945209&Signature=zNd4n6Ua9pxe2wNFyhKy2rxDqEc%3D',
+        },
+      ],
       disputeProcess: '1',
       disputeConfirmFollowUp: true,
     },
@@ -250,7 +257,8 @@ module.exports = {
           'school-city': 'San Francisco',
           'atbd-option5': 'yes',
           'school-state': 'Alabama',
-          'school-address': '1234 Long Address for a School Under Normal Conditions',
+          'school-address':
+            '1234 Long Address for a School Under Normal Conditions',
           'school-zip-code': '90434',
           'atbd-applying-as': 'yes',
           'atbd-student-ssn': '125-34-2356',
@@ -275,8 +283,7 @@ module.exports = {
     data: {
       forms: {
         'personal-information-form': {
-          ssn:
-            '123231234',
+          ssn: '123231234',
           city: 'Washington',
           name: 'Test Dispute Render User Name',
           email: 'fdsa@fdsa.net',

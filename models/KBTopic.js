@@ -8,7 +8,6 @@ const KBTopic = Class('KBTopic').inherits(Krypton.Model)({
   },
 
   attributes: ['id', 'title', 'createdAt', 'updatedAt'],
-
 });
 
 module.exports = KBTopic;

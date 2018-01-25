@@ -5,7 +5,7 @@ const uniqBy = require('lodash/uniqBy');
 const moment = require('moment');
 
 const DashboardController = Class('DashboardController').inherits(
-  RestfulController
+  RestfulController,
 )({
   beforeActions: [
     // Load Collectives
@@ -17,23 +17,26 @@ const DashboardController = Class('DashboardController').inherits(
 
         const collectives = req.user.debtTypes;
 
-        Promise.all(collectives.map((c) => {
-          const subquery = Campaign.query()
-          .count('*')
-          .where('published', true)
-          .where('collective_id', c.id);
+        Promise.all(
+          collectives.map(c => {
+            const subquery = Campaign.query()
+              .count('*')
+              .where('published', true)
+              .where('collective_id', c.id);
 
-          return subquery.then(([result]) => {
-            c.campaignCount = parseInt(result.count, 10);
-            return c;
-          });
-        })).then(() => {
-          req.collectives = collectives;
-          res.locals.collectives = collectives;
+            return subquery.then(([result]) => {
+              c.campaignCount = parseInt(result.count, 10);
+              return c;
+            });
+          }),
+        )
+          .then(() => {
+            req.collectives = collectives;
+            res.locals.collectives = collectives;
 
-          next();
-        })
-        .catch(next);
+            next();
+          })
+          .catch(next);
       },
       actions: ['index'],
     },
@@ -87,7 +90,9 @@ const DashboardController = Class('DashboardController').inherits(
           // if the user has at least one campaign
           // show campaigns from the collectives he belongs to
           // not older than 3 months and that he is not already part of
-          const threeMonthsAgo = moment().subtract(3, 'months').toDate();
+          const threeMonthsAgo = moment()
+            .subtract(3, 'months')
+            .toDate();
           const campaignIds = req.user_campaigns.map(campaign => campaign.id);
 
           query
@@ -127,7 +132,7 @@ const DashboardController = Class('DashboardController').inherits(
             res.locals.dispute = dispute;
 
             // Taken from DisputesController.show
-            res.locals.latestStatus = req.dispute.statuses.filter((status) => {
+            res.locals.latestStatus = req.dispute.statuses.filter(status => {
               if (status.status !== 'User Update') {
                 return true;
               }

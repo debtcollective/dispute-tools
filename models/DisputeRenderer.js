@@ -17,116 +17,144 @@ const PrivateAttachmentStorage = require('./PrivateAttachmentStorage');
 
 const disputeRendererData = require(path.join(
   process.cwd(),
-  '/lib/data/dispute-renderer/index.js'
+  '/lib/data/dispute-renderer/index.js',
 ));
 
 const DisputeRenderer = Class('DisputeRenderer')
   .inherits(Krypton.Model)
   .includes(Krypton.Attachment)({
-    tableName: 'DisputeRenderers',
-    data: disputeRendererData,
-    attributes: ['id', 'disputeId', 'zipPath', 'zipMeta', 'createdAt', 'updatedAt'],
-    attachmentStorage: new PrivateAttachmentStorage(assignDefaultConfig({
-      acceptedMimeTypes: ['application/zip', 'application/octet-stream', /application/],
+  tableName: 'DisputeRenderers',
+  data: disputeRendererData,
+  attributes: [
+    'id',
+    'disputeId',
+    'zipPath',
+    'zipMeta',
+    'createdAt',
+    'updatedAt',
+  ],
+  attachmentStorage: new PrivateAttachmentStorage(
+    assignDefaultConfig({
+      acceptedMimeTypes: [
+        'application/zip',
+        'application/octet-stream',
+        /application/,
+      ],
       maxFileSize: 41943040, // 40MB
-    })),
+    }),
+  ),
 
-    prototype: {
-      init(config) {
-        Krypton.Model.prototype.init.call(this, config);
+  prototype: {
+    init(config) {
+      Krypton.Model.prototype.init.call(this, config);
 
-        this.hasAttachment({
-          name: 'zip',
+      this.hasAttachment({
+        name: 'zip',
+      });
+
+      return this;
+    },
+
+    async render(dispute) {
+      const documents = await render(dispute);
+
+      const attachments = documents.reduce(
+        (acc, files) => [
+          ...acc,
+          ...files.map(
+            ({ rendered }) =>
+              new Attachment({
+                type: 'DisputeRenderer',
+                foreignKey: this.id,
+                _filePath: rendered,
+              }),
+          ),
+        ],
+        [],
+      );
+
+      return Promise.map(attachments, attachment =>
+        attachment
+          .save()
+          .then(() =>
+            attachment
+              .attach('file', attachment._filePath)
+              .then(() => attachment.save()),
+          ),
+      );
+    },
+
+    _getDocuments(dispute) {
+      return this.constructor.data[dispute.disputeToolId][dispute.data.option]
+        .documents;
+    },
+
+    _printField(template, field, value) {
+      const font = field.font || 'Arial';
+      const size = field.fontSize || 38;
+
+      template
+        .font(font)
+        .fontSize(size)
+        .drawText(field.x, field.y, value);
+    },
+
+    async buildZip(_renderer) {
+      const renderer = this;
+
+      const zip = archiver.create('zip', {});
+      const zipPath = path.join(OS.tmpdir(), `${uuid.v4()}.zip`);
+      const writer = fs.createWriteStream(zipPath);
+
+      zip.pipe(writer);
+
+      const handleAttachment = async attachment => {
+        let readStream;
+
+        const url = getSignedURL(attachment.file.url('original'));
+
+        if (LOCAL_URI_REGEXP.test(url)) {
+          readStream = fs.createReadStream(
+            path.join(process.cwd(), 'public', url),
+          );
+        } else if (REMOTE_URI_REGEXP.test(url)) {
+          readStream = request.get(url);
+        }
+
+        await zip.append(readStream, {
+          name: `debt-collective-dispute/${
+            attachment.file.meta('original').originalFileName
+          }`,
         });
+      };
 
-        return this;
-      },
+      const [dispute] = await Dispute.query()
+        .where('id', _renderer.disputeId)
+        .include('attachments');
 
-      async render(dispute) {
-        const documents = await render(dispute);
+      await Promise.map(
+        [..._renderer.attachments, ...dispute.attachments],
+        handleAttachment,
+        { concurrency: 1 }, // Why do we only allow one attachment at a time here?
+      );
 
-        const attachments = documents.reduce((acc, files) => [...acc, ...files.map(({ rendered }) => new Attachment({
-          type: 'DisputeRenderer',
-          foreignKey: this.id,
-          _filePath: rendered,
-        }))], []);
-
-        return Promise.map(attachments,
-          attachment => attachment.save()
-            .then(() => attachment.attach('file', attachment._filePath)
-              .then(() => attachment.save())));
-      },
-
-      _getDocuments(dispute) {
-        return this.constructor.data[dispute.disputeToolId][dispute.data.option].documents;
-      },
-
-      _printField(template, field, value) {
-        const font = field.font || 'Arial';
-        const size = field.fontSize || 38;
-
-        template
-          .font(font)
-          .fontSize(size)
-          .drawText(field.x, field.y, value);
-      },
-
-      async buildZip(_renderer) {
-        const renderer = this;
-
-        const zip = archiver.create('zip', {});
-        const zipPath = path.join(OS.tmpdir(), `${uuid.v4()}.zip`);
-        const writer = fs.createWriteStream(zipPath);
-
-        zip.pipe(writer);
-
-        const handleAttachment = async attachment => {
-          let readStream;
-
-          const url = getSignedURL(attachment.file.url('original'));
-
-          if (LOCAL_URI_REGEXP.test(url)) {
-            readStream = fs.createReadStream(
-              path.join(process.cwd(), 'public', url)
-            );
-          } else if (REMOTE_URI_REGEXP.test(url)) {
-            readStream = request.get(url);
+      await new Promise((resolve, reject) => {
+        writer.on('close', err => {
+          if (err) {
+            return reject(err);
           }
 
-          await zip.append(readStream, {
-            name: `debt-collective-dispute/${
-              attachment.file.meta('original').originalFileName
-              }`,
-          });
-        };
-
-        const [dispute] = await Dispute.query()
-          .where('id', _renderer.disputeId)
-          .include('attachments');
-
-        await Promise.map(
-          [..._renderer.attachments, ...dispute.attachments],
-          handleAttachment,
-          { concurrency: 1 } // Why do we only allow one attachment at a time here?
-        );
-
-        await new Promise((resolve, reject) => {
-          writer.on('close', err => {
-            if (err) {
-              return reject(err);
-            }
-
-            return resolve();
-          });
-
-          return zip.finalize();
+          return resolve();
         });
 
-        await renderer.attach('zip', zipPath);
-        const [id] = await renderer.save();
-        return id;
-      },
+        return zip.finalize();
+      });
+
+      await renderer.attach('zip', zipPath);
+      const [id] = await renderer.save();
+      return id;
     },
-  });
+  },
+});
 
 module.exports = DisputeRenderer;

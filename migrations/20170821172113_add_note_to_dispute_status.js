@@ -1,12 +1,9 @@
-
-exports.up = (knex) => {
-  return knex.schema.table('DisputeStatuses', (t) => {
+exports.up = knex =>
+  knex.schema.table('DisputeStatuses', t => {
     t.text('note');
   });
-};
 
-exports.down = (knex) => {
-  return knex.schema.table('DisputeStatuses', (t) => {
+exports.down = knex =>
+  knex.schema.table('DisputeStatuses', t => {
     t.dropColumn('note');
   });
-};
