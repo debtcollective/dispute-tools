@@ -37,7 +37,7 @@ const CollectivesController = Class('CollectivesController').inherits(RestfulCon
     // Load Collectives
     {
       before(req, res, next) {
-        Collective.query()
+        Collective.queryVisible()
           .orderBy('created_at', 'DESC')
           .then((collectives) => Promise.all(collectives.map((c) => {
             const subquery = Campaign.query()

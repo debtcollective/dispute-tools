@@ -4,18 +4,12 @@ const sa = require('superagent');
 const expect = require('chai').expect;
 const path = require('path');
 const Promise = require('bluebird');
-const {
-  createUser,
-} = require('../../utils/helpers.js');
-const PrivateAttachmentStorage = require('../../../models/PrivateAttachmentStorage');
 const sinon = require('sinon');
 
-const truncate = require(path.join(
-  process.cwd(),
-  'tests',
-  'utils',
-  'truncate'
-));
+const { createUser } = require('../../utils/helpers.js');
+const PrivateAttachmentStorage = require('../../../models/PrivateAttachmentStorage');
+
+const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 
 const agent = sa.agent();
 const url = CONFIG.env().siteURL;
@@ -197,7 +191,7 @@ describe('DisputesController', () => {
       });
   });
 
-  it('Should allow a User to view index', function (done) {
+  it('Should allow a User to view index', function userViewsIndex(done) {
     this.timeout(10000);
 
     agent

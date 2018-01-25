@@ -25,6 +25,7 @@ const Collective = Class('Collective').inherits(Krypton.Model).includes(Krypton.
     maxFileSize: 5242880,
     acceptedMimeTypes: [/image/],
   })),
+  invisibleId: '00000000-0000-0000-0000-000000000000',
 
   prototype: {
     init(config) {
@@ -50,6 +51,12 @@ const Collective = Class('Collective').inherits(Krypton.Model).includes(Krypton.
       return this;
     },
   },
+
+  queryVisible(...args) {
+    return Krypton.Model.query.call(this, ...args)
+        .whereNot('id', this.invisibleId);
+  }
+
 });
 
 module.exports = Collective;

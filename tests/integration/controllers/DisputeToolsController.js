@@ -3,7 +3,8 @@
 const sa = require('superagent');
 const expect = require('chai').expect;
 const path = require('path');
-const { createUser, signInAs } = require('../../utils/helpers');
+const { createUser } = require('../../utils/helpers');
+const { signInAs } = require('../../utils/csrf')
 
 const truncate = require(path.join(
   process.cwd(),

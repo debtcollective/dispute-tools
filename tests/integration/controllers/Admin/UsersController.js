@@ -1,13 +1,9 @@
 /* globals Post, Dispute, Account, Collective */
 const sa = require('superagent');
 const { expect } = require('chai');
-const {
-  createUser,
-  createEvent,
-  signInAs,
-  createPost,
-  createDispute,
-} = require('../../../utils/helpers');
+const { createUser, createEvent, createPost,
+        createDispute } = require('../../../utils/helpers');
+const { signInAs } = require('../../../utils/csrf');
 const truncate = require('../../../utils/truncate');
 const config = require('../../../../config/config');
 const User = require('../../../../models/User');
@@ -46,8 +42,6 @@ describe('Admin/UsersController', () => {
   });
 
   describe('#destroy', () => {
-    let collect;
-
     after(() => truncate(User));
 
     const deletionRequest = function httpDel(target) {
@@ -91,6 +85,7 @@ describe('Admin/UsersController', () => {
     describe('succeeds', () => {
       let mortalUser;
       let postId;
+      let collectives;
 
       beforeEach(() =>
         createUser({ role: 'User' })
@@ -112,8 +107,11 @@ describe('Admin/UsersController', () => {
               .include('debtTypes')
           )
           .then(([user]) => {
-            collect = user.debtTypes[0];
+            collectives = [];
+            collectives.concat(user.debtTypes[0]);
           })
+          .then(() => Collective.query().where('id', Collective.invisibleId))
+          .then(([invisibleCollective]) => collectives.concat(invisibleCollective))
           // delete the user
           .then(() => deletionRequest(mortalUser))
       );
@@ -154,13 +152,15 @@ describe('Admin/UsersController', () => {
             );
           }));
 
-      it('decreases the collective member count', () =>
-        Collective.query()
-          .where('id', collect.id)
-          .include('userCount')
-          .then(([updated]) =>
-            expect(updated.userCount).to.be.equal(collect.userCount - 1)
-          ));
+      it('decreases the collective member count, including the invisible collective', () =>
+        Promise.all(collectives.map(collective =>
+          Collective.query()
+            .where('id', Collective.invisibleId)
+            .include('userCount')
+            .then(([updated]) =>
+              expect(updated[0].userCount).to.be.equal(collective.userCount - 1)
+          )))
+        );
     });
   });
 });

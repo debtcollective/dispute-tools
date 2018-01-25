@@ -1,5 +1,5 @@
 /* global Class, CONFIG, RestfulController, NotFoundError, Post, PostsController,
-PostImage, neonode, Campaign, Account */
+PostImage, neonode, Campaign, Account, logger */
 
 const _ = require('lodash');
 const sanitize = require('sanitize-html');
@@ -169,6 +169,8 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
     },
 
     create(req, res) {
+      logger.debug(`Creating a new post by ${req.user.id}`);
+
       let builder = false;
 
       const controller = neonode.controllers.Posts;
@@ -186,10 +188,11 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       }
 
       if (!builder) {
-        builder = Promise.reject(new Error('Invalid post type'));
+        logger.debug(`New post by ${req.user.id} had invalid post type ${req.body.type}`);
+        return Promise.reject(new Error('Invalid post type'));
       }
 
-      builder
+      return builder
         .then((post) => {
           res.json(post);
         })
@@ -397,10 +400,10 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       }
 
       if (!builder) {
-        builder = Promise.reject(new Error('Invalid post type'));
+        return Promise.reject(new Error('Invalid post type'));
       }
 
-      builder
+      return builder
         .then(() => {
           res.json(post);
         })

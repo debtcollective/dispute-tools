@@ -6,8 +6,10 @@ const Promise = require('bluebird');
 const path = require('path');
 const uuid = require('uuid');
 
-const agent = sa.agent();
+const { requestCSRF } = require(path.join(process.cwd(), 'tests', 'utils', 'csrf'));
 const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
+
+const agent = sa.agent();
 const url = CONFIG.env().siteURL;
 const urls = CONFIG.router.helpers;
 
@@ -43,7 +45,7 @@ describe('UsersController', () => {
       phone: '123456-789',
     });
 
-    return Collective.first().then((res) => {
+    return Collective.queryVisible().then(([res]) => {
       collective = res;
 
       return User.transaction((trx) => user.transacting(trx).save()
@@ -148,41 +150,65 @@ describe('UsersController', () => {
   });
 
   describe('#create', () => {
-    it('As a Visitor, it should create a user', (done) => {
-      agent.post(`${url}${urls.Users.create.url()}`)
-        .set('Accept', 'text/html')
-        .send({
-          email: 'test@example.com',
-          password: '12345678',
+    const testEmail = 'test@example.com';
 
-          fullname: 'Users Fullname',
-          state: 'Texas',
-          zip: '90210',
-          phone: '123456789',
-          collectiveIds: [collective.id],
-          _csrf,
-        })
-        .end((err, res) => {
-          expect(err).to.be.equal(null);
-          expect(res.status).to.be.equal(200);
-          done();
-        });
+    const getUserCount = function getUserCount(collectiveId) {
+      return Collective.query().where('id', collectiveId)
+          .then((res) => res[0].userCount);
+    };
+
+    it('As a Visitor, it should create a user', () => {
+      let oldUserCount;
+
+      return getUserCount(Collective.invisibleId)
+      .then(userCount => {
+        oldUserCount = userCount;
+
+        return requestCSRF(agent)
+          .then((csrf) =>
+            agent.post(`${url}${urls.Users.create.url()}`)
+              .set('Accept', 'text/html')
+              .send({
+                email: testEmail,
+                password: '12345678',
+
+                fullname: 'Users Fullname',
+                state: 'Texas',
+                zip: '90210',
+                phone: '123456789',
+                collectiveIds: [collective.id],
+                _csrf: csrf,
+              })
+              .then(res => {
+                expect(res.status).to.be.equal(200);
+              })
+              .then(() => getUserCount(Collective.invisibleId))
+              .then((newUserCount) => {
+                expect(newUserCount).to.equal(oldUserCount + 1);
+              })
+             .catch(err => {
+               throw err;
+             })
+          );
+      });
     });
 
-    it('As a Visitor, it should not validate when creating a user', (done) => {
-      agent.post(`${url}${urls.Users.create.url()}`)
-        .set('Accept', 'text/html')
-        .send({
-          email: 'test@example.com',
-          password: '12345678',
-          _csrf,
-        })
-        .end((err, res) => {
-          expect(err.toString()).to.be.equal('Error: Bad Request');
-          expect(res.status).to.be.equal(400);
-          done();
-        });
-    });
+    it('As a Visitor, it should not validate when creating a user', () =>
+      requestCSRF(agent)
+        .then(csrf =>
+          agent.post(`${url}${urls.Users.create.url()}`)
+            .set('Accept', 'text/html')
+            .send({
+              email: testEmail,
+              password: '12345678',
+              _csrf: csrf,
+            })
+            .catch(err => {
+              expect(err.toString()).to.be.equal('Error: Bad Request');
+            })
+        )
+    );
+
   });
 
   describe('#update', () => {

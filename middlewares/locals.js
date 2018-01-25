@@ -14,7 +14,7 @@ module.exports = function locals(req, res, next) {
   res.locals.STRIPE_PUBLISHABLE_KEY = CONFIG.env().stripe.publishable;
 
   if (!req.user) {
-    return Collective.query().then((collectives) => {
+    return Collective.queryVisible().then((collectives) => {
       res.locals.COLLECTIVES = collectives;
       next();
     });
