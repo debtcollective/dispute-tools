@@ -4,9 +4,10 @@ const sa = require('superagent');
 const expect = require('chai').expect;
 const path = require('path');
 const Promise = require('bluebird');
+const sinon = require('sinon');
+
 const { createUser } = require('../../utils/helpers.js');
 const PrivateAttachmentStorage = require('../../../models/PrivateAttachmentStorage');
-const sinon = require('sinon');
 
 const truncate = require(path.join(
   process.cwd(),
@@ -195,7 +196,7 @@ describe('DisputesController', () => {
       });
   });
 
-  it('Should allow a User to view index', function(done) {
+  it('Should allow a User to view index', function userViewsIndex(done) {
     this.timeout(10000);
 
     agent
@@ -436,9 +437,6 @@ describe('DisputesController', () => {
           },
         }),
       );
-
-      // await signInAs(data.User, agent);
-      // attachableDispute = await createDispute(data.User);
     });
 
     after(() => {

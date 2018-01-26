@@ -1,4 +1,3 @@
-import WebFont from 'webfontloader';
 import Pisces from 'pisces';
 import NodeSupport from '../../lib/widget/NodeSupport';
 import Common from '../../components/Common';
@@ -18,16 +17,6 @@ class ViewDisputeToolsIndex extends NodeSupport {
     );
 
     this.disputeIds = config.disputeIds;
-
-    WebFont.load({
-      google: {
-        families: ['Space Mono'],
-      },
-    });
-
-    this.DTRlink = document.getElementById('defense-to-repayment-link');
-    this.DTRstayButton = document.getElementById('stay-button');
-    this.DTRcontinueButton = document.getElementById('continue-button');
 
     this._bindEvents()
       ._bindScrollTo()

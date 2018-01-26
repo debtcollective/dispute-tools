@@ -110,7 +110,11 @@ const HomeController = Class('HomeController').inherits(BaseController)({
         });
 
       if (!token) {
-        res.status(400).json({ error: { message: 'Invalid token' } });
+        res.status(400).json({
+          error: {
+            message: 'Invalid token',
+          },
+        });
         return;
       }
 
@@ -170,7 +174,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
 
     index(req, res) {
       if (!req.user) res.render('home/index.pug');
-      else res.redirect(CONFIG.router.helpers.Collectives.url());
+      else res.redirect(CONFIG.router.helpers.dashboard.url());
     },
 
     about(req, res) {

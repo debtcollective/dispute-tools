@@ -13,7 +13,7 @@ the app to work correctly
 * [PostgreSQL](https://www.postgresql.org/) 9.5 or greater
 * GraphicsMagick (`brew install graphicsmagick` if you are on macOS)
 * ImageMagick (`brew install imagemagick` if you are on macOS)
-* PDFtk (`brew cask install pdftk` if you are on macOS)
+* PDFtk (user this [Installer](`https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-mac_osx-10.11-setup.pkg`) if you are on macOS)
 4. [Yarn](https://yarnpkg.com/) 1.3 or greater
 
 ## Optional Dependencies

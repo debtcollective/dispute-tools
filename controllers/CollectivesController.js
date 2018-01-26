@@ -38,7 +38,7 @@ const CollectivesController = Class('CollectivesController').inherits(
     // Load Collectives
     {
       before(req, res, next) {
-        Collective.query()
+        Collective.queryVisible()
           .orderBy('created_at', 'DESC')
           .then(collectives =>
             Promise.all(

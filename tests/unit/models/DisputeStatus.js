@@ -26,7 +26,7 @@ describe('Dispute Status', () => {
     return DisputeTool.first()
       .then(dt => {
         tool = dt;
-        return Collective.first().then(result => {
+        return Collective.queryVisible().then(([result]) => {
           collective = result;
 
           return User.transaction(trx =>

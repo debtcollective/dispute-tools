@@ -142,6 +142,7 @@ a {
   text-decoration: none;
   transition: color 260ms;
 
+
   &:hover {color: var(--primary-lighter)}
 
   &:not([href]) {

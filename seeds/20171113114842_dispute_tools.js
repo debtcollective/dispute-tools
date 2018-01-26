@@ -9,6 +9,7 @@ exports.seed = knex =>
         {
           id: '11111111-1111-1111-1111-111111111111',
           name: 'Dispute Your Wages Being Taken',
+          readable_name: 'Wage Garnishment Dispute',
           excerpt:
             'Use this tool if you have a federal student loan that is being garnished or if you have been threatened with garnishment.',
           about: `### Dispute Your Wages Being Taken
@@ -26,6 +27,7 @@ The number is: 1-800-304-3107.`,
         {
           id: '11111111-1111-2222-1111-111111111111',
           name: 'Dispute Your Tax Return Being Taken',
+          readable_name: 'Tax Offset Dispute',
           excerpt:
             'Use this tool if your tax return is being seized for an unpaid federal student loan.',
           about: `### Dispute Your Tax Return Being Taken
@@ -42,6 +44,7 @@ The Department of Education usually sends offset notices once per year in the su
         {
           id: '11111111-1111-3333-1111-111111111111',
           name: 'Dispute Any Debt in Collections',
+          readable_name: 'General Debt Dispute',
           excerpt:
             'Use this tool to dispute any debt (except a student loan) that has been sent to collections. Make them prove it!',
           about: `### Dispute Any Debt in Collections
@@ -58,6 +61,7 @@ Before you begin you will need the name and address of the creditor or the colle
         {
           id: '11111111-1111-4444-1111-111111111111',
           name: 'Dispute Errors on Your Credit Report',
+          readable_name: 'Credit Report Dispute',
           excerpt:
             'Most of us have been victims of bad credit reporting. Use this tool to send a dispute.',
           about: `### Dispute Errors on Your Credit Report
@@ -86,6 +90,7 @@ Millions of us have errors on our credit reports, which makes it harder to do ba
         {
           id: '11111111-1111-6666-1111-111111111111',
           name: 'Dispute an Unpaid Private Student Loan',
+          readable_name: 'Private Student Loan Dispute',
           excerpt:
             'Use this tool to send a dispute to a private student loan in collections.',
           about: `### Dispute an Unpaid Private Student Loan
@@ -109,6 +114,8 @@ If you don't have the name and address of the collection agency, you will not be
         tools.map(tool => ({
           id: tool.id,
           name: tool.name,
+          readable_name: tool.readable_name,
+          excerpt: tool.excerpt,
           about: tool.about,
           completed: tool.completed,
           created_at: new Date(),

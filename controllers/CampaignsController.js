@@ -327,6 +327,10 @@ const CampaignsController = Class('CampaignsController').inherits(
       res.render('campaigns/show');
     },
 
+    index(req, res) {
+      res.render('campaigns/index');
+    },
+
     join(req, res, next) {
       const knex = Campaign.knex();
       const debtAmount = req.body.debt_amount * 100 || 0;

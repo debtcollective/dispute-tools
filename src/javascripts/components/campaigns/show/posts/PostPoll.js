@@ -34,7 +34,6 @@ export default class PostPoll extends Post {
               ${this.getAvatarHTMLString(data.user.account)}
             </div>
             <div class='flex-auto pl2'>
-              <p class='-fw-500'>${data.user.account.fullname}</p>
               ${this.getCaptionHTMLString(data)}
               <p class='Campaign_FeedItemText pb3'>${data.data.title}</p>
               <div data-main-content>
@@ -188,7 +187,9 @@ export default class PostPoll extends Post {
         {
           campaignId: this.data.campaignId,
           postId: this.data.id,
-          body: { index },
+          body: {
+            index,
+          },
         },
         (err, res) => {
           if (err) {

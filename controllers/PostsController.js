@@ -1,6 +1,7 @@
 /* global Class, CONFIG, RestfulController, NotFoundError, Post, PostsController,
-PostImage, neonode, Campaign, Account */
+PostImage, neonode, Campaign, Account, logger */
 
+const _ = require('lodash');
 const sanitize = require('sanitize-html');
 const Promise = require('bluebird');
 const fs = require('fs-extra');
@@ -153,17 +154,26 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
                 post.imageURL = post.image.file.url('thumb');
               }
             }
-
             return Promise.resolve();
           });
       })
         .then(() => {
-          res.json(req.posts);
+          const posts = req.posts;
+
+          // Filter user private fields
+          // This needs to be added to the ORM itself
+          _.forEach(posts, post => {
+            post.user = _.pick(post.user, ['id', 'role', 'account']);
+          });
+
+          res.json(posts);
         })
         .catch(next);
     },
 
     create(req, res) {
+      logger.debug(`Creating a new post by ${req.user.id}`);
+
       let builder = false;
 
       const controller = neonode.controllers.Posts;
@@ -181,17 +191,24 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       }
 
       if (!builder) {
-        builder = Promise.reject(new Error('Invalid post type'));
+        logger.debug(
+          `New post by ${req.user.id} had invalid post type ${req.body.type}`,
+        );
+        return Promise.reject(new Error('Invalid post type'));
       }
 
-      builder
+      return builder
         .then(post => {
           res.json(post);
         })
         .catch(err => {
           res.status = 400;
 
-          res.json(err.errors || { error: err });
+          res.json(
+            err.errors || {
+              error: err,
+            },
+          );
         });
     },
 
@@ -328,7 +345,11 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
         .catch(err => {
           res.status = 400;
 
-          res.json(err.errors || { error: err });
+          res.json(
+            err.errors || {
+              error: err,
+            },
+          );
         });
     },
 
@@ -360,7 +381,11 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
           .catch(err => {
             res.status = 400;
 
-            res.json(err.errors || { error: err });
+            res.json(
+              err.errors || {
+                error: err,
+              },
+            );
           });
       }
 
@@ -387,17 +412,21 @@ const PostsController = Class('PostsController').inherits(RestfulController)({
       }
 
       if (!builder) {
-        builder = Promise.reject(new Error('Invalid post type'));
+        return Promise.reject(new Error('Invalid post type'));
       }
 
-      builder
+      return builder
         .then(() => {
           res.json(post);
         })
         .catch(err => {
           res.status = 400;
 
-          res.json(err.errors || { error: err });
+          res.json(
+            err.errors || {
+              error: err,
+            },
+          );
         });
     },
 

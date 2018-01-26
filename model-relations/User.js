@@ -18,6 +18,7 @@ User.relations = {
   },
 
   debtTypes: {
+    // will never return the invisible collective (see `query` in `models/Collective.js`)
     type: 'HasManyThrough',
     relatedModel: Collective,
     ownerCol: 'id',
@@ -30,7 +31,7 @@ User.relations = {
   },
 
   campaigns: {
-    type: 'HasMany',
+    type: 'HasManyThrough',
     relatedModel: Campaign,
     ownerCol: 'id',
     relatedCol: 'id',
