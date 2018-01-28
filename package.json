@@ -39,7 +39,7 @@
   },
   "lint-staged": {
     "*.js": ["prettier --write", "eslint --fix", "git add"],
-    "*.vue": ["eslint --fix", "git add"]
+    "*.css": ["prettier --write", "git add"]
   },
   "tarima": {
     "cwd": ".",
@@ -51,7 +51,8 @@
     "filter": [
       "!node_modules/**",
       "!**/{components,lib}/**",
-      "!**/{base,utils}*.css"
+      "!**/{base,utils}*.css",
+      "!**/*.js"
     ],
     "rename": [
       "**/_vendor/*:{filepath/1/_vendor}/{filename}.{extname}",

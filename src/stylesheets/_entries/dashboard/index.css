@@ -7,8 +7,12 @@
 @import '../../components/GridButton';
 
 /* page utils */
-.-bg-neutral-light {background-color: var(--k-color-palette-neutral-light)}
-.-neutral-dark {color: var(--k-color-palette-neutral-dark)}
+.-bg-neutral-light {
+  background-color: var(--k-color-palette-neutral-light);
+}
+.-neutral-dark {
+  color: var(--k-color-palette-neutral-dark);
+}
 
 /* page styles */
 .bg-light-pattern {
@@ -20,19 +24,19 @@
 
 hr {
   height: 2px;
-  background-color: #E3E3E3;
+  background-color: #e3e3e3;
   border: none;
   transition: background-color 260ms;
 }
 
 .dashboard-campaign-container {
-  background: #FEFAC0;
+  background: #fefac0;
   padding: 15px;
   margin-bottom: 10px;
 
   & p {
     font-size: 14px;
-    font-color:
+    font-color: ;
   }
 
   & a {
@@ -41,7 +45,7 @@ hr {
     background-color: transparent;
 
     &:hover {
-      color: #F04C34;
+      color: #f04c34;
     }
   }
 }
@@ -85,7 +89,7 @@ hr {
 }
 
 .collectives-list-item:hover a {
-  color: #f04c34
+  color: #f04c34;
 }
 
 .collectives-list-item:hover svg {
@@ -109,7 +113,7 @@ hr {
   display: flex;
   height: 2rem;
   overflow: hidden;
-  background-color: #9B9B9B;
+  background-color: #9b9b9b;
 
   &-bar {
     display: flex;
@@ -117,7 +121,7 @@ hr {
     align-items: center;
     font-weight: 700;
     color: white;
-    padding: 0 1.875rem 0 .9375rem;
+    padding: 0 1.875rem 0 0.9375rem;
 
     &:after {
       content: '';
@@ -126,7 +130,7 @@ hr {
       top: 0;
       right: 0;
       border-left: 1.5rem solid transparent;
-      border-bottom: 2rem solid #9B9B9B;
+      border-bottom: 2rem solid #9b9b9b;
     }
   }
 }
