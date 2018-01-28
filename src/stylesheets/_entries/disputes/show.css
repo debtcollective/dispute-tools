@@ -5,7 +5,7 @@
 /* @import '../../components/AvatarList'; */
 @import '../../components/ConfirmInline';
 
-.Dispute__step-content[aria-hidden="true"] {
+.Dispute__step-content[aria-hidden='true'] {
   display: none;
 }
 
@@ -21,10 +21,6 @@ fieldset {
   /* box-shadow: 0 0 0 1px dodgerblue; */
 }
 
-input[data-toggle-radio][value="no"]:checked ~ fieldset {
-  display: none;
-}
-
 /* information */
 .Tool__Info {
   padding: var(--space-3) var(--space-3) 40px;
@@ -32,8 +28,8 @@ input[data-toggle-radio][value="no"]:checked ~ fieldset {
   border-radius: var(--border-radius);
 
   &.-upload {
-    border: 2px dashed rgba(255,255,255,.3);
-    background-color: rgba(0,0,0,.3);
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    background-color: rgba(0, 0, 0, 0.3);
   }
 
   &.-completed {
@@ -57,7 +53,6 @@ input[data-toggle-radio][value="no"]:checked ~ fieldset {
       color: var(--k-color-palette-neutral-mid);
     }
 
-
     & .Tool__Info-optional-badge {
       background-color: color(var(--k-color-palette-neutral-mid) alpha(25%));
       color: var(--k-color-palette-neutral-mid);
@@ -77,11 +72,15 @@ input[data-toggle-radio][value="no"]:checked ~ fieldset {
   &-badge {
     width: 40px;
     color: #fff;
-    padding: 0 .3em;
+    padding: 0 0.3em;
     background-color: #000;
 
-    &.-pdf {background-color: var(--k-color-palette-primary)}
-    &.-doc {background-color: #4A90E2}
+    &.-pdf {
+      background-color: var(--k-color-palette-primary);
+    }
+    &.-doc {
+      background-color: #4a90e2;
+    }
   }
 }
 
@@ -97,7 +96,9 @@ input[data-toggle-radio][value="no"]:checked ~ fieldset {
   height: 100%;
   cursor: pointer;
 
-  & > input[type="radio"] {display: none}
+  & > input[type='radio'] {
+    display: none;
+  }
 
   &-inner {
     padding: var(--space-3);
@@ -108,19 +109,27 @@ input[data-toggle-radio][value="no"]:checked ~ fieldset {
   &-icon {
     height: 60px;
     margin-bottom: var(--space-1);
-    opacity: .6;
+    opacity: 0.6;
   }
 
-  & .css-btn-selected {display: none}
+  & .css-btn-selected {
+    display: none;
+  }
 
-  & > input[type="radio"]:checked {
+  & > input[type='radio']:checked {
     & + .Tool__process-option-inner {
       background-color: #fff;
       color: #000;
 
-      & .Tool__process-option-icon {opacity: 1}
-      & .-k-btn {display: none}
-      & .css-btn-selected {display: block}
+      & .Tool__process-option-icon {
+        opacity: 1;
+      }
+      & .-k-btn {
+        display: none;
+      }
+      & .css-btn-selected {
+        display: block;
+      }
     }
   }
 }

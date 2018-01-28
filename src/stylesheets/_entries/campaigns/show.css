@@ -13,21 +13,37 @@
 @import '../../components/SearchPanel';
 
 /* page utils */
-.-neutral-dark {color: var(--k-color-palette-neutral-dark)}
-.-bg-neutral-light {background-color: var(--k-color-palette-neutral-light)}
-.-bw2 {border-width: 2px}
-.-border-neutral-mid-x {border-color: var(--k-color-palette-neutral-mid-x)}
-.-stroke-dark {stroke: #000}
+.-neutral-dark {
+  color: var(--k-color-palette-neutral-dark);
+}
+.-bg-neutral-light {
+  background-color: var(--k-color-palette-neutral-light);
+}
+.-bw2 {
+  border-width: 2px;
+}
+.-border-neutral-mid-x {
+  border-color: var(--k-color-palette-neutral-mid-x);
+}
+.-stroke-dark {
+  stroke: #000;
+}
 .-k-input.-no-border,
-.-k-textarea {border: 0}
+.-k-textarea {
+  border: 0;
+}
 .-k-input.-transparent,
-.-k-textarea.-transparent{background-color: transparent}
+.-k-textarea.-transparent {
+  background-color: transparent;
+}
 .-k-select.-accent {
   border: 0;
   color: #785616;
   background-color: var(--k-color-palette-accent);
 }
-.-rn {resize: none}
+.-rn {
+  resize: none;
+}
 
 /* page styles */
 .bg-light-pattern::before {
@@ -74,7 +90,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0,0,0,.7);
+    background-color: rgba(0, 0, 0, 0.7);
     z-index: 2;
 
     &[aria-hidden='true'] {
@@ -91,7 +107,9 @@
 
 .Poll_create-option {
   margin-bottom: 2px;
-  &:last-child {margin-bottom: 0}
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .Campaign_NewPost__ImageDropper {
@@ -106,7 +124,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  &Comment {margin-bottom: 2px}
+  &Comment {
+    margin-bottom: 2px;
+  }
 }
 
 .Post_Header {
@@ -117,7 +137,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  padding: 0 .5em;
+  padding: 0 0.5em;
   color: #785616;
 }
 
@@ -161,7 +181,7 @@
   &CarouselItem {
     width: 33.333333333333336%;
 
-    &[aria-hidden="true"] {
+    &[aria-hidden='true'] {
       height: 0;
     }
   }
@@ -172,7 +192,7 @@
   padding-bottom: 47%;
   border-width: 2px 0;
   border-style: solid;
-  border-color: #ECECEB;
+  border-color: #ececeb;
   background-color: var(--k-color-palette-neutral-light);
 
   &::before {
@@ -219,7 +239,9 @@
       padding: var(--space-2) var(--space-3);
       border-top: 1px solid var(--k-color-palette-neutral-light);
 
-      &:first-child {border-top: none}
+      &:first-child {
+        border-top: none;
+      }
     }
   }
 }
@@ -231,7 +253,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    padding: .6em .7em;
+    padding: 0.6em 0.7em;
     color: black;
   }
 

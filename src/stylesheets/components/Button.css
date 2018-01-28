@@ -9,7 +9,9 @@
 .btn-link {
   background-color: transparent;
   transition: opacity 260ms;
-  &:hover {opacity: .8}
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .btn-primary {
@@ -46,12 +48,12 @@
 }
 
 .btn-gray {
-  background-color: #8E8E8E;
+  background-color: #8e8e8e;
   color: white;
 
   &:hover:not([disabled]):not(:active) {
     color: white;
-    background-color: color(#8E8E8E alpha(95%));
+    background-color: color(#8e8e8e alpha(95%));
   }
 }
 
@@ -68,12 +70,18 @@
   box-shadow: 0 0 0 2px #979797;
   background-color: transparent;
 
-  &:hover {opacity: .8}
+  &:hover {
+    opacity: 0.8;
+  }
 
-  &.-sm {box-shadow: 0 0 0 1px #979797}
+  &.-sm {
+    box-shadow: 0 0 0 1px #979797;
+  }
 
   &.-primary {
     box-shadow: 0 0 0 2px var(--k-color-palette-primary);
-    &.-sm {box-shadow: 0 0 0 1px var(--k-color-palette-primary)}
+    &.-sm {
+      box-shadow: 0 0 0 1px var(--k-color-palette-primary);
+    }
   }
 }
