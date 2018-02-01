@@ -25,7 +25,7 @@ block content
           label.block.pb1.-fw-500 Cover
           .EditCollective__image-wrapper.inline-block.align-top.mr2
             if collective.cover.exists('grayscale')
-              img.block(src=collective.cover.url['grayscale'])
+              img.block(src=collective.cover.urls['grayscale'])
             else
               img.block(src='/images/collectives/cover-placeholder.jpg')
           .relative.-k-btn.btn-link.btn-outline.-primary.-xs
