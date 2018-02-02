@@ -1,0 +1,1142 @@
+---
+FieldType: Text
+FieldName: borr_name
+FieldNameAlt: Your Name
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: beginning_date_of_employment
+FieldNameAlt: Beginning Date Of Current Employment
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: borr_address_1
+FieldNameAlt: Address line 1
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: borr_address_2
+FieldNameAlt: Address line 2
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: borr_telephone
+FieldNameAlt: Telephone - Primary. Enter 10 digit telephone number including area code. If applicable, enter country code
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: employer
+FieldNameAlt: Employer Name
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: employer_address_1
+FieldNameAlt: Employer address line 1
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: employer_address_2
+FieldNameAlt: Employer address line 2
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: employer_telephone
+FieldNameAlt: Employer Telephone -  Enter 10 digit telephone number including area code. If applicable, enter country code
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: Check Box1
+FieldNameAlt: CHECK HERE if you object on the grounds that garnishment in amounts equal to 15% of your disposable pay would cause financial hardship to you and your dependents. (To arrange voluntary repayment, contact customer service at the number below.)
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box2
+FieldNameAlt: I want a written records hearing of my objection(s) based on the Department&#8217;s review of this written statement, the documents I have enclosed, and the records in my debt file at the Department.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Text
+FieldName: I want this InPerson hearing held in
+FieldNameAlt: I want this InPerson hearing held in- Atlanta, GA
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: Check Box3
+FieldNameAlt: I want a hearing by telephone to present my objections. (You must provide a daytime telephone number at which you can be contacted between the hours of 8:00 am to 4:00 pm, Monday through Friday.) I can be reached at: ( ) ______-___________
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Text
+FieldName: necessary on a separate sheet of paper If you have already fully described these facts in your response
+FieldNameAlt: EXPLAIN the additional facts that you believe make a hearing necessary on a separate sheet of paper. If you have already fully described these facts in your response in Part Ill, WRITE HERE the number of the objection in which you described these facts
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: mm3
+FieldNameAlt: I used this loan to enroll in (school)  on or about - Enter year in YY format
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: Check Box4
+FieldNameAlt: I do not owe the full amount shown because I repaid some or all of this debt. (ENCLOSE: copies of the front and back of all checks, money orders and any receipts showing payments made to the holder of the debt.)
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box5
+FieldNameAlt: I am making payments on this debt as required under the repayment agreement I reached with the holder of the debt. (ENCLOSE: copies of the repayment agreement and copies of the front and back of checks where you paid on the agreement.)
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box6
+FieldNameAlt: I filed for bankruptcy and my case is still open. (ENCLOSE: copies of any documents from the court that show the date that you filed, the name of the court, and your case number.)
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box7
+FieldNameAlt: This debt was discharged in bankruptcy. (ENCLOSE: copies of debt discharge order and the schedule of debts filed with the court.)
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box8
+FieldNameAlt: The borrower has died. (ENCLOSE: Original, certified copy, or clear, accurate, and complete photocopy of the original or certified Death Certificate.) For loans only.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box9
+FieldNameAlt: I am totally and permanently disabled - unable to engage in substantial gainful activity because of a medically-determinable physical or mental impairment. (Obtain and submit a completed Loan Discharge Application: Total and Permanent Disability form. The form must be completed by a physician except if you are a veteran, in which case you can submit required documentation from the U.S. Department of Veterans Affairs. Refer to the application for all requirements.) For loans only.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Text
+FieldName: mm11
+FieldNameAlt: I withdrew from school on or about - Enter month in MM format
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Veterans Affairs Refer to the application for all requirements For loans only
+FieldNameAlt: I used this loan to enroll in (school) - Enter School Name
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: mm22
+FieldNameAlt: I withdrew from school on or about - Enter day  in DD format
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: mm33
+FieldNameAlt: I withdrew from school on or about - Enter year in YY format
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: mm1
+FieldNameAlt: I used this loan to enroll in (school)  on or about - Enter month in MM format
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: Check Box10
+FieldNameAlt: I used this loan to enroll in _______________________________________(school) on or about ___/___/___, and I withdrew from school on or about ___/___/___. I paid the school $_________ and I believe that I am owed, but have not been paid, a refund from the school in the amount of $__________. (Obtain and submit a completed Loan Discharge Application: Unpaid Refund form. ENCLOSE: any records you have showing your withdrawal date). For loans only.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Text
+FieldName: school on or about
+FieldNameAlt: I paid the school - Enter dollar amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: mm2
+FieldNameAlt: I used this loan to enroll in (school)  on or about - Enter  day in DD format
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: and I
+FieldNameAlt: I believe that I am owed, but have not been paid, a refund from the school in the amount of - Enter amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: Check Box11
+FieldNameAlt: I (or, for parent PLUS borrowers, the student) used this loan to enroll in ____________________________________(school) on or about ___/___/___ and was unable to complete the education because the school closed. (Obtain and submit a completed Loan Discharge Application: School Closure form. ENCLOSE: any records you have showing your (or, for parent PLUS borrowers, the student&#8217;s) withdrawal date.) For loans only.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Text
+FieldName: mm333
+FieldNameAlt: I (or, for parent PLUS borrowers, the student) used this loan to enroll in school on or about - Enter year in YY format
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: mm2222
+FieldNameAlt: I (or, for parent PLUS borrowers, the student) used this loan to enroll in school on or about - Enter Day in DD format
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: mm111
+FieldNameAlt: I (or, for parent PLUS borrowers, the student) used this loan to enroll in school on or about - Enter month in MM format
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: school on
+FieldNameAlt: I (or, for parent PLUS borrowers, the student) used this loan to enroll in - Enter school name
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: Check Box12
+FieldNameAlt: This is not my Social Security Number, and I do not owe this debt. (ENCLOSE: a copy of your driver&#8217;s license or other identification issued by a Federal, state or local government agency, and a copy of your Social Security Card.)
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box13
+FieldNameAlt: I believe that this debt is not an enforceable debt in the amount stated for the reason explained in the attached letter. (Attach a letter explaining any reason other than those listed above for your objection to collection of this debt amount by garnishment of your salary. ENCLOSE: any supporting records.)
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box14
+FieldNameAlt: I (or, for parent PLUS borrowers, the student) did not have a high school diploma or GED when I (or,for parent PLUS borrowers, the student) enrolled at the school attended with this guaranteed student loan. The school did not properly test my (or, for parent PLUS borrowers, the student&#8217;s) ability to benefit from the training offered. (Obtain and submit a completed Loan Discharge Application: False Certification (Ability to Benefit) form. ENCLOSE: any records you have showing your withdrawal date.) For loans only.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box15
+FieldNameAlt: When I borrowed this guaranteed student loan to attend __________________________(school), I (or, for parent PLUS borrowers, the student) had a condition (physical, mental, age, criminal record) that prevented me (or, for parent PLUS borrowers, the student) from meeting State requirements for performing the occupation for which the school training was provided. (Obtain and submit completed Loan Discharge Application: False Certification (Disqualifying Status) form. For loans only.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Text
+FieldName: school I or for parent PLUS borrowers the student had a condition
+FieldNameAlt: When I borrowed this guaranteed student loan to attendWhenI borrowed this guaranteed student loan to attend school - Enter School Name
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: Check Box16
+FieldNameAlt: I was involuntarily terminated from my last employment and I have been employed in my current job for less than twelve months. (Attach statement from employer showing date of hire in current job and statement from prior employer showing involuntary termination.)
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Text
+FieldName: 14    I believe that
+FieldNameAlt: i believe that  enter (name of individual or pther party
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: Check Box17
+FieldNameAlt: I believe that __________________________________________________ (name of individual or other party) without my permission signed my name or used my personal identification data to execute documents to obtain this loan, and I did not receive the loan funds. (Obtain and submit a completed False Certification (Unauthorized Signature/Unauthorized Payment) discharge application or Identity Theft Certification). Enclose any records showing your withdrawal date). For loans only.
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Button
+FieldName: Check Box18
+FieldNameAlt: I want an in-person hearing at the Department hearing office to present my objection(s). I understand that I must pay my own expenses to appear for this hearing.I want this In-Person hearing held in: ____ Atlanta, GA, ____ Chicago. IL. ____ San Francisco,CA. (Check the location you wish for the hearing.)
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: Yes
+---
+FieldType: Text
+FieldName: Chicago. IL
+FieldNameAlt: I want this InPerson hearing held in-Chicago. IL 
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: San Francisco
+FieldNameAlt: I want this InPerson hearing held in-San Francisco CA
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: day time telephone number
+FieldNameAlt: I want a hearing by telephone to present my objections. (You must provide a daytime telephone number at which you can be contacted between the hours of 8:00 am to 4:00 pm, Monday through Friday.) I can be reached at - Enter day time telephone number
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Text1
+FieldNameAlt: I state under penalty of law that the statements made on this request are true and accurate tothe best of my knowledge - Enter Date
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Your Name
+FieldNameAlt: Your Name
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Your Social Security No
+FieldNameAlt:  Social Security Number
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Address 1
+FieldNameAlt: Address  line 1
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Address 2
+FieldNameAlt: Address  line 2
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Address 3
+FieldNameAlt: Address  line 3
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Phone
+FieldNameAlt: Telephone -  Enter 10 digit telephone number including area code. If applicable, enter country code
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Country
+FieldNameAlt: Country
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Current Employer
+FieldNameAlt: Current Employer
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Date Employed
+FieldNameAlt: Date Employed - Enter date
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Employer Phone
+FieldNameAlt: Employer Telephone -  Enter 10 digit telephone number including area code. If applicable, enter country code
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Present Position
+FieldNameAlt: Present Position
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined
+FieldNameAlt: Gross Income - Enter Amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: Weekly
+FieldNameAlt: Check this box if Gross income is  Weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: BiWeekly
+FieldNameAlt: Check this box if Gross income is  Bi-Weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Monthly
+FieldNameAlt: Check this box if Gross income is  Monthly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: undefined_2
+FieldNameAlt: Check this box if Gross income is  other
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Text
+FieldName: Other
+FieldNameAlt:  if you checked Gross income as Other then enter other
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_3
+FieldNameAlt: Net Income - Enter Amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: Weekly_2
+FieldNameAlt: Check this box if net income is Weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: BiWeekly_2
+FieldNameAlt: Check this box if net income is Bi-Weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Monthly_2
+FieldNameAlt: Check this box if net income is Monthly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: undefined_4
+FieldNameAlt: Check this box if net income is other
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Text
+FieldName: Other_2
+FieldNameAlt:  if you checked net income as Other then enter other
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Number of dependents
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - Number of dependents including yourself
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: Married
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - Marital Status - Check this box if Married
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Single
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - Marital Status - Check this box if Single
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Divorced
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - Marital Status - Check this box if Divorced
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Text
+FieldName: Your spouses name
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - Enter Your spouse&#8217;s name
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Spouses SSN
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - Enter Your Spouse&#8217;s SSN
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_5
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - Enter Gross Income
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: Weekly_3
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if Gross Income is weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: BiWeekly_3
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if Gross Income is Bi-Weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Monthly_3
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if Gross Income is Monthly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: undefined_6
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if Gross Income is other
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Text
+FieldName: Other_3
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING -  if you checked Gross income as Other then enter other
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_7
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - Enter net  Income
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: Weekly_4
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if net  Income is weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: BiWeekly_4
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if net  Income is Bi-Weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Monthly_4
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if net  Income is Monthly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: undefined_8
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if  net  Income is other
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Text
+FieldName: Other_4
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - if you checked net income as Other then enter other
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Other household memberss with income
+FieldNameAlt: ENCLOSE: COPY OF TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING -Other household members(s) with income Enter amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: SSN
+FieldNameAlt: ENCLOSE: COPY OF TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING Enter Social Security Number
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_9
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - Enter Gross Income
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: Weekly_5
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if Gross Income is weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: BiWeekly_5
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if Gross Income is Bi-Weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Monthly_5
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if Gross Income is Monthly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: undefined_10
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if Gross Income is other
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Text
+FieldName: Other_5
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING -  if you checked Gross income as Other then enter other
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_11
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - Enter net  Income
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: Weekly_6
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if net  Income is Weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: BiWeekly_6
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if net  Income is Bi-Weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Monthly_6
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if net  Income is Monthly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: undefined_12
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if net  Income is other
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Text
+FieldName: Other_6
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - if you checked net income as Other then enter other
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: Weekly_7
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if other income child support amount is weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: BiWeekly_7
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if other income child support amount is Bi-Weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Monthly_7
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if other income child support amount is Monthly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Other_7
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if other income child support amount is Other
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Weekly_8
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if other income alimony amount is Weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: BiWeekly_8
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if other income alimony amount is Bi-Weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Monthly_8
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if other income alimony amount is Monthly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Other_8
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if other income alimony amount is Other
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Weekly_9
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if other income interest amount is Weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: BiWeekly_9
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if other income interest amount is Bi-Weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Monthly_9
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if other income interest amount is Monthly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Other_9
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if other income interest amount is Other
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Weekly_10
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if other income public assistance amount is Weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: BiWeekly_10
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if other income public assistance amount is Bi-Weekly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Monthly_10
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if other income public assistance amount is Monthly
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Button
+FieldName: Other_10
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - check this box if other income public assistance amount is Other
+FieldFlags: 0
+FieldJustification: Left
+FieldStateOption: Off
+FieldStateOption: On
+---
+FieldType: Text
+FieldName: Describe
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - if you  Entered other income then describe
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Amount
+FieldNameAlt: Please explain all deductions shown on pay-stubs: Enter 401k  Amount and Reason
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Retirement 1
+FieldNameAlt: Please explain all deductions shown on pay-stubs: Enter  retirement Amount and Reason
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Union Dues
+FieldNameAlt: Please explain all deductions shown on pay-stubs: Enter union dues  Amount and Reason
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Retirement 2
+FieldNameAlt: Please explain all deductions shown on pay-stubs: Enter medical  Amount and Reason
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Credit Union
+FieldNameAlt: Please explain all deductions shown on pay-stubs: Enter credit union  Amount and Reason
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Retirement 3
+FieldNameAlt: Please explain all deductions shown on pay-stubs: Enter other  Amount and Reason
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_14
+FieldNameAlt: Monthly Expenses -  Shelter (SEND COPY OF MORTGAGE OR LEASE)- enter Rent/Mortgage amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Paid to whom
+FieldNameAlt: Monthly Expenses -  Shelter (SEND COPY OF MORTGAGE OR LEASE)-  Rent/Mortgage amount Paid to whom enter name
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_15
+FieldNameAlt: Monthly Expenses -  Shelter (SEND COPY OF MORTGAGE OR LEASE)- enter 2nd home mortgage amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Paid to whom_2
+FieldNameAlt: Monthly Expenses -  Shelter (SEND COPY OF MORTGAGE OR LEASE)-  2nd home mortgage amount Paid to whom enter name
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_16
+FieldNameAlt: Monthly Expenses -  Shelter (SEND COPY OF MORTGAGE OR LEASE)- enter Home/Renter insurance amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_17
+FieldNameAlt: Monthly Expenses -  Shelter (SEND COPY OF MORTGAGE OR LEASE)- enter Other amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Describe_2
+FieldNameAlt: Monthly Expenses -  Shelter (SEND COPY OF MORTGAGE OR LEASE)-  Other amount - Enter description 
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_18
+FieldNameAlt: Monthly Expenses -  Food and Household- enter Expenses amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_19
+FieldNameAlt: Monthly Expenses -  Food and Household- enter Clothing amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_20
+FieldNameAlt: Monthly Expenses - Utilities (SEND COPIES OF BILLS)- enter amount for Electric
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_21
+FieldNameAlt: Monthly Expenses - Utilities (SEND COPIES OF BILLS)- enter amount for Gas:
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_22
+FieldNameAlt: Monthly Expenses - Utilities (SEND COPIES OF BILLS)- enter amount for Water/Sewer
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_23
+FieldNameAlt: Monthly Expenses - Utilities (SEND COPIES OF BILLS)- enter amount for Garbage pickup
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_24
+FieldNameAlt: Monthly Expenses - Utilities (SEND COPIES OF BILLS)- enter amount for Basic telephone
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_25
+FieldNameAlt: Monthly Expenses - Utilities (SEND COPIES OF BILLS)- enter amount for other
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Describe_3
+FieldNameAlt: Monthly Expenses - Utilities (SEND COPIES OF BILLS)- if you entered amount for other then enter description  
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_26
+FieldNameAlt: Monthly Expenses- Medical (SEND COPIES OF BILLS) - enter Insurance amount per month (Only list payments not deducted from paycheck)
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Bill payments
+FieldNameAlt: Monthly Expenses- Medical (SEND COPIES OF BILLS) - enter Bill payments per month (Only list payments not covered by insurance)
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_27
+FieldNameAlt: Monthly Expenses- Medical (SEND COPIES OF BILLS) - enter other payments per month 
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Describe_4
+FieldNameAlt: Monthly Expenses- Medical (SEND COPIES OF BILLS) - if you entered other payments then enter description 
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Of cars
+FieldNameAlt: Transportation (SEND COPIES OF CAR PAYMENT AGREEMENT OR BILLS)- enter number of cars
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_28
+FieldNameAlt: Transportation (SEND COPIES OF CAR PAYMENT AGREEMENT OR BILLS) - enter 1st Car payment per month
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_29
+FieldNameAlt: Transportation (SEND COPIES OF CAR PAYMENT AGREEMENT OR BILLS) -enter 2nd Car payment per month
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_30
+FieldNameAlt: Transportation (SEND COPIES OF CAR PAYMENT AGREEMENT OR BILLS) -enter Gas and oil per month
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Public transportation
+FieldNameAlt: Transportation (SEND COPIES OF CAR PAYMENT AGREEMENT OR BILLS) -enter Public transportation per month
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_31
+FieldNameAlt: Transportation (SEND COPIES OF CAR PAYMENT AGREEMENT OR BILLS) -enter Car insurance per month
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_32
+FieldNameAlt: Transportation (SEND COPIES OF CAR PAYMENT AGREEMENT OR BILLS) -enter Other per month
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Describe_5
+FieldNameAlt: Transportation (SEND COPIES OF CAR PAYMENT AGREEMENT OR BILLS) - if you entred other expenses  then enter description 
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_33
+FieldNameAlt: Child Care (SEND COPIES OF BILLS)- enter child care per month
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Number of children
+FieldNameAlt: Child Care (SEND COPIES OF BILLS)- if you entered child care per month then enter number of children
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Child support
+FieldNameAlt: Child Care (SEND COPIES OF BILLS)- enter Child support per month
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Number of children_2
+FieldNameAlt: Child Care (SEND COPIES OF BILLS)- if you entered Child support per month then enter number of children
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_34
+FieldNameAlt: Child Care (SEND COPIES OF BILLS)- enter Other per month
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Describe_6
+FieldNameAlt: Child Care (SEND COPIES OF BILLS)- if you entered Other then enter description 
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Other Insurance
+FieldNameAlt: Other Insurance - enter amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Describe_7
+FieldNameAlt: if you entered other insurance amount then describe Other Expenses (Attach a list describing expense, monthly payment and enclose bills)
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Based on this Statement I think I can afford to pay
+FieldNameAlt: Based on this Statement, I think I can afford to pay - enter amount per month
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Date
+FieldNameAlt: I declare under penalty of law that the answers and statements contained herein are true and correct - Enter date
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_13
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - Enter other income other Amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_1311
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - Enter other income Child Support Amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_1312
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - Enter other income Alimony Amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_1313
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - Enter other income interest Amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: undefined_1314
+FieldNameAlt: ENCLOSE: COPY OF YOUR TWO MOST RECENT PAY STUBS AND COPIES OF MOST RECENT W-2s AND 1040, 1040A, 1040EZ or other IRS FILING - Enter other income public assistance Amount
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Social Security Number
+FieldNameAlt: Social Security Number
+FieldFlags: 0
+FieldJustification: Left

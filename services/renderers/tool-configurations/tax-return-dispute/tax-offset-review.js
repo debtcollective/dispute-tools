@@ -1,13 +1,12 @@
 const DisputeTemplate = require('../../DisputeTemplate');
-const { formatDate } = require('../shared/utils');
+const { formatDate, getAddress2 } = require('../shared/utils');
 const { range } = require('lodash');
-
-const checkbox = n => `Check Box${n}`;
-const requestAdditionalFacts =
-  'I am requesting an in-person or telephone hearing because there are additional facts that I believe can only be described in person or by phone.'; // eslint-disable-line
-
-const YES = 'Yes';
-const NO = 'Off';
+const {
+  requestAdditionalFacts,
+  CheckboxAnswer: { YES, NO },
+  DisputeProcess,
+  checkboxKey,
+} = require('../shared/federal-student-loan-disputes.js');
 
 /**
  * Refer to lib/assets/document_templates/tax_offset_review/0.fdf
@@ -23,47 +22,47 @@ module.exports = {
         getDisputeProcess(disputeProcess, { phone }) {
           disputeProcess = parseInt(disputeProcess, 10);
 
-          const indexed = disputeProcess + 17;
-          const ret = range(17, 20).reduce((acc, n) =>
-            Object.assign({}, acc, {
-              [checkbox(n)]: n === indexed ? YES : NO,
-            }),
+          // disputeProcess must be one of the values in DisputeProcess
+          // eslint-disable-next-line
+          console.assert(
+            Object.values(DisputeProcess).includes(disputeProcess),
           );
 
-          if (disputeProcess === 2 || disputeProcess === 3) {
-            ret[`Telephone ${disputeProcess - 1}`] = phone;
-          }
+          const ret = {};
+          // 18 == written, 19 == in person, 20 == by phone
+          ret[checkboxKey(17 + disputeProcess)] = YES; // off by default
+          ret[`Telephone ${disputeProcess - 1}`] = phone;
 
           return ret;
         },
         getObjections(objectionOption, { schoolName }) {
           const ret = range(20, 32).reduce(
-            (acc, n) => Object.assign(acc, { [checkbox(n)]: NO }),
+            (acc, n) => Object.assign(acc, { [checkboxKey(n)]: NO }),
             {},
           );
 
           switch (objectionOption) {
             default:
             case 'A':
-              ret[checkbox(21)] = YES;
+              ret[checkboxKey(21)] = YES;
               ret.number1 = '1';
               break;
             case 'B':
-              ret[checkbox(27)] = YES;
+              ret[checkboxKey(27)] = YES;
               ret.number1 = '7';
               break;
             case 'C':
-              ret[checkbox(30)] = YES;
+              ret[checkboxKey(30)] = YES;
               ret['School 3'] = schoolName;
               ret.number1 = '10';
               break;
             case 'D':
-              ret[checkbox(31)] = YES;
+              ret[checkboxKey(31)] = YES;
               ret['School 4'] = schoolName;
               ret.number1 = '11';
               break;
             case 'E':
-              ret[checkbox(32)] = YES;
+              ret[checkboxKey(32)] = YES;
               ret['School 5'] = schoolName;
               ret.number1 = '12';
               break;
@@ -77,8 +76,7 @@ module.exports = {
         option,
         forms: { 'personal-information-form': form },
       }) {
-        const address2 =
-          form.address2 || `${form.city}, ${form.state} ${form['zip-code']}`;
+        const address2 = getAddress2({ form });
 
         const disputeProcessCheckboxes = this.data.getDisputeProcess(
           disputeProcess,
@@ -98,16 +96,24 @@ module.exports = {
           objectionsCheckboxes,
         );
       },
-      post(pdf, { signature }) {
+      post(pdf, { signature, disputeProcess }) {
         pdf.editPage(2);
-        pdf.text(
-          requestAdditionalFacts,
-          90,
-          725,
-          DisputeTemplate.PDF_WRITER_CONFIG,
-        );
-
+        // put the signature on page 2 at coordinates (290, 703)
         pdf.text(signature, 290, 703, DisputeTemplate.PDF_WRITER_CONFIG);
+
+        disputeProcess = parseInt(disputeProcess, 10);
+        if (
+          disputeProcess === DisputeProcess.INPERSON ||
+          disputeProcess === DisputeProcess.BYPHONE
+        ) {
+          // add the request text on page 2 at coordinates (90, 725)
+          pdf.text(
+            requestAdditionalFacts,
+            90,
+            725,
+            DisputeTemplate.PDF_WRITER_CONFIG,
+          );
+        }
 
         pdf.endPage();
       },
