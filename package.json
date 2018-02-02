@@ -185,6 +185,7 @@
     "mocha": "^3.0.2",
     "nock": "^9.1.5",
     "node-notifier": "^4.6.1",
+    "node-pdftk": "^1.2.1",
     "nodemailer-stub-transport": "^1.0.0",
     "nodemon": "^1.13.2",
     "postcss": "^5.1.1",

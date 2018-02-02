@@ -45,6 +45,7 @@ const _configurations = Object.assign(
   require('./renderers/tool-configurations/general-dispute-letter'),
   require('./renderers/tool-configurations/private-student-loan-dispute-letter'),
   require('./renderers/tool-configurations/tax-return-dispute'),
+  require('./renderers/tool-configurations/wage-garnishment-dispute'),
 );
 
 /**

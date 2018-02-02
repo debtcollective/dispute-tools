@@ -12,9 +12,9 @@ The pug pipeline is used for the various letters we can generate for our users t
 
 ## PDF
 
-The PDF pipeline is the most complicated pipeline we support and is used to fill PDF forms directly. 
+The PDF pipeline is the most complicated pipeline we support and is used to fill PDF forms directly.
 
-### Normalize 
+### The FDF Document
 
 Each PDF form has something called an `fdf` document associated with it. To generate it, you simply run the following `pdftk` command:
 
@@ -22,7 +22,41 @@ Each PDF form has something called an `fdf` document associated with it. To gene
 pdftk path/to/file.pdf dump_data_fields output path/to/output.fdf
 ```
 
-That will generate a file looking roughly like:
+We keep these FDF files next to the PDFs for documentation purposes, so if you're adding a new PDF form, go ahead and save the FDF alongside it. `FieldType`, `FieldName`, and `FieldStateOption`s are the properties that concern us.
+
+### Normalize
+
+The `normalize` function returns a dictionary where the keys are taken from the `fdf` document (`FieldName`).
+
+If `FieldType` is text, then `normalize` returns a dictionary where the key is the `FieldName` and the value is a string:
+
+```
+---
+FieldType: Text
+FieldName: topmostSubform[0].Page1[0].Name[0]
+FieldNameAlt: Name.
+FieldFlags: 8388608
+FieldJustification: Left
+---
+```
+
+```javascript
+const name = 'Alexandre Marcondes';
+
+return {
+  'topmostSubform[0].Page1[0].Name[0]': name,
+};
+```
+
+If `FieldType` is `Button`, then that's the equivalent of a checkbox on a PDF form.
+Each button has two states, listed as `FieldStateOption`s.
+The off or unchecked `FieldStateOption` is usually `Off`.
+The other `FieldStateOption` is the on or checked value (`1` or `2` in the example below).
+
+When there's a list of checkboxes, they're usually grouped in an array with their on value being their index + 1.
+
+Checkboxes are off by default.
+To set a checkbox as on, `normalize` returns a dictionary where the key is the `FieldName` and the value is the checked `FieldStateOption`.
 
 ```
 ---
@@ -44,37 +78,7 @@ FieldJustification: Left
 FieldStateOption: 2
 FieldStateOption: Off
 ---
-FieldType: Text
-FieldName: topmostSubform[0].Page1[0].Phone2[0]
-FieldNameAlt: Telephone &#8211; Alternate. Enter 10 digit telephone number including area code. If applicable, enter country code.
-FieldFlags: 8388608
-FieldJustification: Left
----
-FieldType: Text
-FieldName: topmostSubform[0].Page1[0].Name[0]
-FieldNameAlt: Name.
-FieldFlags: 8388608
-FieldJustification: Left
----
-FieldType: Text
-FieldName: topmostSubform[0].Page1[0].Address[0]
-FieldNameAlt: Address.
-FieldFlags: 8388608
-FieldJustification: Left
----
 ```
-
-We keep these FDF files next to the PDFs for documentation purposes, so if you're adding a new PDF form, go ahead and save the FDF alongside it. `FieldType`, `FieldName`, and `FieldStateOption`s are the properties that concern us. If `FieldType` is text, then `normalize` on the template configs just needs to return an object that has the `FieldName` as a property:
-
-```javascript
-const name = 'Alexandre Marcondes';
-
-return {
-  'topmostSubform[0].Page1[0].Name[0]': name,
-};
-```
-
-If it's a `Button` then that's the equivalent of a checkbox on a PDF form. Each button has two states, listed as `FieldStateOption`s. The off or unchecked option is usually `Off` and is the default state for a PDF button. The other option listed is the on value. When there's a list of checkboxes, they're usually grouped in an array with their on value being their index + 1. Usually the Yes option is `1` and the No is `2` for this reason. To set a checkbox as on, `normalize` just needs to return an object with the on value. If it's off then there's no need to set the property to anything as off is the default:
 
 ```javascript
 const ret = {};
