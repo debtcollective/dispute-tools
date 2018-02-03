@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* global Checkit */
 import Pisces from 'pisces';
 import Widget from '../../lib/widget';
@@ -67,14 +66,19 @@ export default class DisputesInformationForm extends Widget {
         t.checked = false;
         t.click();
       }
+
+      // Initialize fieldsets for toggles that do not have defaults
+      if (t.dataset.default === 'undefined') {
+        t.parentElement.querySelector('fieldset').style.display = 'none';
+      }
     });
 
-    this.toogleRadios = [].slice.call(
+    this.toggleRadios = [].slice.call(
       document.querySelectorAll('[data-partial-toggle-radio]'),
     );
-    this._toogleRadiosRefs = {};
+    this._toggleRadiosRef = {};
     this._handlePartialTogglerRef = this._handlePartialToggler.bind(this);
-    this.toogleRadios.forEach(t => {
+    this.toggleRadios.forEach(t => {
       t.addEventListener('change', this._handlePartialTogglerRef);
       if (t.checked) {
         this._initHiddenElements.call(this, t);
@@ -117,7 +121,7 @@ export default class DisputesInformationForm extends Widget {
       return;
     }
 
-    const opossiteAction = target.value === 'yes' ? 'no' : 'yes';
+    const oppositeAction = target.value === 'yes' ? 'no' : 'yes';
 
     this.appendChild(
       new ConfirmInline({
@@ -125,7 +129,7 @@ export default class DisputesInformationForm extends Widget {
         className: '-warning mt2',
         data: {
           text: `▲ ${matched.message}`,
-          cancelButtonText: `Select ${opossiteAction}`,
+          cancelButtonText: `Select ${oppositeAction}`,
           okButtonText: 'Exit form',
         },
       }),
@@ -133,7 +137,7 @@ export default class DisputesInformationForm extends Widget {
 
     this.ConfirmInline.bind('onCancel', () => {
       parentElement
-        .querySelector(`[name="${ev.target.name}"][value="${opossiteAction}"]`)
+        .querySelector(`[name="${ev.target.name}"][value="${oppositeAction}"]`)
         .click();
     });
 
@@ -155,6 +159,7 @@ export default class DisputesInformationForm extends Widget {
         .map(i => i.dataset.name);
 
       if (target.value === 'no') {
+        fieldset.style.display = 'none';
         names.forEach(name => {
           const el = this.ui[name];
 
@@ -167,6 +172,7 @@ export default class DisputesInformationForm extends Widget {
           }
         });
       } else {
+        fieldset.style.display = 'initial';
         names.forEach(name => {
           const el = this.ui[name];
           const vals = this._constraintsAll[name];
@@ -200,7 +206,7 @@ export default class DisputesInformationForm extends Widget {
         }
       }
 
-      this._toogleRadiosRefs[name] = {
+      this._toggleRadiosRef[name] = {
         el,
         parent,
       };
@@ -214,7 +220,7 @@ export default class DisputesInformationForm extends Widget {
     const names = JSON.parse(target.dataset.partialToggleRadio);
 
     names.forEach(name => {
-      const ref = this._toogleRadiosRefs[name];
+      const ref = this._toggleRadiosRef[name];
 
       if (ref.el.dataset.hidden === 'true') {
         const vals = this._constraintsAll[name];

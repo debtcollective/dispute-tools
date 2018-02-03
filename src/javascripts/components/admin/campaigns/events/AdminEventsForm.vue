@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import Checkit from 'checkit';
+import Checkit from '../../../../../../shared/Checkit';
 import moment from 'moment';
 import FlatPickr from 'vue-flatpickr-component';
 import Label from '../../../Label.vue';
@@ -183,7 +183,7 @@ export default {
   },
   mounted() {
     this.autocomplete = new google.maps.places.Autocomplete( // eslint-disable-line
-      this.$refs.locationInput
+      this.$refs.locationInput,
     );
 
     this.autocomplete.addListener('place_changed', () => {

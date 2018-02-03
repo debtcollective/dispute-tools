@@ -1,5 +1,4 @@
-/* eslint-disable max-len, no-unused-vars */
-// TODO: remove unused-vars, find out where they're really used
+/* eslint-disable max-len */
 
 exports.seed = knex =>
   knex('DisputeTools')
@@ -69,23 +68,6 @@ Before you begin you will need the name and address of the creditor or the colle
 Millions of us have errors on our credit reports, which makes it harder to do basic things like get a job or rent an apartment. Fight back! You can get a free copy of your credit report once per year at <a href="http://annualcreditreport.com" target="_blank" rel="noopener noreferrer">annualcreditreport.com</a> or call 1-877- 322-8228. For a list of common errors to look for, go <a href="http://www.consumerfinance.gov/askcfpb/1339/if-credit-reporting-error-corrected-how-long-will-it-take-i-find-out-results.html" target="_blank" rel="noopener noreferrer">here</a>. Once you have determined that there are errors on your report, you can use this tool to ask for a correction. This tool will help you write a dispute letter to the three main credit reporting agencies. The Debt Collective will submit the letters your behalf. For more information about the process, go <a href="http://www.consumerfinance.gov/askcfpb/1261/what-are-errors-show-credit-reports-out-having-creditors-report-your-accounts-credit-bureaus.html" target="_blank" rel="noopener noreferrer">here</a>. Please have a photo of your picture ID ready to upload (taking a picture with your camera phone is fine).`,
           completed: 0,
         },
-
-        //         {
-        //           id: '11111111-1111-5555-1111-111111111111',
-        //           name: 'Defense to Repayment for Federal Student Loans',
-        //           excerpt: 'Most of us have been victims of bad credit reporting. Use this tool to send a dispute.',
-        //           about: `### Defense to Repayment for Federal Student Loans
-        //
-        // If your taxes are being seized ("offset") or if you have been threatened with offset, you have a lot in common with thousands of other people whose taxes are offset each year. This is wrong, since no one should have to go into debt for education!
-        //
-        // You can use this form to submit a dispute to the Department of Education. The Department's form is unnecessarily complicated. We have streamlined the process for our members. You can make sure your offset is placed on hold if you file this dispute by 65 days after the date you received the offset notice. You can also stop an offset that has already begun if you receive a favorable decision from the Department.
-        //
-        // What if I suspect that my taxes will be offset but I haven't received a notice?
-        //
-        // The Department of Education usually sends offset notices once per year in the summer. If you want to know whether your taxes will be offset as a result of a federal student loan, you can call the Bureau of the Fiscal Service at 1-800-304-3107. Making this call does not make it more likely that your taxes will be offset.
-        // `,
-        //           completed: 0,
-        //         },
 
         {
           id: '11111111-1111-6666-1111-111111111111',

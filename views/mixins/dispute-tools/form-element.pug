@@ -4,7 +4,7 @@ mixin _toolsYesNoMixin(field)
 
   p.-ff-sec.-accent.-fw-700= field.label
 
-  - var _checked = field.default || 'no'
+  - var _checked = field.default !== undefined ? field.default : null
   if _formData[field.name]
     - _checked = _formData[field.name]
   input(
@@ -15,11 +15,11 @@ mixin _toolsYesNoMixin(field)
     checked= _checked === 'yes'
     data-name= field.name
     data-hidden= field.hidden && field.hidden.toString()
-    data-default= field.default
+    data-default= '' + field.default
     data-partial-toggle-radio= field.toggle
     data-toggle-radio= field.yesno && field.yesno.toString()
     data-alert!= field.alert
-  )
+  )&attributes(field.attributes)
   label.pl1.mr3.-ff-sec(for=`${field.name}-yes`) Yes
 
   input(
@@ -34,7 +34,7 @@ mixin _toolsYesNoMixin(field)
     data-partial-toggle-radio= field.toggle
     data-toggle-radio= field.yesno && field.yesno.toString()
     data-alert!= field.alert
-  )
+  )&attributes(field.attributes)
   label.pl1.-ff-sec(for=`${field.name}-no`) No
 
 

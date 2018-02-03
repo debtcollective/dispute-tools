@@ -1,4 +1,4 @@
-import Checkit from 'checkit';
+import Checkit from '../../shared/Checkit';
 import NodeSupport from './lib/widget/NodeSupport';
 import Common from './components/Common';
 

@@ -42,6 +42,7 @@ block content
               .ToolCard__caption.-caption.-fw-500 (Federal student loans only)
             hr.mb2
             a.-k-btn.btn-primary.-fw.-fw-700(
+              id='defense-to-repayment-link'
               href='https://borrowerdischarge.ed.gov/FormWizard/BDU/BDULanding.aspx' rel='noopener noreferrer'
               target='_blank'
               class= !user && 'js-login-link'
@@ -106,6 +107,29 @@ block append body
         .px2
           .max-width-1.mx-auto
             .Tools__Text-Modal!= tool.about
+
+  .Modal(
+    data-component-modal='defense-to-repayment-link-warning'
+    aria-hidden='true' role='dialog'
+  )
+    button(class='Modal__close', aria-label='close')
+      svg(class='-s18'): use(xlink:href='#svg-close')
+    .Modal__body(role='document')
+      .px2
+        .max-width-2.mx-auto
+          p You are being redirected to the Department of Education's <b>Application for Borrower Defense to Repayment</b> form.
+          p.mt3.center Continue to the Department of Education's website?
+          .mt3.flex
+            a.-k-btn.btn-outline.-fw.-fw-700.mr2(
+              href='about:blank'
+              id='stay-button'
+            ) Stay
+            a.-k-btn.btn-primary.-fw.-fw-700.ml2(
+              href='https://borrowerdischarge.ed.gov/FormWizard/BDU/BDULanding.aspx' rel='noopener noreferrer'
+              target='_blank'
+              id='continue-button'
+            ) Continue
+
 
 block scripts
   - var disputeIds = disputeTools.map(dispute => dispute.id);

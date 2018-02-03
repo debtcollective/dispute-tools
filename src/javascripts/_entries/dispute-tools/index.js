@@ -45,6 +45,29 @@ class ViewDisputeToolsIndex extends NodeSupport {
         .addEventListener('click', this.handlers[id]);
     });
 
+    this.appendChild(
+      new Modal({
+        name: 'DTRmodal',
+        element: document.querySelector(
+          '[data-component-modal="defense-to-repayment-link-warning"]',
+        ),
+      }),
+    );
+
+    this.DTRlink.addEventListener('click', e => {
+      e.preventDefault();
+      this.DTRmodal.activate();
+    });
+
+    this.DTRstayButton.addEventListener('click', e => {
+      e.preventDefault();
+      this.DTRmodal.deactivate();
+    });
+
+    this.DTRcontinueButton.addEventListener('click', () =>
+      this.DTRmodal.deactivate(),
+    );
+
     return this;
   }
 

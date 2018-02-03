@@ -43,24 +43,24 @@
 
 :root {
   /* KABINETT CONFIGURATION */
-  --k-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --k-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --k-background-color: #000;
   --k-color: #fff;
 
   --k-color-palette-primary: #f04c34;
   --k-color-palette-danger: #d0021b;
   --k-color-palette-success: #bae88b;
-  --k-color-palette-accent: #FEFAC0;
+  --k-color-palette-accent: #fefac0;
   --k-color-palette-neutral-dark: #242424;
   --k-color-palette-neutral-mid: #9b9b9b;
-  --k-color-palette-neutral-mid-x: #D8D8D8;
+  --k-color-palette-neutral-mid-x: #d8d8d8;
   --k-color-palette-neutral-light: #f5f5f5;
 
   --k-h1: 7.4375rem; /* 119px */
   --k-h2: 4.1875rem; /* 67px */
   --k-h3: 2.3125rem; /* 37px; */
   --k-h4: 1.3125rem; /* 21px; */
-  --k-font-caption-size: .75rem; /* 12px; */
+  --k-font-caption-size: 0.75rem; /* 12px; */
 
   --k-xs-fs: 12px;
   --k-xs-p: 7px 1em 6px;
@@ -87,8 +87,8 @@
   /* basscss-border */
   --border-radius: 2px;
   /* basscss-padding */
-  --space-1: .5rem;
-  --space-2: .9375rem;
+  --space-1: 0.5rem;
+  --space-2: 0.9375rem;
   --space-3: 1.875rem;
   --space-4: 3.75rem;
 
@@ -98,8 +98,6 @@
   --primary-lighter: color(var(--k-color-palette-primary) tint(15%));
   --primary-darker: color(var(--k-color-palette-primary) shade(15%));
 }
-
-
 
 /* CUSTOM STYLES */
 body {
@@ -115,26 +113,33 @@ body {
     bottom: 0;
     z-index: -1;
     will-change: transform;
-    background: var(--k-background-color) url('/images/global/bg-black-pattern.gif') 50% 0 repeat;
+    background: var(--k-background-color)
+      url('/images/global/bg-black-pattern.gif') 50% 0 repeat;
   }
 }
 
-* {margin: 0}
+* {
+  margin: 0;
+}
 
 ::selection {
   background-color: var(--k-color-palette-primary);
   color: #fff;
 }
 
-h2 {line-height: 1.194em; /* 80px */}
-h3 {line-height: 1.081em; /* 40px */}
+h2 {
+  line-height: 1.194em; /* 80px */
+}
+h3 {
+  line-height: 1.081em; /* 40px */
+}
 
 blockquote {
   font-size: 1.125rem;
 }
 
 .-paragraph {
-  font-size: .9375rem;
+  font-size: 0.9375rem;
 }
 
 a {
@@ -142,12 +147,13 @@ a {
   text-decoration: none;
   transition: color 260ms;
 
-
-  &:hover {color: var(--primary-lighter)}
+  &:hover {
+    color: var(--primary-lighter);
+  }
 
   &:not([href]) {
     text-decoration: line-through;
-    opacity: .5;
+    opacity: 0.5;
   }
 
   &[href*="//"]:not([rel*="noopener"]),
@@ -157,7 +163,11 @@ a {
   }
 }
 
-a, button, textarea, input, select {
+a,
+button,
+textarea,
+input,
+select {
   &:focus {
     outline: none;
     border-color: rgb(132, 191, 252);
@@ -166,11 +176,15 @@ a, button, textarea, input, select {
 }
 
 @media (max-width: 52em) {
-  :root {font-size: 14px}
+  :root {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 40em) {
-  :root {font-size: 12px}
+  :root {
+    font-size: 12px;
+  }
 }
 
 main {

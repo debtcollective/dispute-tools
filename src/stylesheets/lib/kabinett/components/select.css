@@ -8,7 +8,7 @@
   border: 1px solid currentColor;
 
   &::after {
-    content: "▾";
+    content: '▾';
     line-height: 1;
     position: absolute;
     top: 50%;
@@ -35,6 +35,10 @@
   &.-xl {
     padding: 0;
   }
+
+  &[disabled] {
+    opacity: 0.5;
+  }
 }
 
 .-k-select-multiple {
@@ -43,4 +47,3 @@
   border-width: 0;
   border-radius: var(--border-radius);
 }
-
