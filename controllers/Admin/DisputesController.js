@@ -8,26 +8,15 @@ const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 
 global.Admin = global.Admin || {};
 
-Admin.DisputesController = Class(Admin, 'DisputesController').inherits(
-  RestfulController,
-)({
+Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulController)({
   beforeActions: [
     {
-      before: [
-        (req, res, next) =>
-          neonode.controllers.Home._authenticate(req, res, next),
-      ],
+      before: [(req, res, next) => neonode.controllers.Home._authenticate(req, res, next)],
       actions: ['index', 'show', 'edit', 'update', 'destroy'],
     },
     {
       before: '_loadDispute',
-      actions: [
-        'show',
-        'update',
-        'destroy',
-        'updateAdmins',
-        'getAvailableAdmins',
-      ],
+      actions: ['show', 'update', 'destroy', 'updateAdmins', 'getAvailableAdmins'],
     },
     {
       before(req, res, next) {
@@ -39,9 +28,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(
           query.whereIn('id', disputeIds);
         })().then(() => {
           RESTfulAPI.createMiddleware({
-            queryBuilder: query
-              .where('deactivated', false)
-              .include('[user.account, attachments, disputeTool, admins]'),
+            queryBuilder: query.where('deactivated', false).include('[user.account, attachments, disputeTool, admins]'),
             order: {
               default: '-updated_at',
               allowedFields: ['created_at', 'updated_at'],
@@ -125,43 +112,17 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(
       res.render('admin/disputes/edit');
     },
 
-    update(req, res, next) {
+    async update(req, res, next) {
       const dispute = res.locals.dispute;
 
-      const { comment, status, note, notify } = req.body;
+      try {
+        await DisputeStatus.createForDispute(dispute, req.body);
 
-      const ds = new DisputeStatus({
-        comment,
-        status,
-        note,
-        disputeId: dispute.id,
-      });
-
-      if (!notify) {
-        ds.notify = false;
+        req.flash('success', 'The dispute status has been updated.');
+        res.redirect(CONFIG.router.helpers.Admin.Disputes.url());
+      } catch (e) {
+        next(e);
       }
-
-      ds
-        .save()
-        .then(() => {
-          if (!ds.notify) {
-            return Promise.resolve();
-          }
-
-          return DisputeMailer.sendStatusToUser({
-            dispute,
-            disputeStatus: ds,
-          }).catch(e => {
-            logger.log('  ---> Failed to send mail to user (on #update)');
-            logger.log(e.stack);
-          });
-        })
-        .then(() => dispute.save())
-        .then(() => {
-          req.flash('success', 'The dispute status has been updated.');
-          return res.redirect(CONFIG.router.helpers.Admin.Disputes.url());
-        })
-        .catch(next);
     },
 
     getAvailableAdmins(req, res, next) {
@@ -175,10 +136,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(
       req.dispute
         .updateAdmins(req.body)
         .then(() => {
-          req.flash(
-            'success',
-            'The list of administrators assigned as been updated.',
-          );
+          req.flash('success', 'The list of administrators assigned as been updated.');
           res.send({});
         })
         .catch(next);
