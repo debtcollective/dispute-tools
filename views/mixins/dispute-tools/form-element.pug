@@ -13,6 +13,7 @@ mixin _toolsYesNoMixin(field)
     id=`${field.name}-yes`
     value="yes"
     checked= _checked === 'yes'
+    aria-label= 'Yes'
     data-name= field.name
     data-hidden= field.hidden && field.hidden.toString()
     data-default= '' + field.default
@@ -28,6 +29,7 @@ mixin _toolsYesNoMixin(field)
     id=`${field.name}-no`
     value="no"
     checked= _checked === 'no'
+    aria-label= 'No'
     data-name= field.name
     data-hidden= field.hidden && field.hidden.toString()
     data-default= field.default
@@ -48,6 +50,7 @@ mixin toolsFormElementMixin(field, index)
             name=`fieldValues[${field.name}]`
             multiple= field.multiple
             data-name= field.name
+            aria-label= field.label
             data-hidden= field.hidden && field.hidden.toString()
           )&attributes(field.attributes)
             each option in field.options
@@ -59,6 +62,7 @@ mixin toolsFormElementMixin(field, index)
           .-k-select
             select.-fw(
               name=`fieldValues[${field.name}]`
+              aria-label= field.label
               data-name= field.name
               data-hidden= field.hidden && field.hidden.toString()
             )&attributes(field.attributes)
@@ -76,6 +80,7 @@ mixin toolsFormElementMixin(field, index)
           type="date"
           name=`fieldValues[${field.name}]`
           value=_formData[field.name]
+          aria-label= field.label
           data-name=field.name
           data-hidden= field.hidden && field.hidden.toString()
         )&attributes(field.attributes)
@@ -90,6 +95,7 @@ mixin toolsFormElementMixin(field, index)
         textarea.-k-textarea.block.-fw(
           name=`fieldValues[${field.name}]`
           value=_formData[field.name]
+          aria-label= field.label
           data-name=field.name
           data-hidden= field.hidden && field.hidden.toString()
         )&attributes(field.attributes)= _formData[field.name]
@@ -103,6 +109,7 @@ mixin toolsFormElementMixin(field, index)
               name=`fieldValues[${field.name}]`
               checked= _formData[field.name]
               value='yes'
+              aria-label= field.label
               data-name=field.name
               data-hidden= field.hidden && field.hidden.toString()
             )&attributes(field.attributes)
@@ -116,6 +123,7 @@ mixin toolsFormElementMixin(field, index)
           id=`${field.name}-${field.value}`
           value=`${field.value}`
           checked= _formData && _formData[field.name] === field.value
+          aria-label= field.label
           data-name= field.name
         )
         label.pl1.mr3.-ff-sec(for=`${field.name}-${field.value}`)!= field.label
@@ -148,6 +156,7 @@ mixin toolsFormElementMixin(field, index)
           name=`fieldValues[${field.name}]`
           value=_formData[field.name]
           data-name=field.name
+          aria-label= field.label
           data-hidden= field.hidden && field.hidden.toString()
         )&attributes(field.attributes)
         p.-on-error.-danger.-caption.-fw-500.mt1
