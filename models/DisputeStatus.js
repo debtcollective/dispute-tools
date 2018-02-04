@@ -45,8 +45,6 @@ const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
       logger.log(e.stack);
       throw new EmailSendingError(e);
     }
-
-    await dispute.save();
   },
 
   prototype: {

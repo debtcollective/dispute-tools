@@ -3,6 +3,7 @@ CONFIG, Collective, Account, DisputeTool, logger */
 const Promise = require('bluebird');
 const fs = require('fs-extra');
 const createQueue = require('../workers/utils').createQueue;
+const ForbiddenError = require('../lib/errors/ForbiddenError');
 
 const userLocationQueue = createQueue('userLocation');
 
@@ -16,9 +17,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
   prototype: {
     _loadUser(req, res, next) {
-      const query = User.query().include(
-        '[account, disputes.statuses.disputeTool]',
-      );
+      const query = User.query().include('[account, disputes.statuses.disputeTool]');
 
       query
         .where('id', req.params.id)
@@ -31,20 +30,16 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             .restifyACL(result)
             .then(([_result]) => {
               if (!_result) {
-                const err = new Error();
-                err.name = 'ForbiddenError';
-                return next(err);
+                return next(new ForbiddenError());
               }
 
               res.locals.user = _result;
 
               return Promise.each(res.locals.user.disputes, dispute =>
-                DisputeTool.first({ id: dispute.disputeToolId }).then(
-                  disputeTool => {
-                    dispute.disputeTool = disputeTool;
-                    return true;
-                  },
-                ),
+                DisputeTool.first({ id: dispute.disputeToolId }).then(disputeTool => {
+                  dispute.disputeTool = disputeTool;
+                  return true;
+                }),
               );
             })
             .finally(() => next());
@@ -126,11 +121,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
                 .transacting(trx)
                 .where('id', collectiveId)
                 .then(([collective]) => {
-                  logger.debug(
-                    `Incrementing ${collective.name} userCount for new user ${
-                      user.id
-                    }`,
-                  );
+                  logger.debug(`Incrementing ${collective.name} userCount for new user ${user.id}`);
                   collective.userCount++;
 
                   return collective.transacting(trx).save();
@@ -157,11 +148,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             .save();
         })
         .catch(err => {
-          logger.debug(
-            `Unable to create user ${user.email} because of error: ${err}${
-              err.stack
-            }`,
-          );
+          logger.debug(`Unable to create user ${user.email} because of error: ${err}${err.stack}`);
           res.status(400);
 
           if (err.message === 'Must provide a password') {
@@ -225,9 +212,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
         .then(() => {
           if (!user.activationToken) {
             req.flash('success', 'Profile updated succesfully');
-            return res.redirect(
-              CONFIG.router.helpers.Users.show.url(req.params.id),
-            );
+            return res.redirect(CONFIG.router.helpers.Users.show.url(req.params.id));
           }
 
           return user.sendActivation().then(() => {
@@ -264,10 +249,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
     activate(req, res, next) {
       Promise.coroutine(function* activateCoroutine() {
-        const users = yield User.query().where(
-          'activation_token',
-          req.params.token,
-        );
+        const users = yield User.query().where('activation_token', req.params.token);
 
         if (users.length !== 1) {
           req.flash('error', 'Invalid activation token');
@@ -284,10 +266,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
               return next(err);
             }
 
-            req.flash(
-              'success',
-              'Welcome! Your account was succesfully activated.',
-            );
+            req.flash('success', 'Welcome! Your account was succesfully activated.');
             return res.redirect(CONFIG.router.helpers.Collectives.url());
           });
         });
