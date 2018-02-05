@@ -33,11 +33,24 @@ block content
       .col.lg-col-9.col-12.px2
         .pt3.pr3.pl3.pb2.-bg-neutral-dark
           h4.pb1 We #[span.-accent ❤] debt resisters. Let's get this dispute started!
-          p.pb2.-ff-sec This is the part of the dispute where you will explain why you are disputing your federal student debt. Choose the option that best applies to you.
+          .Tool__About__Content.pb3
+            != marked(disputeTool.about)
+          if Object.keys(disputeTool.data.options).length > 1
+            p.pb2.-ff-sec This is the part of the dispute where you will explain why you are disputing your federal student debt. Choose the option that best applies to you.
 
-          .clearfix.mxn2.md-flex.flex-wrap
-            each val, key in disputeTool.data.options
-              +DisputeCard(key, val)
+            .clearfix.mxn2.md-flex.flex-wrap
+              each val, key in disputeTool.data.options
+                +DisputeCard(key, val)
+          else
+            form(
+              action=routeMappings.Disputes.create.url()
+              method="post"
+            )
+              input(name="_csrf" type="hidden" value=csrfToken)
+              input(name="disputeToolId" type="hidden" value=disputeTool.id)
+              input(name="option" type="hidden" value="none")
+
+              button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Start Dispute
 
 block append body
   each option, key in disputeTool.data.options
@@ -64,4 +77,3 @@ block scripts
 
       new ViewDisputeToolsShow(options);
     }, true);
-
