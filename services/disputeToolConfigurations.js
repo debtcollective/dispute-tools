@@ -1,4 +1,3 @@
-const legacyConfigurations = require('../lib/data/dispute-renderer');
 const { RENDER_TYPE } = require('./renderers/DisputeTemplate');
 
 /**
@@ -16,7 +15,7 @@ const { RENDER_TYPE } = require('./renderers/DisputeTemplate');
 /**
  * @typedef TemplateConfiguration
  *
- * @prop {string} type 'pug' and 'legacy' are supported
+ * @prop {string} type 'pug' and 'pdf' are supported
  * @prop {string} file absolute path to the template file
  * @prop {{ format: string, type: string }} pdf options to pass to the pdf generator
  * @prop {{ [fieldName: string]: TemplateFunction | TemplateFieldCoordinates }} fields
@@ -55,11 +54,7 @@ const _configurations = Object.assign(
  * @returns {DocumentConfigurationMap}
  */
 const getConfiguration = (disputeToolId, option = 'none') => {
-  const config = _configurations[disputeToolId];
-  if (config) {
-    return config[option];
-  }
-  return legacyConfigurations[disputeToolId][option].documents;
+  return _configurations[disputeToolId][option];
 };
 
 module.exports = {
