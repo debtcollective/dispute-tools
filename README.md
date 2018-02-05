@@ -11,10 +11,8 @@ the app to work correctly
 * [Node](https://nodejs.org/) 8.9.1
 * [Redis Server](https://redis.io/) 4.0 or greater
 * [PostgreSQL](https://www.postgresql.org/) 9.5 or greater
-* GraphicsMagick (`brew install graphicsmagick` if you are on macOS)
-* ImageMagick (`brew install imagemagick` if you are on macOS)
 * PDFtk (user this [Installer](`https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-mac_osx-10.11-setup.pkg`) if you are on macOS)
-4. [Yarn](https://yarnpkg.com/) 1.3 or greater
+* [Yarn](https://yarnpkg.com/) 1.3 or greater
 
 ## Optional Dependencies
 

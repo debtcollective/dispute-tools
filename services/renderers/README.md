@@ -1,10 +1,11 @@
 # Rendering pipelines
 
-There are currently three rendering pipelines, `legacy`, `pdf`, and `pug`. At the end of the day, all three produce PDF files of rendered dispute forms and letters. Each dispute configuration can have multiple documents, each with several `DisputeTemplate`s associated with them. The `credit-report-dispute-letter` for example, is a single document with two pug templates. On the other hand, option C of the `tax-offset-review` dispute, has two separate documents with a single template each. The rendering pipeline used depends on the type defined on the template configuration, so a given document is free to use multiple pipelines.
-
-## Legacy 
-
-The legacy pipeline is almost completely phased out. It uses [`graphicsmagick`](http://www.graphicsmagick.org/) to manipulate PNG snapshots of the supported letters and PDF forms directly by overlaying text in specific areas then embedding the PNG into a multi-page PDF document. Aside from not producing actual text-based PDFs, this was costly to create and maintain and ultimately produced sub-par documents that looked un-professional and hastily put together. There were also specific issues brought up around the difficulty of maintaining dynamic content of variable/unknown length. See: [#279](https://gitlab.com/debtcollective/debtcollective/issues/279), [#281](https://gitlab.com/debtcollective/debtcollective/issues/281). The pug and PDF pipelines were created to replace the legacy pipeline.
+There are currently two rendering pipelines: `pdf` and `pug`.
+At the end of the day, both produce PDF files of rendered dispute forms and letters.
+Each dispute configuration can have multiple documents, each with several `DisputeTemplate`s associated with them.
+The `credit-report-dispute-letter` for example, is a single document with two pug templates.
+On the other hand, option C of the `tax-offset-review` dispute, has two separate documents with a single template each.
+The rendering pipeline used depends on the type defined on the template configuration, so a given document is free to use multiple pipelines.
 
 ## Pug
 
