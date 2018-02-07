@@ -20,11 +20,8 @@ module.exports = {
                   address1: form['agency-address1'] || form['agency-address'],
                   address2:
                     form['agency-address2'] || // Retain the old agency address format
-                    `${form['agency-city']}, ${form['agency-state']} ${
-                      form['agency-zip-code']
-                    }`,
+                    `${form['agency-city']}, ${form['agency-state']} ${form['agency-zip-code']}`,
                 },
-                contactType: form['letter-or-phonecall'],
               };
             },
           }),
