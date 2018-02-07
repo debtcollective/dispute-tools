@@ -15,31 +15,14 @@ const REMOTE_URI_REGEXP = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z
 const { assignDefaultConfig, getSignedURL } = require('../lib/AWS');
 const PrivateAttachmentStorage = require('./PrivateAttachmentStorage');
 
-const disputeRendererData = require(path.join(
-  process.cwd(),
-  '/lib/data/dispute-renderer/index.js',
-));
-
 const DisputeRenderer = Class('DisputeRenderer')
   .inherits(Krypton.Model)
   .includes(Krypton.Attachment)({
   tableName: 'DisputeRenderers',
-  data: disputeRendererData,
-  attributes: [
-    'id',
-    'disputeId',
-    'zipPath',
-    'zipMeta',
-    'createdAt',
-    'updatedAt',
-  ],
+  attributes: ['id', 'disputeId', 'zipPath', 'zipMeta', 'createdAt', 'updatedAt'],
   attachmentStorage: new PrivateAttachmentStorage(
     assignDefaultConfig({
-      acceptedMimeTypes: [
-        'application/zip',
-        'application/octet-stream',
-        /application/,
-      ],
+      acceptedMimeTypes: ['application/zip', 'application/octet-stream', /application/],
       maxFileSize: 41943040, // 40MB
     }),
   ),
@@ -74,19 +57,8 @@ const DisputeRenderer = Class('DisputeRenderer')
       );
 
       return Promise.map(attachments, attachment =>
-        attachment
-          .save()
-          .then(() =>
-            attachment
-              .attach('file', attachment._filePath)
-              .then(() => attachment.save()),
-          ),
+        attachment.save().then(() => attachment.attach('file', attachment._filePath).then(() => attachment.save())),
       );
-    },
-
-    _getDocuments(dispute) {
-      return this.constructor.data[dispute.disputeToolId][dispute.data.option]
-        .documents;
     },
 
     _printField(template, field, value) {
@@ -114,17 +86,13 @@ const DisputeRenderer = Class('DisputeRenderer')
         const url = getSignedURL(attachment.file.url('original'));
 
         if (LOCAL_URI_REGEXP.test(url)) {
-          readStream = fs.createReadStream(
-            path.join(process.cwd(), 'public', url),
-          );
+          readStream = fs.createReadStream(path.join(process.cwd(), 'public', url));
         } else if (REMOTE_URI_REGEXP.test(url)) {
           readStream = request.get(url);
         }
 
         await zip.append(readStream, {
-          name: `debt-collective-dispute/${
-            attachment.file.meta('original').originalFileName
-          }`,
+          name: `debt-collective-dispute/${attachment.file.meta('original').originalFileName}`,
         });
       };
 

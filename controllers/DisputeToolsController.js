@@ -58,12 +58,6 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(
         }
       });
 
-      // In case the DisputeTool has just one option ('none')
-      // render the show-no-options view
-      if (Object.keys(disputeTool.data.options).length === 1) {
-        return res.render('dispute-tools/show-optionless');
-      }
-
       return res.render('dispute-tools/show');
     },
   },

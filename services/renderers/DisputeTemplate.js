@@ -4,7 +4,7 @@ const { values, mapValues } = require('lodash');
 /**
  * @typedef DisputeTemplateConfiguration
  *
- * @prop {'pug'|'pdf'|'legacy'} type One of 'pug', 'pdf', or 'legacy'
+ * @prop {'pug'|'pdf'} type One of 'pug'or 'pdf'
  * @prop {string[]} file Path split into array to be passed to path.join
  * @prop {any?} pdf PDF rendering settings passed to html-pdf
  * @prop {(({ forms: { 'personal-information-form': any } }) => any)?} normalize
@@ -19,9 +19,9 @@ const { values, mapValues } = require('lodash');
 class DisputeTemplate {
   constructor({
     /**
-     * One of 'pug', 'pdf', or 'legacy'
+     * One of 'pug' or 'pdf'
      */
-    type = DisputeTemplate.RENDER_TYPE.LEGACY,
+    type,
     /**
      * Path split into array to be passed to path.join
      */
@@ -56,9 +56,7 @@ class DisputeTemplate {
     if (post === null) {
       this.post = null;
     } else {
-      this.post = (Array.isArray(post) ? post : [post]).map(fn =>
-        fn.bind(this),
-      );
+      this.post = (Array.isArray(post) ? post : [post]).map(fn => fn.bind(this));
     }
     this.data = data;
   }
@@ -85,15 +83,9 @@ DisputeTemplate.PDF_WRITER_CONFIG = {
 
 DisputeTemplate.RENDER_TYPE = {
   PUG: 'pug',
-  LEGACY: 'legacy',
   PDF: 'pdf',
 };
 
-DisputeTemplate.templatesRoot = join(
-  process.cwd(),
-  'lib',
-  'assets',
-  'document_templates',
-);
+DisputeTemplate.templatesRoot = join(process.cwd(), 'lib', 'assets', 'document_templates');
 
 module.exports = DisputeTemplate;

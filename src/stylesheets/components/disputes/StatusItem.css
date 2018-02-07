@@ -1,5 +1,5 @@
 .StatusItem {
-  border-bottom: 2px solid rgba(155, 155, 155, .5);
+  border-bottom: 2px solid rgba(155, 155, 155, 0.5);
 
   &-Avatar {
     width: 50px;
@@ -18,10 +18,10 @@
 
   &-Note {
     -webkit-font-smoothing: antialiased;
-    background-color: #FFFAC0;
+    background-color: #fffac0;
     color: var(--k-color);
     font-size: 14px;
-    white-space: pre;
+    white-space: pre-wrap;
 
     &:empty {
       display: none;
