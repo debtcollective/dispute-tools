@@ -1,4 +1,4 @@
-/* globals User, Account, CONFIG, Collective, Dispute, DisputeTool, Attachment */
+/* globals User, Account, CONFIG, Collective, DisputeStatus, Dispute, DisputeTool, Attachment */
 
 const expect = require('chai').expect;
 const path = require('path');
@@ -207,6 +207,7 @@ describe('Dispute', () => {
 
     describe('search', () => {
       const containsDispute = ids => expect(ids).to.contain(dispute.id);
+
       it("should search by the user's name", () =>
         Dispute.search({ name: user.account.fullname }).then(containsDispute));
 
@@ -215,8 +216,30 @@ describe('Dispute', () => {
           containsDispute,
         ));
 
-      it('should search by the dispute status', () =>
-        Dispute.search({ status: dispute.status }).then(containsDispute));
+      describe('by dispute status', () => {
+        it('should search by the dispute status', () =>
+          Dispute.search({ status: dispute.status }).then(containsDispute));
+
+        describe('should ignore', () => {
+          let status;
+          let disputeId;
+          before(async () => {
+            disputeId = dispute.id;
+            status = new DisputeStatus({
+              status: 'In Review',
+              notify: false,
+              comment: 'asdfasdf',
+              disputeId,
+            });
+            await status.save();
+          });
+
+          it('the notify flag', () =>
+            Dispute.search({ status: status.status }).then(res => {
+              expect(res).to.contain(disputeId);
+            }));
+        });
+      });
 
       it('should search by the dispute tool', () =>
         Dispute.search({

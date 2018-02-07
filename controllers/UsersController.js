@@ -3,6 +3,7 @@ CONFIG, Collective, Account, DisputeTool, logger */
 const Promise = require('bluebird');
 const fs = require('fs-extra');
 const createQueue = require('../workers/utils').createQueue;
+const ForbiddenError = require('../lib/errors/ForbiddenError');
 
 const userLocationQueue = createQueue('userLocation');
 
@@ -29,9 +30,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             .restifyACL(result)
             .then(([_result]) => {
               if (!_result) {
-                const err = new Error();
-                err.name = 'ForbiddenError';
-                return next(err);
+                return next(new ForbiddenError());
               }
 
               res.locals.user = _result;

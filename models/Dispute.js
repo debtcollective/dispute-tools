@@ -55,45 +55,31 @@ const Dispute = Class('Dispute')
 
     query.include(Dispute.defaultIncludes);
 
-    const results = [];
-
     const records = await query;
 
-    records.forEach(record => {
-      let nameFound = false;
-      let statusFound = false;
-
-      if (
-        qs.name &&
+    return records.reduce((acc, record) => {
+      const nameFound =
+        // If no name passed in
+        !qs.name ||
         record.user.account.fullname
           .toLowerCase()
-          .search(qs.name.toLowerCase()) !== -1
-      ) {
-        nameFound = true;
-      }
+          .indexOf(qs.name.toLowerCase()) !== -1;
 
-      if (
-        qs.status &&
-        record.statuses.length > 0 &&
-        record.statuses[0].status === qs.status
-      ) {
-        statusFound = true;
-      }
-
-      if (!qs.name) {
-        nameFound = true;
-      }
-
-      if (!qs.status) {
-        statusFound = true;
-      }
+      const statusFound =
+        // If no status passed in
+        !qs.status ||
+        (record.statuses.length > 0 &&
+          // model-relations/Dispute.js already configures the statuses
+          // to be pulled in descending order by their created_at date
+          // so we know the first one will be the most recent, no need to order
+          record.statuses[0].status === qs.status);
 
       if (nameFound && statusFound) {
-        results.push(record);
+        return [...acc, record.id];
       }
-    });
 
-    return results.map(item => item.id);
+      return acc;
+    }, []);
   },
 
   prototype: {

@@ -511,7 +511,7 @@ describe('DisputesController', () => {
         .field('name', 'deactivater-1')
         .then(result => {
           expect(result.status).to.equal(200);
-          Dispute.query()
+          return Dispute.query()
             .where('id', data.disputeId)
             .then(([dispute]) => {
               expect(dispute.deactivated).to.be.true;

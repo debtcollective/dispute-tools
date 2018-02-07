@@ -6297,6 +6297,10 @@ node-notifier@^4.6.1:
     shellwords "^0.1.0"
     which "^1.0.5"
 
+node-pdftk@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/node-pdftk/-/node-pdftk-1.2.1.tgz#366f567904ae47e4e0ded7e4e0e0598dea6d1910"
+
 node-pre-gyp@^0.6.13, node-pre-gyp@^0.6.39:
   version "0.6.39"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.6.39.tgz#c00e96860b23c0e1420ac7befc5044e1d78d8649"
