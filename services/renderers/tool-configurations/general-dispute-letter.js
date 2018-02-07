@@ -1,4 +1,5 @@
 const DisputeTemplate = require('../DisputeTemplate');
+const { getAddress2 } = require('./shared/utils');
 
 module.exports = {
   '11111111-1111-3333-1111-111111111111': {
@@ -13,14 +14,12 @@ module.exports = {
                 user: {
                   name: form.name,
                   address1: form.address,
-                  address2: `${form.city}, ${form.state} ${form['zip-code']}`,
+                  address2: getAddress2({ form }),
                 },
                 agency: {
                   name: form['agency-name'],
                   address1: form['agency-address1'] || form['agency-address'],
-                  address2:
-                    form['agency-address2'] || // Retain the old agency address format
-                    `${form['agency-city']}, ${form['agency-state']} ${form['agency-zip-code']}`,
+                  address2: getAddress2({ form, prefix: 'agency-' }),
                 },
               };
             },

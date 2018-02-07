@@ -1,10 +1,5 @@
 const DisputeTemplate = require('../../DisputeTemplate');
-const {
-  pathHelper,
-  normalizeSsn,
-  formatDate,
-  getAddress2,
-} = require('./utils');
+const { pathHelper, normalizeSsn, formatDate, getAddress2 } = require('./utils');
 
 const page1 = pathHelper(0)(1);
 const page2 = pathHelper(0)(2);
@@ -31,14 +26,14 @@ module.exports = {
           };
         },
         getApplyingAs({
-          'atd-applying-as': applyingAs,
-          'atd-student-name': studentName,
-          'atd-student-ssn': studentSsn,
+          'atb-applying-as': applyingAs,
+          'atb-student-name': studentName,
+          'atb-student-ssn': studentSsn,
         }) {
           const ret = {};
 
           if (applyingAs === 'yes') {
-            ret[page1('Applying')] = YES; // 0.fdf:83 -- go figure why this one's different...
+            ret[page1('Applying', 1)] = NO;
             ret[page1('StudentName')] = studentName;
 
             const [ssn1, ssn2, ssn3] = normalizeSsn(studentSsn);
@@ -47,7 +42,7 @@ module.exports = {
             ret[studSsn(2)] = ssn2;
             ret[studSsn(3)] = ssn3;
           } else {
-            ret[page1('Applying', 1)] = NO; // 0.fdf.137
+            ret[page1('Applying')] = YES;
           }
 
           return ret;
@@ -98,6 +93,7 @@ module.exports = {
           'atb-entrance-exam-score': examScore,
           'atb-entrance-exam-improper': examAppearedImproperlyAdministered,
           'atb-entrance-exam-improper-explain': improprietyExplained,
+          'atb-entrance-exam-radio-option': existsSomeoneToSupportClaim,
           'atb-entrance-exam-supporter-name': nameOfSomeoneSupportingClaim,
           'atb-entrance-exam-supporter-address': supporterAddress,
           'atb-entrance-exam-supporter-address2': supporterAddress2,
@@ -117,12 +113,12 @@ module.exports = {
             if (examAppearedImproperlyAdministered === 'yes') {
               ret[page2('YesNo8', 1)] = YES;
               ret[page2('Explain')] = improprietyExplained;
-              ret[page2('NameofParty')] = nameOfSomeoneSupportingClaim;
-              ret[page2('Phone1')] = supporterPhone;
-              ret[
-                page2('Address')
-              ] = `${supporterAddress}, ${supporterAddress2 ||
-                `${supporterCity}, ${supporterState} ${supporterZipCode}`}`;
+              if (existsSomeoneToSupportClaim === 'yes') {
+                ret[page2('NameofParty')] = nameOfSomeoneSupportingClaim;
+                ret[page2('Phone1')] = supporterPhone;
+                ret[page2('Address')] = `${supporterAddress}, ${supporterAddress2 ||
+                  `${supporterCity}, ${supporterState} ${supporterZipCode}`}`;
+              }
             } else {
               ret[page2('YesNo8')] = NO;
             }

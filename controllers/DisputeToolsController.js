@@ -1,14 +1,11 @@
 /* globals RestfulController, DisputeTool, neonode, Class, CONFIG, Dispute */
 const marked = require('marked');
 
-const DisputeToolsController = Class('DisputeToolsController').inherits(
-  RestfulController,
-)({
+const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulController)({
   beforeActions: [
     {
       before: [
-        (req, res, next) =>
-          neonode.controllers.Home._authenticate(req, res, next),
+        (req, res, next) => neonode.controllers.Home._authenticate(req, res, next),
         (req, res, next) => {
           DisputeTool.query()
             .where({

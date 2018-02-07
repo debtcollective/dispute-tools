@@ -5,12 +5,7 @@ const path = require('path');
 const { createUser, createDispute } = require('../../utils/helpers');
 const puppeteer = require('puppeteer');
 
-const truncate = require(path.join(
-  process.cwd(),
-  'tests',
-  'utils',
-  'truncate',
-));
+const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 
 describe('DashboardController', () => {
   let browser;
@@ -48,26 +43,20 @@ describe('DashboardController', () => {
   describe('with session', () => {
     // login user
     before(async function before() {
-      this.timeout(10000);
+      this.timeout(100000);
 
       await page.goto('http://localhost:3000/login');
 
       await page.type('input[name="email"]', user.email);
       await page.type('input[name="password"]', '12345678');
 
-      return Promise.all([
-        page.click('button[type="submit"]'),
-        page.waitForNavigation(),
-      ]);
+      return Promise.all([page.click('button[type="submit"]'), page.waitForNavigation()]);
     });
 
     it('shows collectives', async () => {
       await page.goto('http://localhost:3000/dashboard');
 
-      const collectivesCount = await page.$$eval(
-        '.collectives-list-item',
-        items => items.length,
-      );
+      const collectivesCount = await page.$$eval('.collectives-list-item', items => items.length);
 
       expect(collectivesCount).to.eq(1);
     });
@@ -78,10 +67,7 @@ describe('DashboardController', () => {
       it('shows dispute status message', async () => {
         await page.goto('http://localhost:3000/dashboard');
 
-        const title = await page.$eval(
-          '.dispute-status-title',
-          e => e.innerHTML,
-        );
+        const title = await page.$eval('.dispute-status-title', e => e.innerHTML);
 
         expect(title).to.match(/You began a Wage Garnishment Dispute on/);
       });

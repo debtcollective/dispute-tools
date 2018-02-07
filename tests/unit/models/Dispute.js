@@ -5,12 +5,7 @@ const path = require('path');
 const sinon = require('sinon');
 const PrivateAttachmentStorage = require('../../../models/PrivateAttachmentStorage');
 
-const truncate = require(path.join(
-  process.cwd(),
-  'tests',
-  'utils',
-  'truncate',
-));
+const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 
 describe('Dispute', () => {
   let user;
@@ -83,9 +78,7 @@ describe('Dispute', () => {
       });
 
       return dispute.save().catch(err => {
-        expect(err.errors.disputeToolId.message).to.be.equal(
-          'The disputeToolId is required',
-        );
+        expect(err.errors.disputeToolId.message).to.be.equal('The disputeToolId is required');
       });
     });
   });
@@ -147,12 +140,7 @@ describe('Dispute', () => {
         dispute.userId = user.id;
         dispute.disputeToolId = tool.id;
 
-        const filePath = path.join(
-          process.cwd(),
-          'tests',
-          'assets',
-          'hubble.jpg',
-        );
+        const filePath = path.join(process.cwd(), 'tests', 'assets', 'hubble.jpg');
 
         // Prevent uploading files to S3
         sinon.stub(PrivateAttachmentStorage.prototype, 'saveStream').returns(
@@ -163,8 +151,7 @@ describe('Dispute', () => {
                 mimeType: 'image/jpeg',
                 width: 1280,
                 height: 1335,
-                key:
-                  'test/DisputeAttachment/6595579a-b170-4ffd-87b3-2439f3d032fc/file/original.jpeg',
+                key: 'test/DisputeAttachment/6595579a-b170-4ffd-87b3-2439f3d032fc/file/original.jpeg',
               },
             };
 
@@ -178,9 +165,7 @@ describe('Dispute', () => {
             expect(dispute.data.attachments[0].id).to.exists;
             expect(dispute.data.attachments[0].path).to.exists;
             expect(dispute.data.attachments[0].thumb).to.exists;
-            expect(dispute.data.attachments[0].name).to.be.equal(
-              'single-uploader',
-            );
+            expect(dispute.data.attachments[0].name).to.be.equal('single-uploader');
 
             PrivateAttachmentStorage.prototype.saveStream.restore();
           }),
@@ -212,9 +197,7 @@ describe('Dispute', () => {
         Dispute.search({ name: user.account.fullname }).then(containsDispute));
 
       it('should search by the dispute human readable id', () =>
-        Dispute.search({ filters: { readable_id: dispute.readableId } }).then(
-          containsDispute,
-        ));
+        Dispute.search({ filters: { readable_id: dispute.readableId } }).then(containsDispute));
 
       describe('by dispute status', () => {
         it('should search by the dispute status', () =>
@@ -247,17 +230,11 @@ describe('Dispute', () => {
         }).then(containsDispute));
 
       describe('when given a readable id should ignore', () => {
-        const withreadableId = q =>
-          Object.assign({ filters: { readable_id: dispute.readableId } }, q);
-        it('the name', () =>
-          Dispute.search(withreadableId({ name: 'bogus bogus' })).then(
-            containsDispute,
-          ));
+        const withreadableId = q => Object.assign({ filters: { readable_id: dispute.readableId } }, q);
+        it('the name', () => Dispute.search(withreadableId({ name: 'bogus bogus' })).then(containsDispute));
 
         it('the status', () =>
-          Dispute.search(
-            withreadableId({ status: 'not a real status beep boop beeeeeeep' }),
-          ).then(containsDispute));
+          Dispute.search(withreadableId({ status: 'not a real status beep boop beeeeeeep' })).then(containsDispute));
       });
     });
 
@@ -272,8 +249,7 @@ describe('Dispute', () => {
 
           expect(disputeAdmins).to.be.truthy;
           expect(disputeAdmins.length).to.eq(1);
-          expect(disputeAdmins.find(da => da.admin_id === user.id)).to.be
-            .defined;
+          expect(disputeAdmins.find(da => da.admin_id === user.id)).to.be.defined;
         });
 
         it('should remove the admin from being assigned to the dispute', async () => {
@@ -285,8 +261,7 @@ describe('Dispute', () => {
           });
 
           expect(disputeAdmins.length).to.eq(0);
-          expect(disputeAdmins.find(da => da.admin_id === user.id)).to.be
-            .undefined;
+          expect(disputeAdmins.find(da => da.admin_id === user.id)).to.be.undefined;
         });
       });
     });

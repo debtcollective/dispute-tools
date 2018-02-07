@@ -1,0 +1,44 @@
+#letter
+  header
+    div
+      p #{user.name}
+      
+      p #{user.address1}
+      p #{user.address2}
+      p #{agency.address1}
+      p #{agency.address2}
+      p #{date}
+  
+  br
+  p Dear #{agency.name},
+  p I am writing with regard to account number #{accountNumber}. I am disputing the alleged debt.
+  p Please provide me with the following documentation, to which I am legally entitled under the Fair Debt Collection Practices Act and similar state law:
+
+  ul
+    li Proof that I signed the promissory note and/or contact associated with this debt;
+    li Proof that you are the present owner or holder of the note, including the entire chain of title tracing your possession to the original issuance;
+    li Proof of amount owed.
+
+  p Nothing in this letter should be read as a waiver of any of my rights under state or federal law.
+  p Be advised that I have documented all correspondence with respect to this debt and will not hesitate to report any violates of the law to my State Attorney General, the Federal Trade Commission, and the Better Business Bureau. Nor will I hesitate to contact my attorney if necessary. I am a member of the Debt Collective.
+
+  br
+
+  p Sincerely,
+  p #{user.name}
+
+style.
+  #letter {
+    font-size: 10pt;
+    font-family: 'Times';
+    font-variant-ligatures: common-ligatures;
+  }
+  div > p:nth-child(1),
+  div > p:nth-child(4) {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  div > p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }

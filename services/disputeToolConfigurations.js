@@ -19,6 +19,7 @@ const { RENDER_TYPE } = require('./renderers/DisputeTemplate');
  * @prop {string} file absolute path to the template file
  * @prop {{ format: string, type: string }} pdf options to pass to the pdf generator
  * @prop {{ [fieldName: string]: TemplateFunction | TemplateFieldCoordinates }} fields
+ * @prop {function} normalize
  *  functions to handle each field on a generated dispute
  */
 
@@ -53,9 +54,7 @@ const _configurations = Object.assign(
  * @param {string?} option Defaults to `none`
  * @returns {DocumentConfigurationMap}
  */
-const getConfiguration = (disputeToolId, option = 'none') => {
-  return _configurations[disputeToolId][option];
-};
+const getConfiguration = (disputeToolId, option = 'none') => _configurations[disputeToolId][option];
 
 module.exports = {
   _configurations,

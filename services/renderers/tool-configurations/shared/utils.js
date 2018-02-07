@@ -47,5 +47,5 @@ exports.getAddress2 = ({
   state = 'state',
   prefix = '',
 }) =>
-  form[prefix + address2] || // default to the old form style
+  form[prefix + address2] /* default to the old form style */ ||
   `${form[prefix + city]}, ${form[prefix + state]}, ${form[prefix + zipCode]}`;
