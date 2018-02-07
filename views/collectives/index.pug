@@ -31,7 +31,7 @@ block content
               if collective.cover.exists('grayscale')
                 .center.pb2
                   img.inline-block.align-top.fit(
-                    src=collective.cover.url['grayscale']
+                    src=collective.cover.urls['grayscale']
                   )
 
               if collective.userBelongsToCollective
