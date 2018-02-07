@@ -4,8 +4,8 @@ const { values, mapValues } = require('lodash');
 /**
  * @typedef DisputeTemplateConfiguration
  *
- * @prop {'pug'|'pdf'} type One of 'pug'or 'pdf'
- * @prop {string[]} file Path split into array to be passed to path.join
+ * @prop {'pug'|'pdf'} type One of 'pug' or 'pdf'
+ * @prop {string[]|(data: any) => string[]} file Path split into array to be passed to path.join
  * @prop {any?} pdf PDF rendering settings passed to html-pdf
  * @prop {(({ forms: { 'personal-information-form': any } }) => any)?} normalize
  *    Function to normalize the form data to make the templates easier to read. Gets bound to
@@ -23,7 +23,10 @@ class DisputeTemplate {
      */
     type,
     /**
-     * Path split into array to be passed to path.join
+     * Either a path split into array to be passed to path.join or a function
+     * taking arguments used to determine which file is used. Useful for when
+     * the determination of the tile to use depends on an answer to one of the
+     * form questions
      */
     file,
     /**
@@ -49,7 +52,10 @@ class DisputeTemplate {
   }) {
     this.type = type;
 
-    this.file = join(DisputeTemplate.templatesRoot, ...file);
+    this.file =
+      typeof file === 'function'
+        ? (...args) => join(DisputeTemplate.templatesRoot, ...file(...args))
+        : () => join(DisputeTemplate.templatesRoot, ...file);
 
     this.pdf = pdf;
     this.normalize = normalize.bind(this);

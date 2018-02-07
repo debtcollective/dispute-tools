@@ -1,5 +1,6 @@
 # The Debt Collective
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/debtcollective/Lobby)  
+
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/debtcollective/Lobby)
 
 Corporate elites control our government and by extension our lives. They cheat workers, don’t pay their taxes, and then force us into debt for the basic necessities of life: shelter, food, education, and healthcare. We have the power to change this.
 
@@ -23,19 +24,22 @@ You may need to install the following for certain parts of the app to work corre
 # Installation
 
 1. Clone the repo
+
 ```bash
 git clone git@gitlab.com:debtcollective/debtcollective.git
 cd debtcollective
 ```
 
 2. Copy config files and edit them as needed
+
 ```bash
 cp config/config.sample.js config/config.js
 cp config/knexfile.sample.js knexfile.js
 ```
 
 3. (optional, recommended) Disable account activation
-Update `./debtcollective/config/config.js` to include `disableActivation` attribute
+   Update `./debtcollective/config/config.js` to include `disableActivation` attribute
+
 ```javascript
 development: {
   disableActivation: true,
@@ -52,7 +56,6 @@ Ensure Redis and Postgres are running.
 3. Install dependencies `yarn`
 4. Build assets `yarn build`
 5. Run app `yarn start`
-
 
 # Emails in Development
 
@@ -123,6 +126,10 @@ Create an User and change the role to `Admin` in the `Users` table.
 
 Please refer to `services/renderers/README.md` for a description of our rendering pipeline and also guidelines on creating new templates.
 
+## Create/update a new form definition
+
+Please refer to `lib/data/dispute-tools/README.md` for specific documentation about how the forms work.
+
 ## Workers
 
 We are using [bee-queue](https://github.com/bee-queue/bee-queue) as our
@@ -161,11 +168,10 @@ You enqueue a job like this
 const createQueue = require('./workers/utils').createQueue;
 const userLocationQueue = createQueue('userLocation');
 
-
 // Enqueue a Job
 userLocationQueue
-  .createJob({
-    accountId: account.id,
-  })
-  .save();
+    .createJob({
+        accountId: account.id,
+    })
+    .save();
 ```

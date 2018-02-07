@@ -15,16 +15,7 @@ const Dispute = Class('Dispute')
     userId: ['required'],
     disputeToolId: ['required'],
   },
-  attributes: [
-    'id',
-    'readableId',
-    'userId',
-    'disputeToolId',
-    'data',
-    'deactivated',
-    'createdAt',
-    'updatedAt',
-  ],
+  attributes: ['id', 'readableId', 'userId', 'disputeToolId', 'data', 'deactivated', 'createdAt', 'updatedAt'],
 
   defaultIncludes: '[user.account, statuses]',
 
@@ -60,10 +51,7 @@ const Dispute = Class('Dispute')
     return records.reduce((acc, record) => {
       const nameFound =
         // If no name passed in
-        !qs.name ||
-        record.user.account.fullname
-          .toLowerCase()
-          .indexOf(qs.name.toLowerCase()) !== -1;
+        !qs.name || record.user.account.fullname.toLowerCase().indexOf(qs.name.toLowerCase()) !== -1;
 
       const statusFound =
         // If no status passed in
@@ -195,9 +183,7 @@ const Dispute = Class('Dispute')
                   .where({ id: renderer.id })
                   .include('attachments')
                   .then(([_disputeRenderer]) => {
-                    return renderer
-                      .buildZip(_disputeRenderer)
-                      .catch(fail('BUILDING ZIP'));
+                    return renderer.buildZip(_disputeRenderer).catch(fail('BUILDING ZIP'));
                   });
               });
           })
@@ -292,18 +278,14 @@ const Dispute = Class('Dispute')
         throw new Error("Dispute doesn't have any attachments");
       }
 
-      const attachments = dispute.attachments.filter(
-        attachment => attachment.id === id,
-      );
+      const attachments = dispute.attachments.filter(attachment => attachment.id === id);
 
       if (attachments.length === 0) {
         throw new Error('Attachment not found');
       }
 
       return attachments[0].destroy().then(() => {
-        const dataAttachment = dispute.data.attachments.filter(
-          attachment => attachment.id === id,
-        )[0];
+        const dataAttachment = dispute.data.attachments.filter(attachment => attachment.id === id)[0];
 
         const index = dispute.data.attachments.indexOf(dataAttachment);
 

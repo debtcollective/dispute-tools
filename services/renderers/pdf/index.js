@@ -7,11 +7,13 @@ const PDFDocument = require('hummus-recipe');
 
 module.exports = ({ file, normalize = l => l, post }, data, documentName) =>
   new Promise((resolve, reject) => {
-    fillPdf.generatePdf(normalize(data), file, (err, buffer) => {
+    fillPdf.generatePdf(normalize(data), file(data), (err, buffer) => {
       if (err) {
         return reject(err);
       }
+
       const rendered = join(tmpdir(), `${documentName}_${uuid.v4()}.pdf`);
+
       return writeFile(rendered, buffer, writeErr => {
         if (writeErr) {
           return reject(writeErr);

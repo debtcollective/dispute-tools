@@ -1,11 +1,6 @@
 const DisputeTemplate = require('../../DisputeTemplate');
 const { map } = require('lodash');
-const {
-  pathHelper,
-  formatDate,
-  normalizeSsn,
-  getAddress2,
-} = require('./utils');
+const { pathHelper, formatDate, normalizeSsn, getAddress2 } = require('./utils');
 
 const page1 = pathHelper(0)(1);
 const page2 = pathHelper(0)(2);
@@ -41,11 +36,7 @@ module.exports = {
             [regSsn(3)]: ssn3,
           };
         },
-        getApplyingAs({
-          'fc-applying-as': applyingAs,
-          'fc-student-name': studentName,
-          'fc-student-ssn': studentSsn,
-        }) {
+        getApplyingAs({ 'fc-applying-as': applyingAs, 'fc-student-name': studentName, 'fc-student-ssn': studentSsn }) {
           const ret = {};
 
           if (applyingAs === 'yes') {
@@ -65,7 +56,7 @@ module.exports = {
         getSignedDocuments(form) {
           const ret = {};
 
-          map(documents, (letter, box) => {
+          map(documents, (box, letter) => {
             if (form[`fc-documents-${letter}`] === 'yes') {
               ret[box] = YES;
             }
@@ -84,9 +75,7 @@ module.exports = {
             [page1('Phone1')]: form.phone,
             [page1('Phone2')]: form.phone2 || '', // prevent 'undefined' on form
             [page1('SchoolName')]: form.schoolName,
-            [page1('SchoolAddress')]: `${form['school-address']}, ${getAddress2(
-              { form, prefix: 'school-' },
-            )}`,
+            [page1('SchoolAddress')]: `${form['school-address']}, ${getAddress2({ form, prefix: 'school-' })}`,
             [page1('DateFrom')]: form['school-attended-from'],
             [page1('DateTo')]: form['school-attended-to'],
             [page1('YesNo1')]: NO, // always no based on the old template

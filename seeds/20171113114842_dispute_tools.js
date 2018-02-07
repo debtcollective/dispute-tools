@@ -27,8 +27,7 @@ The number is: 1-800-304-3107.`,
           id: '11111111-1111-2222-1111-111111111111',
           name: 'Dispute Your Tax Return Being Taken',
           readable_name: 'Tax Offset Dispute',
-          excerpt:
-            'Use this tool if your tax return is being seized for an unpaid federal student loan.',
+          excerpt: 'Use this tool if your tax return is being seized for an unpaid federal student loan.',
           about: `### Dispute Your Tax Return Being Taken
 
 If your taxes are being seized ("offset") or if you have been threatened with offset, you have a lot in common with thousands of other people whose taxes are offset each year. This is wrong, since no one should have to go into debt for education!
@@ -61,8 +60,7 @@ Before you begin you will need the name and address of the creditor or the colle
           id: '11111111-1111-4444-1111-111111111111',
           name: 'Dispute Errors on Your Credit Report',
           readable_name: 'Credit Report Dispute',
-          excerpt:
-            'Most of us have been victims of bad credit reporting. Use this tool to send a dispute.',
+          excerpt: 'Most of us have been victims of bad credit reporting. Use this tool to send a dispute.',
           about: `### Dispute Errors on Your Credit Report
 
 Millions of us have errors on our credit reports, which makes it harder to do basic things like get a job or rent an apartment. Fight back! You can get a free copy of your credit report once per year at <a href="http://annualcreditreport.com" target="_blank" rel="noopener noreferrer">annualcreditreport.com</a> or call 1-877- 322-8228. For a list of common errors to look for, go <a href="http://www.consumerfinance.gov/askcfpb/1339/if-credit-reporting-error-corrected-how-long-will-it-take-i-find-out-results.html" target="_blank" rel="noopener noreferrer">here</a>. Once you have determined that there are errors on your report, you can use this tool to ask for a correction. This tool will help you write a dispute letter to the three main credit reporting agencies. The Debt Collective will submit the letters your behalf. For more information about the process, go <a href="http://www.consumerfinance.gov/askcfpb/1261/what-are-errors-show-credit-reports-out-having-creditors-report-your-accounts-credit-bureaus.html" target="_blank" rel="noopener noreferrer">here</a>. Please have a photo of your picture ID ready to upload (taking a picture with your camera phone is fine).`,
@@ -71,20 +69,18 @@ Millions of us have errors on our credit reports, which makes it harder to do ba
 
         {
           id: '11111111-1111-6666-1111-111111111111',
-          name: 'Dispute an Unpaid Private Student Loan',
+          name: 'Dispute a Private Student Loan',
           readable_name: 'Private Student Loan Dispute',
-          excerpt:
-            'Use this tool to send a dispute to a private student loan in collections.',
+          excerpt: 'Use this tool to dispute any private student loan.',
           about: `### Dispute an Unpaid Private Student Loan
 
-#### For any defaulted private student loan debt that has been sent to collections.
+#### For any private student loan debt
 
-Private student loans are those issued by a company not working on behalf of the government. These companies often contract with a servicer to collect the debt. Some of them break the law when trying to collect. What is more, because of sloppy paperwork, the new owners of the debt often can’t prove they own it. Demanding proof of ownership, or “chain of title,” is the first step to getting debt collectors off our backs.
+Private student loans are those issued by a company not working on behalf of the government. These companies often contract with a servicer to collect the debt. Some of them break the law when trying to collect. What is more, because of sloppy paperwork, the owners of the debt often can’t prove they own it. Demanding proof of ownership is the first step to getting debt collectors off our backs.
 
-If you are in default on a student loan, this tool will assist you to generate a letter that will be automatically sent to the debt collector asking them to prove that they have the right to collect on the debt they have been bugging you about. You have a right to this evidence. If the debt collector cannot prove that you owe them money, they will be less likely to sue you or continue to collect).
+If you have a private student loan, this tool will assist you to generate a letter that will be automatically sent to the creditor or to the debt collector asking them to prove that they have the right to collect on the debt they have been bugging you about. You have a right to this evidence. If the creditor or collector cannot prove that you owe them money, they will be less likely to sue you or continue to collect.
 
-This tool should **not** be used in response to a Complaint/Summons letter letting you know that the collector is actively seeking a judgment against you in court. If you are being sued, you should seek legal advice.
-
+This tool should not be used in response to a Complaint/Summons letter letting you know that the collector is actively seeking a judgment against you in court. If you are being sued, you should seek legal advice.
 Before you begin to use this tool, you should make sure you have the name and address of the collections agency that is attempting to collect from you.
 
 If you don't have the name and address of the collection agency, you will not be able to file this dispute.`,
