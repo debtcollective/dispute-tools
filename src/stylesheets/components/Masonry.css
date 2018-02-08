@@ -5,15 +5,15 @@
     width: 100%;
 
     @media (--breakpoint-sm) {
-      width: calc(6/12 * 100%);
+      width: calc(6 / 12 * 100%);
     }
 
     @media (--breakpoint-md) {
-      width: calc(4/12 * 100%);
+      width: calc(4 / 12 * 100%);
     }
   }
 
-  @supports(column-count: 1) {
+  @supports (column-count: 1) {
     column-count: 1;
     column-gap: 0;
 
@@ -30,7 +30,9 @@
       display: block;
       break-inside: avoid;
 
-      &:only-child { display: inline-block; }
+      &:only-child {
+        display: inline-block;
+      }
     }
   }
 }

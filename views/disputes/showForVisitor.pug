@@ -3,9 +3,6 @@ extends ../layouts/application.pug
 block title
   | #{dispute.disputeTool.name} / #{dispute.data.option} — The Debt Collective
 
-block styles
-  link(href="/build/stylesheets/disputes/show.css" rel="stylesheet")
-
 block content
   -
     var currentStep = 3;

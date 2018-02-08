@@ -3,9 +3,6 @@ extends ../layouts/application.pug
 block title
   | #{user.account.fullname} — The Debt Collective
 
-block styles
-  link(href='/build/stylesheets/users/show.css' rel='stylesheet')
-
 block content
   .ProfileWrapper.wrapper.py4.px2.flex.items-center.relative
     - var _state = user.account.state.toLowerCase().replace(' ', '-')

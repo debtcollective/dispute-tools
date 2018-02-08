@@ -1,5 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const path = require('path');
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const dev = process.env.NODE_ENV !== 'production';
 
@@ -28,6 +30,7 @@ module.exports = {
         NODE_ENV: `"${process.env.NODE_ENV}"`,
       },
     }),
+    new ExtractTextPlugin('[name].css'),
   ],
   devtool: dev ? 'inline-source-map' : 'source-map',
   output: {
@@ -36,12 +39,92 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.vue$/, use: 'vue-loader' },
+      {
+        test: /\.vue$/,
+        use: {
+          loader: 'vue-loader',
+          options: {
+            postcss: [
+              require('stylelint')(),
+              require('postcss-reporter')({ clearReportedMessages: true }),
+              require('postcss-cssnext')({ browsers: ['last 2 versions'] }),
+              require('postcss-color-function')(),
+              require('postcss-nested')(),
+            ].concat(
+              dev
+                ? []
+                : [
+                    require('cssnano')({
+                      autoprefixer: false,
+                      preset: [
+                        'default',
+                        {
+                          discardComments: {
+                            removeAll: true,
+                          },
+                        },
+                      ],
+                    }),
+                  ],
+            ),
+          },
+        },
+      },
       {
         test: /\.js$/,
         use: {
           loader: 'babel-loader',
         },
+      },
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                importLoaders: false,
+                sourceMap: true,
+              },
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                ident: 'postcss',
+                sourceMap: true,
+                plugins(loader) {
+                  return [
+                    require('stylelint'),
+                    require('postcss-reporter'),
+                    require('postcss-import')({ root: loader.resourcePath }),
+                    require('postcss-cssnext')({
+                      browsers: ['last 2 versions'],
+                    }),
+                    require('postcss-color-function')(),
+                    require('postcss-nested')(),
+                  ].concat(
+                    dev
+                      ? []
+                      : [
+                          require('cssnano')({
+                            autoprefixer: false,
+                            preset: [
+                              'default',
+                              {
+                                discardComments: {
+                                  removeAll: true,
+                                },
+                              },
+                            ],
+                          }),
+                        ],
+                  );
+                },
+              },
+            },
+          ],
+        }),
       },
     ],
   },

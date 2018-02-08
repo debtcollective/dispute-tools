@@ -1,4 +1,6 @@
-counter-reset: steps;
+.Tool {
+  counter-reset: steps;
+}
 
 .Tool__sidebar-steps {
   & > li {
@@ -12,18 +14,18 @@ counter-reset: steps;
 
   & > svg {
     opacity: 0;
-    transform: translate3d(10px,.3em,0);
+    transform: translate3d(10px, 0.3em, 0);
     position: absolute;
     left: 0;
     transition: transform 300ms, opacity 300ms;
   }
 
   &[disabled] {
-    opacity: .5;
+    opacity: 0.5;
   }
 
   &:hover:not(.-current):not(:disabled) {
-    opacity: .8;
+    opacity: 0.8;
   }
 
   &.-done {
@@ -31,7 +33,7 @@ counter-reset: steps;
 
     & .svg-done {
       opacity: 1;
-      transform: translate3d(0,.3em,0);
+      transform: translate3d(0, 0.3em, 0);
     }
 
     &[disabled] {
@@ -44,14 +46,14 @@ counter-reset: steps;
 
     & .svg-current {
       opacity: 1;
-      transform: translate3d(0,.3em,0);
+      transform: translate3d(0, 0.3em, 0);
     }
   }
 
   transition: color 300ms, opacity 300ms;
 
   &::before {
-    content: counter(steps) ") ";
+    content: counter(steps) ') ';
   }
 }
 

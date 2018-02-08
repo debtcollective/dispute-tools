@@ -1,15 +1,13 @@
 .-k-popover {
   z-index: 1;
 
-  &[aria-hidden="false"] {
+  &[aria-hidden='false'] {
     transition: opacity 300ms;
     opacity: 1;
   }
 
-  &[aria-hidden="true"] {
-    transition:
-      visibility 0ms linear 260ms,
-      opacity 260ms;
+  &[aria-hidden='true'] {
+    transition: visibility 0ms linear 260ms, opacity 260ms;
     opacity: 0;
   }
 
@@ -28,11 +26,12 @@
   }
 
   &.-success {
-    background-color: #B8E986;
+    background-color: #b8e986;
     color: var(--k-color-palette-neutral-dark);
   }
+
   &[class*='bottom'] > .-k-popover-wrapper > .-k-popover__arrow::after {
-    border-bottom-color: #B8E986;
+    border-bottom-color: #b8e986;
   }
 }
 
@@ -43,5 +42,5 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0,0,0,.7);
+  background-color: rgba(0, 0, 0, 0.7);
 }

@@ -4,8 +4,13 @@
   overflow: hidden;
   background-color: white;
 
-  &:first-child {border-bottom-left-radius: 3px}
-  &:last-child {border-bottom-right-radius: 3px}
+  &:first-child {
+    border-bottom-left-radius: 3px;
+  }
+
+  &:last-child {
+    border-bottom-right-radius: 3px;
+  }
 
   &::after {
     content: '';
@@ -19,7 +24,9 @@
     transition: transform 120ms cubic-bezier(0.39, 0.575, 0.565, 1);
   }
 
-  &[role='tab'] {cursor: pointer}
+  &[role='tab'] {
+    cursor: pointer;
+  }
 
   &[role='tab']:hover::after,
   &[aria-selected='true']::after {

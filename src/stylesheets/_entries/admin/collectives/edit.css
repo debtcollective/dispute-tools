@@ -1,8 +1,10 @@
-@import '../../../base_admin';
-
 /* view utils */
-.-border-neutral-mid {border-color: var(--k-color-palette-neutral-mid)}
+.-border-neutral-mid {
+  border-color: var(--k-color-palette-neutral-mid);
+}
 
 .EditCollective__image-wrapper {
-  & > img {max-width: 300px}
+  & > img {
+    max-width: 300px;
+  }
 }

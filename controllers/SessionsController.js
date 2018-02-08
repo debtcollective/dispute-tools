@@ -37,8 +37,9 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
           if (user.banned) {
             req.flash(
               'warning',
+              // eslint-disable-next-line max-len
               'This account is currently suspended. <a href="/contact">Contact us</a> if you think this is a mistake.',
-            ); // eslint-disable-line
+            );
             res.redirect(CONFIG.router.helpers.login.url());
             next();
           }

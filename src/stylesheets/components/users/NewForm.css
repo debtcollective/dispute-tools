@@ -19,11 +19,11 @@
     }
   }
 
-  & > input[type="checkbox"] {
+  & > input[type='checkbox'] {
     display: none;
   }
 
-  & > input[type="checkbox"]:checked + .inner {
+  & > input[type='checkbox']:checked + .inner {
     background-color: #fff;
     color: var(--k-color-palette-success);
   }

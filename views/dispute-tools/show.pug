@@ -3,9 +3,6 @@ extends ../layouts/application.pug
 block title
   | #{disputeTool.name} — The Debt Collective
 
-block styles
-  link(href="/build/stylesheets/dispute-tools/show.css" rel="stylesheet")
-
 block content
   mixin DisputeCard(key, dispute)
     .col.md-col-6.col-12.p2

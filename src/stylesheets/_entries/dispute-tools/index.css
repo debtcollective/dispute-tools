@@ -1,4 +1,3 @@
-@import '../../base';
 @import '../../components/dispute-tools/TextModal';
 @import '../../components/dispute-tools/ToolCard';
 
@@ -7,6 +6,7 @@
   &__stats {
     color: var(--k-color-palette-accent);
   }
+
   &__caption {
     color: var(--k-color-palette-neutral-mid);
   }

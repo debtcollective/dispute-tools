@@ -1,5 +1,7 @@
 .PaymentMethods {
   display: none;
+  margin-top: 18px;
+  margin-bottom: 48px;
 
   &--stripe {
     margin-bottom: 36px;
@@ -30,7 +32,10 @@
   margin-bottom: 21px;
 }
 
-.DonateOption.active { background-color: #fff; cursor: default; }
+.DonateOption.active {
+  background-color: #fff;
+  cursor: default;
+}
 
 .DonateOption:not(.active):hover {
   cursor: pointer;
@@ -41,11 +46,14 @@
   font-size: 21px;
   font-weight: bold;
   line-height: 1.33;
-  color: #ffffff;
+  color: #fff;
   margin-bottom: 4px;
 }
 
-.DonateOption.active h4 { color: #417505; opacity: 1; }
+.DonateOption.active h4 {
+  color: #417505;
+  opacity: 1;
+}
 
 .DonateOption small {
   display: inline-block;
@@ -56,9 +64,12 @@
   color: #ebebeb;
 }
 
-.DonateOption.active small { color: #000; opacity: 1; }
+.DonateOption.active small {
+  color: #000;
+  opacity: 1;
+}
 
-.DonateOption:before {
+.DonateOption::before {
   content: '';
   position: absolute;
   left: 24px;
@@ -73,12 +84,12 @@
   border: solid 0.5px #b3b3b3;
 }
 
-.DonateOption.active:before {
+.DonateOption.active::before {
   background-color: #3b99fc;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3);
 }
 
-.DonateOption.active:after {
+.DonateOption.active::after {
   content: '';
   position: absolute;
   left: 29px;
@@ -92,11 +103,6 @@
   background-color: #fff;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.3);
 }
-
-
-
-
-.AmountPicker {}
 
 .AmountOption {
   width: 100%;
@@ -129,13 +135,6 @@
 * Payment section
 */
 
-section.Payment {}
-
-.PaymentMethods {
-  margin-top: 18px;
-  margin-bottom: 48px;
-}
-
 .PaymentMethod {
   width: 170px;
   height: 130px;
@@ -166,7 +165,7 @@ section.Payment {}
   font-weight: bold;
   line-height: 1.25;
   text-align: center;
-  color: #000000;
+  color: #000;
   width: 100%;
 }
 
@@ -179,7 +178,9 @@ section.Payment {}
   width: 100%;
 }
 
-section.Payment .flex div:first-child .PaymentMethod { margin-right: 30px; }
+section.Payment .flex div:first-child .PaymentMethod {
+  margin-right: 30px;
+}
 
 .DonationForm .btn-back {
   cursor: pointer;
@@ -189,7 +190,6 @@ section.Payment .flex div:first-child .PaymentMethod { margin-right: 30px; }
   background-color: rgb(58, 58, 58);
   color: #fff;
 }
-
 
 /**
 * Success section
@@ -248,7 +248,7 @@ section.Error .DonationResponse {
 }
 
 .DonationResponse .btn-back {
-  margin:  0 auto;
+  margin: 0 auto;
   margin-top: 43px;
   float: none;
 }

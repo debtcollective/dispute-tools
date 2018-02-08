@@ -1,7 +1,7 @@
-@import '../../../base_admin';
-
 /* view utils */
-.-border-neutral-mid {border-color: var(--k-color-palette-neutral-mid)}
+.-border-neutral-mid {
+  border-color: var(--k-color-palette-neutral-mid);
+}
 
 /* view styles */
 .EditProfile__image {
@@ -11,8 +11,9 @@
     background-size: cover;
     background-position: 50%;
   }
+
   &-placeholder-text {
     color: #fff;
-    opacity: .3;
+    opacity: 0.3;
   }
 }

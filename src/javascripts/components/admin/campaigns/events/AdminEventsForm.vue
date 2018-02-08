@@ -171,8 +171,9 @@ export default {
   },
   computed: {
     formAction() {
-      let ret = `/admin/collectives/${this.campaign.collective
-        .id}/campaigns/${this.campaign.id}/events`;
+      let ret = `/admin/collectives/${this.campaign.collective.id}/campaigns/${
+        this.campaign.id
+      }/events`;
 
       if (this.event.id) {
         ret += `/${this.event.id}`;

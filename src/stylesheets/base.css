@@ -8,25 +8,24 @@
 @import 'basscss-margin';
 @import 'basscss-padding';
 @import 'basscss-position';
+
 /* @import 'basscss-type-scale'; */
 @import 'basscss-typography';
 
 /* KABINETT */
-@import './lib/kabinett/core/base';
-@import './lib/kabinett/components/button';
-@import './lib/kabinett/components/input';
-@import './lib/kabinett/components/textarea';
-@import './lib/kabinett/components/select';
-@import './lib/kabinett/components/popover';
-@import './lib/kabinett/components/tooltip-inline';
-@import './lib/kabinett/utilities/layout';
-@import './lib/kabinett/utilities/type-font-weight';
-@import './lib/kabinett/utilities/type-font-scale';
-@import './lib/kabinett/utilities/aria';
-@import './lib/kabinett/utilities/sizes';
-
+@import '../lib/kabinett/core/base';
+@import '../lib/kabinett/components/button';
+@import '../lib/kabinett/components/input';
+@import '../lib/kabinett/components/textarea';
+@import '../lib/kabinett/components/select';
+@import '../lib/kabinett/components/popover';
+@import '../lib/kabinett/components/tooltip-inline';
+@import '../lib/kabinett/utilities/layout';
+@import '../lib/kabinett/utilities/type-font-weight';
+@import '../lib/kabinett/utilities/type-font-scale';
+@import '../lib/kabinett/utilities/aria';
+@import '../lib/kabinett/utilities/sizes';
 @import './utils';
-
 @import './components/Header';
 @import './components/Footer';
 @import './components/Modal';
@@ -36,9 +35,7 @@
 @import './components/Button';
 @import './components/Popover';
 @import './components/ResponsiveMenu';
-@import './components/Button';
 @import './components/users/NewForm';
-
 @import 'flatpickr/dist/flatpickr';
 
 :root {
@@ -46,7 +43,6 @@
   --k-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --k-background-color: #000;
   --k-color: #fff;
-
   --k-color-palette-primary: #f04c34;
   --k-color-palette-danger: #d0021b;
   --k-color-palette-success: #bae88b;
@@ -55,23 +51,18 @@
   --k-color-palette-neutral-mid: #9b9b9b;
   --k-color-palette-neutral-mid-x: #d8d8d8;
   --k-color-palette-neutral-light: #f5f5f5;
-
   --k-h1: 7.4375rem; /* 119px */
   --k-h2: 4.1875rem; /* 67px */
   --k-h3: 2.3125rem; /* 37px; */
   --k-h4: 1.3125rem; /* 21px; */
   --k-font-caption-size: 0.75rem; /* 12px; */
-
   --k-xs-fs: 12px;
   --k-xs-p: 7px 1em 6px;
   --k-xs-h: 25px;
-
   --k-sm-fs: calc(var(--k-font-size) * 1);
   --k-sm-p: 9px 1em 10px;
   --k-sm-h: 35px;
-
   --k-loader-color: var(--k-color-palette-primary);
-
   --k-tooltip-font-size: var(--k-font-caption-size);
   --k-tooltip-font-weight: 700;
   --k-tooltip-arrow-size: 5px;
@@ -79,13 +70,16 @@
   --k-tooltip-color: var(--k-color-palette-neutral-light);
 
   /* BASSCSS CONFIGURATION */
+
   /* basscss-layout */
   --width-1: 23.125rem;
   --width-2: 36rem;
   --width-3: 48rem;
   --width-4: 60.625rem;
+
   /* basscss-border */
   --border-radius: 2px;
+
   /* basscss-padding */
   --space-1: 0.5rem;
   --space-2: 0.9375rem;
@@ -130,6 +124,7 @@ body {
 h2 {
   line-height: 1.194em; /* 80px */
 }
+
 h3 {
   line-height: 1.081em; /* 40px */
 }

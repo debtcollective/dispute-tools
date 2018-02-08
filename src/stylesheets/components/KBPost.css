@@ -12,7 +12,8 @@
   background-repeat: no-repeat;
 }
 
-.KBPost--symbol a, .KBPost--size {
+.KBPost--symbol a,
+.KBPost--size {
   opacity: 0.8;
   font-size: 12px;
   line-height: 1.58;
@@ -21,9 +22,17 @@
   vertical-align: top;
 }
 
-.KBPost--symbol.-image { background-image: url(/svg/type-image.svg); }
-.KBPost--symbol.-video { background-image: url(/svg/type-video.svg); }
-.KBPost--symbol.-file { background-image: url(/svg/type-file.svg); }
+.KBPost--symbol.-image {
+  background-image: url(/svg/type-image.svg);
+}
+
+.KBPost--symbol.-video {
+  background-image: url(/svg/type-video.svg);
+}
+
+.KBPost--symbol.-file {
+  background-image: url(/svg/type-file.svg);
+}
 
 .KBPost--caption {
   font-size: 21px;
@@ -33,7 +42,7 @@
   line-height: 1.33;
   color: #fff;
   margin-top: 25px;
-  margin-bottom: .25em;
+  margin-bottom: 0.25em;
 }
 
 .KBPost--category {
@@ -89,24 +98,38 @@
   font-weight: 500;
   line-height: 1.42;
   text-align: center;
-  color: #ffffff;
-  text-align: center;
+  color: #fff;
 }
-.Share .twitter { background-image: url(/svg/twitter.svg);  }
-.Share .facebook { background-image: url(/svg/facebook.svg); }
-.Share .email { background-image: url(/svg/email.svg);  }
-.Share .-twitter, .Share .-facebook, .Share .-email {
+
+.Share .twitter {
+  background-image: url(/svg/twitter.svg);
+}
+
+.Share .facebook {
+  background-image: url(/svg/facebook.svg);
+}
+
+.Share .email {
+  background-image: url(/svg/email.svg);
+}
+
+.Share .-twitter,
+.Share .-facebook,
+.Share .-email {
   background-repeat: no-repeat;
   background-position: center;
-  background-repeat: no-repeat;
-  width: 14px;
   height: 14px;
   display: inline-block;
   width: 30%;
   margin-top: 10px;
   color: white;
 }
-.Share .-twitter:hover, .Share .-facebook:hover, .Share .-email:hover { color: rgb(242, 103, 82); }
+
+.Share .-twitter:hover,
+.Share .-facebook:hover,
+.Share .-email:hover {
+  color: rgb(242, 103, 82);
+}
 
 .KBPost .-delete {
   position: absolute;
@@ -114,4 +137,7 @@
   right: 30px;
   color: white;
 }
-.KBPost .-delete:hover { color: rgb(242, 103, 82); }
+
+.KBPost .-delete:hover {
+  color: rgb(242, 103, 82);
+}
