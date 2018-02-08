@@ -1,7 +1,7 @@
 :root {
   --k-color-palette-primary: #f04c34;
   --k-color-palette-success: #bae88b;
-  --k-color-palette-accent: #FEFAC0;
+  --k-color-palette-accent: #fefac0;
 }
 
 fieldset[disabled] .multiselect {
@@ -18,28 +18,28 @@ fieldset[disabled] .multiselect {
   display: block;
 }
 
-.multiselect__spinner:before,
-.multiselect__spinner:after {
+.multiselect__spinner::before,
+.multiselect__spinner::after {
   position: absolute;
-  content: "";
+  content: '';
   top: 50%;
   left: 50%;
   margin: -8px 0 0 -8px;
   width: 16px;
   height: 16px;
   border-radius: 100%;
-  border-color: #41B883 transparent transparent;
+  border-color: #41b883 transparent transparent;
   border-style: solid;
   border-width: 2px;
   box-shadow: 0 0 0 1px transparent;
 }
 
-.multiselect__spinner:before {
+.multiselect__spinner::before {
   animation: spinning 2.4s cubic-bezier(0.41, 0.26, 0.2, 0.62);
   animation-iteration-count: infinite;
 }
 
-.multiselect__spinner:after {
+.multiselect__spinner::after {
   animation: spinning 2.4s cubic-bezier(0.51, 0.09, 0.21, 0.8);
   animation-iteration-count: infinite;
 }
@@ -70,7 +70,7 @@ fieldset[disabled] .multiselect {
   width: 100%;
   min-height: 40px;
   text-align: left;
-  color: #35495E;
+  color: #35495e;
 }
 
 .multiselect * {
@@ -82,6 +82,7 @@ fieldset[disabled] .multiselect {
 }
 
 .multiselect--disabled {
+  background: #ededed;
   pointer-events: none;
   opacity: 0.6;
 }
@@ -146,15 +147,15 @@ fieldset[disabled] .multiselect {
 }
 
 .multiselect__tags-wrap {
-  display: inline
+  display: inline;
 }
 
 .multiselect__tags {
   min-height: 40px;
   display: block;
   padding: 8px 40px 0 8px;
-  border-radius: 0px;
-  border: 1px solid #E8E8E8;
+  border-radius: 0;
+  border: 1px solid #e8e8e8;
   background: #fff;
 }
 
@@ -162,7 +163,7 @@ fieldset[disabled] .multiselect {
   position: relative;
   display: inline-block;
   padding: 4px 26px 4px 10px;
-  border-radius: 0px;
+  border-radius: 0;
   margin-right: 10px;
   color: #000;
   line-height: 1;
@@ -191,8 +192,8 @@ fieldset[disabled] .multiselect {
   visibility: visible !important;
 }
 
-.multiselect__tag-icon:after {
-  content: "×";
+.multiselect__tag-icon::after {
+  content: '×';
   color: #111;
   font-size: 14px;
   visibility: visbile !important;
@@ -203,8 +204,8 @@ fieldset[disabled] .multiselect {
   background: color(var(--k-color-palette-accent) shade(15%));
 }
 
-.multiselect__tag-icon:focus:after,
-.multiselect__tag-icon:hover:after {
+.multiselect__tag-icon:focus::after,
+.multiselect__tag-icon:hover::after {
   color: #000;
 }
 
@@ -219,8 +220,8 @@ fieldset[disabled] .multiselect {
   white-space: nowrap;
   margin: 0;
   text-decoration: none;
-  border-radius: 0px;
-  border: 1px solid #E8E8E8;
+  border-radius: 0;
+  border: 1px solid #e8e8e8;
   cursor: pointer;
 }
 
@@ -241,7 +242,7 @@ fieldset[disabled] .multiselect {
   transition: transform 0.2s ease;
 }
 
-.multiselect__select:before {
+.multiselect__select::before {
   position: relative;
   right: 0;
   top: 65%;
@@ -250,11 +251,11 @@ fieldset[disabled] .multiselect {
   border-style: solid;
   border-width: 5px 5px 0 5px;
   border-color: #000 transparent transparent transparent;
-  content: "";
+  content: '';
 }
 
 .multiselect__placeholder {
-  color: #ADADAD;
+  color: #adadad;
   display: inline-block;
   margin-bottom: 10px;
   padding-top: 2px;
@@ -271,7 +272,7 @@ fieldset[disabled] .multiselect {
   width: 100%;
   max-height: 240px;
   overflow: auto;
-  border: 1px solid #E8E8E8;
+  border: 1px solid #e8e8e8;
   border-top: none;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -295,12 +296,14 @@ fieldset[disabled] .multiselect {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   border-bottom: none;
-  border-top: 1px solid #E8E8E8;
+  border-top: 1px solid #e8e8e8;
 }
 
+/* stylelint-disable selector-pseudo-element-no-unknown */
 .multiselect__content::webkit-scrollbar {
   display: none;
 }
+/* stylelint-enable selector-pseudo-element-no-unknown */
 
 .multiselect__element {
   display: block;
@@ -318,7 +321,7 @@ fieldset[disabled] .multiselect {
   white-space: nowrap;
 }
 
-.multiselect__option:after {
+.multiselect__option::after {
   top: 0;
   right: 0;
   position: absolute;
@@ -333,19 +336,19 @@ fieldset[disabled] .multiselect {
   color: #000;
 }
 
-.multiselect__option--highlight:after {
+.multiselect__option--highlight::after {
   content: attr(data-select);
   background: var(--k-color-palette-success);
   color: #000;
 }
 
 .multiselect__option--selected {
-  background: #F3F3F3;
-  color: #35495E;
+  background: #f3f3f3;
+  color: #35495e;
   font-weight: bold;
 }
 
-.multiselect__option--selected:after {
+.multiselect__option--selected::after {
   content: attr(data-selected);
   color: silver;
 }
@@ -355,15 +358,10 @@ fieldset[disabled] .multiselect {
   color: #fff;
 }
 
-.multiselect__option--selected.multiselect__option--highlight:after {
+.multiselect__option--selected.multiselect__option--highlight::after {
   background: var(--k-color-palette-primary);
   content: attr(data-deselect);
   color: #fff;
-}
-
-.multiselect--disabled {
-  background: #ededed;
-  pointer-events: none;
 }
 
 .multiselect--disabled .multiselect__current,
@@ -400,39 +398,44 @@ fieldset[disabled] .multiselect {
   vertical-align: top;
 }
 
-*[dir="rtl"] .multiselect {
-    text-align: right;
+*[dir='rtl'] .multiselect {
+  text-align: right;
 }
 
-*[dir="rtl"] .multiselect__select {
-    right: auto;
-    left: 1px;
+*[dir='rtl'] .multiselect__select {
+  right: auto;
+  left: 1px;
 }
 
-*[dir="rtl"] .multiselect__tags {
-    padding: 8px 8px 0px 40px;
+*[dir='rtl'] .multiselect__tags {
+  padding: 8px 8px 0 40px;
 }
 
-*[dir="rtl"] .multiselect__content {
-    text-align: right;
+*[dir='rtl'] .multiselect__content {
+  text-align: right;
 }
 
-*[dir="rtl"] .multiselect__option:after {
-    right: auto;
-    left: 0;
+*[dir='rtl'] .multiselect__option::after {
+  right: auto;
+  left: 0;
 }
 
-*[dir="rtl"] .multiselect__clear {
-    right: auto;
-    left: 12px;
+*[dir='rtl'] .multiselect__clear {
+  right: auto;
+  left: 12px;
 }
 
-*[dir="rtl"] .multiselect__spinner {
-    right: auto;
-    left: 1px;
+*[dir='rtl'] .multiselect__spinner {
+  right: auto;
+  left: 1px;
 }
 
 @keyframes spinning {
-  from { transform:rotate(0) }
-  to { transform:rotate(2turn) }
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(2turn);
+  }
 }

@@ -1,9 +1,11 @@
-@import '../../../base_admin';
 @import '../../../components/Tag';
 @import '../../../components/Pagination';
 @import '../../../components/Multiselect';
 
 button[data-add-status] {
   cursor: pointer;
-  &:hover {opacity: .6}
+
+  &:hover {
+    opacity: 0.6;
+  }
 }

@@ -1,5 +1,5 @@
 .Tag {
-  background-color: rgba(0, 0, 0, .1);
+  background-color: rgba(0, 0, 0, 0.1);
   border-radius: 50px;
   padding: 8px 15px;
   font-size: 13px;
@@ -9,7 +9,7 @@
   }
 
   &--empty {
-    opacity: .5;
+    opacity: 0.5;
     color: gray;
   }
 }

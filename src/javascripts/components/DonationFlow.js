@@ -37,6 +37,7 @@ export default class DonationFlow extends Widget {
       cvc: '',
       exp: '',
     };
+
     this.donationFormEl = this.element;
     this.sectionDonateEl = this.donationFormEl.querySelector('section.Donate');
     this.sectionDonateSubmitEl = this.sectionDonateEl.querySelector('button');

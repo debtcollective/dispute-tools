@@ -13,7 +13,6 @@
   }
 }
 
-
 .Header {
   z-index: 2;
   position: fixed;
@@ -24,11 +23,13 @@
 
   &__bg {
     z-index: -1;
-    transform: translate3d(0,0,0);
+    transform: translate3d(0, 0, 0);
     background-color: var(--k-background-color);
   }
 
-  & .Dropdown__label {max-width: 150px}
+  & .Dropdown__label {
+    max-width: 150px;
+  }
 }
 
 .Header__logo {
@@ -38,11 +39,18 @@
     display: block;
     height: 20px;
 
-    &.-small {display: none}
+    &.-small {
+      display: none;
+    }
 
     @media (max-width: 880px) {
-      &.-small {display: block}
-      &.-large {display: none}
+      &.-small {
+        display: block;
+      }
+
+      &.-large {
+        display: none;
+      }
     }
   }
 }
@@ -69,7 +77,7 @@
 .Header__dropdown-item {
   display: block;
   width: 100%;
-  padding: .25em 1.75em;
+  padding: 0.25em 1.75em;
   border: none;
   font: inherit;
   font-weight: 500;
@@ -79,5 +87,7 @@
   cursor: pointer;
   transition: color 260ms;
 
-  &:hover {color: var(--k-color-palette-primary)}
+  &:hover {
+    color: var(--k-color-palette-primary);
+  }
 }

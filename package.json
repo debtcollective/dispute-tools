@@ -13,8 +13,7 @@
     "test:unit": "scripty",
     "test:integration": "scripty",
     "test:debug:unit": "node --inspect=9220 --inspect-brk tests/unit.js",
-    "test:debug:integration":
-      "node --inspect=9220 --inspect-brk tests/integration.js",
+    "test:debug:integration": "node --inspect=9220 --inspect-brk tests/integration.js",
     "utils:resetdb": "scripty",
     "utils:knexreset": "scripty",
     "utils:copybadges": "scripty",
@@ -27,10 +26,8 @@
     "start:dev": "nodemon --inspect=9220 bin/server.js -i src/**/*",
     "start:workers": "node workers/worker.js",
     "iron-node": "scripty",
-    "watch": "scripty",
-    "dev": "tarima -wP localhost:3000 -p 3001 -e",
-    "svg":
-      "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
+    "watch": "webpack --progress --watch",
+    "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
     "post_deploy_staging": "scripty",
     "post_deploy_production": "./scripts/post_deploy_production",
     "disputes_sendto_admin": "./scripts/tasks/disputes-sendto-admin",
@@ -38,37 +35,20 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": ["prettier --write", "eslint --fix", "git add"],
-    "*.css": ["prettier --write", "git add"]
-  },
-  "tarima": {
-    "cwd": ".",
-    "src": "src",
-    "watch": "views",
-    "dest": "./public/build",
-    "ignoreFiles": [".gitignore", "*.js"],
-    "bundle": ["src/stylesheets/_entries/**"],
-    "filter": [
-      "!node_modules/**",
-      "!**/{components,lib}/**",
-      "!**/{base,utils}*.css",
-      "!**/*.js"
+    "*.js": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
     ],
-    "rename": [
-      "**/_vendor/*:{filepath/1/_vendor}/{filename}.{extname}",
-      "**/_entries/**:{filepath/1/_entries}/{filename}.{extname}"
+    "*.css": [
+      "prettier-stylelint --write",
+      "stylelint --fix",
+      "git add"
     ],
-    "devPlugins": ["tarima-lr"],
-    "bundleOptions": {
-      "bundleCache": true,
-      "entryCache": true,
-      "extensions": {
-        "css": "post"
-      },
-      "postcss": {
-        "plugins": ["postcss-import", "postcss-cssnext"]
-      }
-    }
+    "*.vue": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "dependencies": {
     "@google/maps": "^0.4.5",
@@ -87,6 +67,7 @@
     "bluebird": "^3.4.1",
     "body-parser": "^1.15.2",
     "caniuse-db": "^1.0.30000784",
+    "caniuse-lite": "^1.0.30000697",
     "checkit": "^0.7.0",
     "chokidar": "^1.7.0",
     "cli-table": "^0.3.1",
@@ -133,6 +114,8 @@
     "path": "^0.12.7",
     "pg": "^6.0.3",
     "pisces": "0.0.15",
+    "pluralize": "^3.0.0",
+    "postcss-loader": "^2.0.10",
     "pug": "^2.0.0-beta4",
     "query-string": "^4.2.3",
     "raven": "^2.1.1",
@@ -169,8 +152,8 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-plugin-transform-vue-jsx": "^3.5.0",
     "chai": "^3.5.0",
-    "concurrently": "^3.5.1",
     "css-loader": "^0.28.8",
+    "cssnano": "^4.0.0-rc.2",
     "eslint": "^3.2.2",
     "eslint-config-airbnb-base": "^5.0.1",
     "eslint-config-prettier": "^2.9.0",
@@ -189,19 +172,21 @@
     "nodemailer-stub-transport": "^1.0.0",
     "nodemon": "^1.13.2",
     "postcss": "^5.1.1",
-    "postcss-cssnext": "^2.7.0",
-    "postcss-import": "^8.1.2",
-    "postcss-loader": "^2.0.9",
+    "postcss-cssnext": "^3.0.2",
+    "postcss-import": "^11.0.0",
+    "postcss-nested": "^3.0.0",
+    "postcss-reporter": "^5.0.0",
     "prettier": "1.10.2",
-    "sinon": "^4.1.3",
-    "style-loader": "^0.19.1",
+    "prettier-stylelint": "^0.4.2",
     "puppeteer": "^0.13.0",
+    "sinon": "^4.1.3",
     "style-loader": "^0.19.0",
+    "stylelint": "^8.4.0",
+    "stylelint-config-standard": "^18.0.0",
     "svg-sprite": "^1.3.3",
-    "tarima": "^3.2.0",
-    "tarima-lr": "^0.3.2",
     "testdouble": "^1.6.0",
     "vue-loader": "^13.5.0",
+    "vue-style-loader": "^3.0.3",
     "webpack-dev-server": "^2.9.7"
   }
 }

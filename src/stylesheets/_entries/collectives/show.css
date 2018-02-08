@@ -1,4 +1,3 @@
-@import '../../base';
 @import '../../components/Tabs';
 @import '../../components/Masonry';
 @import '../../components/dispute-tools/TextModal';
@@ -7,8 +6,13 @@
 @import '../../components/GridButton';
 
 /* page utils */
-.-bg-neutral-light {background-color: var(--k-color-palette-neutral-light)}
-.-neutral-dark {color: var(--k-color-palette-neutral-dark)}
+.-bg-neutral-light {
+  background-color: var(--k-color-palette-neutral-light);
+}
+
+.-neutral-dark {
+  color: var(--k-color-palette-neutral-dark);
+}
 
 /* page styles */
 .bg-light-pattern {
@@ -39,21 +43,38 @@
 }
 
 .Collective_Manifest--title {
-  @media (max-width: 870px) {font-size: 7rem}
-  @media (max-width: 670px) {font-size: 6rem}
-  @media (max-width: 500px) {font-size: 5rem}
-  @media (max-width: 420px) {font-size: 4rem}
-  @media (max-width: 350px) {font-size: 3rem}
+  @media (max-width: 870px) {
+    font-size: 7rem;
+  }
+
+  @media (max-width: 670px) {
+    font-size: 6rem;
+  }
+
+  @media (max-width: 500px) {
+    font-size: 5rem;
+  }
+
+  @media (max-width: 420px) {
+    font-size: 4rem;
+  }
+
+  @media (max-width: 350px) {
+    font-size: 3rem;
+  }
 }
 
 .Collective_Manifest--text {
-  & h3 {padding-bottom: var(--space-3)}
+  & h3 {
+    padding-bottom: var(--space-3);
+  }
 
   & p {
     font-family: monospace;
     padding-bottom: var(--space-2);
   }
 }
+
 .wf-spacemono-n4-active .Collective_Manifest--text p {
   font-family: 'Space Mono', monospace;
 }
@@ -64,5 +85,5 @@
   height: 46px;
   border: 2px solid;
   border-radius: 50%;
-  padding-top: .5em;
+  padding-top: 0.5em;
 }

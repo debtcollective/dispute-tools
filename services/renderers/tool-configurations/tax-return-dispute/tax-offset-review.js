@@ -24,9 +24,7 @@ module.exports = {
 
           // disputeProcess must be one of the values in DisputeProcess
           // eslint-disable-next-line
-          console.assert(
-            Object.values(DisputeProcess).includes(disputeProcess),
-          );
+          console.assert(Object.values(DisputeProcess).includes(disputeProcess));
 
           const ret = {};
           // 18 == written, 19 == in person, 20 == by phone
@@ -36,10 +34,7 @@ module.exports = {
           return ret;
         },
         getObjections(objectionOption, { schoolName }) {
-          const ret = range(20, 32).reduce(
-            (acc, n) => Object.assign(acc, { [checkboxKey(n)]: NO }),
-            {},
-          );
+          const ret = range(20, 32).reduce((acc, n) => Object.assign(acc, { [checkboxKey(n)]: NO }), {});
 
           switch (objectionOption) {
             default:
@@ -71,17 +66,10 @@ module.exports = {
           return ret;
         },
       },
-      normalize({
-        disputeProcess,
-        option,
-        forms: { 'personal-information-form': form },
-      }) {
+      normalize({ disputeProcess, option, forms: { 'personal-information-form': form } }) {
         const address2 = getAddress2({ form });
 
-        const disputeProcessCheckboxes = this.data.getDisputeProcess(
-          disputeProcess,
-          form,
-        );
+        const disputeProcessCheckboxes = this.data.getDisputeProcess(disputeProcess, form);
         const objectionsCheckboxes = this.data.getObjections(option, form);
 
         return Object.assign(
@@ -102,17 +90,9 @@ module.exports = {
         pdf.text(signature, 290, 703, DisputeTemplate.PDF_WRITER_CONFIG);
 
         disputeProcess = parseInt(disputeProcess, 10);
-        if (
-          disputeProcess === DisputeProcess.INPERSON ||
-          disputeProcess === DisputeProcess.BYPHONE
-        ) {
+        if (disputeProcess === DisputeProcess.INPERSON || disputeProcess === DisputeProcess.BYPHONE) {
           // add the request text on page 2 at coordinates (90, 725)
-          pdf.text(
-            requestAdditionalFacts,
-            90,
-            725,
-            DisputeTemplate.PDF_WRITER_CONFIG,
-          );
+          pdf.text(requestAdditionalFacts, 90, 725, DisputeTemplate.PDF_WRITER_CONFIG);
         }
 
         pdf.endPage();

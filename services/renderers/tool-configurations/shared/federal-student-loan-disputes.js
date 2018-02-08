@@ -1,9 +1,5 @@
 // Stuff that both the wage garnishment and tax return disputes use
-const {
-  atb_disqualifying,
-  ability_to_benefit,
-  unauthorized_signature_form,
-} = require('../shared');
+const { atb_disqualifying, ability_to_benefit, unauthorized_signature_form } = require('../shared');
 
 // functions
 const configure = (disputeToolId, dispute) => {

@@ -8,24 +8,40 @@
   /* KABINETT CONFIGURATION */
   --k-background-color: #fff;
   --k-color: #000;
+
   background-color: #f0f0f0;
 }
 
 /* CUSTOM STYLES */
 body::before {
-  background: var(--k-background-color) url('/images/global/bg-white-pattern.gif') 50% 0 repeat;
+  background: var(--k-background-color)
+    url('/images/global/bg-white-pattern.gif') 50% 0 repeat;
 }
 
 .-status {
-  &-incomplete {color: #F5A623}
-  &-completed {color: #F04C34}
-  &-in-review {color: #267DE2}
-  &-documents-sent {color: #D0021B}
-  &-update {color: #4D9900}
+  &-incomplete {
+    color: #f5a623;
+  }
+
+  &-completed {
+    color: #f04c34;
+  }
+
+  &-in-review {
+    color: #267de2;
+  }
+
+  &-documents-sent {
+    color: #d0021b;
+  }
+
+  &-update {
+    color: #4d9900;
+  }
 }
 
 .-download-disabled {
-  opacity: .2;
+  opacity: 0.2;
 }
 
 table {
@@ -49,6 +65,7 @@ thead > tr > th {
 
 tbody > tr {
   background-color: white;
+
   &:hover {
     background-color: var(--k-color-palette-accent);
   }

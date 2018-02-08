@@ -1,12 +1,8 @@
-@import '../../base';
-
 @import '../../components/Tabs';
 @import '../../components/ReadMore';
 @import '../../components/AvatarList';
 @import '../../components/Input';
-
-@import '../../lib/kabinett/components/loader';
-
+@import '../../../lib/kabinett/components/loader';
 @import '../../components/Masonry';
 @import '../../components/KBPost';
 @import '../../components/GridButton';
@@ -16,31 +12,39 @@
 .-neutral-dark {
   color: var(--k-color-palette-neutral-dark);
 }
+
 .-bg-neutral-light {
   background-color: var(--k-color-palette-neutral-light);
 }
+
 .-bw2 {
   border-width: 2px;
 }
+
 .-border-neutral-mid-x {
   border-color: var(--k-color-palette-neutral-mid-x);
 }
+
 .-stroke-dark {
   stroke: #000;
 }
+
 .-k-input.-no-border,
 .-k-textarea {
   border: 0;
 }
+
 .-k-input.-transparent,
 .-k-textarea.-transparent {
   background-color: transparent;
 }
+
 .-k-select.-accent {
   border: 0;
   color: #785616;
   background-color: var(--k-color-palette-accent);
 }
+
 .-rn {
   resize: none;
 }
@@ -107,6 +111,7 @@
 
 .Poll_create-option {
   margin-bottom: 2px;
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -124,6 +129,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
   &Comment {
     margin-bottom: 2px;
   }
@@ -155,6 +161,7 @@
   &[aria-expanded='false'] {
     display: none;
   }
+
   &[aria-expanded='true'] {
     display: block;
   }

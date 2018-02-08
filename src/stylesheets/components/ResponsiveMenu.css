@@ -7,15 +7,13 @@
   z-index: 2;
   background-color: #000;
   color: #fff;
-
   opacity: 0;
-  transition: visibility 0ms linear 300ms,
-    opacity 160ms linear;
+  transition: visibility 0ms linear 300ms, opacity 160ms linear;
 
-  &[aria-hidden="false"] {
+  &[aria-hidden='false'] {
     opacity: 1;
-    transition-delay: 0ms;
     transition: opacity 160ms linear;
+    transition-delay: 0ms;
   }
 
   &__Header {
@@ -28,8 +26,11 @@
 
     &:hover {
       color: #fff;
-      opacity: .8;
+      opacity: 0.8;
     }
-    &.active {color: var(--k-color-palette-primary)}
+
+    &.active {
+      color: var(--k-color-palette-primary);
+    }
   }
 }

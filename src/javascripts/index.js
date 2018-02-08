@@ -19,3 +19,5 @@ require('./_entries/users/edit');
 require('./_entries/users/new');
 require('./_entries/users/show');
 require('./_entries/dashboard');
+
+require('../stylesheets/index.css');

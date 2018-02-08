@@ -28,7 +28,11 @@
   background-color: #fff;
   color: #000;
 
-  & .CollectiveCard__title {color: inherit}
+  & .CollectiveCard__title {
+    color: inherit;
+  }
 
-  & .AvatarList {mix-blend-mode: initial}
+  & .AvatarList {
+    mix-blend-mode: initial;
+  }
 }

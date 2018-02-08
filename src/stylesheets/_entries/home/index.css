@@ -1,10 +1,11 @@
-@import '../../base';
-
-.-gray {color: #4A4A4A}
+.-gray {
+  color: #4a4a4a;
+}
 
 /* page styles */
 .HomeHeading {
   font-size: 3.5625rem;
+
   @media (max-width: 400px) {
     font-size: 3rem;
   }
@@ -40,7 +41,7 @@
 }
 
 .underlined-link {
-  border-bottom: .25em solid;
+  border-bottom: 0.25em solid;
   position: relative;
   display: inline-block;
   vertical-align: top;
