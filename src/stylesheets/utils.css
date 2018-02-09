@@ -51,6 +51,17 @@
   background-color: #fff;
 }
 
+.-bg-light-pattern {
+  background-color: var(--k-color-palette-neutral-light);
+  background-image: url(/images/global/bg-white-pattern.gif);
+  background-position: 50% 0;
+  background-repeat: repeat;
+}
+
+.-bg-neutral-light {
+  background-color: var(--k-color-palette-neutral-light);
+}
+
 .-bg-neutral-dark {
   background-color: var(--k-color-palette-neutral-dark);
 }

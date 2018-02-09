@@ -9,18 +9,11 @@
 .-bg-neutral-light {
   background-color: var(--k-color-palette-neutral-light);
 }
-
 .-neutral-dark {
   color: var(--k-color-palette-neutral-dark);
 }
 
 /* page styles */
-.bg-light-pattern {
-  background-color: var(--k-color-palette-neutral-light);
-  background-image: url(/images/global/bg-white-pattern.gif);
-  background-position: 50% 0;
-  background-repeat: repeat;
-}
 
 [data-hit-sticky] {
   position: absolute;
@@ -46,19 +39,15 @@
   @media (max-width: 870px) {
     font-size: 7rem;
   }
-
   @media (max-width: 670px) {
     font-size: 6rem;
   }
-
   @media (max-width: 500px) {
     font-size: 5rem;
   }
-
   @media (max-width: 420px) {
     font-size: 4rem;
   }
-
   @media (max-width: 350px) {
     font-size: 3rem;
   }

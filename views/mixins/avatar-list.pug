@@ -1,0 +1,11 @@
+mixin avatarListMixin(accountList, imageKey)
+  ul.AvatarList
+    each account in accountList
+      li.mb1
+        - var _avatarUrl = '/images/profile/placeholder-small.png';
+        if (account.image.exists(imageKey))
+          - _avatarUrl = account.image.urls[imageKey]
+        a.block(
+          href=routeMappings.Users.show.url(account.user_id)
+          title=`${account.fullname}’s profile`
+        ): img(src=_avatarUrl alt=account.fullname width='50' height='50')

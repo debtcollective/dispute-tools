@@ -20,6 +20,7 @@
   left: 0;
   right: 0;
   height: var(--header-height);
+  color: var(--k-color);
 
   &__bg {
     z-index: -1;

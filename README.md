@@ -116,6 +116,14 @@ If you need to change branches, servers etc, feel free to edit `ecosystem.json`
 
 This part is handled by [debtcollective-terrraform](https://gitlab.com/debtcollective/debtcollective-terraform) too, since we are using files for configuration.
 
+# Design
+
+We use `pug` and `vuejs` for the templates.
+`pug` files are located in `views`
+For styling, we use `basscss`.
+Layout and typography are declared inside the templates (e.g. using `basscss` layout utilities like `pb3`).
+CSS is used for for specific stylings or shortcuts for obvious stuff.
+
 # How Tos
 
 ## Create an admin user

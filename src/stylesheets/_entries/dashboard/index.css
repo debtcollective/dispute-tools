@@ -8,9 +8,6 @@
 @import '../../components/GridButton';
 
 /* page utils */
-.-bg-neutral-light {
-  background-color: var(--k-color-palette-neutral-light);
-}
 
 .-neutral-dark {
   color: var(--k-color-palette-neutral-dark);

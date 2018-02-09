@@ -105,7 +105,7 @@ fieldset {
   &-inner {
     padding: var(--space-3);
     border-radius: var(--border-radius);
-    background-color: #4a4a4a;
+    background-color: var(--k-color-palette-neutral-mid-dark);
   }
 
   &-icon {

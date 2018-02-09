@@ -7,17 +7,8 @@
 
   if campaign.users.length
     .pt3
-      ul.AvatarList
-        each user in campaign.users
-          li.mb1
-            - var _avatarUrl = '/images/profile/placeholder-small.png';
-            if (user.account.image.exists('smallGrayscale'))
-              - _avatarUrl = user.account.image.urls['smallGrayscale']
-            a.block(
-              href=routeMappings.Users.show.url(user.id)
-              title=`${user.account.fullname}’s profile`
-            ): img(src=_avatarUrl alt=user.account.fullname width='50' height='50')
-
+      include ../../mixins/avatar-list
+      +avatarListMixin(collective.users.map(user => user.account), 'smallGrayscale')
 
   unless userBelongsToCampaign
     .pt3
@@ -28,4 +19,4 @@
       else
         button.js-login-link.-k-btn.btn-primary.-fw-700.-fw Join campaign
 
-      p.pt2.center.-caption.-fw-500 This campaign is currently inactive, you can join the campaign and we notifify you when starts the activity, if you have any doubt please contact us.
+      p.pt2.center.-caption.-fw-500 This campaign is currently inactive. You can join the campaign and we will notify you when it becomes active. If you have any doubt please contact us.
