@@ -2,7 +2,7 @@
 
 hr {
   height: 2px;
-  background-color: #4a4a4a;
+  background-color: var(--k-color-palette-neutral-mid-dark);
   border: none;
 }
 

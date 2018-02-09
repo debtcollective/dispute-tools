@@ -1,5 +1,7 @@
+@import '../../base';
+
 .-gray {
-  color: #4a4a4a;
+  color: var(--k-color-palette-neutral-mid-dark);
 }
 
 /* page styles */
@@ -34,10 +36,6 @@
   @media (max-width: 500px) {
     width: 40%;
   }
-}
-
-.bg-light-pattern {
-  background-color: var(--k-color-palette-neutral-light);
 }
 
 .underlined-link {

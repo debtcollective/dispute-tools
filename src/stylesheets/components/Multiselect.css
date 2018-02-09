@@ -192,7 +192,7 @@ fieldset[disabled] .multiselect {
   visibility: visible !important;
 }
 
-.multiselect__tag-icon::after {
+.multiselect__tag-icon:after {
   content: '×';
   color: #111;
   font-size: 14px;
@@ -220,7 +220,7 @@ fieldset[disabled] .multiselect {
   white-space: nowrap;
   margin: 0;
   text-decoration: none;
-  border-radius: 0;
+  border-radius: 0px;
   border: 1px solid #e8e8e8;
   cursor: pointer;
 }
@@ -415,7 +415,7 @@ fieldset[disabled] .multiselect {
   text-align: right;
 }
 
-*[dir='rtl'] .multiselect__option::after {
+*[dir='rtl'] .multiselect__option:after {
   right: auto;
   left: 0;
 }
