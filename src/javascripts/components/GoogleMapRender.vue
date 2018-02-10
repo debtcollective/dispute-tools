@@ -26,9 +26,8 @@ export default {
   },
   computed: {
     iframeSrc() {
-      return `https://www.google.com/maps/embed/v1/place?key=${
-        this.gmapsKey
-      }&q=${this.value || 'new+york'}`;
+      return `https://www.google.com/maps/embed/v1/place?key=${this.gmapsKey}&q=${this.value ||
+        'new+york'}`;
     },
   },
 };

@@ -2,8 +2,13 @@
  * Kabinett — Utilities Layout
  */
 
-.-fh {height: 100%}
-.-fw {width: 100%}
+.-fh {
+  height: 100%;
+}
+
+.-fw {
+  width: 100%;
+}
 
 .-ell {
   white-space: nowrap;

@@ -11,15 +11,11 @@
   white-space: nowrap;
   border-width: 0;
   cursor: pointer;
-
   text-align: center;
   text-decoration: none;
   border-radius: var(--border-radius);
-
   user-select: none;
   touch-action: manipulation;
-
-  cursor: pointer;
 
   &[disabled] {
     opacity: 0.2;

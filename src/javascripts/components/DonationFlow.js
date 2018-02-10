@@ -47,56 +47,30 @@ export default class DonationFlow extends Widget {
     this.sectionDonateFundOptionStrikeEl = this.sectionDonateEl.querySelector(
       '.DonateOption[data-fund-option-strike]',
     );
-    this.sectionDonateAmountPickerEl = this.sectionDonateEl.querySelector(
-      '.AmountPicker',
-    );
+    this.sectionDonateAmountPickerEl = this.sectionDonateEl.querySelector('.AmountPicker');
     this.customDonationCustomInputEl = this.sectionDonateAmountPickerEl.querySelector(
       '[data-donation-custom-input]',
     );
-    this.sectionPaymentEl = this.donationFormEl.querySelector(
-      'section.Payment',
-    );
-    this.sectionPaymentMethodsEl = this.donationFormEl.querySelector(
-      '.PaymentMethods',
-    );
+    this.sectionPaymentEl = this.donationFormEl.querySelector('section.Payment');
+    this.sectionPaymentMethodsEl = this.donationFormEl.querySelector('.PaymentMethods');
     this.sectionPaymentMethodCreditCardEl = this.donationFormEl.querySelector(
       '.PaymentMethod[data-payment-method="credit-card"]',
     );
     this.sectionPaymentMethodPayPalEl = this.donationFormEl.querySelector(
       '.PaymentMethod[data-payment-method="paypal"]',
     );
-    this.sectionPaymentPayPalFormEl = this.sectionPaymentMethodPayPalEl.querySelector(
-      'form',
-    );
-    this.sectionPaymentInputEmailEl = this.donationFormEl.querySelector(
-      '[name="email"]',
-    );
-    this.sectionPaymentInputNumberEl = this.donationFormEl.querySelector(
-      '[name="number"]',
-    );
-    this.sectionPaymentInputExpEl = this.donationFormEl.querySelector(
-      '[name="exp"]',
-    );
-    this.sectionPaymentInputCvcEl = this.donationFormEl.querySelector(
-      '[name="cvc"]',
-    );
+    this.sectionPaymentPayPalFormEl = this.sectionPaymentMethodPayPalEl.querySelector('form');
+    this.sectionPaymentInputEmailEl = this.donationFormEl.querySelector('[name="email"]');
+    this.sectionPaymentInputNumberEl = this.donationFormEl.querySelector('[name="number"]');
+    this.sectionPaymentInputExpEl = this.donationFormEl.querySelector('[name="exp"]');
+    this.sectionPaymentInputCvcEl = this.donationFormEl.querySelector('[name="cvc"]');
     this.sectionPaymentSubmitEl = this.sectionPaymentEl.querySelector('button');
-    this.sectionSuccessEl = this.donationFormEl.querySelector(
-      'section.Success',
-    );
-    this.sectionDonateBtn = this.donationFormEl.querySelector(
-      '.js-donate-amount',
-    );
-    this.sectionDonateValues = this.donationFormEl.querySelectorAll(
-      '.js-amount-value',
-    );
-    this.sectionDonateMonthly = this.donationFormEl.querySelector(
-      '.js-donate-monthly',
-    );
+    this.sectionSuccessEl = this.donationFormEl.querySelector('section.Success');
+    this.sectionDonateBtn = this.donationFormEl.querySelector('.js-donate-amount');
+    this.sectionDonateValues = this.donationFormEl.querySelectorAll('.js-amount-value');
+    this.sectionDonateMonthly = this.donationFormEl.querySelector('.js-donate-monthly');
     this.sectionErrorEl = this.donationFormEl.querySelector('section.Error');
-    this.sectionEls = Array.prototype.slice.call(
-      this.donationFormEl.querySelectorAll('section'),
-    );
+    this.sectionEls = Array.prototype.slice.call(this.donationFormEl.querySelectorAll('section'));
 
     // Continue button
     this.sectionDonateSubmitEl.addEventListener('click', () => {
@@ -124,9 +98,7 @@ export default class DonationFlow extends Widget {
       });
 
     this.customDonationCustomInputEl.addEventListener('input', () => {
-      const match = /[\d.]+/.exec(
-        this.customDonationCustomInputEl.value.trim(),
-      );
+      const match = /[\d.]+/.exec(this.customDonationCustomInputEl.value.trim());
       const amountParsed = parseFloat(match && match[0], 10);
       const amount = Math.round(amountParsed * 100); // rounded in cents
       this.setState({ amount });
@@ -159,9 +131,7 @@ export default class DonationFlow extends Widget {
     });
 
     // Initial render
-    this.customDonationCustomInputEl.value = formatCurrency(
-      this.state.amount / 100,
-    );
+    this.customDonationCustomInputEl.value = formatCurrency(this.state.amount / 100);
     this.render();
 
     // Render on any change
@@ -236,9 +206,7 @@ export default class DonationFlow extends Widget {
     }
 
     // Data: AmountPicker
-    const amountOptActive = this.sectionDonateAmountPickerEl.querySelector(
-      '.AmountOption.active',
-    );
+    const amountOptActive = this.sectionDonateAmountPickerEl.querySelector('.AmountOption.active');
     if (amountOptActive) amountOptActive.classList.remove('active');
     const matchingPreset = this.sectionDonateAmountPickerEl.querySelector(
       `.AmountOption[data-donation-amount="${amount}"]`,
@@ -260,20 +228,13 @@ export default class DonationFlow extends Widget {
     }
 
     // Data: Credit Card Inputs
-    const emailIsValid = Checkit.checkSync(
+    const emailIsValid = Checkit.checkSync('email', this.sectionPaymentInputEmailEl.value, [
+      'required',
       'email',
-      this.sectionPaymentInputEmailEl.value,
-      ['required', 'email'],
-    )[1];
-    const numberIsValid = Stripe.card.validateCardNumber(
-      this.sectionPaymentInputNumberEl.value,
-    );
-    const expiryIsValid = Stripe.card.validateExpiry(
-      this.sectionPaymentInputExpEl.value,
-    );
-    const cvcIsValid = Stripe.card.validateCVC(
-      this.sectionPaymentInputCvcEl.value,
-    );
+    ])[1];
+    const numberIsValid = Stripe.card.validateCardNumber(this.sectionPaymentInputNumberEl.value);
+    const expiryIsValid = Stripe.card.validateExpiry(this.sectionPaymentInputExpEl.value);
+    const cvcIsValid = Stripe.card.validateCVC(this.sectionPaymentInputCvcEl.value);
 
     if (emailIsValid) {
       this.sectionPaymentInputNumberEl.removeAttribute('disabled');

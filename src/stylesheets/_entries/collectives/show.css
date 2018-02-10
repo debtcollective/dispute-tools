@@ -9,6 +9,7 @@
 .-bg-neutral-light {
   background-color: var(--k-color-palette-neutral-light);
 }
+
 .-neutral-dark {
   color: var(--k-color-palette-neutral-dark);
 }
@@ -39,15 +40,19 @@
   @media (max-width: 870px) {
     font-size: 7rem;
   }
+
   @media (max-width: 670px) {
     font-size: 6rem;
   }
+
   @media (max-width: 500px) {
     font-size: 5rem;
   }
+
   @media (max-width: 420px) {
     font-size: 4rem;
   }
+
   @media (max-width: 350px) {
     font-size: 3rem;
   }

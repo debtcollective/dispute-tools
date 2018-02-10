@@ -32,7 +32,7 @@ module.exports = {
     }),
     new ExtractTextPlugin('[name].css'),
   ],
-  devtool: dev ? 'inline-source-map' : 'source-map',
+  devtool: dev ? 'eval-source-map' : 'source-map',
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'public', 'build'),
@@ -54,18 +54,18 @@ module.exports = {
               dev
                 ? []
                 : [
-                    require('cssnano')({
-                      autoprefixer: false,
-                      preset: [
-                        'default',
-                        {
-                          discardComments: {
-                            removeAll: true,
-                          },
+                  require('cssnano')({
+                    autoprefixer: false,
+                    preset: [
+                      'default',
+                      {
+                        discardComments: {
+                          removeAll: true,
                         },
-                      ],
-                    }),
-                  ],
+                      },
+                    ],
+                  }),
+                ],
             ),
           },
         },
@@ -107,18 +107,18 @@ module.exports = {
                     dev
                       ? []
                       : [
-                          require('cssnano')({
-                            autoprefixer: false,
-                            preset: [
-                              'default',
-                              {
-                                discardComments: {
-                                  removeAll: true,
-                                },
+                        require('cssnano')({
+                          autoprefixer: false,
+                          preset: [
+                            'default',
+                            {
+                              discardComments: {
+                                removeAll: true,
                               },
-                            ],
-                          }),
-                        ],
+                            },
+                          ],
+                        }),
+                      ],
                   );
                 },
               },

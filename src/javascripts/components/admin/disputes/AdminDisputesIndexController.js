@@ -5,7 +5,7 @@ import AdminDisputesIndexTableControls from './AdminDisputesIndexTableControls';
 import AdminDisputesIndexTable from './AdminDisputesIndexTable';
 import Modal from '../../Modal';
 import AdminDisputesAddStatusForm from './AdminDisputesAddStatusForm';
-import adminShowDisputePanel from './AdminShowDisputePanel';
+import AdminShowFormInformationPanel from './AdminShowFormInformationPanel.vue';
 import AssignedToMeButton from './AssignedToMeButton';
 import ManageDisputeAdmins from './ManageDisputeAdmins.vue';
 
@@ -20,6 +20,14 @@ const mountManageDisputeAdmins = disputeId =>
     el: '#manage-assigned-admin-vue',
     render() {
       return <ManageDisputeAdmins initialDisputeId={disputeId} />;
+    },
+  }).$children[0];
+
+const mountAdminShowFormInformationPanel = ({ dispute }) =>
+  new Vue({
+    el: '[data-dispute-wrapper]',
+    render() {
+      return <AdminShowFormInformationPanel initialDispute={dispute} />;
     },
   }).$children[0];
 
@@ -52,27 +60,18 @@ export default class AdminDisputesIndexController extends Widget {
     this.appendChild(
       new Modal({
         name: 'viewDisputeModal',
-        element: document.querySelector(
-          '[data-component-modal="show-dispute"]',
-        ),
+        element: document.querySelector('[data-component-modal="show-dispute"]'),
       }),
     );
-
-    // Dispute Show Modal
-    this.adminShowDisputePanel = adminShowDisputePanel();
 
     this.appendChild(
       new AdminDisputesAddStatusForm({
         name: 'AdminDisputesAddStatusForm',
-        element: document.querySelector(
-          '[data-component-form="dispute-add-status"]',
-        ),
+        element: document.querySelector('[data-component-form="dispute-add-status"]'),
       }),
     );
 
-    const searchAdminId = /admin_id\]=([\d\w-]*)/.exec(
-      decodeURIComponent(window.location.search),
-    );
+    const searchAdminId = /admin_id\]=([\d\w-]*)/.exec(decodeURIComponent(window.location.search));
 
     this.originalQuery = {
       filters: {
@@ -89,19 +88,14 @@ export default class AdminDisputesIndexController extends Widget {
     this._query = JSON.parse(JSON.stringify(this.originalQuery));
 
     // Not sure why this button isn't within the scope of `this.element` but this works anyway
-    this.assignedToMeButtonContainer = document.querySelector(
-      '#assigned-to-me-button',
-    );
+    this.assignedToMeButtonContainer = document.querySelector('#assigned-to-me-button');
     // Has to happen after this._query is populated
     this.assignedToMeButton = new AssignedToMeButton({
       queryReference: this._query,
       adminId: this.assignedToMeButtonContainer.dataset.currentUserId,
-      applyFilters: () =>
-        this.AdminDisputesIndexTableControls.dispatch('applyFilters'),
+      applyFilters: () => this.AdminDisputesIndexTableControls.dispatch('applyFilters'),
     });
-    this.assignedToMeButtonContainer.appendChild(
-      this.assignedToMeButton.element,
-    );
+    this.assignedToMeButtonContainer.appendChild(this.assignedToMeButton.element);
 
     this.pagination = document.querySelector('.Pagination ul');
 
@@ -156,7 +150,12 @@ export default class AdminDisputesIndexController extends Widget {
     });
 
     this.AdminDisputesIndexTable.bind('show', data => {
-      this.adminShowDisputePanel.dispute = data.dispute;
+      if (this.adminShowInformationPanel) {
+        this.adminShowInformationPanel.updateData(data);
+      } else {
+        this.adminShowInformationPanel = mountAdminShowFormInformationPanel(data);
+      }
+
       this.viewDisputeModal.activate();
     });
 
@@ -178,8 +177,7 @@ export default class AdminDisputesIndexController extends Widget {
     if (
       this._query.name !== this.originalQuery.name ||
       this._query.status !== this.originalQuery.status ||
-      this._query.filters.dispute_tool_id !==
-        this.originalQuery.filters.dispute_tool_id ||
+      this._query.filters.dispute_tool_id !== this.originalQuery.filters.dispute_tool_id ||
       this._query.order !== this.originalQuery.order ||
       this._query.filters.readable_id !== this.originalQuery.filters.readable_id
     ) {

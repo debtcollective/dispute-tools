@@ -50,8 +50,7 @@
   &[aria-hidden='true'] {
     opacity: 0;
     transform: translate3d(0, 0, 0);
-    transition: visibility 0ms linear 100ms opacity 100ms linear,
-      transform 100ms ease-in;
+    transition: visibility 0ms linear 100ms opacity 100ms linear, transform 100ms ease-in;
   }
 
   &::before {

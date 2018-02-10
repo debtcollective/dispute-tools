@@ -16,6 +16,9 @@ svg {
   fill: currentColor;
 }
 
-code, kbd, pre, samp {
+code,
+kbd,
+pre,
+samp {
   font-family: var(--k-monospace-font-family);
 }

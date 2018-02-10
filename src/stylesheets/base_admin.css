@@ -14,8 +14,7 @@
 
 /* CUSTOM STYLES */
 body::before {
-  background: var(--k-background-color)
-    url('/images/global/bg-white-pattern.gif') 50% 0 repeat;
+  background: var(--k-background-color) url('/images/global/bg-white-pattern.gif') 50% 0 repeat;
 }
 
 .-status {
