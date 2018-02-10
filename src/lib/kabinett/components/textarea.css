@@ -5,5 +5,7 @@
   border-radius: var(--border-radius);
   border: 1px solid currentColor;
 
-  &[disabled] {opacity: .5}
+  &[disabled] {
+    opacity: 0.5;
+  }
 }

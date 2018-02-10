@@ -1,7 +1,8 @@
 :root {
   /* global */
-  --k-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Helvetica, sans-serif;
-  --k-monospace-font-family: "Ubuntu Mono", "Source Code Pro", Consolas, monospace;
+  --k-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Helvetica,
+    sans-serif;
+  --k-monospace-font-family: 'Ubuntu Mono', 'Source Code Pro', Consolas, monospace;
   --k-font-size: 16px;
   --k-line-height: 1.618;
   --k-background-color: #fff;
@@ -12,28 +13,26 @@
   --k-h2: 1.75rem;
   --k-h3: 1.3125rem;
   --k-h4: 1rem;
-  --k-h5: .75rem;
-  --k-h6: .5625rem;
+  --k-h5: 0.75rem;
+  --k-h6: 0.5625rem;
   --k-font-caption-size: var(--k-h5);
 
   /* sizes */
-  --k-xs-fs: calc(var(--k-font-size) * .5);
+  --k-xs-fs: calc(var(--k-font-size) * 0.5);
   --k-xs-p: calc(var(--k-xs-fs) - 1px) 1em calc(var(--k-xs-fs) - 2px);
   --k-xs-h: calc(var(--k-xs-fs) - 1px + var(--k-xs-fs) + calc(var(--k-xs-fs) - 2px));
-
-  --k-sm-fs: calc(var(--k-font-size) * .75);
+  --k-sm-fs: calc(var(--k-font-size) * 0.75);
   --k-sm-p: calc(var(--k-sm-fs) - 1px) 1em calc(var(--k-sm-fs) - 2px);
   --k-sm-h: calc(calc(var(--k-sm-fs) - 1px) + var(--k-sm-fs) + calc(var(--k-sm-fs) - 2px));
-
   --k-lg-fs: calc(var(--k-font-size) + 4);
   --k-lg-p: calc(var(--k-lg-fs) - 1px) 1em calc(var(--k-lg-fs) - 2px);
   --k-lg-h: calc(calc(var(--k-lg-fs) - 1px) + var(--k-lg-fs) + calc(var(--k-lg-fs) - 2px));
-
   --k-xl-fs: calc(var(--k-font-size) + 9);
   --k-xl-p: calc(var(--k-xl-fs) - 1px) 1em calc(var(--k-xl-fs) - 2px);
   --k-xl-h: calc(calc(var(--k-xl-fs) - 1px) + var(--k-xl-fs) + calc(var(--k-xl-fs) - 2px));
 
   /* elements */
+
   /* elements loader */
   --k-loader-color: var(--k-color);
 

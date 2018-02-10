@@ -5,71 +5,31 @@
     "mocha": true,
     "browser": true
   },
-  "plugins": [
-    "mocha",
-    "vue"
-  ],
-  "extends": [
-    "airbnb-base",
-    "plugin:prettier/recommended",
-    "plugin:vue/recommended"
-  ],
+  "plugins": ["mocha"],
+  "extends": ["airbnb-base", "plugin:vue/recommended"],
   "parserOptions": {
     "ecmaVersion": 8,
     "sourceType": "module"
   },
   "rules": {
-    "comma-dangle": [
-      2,
-      "always-multiline"
-    ],
+    "comma-dangle": [2, "always-multiline"],
     "consistent-return": 0,
     "new-cap": [
       1,
       {
-        "capIsNewExceptions": [
-          "Class",
-          "Module",
-          "Interface",
-          "RouteMappings",
-          "Knex",
-          "Vue"
-        ]
+        "capIsNewExceptions": ["Class", "Module", "Interface", "RouteMappings", "Knex", "Vue"]
       }
     ],
-    "mocha/no-exclusive-tests": [
-      0,
-      {}
-    ],
-    "no-param-reassign": [
-      0,
-      {}
-    ],
-    "no-underscore-dangle": [
-      0,
-      {}
-    ],
-    "global-require": [
-      0
-    ],
-    "arrow-body-style": [
-      1,
-      "as-needed"
-    ],
-    "no-global-assign": [
-      0
-    ],
+    "mocha/no-exclusive-tests": [0, {}],
+    "no-param-reassign": [0, {}],
+    "no-underscore-dangle": [0, {}],
+    "global-require": [0],
+    "arrow-body-style": [1, "as-needed"],
+    "no-global-assign": [0],
     "no-shadow": [
       0,
       {
-        "allow": [
-          "done",
-          "err",
-          "res",
-          "req",
-          "resolve",
-          "reject"
-        ]
+        "allow": ["done", "err", "res", "req", "resolve", "reject"]
       }
     ],
     "jsx-uses-vars": 0

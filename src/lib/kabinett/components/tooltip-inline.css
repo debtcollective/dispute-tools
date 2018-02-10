@@ -16,7 +16,7 @@
     z-index: 1;
     font-size: var(--k-tooltip-font-size);
     font-weight: var(--k-tooltip-font-weight);
-    padding: .25em .75em;
+    padding: 0.25em 0.75em;
     border: 1px solid;
     color: var(--k-tooltip-color);
     background-color: var(--k-tooltip-background-color);
