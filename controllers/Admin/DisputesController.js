@@ -28,7 +28,9 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
           query.whereIn('id', disputeIds);
         })().then(() => {
           RESTfulAPI.createMiddleware({
-            queryBuilder: query.where('deactivated', false).include('[user.account, attachments, disputeTool, admins]'),
+            queryBuilder: query
+              .where('deactivated', false)
+              .include('[user.account, attachments, disputeTool, admins]'),
             order: {
               default: '-updated_at',
               allowedFields: ['created_at', 'updated_at'],
@@ -128,7 +130,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     getAvailableAdmins(req, res, next) {
       req.dispute
         .getAssignedAndAvailableAdmins()
-        .then(res.send)
+        .then(res.status(200).send)
         .catch(next);
     },
 
@@ -137,7 +139,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         .updateAdmins(req.body)
         .then(() => {
           req.flash('success', 'The list of administrators assigned as been updated.');
-          res.send({});
+          res.status(200).send({});
         })
         .catch(next);
     },
