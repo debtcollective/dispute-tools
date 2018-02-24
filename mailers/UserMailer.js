@@ -18,10 +18,6 @@ const UserMailer = Class('UserMailer').inherits(BaseMailer)({
     return this._send('sendDispute', ...args);
   },
 
-  sendSubscription(...args) {
-    return this._send('sendSubscription', ...args);
-  },
-
   sendDisputeToAdmin(locals) {
     const mails = CONFIG.env().mailers.disputesBCCAddresses;
 
