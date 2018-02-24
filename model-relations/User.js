@@ -17,57 +17,6 @@ User.relations = {
     scope: ['deactivated', false],
   },
 
-  debtTypes: {
-    // will never return the invisible collective (see `query` in `models/Collective.js`)
-    type: 'HasManyThrough',
-    relatedModel: Collective,
-    ownerCol: 'id',
-    relatedCol: 'id',
-    through: {
-      tableName: 'UsersCollectives',
-      ownerCol: 'user_id',
-      relatedCol: 'collective_id',
-    },
-  },
-
-  campaigns: {
-    type: 'HasManyThrough',
-    relatedModel: Campaign,
-    ownerCol: 'id',
-    relatedCol: 'id',
-    through: {
-      tableName: 'UsersCampaigns',
-      ownerCol: 'user_id',
-      relatedCol: 'campaign_id',
-    },
-  },
-
-  collectiveAdmins: {
-    type: 'HasManyThrough',
-    relatedModel: Collective,
-    ownerCol: 'id',
-    relatedCol: 'id',
-    through: {
-      tableName: 'CollectiveAdmins',
-      ownerCol: 'user_id',
-      relatedCol: 'collective_id',
-    },
-  },
-
-  eventsOwner: {
-    type: 'HasMany',
-    relatedModel: Event,
-    ownerCol: 'id',
-    relatedCol: 'user_id',
-  },
-
-  posts: {
-    type: 'HasMany',
-    relatedModel: Post,
-    ownerCol: 'id',
-    relatedCol: 'user_id',
-  },
-
   disputeAdmin: {
     type: 'HasManyThrough',
     relatedModel: Dispute,
