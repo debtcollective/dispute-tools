@@ -1,4 +1,4 @@
-/* global Krypton, Class, CONFIG, UserMailer, Campaign */
+/* global Krypton, Class, CONFIG, UserMailer */
 
 const bcrypt = require('bcrypt-node');
 const uuid = require('uuid');
@@ -57,7 +57,7 @@ const User = Class('User').inherits(Krypton.Model)({
     'updatedAt',
   ],
 
-  roles: ['Admin', 'CollectiveManager', 'User'],
+  roles: ['Admin', 'User'],
 
   search(qs) {
     const query = this.knex()
@@ -77,51 +77,6 @@ const User = Class('User').inherits(Krypton.Model)({
     }
 
     return query.then(results => results.map(item => item.id));
-  },
-
-  getCampaigns(id, collectiveId) {
-    const myCampaigns = ids => {
-      const query = User.knex()
-        .select('UsersCampaigns.*')
-        .select('Campaigns.*')
-        .from('UsersCampaigns')
-        .where('UsersCampaigns.user_id', id)
-        .join('Campaigns', 'UsersCampaigns.campaign_id', 'Campaigns.id');
-
-      if (ids.length) {
-        query.whereIn('UsersCampaigns.campaign_id', ids);
-      }
-
-      return query;
-    };
-
-    const myCampaignsLength = ids => {
-      const query = User.knex()
-        .count('UsersCampaigns.*')
-        .from('UsersCampaigns')
-        .where('UsersCampaigns.user_id', id);
-
-      if (ids.length) {
-        query.whereIn('UsersCampaigns.campaign_id', ids);
-      }
-
-      return query.then(([result]) => result);
-    };
-
-    const getCollectiveCampaignIds = () => {
-      const query = Campaign.query()
-        .where('collective_id', collectiveId)
-        .then(results => results.map(x => x.id));
-
-      return query;
-    };
-
-    return Promise.resolve(collectiveId ? getCollectiveCampaignIds() : []).then(
-      ids =>
-        Promise.all([myCampaigns(ids), myCampaignsLength(ids)]).then(
-          ([results, res]) => ({ results, count: parseInt(res.count, 10) }),
-        ),
-    );
   },
 
   prototype: {
@@ -152,21 +107,16 @@ const User = Class('User').inherits(Krypton.Model)({
           return done();
         }
 
-        return bcrypt.hash(
-          model.password,
-          bcrypt.genSaltSync(10),
-          null,
-          (err, hash) => {
-            if (err) {
-              return done(err);
-            }
+        return bcrypt.hash(model.password, bcrypt.genSaltSync(10), null, (err, hash) => {
+          if (err) {
+            return done(err);
+          }
 
-            model.encryptedPassword = hash;
+          model.encryptedPassword = hash;
 
-            model.password = null;
-            return done();
-          },
-        );
+          model.password = null;
+          return done();
+        });
       });
 
       // Updates old email when record saves
@@ -217,18 +167,7 @@ const User = Class('User').inherits(Krypton.Model)({
   },
 
   destroy() {
-    // anonymize the user's posts
-    Promise.all(this.posts.map(post => post.unsetUser()))
-      // reduce the userCount of collectives and campaigns
-      .then(
-        Promise.all(
-          this.debtTypes.concat(this.campaigns).map(collpaign => {
-            collpaign.userCount -= 1;
-            return collpaign.save();
-          }),
-        ),
-      )
-      .then(super.destroy());
+    super.destroy();
   },
 });
 

@@ -1,30 +1,17 @@
-/* globals User, Account, CONFIG, Collective */
+/* globals User, Account, CONFIG */
 
 const expect = require('chai').expect;
 const uuid = require('uuid');
 const path = require('path');
 
-const truncate = require(path.join(
-  process.cwd(),
-  'tests',
-  'utils',
-  'truncate',
-));
+const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 
 describe('Account', () => {
-  // let collective;
-
-  // before(() =>
-  //   Collective.first().then(res => {
-  //     collective = res;
-  //   }),
-  // );
-
   after(() => truncate([Account, User]));
 
   describe('Validations', () => {
     describe('userId', () => {
-      it('Sould fail if userId is not set', () => {
+      it('Should fail if userId is not set', () => {
         const account = new Account({});
 
         return account
@@ -33,13 +20,11 @@ describe('Account', () => {
             expect.fail('Should have rejected');
           })
           .catch(err => {
-            expect(err.errors.userId.message).to.be.equal(
-              'The userId is required',
-            );
+            expect(err.errors.userId.message).to.be.equal('The userId is required');
           });
       });
 
-      it('Sould pass if userId is set', () => {
+      it('Should pass if userId is set', () => {
         const account = new Account({
           userId: uuid.v4(),
         });
@@ -56,7 +41,7 @@ describe('Account', () => {
     });
 
     describe('fullname', () => {
-      it('Sould fail if fullname is not set', () => {
+      it('Should fail if fullname is not set', () => {
         const account = new Account({});
 
         return account
@@ -65,13 +50,11 @@ describe('Account', () => {
             expect.fail('Should have rejected');
           })
           .catch(err => {
-            expect(err.errors.fullname.message).to.be.equal(
-              'The fullname is required',
-            );
+            expect(err.errors.fullname.message).to.be.equal('The fullname is required');
           });
       });
 
-      it('Sould pass if fullname is set', () => {
+      it('Should pass if fullname is set', () => {
         const account = new Account({
           fullname: 'Example Account Fullname',
         });
@@ -88,7 +71,7 @@ describe('Account', () => {
     });
 
     describe('state', () => {
-      it('Sould fail if state is not set', () => {
+      it('Should fail if state is not set', () => {
         const account = new Account({});
 
         return account
@@ -97,13 +80,11 @@ describe('Account', () => {
             expect.fail('Should have rejected');
           })
           .catch(err => {
-            expect(err.errors.state.message).to.be.equal(
-              'The state is required',
-            );
+            expect(err.errors.state.message).to.be.equal('The state is required');
           });
       });
 
-      it('Sould fail if state is invalid', () => {
+      it('Should fail if state is invalid', () => {
         const account = new Account({
           state: 'Jalisco',
         });
@@ -114,13 +95,11 @@ describe('Account', () => {
             expect.fail('Should have rejected');
           })
           .catch(err => {
-            expect(err.errors.state.message).to.be.equal(
-              "The Account's state is invalid.",
-            );
+            expect(err.errors.state.message).to.be.equal("The Account's state is invalid.");
           });
       });
 
-      it('Sould pass if state is set', () => {
+      it('Should pass if state is set', () => {
         const account = new Account({
           state: 'Texas',
         });
@@ -137,7 +116,7 @@ describe('Account', () => {
     });
 
     describe('zip', () => {
-      it('Sould fail if zip is not set', () => {
+      it('Should fail if zip is not set', () => {
         const account = new Account({});
 
         return account
@@ -150,7 +129,7 @@ describe('Account', () => {
           });
       });
 
-      it('Sould fail if zip is invalid', () => {
+      it('Should fail if zip is invalid', () => {
         const account = new Account({
           zip: '123456',
         });
@@ -161,13 +140,11 @@ describe('Account', () => {
             expect.fail('Should have rejected');
           })
           .catch(err => {
-            expect(err.errors.zip.message).to.be.equal(
-              "The Account's zip code is invalid.",
-            );
+            expect(err.errors.zip.message).to.be.equal("The Account's zip code is invalid.");
           });
       });
 
-      it('Sould pass if zip is set', () => {
+      it('Should pass if zip is set', () => {
         const account = new Account({
           zip: '90210',
         });

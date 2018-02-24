@@ -6,7 +6,6 @@ export default class UsersNewForm extends Widget {
   static get constraints() {
     return {
       fullname: ['required'],
-      collectiveIds: ['required', 'array', 'minLength:1'],
       state: ['required'],
       zip: [
         'required',
@@ -46,15 +45,6 @@ export default class UsersNewForm extends Widget {
       }),
     );
 
-    this.collectivesOptions = [].slice.call(
-      this.element.querySelectorAll('[name="collectiveIds"]'),
-    );
-    this.collectivesWithDebt = this.collectivesOptions.filter(
-      option => option.dataset.hasDebt === 'true',
-    );
-    this.collectivesWithoutDebt = this.collectivesOptions.filter(
-      option => option.dataset.hasDebt === 'false',
-    );
     this.step1Layer = this.element.querySelector('.js-step-1');
     this.step2Layer = this.element.querySelector('.js-step-2');
     this.nextBtn = this.element.querySelector('#sign-up-btn-next');
@@ -71,40 +61,14 @@ export default class UsersNewForm extends Widget {
   }
 
   _bindEvents() {
-    this._handleCollectiveOptionsChangeRef = this._handleCollectiveOptionsChange.bind(
-      this,
-    );
-    for (let i = 0, len = this.collectivesOptions.length; i < len; i++) {
-      this.collectivesOptions[i].addEventListener(
-        'change',
-        this._handleCollectiveOptionsChangeRef,
-      );
-    }
-
-    this._hadnleShowNextStepRef = this._handleShowNextStep.bind(this);
-    this.nextBtn.addEventListener('click', this._hadnleShowNextStepRef);
+    this._handleShowNextStepRef = this._handleShowNextStep.bind(this);
+    this.nextBtn.addEventListener('click', this._handleShowNextStepRef);
 
     this._handleShowPrevStepRef = this._handleShowPrevStep.bind(this);
     this.prevBtn.addEventListener('click', this._handleShowPrevStepRef);
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
-    this.element
-      .querySelector('form')
-      .addEventListener('submit', this._handleFormSubmit);
-  }
-
-  _handleCollectiveOptionsChange(ev) {
-    const selected = this.collectivesOptions
-      .filter(c => c.checked)
-      .map(v => v.value);
-
-    if (ev.target.dataset.hasDebt === 'true') {
-      this.collectivesWithoutDebt.map(option => (option.checked = false));
-    } else {
-      this.collectivesWithDebt.map(option => (option.checked = false));
-    }
-
-    this.ButtonContinue[selected.length ? 'enable' : 'disable']();
+    this.element.querySelector('form').addEventListener('submit', this._handleFormSubmit);
   }
 
   _handleShowNextStep() {

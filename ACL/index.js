@@ -1,3 +1,3 @@
 /* Roles */
 
-module.exports = ['Visitor.User.CollectiveManager.Admin'];
+module.exports = ['Visitor.User.Admin'];

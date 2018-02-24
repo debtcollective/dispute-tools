@@ -1,4 +1,4 @@
-/* globals CONFIG, Collective, User, Account, Dispute, DisputeTool, Campaign, Post */
+/* globals CONFIG, User, Account, Dispute, DisputeTool */
 const url = CONFIG.env().siteURL;
 const urls = CONFIG.router.helpers;
 

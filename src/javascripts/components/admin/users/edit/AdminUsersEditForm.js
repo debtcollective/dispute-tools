@@ -46,9 +46,6 @@ export default class AdminUsersEditForm extends Widget {
     this.fileInput = this.element.querySelector('[type="file"]');
     this.image = this.element.querySelector('.EditProfile__image-wrapper');
     this.roleSelect = this.element.querySelector('[name="role"]');
-    this.collectiveManagerWrapper = this.element.querySelector(
-      '[data-collective-manager]',
-    );
     this.socialLinks = this.element.querySelector('[name="socialLinks"]');
 
     this.ui = {};
@@ -74,9 +71,6 @@ export default class AdminUsersEditForm extends Widget {
 
     this._handleFileChangeRef = this._handleFileChange.bind(this);
     this.fileInput.addEventListener('change', this._handleFileChangeRef);
-
-    this._handleRoleChangeRef = this._handleRoleChange.bind(this);
-    this.roleSelect.addEventListener('change', this._handleRoleChangeRef);
   }
 
   _handleFormSubmit(ev) {
@@ -109,14 +103,6 @@ export default class AdminUsersEditForm extends Widget {
       };
 
       reader.readAsDataURL(input.files[0]);
-    }
-  }
-
-  _handleRoleChange(ev) {
-    if (ev.target.value === 'CollectiveManager') {
-      this.collectiveManagerWrapper.classList.remove('hide');
-    } else {
-      this.collectiveManagerWrapper.classList.add('hide');
     }
   }
 

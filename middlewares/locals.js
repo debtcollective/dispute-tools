@@ -1,4 +1,4 @@
-/* globals CONFIG, Collective */
+/* globals CONFIG */
 
 const marked = require('marked');
 const { US_STATES } = require('../lib/data');
@@ -12,13 +12,6 @@ module.exports = function locals(req, res, next) {
 
   // DonationFlow
   res.locals.STRIPE_PUBLISHABLE_KEY = CONFIG.env().stripe.publishable;
-
-  if (!req.user) {
-    return Collective.queryVisible().then(collectives => {
-      res.locals.COLLECTIVES = collectives;
-      next();
-    });
-  }
 
   return next();
 };

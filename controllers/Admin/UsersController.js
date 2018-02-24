@@ -1,5 +1,5 @@
 /* globals Admin, Class, RestfulController, User, NotFoundError,
-CONFIG, Collective, Account, DisputeTool, neonode */
+CONFIG, Account, DisputeTool, neonode */
 
 const fs = require('fs-extra');
 const path = require('path');
@@ -9,15 +9,10 @@ const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 
 global.Admin = global.Admin || {};
 
-Admin.UsersController = Class(Admin, 'UsersController').inherits(
-  RestfulController,
-)({
+Admin.UsersController = Class(Admin, 'UsersController').inherits(RestfulController)({
   beforeActions: [
     {
-      before: [
-        (req, res, next) =>
-          neonode.controllers.Home._authenticate(req, res, next),
-      ],
+      before: [(req, res, next) => neonode.controllers.Home._authenticate(req, res, next)],
       actions: ['index', 'edit', 'update'],
     },
     {
@@ -76,14 +71,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(
           res.locals._backUrl = req.query._backUrl;
         }
 
-        Collective.queryVisible()
-          .orderBy('created_at', 'ASC')
-          .then(collectives => {
-            req.collectives = collectives;
-            res.locals.collectives = collectives;
-            next();
-          })
-          .catch(next);
+        next();
       },
       actions: ['edit', 'update'],
     },
@@ -92,7 +80,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(
   prototype: {
     _loadUser(req, res, next) {
       const query = User.query()
-        .include('[account, debtTypes, eventsOwner, collectiveAdmins]')
+        .include('[account]')
         .where('id', req.params.id);
 
       query
@@ -117,72 +105,25 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(
       // check whether or not this user can even be deleted
       const errorPrefix = 'You cannot delete this user because ';
       let err;
-      if (user.eventsOwner.length > 0) {
-        err = new Error(`${errorPrefix}they are the primary user on an event.`);
-        req.flash('error', err.message);
-        res.redirect(
-          req.body._backUrl || CONFIG.router.helpers.Admin.Users.url(),
-        );
-      } else if (user.collectiveAdmins.length > 0) {
-        err = new Error(`${errorPrefix}they are an admin for a collective.`);
-        req.flash('error', err.message);
-        res.redirect(
-          req.body._backUrl || CONFIG.router.helpers.Admin.Users.url(),
-        );
-      } else if (user.role === 'Admin') {
+      if (user.role === 'Admin') {
         err = new Error(`${errorPrefix}they are an Admin.`);
         req.flash('error', err.message);
-        res.redirect(
-          req.body._backUrl || CONFIG.router.helpers.Admin.Users.url(),
-        );
+        res.redirect(req.body._backUrl || CONFIG.router.helpers.Admin.Users.url());
       } else {
         // erase user from any posts and destroy
-        return User.transaction(trx =>
-          User.query()
-            .where('id', user.id)
-            .include('[posts, debtTypes, campaigns]')
-            .then(result => {
-              const deluser = result[0];
-              // reduce the userCount of collectives and campaigns
-              return (
-                Promise.all(
-                  deluser.debtTypes.concat(deluser.campaigns).map(collpaign => {
-                    collpaign.userCount -= 1;
-                    return collpaign.transacting(trx).save();
-                  }),
-                )
-                  // erase user from any posts and destroy
-                  .then(() =>
-                    Promise.all(
-                      deluser.posts.map(post =>
-                        post.transacting(trx).unsetUser(),
-                      ),
-                    ),
-                  )
-                  .then(() =>
-                    User.knex()
-                      .table('Users')
-                      .transacting(trx)
-                      .where('id', deluser.id)
-                      .del(),
-                  )
-              );
-            }),
-        )
+        return User.knex()
+          .table('Users')
+          .where('id', user.id)
+          .del()
+
           .then(() => {
             req.flash('warning', 'The user has been permanently deleted.');
-            res.redirect(
-              req.body._backUrl || CONFIG.router.helpers.Admin.Users.url(),
-            );
+            res.redirect(req.body._backUrl || CONFIG.router.helpers.Admin.Users.url());
           })
           .catch(e => {
-            err = new Error(
-              `The user was not deleted because of an error: ${e.message}`,
-            );
+            err = new Error(`The user was not deleted because of an error: ${e.message}`);
             req.flash('error', err.message);
-            res.redirect(
-              req.body._backUrl || CONFIG.router.helpers.Admin.Users.url(),
-            );
+            res.redirect(req.body._backUrl || CONFIG.router.helpers.Admin.Users.url());
           });
       }
       return next();
@@ -197,17 +138,6 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(
 
       user.updateAttributes(req.body);
       user.account.updateAttributes(req.body);
-
-      const knex = User.knex();
-
-      if (!Array.isArray(req.body.collectiveIds)) {
-        req.body.collectiveIds = [req.body.collectiveIds];
-      }
-
-      const usersCollectives = req.body.collectiveIds.map(id => ({
-        user_id: user.id,
-        collective_id: id,
-      }));
 
       User.transaction(trx =>
         user
@@ -230,73 +160,6 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(
             }
 
             return user.account.transacting(trx).save();
-          })
-          .then(() =>
-            knex('CollectiveAdmins')
-              .transacting(trx)
-              .where({
-                user_id: user.id,
-              })
-              .del(),
-          )
-          .then(() => {
-            if (user.role !== 'CollectiveManager') {
-              return Promise.resolve();
-            }
-
-            return knex('CollectiveAdmins')
-              .transacting(trx)
-              .insert(usersCollectives);
-          })
-          .then(() =>
-            // Get collectiveIds where the users has not already joined
-            Promise.map(req.body.collectiveIds, collectiveId =>
-              User.knex()
-                .table('UsersCollectives')
-                .where({
-                  user_id: user.id,
-                  collective_id: collectiveId,
-                })
-                .then(result => {
-                  if (result.length === 0) {
-                    return collectiveId;
-                  }
-
-                  return undefined;
-                }),
-            ).then(collectiveIds => {
-              collectiveIds = collectiveIds.filter(n => n !== undefined);
-
-              // Sum newly joined collective's user count
-              return Promise.each(collectiveIds, collectiveId =>
-                Collective.query()
-                  .where('id', collectiveId)
-                  .then(([collective]) => {
-                    collective.userCount++;
-
-                    return collective.save();
-                  }),
-              );
-            }),
-          )
-          .then(() => {
-            if (user.role !== 'CollectiveManager') {
-              return Promise.resolve();
-            }
-
-            return Promise.each(usersCollectives, uc =>
-              knex('UsersCollectives')
-                .where(uc)
-                .then(result => {
-                  if (result.length !== 0) {
-                    return Promise.resolve();
-                  }
-
-                  return knex('UsersCollectives')
-                    .transacting(trx)
-                    .insert(uc);
-                }),
-            );
           })
           .finally(trx.commit)
           .catch(trx.rollback),
@@ -329,9 +192,7 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(
     ban(req, res) {
       if (req.user.id === req.params.id) {
         req.flash('error', 'Cannot ban yourself!');
-        res.redirect(
-          req.body._backUrl || CONFIG.router.helpers.Admin.Users.url(),
-        );
+        res.redirect(req.body._backUrl || CONFIG.router.helpers.Admin.Users.url());
         return;
       }
 
@@ -343,15 +204,11 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(
         })
         .then(() => {
           req.flash('success', 'User banned succesfully');
-          res.redirect(
-            req.body._backUrl || CONFIG.router.helpers.Admin.Users.url(),
-          );
+          res.redirect(req.body._backUrl || CONFIG.router.helpers.Admin.Users.url());
         })
         .catch(error => {
           req.flash('error', `An error was occurred: ${error.message}`);
-          res.redirect(
-            req.body._backUrl || CONFIG.router.helpers.Admin.Users.url(),
-          );
+          res.redirect(req.body._backUrl || CONFIG.router.helpers.Admin.Users.url());
         });
     },
 
@@ -364,15 +221,11 @@ Admin.UsersController = Class(Admin, 'UsersController').inherits(
         })
         .then(() => {
           req.flash('success', 'User unbanned succesfully');
-          res.redirect(
-            req.body._backUrl || CONFIG.router.helpers.Admin.Users.url(),
-          );
+          res.redirect(req.body._backUrl || CONFIG.router.helpers.Admin.Users.url());
         })
         .catch(error => {
           req.flash('error', `An error was occurred: ${error.message}`);
-          res.redirect(
-            req.body._backUrl || CONFIG.router.helpers.Admin.Users.url(),
-          );
+          res.redirect(req.body._backUrl || CONFIG.router.helpers.Admin.Users.url());
         });
     },
   },

@@ -1,4 +1,4 @@
-/* globals CONFIG, DisputeTool, User, Account, Collective */
+/* globals CONFIG, DisputeTool, User, Account */
 
 const sa = require('superagent');
 const expect = require('chai').expect;
@@ -6,12 +6,7 @@ const path = require('path');
 const { createUser } = require('../../utils/helpers');
 const { signInAs } = require('../../utils/csrf');
 
-const truncate = require(path.join(
-  process.cwd(),
-  'tests',
-  'utils',
-  'truncate',
-));
+const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 
 const agent = sa.agent();
 const url = CONFIG.env().siteURL;
@@ -47,9 +42,7 @@ describe('DisputeToolsController', () => {
         .get(`${url}${urls.DisputeTools.show.url(tool.id)}`)
         .set('Accept', 'text/html')
         .end((err, res) => {
-          _csrf = unescape(
-            /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
-          );
+          _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
 
           expect(res.status).to.equal(200);
           expect(res.redirects.length).to.be.equal(1);
@@ -76,9 +69,7 @@ describe('DisputeToolsController', () => {
             .end((err, res) => {
               expect(res.status).to.equal(200);
               expect(res.redirects.length).to.be.equal(0);
-              expect(res.req.path).to.be.equal(
-                urls.DisputeTools.show.url(tool.id),
-              );
+              expect(res.req.path).to.be.equal(urls.DisputeTools.show.url(tool.id));
               done();
             });
         });

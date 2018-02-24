@@ -1,5 +1,5 @@
 /* globals Class, RestfulController, User, NotFoundError,
-CONFIG, Collective, Account, DisputeTool, logger */
+CONFIG, Account, DisputeTool, logger */
 const Promise = require('bluebird');
 const fs = require('fs-extra');
 const createQueue = require('../workers/utils').createQueue;
@@ -83,12 +83,6 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
 
       logger.debug(`Creating a new user ${user.email}`);
 
-      if (!Array.isArray(req.body.collectiveIds)) {
-        req.body.collectiveIds = [req.body.collectiveIds];
-      }
-      const collectiveIds = req.body.collectiveIds;
-      collectiveIds.push(Collective.invisibleId);
-
       User.transaction(trx =>
         user
           .transacting(trx)
@@ -97,30 +91,6 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             account.userId = user.id;
             return account.transacting(trx).save();
           })
-          .then(() => {
-            const userCollectives = collectiveIds.map(collectiveId => ({
-              user_id: user.id,
-              collective_id: collectiveId,
-            }));
-
-            return User.knex()
-              .table('UsersCollectives')
-              .transacting(trx)
-              .insert(userCollectives);
-          })
-          .then(() =>
-            Promise.each(collectiveIds, collectiveId =>
-              Collective.query()
-                .transacting(trx)
-                .where('id', collectiveId)
-                .then(([collective]) => {
-                  logger.debug(`Incrementing ${collective.name} userCount for new user ${user.id}`);
-                  collective.userCount++;
-
-                  return collective.transacting(trx).save();
-                }),
-            ),
-          )
           .then(trx.commit)
           .catch(trx.rollback),
       )
@@ -260,7 +230,7 @@ const UsersController = Class('UsersController').inherits(RestfulController)({
             }
 
             req.flash('success', 'Welcome! Your account was succesfully activated.');
-            return res.redirect(CONFIG.router.helpers.Collectives.url());
+            return res.redirect(CONFIG.router.helpers.DisputeTool.url());
           });
         });
       })().catch(next);

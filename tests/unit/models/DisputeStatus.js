@@ -1,11 +1,10 @@
-/* globals User, Account, CONFIG, Collective, Dispute, DisputeTool, DisputeStatus */
+/* globals User, Account, CONFIG, Dispute, DisputeTool, DisputeStatus */
 
 const { expect } = require('chai');
 const DisputeStatuses = require('../../../shared/enum/DisputeStatuses');
 
 describe('Dispute Status', () => {
   let dispute;
-  let collective;
 
   before(function before() {
     this.timeout(5000);
@@ -24,23 +23,11 @@ describe('Dispute Status', () => {
       zip: '73301',
     });
 
-    return DisputeTool.first()
-      .then(dt => {
-        tool = dt;
-        return Collective.queryVisible().then(([result]) => {
-          collective = result;
-
-          return User.transaction(trx =>
-            user
-              .transacting(trx)
-              .save()
-              .then(() => {
-                account.userId = user.id;
-                account.collectiveId = collective.id;
-                return account.transacting(trx).save();
-              }),
-          );
-        });
+    return user
+      .save()
+      .then(() => {
+        account.userId = user.id;
+        return account.save();
       })
       .then(() => {
         dispute = new Dispute({

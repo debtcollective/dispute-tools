@@ -1,4 +1,4 @@
-/* globals User, Account, CONFIG, Collective */
+/* globals User, Account, CONFIG */
 
 const expect = require('chai').expect;
 const path = require('path');
@@ -6,12 +6,7 @@ const nock = require('nock');
 const userLocationWorker = require('../../../workers/userLocationWorker');
 const { createUser } = require('../../utils/helpers.js');
 
-const truncate = require(path.join(
-  process.cwd(),
-  'tests',
-  'utils',
-  'truncate',
-));
+const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 
 describe('userLocationWorker', () => {
   let user;

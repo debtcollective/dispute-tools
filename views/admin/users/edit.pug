@@ -47,25 +47,6 @@ block content
                   )= role
           p(class="-on-error -danger -caption -fw-500 mt1")
 
-        .py1(
-          class= !user.collectiveAdmins.length && 'hide'
-          data-collective-manager
-        )
-          label.block.pb1.-fw-500 Collectives
-          - var collectiveAdminIds = user.collectiveAdmins.map(c => c.id);
-          each collective in collectives
-            div
-              input(
-                type='checkbox'
-                name='collectiveIds'
-                value= collective.id
-                id= collective.id
-                checked= collectiveAdminIds.includes(collective.id)
-              )
-              label.pl1(
-                for= collective.id
-              )= collective.name
-
         .py1
           label.block.pb1.-fw-500 Fullname
           input.-k-input.-fw.-border-neutral-mid(

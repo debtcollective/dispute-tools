@@ -1,4 +1,4 @@
-/* globals CONFIG, Dispute, DisputeTool, User, Account, Collective */
+/* globals CONFIG, Dispute, DisputeTool, User, Account */
 
 const sa = require('superagent');
 const expect = require('chai').expect;

@@ -8,11 +8,6 @@ const routeMappings = RouteMappings()
     as: 'root',
   })
 
-  .get('/dashboard', {
-    to: 'Dashboard#index',
-    as: 'dashboard',
-  })
-
   .get('/terms', {
     to: 'Home#tos',
     as: 'tos',
@@ -110,27 +105,6 @@ const routeMappings = RouteMappings()
             as: 'updateAdmins',
           }),
       )
-      .resources('/Collectives', mapAdminCollectives =>
-        mapAdminCollectives()
-          .resources('/Users')
-          .resources('/Campaigns', mapAdminCampaigns =>
-            mapAdminCampaigns()
-              .resources('/KBPosts')
-              .resources('/Events')
-              .post('/:id/activate', {
-                to: 'Campaigns#activate',
-                as: 'activate',
-              })
-              .post('/:id/deactivate', {
-                to: 'Campaigns#deactivate',
-                as: 'deactivate',
-              })
-              .post('/files', {
-                to: 'Campaigns#uploadFiles',
-                as: 'uploadFiles',
-              }),
-          ),
-      )
       .resources('/Users', mapAdminUsers =>
         mapAdminUsers()
           .post('/:id/ban', {
@@ -191,57 +165,6 @@ const routeMappings = RouteMappings()
         as: 'removeAttachment',
       }),
   )
-
-  // Collectives
-
-  .resources('/Collectives', mapCollectives =>
-    mapCollectives().post('/:id/join', {
-      to: 'Collectives#join',
-      as: 'join',
-    }),
-  )
-
-  // Campaigns
-
-  .resources('/Campaigns', mapCampaigns =>
-    mapCampaigns()
-      .resources('/Events', mapCampaignEvents =>
-        mapCampaignEvents()
-          .post('/:id/rsvp', { as: 'doRSVP' })
-          .delete('/:id/rsvp', { as: 'undoRSVP' }),
-      )
-      .post('/:id/join', {
-        to: 'Campaigns#join',
-        as: 'join',
-      }),
-  )
-
-  // Posts
-
-  .get('/campaigns/:id/posts', {
-    to: 'Posts#index',
-    as: 'PostsIndex',
-  })
-  .post('/campaigns/:id/posts/:post_id', {
-    to: 'Posts#createComment',
-    as: 'CreatePostComment',
-  })
-  .post('/campaigns/:campaign_id/posts/:id/vote', {
-    to: 'Posts#votePoll',
-    as: 'VotePostPoll',
-  })
-  .post('/campaigns/:id/posts', {
-    to: 'Posts#create',
-    as: 'CreatePost',
-  })
-  .put('/campaigns/:campaign_id/posts/:id', {
-    to: 'Posts#update',
-    as: 'UpdatePost',
-  })
-  .delete('/campaigns/:campaign_id/posts/:id', {
-    to: 'Posts#delete',
-    as: 'DeletePost',
-  })
 
   .post('/donate', {
     to: 'Home#donate',

@@ -1,4 +1,4 @@
-/* globals User, CONFIG, Collective, Account */
+/* globals User, CONFIG, Account */
 const sa = require('superagent');
 const bcrypt = require('bcrypt-node');
 const path = require('path');
@@ -8,12 +8,7 @@ const agent = sa.agent();
 
 const expect = require('chai').expect;
 
-const truncate = require(path.join(
-  process.cwd(),
-  'tests',
-  'utils',
-  'truncate',
-));
+const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
 const url = CONFIG.env().siteURL;
 const urls = CONFIG.router.helpers;
 
@@ -52,9 +47,7 @@ describe('SessionsController', () => {
       .get(`${url}${urls.login.url()}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
-        _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
-        );
+        _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
 
         expect(err).to.be.equal(null);
         expect(res.status).to.be.equal(200);
@@ -85,9 +78,7 @@ describe('SessionsController', () => {
       .get(`${url}${urls.login.url()}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
-        _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
-        );
+        _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
 
         _agent
           .post(`${url}${urls.login.url()}`)
@@ -110,9 +101,7 @@ describe('SessionsController', () => {
       .get(`${url}${urls.login.url()}`)
       .set('Accept', 'text/html')
       .end((err, res) => {
-        _csrf = unescape(
-          /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
-        );
+        _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
 
         agent
           .delete(`${url}${urls.logout.url()}`)
@@ -183,9 +172,7 @@ describe('SessionsController', () => {
           )
           .set('Accept', 'text/html')
           .end((err, res) => {
-            _csrf = unescape(
-              /XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1],
-            );
+            _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
             expect(err).to.be.equal(null);
             expect(res.status).to.be.equal(200);
             done();
@@ -217,15 +204,11 @@ describe('SessionsController', () => {
             User.query()
               .where('email', user.email)
               .then(_user => {
-                bcrypt.compare(
-                  '87654321',
-                  _user[0].encryptedPassword,
-                  (err, valid) => {
-                    expect(err).to.be.equal(null);
-                    expect(valid).to.be.equal(true);
-                    done();
-                  },
-                );
+                bcrypt.compare('87654321', _user[0].encryptedPassword, (err, valid) => {
+                  expect(err).to.be.equal(null);
+                  expect(valid).to.be.equal(true);
+                  done();
+                });
               });
           });
       });

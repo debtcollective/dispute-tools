@@ -4,16 +4,8 @@ block title
   | Sign up — The Debt Collective
 
 block content
-  .wrapper.py4
-    include ../includes/users/new-form.pug
 
 block scripts
   script.
     window.addEventListener('load', function() {
-      var options = {
-        currentUser: !{JSON.stringify(UserRenderer(currentUser))},
-        currentURL: !{JSON.stringify(currentURL)},
-      };
-
-      new ViewUsersNew(options);
     }, true);

@@ -1,4 +1,4 @@
-/* globals User, Account, CONFIG, Collective, DisputeStatus, Dispute, DisputeTool, Attachment */
+/* globals User, Account, CONFIG, DisputeStatus, Dispute, DisputeTool, Attachment */
 
 const expect = require('chai').expect;
 const path = require('path');
@@ -9,7 +9,6 @@ const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'))
 
 describe('Dispute', () => {
   let user;
-  let collective;
   let tool;
 
   before(function before() {
@@ -29,22 +28,9 @@ describe('Dispute', () => {
 
     return DisputeTool.first().then(dt => {
       tool = dt;
-
-      return Collective.queryVisible().then(([result]) => {
-        collective = result;
-
-        return User.transaction(trx =>
-          user
-            .transacting(trx)
-            .save()
-            .then(() => {
-              account.userId = user.id;
-              account.collectiveId = collective.id;
-              user.account = account;
-              return account.transacting(trx).save();
-            }),
-        );
-      });
+      account.userId = user.id;
+      user.account = account;
+      return account.save();
     });
   });
 
@@ -151,7 +137,8 @@ describe('Dispute', () => {
                 mimeType: 'image/jpeg',
                 width: 1280,
                 height: 1335,
-                key: 'test/DisputeAttachment/6595579a-b170-4ffd-87b3-2439f3d032fc/file/original.jpeg',
+                key:
+                  'test/DisputeAttachment/6595579a-b170-4ffd-87b3-2439f3d032fc/file/original.jpeg',
               },
             };
 
@@ -230,11 +217,15 @@ describe('Dispute', () => {
         }).then(containsDispute));
 
       describe('when given a readable id should ignore', () => {
-        const withreadableId = q => Object.assign({ filters: { readable_id: dispute.readableId } }, q);
-        it('the name', () => Dispute.search(withreadableId({ name: 'bogus bogus' })).then(containsDispute));
+        const withreadableId = q =>
+          Object.assign({ filters: { readable_id: dispute.readableId } }, q);
+        it('the name', () =>
+          Dispute.search(withreadableId({ name: 'bogus bogus' })).then(containsDispute));
 
         it('the status', () =>
-          Dispute.search(withreadableId({ status: 'not a real status beep boop beeeeeeep' })).then(containsDispute));
+          Dispute.search(withreadableId({ status: 'not a real status beep boop beeeeeeep' })).then(
+            containsDispute,
+          ));
       });
     });
 
