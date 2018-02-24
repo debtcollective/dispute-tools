@@ -13,13 +13,14 @@ const config = {
     port: process.env.PORT || 3000,
     disableActivation: true,
 
-    sessions: {
-      key: 'session',
-      secret: 'SECRET',
-    },
-
     siteURL: `http://localhost:${process.env.PORT || 3000}`,
     enableLithium: false,
+
+    sso: {
+      endpoint: 'http://localhost:3000/session/sso_provider',
+      secret: 'super secret string of something',
+      jwtSecret: 'another super secret',
+    },
 
     mailers: {
       contactEmail: 'contact@example.com',
@@ -70,21 +71,21 @@ const config = {
 
   test: {
     port: process.env.PORT || 3000,
-    sessions: {
-      key: process.env.SESSION_NAME || 'session',
-      secret: process.env.SESSION_SECRET || 'SECRET',
-    },
-    siteURL: `http${process.env.SECURE === 'true' ? 's' : ''}://${process.env
-      .HOST || 'localhost'}:${process.env.PORT || 3000}`,
+    siteURL: `http${process.env.SECURE === 'true' ? 's' : ''}://${process.env.HOST ||
+      'localhost'}:${process.env.PORT || 3000}`,
     enableLithium: false,
+
+    sso: {
+      endpoint: '',
+      secret: 'super secret string of something',
+      jwtSecret: 'another super secret',
+    },
 
     // Mailer
     mailers: {
       contactEmail: process.env.CONTACT_EMAIL || 'contact@example.com',
       senderEmail: process.env.SENDER_EMAIL || 'no-reply@example.com',
-      disputesBCCAddresses: [
-        process.env.DISPUTES_EMAIL || 'disputes@example.com',
-      ],
+      disputesBCCAddresses: [process.env.DISPUTES_EMAIL || 'disputes@example.com'],
     },
 
     nodemailer: {

@@ -1,22 +1,26 @@
-/* globals RestfulController, DisputeTool, neonode, Class, CONFIG, Dispute */
+/* globals RestfulController, DisputeTool, Class */
 const marked = require('marked');
+const authenticate = require('../services/authentication');
+const authorization = require('../services/authorization');
 
 const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulController)({
   beforeActions: [
     {
       before: [
-        (req, res, next) => neonode.controllers.Home._authenticate(req, res, next),
-        (req, res, next) => {
-          DisputeTool.query()
-            .where({
-              id: req.params.id,
-            })
-            .then(([disputeTool]) => {
+        authenticate,
+        authorization(({ user }) => user !== undefined),
+        async (req, res, next) => {
+          try {
+            const disputeTool = await DisputeTool.findById(req.params.id);
+            if (disputeTool) {
               res.locals.disputeTool = disputeTool;
-
               next();
-            })
-            .catch(next);
+            } else {
+              throw new Error('Not found!');
+            }
+          } catch (e) {
+            next(e);
+          }
         },
       ],
       actions: ['show'],

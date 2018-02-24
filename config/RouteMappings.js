@@ -47,89 +47,19 @@ const routeMappings = RouteMappings()
     as: 'tool',
   })
 
-  // Users and Sessions
-
-  .get('/signup', {
-    to: 'Users#new',
-    as: 'signup',
-  })
-
-  .get('/login', {
-    to: 'Sessions#new',
-    as: 'login',
-  })
-
-  .post('/login', {
-    to: 'Sessions#create',
-  })
-
-  .delete('/logout', {
-    to: 'Sessions#destroy',
-    as: 'logout',
-  })
-
-  .get('/reset-password', {
-    to: 'Sessions#showEmailForm',
-    as: 'resetPassword',
-  })
-
-  .post('/reset-password', {
-    to: 'Sessions#sendResetEmail',
-  })
-
-  .get('/reset-password/:token', {
-    to: 'Sessions#showPasswordForm',
-    as: 'resetPasswordWithToken',
-  })
-
-  .put('/reset-password/:token', {
-    to: 'Sessions#resetPassword',
-  })
-
-  .get('/acl', {
-    to: 'ACL#index',
-    as: 'acl',
-  })
-
   // Admin
   .namespace('/Admin', mapAdmins =>
-    mapAdmins()
-      .resources('/Disputes', mapAdminDisputes =>
-        mapAdminDisputes()
-          .get('/:id/admins', {
-            to: 'Disputes#getAvailableAdmins',
-            as: 'getAvailableAdmins',
-          })
-          .post('/:id/admins', {
-            to: 'Disputes#updateAdmins',
-            as: 'updateAdmins',
-          }),
-      )
-      .resources('/Users', mapAdminUsers =>
-        mapAdminUsers()
-          .post('/:id/ban', {
-            to: 'Users#ban',
-            as: 'ban',
-          })
-          .delete('/:id/ban', {
-            to: 'Users#unban',
-            as: 'unban',
-          }),
-      ),
-  )
-
-  // Users
-
-  .resources('/Users', mapUsers =>
-    mapUsers()
-      .get('/activation', {
-        to: 'Users#activation',
-        as: 'activation',
-      })
-      .get('/:token/activate', {
-        to: 'Users#activate',
-        as: 'activate',
-      }),
+    mapAdmins().resources('/Disputes', mapAdminDisputes =>
+      mapAdminDisputes()
+        .get('/:id/admins', {
+          to: 'Disputes#getAvailableAdmins',
+          as: 'getAvailableAdmins',
+        })
+        .post('/:id/admins', {
+          to: 'Disputes#updateAdmins',
+          as: 'updateAdmins',
+        }),
+    ),
   )
 
   // Dispute Tools

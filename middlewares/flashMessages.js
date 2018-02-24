@@ -1,7 +1,8 @@
-const { sessions } = require('../config/config').env();
+module.exports = (req, res, next) => {
+  req.flash = (key, value) => {
+    if (!res.locals.flash) res.locals.flash = {};
 
-if (sessions) {
-  module.exports = require('req-flash')({ locals: 'flash' });
-} else {
-  module.exports = (req, res, next) => next();
-}
+    res.locals.flash[key] = value;
+  };
+  next();
+};

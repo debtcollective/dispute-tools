@@ -14,44 +14,27 @@
       },
     ],
     loggedOut: [
-      {
-        text: 'Join Us',
-        title: 'Join Us',
-        url: routeMappings.signup.url(),
-        className: 'js-signup-link -primary',
-        parentClassName: 'px2 pl4'
-      },
-      {
-        text: 'Log In',
-        title: 'Log In',
-        url: routeMappings.login.url(),
-        className: 'js-login-link',
-        parentClassName: 'pl2'
-      },
+      //- {
+      //-   text: 'Join Us',
+      //-   title: 'Join Us',
+      //-   url: routeMappings.signup.url(),
+      //-   className: 'js-signup-link -primary',
+      //-   parentClassName: 'px2 pl4'
+      //- },
+      //- {
+      //-   text: 'Log In',
+      //-   title: 'Log In',
+      //-   url: routeMappings.login.url(),
+      //-   className: 'js-login-link',
+      //-   parentClassName: 'pl2'
+      //- },
     ],
     loggedIn: [],
     admin: [],
   }
 
-  if (currentUser) {
-    _menuItemsData.loggedIn = _menuItemsData.loggedIn.concat([
-      {
-        text: 'Profile and tools',
-        url: routeMappings.Users.show.url(currentUser.id),
-      },
-      {
-        text: 'Edit profile',
-        url: routeMappings.Users.edit.url(currentUser.id),
-      }
-    ]);
-  }
-
   if (currentUser && currentUser.role === 'Admin') {
     _menuItemsData.admin = _menuItemsData.admin.concat([
-      {
-        text: 'Users',
-        url: routeMappings.Admin.Users.url(),
-      },
       {
         text: 'Disputes',
         url: routeMappings.Admin.Disputes.url(),

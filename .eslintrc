@@ -32,6 +32,8 @@
         "allow": ["done", "err", "res", "req", "resolve", "reject"]
       }
     ],
-    "jsx-uses-vars": 0
+    "jsx-uses-vars": 0,
+    "indent": 0,
+    "max-len": [2, { "code": 100, "ignoreStrings": true, "ignoreTemplateLiterals": true }]
   }
 }

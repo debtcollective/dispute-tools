@@ -9,12 +9,20 @@ const _ = require('lodash');
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 const Raven = require('raven');
 
-const DisputesController = Class('DisputesController').inherits(
-  RestfulController,
-)({
+const authenticate = require('../services/authentication');
+const authorize = require('../services/authorization');
+
+const DisputesController = Class('DisputesController').inherits(RestfulController)({
   beforeActions: [
     {
-      before: '_loadDispute',
+      before: [authenticate],
+      actions: ['*'],
+    },
+    {
+      before: [
+        '_loadDispute',
+        authorize((req, res) => req.user.id === res.locals.dispute.userId),
+      ],
       actions: [
         'show',
         'edit',
@@ -63,7 +71,7 @@ const DisputesController = Class('DisputesController').inherits(
     _loadDispute(req, res, next) {
       Dispute.query()
         .where({ id: req.params.id })
-        .include('[user.account, statuses, attachments, disputeTool]')
+        .include('[user, statuses, attachments, disputeTool]')
         .then(([dispute]) => {
           if (!dispute) {
             next(new NotFoundError());
@@ -76,8 +84,7 @@ const DisputesController = Class('DisputesController').inherits(
               (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
             );
 
-            const optionData =
-              dispute.disputeTool.data.options[dispute.data.option];
+            const optionData = dispute.disputeTool.data.options[dispute.data.option];
             if (optionData && optionData.more) {
               optionData.more = marked(optionData.more);
             }
@@ -124,9 +131,7 @@ const DisputesController = Class('DisputesController').inherits(
           option: req.body.option,
           user: req.user,
         })
-        .then(disputeId =>
-          res.redirect(CONFIG.router.helpers.Disputes.show.url(disputeId)),
-        )
+        .then(disputeId => res.redirect(CONFIG.router.helpers.Disputes.show.url(disputeId)))
         .catch(next);
     },
 
@@ -154,9 +159,7 @@ const DisputesController = Class('DisputesController').inherits(
           }),
         )
         .then(() => dispute.save())
-        .then(() =>
-          res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)),
-        )
+        .then(() => res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)))
         .catch(next);
     },
 
@@ -184,9 +187,7 @@ const DisputesController = Class('DisputesController').inherits(
               }),
             )
             .catch(e => {
-              logger.error(
-                '  ---> Failed to send smail to user (on #setSignature)',
-              );
+              logger.error('  ---> Failed to send smail to user (on #setSignature)');
               logger.error(e.stack);
               Raven.captureException(e, { req });
             }),
@@ -216,9 +217,7 @@ const DisputesController = Class('DisputesController').inherits(
         return res.format({
           html() {
             req.flash('error', `${e.toString()} (on #${req.body.command})`);
-            return res.redirect(
-              CONFIG.router.helpers.Disputes.show.url(dispute.id),
-            );
+            return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
           },
           json() {
             return res.json({ error: e.toString() });
@@ -231,9 +230,7 @@ const DisputesController = Class('DisputesController').inherits(
         .then(() =>
           res.format({
             html() {
-              return res.redirect(
-                CONFIG.router.helpers.Disputes.show.url(dispute.id),
-              );
+              return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
             },
             json() {
               return res.json({ status: 'confirmed' });
@@ -248,14 +245,10 @@ const DisputesController = Class('DisputesController').inherits(
 
       dispute
         .setSignature(req.body.signature)
-        .then(() =>
-          res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)),
-        )
+        .then(() => res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)))
         .catch(e => {
           req.flash('error', `${e.toString()} (on #setSignature)`);
-          return res.redirect(
-            CONFIG.router.helpers.Disputes.show.url(dispute.id),
-          );
+          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
         });
     },
 
@@ -264,9 +257,7 @@ const DisputesController = Class('DisputesController').inherits(
 
       if (!req.files.attachment) {
         req.flash('error', 'There is no file to process');
-        return res.redirect(
-          CONFIG.router.helpers.Disputes.show.url(dispute.id),
-        );
+        return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
       }
 
       return Promise.each(req.files.attachment, attachment =>
@@ -274,16 +265,11 @@ const DisputesController = Class('DisputesController').inherits(
       )
         .then(() => dispute.save())
         .catch(() => {
-          req.flash(
-            'error',
-            'A problem occurred trying to process the attachments',
-          );
+          req.flash('error', 'A problem occurred trying to process the attachments');
         })
         .finally(() => {
           req.flash('success', 'Attachment successfully added!');
-          return res.redirect(
-            CONFIG.router.helpers.Disputes.show.url(dispute.id),
-          );
+          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
         });
     },
 
@@ -292,24 +278,18 @@ const DisputesController = Class('DisputesController').inherits(
 
       if (!req.params.attachment_id) {
         req.flash('error', 'Missing attachment id');
-        return res.redirect(
-          CONFIG.router.helpers.Disputes.show.url(dispute.id),
-        );
+        return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
       }
 
       return dispute
         .removeAttachment(req.params.attachment_id)
         .then(() => {
           req.flash('success', 'Attachment removed');
-          return res.redirect(
-            CONFIG.router.helpers.Disputes.show.url(dispute.id),
-          );
+          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
         })
         .catch(err => {
           req.flash('error', err.message);
-          return res.redirect(
-            CONFIG.router.helpers.Disputes.show.url(dispute.id),
-          );
+          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
         });
     },
 
@@ -343,14 +323,9 @@ const DisputesController = Class('DisputesController').inherits(
           return true;
         }
 
-        const currentStatus = _.sortBy(dispute.statuses, 'updatedAt').slice(
-          -1,
-        )[0];
+        const currentStatus = _.sortBy(dispute.statuses, 'updatedAt').slice(-1)[0];
 
-        return (
-          currentStatus.status !== 'Completed' ||
-          currentStatus.updatedAt > renderer.updatedAt
-        );
+        return currentStatus.status !== 'Completed' || currentStatus.updatedAt > renderer.updatedAt;
       };
 
       DisputeRenderer.query()

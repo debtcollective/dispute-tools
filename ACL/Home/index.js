@@ -1,0 +1,3 @@
+module.exports = {
+  Visitor: [[true]],
+};

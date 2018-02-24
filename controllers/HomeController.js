@@ -2,28 +2,12 @@
 
 const stripe = require('stripe');
 
-const stripeClient = stripe(CONFIG.env().stripe.secret);
+const { stripe: { secret: stripeSecret }, mailers: { contactEmail: CONTACT_EMAIL } } = CONFIG.env();
 
-const CONTACT_EMAIL = CONFIG.env().mailers.contactEmail;
+const stripeClient = stripe(stripeSecret);
 
 const HomeController = Class('HomeController').inherits(BaseController)({
   prototype: {
-    _authenticate(req, res, next) {
-      if (!req.user) {
-        return res.format({
-          html() {
-            req.flash('info', 'You have to login first.');
-            return res.redirect(CONFIG.router.helpers.login.url());
-          },
-          json() {
-            return res.status(403).end();
-          },
-        });
-      }
-
-      return next();
-    },
-
     donate(req, res) {
       const token = req.body.token;
       const amount = Math.floor(Number(req.body.amount));
@@ -134,9 +118,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
           })
           .then(subscription => {
             res.status(200).json({
-              success:
-                subscription.status === 'active' &&
-                subscription.plan.id === planId,
+              success: subscription.status === 'active' && subscription.plan.id === planId,
             });
           })
           .catch(error => {
@@ -149,10 +131,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
         charge()
           .then(_charge => {
             res.status(200).json({
-              success:
-                _charge.captured &&
-                _charge.paid &&
-                _charge.status === 'succeeded',
+              success: _charge.captured && _charge.paid && _charge.status === 'succeeded',
             });
           })
           .catch(error => {
@@ -203,10 +182,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       ContactMailer.sendMessage(CONTACT_EMAIL, emailerOptions)
         .then(result => {
           logger.info('ContactMailer.sendMessage result', result);
-          req.flash(
-            'success',
-            'Your message has been sent, thank you for contacting us.',
-          );
+          req.flash('success', 'Your message has been sent, thank you for contacting us.');
           res.redirect(CONFIG.router.helpers.contact.url());
           next();
         })
