@@ -6,10 +6,10 @@ const DisputeStatuses = require('../../../shared/enum/DisputeStatuses');
 describe('Dispute Status', () => {
   let dispute;
 
-  before(function before() {
+  before(async function before() {
     this.timeout(5000);
 
-    let tool;
+    const [tool] = await DisputeTool.query().limit(1);
     const user = new User({
       email: 'user@example.com',
       password: '12345678',
