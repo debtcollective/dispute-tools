@@ -36,10 +36,6 @@ const middlewares = [
     path: 'middlewares/SafeLocals.js',
   },
   {
-    name: 'RestifyACL',
-    path: 'middlewares/RestifyACL.js',
-  },
-  {
     name: 'ResponseTime',
     path: 'middlewares/ResponseTime.js',
   },
