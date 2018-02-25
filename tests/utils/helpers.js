@@ -1,20 +1,18 @@
 /* globals CONFIG, User, Account, Dispute, DisputeTool, Post */
-const uuid = require('uuid');
 const _ = require('lodash');
+
+const ids = {
+  _external: 0,
+  get nextExternal() {
+    return ++ids._external;
+  },
+};
 
 // create objects helper
 module.exports = {
   createUser(params = {}) {
     _.defaults(params, {
-      role: 'User',
-      email: `user-${uuid.v4()}@example.com`,
-      password: '12345678',
-      account: {
-        fullname: 'Example Account Name',
-        bio: '',
-        state: 'Texas',
-        zip: '73301',
-      },
+      external_id: ids.nextExternal,
     });
 
     const user = new User(params);
@@ -26,6 +24,7 @@ module.exports = {
       return user;
     });
   },
+
   createDispute(user) {
     return DisputeTool.first().then(tool =>
       tool
