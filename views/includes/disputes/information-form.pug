@@ -5,7 +5,7 @@ include ../../mixins/dispute-tools/form-element
     action=routeMappings.Disputes.updateDisputeData.url(dispute.id)
     method="post"
   )
-    input(type="hidden" name="_csrf" value=csrfToken)
+    //- input(type="hidden" name="_csrf" value=csrfToken)
     input(name="_method" type="hidden" value="PUT")
     input(type="hidden" name="command" value="setForm")
     input(type="hidden" name="formName" value=step.name)

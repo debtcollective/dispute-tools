@@ -1,7 +1,7 @@
 extends ../layouts/UserMailer.pug
 
 block title
-  div #{user.account.fullname} have submitted a new dispute with The Debt Collective.
+  div #{user.username} have submitted a new dispute with The Debt Collective.
 
 block content
   - var downloadURL = `${CONFIG.env().siteURL}${CONFIG.router.helpers.Disputes.download.url(renderer.disputeId)}`
