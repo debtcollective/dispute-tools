@@ -92,6 +92,7 @@
     "im-metadata": "^3.0.0",
     "imagemagick-stream": "^4.1.1",
     "imagesize": "^1.0.0",
+    "jsonwebtoken": "^8.1.1",
     "jstransformer-verbatim": "^1.1.1",
     "knex": "^0.11.9",
     "krypton-orm": "git://github.com/sgarza/krypton.git#dev",

@@ -1,13 +1,10 @@
 /* globals CONFIG, User */
 
-const moment = require('moment');
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 
 const { siteURL, sso: { endpoint, secret, jwtSecret } } = CONFIG.env();
 const nonces = {};
-
-// 1hr
-// const nonceExpiration = 3600000;
 
 const validNonce = nonce => nonces[nonce] !== undefined;
 
@@ -95,39 +92,31 @@ module.exports = {
 
       return user;
     }
+
+    throw new Error('Authentication failure');
   },
 
   createCookie(req, res, next) {
     // create a JWT cookie for the user so we don't have to authenticate with discourse every time
-    const json = JSON.stringify(
-      Object.assign(
-        {
-          sig: generateSignature(jwtSecret),
-        },
-        cleanUser(req.user),
-      ),
-    );
-
-    const b64jwt = Buffer.from(json).toString('base64');
+    const b64jwt = Buffer.from(jwt.sign(cleanUser(req.user), jwtSecret)).toString('base64');
 
     res.cookie('dispute-tool', b64jwt, {
-      maxAge: moment()
-        .add(1, 'd')
-        .valueOf(),
+      // when the browser session ends
+      expires: null,
+      httpOnly: true,
     });
 
     next();
   },
 
   extractCookie(req, res, next) {
-    const cookie = req.cookies['dispute-tool'];
-    const jwt = Buffer.from(cookie, 'base64').toString('utf8');
-    const claim = JSON.parse(jwt);
-    if (claim.sig === generateSignature(jwtSecret)) {
+    const decodedCookie = Buffer.from(req.cookies['dispute-tool'], 'base64').toString('utf8');
+    try {
+      const claim = jwt.verify(decodedCookie, jwtSecret);
       req.user = cleanUser(claim);
       next();
-    } else {
-      next(new Error('Authentication failed!'));
+    } catch (e) {
+      next(new Error(`Authentication failed! ${e.message}`));
     }
   },
 };
