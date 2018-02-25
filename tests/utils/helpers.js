@@ -1,4 +1,4 @@
-/* globals CONFIG, User, Account, Dispute, DisputeTool, Post */
+/* globals CONFIG, User, Dispute, DisputeTool, Post */
 const _ = require('lodash');
 
 const ids = {
@@ -17,12 +17,7 @@ module.exports = {
 
     const user = new User(params);
 
-    const account = new Account(params.account);
-
-    return user.save().then(() => {
-      user.account = account;
-      return user;
-    });
+    return user.save().then(() => user);
   },
 
   createDispute(user) {

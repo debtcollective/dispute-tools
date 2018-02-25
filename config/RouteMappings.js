@@ -52,6 +52,11 @@ const routeMappings = RouteMappings()
     as: 'login',
   })
 
+  .get('/logout', {
+    to: 'Home#logout',
+    as: 'logout',
+  })
+
   // Admin
   .namespace('/Admin', mapAdmins =>
     mapAdmins().resources('/Disputes', mapAdminDisputes =>

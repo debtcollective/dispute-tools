@@ -15,9 +15,18 @@ const Dispute = Class('Dispute')
     userId: ['required'],
     disputeToolId: ['required'],
   },
-  attributes: ['id', 'readableId', 'userId', 'disputeToolId', 'data', 'deactivated', 'createdAt', 'updatedAt'],
+  attributes: [
+    'id',
+    'readableId',
+    'userId',
+    'disputeToolId',
+    'data',
+    'deactivated',
+    'createdAt',
+    'updatedAt',
+  ],
 
-  defaultIncludes: '[user.account, statuses]',
+  defaultIncludes: '[user, statuses]',
 
   async search(qs) {
     const query = this.query().where({ deactivated: false });
@@ -51,7 +60,7 @@ const Dispute = Class('Dispute')
     return records.reduce((acc, record) => {
       const nameFound =
         // If no name passed in
-        !qs.name || record.user.account.fullname.toLowerCase().indexOf(qs.name.toLowerCase()) !== -1;
+        !qs.name || record.user.username.toLowerCase().indexOf(qs.name.toLowerCase()) !== -1;
 
       const statusFound =
         // If no status passed in
@@ -285,7 +294,9 @@ const Dispute = Class('Dispute')
       }
 
       return attachments[0].destroy().then(() => {
-        const dataAttachment = dispute.data.attachments.filter(attachment => attachment.id === id)[0];
+        const dataAttachment = dispute.data.attachments.filter(
+          attachment => attachment.id === id,
+        )[0];
 
         const index = dispute.data.attachments.indexOf(dataAttachment);
 

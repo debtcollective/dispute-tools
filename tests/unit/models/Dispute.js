@@ -1,4 +1,4 @@
-/* globals User, Account, CONFIG, DisputeStatus, Dispute, DisputeTool, Attachment */
+/* globals User, CONFIG, DisputeStatus, Dispute, DisputeTool, Attachment */
 
 const expect = require('chai').expect;
 const path = require('path');
@@ -19,22 +19,12 @@ describe('Dispute', () => {
       role: 'Admin',
     });
 
-    const account = new Account({
-      fullname: 'Example Account Name',
-      bio: '',
-      state: 'Texas',
-      zip: '73301',
-    });
-
     return DisputeTool.first().then(dt => {
       tool = dt;
-      account.userId = user.id;
-      user.account = account;
-      return account.save();
     });
   });
 
-  after(() => truncate(User, Account));
+  after(() => truncate(User));
 
   it('Should create a valid dispute', () => {
     const dispute = new Dispute({
@@ -180,8 +170,9 @@ describe('Dispute', () => {
     describe('search', () => {
       const containsDispute = ids => expect(ids).to.contain(dispute.id);
 
-      it("should search by the user's name", () =>
-        Dispute.search({ name: user.account.fullname }).then(containsDispute));
+      // TODO Re-enable once discourse sends the person's fullname
+      xit("should search by the user's name", () =>
+        Dispute.search({ name: user.fullname }).then(containsDispute));
 
       it('should search by the dispute human readable id', () =>
         Dispute.search({ filters: { readable_id: dispute.readableId } }).then(containsDispute));

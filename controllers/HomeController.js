@@ -3,7 +3,11 @@
 const stripe = require('stripe');
 const sso = require('../services/sso');
 
-const { stripe: { secret: stripeSecret }, mailers: { contactEmail: CONTACT_EMAIL } } = CONFIG.env();
+const {
+  stripe: { secret: stripeSecret },
+  mailers: { contactEmail: CONTACT_EMAIL },
+  siteURL,
+} = CONFIG.env();
 
 const stripeClient = stripe(stripeSecret);
 
@@ -154,7 +158,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
 
     index(req, res) {
       if (!req.user) res.render('home/index.pug');
-      else res.redirect(CONFIG.router.helpers.dashboard.url());
+      else res.redirect(CONFIG.router.helpers.DisputeTools.url());
     },
 
     about(req, res) {
@@ -208,6 +212,12 @@ const HomeController = Class('HomeController').inherits(BaseController)({
 
     login(req, res) {
       res.send({ redirect: sso.buildRedirect(req, req.body.returnTo) });
+    },
+
+    logout(req, res) {
+      // Expire the cookie right away to invalidate it
+      res.cookie('dispute-tool', '', { expires: new Date() });
+      res.redirect(siteURL);
     },
   },
 });

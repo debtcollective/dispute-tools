@@ -1,12 +1,39 @@
 /**
- * Creates an authorization test
- * @param {(user: User, req: Request) => boolean} test
- *  Should return true if authorized, false otherwise
+ * Creates an authorization middleware that will allow
+ * the request to continue if the passed in test is successful
+ *
+ * @example
+ * Example where we only authorize the route if the requested resource
+ * is owned by the user requesting it.
+ *
+ * <code><pre>
+ * authorize(async ({ user, query: { id: fooId }}) => {
+ *   const [aFoo] = await Foo.query()
+ *     .where('id', fooId)
+ *     .limit(1);
+ *
+ *   return fooId.userId === user.id;
+ * })
+ * </pre></code>
+ * @param {(req: e.Request, res: e.Response) => boolean | Promise<boolean>} test
+ *  Should return true if authorized, false otherwise. May optionally
+ *  return a Promise resolving in a boolean.
  */
-module.exports = test => (req, res, next) => {
-  if (test(req, res)) {
-    next();
-  } else {
-    throw new Error('Authorization failed!');
+module.exports = test => async (req, res, next) => {
+  try {
+    let testResult = test(req, res);
+
+    if (testResult.then && typeof testResult.then === 'function') {
+      testResult = await testResult;
+    }
+
+    if (testResult) {
+      next();
+    } else {
+      throw new Error('Authorization failed!');
+    }
+  } catch (e) {
+    // Rethrow the error in case something in `test` was what threw it
+    throw e;
   }
 };

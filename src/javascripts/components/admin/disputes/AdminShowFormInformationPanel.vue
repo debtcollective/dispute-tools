@@ -55,7 +55,7 @@ export default {
         State: this.form.state,
         Zip: this.form['zip-code'],
         Email: this.form.email || this.user.email,
-        Phone: this.form.phone || this.user.account.phone,
+        Phone: this.form.phone || this.user.phone,
         'Phone 2': this.form.phone2,
         Creditor: this.form['agency-name'] || this.form['firm-name'],
       };

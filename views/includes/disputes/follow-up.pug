@@ -58,7 +58,7 @@
                 p Your dispute is being processed, thank you.
               else
                 p A copy of your dispute has been sent to your email.
-            
+
 
     if dispute.data.disputeConfirmFollowUp
       .-caption.-neutral-mid.-ttu.-fw-700 Your dispute status:
@@ -78,10 +78,11 @@
           .StatusItem.py2.clearfix
             .StatusItem-Avatar.left
               if userUpdate
-                if (dispute.user.account.image.exists('small'))
-                  img.block.-fw(src=dispute.user.account.image.urls['small'] alt=dispute.user.account.fullname)
-                else
-                  img.block(width='50' height='50' src='/images/profile/placeholder-small.png')
+                //- if (dispute.user.account.image.exists('small'))
+                //-   img.block.-fw(src=dispute.user.account.image.urls['small'] alt=dispute.user.account.fullname)
+                //- else
+                //- TODO Use Discourse provided profile image
+                img.block(width='50' height='50' src='/images/profile/placeholder-small.png')
               else
                 .StatusItem-TDC-placeholder
 
@@ -106,10 +107,11 @@
         if _isDisputeOwner()
           .py2.clearfix
             .StatusItem-Avatar.left
-              if (currentUser.account.image.exists('small'))
-                img.block.-fw(src=currentUser.account.image.urls['small'] alt=currentUser.account.fullname)
-              else
-                img.block(width='50' height='50' src='/images/profile/placeholder-small.png')
+              //- if (currentUser.account.image.exists('small'))
+              //-   img.block.-fw(src=currentUser.account.image.urls['small'] alt=currentUser.account.fullname)
+              //- else
+              //- TODO Use Discourse provided profile picture
+              img.block(width='50' height='50' src='/images/profile/placeholder-small.png')
 
             .StatusItem-Text
               form(
