@@ -1,6 +1,7 @@
 /* globals Class, BaseController, logger, CONFIG, UserMailer, ContactMailer */
 
 const stripe = require('stripe');
+const sso = require('../services/sso');
 
 const { stripe: { secret: stripeSecret }, mailers: { contactEmail: CONTACT_EMAIL } } = CONFIG.env();
 
@@ -203,6 +204,10 @@ const HomeController = Class('HomeController').inherits(BaseController)({
 
     tool(req, res) {
       res.render('home/tool');
+    },
+
+    login(req, res) {
+      res.send({ redirect: sso.buildRedirect(req, req.body.returnTo) });
     },
   },
 });

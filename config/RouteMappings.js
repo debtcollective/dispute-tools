@@ -47,6 +47,11 @@ const routeMappings = RouteMappings()
     as: 'tool',
   })
 
+  .post('/login', {
+    to: 'Home#login',
+    as: 'login',
+  })
+
   // Admin
   .namespace('/Admin', mapAdmins =>
     mapAdmins().resources('/Disputes', mapAdminDisputes =>

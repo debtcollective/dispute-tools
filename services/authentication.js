@@ -7,10 +7,7 @@ module.exports = async (req, res, next) => {
     }
 
     if (req.query.sso && req.query.sig) {
-      const payload = sso.extractPayload(req.query);
-      req.user = await sso.handlePayload(payload);
-
-      return sso.createCookie(req, res, next);
+      return sso.handleSsoResult(req, res, next);
     }
 
     return res.format({

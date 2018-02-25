@@ -1,5 +1,9 @@
 const middlewares = [
   {
+    name: 'Authentication handler',
+    path: 'middlewares/handleAuthentication.js',
+  },
+  {
     name: 'Sentry',
     path: 'middlewares/sentry.js',
   },

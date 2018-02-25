@@ -14,7 +14,6 @@ const config = {
     disableActivation: true,
 
     siteURL: `http://localhost:${process.env.PORT || 3000}`,
-    enableLithium: false,
 
     sso: {
       endpoint: 'http://localhost:3000/session/sso_provider',
@@ -73,7 +72,6 @@ const config = {
     port: process.env.PORT || 3000,
     siteURL: `http${process.env.SECURE === 'true' ? 's' : ''}://${process.env.HOST ||
       'localhost'}:${process.env.PORT || 3000}`,
-    enableLithium: false,
 
     sso: {
       endpoint: '',

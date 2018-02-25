@@ -13,23 +13,18 @@
         url: '#',
       },
     ],
-    loggedOut: [
-      //- {
-      //-   text: 'Join Us',
-      //-   title: 'Join Us',
-      //-   url: routeMappings.signup.url(),
-      //-   className: 'js-signup-link -primary',
-      //-   parentClassName: 'px2 pl4'
-      //- },
-      //- {
-      //-   text: 'Log In',
-      //-   title: 'Log In',
-      //-   url: routeMappings.login.url(),
-      //-   className: 'js-login-link',
-      //-   parentClassName: 'pl2'
-      //- },
+    loggedOut: [{
+      text: 'Log In',
+      title: 'Log In',
+      className: 'login-link',
+      url: '#',
+      onclick: `window.login('${routeMappings.login.url()}')`,
+    }],
+    loggedIn: [
+      {
+        text: 'Something'
+      }
     ],
-    loggedIn: [],
     admin: [],
   }
 
@@ -51,7 +46,7 @@ mixin _linkMixin(item, responsive = false)
   if item.url === '/dispute-tools' && currentURL.startsWith('/disputes')
     - _className += ' active'
   - _className = _className + (item.className ? ' ' + item.className : '')
-  a(href!=item.url, class=_className, title=item.title || item.text)&attributes(attributes)
+  a(href!=item.url, class=_className, title=item.title || item.text, onclick=item.onclick || '')&attributes(attributes)
     block
     | #{item.text}
 
@@ -67,8 +62,6 @@ mixin _responsiveMenuMixin
       li: +_linkMixin(item, true)(class='px2 py1')
 
     unless currentUser
-      each item in _menuItemsData.loggedOut
-        li: +_linkMixin(item, true)(class='px2 py1')
     else
       each item in _menuItemsData.loggedIn
         li: +_linkMixin(item, true)(class='px2 py1')

@@ -46,9 +46,9 @@ const cleanUser = user => ({
   externalId: user.externalId,
 });
 
-module.exports = {
-  buildRedirect(req) {
-    return `${endpoint}?${generateToken(`${siteURL}${req.originalUrl}`)}`;
+const sso = {
+  buildRedirect(req, url = req.originalUrl) {
+    return `${endpoint}?${generateToken(`${siteURL}${url}`)}`;
   },
 
   extractPayload({ sso, sig }) {
@@ -119,4 +119,13 @@ module.exports = {
       next(new Error(`Authentication failed! ${e.message}`));
     }
   },
+
+  async handleSsoResult(req, res, next) {
+    const payload = sso.extractPayload(req.query);
+    req.user = await sso.handlePayload(payload);
+
+    return sso.createCookie(req, res, next);
+  },
 };
+
+module.exports = sso;

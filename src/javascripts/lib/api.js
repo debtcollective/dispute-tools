@@ -127,3 +127,15 @@ export function updateAdmins(disputeId, adminIds) {
     body: adminIds,
   });
 }
+
+export function login(url) {
+  return req({
+    url,
+    method: 'post',
+    body: {
+      returnTo: window.location.pathname,
+    },
+  }).then(({ redirect }) => {
+    window.location = redirect;
+  });
+}
