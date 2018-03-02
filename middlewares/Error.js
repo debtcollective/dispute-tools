@@ -1,21 +1,22 @@
 /* globals logger, CONFIG */
 
-// prettier-ignore
-module.exports = (err, req, res, next) => { // eslint-disable-line
+const { ForbiddenError, AuthenticationFailure, NotFoundError } = require('../lib/errors');
+
+// Needs four parameters so that Express knows it's an error handler
+// eslint-disable-next-line
+module.exports = (err, req, res, next) => {
   logger.error(err);
 
   let status;
 
-  if (err.name) {
-    switch (err.name) {
-      case 'ForbiddenError':
-      case 'NotFoundError':
-        status = 404;
-        break;
-      default:
-        status = 500;
-        break;
-    }
+  if (err instanceof ForbiddenError) {
+    status = 403;
+  } else if (err instanceof AuthenticationFailure) {
+    status = 401;
+  } else if (err instanceof NotFoundError) {
+    status = 404;
+  } else {
+    status = 500;
   }
 
   res.status(status);

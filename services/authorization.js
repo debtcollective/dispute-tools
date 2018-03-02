@@ -1,3 +1,5 @@
+const ForbiddenError = require('../lib/errors/ForbiddenError');
+
 /**
  * Creates an authorization middleware that will allow
  * the request to continue if the passed in test is successful
@@ -30,7 +32,7 @@ module.exports = test => async (req, res, next) => {
     if (testResult) {
       next();
     } else {
-      throw new Error('Authorization failed!');
+      throw new ForbiddenError();
     }
   } catch (e) {
     // Rethrow the error in case something in `test` was what threw it
