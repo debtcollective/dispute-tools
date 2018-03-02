@@ -1,3 +1,6 @@
+/* globals CONFIG */
+const { sso: { cookieName } } = CONFIG.env();
+
 const sso = require('../services/sso');
 
 /**
@@ -14,7 +17,7 @@ module.exports = async (req, res, next) => {
     req.user = await sso.handlePayload(payload);
 
     sso.createCookie(req, res, next);
-  } else if (req.cookies['dispute-tool']) {
+  } else if (req.cookies[cookieName]) {
     sso.extractCookie(req, res, next);
   } else {
     next();

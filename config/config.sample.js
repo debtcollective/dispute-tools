@@ -19,6 +19,7 @@ const config = {
       endpoint: 'http://localhost:3000/session/sso_provider',
       secret: 'super secret string of something',
       jwtSecret: 'another super secret',
+      cookieName: '_dispute_tools',
     },
 
     mailers: {
@@ -77,6 +78,7 @@ const config = {
       endpoint: '',
       secret: 'super secret string of something',
       jwtSecret: 'another super secret',
+      cookieName: '_dispute_tools',
     },
 
     // Mailer
