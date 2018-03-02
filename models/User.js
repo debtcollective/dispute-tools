@@ -11,7 +11,7 @@ const User = Class('User').inherits(Krypton.Model)({
       Krypton.Model.prototype.init.call(this, config);
     },
     setInfo(info) {
-      Object.assign(this, info);
+      return Object.assign(this, info);
     },
   },
 });

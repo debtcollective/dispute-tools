@@ -1,9 +1,5 @@
 const middlewares = [
   {
-    name: 'Error',
-    path: 'middlewares/Error.js',
-  },
-  {
     name: 'Authentication handler',
     path: 'middlewares/handleAuthentication.js',
   },
@@ -50,6 +46,10 @@ const middlewares = [
   {
     name: 'Router',
     path: 'middlewares/Router.js',
+  },
+  {
+    name: 'Error',
+    path: 'middlewares/Error.js',
   },
 ];
 

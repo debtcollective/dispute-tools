@@ -12,7 +12,9 @@
     "test": "scripty",
     "test:unit": "scripty",
     "test:integration": "scripty",
+    "pretest:debug:unit": "npm run utils:resetdb && npm run utils:knexreset",
     "test:debug:unit": "node --inspect=9220 --inspect-brk tests/unit.js",
+    "pretest:debug:integration": "npm run utils:resetdb && npm run utils:knexreset",
     "test:debug:integration": "node --inspect=9220 --inspect-brk tests/integration.js",
     "utils:resetdb": "scripty",
     "utils:knexreset": "scripty",
@@ -27,7 +29,8 @@
     "start:workers": "node workers/worker.js",
     "iron-node": "scripty",
     "watch": "webpack --progress --watch",
-    "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
+    "svg":
+      "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
     "post_deploy_staging": "scripty",
     "post_deploy_production": "./scripts/post_deploy_production",
     "disputes_sendto_admin": "./scripts/tasks/disputes-sendto-admin",
@@ -35,20 +38,9 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "eslint --fix",
-      "git add"
-    ],
-    "*.css": [
-      "prettier-stylelint --write",
-      "stylelint --fix",
-      "git add"
-    ],
-    "*.vue": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.js": ["prettier --write", "eslint --fix", "git add"],
+    "*.css": ["prettier-stylelint --write", "stylelint --fix", "git add"],
+    "*.vue": ["prettier --write", "git add"]
   },
   "dependencies": {
     "@google/maps": "^0.4.5",

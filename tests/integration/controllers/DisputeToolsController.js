@@ -1,95 +1,147 @@
 /* globals CONFIG, DisputeTool, User, Account */
 
-const sa = require('superagent');
 const expect = require('chai').expect;
-const path = require('path');
-const { createUser } = require('../../utils/helpers');
-const { signInAs } = require('../../utils/csrf');
+const { createUser, testGetPage } = require('../../utils/helpers');
 
-const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
-
-const agent = sa.agent();
-const url = CONFIG.env().siteURL;
+const { sso: { endpoint } } = CONFIG.env();
 const urls = CONFIG.router.helpers;
 
 describe('DisputeToolsController', () => {
-  let user;
-  let _csrf;
+  describe('authorization', () => {
+    let user;
+    let admin;
+    let moderator;
 
-  before(function before() {
-    this.timeout(5000);
+    before(async () => {
+      user = await createUser();
+      admin = await createUser({ admin: true });
+      moderator = await createUser({ moderator: true });
+    });
 
-    return createUser({ role: 'User' }).then(u => {
-      user = u;
+    describe('index', () => {
+      const index = urls.DisputeTools.url();
+      describe('unauthenticated', () => {
+        it('should allow', () =>
+          testGetPage(index).then(res => {
+            expect(res.status).eq(200);
+          }));
+      });
+
+      describe('unprivileged', () => {
+        it('should allow', () =>
+          testGetPage(index, user).then(res => {
+            expect(res.status).eq(200);
+          }));
+      });
+
+      describe('admin', () => {
+        it('should allow', () =>
+          testGetPage(index, admin).then(res => {
+            expect(res.status).eq(200);
+          }));
+      });
+
+      describe('moderator', () => {
+        it('should allow', () =>
+          testGetPage(index, moderator).then(res => {
+            expect(res.status).eq(200);
+          }));
+      });
+    });
+
+    describe('tool page', () => {
+      let url;
+
+      before(async () => {
+        const tool = await DisputeTool.first();
+        url = urls.DisputeTools.show.url(tool.id);
+      });
+
+      describe('unauthenticated', () => {
+        it.skip('should redirect to sso', () =>
+          // Need some way to catch the sso redirect...
+          testGetPage(url).then(res => {
+            expect(res.status).eq(200);
+            expect(res.redirects.length).eq(1);
+            expect(res.redirects[0]).eq(endpoint);
+          }));
+      });
+
+      describe('unprivileged', () => {
+        it('should allow', () =>
+          testGetPage(url, user).then(res => {
+            expect(res.status).eq(200);
+            expect(res.redirects.length).eq(0);
+          }));
+      });
+
+      describe('admin', () => {
+        it('should allow', () =>
+          testGetPage(url, admin).then(res => {
+            expect(res.status).eq(200);
+            expect(res.redirects.length).eq(0);
+          }));
+      });
+
+      describe('moderator', () => {
+        it('should allow', () =>
+          testGetPage(url, moderator).then(res => {
+            expect(res.status).eq(200);
+            expect(res.redirects.length).eq(0);
+          }));
+      });
     });
   });
 
-  after(() => truncate([User, Account]));
+  // it('Should redirect to login when accessing a tool if not logged in', done => {
+  //   DisputeTool.first().then(tool => {
+  //     agent
+  //       .get(`${url}${urls.DisputeTools.show.url(tool.id)}`)
+  //       .set('Accept', 'text/html')
+  //       .end((err, res) => {
+  //         expect(res.status).to.equal(200);
+  //         expect(res.redirects.length).to.be.equal(1);
+  //         expect(res.redirects[0]).to.have.string('/login');
+  //         done();
+  //       });
+  //   });
+  // });
 
-  it('Should render the index view', done => {
-    agent
-      .get(`${url}${urls.DisputeTools.url()}`)
-      .set('Accept', 'text/html')
-      .end((err, res) => {
-        expect(res.status).to.equal(200);
-        done();
-      });
-  });
+  // it('Should render the show view when logged in', done => {
+  //   agent
+  //     .post(`${url}${urls.login.url()}`)
+  //     .set('Accept', 'text/html')
+  //     .send({
+  //       email: user.email,
+  //       password: '12345678',
+  //     })
+  //     .end(() => {
+  //       DisputeTool.first().then(tool => {
+  //         agent
+  //           .get(`${url}${urls.DisputeTools.show.url(tool.id)}`)
+  //           .set('Accept', 'text/html')
+  //           .end((err, res) => {
+  //             expect(res.status).to.equal(200);
+  //             expect(res.redirects.length).to.be.equal(0);
+  //             expect(res.req.path).to.be.equal(urls.DisputeTools.show.url(tool.id));
+  //             done();
+  //           });
+  //       });
+  //     });
+  // });
 
-  it('Should redirect to login when accessing a tool if not logged in', done => {
-    DisputeTool.first().then(tool => {
-      agent
-        .get(`${url}${urls.DisputeTools.show.url(tool.id)}`)
-        .set('Accept', 'text/html')
-        .end((err, res) => {
-          _csrf = unescape(/XSRF-TOKEN=(.*?);/.exec(res.headers['set-cookie'])[1]);
+  // it('Should render the show view for disputes with no options', () => {
+  //   // Tools have fixed ids
+  //   // 11111111-1111-3333-1111-111111111111 == Dispute Any Debt in Collections
+  //   const toolId = '11111111-1111-3333-1111-111111111111';
 
-          expect(res.status).to.equal(200);
-          expect(res.redirects.length).to.be.equal(1);
-          expect(res.redirects[0]).to.have.string('/login');
-          done();
-        });
-    });
-  });
-
-  it('Should render the show view when logged in', done => {
-    agent
-      .post(`${url}${urls.login.url()}`)
-      .set('Accept', 'text/html')
-      .send({
-        email: user.email,
-        password: '12345678',
-        _csrf,
-      })
-      .end(() => {
-        DisputeTool.first().then(tool => {
-          agent
-            .get(`${url}${urls.DisputeTools.show.url(tool.id)}`)
-            .set('Accept', 'text/html')
-            .end((err, res) => {
-              expect(res.status).to.equal(200);
-              expect(res.redirects.length).to.be.equal(0);
-              expect(res.req.path).to.be.equal(urls.DisputeTools.show.url(tool.id));
-              done();
-            });
-        });
-      });
-  });
-
-  it('Should render the show view for disputes with no options', () => {
-    // Tools have fixed ids
-    // 11111111-1111-3333-1111-111111111111 == Dispute Any Debt in Collections
-    const toolId = '11111111-1111-3333-1111-111111111111';
-
-    return signInAs(user, agent).then(() =>
-      agent
-        .get(`${url}${urls.DisputeTools.show.url(toolId)}`)
-        .set('Accept', 'text/html')
-        .then(res => {
-          expect(res.status).to.equal(200);
-          expect(res.redirects.length).to.be.equal(0);
-          expect(res.req.path).to.be.equal(urls.DisputeTools.show.url(toolId));
-        }),
-    );
-  });
+  //   return agent
+  //     .get(`${url}${urls.DisputeTools.show.url(toolId)}`)
+  //     .set('Accept', 'text/html')
+  //     .then(res => {
+  //       expect(res.status).to.equal(200);
+  //       expect(res.redirects.length).to.be.equal(0);
+  //       expect(res.req.path).to.be.equal(urls.DisputeTools.show.url(toolId));
+  //     });
+  // });
 });
