@@ -17,6 +17,7 @@ const ForbiddenError = require('../lib/errors/ForbiddenError');
  *   return fooId.userId === user.id;
  * })
  * </pre></code>
+ *
  * @param {(req: e.Request, res: e.Response) => boolean | Promise<boolean>} test
  *  Should return true if authorized, false otherwise. May optionally
  *  return a Promise resolving in a boolean.
@@ -25,6 +26,7 @@ module.exports = test => async (req, res, next) => {
   try {
     let testResult = test(req, res);
 
+    // Handle if the authorization test is a promise
     if (testResult.then && typeof testResult.then === 'function') {
       testResult = await testResult;
     }
@@ -32,10 +34,9 @@ module.exports = test => async (req, res, next) => {
     if (testResult) {
       next();
     } else {
-      throw new ForbiddenError();
+      next(new ForbiddenError());
     }
   } catch (e) {
-    // Rethrow the error in case something in `test` was what threw it
-    throw e;
+    next(e);
   }
 };

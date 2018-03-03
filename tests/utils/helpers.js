@@ -2,8 +2,9 @@
 const uuid = require('uuid');
 const sso = require('../../services/sso');
 const sa = require('superagent');
+const { expect } = require('chai');
 
-const { siteURL } = CONFIG.env();
+const { siteURL, sso: { endpoint } } = CONFIG.env();
 
 const agent = sa.agent();
 
@@ -60,15 +61,14 @@ const helpers = {
     return ret;
   },
 
-  createDispute(user) {
-    return DisputeTool.first().then(tool =>
-      tool
-        .createDispute({
-          user,
-          option: tool.data.options.A ? 'A' : 'none',
-        })
-        .then(disputeId => Dispute.query().where('id', disputeId)),
-    );
+  async createDispute(user, tool = null) {
+    if (tool === null) {
+      tool = await DisputeTool.first();
+    }
+    return tool.createDispute({
+      user,
+      option: tool.data.options.A ? 'A' : 'none',
+    });
   },
 
   setCookie(req, user) {
@@ -90,22 +90,26 @@ const helpers = {
 
   testPostPage: (url, body, user) => helpers.testPost(url, body, user, 'text/html'),
 
-  testPost(url, body = {}, user = null, accept = 'application/json') {
-    const req = agent
-      .post(withSiteUrl(url))
-      .set('Accept', accept)
-      .send(body);
+  testPost(url, body = null, user = null, accept = 'application/json') {
+    const req = agent.post(withSiteUrl(url)).set('Accept', accept);
+
+    if (body !== null) {
+      req.send(body);
+    }
+
     helpers.setCookie(req, user);
     return req;
   },
 
   testPutPage: (url, body, user) => helpers.testPut(url, body, user, 'text/html'),
 
-  testPut(url, body = {}, user = null, accept = 'application/json') {
-    const req = agent
-      .put(withSiteUrl(url))
-      .set('Accept', accept)
-      .send(body);
+  testPut(url, body = null, user = null, accept = 'application/json') {
+    const req = agent.put(withSiteUrl(url)).set('Accept', accept);
+
+    if (body !== null) {
+      req.send(body);
+    }
+
     helpers.setCookie(req, user);
     return req;
   },
@@ -117,6 +121,57 @@ const helpers = {
     helpers.setCookie(req, user);
     return req;
   },
+
+  /**
+   * Wraps a request meant to represent an unauthenticated
+   * user's request that will be redirected. We turn off
+   * redirects so that superagent doesn't try to follow through
+   * to the SSO authentication endpoint.
+   */
+  testUnauthenticated: req =>
+    req.redirects(0).catch(({ status, response: { headers } }) => {
+      expect(status).eq(302);
+      expect(headers.location.startsWith(endpoint)).true;
+    }),
+
+  /**
+   * Only use this to test route access. If you're
+   * trying to actually test whether the route does what
+   * it says it does then use testOk.
+   *
+   * We disable redirects here because some routes (especially creates)
+   * will redirect to the created resource and that will muddy up the
+   * authorization test with implementation details of the route.
+   */
+  testAllowed: req =>
+    req
+      .redirects(0)
+      .then(res => {
+        expect(res.status).eq(200);
+      })
+      .catch(({ status, response: { headers } }) => {
+        // Default redirect status for Express's res.redirect is a 302
+        expect(status).eq(302);
+        // Make sure we didn't get redirected to the sso login page
+        expect(headers.location.slice(0, endpoint.length), 'Redirected to SSO endpoint').not.eq(
+          endpoint,
+        );
+      }),
+
+  testOk: req =>
+    req.then(res => {
+      expect(res.status).eq(200);
+    }),
+
+  testForbidden: req =>
+    req.catch(err => {
+      expect(err.status).eq(403);
+    }),
+
+  testBadRequest: req =>
+    req.catch(err => {
+      expect(err.status).eq(400);
+    }),
 };
 
 module.exports = helpers;

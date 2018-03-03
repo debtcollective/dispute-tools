@@ -1,6 +1,11 @@
 /* globals logger, CONFIG */
 
-const { ForbiddenError, AuthenticationFailure, NotFoundError } = require('../lib/errors');
+const {
+  ForbiddenError,
+  AuthenticationFailure,
+  NotFoundError,
+  BadRequest,
+} = require('../lib/errors');
 
 // Needs four parameters so that Express knows it's an error handler
 // eslint-disable-next-line
@@ -15,6 +20,8 @@ module.exports = (err, req, res, next) => {
     status = 401;
   } else if (err instanceof NotFoundError) {
     status = 404;
+  } else if (err instanceof BadRequest) {
+    status = 400;
   } else {
     status = 500;
   }

@@ -1,5 +1,5 @@
 /* globals Class, Krypton, Attachment, DisputeTool, DisputeStatus, DisputeRenderer, UserMailer
- Account, User, logger */
+ User, logger */
 /* eslint arrow-body-style: 0 */
 
 const _ = require('lodash');
@@ -77,6 +77,38 @@ const Dispute = Class('Dispute')
 
       return acc;
     }, []);
+  },
+
+  async findById(id, include = null) {
+    const query = Dispute.query().where({ id });
+    if (typeof include === 'string') {
+      query.include(include);
+    }
+    const [dispute] = await query.limit(1);
+    return dispute;
+  },
+
+  createFromTool({ user, disputeToolId, option }) {
+    const dispute = new Dispute({
+      disputeToolId,
+      userId: user.id,
+    });
+
+    const status = new DisputeStatus({
+      status: 'Incomplete',
+    });
+
+    dispute.setOption(option);
+
+    return Dispute.transaction(async trx => {
+      dispute.transacting(trx);
+      status.transacting(trx);
+
+      await dispute.save();
+      status.disputeId = dispute.id;
+      await status.save();
+      return dispute;
+    });
   },
 
   prototype: {

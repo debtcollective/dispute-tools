@@ -24,6 +24,7 @@ const DisputeTool = Class('DisputeTool').inherits(Krypton.Model)({
 
       this.data = require(dataFile);
     },
+
     createDispute(config) {
       const dispute = new Dispute({
         disputeToolId: this.id,
@@ -36,19 +37,15 @@ const DisputeTool = Class('DisputeTool').inherits(Krypton.Model)({
 
       dispute.setOption(config.option);
 
-      return Dispute.transaction(trx =>
-        dispute
-          .transacting(trx)
-          .save()
-          .then(() => {
-            status.disputeId = dispute.id;
+      return Dispute.transaction(async trx => {
+        dispute.transacting(trx);
+        status.transacting(trx);
 
-            return status
-              .transacting(trx)
-              .save()
-              .then(() => dispute.id);
-          }),
-      );
+        await dispute.save();
+        status.disputeId = dispute.id;
+        await status.save();
+        return dispute;
+      });
     },
   },
 });
