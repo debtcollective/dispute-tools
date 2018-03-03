@@ -155,6 +155,12 @@ const Dispute = Class('Dispute')
       return this;
     },
 
+    /**
+     * Set the signature on the dispute data
+     *
+     * TODO Why does this method save the dispute and the above does not?
+     * @param {string} signature
+     */
     setSignature(signature) {
       const dispute = this;
 
@@ -172,6 +178,12 @@ const Dispute = Class('Dispute')
       });
     },
 
+    /**
+     * Moves the dispute into the completed status
+     *
+     * TODO This method does too much, refactor to be multiple method calls and use async/await
+     * @param {boolean} pendingSubmission
+     */
     markAsCompleted(pendingSubmission) {
       const dispute = this;
 

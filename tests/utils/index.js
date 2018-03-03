@@ -27,6 +27,16 @@ const withSiteUrl = url => {
 
 // create objects helper
 const helpers = {
+  truncate(...models) {
+    if (models.length === 1 && Array.isArray(models[0])) {
+      models = models[0];
+    }
+
+    return Promise.all(
+      models.map(model => model.knex().raw(`truncate table "${model.tableName}" cascade`)),
+    );
+  },
+
   async createUser({
     params = { externalId: ids.nextExternal() },
     groups = [],

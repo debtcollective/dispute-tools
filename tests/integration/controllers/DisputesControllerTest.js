@@ -16,7 +16,7 @@ const {
   testForbidden,
   testBadRequest,
   testOk,
-} = require('../../utils/helpers.js');
+} = require('../../utils');
 const PrivateAttachmentStorage = require('../../../models/PrivateAttachmentStorage');
 
 const urls = CONFIG.router.helpers;

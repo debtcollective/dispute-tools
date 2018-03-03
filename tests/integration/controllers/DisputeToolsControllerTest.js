@@ -1,11 +1,6 @@
 /* globals CONFIG, DisputeTool, User, Account */
 
-const {
-  createUser,
-  testGetPage,
-  testUnauthenticated,
-  testAllowed,
-} = require('../../utils/helpers');
+const { createUser, testGetPage, testUnauthenticated, testAllowed } = require('../../utils');
 
 const urls = CONFIG.router.helpers;
 

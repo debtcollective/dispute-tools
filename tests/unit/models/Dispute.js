@@ -1,39 +1,67 @@
 /* globals User, CONFIG, DisputeStatus, Dispute, DisputeTool, Attachment */
 
 const expect = require('chai').expect;
-const path = require('path');
 const sinon = require('sinon');
+const path = require('path');
+const uuid = require('uuid');
 const PrivateAttachmentStorage = require('../../../models/PrivateAttachmentStorage');
-
-const truncate = require(path.join(process.cwd(), 'tests', 'utils', 'truncate'));
+const { createUser, createDispute, truncate } = require('../../utils');
+const DisputeStatuses = require('../../../shared/enum/DisputeStatuses');
 
 describe('Dispute', () => {
   let user;
   let tool;
 
-  before(function before() {
-    this.timeout(5000);
-    user = new User({
-      email: 'user@example.com',
-      password: '12345678',
-      role: 'Admin',
+  before(async () => {
+    user = await createUser();
+    tool = await DisputeTool.first();
+  });
+
+  describe('findById', () => {
+    let dispute;
+    beforeEach(async () => {
+      dispute = await createDispute(user);
     });
 
-    return DisputeTool.first().then(dt => {
-      tool = dt;
+    afterEach(() => truncate(Dispute));
+
+    it('should return the dispute by its id', async () => {
+      const found = await Dispute.findById(dispute.id);
+      expect(found).exist;
+      expect(found.id).eq(dispute.id);
+    });
+
+    it('should return undefined when no dispute exists for the id', async () => {
+      const found = await Dispute.findById(uuid.v4());
+      expect(found).not.exist;
     });
   });
 
-  after(() => truncate(User));
-
-  it('Should create a valid dispute', () => {
-    const dispute = new Dispute({
-      userId: user.id,
-      disputeToolId: tool.id,
+  describe('createFromTool', () => {
+    let dispute;
+    beforeEach(async () => {
+      dispute = await Dispute.createFromTool({
+        user,
+        disputeToolId: tool.id,
+        option: 'none',
+      });
+    });
+    it('should create a dispute for the passed in tool id', async () => {
+      expect(dispute.disputeToolId).eq(tool.id);
     });
 
-    return dispute.save().then(id => {
-      expect(id[0]).to.be.equal(dispute.id);
+    it('should create a dispute for the passed in user', async () => {
+      expect(dispute.userId).eq(user.id);
+    });
+
+    it('should create a dispute with the passed in option', async () => {
+      expect(dispute.data.option).eq('none');
+    });
+
+    it('should create a dispute with a default status', async () => {
+      const statuses = await DisputeStatus.query().where('dispute_id', dispute.id);
+      expect(statuses.length).eq(1);
+      expect(statuses[0].status).eq(DisputeStatuses.incomplete);
     });
   });
 
@@ -59,6 +87,81 @@ describe('Dispute', () => {
     });
   });
 
+  describe('setOption', () => {
+    let dispute;
+    before(async () => {
+      dispute = await createDispute(user);
+    });
+
+    it('should set the option property on the dispute data', () => {
+      const option = uuid.v4();
+      dispute.setOption(option);
+      expect(dispute.data.option).eq(option);
+    });
+  });
+
+  describe('setSignature', () => {
+    let dispute;
+    before(async () => {
+      dispute = await createDispute(user);
+    });
+
+    it('should set the signature on the dispute data', async () => {
+      const signature = uuid.v4();
+      await dispute.setSignature(signature);
+      expect(dispute.data.signature).eq(signature);
+    });
+  });
+
+  describe('setDisputeProcess', () => {
+    let dispute;
+    before(async () => {
+      dispute = await createDispute(user);
+    });
+
+    it('should set the dispute process on the dispute data', async () => {
+      const process = uuid.v4();
+      await dispute.setDisputeProcess({ process });
+      expect(dispute.data.disputeProcess).eq(process);
+    });
+
+    it('should set the dispute process city on the dispute data', async () => {
+      const process = uuid.v4();
+      const processCity = uuid.v4();
+      await dispute.setDisputeProcess({ process, processCity });
+      expect(dispute.data.disputeProcessCity).eq(processCity);
+    });
+  });
+
+  describe('setConfirmFollowUp', () => {
+    let dispute;
+    before(async () => {
+      dispute = await createDispute(user);
+    });
+
+    it('should set disputeConfirmFollowUp to true on the dispute data', () => {
+      dispute.data.disputeConfirmFollowUp = false;
+      dispute.setConfirmFollowUp();
+      expect(dispute.data.disputeConfirmFollowUp).true;
+    });
+  });
+
+  describe('setForm', () => {
+    let dispute;
+    before(async () => {
+      dispute = await createDispute(user);
+    });
+
+    it('should require a form name', () => {
+      try {
+        dispute.setForm({ fieldValues: {}, _isDirty: false });
+        expect(true, 'Did not throw error when calling setForm with invalid parameters').false;
+      } catch (e) {
+        expect(e.message).string('The formName is required');
+      }
+    });
+  });
+
   describe('Instance Methods', () => {
     let dispute;
 
@@ -76,24 +179,6 @@ describe('Dispute', () => {
             dispute = d;
           }),
       );
-    });
-
-    it('Should set an option', () => {
-      dispute.setOption('A');
-
-      expect(dispute.data.option).to.be.equal('A');
-    });
-
-    it('Should set a dispute process id', () => {
-      dispute.setDisputeProcess({ process: 1 });
-
-      expect(dispute.data.disputeProcess).to.be.equal(1);
-    });
-
-    it('Should set a signature', () => {
-      dispute.setSignature('Example Signature');
-
-      expect(dispute.data.signature).to.be.equal('Example Signature');
     });
 
     it('Should set a form', () => {
