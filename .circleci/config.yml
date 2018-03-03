@@ -1,0 +1,42 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8.9.1
+      # Dependencies
+      - image: postgresql:9.6.2
+      - image: redis:3.0.6
+
+    working_directory: ~/tdc-dispute-tools
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "yarn.lock" }}
+          - v1-dependencies-
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+      - run: ./scripts/copy_config
+      - run: yarn build
+
+  test:
+    requires: build
+    steps:
+      - run: yarn test
+      - run: yarn report
+
+  deploy:
+    requires: build
+    steps:
+      - run: echo "Deployment not yet implemented"
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test

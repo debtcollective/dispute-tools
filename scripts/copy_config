@@ -1,0 +1,3 @@
+#!/usr/bin/sh env
+cp config/config.sample.js config/config.js
+cp config/knexfile.sample.js knexfile.js
