@@ -27,14 +27,14 @@ module.exports = test => async (req, res, next) => {
     let testResult = test(req, res);
 
     // Handle if the authorization test is a promise
-    if (testResult.then && typeof testResult.then === 'function') {
+    if (typeof testResult.then === 'function') {
       testResult = await testResult;
     }
 
     if (testResult) {
       next();
     } else {
-      next(new ForbiddenError());
+      throw new ForbiddenError();
     }
   } catch (e) {
     next(e);

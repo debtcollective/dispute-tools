@@ -30,16 +30,11 @@ class ViewDisputeToolsIndex extends NodeSupport {
       this.appendChild(
         new Modal({
           name: `modal-${id}`,
-          element: document.querySelector(
-            `[data-component-modal="tool-modal-${id}"]`,
-          ),
+          element: document.querySelector(`[data-component-modal="tool-modal-${id}"]`),
         }),
       );
 
-      this.handlers[id] = this._aboutClickHandler.bind(
-        this,
-        this[`modal-${id}`],
-      );
+      this.handlers[id] = this._aboutClickHandler.bind(this, this[`modal-${id}`]);
       document
         .getElementById(`tool-modal-toggler-${id}`)
         .addEventListener('click', this.handlers[id]);
@@ -64,9 +59,7 @@ class ViewDisputeToolsIndex extends NodeSupport {
       this.DTRmodal.deactivate();
     });
 
-    this.DTRcontinueButton.addEventListener('click', () =>
-      this.DTRmodal.deactivate(),
-    );
+    this.DTRcontinueButton.addEventListener('click', () => this.DTRmodal.deactivate());
 
     return this;
   }
@@ -74,9 +67,7 @@ class ViewDisputeToolsIndex extends NodeSupport {
   _bindScrollTo() {
     this.pisces = new Pisces();
 
-    this.whyFileDisputeAnchor = document.getElementById(
-      'why-file-dispute-anchor',
-    );
+    this.whyFileDisputeAnchor = document.getElementById('why-file-dispute-anchor');
     this.whyFileDisputeSection = document.getElementById('why-file-dispute');
     this.whyFileDisputeAnchor.addEventListener('click', () => {
       const y = this.whyFileDisputeSection.offsetTop;
