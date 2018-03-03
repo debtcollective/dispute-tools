@@ -1,12 +1,14 @@
 version: 2
+
+defaults: &defaults
+  working_directory: ~/tdc-dispute-tools
+  docker:
+    - image: circleci/node:8.9.1
+    - image: postgres:9.6.2
+
 jobs:
   build:
-    docker:
-      - image: circleci/node:8.9.1
-      # Dependencies
-      - image: postgres:9.6.2
-
-    working_directory: ~/tdc-dispute-tools
+    <<: *defaults
 
     steps:
       - checkout
@@ -23,13 +25,10 @@ jobs:
       - run: yarn build
 
   test:
-    requires: build
-    docker:
-      - image: circleci/node:8.9.1
-      # Dependencies
-      - image: postgres:9.6.2
-    working_directory: ~/tdc-dispute-tools
+    <<: *defaults
     steps:
+      - attach_workspace:
+          at: ~/tdc-dispute-tools
       - run: sudo apt-get update
       - run: sudo apt-get install pdftk postgresql-client
       - run: yarn test
