@@ -23,6 +23,10 @@ jobs:
           key: v1-dependencies-{{ checksum "yarn.lock" }}
       - run: bash scripts/copy_config
       - run: yarn build
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - *
 
   test:
     <<: *defaults
@@ -35,12 +39,11 @@ jobs:
       - run: yarn report
 
   deploy:
-    docker:
-      - image: circleci/node:8.9.1
-      # Dependencies
-      - image: postgres:9.6.2
+    <<: *defaults
     requires: build
     steps:
+      - attach_workspace:
+          at: ~/tdc-dispute-tools
       - run: echo "Deployment not yet implemented"
 
 workflows:
