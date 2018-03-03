@@ -26,6 +26,8 @@ jobs:
   test:
     requires: build
     steps:
+      - run: apt-get update
+      - run: apt-get install pdftk postgresql-client
       - run: yarn test
       - run: yarn report
 
