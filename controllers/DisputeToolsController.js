@@ -2,6 +2,7 @@
 const marked = require('marked');
 const requireAuthentication = require('../services/authentication');
 const authorizeWhen = require('../services/authorization');
+const { NotFoundError } = require('../lib/errors');
 
 const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulController)({
   beforeActions: [
@@ -16,7 +17,7 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulC
               res.locals.disputeTool = disputeTool;
               next();
             } else {
-              throw new Error('Not found!');
+              throw new NotFoundError();
             }
           } catch (e) {
             next(e);
