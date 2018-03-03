@@ -23,11 +23,12 @@ jobs:
       - run: yarn build
 
   test:
+    requires: build
     docker:
       - image: circleci/node:8.9.1
       # Dependencies
       - image: postgres:9.6.2
-    requires: build
+    working_directory: ~/tdc-dispute-tools
     steps:
       - run: sudo apt-get update
       - run: sudo apt-get install pdftk postgresql-client
