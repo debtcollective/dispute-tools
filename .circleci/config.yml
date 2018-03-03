@@ -24,9 +24,9 @@ jobs:
       - run: bash scripts/copy_config
       - run: yarn build
       - persist_to_workspace:
-          root: workspace
+          root: ~/tdc-dispute-tools
           paths:
-            - *
+            - ./*
 
   test:
     <<: *defaults
