@@ -29,8 +29,8 @@ jobs:
       - image: postgres:9.6.2
     requires: build
     steps:
-      - run: apt-get update
-      - run: apt-get install pdftk postgresql-client
+      - run: sudo apt-get update
+      - run: sudo apt-get install pdftk postgresql-client
       - run: yarn test
       - run: yarn report
 
