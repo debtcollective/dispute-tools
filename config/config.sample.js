@@ -1,14 +1,12 @@
 const environment = process.env.NODE_ENV || 'development';
 const port = process.env.PORT || 8080;
 
-const path = require('path');
 const uuid = require('uuid');
 
 module.exports = {
   environment,
   port,
   appName: process.env.APP_NAME || 'TDC Dispute Tools',
-  logFile: path.resolve(process.cwd(), 'log', `${environment}.log`),
   sso: {
     endpoint: process.env.SSO_ENDPOINT || 'http://localhost:3000/session/sso_provider',
     secret: process.env.SSO_SECRET || uuid.v4(),
