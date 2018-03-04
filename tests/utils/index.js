@@ -75,8 +75,9 @@ const helpers = {
     if (tool === null) {
       tool = await DisputeTool.first();
     }
-    return tool.createDispute({
+    return Dispute.createFromTool({
       user,
+      disputeToolId: tool.id,
       option: tool.data.options.A ? 'A' : 'none',
     });
   },

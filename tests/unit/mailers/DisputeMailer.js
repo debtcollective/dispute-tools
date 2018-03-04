@@ -1,10 +1,8 @@
-/* globals UserMailer, BaseMailer, Class, CONFIG, User, Account */
+/* globals UserMailer, Class, CONFIG, User, Account */
 
 const expect = require('chai').expect;
 const DisputeMailer = require('../../../mailers/DisputeMailer');
 const { createUser } = require('../../utils');
-
-const { mailers: { transport } } = CONFIG;
 
 describe('DisputeMailer', () => {
   let admin;
@@ -16,7 +14,9 @@ describe('DisputeMailer', () => {
   it('Should execute a sendToAdmins method', function sendToAdmins() {
     this.timeout(5000);
 
-    DisputeMailer.transport(transport);
+    DisputeMailer.transport({
+      sendMail: () => Promise.resolve({ accepted: CONFIG.mailers.disputesBCCAddresses }),
+    });
 
     admin.account = {
       name: 'Test Name',
@@ -49,6 +49,5 @@ describe('DisputeMailer', () => {
 
       expect(acceptedOrRejected).to.be.equal(CONFIG.mailers.disputesBCCAddresses[0]);
     });
-    // .then(() => new Promise(ok => setTimeout(ok, 1000)));
   });
 });
