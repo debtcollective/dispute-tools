@@ -57,17 +57,3 @@ workflows:
       - test:
           requires:
             - build
-  deploy_staging:
-    jobs:
-      - build
-          filters:
-            branches:
-              only:
-                - development
-      - deploy_staging:
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - development
