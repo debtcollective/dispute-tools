@@ -5,8 +5,6 @@ const marked = require('marked');
 const _ = require('lodash');
 const { BadRequest } = require('../lib/errors');
 
-const Raven = require('raven');
-
 const authenticate = require('../services/authentication');
 const authorize = require('../services/authorization');
 
@@ -148,7 +146,6 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
             .catch(e => {
               logger.error('  ---> Failed to send smail to user (on #setSignature)');
               logger.error(e.stack);
-              Raven.captureException(e, { req });
             }),
         )
         .then(() => {

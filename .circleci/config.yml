@@ -35,16 +35,19 @@ jobs:
           at: ~/tdc-dispute-tools
       - run: sudo apt-get update
       - run: sudo apt-get install pdftk postgresql-client
+      - run: sudo gem install mailcatcher
+      - run: mailcatcher
       - run: yarn test
       - run: yarn report
 
-  deploy:
+  deploy_dev:
     <<: *defaults
     requires: build
     steps:
       - attach_workspace:
           at: ~/tdc-dispute-tools
-      - run: echo "Deployment not yet implemented"
+      - run: export ENV=dev
+      - run: bash scripts/deploy
 
 workflows:
   version: 2
@@ -52,5 +55,14 @@ workflows:
     jobs:
       - build
       - test:
+          requires:
+            - build
+  deploy_staging:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - deploy_staging:
           requires:
             - build
