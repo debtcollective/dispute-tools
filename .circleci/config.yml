@@ -34,7 +34,7 @@ jobs:
       - attach_workspace:
           at: ~/tdc-dispute-tools
       - run: sudo apt-get update
-      - run: sudo apt-get install pdftk postgresql-client
+      - run: sudo apt-get install pdftk postgresql-client ruby-dev
       - run: sudo gem install mailcatcher
       - run: mailcatcher
       - run: yarn test
@@ -60,9 +60,14 @@ workflows:
   deploy_staging:
     jobs:
       - build
-      - test:
-          requires:
-            - build
+          filters:
+            branches:
+              only:
+                - development
       - deploy_staging:
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - development
