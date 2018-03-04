@@ -4,6 +4,7 @@ const stripe = require('stripe');
 const sso = require('../services/sso');
 
 const {
+  sso: { cookieName },
   stripe: { secret: stripeSecret },
   mailers: { contactEmail: CONTACT_EMAIL },
   siteURL,
@@ -216,7 +217,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
 
     logout(req, res) {
       // Expire the cookie right away to invalidate it
-      res.cookie('dispute-tool', '', { expires: new Date() });
+      res.cookie(cookieName, '', { expires: new Date() });
       res.redirect(siteURL);
     },
   },
