@@ -10,7 +10,7 @@ module.exports = {
   appName: process.env.APP_NAME || 'TDC Dispute Tools',
   logFile: path.resolve(process.cwd(), 'log', `${environment}.log`),
   sso: {
-    endpoint: process.env.SSO_ENDPOINT || 'http://localhost:3000/session',
+    endpoint: process.env.SSO_ENDPOINT || 'http://localhost:3000/session/sso_provider',
     secret: process.env.SSO_SECRET || uuid.v4(),
     jwtSecret: process.env.JWT_SECRET || uuid.v4(),
     cookieName: process.env.SSO_COOKIE_NAME || '_dispute_tools',
