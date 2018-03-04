@@ -1,8 +1,38 @@
-# The Debt Collective
-
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/debtcollective/Lobby)
+# The Debt Collective - Dispute Tools
 
 Corporate elites control our government and by extension our lives. They cheat workers, don’t pay their taxes, and then force us into debt for the basic necessities of life: shelter, food, education, and healthcare. We have the power to change this.
+
+# Getting Started
+
+The easiest way to get started running the dispute-tools locally is through [Docker](https://www.docker.com/).
+
+1. Build the image
+
+```bash
+docker build -t tdc-dispute-tools .
+```
+
+2. Copy the env-file
+
+```bash
+cp config/config.env.env config/config.local.env
+```
+
+3. Edit the env-file as needed.
+
+    Some convenient defaults are provided, but the follow _must_ be provided
+
+    * AWS credentials for uploading generated dispute documents
+    * Discourse host sso endpoint
+    * SSO secret shared between the dispute tools service and Discourse for securing SSO
+
+4. Run the container
+
+```bash
+docker run -idt --env-file ./config/config.local.env --name tdc-dispute-tools -p 8080:8080 tdc-dispute-tools:latest
+```
+
+5. Navigate to localhost:8080 in your browser and you should see the home page!
 
 # Dependencies
 
@@ -10,8 +40,8 @@ You will need to install the following libraries/packages in order for
 the app to work correctly
 
 * [Node](https://nodejs.org/) 8.9.1
-* [Redis Server](https://redis.io/) 4.0 or greater
 * [PostgreSQL](https://www.postgresql.org/) 9.5 or greater
+* [Discourse](https://github.com/discourse/discourse) is our community hub and SSO provider (the latter of which is critical for the dispute tools)
 * PDFtk (user this [Installer](`https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-mac_osx-10.11-setup.pkg`) if you are on macOS)
 * [Yarn](https://yarnpkg.com/) 1.3 or greater
 
@@ -40,16 +70,9 @@ cp config/knexfile.sample.js knexfile.js
 3. (optional, recommended) Disable account activation
    Update `./debtcollective/config/config.js` to include `disableActivation` attribute
 
-```javascript
-development: {
-  disableActivation: true,
-  ...
-}
-```
-
 # Run server
 
-Ensure Redis and Postgres are running.
+Ensure Postgres is running.
 
 1. Run migrations `yarn db:migrate`
 2. Run seeds `yarn db:seed`
@@ -137,49 +160,3 @@ Please refer to `services/renderers/README.md` for a description of our renderin
 ## Create/update a new form definition
 
 Please refer to `lib/data/dispute-tools/README.md` for specific documentation about how the forms work.
-
-## Workers
-
-We are using [bee-queue](https://github.com/bee-queue/bee-queue) as our
-background jobs processing library. This will run as a separated app
-along with the application. The idea with this is to take out time
-consuming processes from the request/response and move them here. Things
-like emails, dispute renderers or any other process that can be done in
-the background should be done here.
-
-### Create a worker
-
-To create a worker follow, first add a new file in the `workers` directory. This file should expose a function with this interface
-
-```js
-function worker(job <Bee-queue Object>, done <Callback) {}
-```
-
-`job` is an object that has information about the job, but it has all
-the parameters in the `job.data` key.
-
-Then add this function to the `workers/worker.js` file, follow the same
-structure there, binding all the events and creating a queue.
-
-The naming convention we are using for workers and queues is the
-following one:
-
-* worker = `<workerName>Worker`
-* queue = `<workerName>`
-
-### Enqueue a job
-
-You enqueue a job like this
-
-```js
-// Define the Queue
-const createQueue = require('./workers/utils').createQueue;
-const userLocationQueue = createQueue('userLocation');
-
-// Enqueue a Job
-userLocationQueue
-    .createJob({
-        accountId: account.id,
-    })
-    .save();
-```
