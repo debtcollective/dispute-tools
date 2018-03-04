@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { AuthenticationFailure } = require('../lib/errors');
 
-const { siteURL, sso: { endpoint, secret, jwtSecret, cookieName } } = CONFIG.env();
+const { siteURL, sso: { endpoint, secret, jwtSecret, cookieName } } = CONFIG;
 const nonces = {};
 
 const generateNonce = () => ({

@@ -1,5 +1,5 @@
 /* globals CONFIG */
-const { sso: { logout } } = CONFIG.env();
+const { sso: { logout } } = CONFIG;
 
 const marked = require('marked');
 const { US_STATES } = require('../lib/data');
@@ -19,7 +19,7 @@ module.exports = function locals(req, res, next) {
   res.locals.US_STATES = US_STATES;
 
   // DonationFlow
-  res.locals.STRIPE_PUBLISHABLE_KEY = CONFIG.env().stripe.publishable;
+  res.locals.STRIPE_PUBLISHABLE_KEY = CONFIG.stripe.publishable;
 
   return next();
 };

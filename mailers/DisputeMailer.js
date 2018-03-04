@@ -2,12 +2,12 @@
 
 const DisputeMailer = Class('DisputeMailer').inherits(BaseMailer)({
   _options: {
-    from: `The Debt Collective <${CONFIG.env().mailers.senderEmail}>`,
+    from: `The Debt Collective <${CONFIG.mailers.senderEmail}>`,
     subject: 'The Debt Collective',
   },
 
   sendToAdmins(locals) {
-    const emails = CONFIG.env().mailers.disputesBCCAddresses;
+    const emails = CONFIG.mailers.disputesBCCAddresses;
 
     return this._send('sendToAdmins', emails, locals);
   },

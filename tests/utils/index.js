@@ -4,7 +4,7 @@ const sso = require('../../services/sso');
 const sa = require('superagent');
 const { expect } = require('chai');
 
-const { siteURL, sso: { endpoint } } = CONFIG.env();
+const { siteURL, sso: { endpoint } } = CONFIG;
 
 const agent = sa.agent();
 

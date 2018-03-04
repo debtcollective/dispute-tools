@@ -7,7 +7,7 @@ const {
   stripe: { secret: stripeSecret },
   mailers: { contactEmail: CONTACT_EMAIL },
   siteURL,
-} = CONFIG.env();
+} = CONFIG;
 
 const stripeClient = stripe(stripeSecret);
 

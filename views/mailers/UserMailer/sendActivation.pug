@@ -5,7 +5,7 @@ block title
   div Please verify your email.
 
 block content
-  - var activateURL = `${CONFIG.env().siteURL}${CONFIG.router.helpers.Users.activate.url(encodeURIComponent(user.activationToken))}`
+  - var activateURL = `${CONFIG.siteURL}${CONFIG.router.helpers.Users.activate.url(encodeURIComponent(user.activationToken))}`
   div(style="font-size: 16px; line-height: 142%;")
     div(style="font-family: monospace; color: #000000;")
       div Hi #{user.fullname},

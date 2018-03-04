@@ -4,10 +4,6 @@ const middlewares = [
     path: 'middlewares/handleAuthentication.js',
   },
   {
-    name: 'Sentry',
-    path: 'middlewares/sentry.js',
-  },
-  {
     name: 'CORS',
     path: 'middlewares/cors.js',
   },

@@ -19,7 +19,8 @@ module.exports = {
   mailers: {
     contactEmail: process.env.EMAIL_CONTACT || 'contact@example.com',
     senderEmail: process.env.EMAIL_NO_REPLY || 'no-reply@example.com',
-    disputesBCCAddresses: process.env.EMAIL_DISPUTES_BCC.split(',') || ['disputes@example.com'],
+    disputesBCCAddresses: (process.env.EMAIL_DISPUTES_BCC &&
+      process.env.EMAIL_DISPUTES_BCC.split(',')) || ['disputes@example.com'],
   },
   nodemailer: {
     host: process.env.EMAIL_HOST || 'localhost',

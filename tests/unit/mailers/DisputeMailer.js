@@ -4,7 +4,7 @@ const expect = require('chai').expect;
 const DisputeMailer = require('../../../mailers/DisputeMailer');
 const { createUser } = require('../../utils');
 
-const { mailers: { transport } } = CONFIG.env();
+const { mailers: { transport } } = CONFIG;
 
 describe('DisputeMailer', () => {
   let admin;
@@ -47,7 +47,7 @@ describe('DisputeMailer', () => {
     }).then(response => {
       const acceptedOrRejected = response.accepted[0] || response.rejected[0];
 
-      expect(acceptedOrRejected).to.be.equal(CONFIG.env().mailers.disputesBCCAddresses[0]);
+      expect(acceptedOrRejected).to.be.equal(CONFIG.mailers.disputesBCCAddresses[0]);
     });
     // .then(() => new Promise(ok => setTimeout(ok, 1000)));
   });

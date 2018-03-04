@@ -1,5 +1,5 @@
 /* globals CONFIG */
-const { sso: { cookieName } } = CONFIG.env();
+const { sso: { cookieName } } = CONFIG;
 
 const sso = require('../services/sso');
 
