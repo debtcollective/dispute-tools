@@ -1,5 +1,4 @@
 /* global Krypton, Class, CONFIG, AWS, S3Uploader */
-// const gm = require('gm').subClass({ imageMagick: process.env.GM === 'true' || false });
 
 const { assignDefaultConfig } = require('../lib/AWS');
 
@@ -11,15 +10,7 @@ const Attachment = Class('Attachment')
     foreignKey: ['required'],
     type: ['required'],
   },
-  attributes: [
-    'id',
-    'type',
-    'foreignKey',
-    'filePath',
-    'fileMeta',
-    'createdAt',
-    'updatedAt',
-  ],
+  attributes: ['id', 'type', 'foreignKey', 'filePath', 'fileMeta', 'createdAt', 'updatedAt'],
   attachmentStorage: new Krypton.AttachmentStorage.S3(
     assignDefaultConfig({
       acceptedMimeTypes: [/image/, /application/],

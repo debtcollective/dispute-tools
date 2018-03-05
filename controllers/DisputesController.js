@@ -1,20 +1,24 @@
 /* globals Dispute, RestfulController, Class, DisputeTool, CONFIG, DisputeStatus,
     DisputeMailer, UserMailer, NotFoundError, DisputeRenderer, Dispute, logger */
-const path = require('path');
-
 const Promise = require('bluebird');
 const marked = require('marked');
 const _ = require('lodash');
+const { BadRequest } = require('../lib/errors');
 
-const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
-const Raven = require('raven');
+const authenticate = require('../services/authentication');
+const authorize = require('../services/authorization');
 
-const DisputesController = Class('DisputesController').inherits(
-  RestfulController,
-)({
+const DisputesController = Class('DisputesController').inherits(RestfulController)({
   beforeActions: [
     {
-      before: '_loadDispute',
+      before: [authenticate],
+      actions: ['*'],
+    },
+    {
+      before: [
+        '_loadDispute',
+        authorize((req, res) => req.user.id === res.locals.dispute.userId || req.user.admin),
+      ],
       actions: [
         'show',
         'edit',
@@ -28,68 +32,30 @@ const DisputesController = Class('DisputesController').inherits(
         'destroy',
       ],
     },
-    {
-      before(req, res, next) {
-        // Load the dispute tool record to use its #createDispute method
-        if (!req.body.disputeToolId) {
-          return next(new Error('Invalid parameters'));
-        }
-
-        return DisputeTool.first({ id: req.body.disputeToolId })
-          .then(disputeTool => {
-            res.locals.disputeTool = disputeTool;
-
-            return next();
-          })
-          .catch(next);
-      },
-      actions: ['create'],
-    },
-    {
-      before(req, res, next) {
-        RESTfulAPI.createMiddleware({
-          queryBuilder: Dispute.query()
-            .where('deactivated', false)
-            .include('[statuses, attachments, disputeTool]'),
-          filters: {
-            allowedFields: [],
-          },
-        })(req, res, next);
-      },
-      actions: ['index'],
-    },
   ],
   prototype: {
-    _loadDispute(req, res, next) {
-      Dispute.query()
-        .where({ id: req.params.id })
-        .include('[user.account, statuses, attachments, disputeTool]')
-        .then(([dispute]) => {
-          if (!dispute) {
-            next(new NotFoundError());
-          } else {
-            res.locals.dispute = dispute;
-            req.dispute = dispute;
+    async _loadDispute(req, res, next) {
+      try {
+        const dispute = await Dispute.findById(
+          req.params.id,
+          '[user, statuses, attachments, disputeTool]',
+        );
 
-            // sort Dispute Status DESC
-            dispute.statuses = dispute.statuses.sort(
-              (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-            );
+        if (!dispute) throw new NotFoundError();
 
-            const optionData =
-              dispute.disputeTool.data.options[dispute.data.option];
-            if (optionData && optionData.more) {
-              optionData.more = marked(optionData.more);
-            }
+        dispute.statuses = _.sortBy(dispute.statuses, 'createdAt');
 
-            next();
-          }
-        })
-        .catch(next);
-    },
-    index(req, res) {
-      res.locals.disputes = res.locals.results;
-      res.render('disputes/index');
+        // Used in template
+        const optionData = dispute.disputeTool.data.options[dispute.data.option];
+        if (optionData && optionData.more) {
+          optionData.more = marked(optionData.more);
+        }
+
+        req.dispute = res.locals.dispute = dispute;
+        next();
+      } catch (e) {
+        next(e);
+      }
     },
 
     show(req, res) {
@@ -108,26 +74,22 @@ const DisputesController = Class('DisputesController').inherits(
       }
     },
 
-    edit(req, res) {
-      res.render('disputes/edit');
-    },
+    async create(req, res, next) {
+      try {
+        if (!(req.body.disputeToolId && req.body.option)) {
+          throw new BadRequest();
+        }
 
-    new(req, res) {
-      res.send(501, 'Not Implemented');
-    },
-
-    create(req, res, next) {
-      const disputeTool = res.locals.disputeTool;
-
-      disputeTool
-        .createDispute({
-          option: req.body.option,
+        const dispute = await Dispute.createFromTool({
           user: req.user,
-        })
-        .then(disputeId =>
-          res.redirect(CONFIG.router.helpers.Disputes.show.url(disputeId)),
-        )
-        .catch(next);
+          disputeToolId: req.body.disputeToolId,
+          option: req.body.option,
+        });
+
+        res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+      } catch (e) {
+        next(e);
+      }
     },
 
     update(req, res, next) {
@@ -154,9 +116,7 @@ const DisputesController = Class('DisputesController').inherits(
           }),
         )
         .then(() => dispute.save())
-        .then(() =>
-          res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)),
-        )
+        .then(() => res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)))
         .catch(next);
     },
 
@@ -184,11 +144,8 @@ const DisputesController = Class('DisputesController').inherits(
               }),
             )
             .catch(e => {
-              logger.error(
-                '  ---> Failed to send smail to user (on #setSignature)',
-              );
+              logger.error('  ---> Failed to send smail to user (on #setSignature)');
               logger.error(e.stack);
-              Raven.captureException(e, { req });
             }),
         )
         .then(() => {
@@ -207,7 +164,7 @@ const DisputesController = Class('DisputesController').inherits(
       const commands = ['setForm', 'setDisputeProcess', 'setConfirmFollowUp'];
 
       if (!commands.includes(req.body.command)) {
-        return next(new Error('Invalid command'));
+        return next(new BadRequest());
       }
 
       try {
@@ -216,9 +173,7 @@ const DisputesController = Class('DisputesController').inherits(
         return res.format({
           html() {
             req.flash('error', `${e.toString()} (on #${req.body.command})`);
-            return res.redirect(
-              CONFIG.router.helpers.Disputes.show.url(dispute.id),
-            );
+            return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
           },
           json() {
             return res.json({ error: e.toString() });
@@ -231,9 +186,7 @@ const DisputesController = Class('DisputesController').inherits(
         .then(() =>
           res.format({
             html() {
-              return res.redirect(
-                CONFIG.router.helpers.Disputes.show.url(dispute.id),
-              );
+              return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
             },
             json() {
               return res.json({ status: 'confirmed' });
@@ -243,30 +196,25 @@ const DisputesController = Class('DisputesController').inherits(
         .catch(next);
     },
 
-    setSignature(req, res) {
+    setSignature(req, res, next) {
       const dispute = res.locals.dispute;
+
+      if (!req.body.signature) return next(new BadRequest());
 
       dispute
         .setSignature(req.body.signature)
-        .then(() =>
-          res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)),
-        )
+        .then(() => res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)))
         .catch(e => {
           req.flash('error', `${e.toString()} (on #setSignature)`);
-          return res.redirect(
-            CONFIG.router.helpers.Disputes.show.url(dispute.id),
-          );
+          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
         });
     },
 
-    addAttachment(req, res) {
+    addAttachment(req, res, next) {
       const dispute = res.locals.dispute;
 
-      if (!req.files.attachment) {
-        req.flash('error', 'There is no file to process');
-        return res.redirect(
-          CONFIG.router.helpers.Disputes.show.url(dispute.id),
-        );
+      if (!req.files || !req.files.attachment) {
+        return next(new BadRequest());
       }
 
       return Promise.each(req.files.attachment, attachment =>
@@ -274,16 +222,11 @@ const DisputesController = Class('DisputesController').inherits(
       )
         .then(() => dispute.save())
         .catch(() => {
-          req.flash(
-            'error',
-            'A problem occurred trying to process the attachments',
-          );
+          req.flash('error', 'A problem occurred trying to process the attachments');
         })
         .finally(() => {
           req.flash('success', 'Attachment successfully added!');
-          return res.redirect(
-            CONFIG.router.helpers.Disputes.show.url(dispute.id),
-          );
+          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
         });
     },
 
@@ -292,24 +235,18 @@ const DisputesController = Class('DisputesController').inherits(
 
       if (!req.params.attachment_id) {
         req.flash('error', 'Missing attachment id');
-        return res.redirect(
-          CONFIG.router.helpers.Disputes.show.url(dispute.id),
-        );
+        return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
       }
 
       return dispute
         .removeAttachment(req.params.attachment_id)
         .then(() => {
           req.flash('success', 'Attachment removed');
-          return res.redirect(
-            CONFIG.router.helpers.Disputes.show.url(dispute.id),
-          );
+          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
         })
         .catch(err => {
           req.flash('error', err.message);
-          return res.redirect(
-            CONFIG.router.helpers.Disputes.show.url(dispute.id),
-          );
+          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
         });
     },
 
@@ -343,14 +280,9 @@ const DisputesController = Class('DisputesController').inherits(
           return true;
         }
 
-        const currentStatus = _.sortBy(dispute.statuses, 'updatedAt').slice(
-          -1,
-        )[0];
+        const currentStatus = _.sortBy(dispute.statuses, 'updatedAt').slice(-1)[0];
 
-        return (
-          currentStatus.status !== 'Completed' ||
-          currentStatus.updatedAt > renderer.updatedAt
-        );
+        return currentStatus.status !== 'Completed' || currentStatus.updatedAt > renderer.updatedAt;
       };
 
       DisputeRenderer.query()

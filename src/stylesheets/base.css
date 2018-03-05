@@ -35,7 +35,6 @@
 @import './components/Button';
 @import './components/Popover';
 @import './components/ResponsiveMenu';
-@import './components/users/NewForm';
 @import 'flatpickr/dist/flatpickr';
 
 :root {

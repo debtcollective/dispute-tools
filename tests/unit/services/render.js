@@ -72,7 +72,10 @@ describe('render', () => {
   describe('pug', () => {
     describe('general debt dispute', () => {
       it('should render the pdf', basicRenderTest(generalDebtDispute));
-      it('should not have undefined values after normalization', testNormalized(generalDebtDispute));
+      it(
+        'should not have undefined values after normalization',
+        testNormalized(generalDebtDispute),
+      );
     });
 
     describe('private student debt dispute', () => {
@@ -89,13 +92,24 @@ describe('render', () => {
 
     describe('credit report dispute letter', () => {
       it('should render the pdf', basicRenderTest(creditReportDispute, [2]));
-      it('should not have undefined values after normalization', testNormalized(creditReportDispute));
+      it(
+        'should not have undefined values after normalization',
+        testNormalized(creditReportDispute),
+      );
     });
   });
 
   describe('pdf', () => {
     const personalInfoKeys = ['city', 'name', 'state', 'address1', 'zip-code'];
-    const employmentInfoKeys = ['er', 'erCity', 'erPhone', 'erState', 'mentDate', 'erZipCode', 'erAddress1'];
+    const employmentInfoKeys = [
+      'er',
+      'erCity',
+      'erPhone',
+      'erState',
+      'mentDate',
+      'erZipCode',
+      'erAddress1',
+    ];
     const schoolInfoKeys = ['Name', '-city', '-state', '-address', '-zip-code'];
     // prettier-ignore
     const supplementalKeys = ['program-of-study', 'option5-text', 'tuition-payment', 'entrance-exam-supporter-zip-code',
@@ -110,7 +124,10 @@ describe('render', () => {
       keys.forEach(key => {
         const pkey = prefix + key;
         if (formData[pkey]) {
-          expect(fdf.includes(formData[pkey]), `generated pdf does not contain ${pkey} (${formData[pkey]})`).true;
+          expect(
+            fdf.includes(formData[pkey]),
+            `generated pdf does not contain ${pkey} (${formData[pkey]})`,
+          ).true;
         }
       });
     };
@@ -145,7 +162,10 @@ describe('render', () => {
           docs = await basicRenderTest(taxOffsetReviews.A, [1])();
         });
 
-        it('should not have undefined values after normalization', testNormalized(taxOffsetReviews.A));
+        it(
+          'should not have undefined values after normalization',
+          testNormalized(taxOffsetReviews.A),
+        );
 
         it('should have the correct data in the fdfs', () => {
           const [[fdf]] = docs;
@@ -159,7 +179,10 @@ describe('render', () => {
           docs = await basicRenderTest(taxOffsetReviews.B, [1])();
         });
 
-        it('should not have undefined values after normalization', testNormalized(taxOffsetReviews.B));
+        it(
+          'should not have undefined values after normalization',
+          testNormalized(taxOffsetReviews.B),
+        );
 
         it('should have the correct data in the fdfs', () => {
           const [[fdf]] = docs;
@@ -177,14 +200,21 @@ describe('render', () => {
           let federalFormFdf;
           describe('render', () => {
             it('works', async () => {
-              [[taxOffsetReviewFdf], [federalFormFdf]] = await basicRenderTest(CasStudent, [1, 1])();
+              [[taxOffsetReviewFdf], [federalFormFdf]] = await basicRenderTest(CasStudent, [
+                1,
+                1,
+              ])();
             });
             it('should not have undefined values after normalization', testNormalized(CasStudent));
           });
 
           describe('result contents', () => {
             it('tax offset review form', () => {
-              expectContains(taxOffsetReviewFdf, CasStudent, [...personalInfoKeys, 'schoolName', 'ssn']);
+              expectContains(taxOffsetReviewFdf, CasStudent, [
+                ...personalInfoKeys,
+                'schoolName',
+                'ssn',
+              ]);
             });
             it('falsecert ability to benefit form', () => {
               expectCorrectLoanDischargeApplication(federalFormFdf, CasStudent, 'atb-');
@@ -197,14 +227,21 @@ describe('render', () => {
           let abilityToBenefitFormFdf;
           describe('render', () => {
             it('works', async () => {
-              [[taxOffsetReviewFdf], [abilityToBenefitFormFdf]] = await basicRenderTest(CasParent, [1, 1])();
+              [[taxOffsetReviewFdf], [abilityToBenefitFormFdf]] = await basicRenderTest(CasParent, [
+                1,
+                1,
+              ])();
             });
             it('should not have undefined values after normalization', testNormalized(CasParent));
           });
 
           describe('result contents', () => {
             it('tax offset review form', () => {
-              expectContains(taxOffsetReviewFdf, CasParent, [...personalInfoKeys, 'schoolName', 'ssn']);
+              expectContains(taxOffsetReviewFdf, CasParent, [
+                ...personalInfoKeys,
+                'schoolName',
+                'ssn',
+              ]);
             });
             it('falsecert ability to benefit form', () => {
               expectContains(abilityToBenefitFormFdf, CasParent, ['atb-student-name']);
@@ -218,14 +255,24 @@ describe('render', () => {
           let abilityToBenefitFormFdf;
           describe('render', () => {
             it('works', async () => {
-              [[taxOffsetReviewFdf], [abilityToBenefitFormFdf]] = await basicRenderTest(CwithSupporter, [1, 1])();
+              [[taxOffsetReviewFdf], [abilityToBenefitFormFdf]] = await basicRenderTest(
+                CwithSupporter,
+                [1, 1],
+              )();
             });
-            it('should not have undefined values after normalization', testNormalized(CwithSupporter));
+            it(
+              'should not have undefined values after normalization',
+              testNormalized(CwithSupporter),
+            );
           });
 
           describe('result contents', () => {
             it('tax offset review form', () => {
-              expectContains(taxOffsetReviewFdf, CwithSupporter, [...personalInfoKeys, 'schoolName', 'ssn']);
+              expectContains(taxOffsetReviewFdf, CwithSupporter, [
+                ...personalInfoKeys,
+                'schoolName',
+                'ssn',
+              ]);
             });
             it('falsecert ability to benefit form', () => {
               expectContains(abilityToBenefitFormFdf, CwithSupporter, [
@@ -235,7 +282,11 @@ describe('render', () => {
                 'atb-entrance-exam-supporter-phone',
                 'atb-entrance-exam-supporter-zip-code',
               ]);
-              expectCorrectLoanDischargeApplication(abilityToBenefitFormFdf, CwithSupporter, 'atb-');
+              expectCorrectLoanDischargeApplication(
+                abilityToBenefitFormFdf,
+                CwithSupporter,
+                'atb-',
+              );
             });
           });
         });
@@ -248,18 +299,29 @@ describe('render', () => {
           let falsecertDisqualifyingFdf;
           describe('render', () => {
             it('works', async () => {
-              [[taxOffsetReviewFdf], [falsecertDisqualifyingFdf]] = await basicRenderTest(DasParent, [1, 1])();
+              [[taxOffsetReviewFdf], [falsecertDisqualifyingFdf]] = await basicRenderTest(
+                DasParent,
+                [1, 1],
+              )();
             });
             it('should not have undefined values after normalization', testNormalized(DasParent));
           });
 
           describe('result contents', () => {
             it('tax offset review form', () => {
-              expectContains(taxOffsetReviewFdf, DasParent, [...personalInfoKeys, 'ssn', 'schoolName', 'phone']);
+              expectContains(taxOffsetReviewFdf, DasParent, [
+                ...personalInfoKeys,
+                'ssn',
+                'schoolName',
+                'phone',
+              ]);
               expectObjectionNum(taxOffsetReviewFdf, '11');
             });
             it('falsecert disqualifying form', () => {
-              expectContains(falsecertDisqualifyingFdf, DasParent, ['atbd-student-name', 'atbd-option5-text']);
+              expectContains(falsecertDisqualifyingFdf, DasParent, [
+                'atbd-student-name',
+                'atbd-option5-text',
+              ]);
               expectCorrectLoanDischargeApplication(falsecertDisqualifyingFdf, DasParent, 'atbd-');
             });
           });
@@ -270,14 +332,22 @@ describe('render', () => {
           let falsecertDisqualifyingFdf;
           describe('render', () => {
             it('works', async () => {
-              [[taxOffsetReviewFdf], [falsecertDisqualifyingFdf]] = await basicRenderTest(DasStudent, [1, 1])();
+              [[taxOffsetReviewFdf], [falsecertDisqualifyingFdf]] = await basicRenderTest(
+                DasStudent,
+                [1, 1],
+              )();
             });
             it('should not have undefined values after normalization', testNormalized(DasStudent));
           });
 
           describe('result contents', () => {
             it('tax offset review form', () => {
-              expectContains(taxOffsetReviewFdf, DasStudent, [...personalInfoKeys, 'ssn', 'schoolName', 'phone']);
+              expectContains(taxOffsetReviewFdf, DasStudent, [
+                ...personalInfoKeys,
+                'ssn',
+                'schoolName',
+                'phone',
+              ]);
               // INPERSON disputeProcess
               expectObjectionNum(taxOffsetReviewFdf, '11');
             });
@@ -296,18 +366,31 @@ describe('render', () => {
           let badSignatureFdf;
           describe('render', () => {
             it('works', async () => {
-              [[taxOffsetReviewFdf], [badSignatureFdf]] = await basicRenderTest(EasStudent, [1, 1])();
+              [[taxOffsetReviewFdf], [badSignatureFdf]] = await basicRenderTest(EasStudent, [
+                1,
+                1,
+              ])();
             });
             it('should not have undefined values after normalization', testNormalized(EasStudent));
           });
 
           describe('result contents', () => {
             it('tax offset review form', () => {
-              expectContains(taxOffsetReviewFdf, EasStudent, [...personalInfoKeys, 'ssn', 'schoolName', 'phone']);
+              expectContains(taxOffsetReviewFdf, EasStudent, [
+                ...personalInfoKeys,
+                'ssn',
+                'schoolName',
+                'phone',
+              ]);
               expectObjectionNum(taxOffsetReviewFdf, '12');
             });
             it('falsecert disqualifying form', () => {
-              expectContains(badSignatureFdf, EasStudent, ['fc-explain', 'schoolName', 'school-city', 'school-state']);
+              expectContains(badSignatureFdf, EasStudent, [
+                'fc-explain',
+                'schoolName',
+                'school-city',
+                'school-state',
+              ]);
               // a - c
               expectCheckboxes(badSignatureFdf, 'Documents', [0, 1, 2], [3, 4, 5, 6]);
               expectCorrectLoanDischargeApplication(badSignatureFdf, EasStudent, 'fc-');
@@ -319,18 +402,31 @@ describe('render', () => {
           let badSignatureFdf;
           describe('render', () => {
             it('works', async () => {
-              [[taxOffsetReviewFdf], [badSignatureFdf]] = await basicRenderTest(EasParent, [1, 1])();
+              [[taxOffsetReviewFdf], [badSignatureFdf]] = await basicRenderTest(EasParent, [
+                1,
+                1,
+              ])();
             });
             it('should not have undefined values after normalization', testNormalized(EasParent));
           });
 
           describe('result contents', () => {
             it('tax offset review form', () => {
-              expectContains(taxOffsetReviewFdf, EasParent, [...personalInfoKeys, 'ssn', 'schoolName', 'phone']);
+              expectContains(taxOffsetReviewFdf, EasParent, [
+                ...personalInfoKeys,
+                'ssn',
+                'schoolName',
+                'phone',
+              ]);
               expectObjectionNum(taxOffsetReviewFdf, '12');
             });
             it('falsecert disqualifying form', () => {
-              expectContains(badSignatureFdf, EasParent, ['fc-explain', 'schoolName', 'school-city', 'school-state']);
+              expectContains(badSignatureFdf, EasParent, [
+                'fc-explain',
+                'schoolName',
+                'school-city',
+                'school-state',
+              ]);
               // d - g
               expectCheckboxes(badSignatureFdf, 'Documents', [3, 4, 5, 6], [0, 1, 2]);
               expectCorrectLoanDischargeApplication(badSignatureFdf, EasParent, 'fc-');
@@ -359,17 +455,23 @@ describe('render', () => {
 
         // because dispute option is INPERSON
         expectObjectionNum(fdf, '10');
-        expect(fdf.includes('X'), `disputeProcessCity is not selected`).true;
+        expect(fdf.includes('X'), 'disputeProcessCity is not selected').true;
       });
 
       it('c: should render the pdf', async () => {
-        const [[wageGarnishentFdf]] = await basicRenderTest(wageGarnishmentDisputes.CasStudent, [1, 1])();
+        const [[wageGarnishentFdf]] = await basicRenderTest(wageGarnishmentDisputes.CasStudent, [
+          1,
+          1,
+        ])();
 
         expectCorrectForm(wageGarnishentFdf, wageGarnishmentDisputes.CasStudent);
       });
 
       it('d: should render the pdf', async () => {
-        const [[wageGarnishentFdf]] = await basicRenderTest(wageGarnishmentDisputes.DasStudent, [1, 1])();
+        const [[wageGarnishentFdf]] = await basicRenderTest(wageGarnishmentDisputes.DasStudent, [
+          1,
+          1,
+        ])();
 
         expectCorrectForm(wageGarnishentFdf, wageGarnishmentDisputes.DasStudent);
         expectContains(wageGarnishentFdf, wageGarnishmentDisputes.DasStudent, ['schoolName']);
@@ -380,14 +482,17 @@ describe('render', () => {
       });
 
       it('e: should render the pdf', async () => {
-        const [[wageGarnishentFdf]] = await basicRenderTest(wageGarnishmentDisputes.EasParent, [1, 1])();
+        const [[wageGarnishentFdf]] = await basicRenderTest(wageGarnishmentDisputes.EasParent, [
+          1,
+          1,
+        ])();
 
         expectCorrectForm(wageGarnishentFdf, wageGarnishmentDisputes.EasParent);
         expectContains(wageGarnishentFdf, wageGarnishmentDisputes.EasParent, ['schoolName']);
 
         // because dispute option is INPERSON
         expectObjectionNum(wageGarnishentFdf, '14');
-        expect(wageGarnishentFdf.includes('X'), `disputeProcessCity is not selected`).true;
+        expect(wageGarnishentFdf.includes('X'), 'disputeProcessCity is not selected').true;
       });
     });
   });

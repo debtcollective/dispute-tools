@@ -1,0 +1,57 @@
+version: 2
+
+defaults: &defaults
+  working_directory: ~/tdc-dispute-tools
+  docker:
+    - image: circleci/node:8.9.1
+    - image: circleci/postgres:9.6.2-alpine
+
+jobs:
+  build:
+    <<: *defaults
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "yarn.lock" }}
+          - v1-dependencies-
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+      - run: bash scripts/copy_config
+      - run: yarn build
+      - persist_to_workspace:
+          root: ~/tdc-dispute-tools
+          paths:
+            - ./*
+
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/tdc-dispute-tools
+      - run: sudo apt-get update
+      - run: sudo apt-get install pdftk postgresql-client
+      - run: yarn test
+      - run: yarn report
+
+  deploy_dev:
+    <<: *defaults
+    requires: build
+    steps:
+      - attach_workspace:
+          at: ~/tdc-dispute-tools
+      - run: export ENV=dev
+      - run: bash scripts/deploy
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build

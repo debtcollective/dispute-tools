@@ -2,11 +2,6 @@
   var _menuItemsData = {
     always: [
       {
-        text: 'Collectives',
-        title: 'Browse The Collectives',
-        url: routeMappings.Collectives.url(),
-      },
-      {
         text: 'Dispute Your Debt',
         title: 'Browse Our Tools and Services',
         url: routeMappings.DisputeTools.url(),
@@ -18,57 +13,28 @@
         url: '#',
       },
     ],
-    loggedOut: [
-      {
-        text: 'Join Us',
-        title: 'Join Us',
-        url: routeMappings.signup.url(),
-        className: 'js-signup-link -primary',
-        parentClassName: 'px2 pl4'
-      },
-      {
-        text: 'Log In',
-        title: 'Log In',
-        url: routeMappings.login.url(),
-        className: 'js-login-link',
-        parentClassName: 'pl2'
-      },
-    ],
-    loggedIn: [],
+    loggedOut: [{
+      text: 'Log In',
+      title: 'Log In',
+      className: 'login-link',
+      url: '#',
+      onclick: `window.login('${routeMappings.login.url()}')`,
+    }],
+    loggedIn: [{
+      text: 'Log out',
+      title: 'Log out',
+      className: 'logout-link',
+      url: routeMappings.logout.url(),
+    }],
     admin: [],
-  }
-
-  if (currentUser) {
-    _menuItemsData.loggedIn = _menuItemsData.loggedIn.concat([
-      {
-        text: 'Profile and tools',
-        url: routeMappings.Users.show.url(currentUser.id),
-      },
-      {
-        text: 'Edit profile',
-        url: routeMappings.Users.edit.url(currentUser.id),
-      }
-    ]);
   }
 
   if (currentUser && currentUser.role === 'Admin') {
     _menuItemsData.admin = _menuItemsData.admin.concat([
       {
-        text: 'Users',
-        url: routeMappings.Admin.Users.url(),
-      },
-      {
         text: 'Disputes',
         url: routeMappings.Admin.Disputes.url(),
       },
-      {
-        text: 'Collectives',
-        url: routeMappings.Admin.Collectives.url(),
-      },
-      {
-        text: 'Campaigns',
-        url: routeMappings.Admin.Collectives.Campaigns.url(),
-      }
     ]);
   }
 
@@ -81,15 +47,9 @@ mixin _linkMixin(item, responsive = false)
   if item.url === '/dispute-tools' && currentURL.startsWith('/disputes')
     - _className += ' active'
   - _className = _className + (item.className ? ' ' + item.className : '')
-  a(href!=item.url, class=_className, title=item.title || item.text)&attributes(attributes)
+  a(href!=item.url, class=_className, title=item.title || item.text, onclick=item.onclick || '')&attributes(attributes)
     block
     | #{item.text}
-
-mixin _logoutMixin
-  form(method='post' action=routeMappings.logout.url())
-    input(type='hidden' name='_csrf' value=csrfToken)
-    input(type='hidden' name='_method' value='DELETE')
-    button(type='submit')&attributes(attributes) Logout
 
 mixin _responsiveMenuMixin
   ul.list-reset.pt1.center
@@ -97,15 +57,12 @@ mixin _responsiveMenuMixin
       li: +_linkMixin(item, true)(class='px2 py1')
 
     unless currentUser
-      each item in _menuItemsData.loggedOut
-        li: +_linkMixin(item, true)(class='px2 py1')
     else
       each item in _menuItemsData.loggedIn
         li: +_linkMixin(item, true)(class='px2 py1')
       each item in _menuItemsData.admin
         li: +_linkMixin(item, true)(class='px2 py1')
           svg.mr1.align-middle(width='18' height='11'): use(xlink:href='#svg-key')
-      li: +_logoutMixin(class='ResponsiveMenu__link center btn-clear px2 py1 left-align -fw -fw-700')
 
 mixin _defaultMenuMixin
   ul.list-reset.-fh.sm-hide.xs-hide
@@ -126,10 +83,10 @@ mixin _defaultMenuMixin
               span.Dropdown__label.inline-block.align-middle.-ell
                 if _menuItemsData.admin.length
                   svg.mr1(width='18' height='11'): use(xlink:href='#svg-key')
-                | #{currentUser.account.fullname}
+                | #{currentUser.email}
             ul.Dropdown__body(aria-hidden='true' aria-label='submenu')
               each item in _menuItemsData.loggedIn
-                li: a.Header__dropdown-item(href=item.url role='button' tabindex='0')= item.text
+                li: a.Header__dropdown-item(href=item.url role='button' tabindex='0' onclick=item.onclick)= item.text
               each item, index in _menuItemsData.admin
                 if index === 0
                   li.-separator
@@ -137,7 +94,6 @@ mixin _defaultMenuMixin
                   svg.mr1(width='18' height='11'): use(xlink:href='#svg-key')
                   | #{item.text}
               li.-separator
-              li: +_logoutMixin(class='Header__dropdown-item')
 
   ul.list-reset.-fh.md-hide.lg-hide
     li: button.js-hamburger-menu.-white.-k-btn.btn-link(style='padding: 13px 0 13px 16px;')

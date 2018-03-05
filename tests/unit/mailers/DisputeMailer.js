@@ -1,36 +1,22 @@
-/* globals UserMailer, BaseMailer, Class, CONFIG, User, Account */
+/* globals UserMailer, Class, CONFIG, User, Account */
 
 const expect = require('chai').expect;
-const path = require('path');
-
-const DisputeMailer = require(path.join(
-  process.cwd(),
-  'mailers',
-  'DisputeMailer',
-));
-const truncate = require(path.join(
-  process.cwd(),
-  'tests',
-  'utils',
-  'truncate',
-));
-const { createUser } = require('../../utils/helpers.js');
+const DisputeMailer = require('../../../mailers/DisputeMailer');
+const { createUser } = require('../../utils');
 
 describe('DisputeMailer', () => {
   let admin;
 
-  before(() =>
-    createUser({ role: 'Admin' }).then(res => {
-      admin = res;
-    }),
-  );
+  before(async () => {
+    admin = await createUser({ admin: true });
+  });
 
-  after(() => truncate([User, Account]));
-
-  it('Should execute a sendToAdmins method', function() {
+  it('Should execute a sendToAdmins method', function sendToAdmins() {
     this.timeout(5000);
 
-    DisputeMailer.transport(CONFIG.env().mailers.transport);
+    DisputeMailer.transport({
+      sendMail: () => Promise.resolve({ accepted: CONFIG.mailers.disputesBCCAddresses }),
+    });
 
     admin.account = {
       name: 'Test Name',
@@ -58,14 +44,10 @@ describe('DisputeMailer', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
       }, // mock the dispute status data here,
-    })
-      .then(response => {
-        const acceptedOrRejected = response.accepted[0] || response.rejected[0];
+    }).then(response => {
+      const acceptedOrRejected = response.accepted[0] || response.rejected[0];
 
-        expect(acceptedOrRejected).to.be.equal(
-          CONFIG.env().mailers.disputesBCCAddresses[0],
-        );
-      })
-      .then(() => new Promise(ok => setTimeout(ok, 1000)));
+      expect(acceptedOrRejected).to.be.equal(CONFIG.mailers.disputesBCCAddresses[0]);
+    });
   });
 });

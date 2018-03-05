@@ -42,9 +42,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
     this.userNameElement = this.element.querySelector('[data-user-name]');
     this.disputeNameElement = this.element.querySelector('[data-dispute-name]');
     this.userAvatarElement = this.element.querySelector('[data-user-avatar]');
-    this.statusesWrapper = this.element.querySelector(
-      '[data-statuses-wrapper]',
-    );
+    this.statusesWrapper = this.element.querySelector('[data-statuses-wrapper]');
 
     this._bindEvents();
     this._initCheckit();
@@ -61,9 +59,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
 
   _bindEvents() {
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
-    this.element
-      .querySelector('form')
-      .addEventListener('submit', this._handleFormSubmit);
+    this.element.querySelector('form').addEventListener('submit', this._handleFormSubmit);
   }
 
   _handleFormSubmit(ev) {
@@ -135,9 +131,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
     this._clearFieldErrors();
 
     const lastStatus = dispute.statuses[0].status;
-    const selectedStatus = this.statusOptions.filter(
-      option => option.value === lastStatus,
-    );
+    const selectedStatus = this.statusOptions.filter(option => option.value === lastStatus);
     const fragmentStatus = document.createDocumentFragment();
     let disputeToolName = dispute.disputeTool.name;
 
@@ -149,13 +143,11 @@ export default class AdminDisputesAddStatusForm extends Widget {
       disputeToolName += ` / ${dispute.data.option}`;
     }
 
-    this.formElement.action = this.constructor.updateUrlString.replace(
-      '${id}',
-      dispute.id,
-    );
-    this.userNameElement.textContent = dispute.user.account.fullname;
+    this.formElement.action = this.constructor.updateUrlString.replace('${id}', dispute.id);
+    this.userNameElement.textContent = dispute.user.fullname;
     this.disputeNameElement.textContent = disputeToolName;
-    this.userAvatarElement.src = dispute.user.account.imageURL;
+    // TODO Use Discourse provided profile image url
+    // this.userAvatarElement.src = dispute.user.imageURL;
 
     while (this.statusesWrapper.firstChild) {
       this.statusesWrapper.removeChild(this.statusesWrapper.firstChild);

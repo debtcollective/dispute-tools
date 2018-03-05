@@ -34,10 +34,7 @@ class ViewDisputeToolsShow extends NodeSupport {
           }),
         );
 
-        this.handlers[option] = this._aboutClickHandler.bind(
-          this,
-          this[`common-cases-${option}`],
-        );
+        this.handlers[option] = this._aboutClickHandler.bind(this, this[`common-cases-${option}`]);
         document
           .getElementById(`common-cases-toggler-${option}`)
           .addEventListener('click', this.handlers[option]);

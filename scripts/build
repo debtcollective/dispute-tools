@@ -4,4 +4,4 @@ export NODE_ENV=production
 npx rimraf public/build
 
 yarn svg
-webpack --progress -p --config webpack.config.js
+webpack -p --config webpack.config.js

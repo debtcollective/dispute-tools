@@ -8,24 +8,23 @@ export default class StatusItem extends Widget {
   template(data) {
     const userUpdate = data.status.status === 'User Update';
     const date = new Date(data.status.createdAt).toDateString();
-    const statusClass = `-status-${data.status.status
-      .toLowerCase()
-      .replace(/\W/g, '-')}`;
+    const statusClass = `-status-${data.status.status.toLowerCase().replace(/\W/g, '-')}`;
 
     let name = 'The Debt Collective';
     let nameClass = '-primary';
-    let avatar = this.constructor.TDCAvatar;
+    // TODO Use Discourse provided profile image
+    // let avatar = this.constructor.TDCAvatar;
 
     if (userUpdate) {
-      name = data.dispute.user.account.fullname;
+      name = data.dispute.user.fullname;
       nameClass = '';
-      avatar = this._getUserAvatar(data.dispute.user.account);
+      // avatar = this._getUserAvatar(data.dispute.user.account);
     }
 
     return `
       <div class='StatusItem py2 clearfix'>
         <div class="StatusItem-Avatar left">
-          ${avatar}
+
         </div>
         <div class="StatusItem-Text">
           <div class="clearfix">

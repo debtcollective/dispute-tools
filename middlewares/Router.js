@@ -1,4 +1,4 @@
-/* globals logger, CONFIG, neonode, ACL */
+/* globals logger, CONFIG, neonode */
 
 const _ = require('lodash');
 const Table = require('cli-table');
@@ -22,8 +22,7 @@ routeMapper.routes.forEach(route => {
 
   const verbs = [route.verb];
   const action = route._actionName || _handler[_handler.length - 1];
-  let controller =
-    route._resourceName || _handler.slice(0, _handler.length - 1).join('.');
+  let controller = route._resourceName || _handler.slice(0, _handler.length - 1).join('.');
 
   if (_handler.indexOf(controller) > -1) {
     // action
@@ -41,22 +40,15 @@ routeMapper.routes.forEach(route => {
 
     const controllerObject = neonode.controllers[controller];
     const controllerMethod = controllerObject && controllerObject[action];
-    const beforeActions =
-      (controllerObject && controllerObject.constructor.beforeActions) || [];
+    const beforeActions = (controllerObject && controllerObject.constructor.beforeActions) || [];
 
     if (!controllerObject) {
-      throw new Error(
-        `Controller '${controller}' is missing. Handler: ${route.handler.join(
-          '.',
-        )}`,
-      );
+      throw new Error(`Controller '${controller}' is missing. Handler: ${route.handler.join('.')}`);
     }
 
     if (!controllerMethod) {
       throw new Error(
-        `Action '${action}' for '${controller}' is missing. Handler: ${route.handler.join(
-          '.',
-        )}`,
+        `Action '${action}' for '${controller}' is missing. Handler: ${route.handler.join('.')}`,
       );
     }
 
@@ -68,7 +60,7 @@ routeMapper.routes.forEach(route => {
       const filters = _.flatten(
         beforeActions
           .filter(item => {
-            if (item.actions.indexOf(action) !== -1) {
+            if (item.actions.includes(action) || item.actions.includes('*')) {
               return true;
             }
 
@@ -83,9 +75,7 @@ routeMapper.routes.forEach(route => {
           if (neonode.controllers[controller][filter]) {
             args.push(neonode.controllers[controller][filter]);
           } else {
-            throw new Error(
-              `BeforeActions Error: Unknown method ${filter} in ${controller}`,
-            );
+            throw new Error(`BeforeActions Error: Unknown method ${filter} in ${controller}`);
           }
         } else if (_.isFunction(filter)) {
           // if is a function just add it to the middleware stack
@@ -94,15 +84,6 @@ routeMapper.routes.forEach(route => {
           throw new Error(`Invalid BeforeAction ${filter}`);
         }
       });
-    }
-
-    // append built middleware for this resource
-    if (
-      ACL &&
-      ACL.middlewares[controller] &&
-      ACL.middlewares[controller][action]
-    ) {
-      args.push(ACL.middlewares[controller][action]);
     }
 
     args.push(controllerMethod);

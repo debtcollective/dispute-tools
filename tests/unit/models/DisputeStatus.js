@@ -1,55 +1,16 @@
-/* globals User, Account, CONFIG, Collective, Dispute, DisputeTool, DisputeStatus */
+/* globals User, Account, CONFIG, Dispute, DisputeTool, DisputeStatus */
 
 const { expect } = require('chai');
+const { createUser, createDispute } = require('../../utils');
 const DisputeStatuses = require('../../../shared/enum/DisputeStatuses');
 
 describe('Dispute Status', () => {
   let dispute;
-  let collective;
+  let user;
 
-  before(function before() {
-    this.timeout(5000);
-
-    let tool;
-    const user = new User({
-      email: 'user@example.com',
-      password: '12345678',
-      role: 'Admin',
-    });
-
-    const account = new Account({
-      fullname: 'Example Account Name',
-      bio: '',
-      state: 'Texas',
-      zip: '73301',
-    });
-
-    return DisputeTool.first()
-      .then(dt => {
-        tool = dt;
-        return Collective.queryVisible().then(([result]) => {
-          collective = result;
-
-          return User.transaction(trx =>
-            user
-              .transacting(trx)
-              .save()
-              .then(() => {
-                account.userId = user.id;
-                account.collectiveId = collective.id;
-                return account.transacting(trx).save();
-              }),
-          );
-        });
-      })
-      .then(() => {
-        dispute = new Dispute({
-          userId: user.id,
-          disputeToolId: tool.id,
-        });
-
-        return dispute.save();
-      });
+  before(async () => {
+    user = await createUser();
+    dispute = await createDispute(user);
   });
 
   it('Should create an new status', () => {

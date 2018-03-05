@@ -1,8 +1,2 @@
 @import './base_admin.css';
-@import './_entries/admin/campaigns/edit.css';
-@import './_entries/admin/campaigns/new.css';
-@import './_entries/admin/collectives/users/index.css';
-@import './_entries/admin/collectives/edit.css';
 @import './_entries/admin/disputes/index.css';
-@import './_entries/admin/users/edit.css';
-@import './_entries/admin/users/index.css';

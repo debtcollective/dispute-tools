@@ -1,133 +1,52 @@
-const env = process.env.NODE_ENV || 'development';
-const path = require('path');
+const environment = process.env.NODE_ENV || 'development';
+const port = process.env.PORT || 8080;
 
-const config = {
-  appName: 'TDC',
-  environment: env,
+const uuid = require('uuid');
 
-  env() {
-    return config[config.environment];
+module.exports = {
+  environment,
+  port,
+  appName: process.env.APP_NAME || 'TDC Dispute Tools',
+  sso: {
+    endpoint: process.env.SSO_ENDPOINT || 'http://localhost:3000/session/sso_provider',
+    secret: process.env.SSO_SECRET || uuid.v4(),
+    jwtSecret: process.env.JWT_SECRET || uuid.v4(),
+    cookieName: process.env.SSO_COOKIE_NAME || '_dispute_tools',
   },
-
-  development: {
-    port: process.env.PORT || 3000,
-    disableActivation: true,
-
-    sessions: {
-      key: 'session',
-      secret: 'SECRET',
-    },
-
-    siteURL: `http://localhost:${process.env.PORT || 3000}`,
-    enableLithium: false,
-
-    mailers: {
-      contactEmail: 'contact@example.com',
-      senderEmail: 'no-reply@example.com',
-      disputesBCCAddresses: ['disputes@example.com'],
-    },
-
-    nodemailer: {
-      host: 'localhost',
-      port: 1025,
-      secure: false,
-      auth: {
-        user: '',
-        pass: '',
-      },
-    },
-
-    loggly: {
-      apiKey: '',
-    },
-
-    stripe: {
-      private: '',
-      publishable: '',
-    },
-
-    sentry: '',
-
-    GoogleMaps: {
-      key: '',
-    },
-
-    aws: {
-      bucket: '',
-      secrets: {
-        accessKeyId: '',
-        secretAccessKey: '',
-        region: '',
-      },
+  siteURL: process.env.SITE_URL || `http://localhost:${port}`,
+  mailers: {
+    contactEmail: process.env.EMAIL_CONTACT || 'contact@example.com',
+    senderEmail: process.env.EMAIL_NO_REPLY || 'no-reply@example.com',
+    disputesBCCAddresses: (process.env.EMAIL_DISPUTES_BCC &&
+      process.env.EMAIL_DISPUTES_BCC.split(',')) || ['disputes@example.com'],
+  },
+  nodemailer: {
+    host: process.env.EMAIL_HOST || 'localhost',
+    port: process.env.EMAIL_PORT || 1025,
+    secure: process.env.EMAIL_SECURE || false,
+    auth: {
+      user: process.env.EMAIL_AUTH || '',
+      pass: process.env.EMAIL_PASS || '',
     },
   },
-
-  production: {},
-
-  // NOTE:
-  // since this file is being copied on CI
-  // all values should be taken from ENV
-
-  test: {
-    port: process.env.PORT || 3000,
-    sessions: {
-      key: process.env.SESSION_NAME || 'session',
-      secret: process.env.SESSION_SECRET || 'SECRET',
-    },
-    siteURL: `http${process.env.SECURE === 'true' ? 's' : ''}://${process.env
-      .HOST || 'localhost'}:${process.env.PORT || 3000}`,
-    enableLithium: false,
-
-    // Mailer
-    mailers: {
-      contactEmail: process.env.CONTACT_EMAIL || 'contact@example.com',
-      senderEmail: process.env.SENDER_EMAIL || 'no-reply@example.com',
-      disputesBCCAddresses: [
-        process.env.DISPUTES_EMAIL || 'disputes@example.com',
-      ],
-    },
-
-    nodemailer: {
-      host: process.env.NODEMAILER_HOST || 'localhost',
-      port: process.env.NODEMAILER_PORT || 1025,
-      secure: process.env.NODEMAILER_SECURE === 'true',
-      auth: {
-        user: process.env.NODEMAILER_USER || '',
-        pass: process.env.NODEMAILER_PASS || '',
-      },
-    },
-
-    loggly: {
-      apiKey: process.env.LOGGLY_KEY,
-    },
-
-    stripe: {
-      secret: process.env.STRIPE_SECRET,
-      publishable: process.env.STRIPE_PUBLISHABLE,
-    },
-
-    sentry: '',
-
-    GoogleMaps: {
-      key: process.env.GMAPS_KEY || 'AIzaSyBDLCXvaAlILavXUE_THISISFAKEKEY',
-    },
-
-    aws: {
-      bucket: process.env.AWS_BUCKET,
-      secrets: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-        // Region is required so we can request signed urls that expire for downloads
-        region: process.env.AWS_REGION || 'us-east-2',
-      },
+  loggly: {
+    apiKey: process.env.LOGGLY_KEY || '',
+  },
+  stripe: {
+    private: process.env.STRIPE_PRIVATE || '',
+    publishable: process.env.STRIPE_PUBLISHABLE || false,
+  },
+  googleMaps: {
+    apiKey: process.env.GMAPS_KEY || '',
+  },
+  aws: {
+    bucket: process.env.AWS_UPLOAD_BUCKET || 'debt-collective',
+    secrets: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
+      region: process.env.AWS_DEFAULT_REGION || '',
     },
   },
+  database: require('./knexfile.sample'),
+  middlewares: require('./middlewares'),
 };
-
-config.logFile = path.join(process.cwd(), 'log', `${env}.log`);
-
-config.database = require('./../knexfile.js');
-
-config.middlewares = require('./middlewares.js');
-
-module.exports = config;

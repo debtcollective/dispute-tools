@@ -1,7 +1,4 @@
 @import './base.css';
-@import './_entries/campaigns/show.css';
-@import './_entries/collectives/index.css';
-@import './_entries/collectives/show.css';
 @import './_entries/dispute-tools/index.css';
 @import './_entries/dispute-tools/show.css';
 @import './_entries/disputes/show.css';
@@ -10,6 +7,3 @@
 @import './_entries/home/dtr.css';
 @import './_entries/home/index.css';
 @import './_entries/home/vision.css';
-@import './_entries/users/edit.css';
-@import './_entries/users/show.css';
-@import './_entries/dashboard/index.css';

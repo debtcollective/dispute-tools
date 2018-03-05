@@ -16,4 +16,4 @@ exports.up = knex =>
     t.timestamps();
   });
 
-exports.down = knex => knex.schema.dropTable('Posts');
+exports.down = knex => knex.schema.dropTable('AdminDisputes');

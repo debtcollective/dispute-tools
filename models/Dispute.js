@@ -1,5 +1,5 @@
 /* globals Class, Krypton, Attachment, DisputeTool, DisputeStatus, DisputeRenderer, UserMailer
- Account, User, logger */
+ User, logger */
 /* eslint arrow-body-style: 0 */
 
 const _ = require('lodash');
@@ -15,9 +15,18 @@ const Dispute = Class('Dispute')
     userId: ['required'],
     disputeToolId: ['required'],
   },
-  attributes: ['id', 'readableId', 'userId', 'disputeToolId', 'data', 'deactivated', 'createdAt', 'updatedAt'],
+  attributes: [
+    'id',
+    'readableId',
+    'userId',
+    'disputeToolId',
+    'data',
+    'deactivated',
+    'createdAt',
+    'updatedAt',
+  ],
 
-  defaultIncludes: '[user.account, statuses]',
+  defaultIncludes: '[user, statuses]',
 
   async search(qs) {
     const query = this.query().where({ deactivated: false });
@@ -51,7 +60,7 @@ const Dispute = Class('Dispute')
     return records.reduce((acc, record) => {
       const nameFound =
         // If no name passed in
-        !qs.name || record.user.account.fullname.toLowerCase().indexOf(qs.name.toLowerCase()) !== -1;
+        !qs.name || record.user.username.toLowerCase().indexOf(qs.name.toLowerCase()) !== -1;
 
       const statusFound =
         // If no status passed in
@@ -68,6 +77,38 @@ const Dispute = Class('Dispute')
 
       return acc;
     }, []);
+  },
+
+  async findById(id, include = null) {
+    const query = Dispute.query().where({ id });
+    if (typeof include === 'string') {
+      query.include(include);
+    }
+    const [dispute] = await query.limit(1);
+    return dispute;
+  },
+
+  createFromTool({ user, disputeToolId, option }) {
+    const dispute = new Dispute({
+      disputeToolId,
+      userId: user.id,
+    });
+
+    const status = new DisputeStatus({
+      status: 'Incomplete',
+    });
+
+    dispute.setOption(option);
+
+    return Dispute.transaction(async trx => {
+      dispute.transacting(trx);
+      status.transacting(trx);
+
+      await dispute.save();
+      status.disputeId = dispute.id;
+      await status.save();
+      return dispute;
+    });
   },
 
   prototype: {
@@ -114,6 +155,12 @@ const Dispute = Class('Dispute')
       return this;
     },
 
+    /**
+     * Set the signature on the dispute data
+     *
+     * TODO Why does this method save the dispute and the above does not?
+     * @param {string} signature
+     */
     setSignature(signature) {
       const dispute = this;
 
@@ -131,6 +178,12 @@ const Dispute = Class('Dispute')
       });
     },
 
+    /**
+     * Moves the dispute into the completed status
+     *
+     * TODO This method does too much, refactor to be multiple method calls and use async/await
+     * @param {boolean} pendingSubmission
+     */
     markAsCompleted(pendingSubmission) {
       const dispute = this;
 
@@ -285,7 +338,9 @@ const Dispute = Class('Dispute')
       }
 
       return attachments[0].destroy().then(() => {
-        const dataAttachment = dispute.data.attachments.filter(attachment => attachment.id === id)[0];
+        const dataAttachment = dispute.data.attachments.filter(
+          attachment => attachment.id === id,
+        )[0];
 
         const index = dispute.data.attachments.indexOf(dataAttachment);
 

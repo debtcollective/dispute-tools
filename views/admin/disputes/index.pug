@@ -78,16 +78,17 @@ block content
 
           -
             // add the user accout image to be accesible on the front-end
-            _dispute.user.account.imageURL = '/images/profile/placeholder-small.png';
+            _dispute.user.imageURL = '/images/profile/placeholder-small.png';
 
-            if (_dispute.user.account.image.exists('small'))
-              _dispute.user.account.imageURL = _dispute.user.account.image.urls['small'];
+            //- TODO Use Discourse provided profile image
+            //- if (_dispute.user.account.image.exists('small'))
+            //-   _dispute.user.account.imageURL = _dispute.user.account.image.urls['small'];
 
           tr
             td
               .flex.items-center
-                img(src=_dispute.user.account.imageURL alt=_dispute.user.account.fullname width="50" height="50")
-                p.pl2.-fw-700= _dispute.user.account.fullname
+                img(src=_dispute.user.imageURL alt=_dispute.user.fullname width="50" height="50")
+                p.pl2.-fw-700= _dispute.user.fullname
             td.-fw-400
               | #{_dispute.readableId}
             td.-fw-500
