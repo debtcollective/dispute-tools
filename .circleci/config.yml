@@ -66,6 +66,7 @@ workflows:
                 - master
       - deploy_staging:
           requires:
+            - build
             - hold
           filters:
             branches:
@@ -73,6 +74,7 @@ workflows:
                 - development
       - deploy_production:
           requires:
+            - build
             - hold
           filters:
             branches:
