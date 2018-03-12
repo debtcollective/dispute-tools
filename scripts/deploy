@@ -2,6 +2,7 @@
 
 ENV=$1
 
+sudo apt-get upgrade
 sudo apt-get install awscli
 eval $(aws ecr get-login --no-include-email --region=us-west-2)
 docker build -t tdc-dispute-tools .
