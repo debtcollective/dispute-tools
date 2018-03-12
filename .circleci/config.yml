@@ -44,7 +44,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/tdc-dispute-tools
-      - run: bash scripts/deploy development
+      - run: bash ./scripts/deploy development
 
 workflows:
   version: 2
