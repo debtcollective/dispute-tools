@@ -3,7 +3,8 @@
 ENV=$1
 
 sudo apt-get upgrade
-sudo apt-get install awscli
+sudo apt-get install python-pip python-dev build-essential
+pip install awscli
 eval $(aws ecr get-login --no-include-email --region=us-west-2)
 docker build -t tdc-dispute-tools .
 docker tag tdc-dispute-tools:latest $DOCKER_REGISTRY/ds-dispute-tools-$ENV:latest
