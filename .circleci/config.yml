@@ -44,6 +44,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/tdc-dispute-tools
+      - setup_remote_docker
       - run: bash ./scripts/deploy development
 
 workflows:
