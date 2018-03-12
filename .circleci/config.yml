@@ -38,14 +38,13 @@ jobs:
       - run: yarn test
       - run: yarn report
 
-  deploy_dev:
+  deploy_staging:
     <<: *defaults
     requires: build
     steps:
       - attach_workspace:
           at: ~/tdc-dispute-tools
-      - run: export ENV=dev
-      - run: bash scripts/deploy
+      - run: bash scripts/deploy development
 
 workflows:
   version: 2
@@ -55,3 +54,26 @@ workflows:
       - test:
           requires:
             - build
+  deploy:
+    jobs:
+      - hold:
+          type: approval
+          filters:
+            branches:
+              only:
+                - development
+                - master
+      - deploy_staging:
+          requires:
+            - hold
+          filters:
+            branches:
+              only:
+                - development
+      - deploy_production:
+          requires:
+            - hold
+          filters:
+            branches:
+              only:
+                - master
