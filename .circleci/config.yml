@@ -60,6 +60,11 @@ workflows:
   deploy:
     jobs:
       - build
+          filters:
+            branches:
+              only:
+                - development
+                - master
       - hold:
           type: approval
           filters:
