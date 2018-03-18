@@ -47,7 +47,7 @@ describe('Email', () => {
 
     it('render if no text is passed', async () => {
       await new Email('Test Email', {}).send();
-      expect(sent.text).eq('Rendered!');
+      expect(sent.html).eq('Rendered!');
     });
 
     it('should resolve with the email info', async () => {

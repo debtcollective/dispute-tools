@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const { ContactUsEmail } = require('../../../services/email');
-const { mailers: contactEmail } = require('../../../config/config');
+const { mailers: { contactEmail } } = require('../../../config/config');
 
 const { ForVisitor } = ContactUsEmail;
 
@@ -9,10 +9,7 @@ describe('ContactUsEmail.ForVisitor', () => {
     it('should set the from address to the contact email', () => {
       const email = new ForVisitor('a message', 'visitor@example.com', 'Veronica Visitor');
       expect(email.from).exist;
-      expect(
-        email.from.endsWith(`<${contactEmail}>`),
-        'Expected to address to be the contact email',
-      ).true;
+      expect(email.from.slice(-(contactEmail.length + 2))).eq(`<${contactEmail}>`);
     });
 
     it("should set the to address to the visitor's", () => {

@@ -41,8 +41,8 @@ class Email {
    *
    * @return {Promise<any>} Promise resolving in the sent email information
    */
-  send(text = this.render()) {
-    const config = { from: this.from, to: this.to, subject: this.subject, text };
+  send(html = this.render()) {
+    const config = { from: this.from, to: this.to, subject: this.subject, html };
     if (Email.SES !== null) {
       config.ses = this.Tags;
     }

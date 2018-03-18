@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const { ContactUsEmail } = require('../../../services/email');
-const { mailers: contactEmail } = require('../../../config/config');
+const { mailers: { contactEmail } } = require('../../../config/config');
 
 const { ForAdmin } = ContactUsEmail;
 
@@ -9,14 +9,14 @@ describe('ContactUsEmail.ForAdmin', () => {
     it('should set the to address to the contact email', () => {
       const email = new ForAdmin('a message', 'visitor@example.com', 'Veronica Visitor');
       expect(email.to).exist;
-      expect(email.to.endsWith(`<${contactEmail}>`), 'Expected to address to be the contact email')
-        .true;
+      expect(email.from.slice(-(contactEmail.length + 2))).eq(`<${contactEmail}>`);
     });
 
     it("should set the from address to the visitor's", () => {
       const email = new ForAdmin('a message', 'visitor@example.com', 'Veronica Visitor');
       expect(email.from).exist;
-      expect(email.from).eq('Veronica Visitor <visitor@example.com>');
+      // It has to be the contact email so that SES doesn't get upset we're sending emails from unverified addresses
+      expect(email.from).eq(`Veronica Visitor <${contactEmail}>`);
     });
 
     it('should set the locals with the passed in message', () => {

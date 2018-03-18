@@ -1,5 +1,4 @@
-- var websiteURL = 'https://debtcollective.org'
-- var assetsPath = `${CONFIG.siteURL}/images/email`
+- var assetsPath = `${CONFIG.aws.staticAssets}/img/debtsyndicate/0.0.1`
 
 center(style="width: 100%; background-color: #ebebeb;")
   table(width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;")
@@ -16,9 +15,8 @@ center(style="width: 100%; background-color: #ebebeb;")
                     div &nbsp;
                     div &nbsp;
                     div
-                      img(src=`${assetsPath}/im-logo-light.png`
-                        width="191" height="20" alt="The Collective"
-                        srcset=`${assetsPath}/im-logo-light@2x.png 2x, ${assetsPath}/im-logo-light@3x.png 3x`)
+                      a(href='https://debtsyndicate.org' target='_blank')
+                        img(src=`${assetsPath}/name1x.png` width="191" height="20" alt="The Debt Syndicate")
                     div &nbsp;
                     div &nbsp;
 
@@ -35,8 +33,10 @@ center(style="width: 100%; background-color: #ebebeb;")
                   div(style="font-size: 12px; line-height: 142%; color: #4a4a4a; text-align: center;")
                     div &nbsp;
                     div &nbsp;
-                    div You are receiving this email because your email address is set to receive contact messages from #[a(href=websiteURL style="color: inherit;")= websiteURL]
-                    div To report abuse, please #[a(href="https://debtcollective.org/contact") contact us].
+                    div
+                      | You are receiving this email because your email address is set to receive contact messages from #[a(href="https://debtsyndicate.org" style="color: inherit;" target='_blank') The Debt Syndicate].
+                    div
+                      | To report abuse, please #[a(href="https://debtsyndicate.org/contact" target='_blank') contact us].
                     div &nbsp;
                     div &nbsp;
                     div &nbsp;

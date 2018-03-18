@@ -1,4 +1,4 @@
-const { mailers: contactEmail } = require('../../config/config');
+const { mailers: { contactEmail } } = require('../../config/config');
 const Email = require('./Email');
 
 /**
@@ -13,7 +13,9 @@ class ForAdmin extends Email {
   constructor(message, email, name) {
     super('ContactUsEmail.ForAdmin', {
       to: ForAdmin.to,
-      from: `${name} <${email}>`,
+      // Must send 'from' the contact email as SES requires emails to be verified
+      // The name may remain the name of the visitor, however.
+      from: `${name} <${contactEmail}>`,
       subject: `${name} has sent a message for the organizers`,
     });
 
@@ -66,6 +68,10 @@ class ContactUsEmail {
 
   send() {
     return Promise.all([this.forAdmin.send(), this.forVisitor.send()]);
+  }
+
+  toString() {
+    return `${this.forAdmin.toString()}\n${this.forVisitor.toString()}`;
   }
 }
 

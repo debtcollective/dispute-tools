@@ -47,6 +47,7 @@ module.exports = {
       region: process.env.AWS_DEFAULT_REGION || '',
     },
     useSes: process.env.USE_SES === 'true',
+    staticAssets: process.env.STATIC_ASSETS_BUCKET_URL || 'https://s3.amazonaws.com/tds-static',
   },
   database: require('./knexfile.sample'),
   middlewares: require('./middlewares'),
