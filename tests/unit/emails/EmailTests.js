@@ -6,6 +6,7 @@ const CBInfo = Symbol('Callback Info');
 describe('Email', () => {
   describe('send', () => {
     let sendMail;
+    let render;
     let sent;
     before(() => {
       sendMail = Email.transport.sendMail;
@@ -13,9 +14,13 @@ describe('Email', () => {
         sent = config;
         cb(null, CBInfo);
       };
+
+      render = Email.prototype.render;
+      Email.prototype.render = () => 'Rendered!';
     });
     after(() => {
       Email.transport.sendMail = sendMail;
+      Email.prototype.render = render;
     });
 
     beforeEach(() => {
@@ -40,10 +45,9 @@ describe('Email', () => {
       expect(sent.subject).eq(subject);
     });
 
-    it("should use the instance's text", async () => {
-      const text = 'some test text';
-      await new Email('Test Email', { text }).send();
-      expect(sent.text).eq(text);
+    it('render if no text is passed', async () => {
+      await new Email('Test Email', {}).send();
+      expect(sent.text).eq('Rendered!');
     });
 
     it('should resolve with the email info', async () => {
