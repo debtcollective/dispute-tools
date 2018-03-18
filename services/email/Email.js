@@ -1,3 +1,5 @@
+const pug = require('pug');
+const { join } = require('path');
 const nodemailer = require('nodemailer');
 const { smtp } = require('../../config/config');
 const { sesInstance: SES } = require('../../lib/AWS');
@@ -25,12 +27,11 @@ class Email {
    * @param {string} email.subject The subject of the email
    * @param {string} email.text The text of the email
    */
-  constructor(name, { to, from, subject, text }) {
+  constructor(name, { to, from, subject }) {
     this._name = name;
     this.to = to;
     this.from = from;
     this.subject = subject;
-    this.text = text;
   }
 
   /**
@@ -40,8 +41,8 @@ class Email {
    *
    * @return {Promise<any>} Promise resolving in the sent email information
    */
-  send() {
-    const config = { from: this.from, to: this.to, subject: this.subject, text: this.text };
+  send(text = this.render()) {
+    const config = { from: this.from, to: this.to, subject: this.subject, text };
     if (Email.SES !== null) {
       config.ses = this.Tags;
     }
@@ -67,10 +68,52 @@ class Email {
       ],
     };
   }
+
+  /**
+   * Gets the locals for the pug template.
+   */
+  get locals() {
+    return this._locals;
+  }
+
+  /**
+   * Sets the locals for the pug template.
+   * Expected to be used by the implementing class during construction.
+   */
+  set locals(l) {
+    this._locals = l;
+  }
+
+  /**
+   * Renders the email using the configured email name as the filename for the template.
+   * @param {Object} locals Pug locals for the email template
+   * @return {string} The rendered HTML string
+   */
+  render(locals = this.locals, templateName = this._name) {
+    return Email.pug.renderFile(
+      join(
+        Email.templatesDirectory,
+        `${templateName}${templateName.endsWith('.pug') ? '' : '.pug'}`,
+      ),
+      locals,
+    );
+  }
+
+  toString() {
+    return `
+[Email ${this._name}
+ Locals: ${JSON.stringify(this._locals, null, 2)}
+ To: ${this.to}
+ From: ${this.from}
+ Subject: ${this.subject}]
+`.trim();
+  }
 }
 
 // Lets us override these during testing
 Email.transport = transport;
 Email.SES = SES;
+Email.templatesDirectory = join(process.cwd(), 'views', 'emails');
+Email.pug = pug;
 
 module.exports = Email;
