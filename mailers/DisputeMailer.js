@@ -6,12 +6,6 @@ const DisputeMailer = Class('DisputeMailer').inherits(BaseMailer)({
     subject: 'The Debt Collective',
   },
 
-  sendToAdmins(locals) {
-    const emails = CONFIG.mailers.disputesBCCAddresses;
-
-    return this._send('sendToAdmins', emails, locals);
-  },
-
   sendStatusToUser(locals) {
     return User.query()
       .where({ id: locals.dispute.userId })

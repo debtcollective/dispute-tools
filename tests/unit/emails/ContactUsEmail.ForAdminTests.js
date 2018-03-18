@@ -9,7 +9,7 @@ describe('ContactUsEmail.ForAdmin', () => {
     it('should set the to address to the contact email', () => {
       const email = new ForAdmin('a message', 'visitor@example.com', 'Veronica Visitor');
       expect(email.to).exist;
-      expect(email.from.slice(-(contactEmail.length + 2))).eq(`<${contactEmail}>`);
+      expect(email.to.slice(-(contactEmail.length + 2))).eq(`<${contactEmail}>`);
     });
 
     it("should set the from address to the visitor's", () => {

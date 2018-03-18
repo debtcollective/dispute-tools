@@ -1,3 +1,5 @@
+- var supportEmail = 'support@debtcollective.org'
+- var websiteURL = 'https://debtsyndicate.org'
 - var assetsPath = `${CONFIG.aws.staticAssets}/img/debtsyndicate/0.0.1`
 
 center(style="width: 100%; background-color: #ebebeb;")
@@ -15,7 +17,7 @@ center(style="width: 100%; background-color: #ebebeb;")
                     div &nbsp;
                     div &nbsp;
                     div
-                      a(href='https://debtsyndicate.org' target='_blank')
+                      a(href=websiteURL target='_blank')
                         img(src=`${assetsPath}/name1x.png` width="191" height="20" alt="The Debt Syndicate")
                     div &nbsp;
                     div &nbsp;
@@ -34,7 +36,7 @@ center(style="width: 100%; background-color: #ebebeb;")
                     div &nbsp;
                     div &nbsp;
                     div
-                      | You are receiving this email because your email address is set to receive contact messages from #[a(href="https://debtsyndicate.org" style="color: inherit;" target='_blank') The Debt Syndicate].
+                      | You are receiving this email because of an action you took on or because this email address was listed as the contact point for a dispute at #[a(href=websiteURL style="color: inherit;" target='_blank') The Debt Syndicate]. If you don't think this email was intended for you, ignore it or #[a(href="https://debtsyndicate.org/contact" target='_blank') contact us] to report the mistake.
                     div
                       | To report abuse, please #[a(href="https://debtsyndicate.org/contact" target='_blank') contact us].
                     div &nbsp;

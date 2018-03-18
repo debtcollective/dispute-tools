@@ -4,6 +4,7 @@ const Promise = require('bluebird');
 const marked = require('marked');
 const _ = require('lodash');
 const { BadRequest } = require('../lib/errors');
+const { CompletedDisputeEmail } = require('../services/email');
 
 const authenticate = require('../services/authentication');
 const authorize = require('../services/authorization');
@@ -120,42 +121,42 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         .catch(next);
     },
 
-    updateSubmission(req, res, next) {
+    async updateSubmission(req, res) {
       const dispute = res.locals.dispute;
       const pendingSubmission = req.body.pending_submission === '1';
 
-      dispute
-        .markAsCompleted(pendingSubmission)
-        .then(renderer =>
-          UserMailer.sendDispute(req.user.email, {
-            user: req.user,
-            renderer,
-            _options: {
-              subject: 'Dispute Documents - The Debt Collective',
-            },
-          })
-            .then(() =>
-              UserMailer.sendDisputeToAdmin({
-                user: req.user,
-                renderer,
-                _options: {
-                  subject: 'New Dispute Completed - The Debt Collective',
-                },
-              }),
-            )
-            .catch(e => {
-              logger.error('  ---> Failed to send smail to user (on #setSignature)');
-              logger.error(e.stack);
-            }),
-        )
-        .then(() => {
-          req.flash(
-            'success',
-            'Thank you for disputing your debt. A copy of your dispute has been sent to your email.',
-          );
-          res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
-        })
-        .catch(next);
+      try {
+        await dispute.markAsCompleted(pendingSubmission);
+      } catch (e) {
+        req.flash(
+          'error',
+          'An error occurred while completing your dispute. Please try again. If the problem persists, contact a Debt Syndicate organizer for assistance.',
+        );
+        logger.error('Unable to mark dispute as completed', e.message, e.stack);
+      }
+
+      const email = new CompletedDisputeEmail(req.user, dispute);
+
+      try {
+        await email.send();
+        req.flash(
+          'success',
+          'Thank you for disputing your debt. A copy of your dispute has been sent to your email.',
+        );
+      } catch (e) {
+        req.error(
+          'error',
+          'Your dispute was successfully saved. However, an error was encountered while sending the confirmation email. Please contact a Debt Syndicate organizer to resolve this error.',
+        );
+        logger.error(
+          'Unable to send email upon dispute completion',
+          e.message,
+          e.stack,
+          email.toString(),
+        );
+      }
+
+      res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
     },
 
     updateDisputeData(req, res, next) {
@@ -210,24 +211,28 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         });
     },
 
-    addAttachment(req, res, next) {
+    async addAttachment(req, res, next) {
       const dispute = res.locals.dispute;
 
       if (!req.files || !req.files.attachment) {
         return next(new BadRequest());
       }
 
-      return Promise.each(req.files.attachment, attachment =>
-        dispute.addAttachment(req.body.name, attachment.path),
-      )
-        .then(() => dispute.save())
-        .catch(() => {
-          req.flash('error', 'A problem occurred trying to process the attachments');
-        })
-        .finally(() => {
-          req.flash('success', 'Attachment successfully added!');
-          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
-        });
+      try {
+        await Promise.each(req.files.attachment, attachment =>
+          dispute.addAttachment(req.body.name, attachment.path),
+        );
+        await dispute.save();
+        req.flash('success', 'Attachment successfully saved to your dispute');
+      } catch (e) {
+        req.flash(
+          'error',
+          'A problem occurred while attempting to upload your attachments. Please try again, and if the problem persists, contact a Debt Syndicate organizer.',
+        );
+        logger.error('Unable to upload attachment', e.message);
+      }
+
+      return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
     },
 
     removeAttachment(req, res) {
