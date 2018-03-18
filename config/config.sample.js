@@ -20,7 +20,7 @@ module.exports = {
     disputesBCCAddresses: (process.env.EMAIL_DISPUTES_BCC &&
       process.env.EMAIL_DISPUTES_BCC.split(',')) || ['disputes@example.com'],
   },
-  nodemailer: {
+  smtp: {
     host: process.env.EMAIL_HOST || 'localhost',
     port: process.env.EMAIL_PORT || 1025,
     secure: process.env.EMAIL_SECURE || false,
@@ -46,6 +46,7 @@ module.exports = {
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
       region: process.env.AWS_DEFAULT_REGION || '',
     },
+    useSes: process.env.USE_SES === 'true',
   },
   database: require('./knexfile.sample'),
   middlewares: require('./middlewares'),
