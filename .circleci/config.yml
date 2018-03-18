@@ -38,7 +38,7 @@ jobs:
       - run: yarn test
       - run: yarn report
 
-  deploy_staging:
+  deploy_development:
     <<: *defaults
     requires: build
     steps:
@@ -46,6 +46,8 @@ jobs:
           at: ~/tdc-dispute-tools
       - setup_remote_docker
       - run: bash ./scripts/deploy development
+      - setup_remote_docker
+      - run: bash ./scripts/deploy_development
 
 workflows:
   version: 2
@@ -65,7 +67,7 @@ workflows:
               only:
                 - development
                 - master
-      - deploy_staging:
+      - deploy_development:
           requires:
             - build
             - hold
