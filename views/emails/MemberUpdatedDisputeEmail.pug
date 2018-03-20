@@ -1,0 +1,20 @@
+extends ./layouts/BaseEmail
+
+block title
+  div Dispute Status Update
+
+block content
+  div(style="font-size: 16px; line-height: 142%;")
+    div(style="font-family: monospace; color: #000000;")
+      div <b>#{member.fullname}</b> have updated their <b>#{dispute.disputeTool.name}</b>.
+      div &nbsp;
+
+      div <b>Comment:</b>
+      div= disputeStatus.comment
+      div &nbsp;
+
+      div <b>Current Status:</b>
+      div= disputeStatus.status
+
+      div &nbsp;
+      div &nbsp;

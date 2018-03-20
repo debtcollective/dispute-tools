@@ -1,12 +1,23 @@
-/* globals Krypton, Class, Dispute, DisputeStatus, logger, DisputeMailer */
+/* globals Krypton, Class, Dispute, DisputeStatus, logger */
 
 const EmailSendingError = require('../lib/errors/EmailSendingFailureError');
 const DisputeStatuses = require('../shared/enum/DisputeStatuses');
+const { OrganizerUpdatedDisputeEmail } = require('../services/email');
 const _ = require('lodash');
 
 const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
   tableName: 'DisputeStatuses',
-  attributes: ['id', 'disputeId', 'status', 'note', 'comment', 'notify', 'pendingSubmission', 'createdAt', 'updatedAt'],
+  attributes: [
+    'id',
+    'disputeId',
+    'status',
+    'note',
+    'comment',
+    'notify',
+    'pendingSubmission',
+    'createdAt',
+    'updatedAt',
+  ],
   statuses: _.values(DisputeStatuses),
   validations: {
     disputeId: ['required'],
@@ -38,11 +49,17 @@ const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
       return;
     }
 
+    const email = new OrganizerUpdatedDisputeEmail(dispute.user, dispute, disputeStatus);
     try {
-      await DisputeMailer.sendStatusToUser({ dispute, disputeStatus });
+      await email.send();
+      logger.info('Successfully sent OrganizerUpdatedDisputeEmail', email.toString());
     } catch (e) {
-      logger.log(' ---> Failed to send mail to user (on #update)');
-      logger.log(e.stack);
+      logger.error(
+        'Failed to send OrganizerUpdatedDisputeEmail',
+        e.message,
+        e.stack,
+        email.toString(),
+      );
       throw new EmailSendingError(e);
     }
   },

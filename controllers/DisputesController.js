@@ -1,10 +1,10 @@
 /* globals Dispute, RestfulController, Class, DisputeTool, CONFIG, DisputeStatus,
-    DisputeMailer, UserMailer, NotFoundError, DisputeRenderer, Dispute, logger */
+    UserMailer, NotFoundError, DisputeRenderer, Dispute, logger */
 const Promise = require('bluebird');
 const marked = require('marked');
 const _ = require('lodash');
 const { BadRequest } = require('../lib/errors');
-const { CompletedDisputeEmail } = require('../services/email');
+const { CompletedDisputeEmail, MemberUpdatedDisputeEmail } = require('../services/email');
 
 const authenticate = require('../services/authentication');
 const authorize = require('../services/authorization');
@@ -106,16 +106,20 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
       ds
         .save()
-        .then(() =>
-          DisputeMailer.sendToAdmins({
-            dispute,
-            user: req.user,
-            disputeStatus: ds,
-          }).catch(e => {
-            logger.error('  ---> Failed to send mail to admins (on #update)');
-            logger.error(e.stack);
-          }),
-        )
+        .then(async () => {
+          const email = new MemberUpdatedDisputeEmail(req.user, dispute, ds);
+          try {
+            await email.send();
+            logger.info('Successfully sent dispute updated email to organizers', email.toString());
+          } catch (e) {
+            logger.error(
+              'Failed to send dispute update email to organizers',
+              e.message,
+              e.stack,
+              email.toString(),
+            );
+          }
+        })
         .then(() => dispute.save())
         .then(() => res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)))
         .catch(next);

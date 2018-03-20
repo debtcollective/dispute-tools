@@ -2,7 +2,7 @@
 
 const stripe = require('stripe');
 const sso = require('../services/sso');
-const { ContactUsEmail } = require('../services/email');
+const { ContactUsEmail, RecurringDonationEmail } = require('../services/email');
 const Router = require('../config/RouteMappings');
 
 const {
@@ -113,14 +113,21 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       if (req.body.subscribe) {
         createCustomer()
           .then(customer => createPlan().then(() => subscribe(customer.id)))
-          .then(subscription => {
+          .then(async subscription => {
             // send email for more info
-            UserMailer.sendSubscription(req.body.email, {
-              amount,
-              _options: {
-                subject: 'Your donation - The Debt Collective',
-              },
-            });
+            const email = new RecurringDonationEmail(req.user, amount);
+
+            try {
+              await email.send();
+              logger.info('Successfully sent RecurringDonationEmail', email.toString());
+            } catch (e) {
+              logger.error(
+                'Failed to send RecurringDonationEmail',
+                e.message,
+                e.stack,
+                email.toString(),
+              );
+            }
 
             return subscription;
           })
