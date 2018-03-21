@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
-pip install awscli --upgrade --user
-<<<<<<< Updated upstream:scripts/deploy
-$(aws ecr get-login --no-include-email --region=us-west-2)
-docker build -t tdc-dispute-tools .
-docker tag tdc-dispute-tools:latest $DOCKER_REGISTRY/tdc-dispute-tools:latest
-docker push $DOCKER_REGISTRY/tdc-dispute-tools:latest
-=======
 
-eval $(aws ecr get-login --no-include-email --region=us-west-1)
+ENV=$1
+
+# Install awscli
+sudo apt-get update
+sudo apt-get install python-dev
+curl -O https://bootstrap.pypa.io/get-pip.py
+python get-pip.py --user
+echo 'export PATH=~/.local/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+pip install awscli --upgrade --user
+
 docker build -t dispute-tools-development .
+
+eval "$(aws ecr get-login --no-include-email --region us-west-1 --registry-ids 183550513269)"
 docker tag dispute-tools-development:latest 183550513269.dkr.ecr.us-west-1.amazonaws.com/dispute-tools-development:latest
-docker push 183550513269.dkr.ecr.us-west-1.amazonaws.com/dispute-tools-development
->>>>>>> Stashed changes:scripts/deploy_development
+docker push 183550513269.dkr.ecr.us-west-1.amazonaws.com/dispute-tools-development:latest
