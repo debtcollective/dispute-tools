@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { errors: { AuthenticationFailure }, Raven, logger } = require('../lib');
 const { siteURL, sso: { endpoint, secret, jwtSecret, cookieName } } = require('../config/config');
+const { getSsoUserEnsuringCreated } = require('./users');
 
 const nonces = {};
 
@@ -80,16 +81,7 @@ const sso = {
     if (sso.validNonce(payload.nonce)) {
       delete nonces[payload.nonce];
 
-      let [user] = await User.query()
-        .where('external_id', payload.external_id)
-        .limit(1);
-
-      if (!user) {
-        user = new User({
-          externalId: payload.external_id,
-        });
-        await user.save();
-      }
+      const user = await getSsoUserEnsuringCreated(payload.external_id);
 
       user.setInfo(cleanPayload(payload));
 
@@ -112,11 +104,14 @@ const sso = {
     next();
   },
 
-  extractCookie(req, res, next) {
+  async extractCookie(req, res, next) {
     const decodedCookie = Buffer.from(req.cookies[cookieName], 'base64').toString('utf8');
     try {
       const claim = jwt.verify(decodedCookie, jwtSecret);
-      req.user = cleanUser(claim);
+
+      const user = await getSsoUserEnsuringCreated(claim.externalId);
+
+      req.user = cleanUser({ ...claim, ...user });
 
       Raven.captureBreadcrumb('Authenticated', req.user);
       logger.debug(`Authenticated ${req.user.email}`);
