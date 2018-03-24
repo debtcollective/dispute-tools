@@ -1,5 +1,4 @@
-const ForbiddenError = require('../lib/errors/ForbiddenError');
-const logger = require('../lib/core/logger');
+const { logger, errors: { ForbiddenError } } = require('../../lib');
 
 /**
  * Creates an authorization middleware that will allow
@@ -24,22 +23,18 @@ const logger = require('../lib/core/logger');
  *  return a Promise resolving in a boolean.
  */
 module.exports = test => async (req, res, next) => {
-  try {
-    let testResult = test(req, res);
+  let testResult = test(req, res);
 
-    // Handle if the authorization test is a promise
-    if (typeof testResult.then === 'function') {
-      testResult = await testResult;
-    }
+  // Handle if the authorization test is a promise
+  if (typeof testResult.then === 'function') {
+    testResult = await testResult;
+  }
 
-    if (testResult) {
-      logger.debug(`Authorized ${req.user.email} with ${test.toString()}`);
-      next();
-    } else {
-      logger.debug(`Unable to authorize ${req.user.email} with ${test.toString()}`);
-      throw new ForbiddenError();
-    }
-  } catch (e) {
-    next(e);
+  if (testResult) {
+    logger.debug(`Authorized ${req.user.email} with ${test.toString()}`);
+    next();
+  } else {
+    logger.debug(`Unable to authorize ${req.user.email} with ${test.toString()}`);
+    next(new ForbiddenError());
   }
 };

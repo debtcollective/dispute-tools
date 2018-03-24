@@ -7,8 +7,7 @@ const { BadRequest } = require('../lib/errors');
 const DisputeStatuses = require('../shared/enum/DisputeStatuses');
 const { CompletedDisputeEmail, MemberUpdatedDisputeEmail } = require('../services/email');
 
-const authenticate = require('../services/authentication');
-const authorize = require('../services/authorization');
+const { authenticate, authorize } = require('../services/auth');
 
 const DisputesController = Class('DisputesController').inherits(RestfulController)({
   beforeActions: [

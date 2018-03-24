@@ -3,7 +3,6 @@
 /* eslint arrow-body-style: 0 */
 
 const _ = require('lodash');
-const Promise = require('bluebird');
 const { basePath } = require('../lib/AWS');
 const DisputeAttachment = require('./DisputeAttachment');
 
@@ -388,27 +387,12 @@ const Dispute = Class('Dispute')
      * @return {Promise<{ assigned: AdminInfo[], available: AdminInfo[] }>}
      */
     getAssignedAndAvailableAdmins() {
-      const assigned = this.admins.reduce((acc, a) => {
-        acc[a.id] = a;
-        return acc;
-      }, {});
+      // const assigned = this.admins.reduce((acc, a) => {
+      //   acc[a.id] = a;
+      //   return acc;
+      // }, {});
 
-      return User.query()
-        .include('[account]')
-        .where('role', 'Admin')
-        .then(allAdmin =>
-          allAdmin.reduce(
-            (acc, { id, account: { fullname: name } }) => {
-              if (assigned[id] !== undefined) {
-                acc.assigned.push({ id, name });
-              } else {
-                acc.available.push({ id, name });
-              }
-              return acc;
-            },
-            { assigned: [], available: [] },
-          ),
-        );
+      return Promise.resolve({ assigned: [], available: [] });
     },
 
     destroy() {

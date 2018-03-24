@@ -4,6 +4,8 @@ const path = require('path');
 const Promise = require('bluebird');
 const Dispute = require('../../models/Dispute');
 
+const { authenticate, authorize, tests: { isDisputeAdmin } } = require('../../services/auth');
+
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 
 global.Admin = global.Admin || {};
@@ -11,12 +13,12 @@ global.Admin = global.Admin || {};
 Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulController)({
   beforeActions: [
     {
-      before: [(req, res, next) => neonode.controllers.Home._authenticate(req, res, next)],
-      actions: ['index', 'show', 'edit', 'update', 'destroy'],
+      before: [authenticate, authorize(isDisputeAdmin)],
+      actions: ['*'],
     },
     {
       before: '_loadDispute',
-      actions: ['show', 'update', 'destroy', 'updateAdmins', 'getAvailableAdmins'],
+      actions: ['update', 'destroy', 'updateAdmins', 'getAvailableAdmins'],
     },
     {
       before(req, res, next) {
@@ -106,14 +108,6 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       res.render('admin/disputes/index');
     },
 
-    show(req, res) {
-      res.render('admin/disputes/show');
-    },
-
-    edit(req, res) {
-      res.render('admin/disputes/edit');
-    },
-
     async update(req, res, next) {
       const dispute = res.locals.dispute;
 
@@ -130,7 +124,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     getAvailableAdmins(req, res, next) {
       req.dispute
         .getAssignedAndAvailableAdmins()
-        .then(res.status(200).send)
+        .then(r => res.status(200).send(r))
         .catch(next);
     },
 
