@@ -1,4 +1,4 @@
-const ForbiddenError = require('../lib/errors/ForbiddenError');
+const ForbiddenError = require('../../lib/errors/ForbiddenError');
 
 /**
  * Creates an authorization middleware that will allow
@@ -23,20 +23,16 @@ const ForbiddenError = require('../lib/errors/ForbiddenError');
  *  return a Promise resolving in a boolean.
  */
 module.exports = test => async (req, res, next) => {
-  try {
-    let testResult = test(req, res);
+  let testResult = test(req, res);
 
-    // Handle if the authorization test is a promise
-    if (typeof testResult.then === 'function') {
-      testResult = await testResult;
-    }
+  // Handle if the authorization test is a promise
+  if (typeof testResult.then === 'function') {
+    testResult = await testResult;
+  }
 
-    if (testResult) {
-      next();
-    } else {
-      throw new ForbiddenError();
-    }
-  } catch (e) {
-    next(e);
+  if (testResult) {
+    next();
+  } else {
+    next(new ForbiddenError());
   }
 };

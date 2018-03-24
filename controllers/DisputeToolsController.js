@@ -1,15 +1,14 @@
 /* globals RestfulController, DisputeTool, Class */
 const marked = require('marked');
-const requireAuthentication = require('../services/authentication');
-const authorizeWhen = require('../services/authorization');
+const { authenticate, authorize, tests: { loggedIn } } = require('../services/auth');
 const { NotFoundError } = require('../lib/errors');
 
 const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulController)({
   beforeActions: [
     {
       before: [
-        requireAuthentication,
-        authorizeWhen(({ user }) => user !== undefined),
+        authenticate,
+        authorize(loggedIn),
         async (req, res, next) => {
           try {
             const disputeTool = await DisputeTool.findById(req.params.id);
