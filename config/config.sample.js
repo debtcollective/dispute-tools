@@ -1,3 +1,4 @@
+/* globals logger */
 const environment = process.env.NODE_ENV || 'development';
 const port = process.env.PORT || 8080;
 
@@ -48,6 +49,7 @@ module.exports = {
     useSes: process.env.USE_SES === 'true',
     staticAssets: process.env.STATIC_ASSETS_BUCKET_URL || 'https://s3.amazonaws.com/tds-static',
   },
+  sentryEndpoint: process.env.SENTRY_ENDPOINT || '',
   database: require('./knexfile.sample'),
   middlewares: require('./middlewares'),
 };

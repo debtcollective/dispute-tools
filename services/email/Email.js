@@ -3,6 +3,7 @@ const { join } = require('path');
 const nodemailer = require('nodemailer');
 const { smtp } = require('../../config/config');
 const { sesInstance: SES } = require('../../lib/AWS');
+const { Raven, logger } = require('../../lib');
 
 const transport = nodemailer.createTransport(SES !== null ? { SES } : smtp);
 
@@ -37,7 +38,7 @@ class Email {
   /**
    * Wraps the default configured nodemailer transport to send a message.
    *
-   * @protected
+   * @public
    *
    * @return {Promise<any>} Promise resolving in the sent email information
    */
@@ -48,8 +49,15 @@ class Email {
     }
     return new Promise((resolve, reject) => {
       Email.transport.sendMail(config, (err, info) => {
-        if (err) reject(err);
-        else resolve(info);
+        if (err) {
+          // Always capture when emails are not sent.
+          logger.error(`Unable to send ${this._name}`, this.toString(), err.message || err);
+          Raven.captureException(err);
+          reject(err);
+        } else {
+          logger.info(`Successfully sent ${this._name}`, this.toString(), info);
+          resolve(info);
+        }
       });
     });
   }

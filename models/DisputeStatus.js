@@ -1,6 +1,5 @@
-/* globals Krypton, Class, Dispute, DisputeStatus, logger */
+/* globals Krypton, Class, Dispute, DisputeStatus */
 
-const EmailSendingError = require('../lib/errors/EmailSendingFailureError');
 const DisputeStatuses = require('../shared/enum/DisputeStatuses');
 const { OrganizerUpdatedDisputeEmail } = require('../services/email');
 const _ = require('lodash');
@@ -50,18 +49,7 @@ const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
     }
 
     const email = new OrganizerUpdatedDisputeEmail(dispute.user, dispute, disputeStatus);
-    try {
-      await email.send();
-      logger.info('Successfully sent OrganizerUpdatedDisputeEmail', email.toString());
-    } catch (e) {
-      logger.error(
-        'Failed to send OrganizerUpdatedDisputeEmail',
-        e.message,
-        e.stack,
-        email.toString(),
-      );
-      throw new EmailSendingError(e);
-    }
+    return email.send();
   },
 
   prototype: {

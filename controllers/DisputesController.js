@@ -4,6 +4,7 @@ const Promise = require('bluebird');
 const marked = require('marked');
 const _ = require('lodash');
 const { BadRequest } = require('../lib/errors');
+const DisputeStatuses = require('../shared/enum/DisputeStatuses');
 const { CompletedDisputeEmail, MemberUpdatedDisputeEmail } = require('../services/email');
 
 const authenticate = require('../services/authentication');
@@ -42,31 +43,32 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           '[user, statuses, attachments, disputeTool]',
         );
 
-        if (!dispute) throw new NotFoundError();
+        if (!dispute) {
+          next(new NotFoundError());
+        } else {
+          dispute.statuses = _.sortBy(dispute.statuses, 'createdAt');
 
-        dispute.statuses = _.sortBy(dispute.statuses, 'createdAt');
+          // Used in template
+          const optionData = dispute.disputeTool.data.options[dispute.data.option];
+          if (optionData && optionData.more) {
+            optionData.more = marked(optionData.more);
+          }
 
-        // Used in template
-        const optionData = dispute.disputeTool.data.options[dispute.data.option];
-        if (optionData && optionData.more) {
-          optionData.more = marked(optionData.more);
+          req.dispute = res.locals.dispute = dispute;
+          next();
         }
-
-        req.dispute = res.locals.dispute = dispute;
-        next();
       } catch (e) {
         next(e);
       }
     },
 
     show(req, res) {
-      res.locals.lastStatus = req.dispute.statuses.filter(status => {
-        if (status.status !== 'User Update') {
-          return true;
-        }
-
-        return false;
-      })[0];
+      res.locals.lastStatus = _.last(
+        _.sortBy(
+          _.filter(req.dispute.statuses, ({ status }) => status !== DisputeStatuses.userUpdate),
+          'updatedAt',
+        ),
+      );
 
       if (req.user && req.user.id === req.dispute.userId) {
         res.render('disputes/show');
@@ -76,11 +78,11 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     },
 
     async create(req, res, next) {
-      try {
-        if (!(req.body.disputeToolId && req.body.option)) {
-          throw new BadRequest();
-        }
+      if (!(req.body.disputeToolId && req.body.option)) {
+        return next(new BadRequest());
+      }
 
+      try {
         const dispute = await Dispute.createFromTool({
           user: req.user,
           disputeToolId: req.body.disputeToolId,
@@ -112,12 +114,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
             await email.send();
             logger.info('Successfully sent dispute updated email to organizers', email.toString());
           } catch (e) {
-            logger.error(
-              'Failed to send dispute update email to organizers',
-              e.message,
-              e.stack,
-              email.toString(),
-            );
+            res.flash('error', 'Failed to send dispute update email to organizers');
           }
         })
         .then(() => dispute.save())
@@ -148,15 +145,9 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           'Thank you for disputing your debt. A copy of your dispute has been sent to your email.',
         );
       } catch (e) {
-        req.error(
+        req.flash(
           'error',
           'Your dispute was successfully saved. However, an error was encountered while sending the confirmation email. Please contact a Debt Syndicate organizer to resolve this error.',
-        );
-        logger.error(
-          'Unable to send email upon dispute completion',
-          e.message,
-          e.stack,
-          email.toString(),
         );
       }
 

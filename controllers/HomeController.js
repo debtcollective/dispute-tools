@@ -121,11 +121,10 @@ const HomeController = Class('HomeController').inherits(BaseController)({
               await email.send();
               logger.info('Successfully sent RecurringDonationEmail', email.toString());
             } catch (e) {
-              logger.error(
-                'Failed to send RecurringDonationEmail',
-                e.message,
-                e.stack,
-                email.toString(),
+              // TODO: Handle this better...
+              req.flash(
+                'error',
+                'Your recurring donation was saved but we were unable to send a confirmation email.',
               );
             }
 
