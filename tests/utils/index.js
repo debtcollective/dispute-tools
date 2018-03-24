@@ -75,11 +75,13 @@ const helpers = {
     if (tool === null) {
       tool = await DisputeTool.first();
     }
-    return Dispute.createFromTool({
+    const dispute = await Dispute.createFromTool({
       user,
       disputeToolId: tool.id,
       option: tool.data.options.A ? 'A' : 'none',
     });
+    dispute.disputeTool = tool;
+    return dispute;
   },
 
   setCookie(req, user) {

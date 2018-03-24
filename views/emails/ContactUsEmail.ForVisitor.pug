@@ -1,0 +1,12 @@
+extends ./layouts/BaseEmail
+
+block title
+  div You have sent the following message to the Debt Syndicate organizers:
+
+block content
+  div(style="font-size: 16px; line-height: 142%;")
+    div(style="font-family: monospace; color: #000000;")
+      div #{message}
+
+    p They should be getting back to you shortly!
+

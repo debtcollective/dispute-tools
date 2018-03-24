@@ -1,9 +1,10 @@
-extends ../layouts/ContactMailer.pug
+extends ./layouts/BaseEmail
 
 block title
-  div #{name}
+  div #{name} has a message for the Debt Syndicate organizers:
 
 block content
   div(style="font-size: 16px; line-height: 142%;")
     div(style="font-family: monospace; color: #000000;")
       div #{message}
+

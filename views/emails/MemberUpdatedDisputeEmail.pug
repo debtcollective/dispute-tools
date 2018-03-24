@@ -1,12 +1,12 @@
-extends ../layouts/UserMailer.pug
+extends ./layouts/BaseEmail
 
 block title
-  div Dispute Status Update.
+  div Dispute Status Update
 
 block content
   div(style="font-size: 16px; line-height: 142%;")
     div(style="font-family: monospace; color: #000000;")
-      div <b>#{user.fullname}</b> have updated its <b>#{dispute.disputeTool.name}</b>.
+      div <b>#{member.fullname}</b> have updated their <b>#{dispute.disputeTool.name}</b>.
       div &nbsp;
 
       div <b>Comment:</b>

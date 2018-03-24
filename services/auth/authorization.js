@@ -1,4 +1,4 @@
-const ForbiddenError = require('../../lib/errors/ForbiddenError');
+const { logger, errors: { ForbiddenError } } = require('../../lib');
 
 /**
  * Creates an authorization middleware that will allow
@@ -31,8 +31,10 @@ module.exports = test => async (req, res, next) => {
   }
 
   if (testResult) {
+    logger.debug(`Authorized ${req.user.email} with ${test.toString()}`);
     next();
   } else {
+    logger.debug(`Unable to authorize ${req.user.email} with ${test.toString()}`);
     next(new ForbiddenError());
   }
 };

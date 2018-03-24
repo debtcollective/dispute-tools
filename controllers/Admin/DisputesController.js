@@ -1,5 +1,5 @@
 /* globals neonode, Class, Admin, RestfulController, DisputeTool, CONFIG, Dispute,
- DisputeMailer, DisputeStatus, logger, User */
+ DisputeStatus, logger, User */
 const path = require('path');
 const Promise = require('bluebird');
 const Dispute = require('../../models/Dispute');
@@ -85,7 +85,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     _loadDispute(req, res, next) {
       Dispute.query()
         .where({ id: req.params.id })
-        .include('[statuses, attachments, disputeTool, admins.[account]]')
+        .include('[user, statuses, attachments, disputeTool, admins.[account]]')
         .then(([dispute]) => {
           res.locals.dispute = dispute;
           req.dispute = dispute;

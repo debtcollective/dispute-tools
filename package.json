@@ -29,8 +29,7 @@
     "start:workers": "node workers/worker.js",
     "iron-node": "scripty",
     "watch": "webpack --progress --watch",
-    "svg":
-      "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
+    "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
     "post_deploy_staging": "scripty",
     "post_deploy_production": "./scripts/post_deploy_production",
     "disputes_sendto_admin": "./scripts/tasks/disputes-sendto-admin",
@@ -38,9 +37,20 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": ["prettier --write", "eslint --fix", "git add"],
-    "*.css": ["prettier-stylelint --write", "stylelint --fix", "git add"],
-    "*.vue": ["prettier --write", "git add"]
+    "*.js": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "*.css": [
+      "prettier-stylelint --write",
+      "stylelint --fix",
+      "git add"
+    ],
+    "*.vue": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "dependencies": {
     "@google/maps": "^0.4.5",
@@ -81,6 +91,7 @@
     "lodash-inflection": "^1.4.0",
     "marked": "^0.3.6",
     "method-override": "^2.3.6",
+    "mime": "^2.2.0",
     "mmmagic": "^0.4.5",
     "moment": "^2.20.1",
     "morgan": "^1.7.0",
@@ -93,6 +104,8 @@
     "postcss-loader": "^2.0.10",
     "pug": "^2.0.0-beta4",
     "query-string": "^4.2.3",
+    "raven": "^2.4.2",
+    "request": "^2.85.0",
     "response-time": "^2.3.1",
     "rimraf": "^2.5.4",
     "route-mappings": "^0.3.2",

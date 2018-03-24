@@ -2,9 +2,9 @@
 
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const { AuthenticationFailure } = require('../lib/errors');
+const { errors: { AuthenticationFailure }, Raven, logger } = require('../lib');
+const { siteURL, sso: { endpoint, secret, jwtSecret, cookieName } } = require('../config/config');
 
-const { siteURL, sso: { endpoint, secret, jwtSecret, cookieName } } = CONFIG;
 const nonces = {};
 
 const generateNonce = () => ({
@@ -117,8 +117,15 @@ const sso = {
     try {
       const claim = jwt.verify(decodedCookie, jwtSecret);
       req.user = cleanUser(claim);
+
+      Raven.captureBreadcrumb('Authenticated', req.user);
+      logger.debug(`Authenticated ${req.user.email}`);
+
       next();
     } catch (e) {
+      Raven.captureException(e);
+      logger.error('Unable to verify JWT cookie');
+      logger.debug(decodedCookie);
       const err = new AuthenticationFailure();
       err.message = e.message;
       next(err);

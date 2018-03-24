@@ -1,5 +1,9 @@
 const middlewares = [
   {
+    name: 'Raven',
+    path: 'middlewares/raven-request.js',
+  },
+  {
     name: 'Authentication handler',
     path: 'middlewares/handleAuthentication.js',
   },
@@ -42,6 +46,10 @@ const middlewares = [
   {
     name: 'Router',
     path: 'middlewares/Router.js',
+  },
+  {
+    name: 'Raven',
+    path: 'middlewares/raven-error.js',
   },
   {
     name: 'Error',

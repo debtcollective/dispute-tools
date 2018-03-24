@@ -1,3 +1,4 @@
+/* globals logger */
 const environment = process.env.NODE_ENV || 'development';
 const port = process.env.PORT || 8080;
 
@@ -17,10 +18,9 @@ module.exports = {
   mailers: {
     contactEmail: process.env.EMAIL_CONTACT || 'contact@example.com',
     senderEmail: process.env.EMAIL_NO_REPLY || 'no-reply@example.com',
-    disputesBCCAddresses: (process.env.EMAIL_DISPUTES_BCC &&
-      process.env.EMAIL_DISPUTES_BCC.split(',')) || ['disputes@example.com'],
+    disputesBCCAddress: process.env.EMAIL_DISPUTES_BCC || 'disputes@example.com',
   },
-  nodemailer: {
+  smtp: {
     host: process.env.EMAIL_HOST || 'localhost',
     port: process.env.EMAIL_PORT || 1025,
     secure: process.env.EMAIL_SECURE || false,
@@ -46,7 +46,10 @@ module.exports = {
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
       region: process.env.AWS_DEFAULT_REGION || '',
     },
+    useSes: process.env.USE_SES === 'true',
+    staticAssets: process.env.STATIC_ASSETS_BUCKET_URL || 'https://s3.amazonaws.com/tds-static',
   },
+  sentryEndpoint: process.env.SENTRY_ENDPOINT || '',
   database: require('./knexfile.sample'),
   middlewares: require('./middlewares'),
 };

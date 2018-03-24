@@ -1,9 +1,11 @@
 /* globals Dispute, RestfulController, Class, DisputeTool, CONFIG, DisputeStatus,
-    DisputeMailer, UserMailer, NotFoundError, DisputeRenderer, Dispute, logger */
+    UserMailer, NotFoundError, DisputeRenderer, Dispute, logger */
 const Promise = require('bluebird');
 const marked = require('marked');
 const _ = require('lodash');
 const { BadRequest } = require('../lib/errors');
+const DisputeStatuses = require('../shared/enum/DisputeStatuses');
+const { CompletedDisputeEmail, MemberUpdatedDisputeEmail } = require('../services/email');
 
 const { authenticate, authorize } = require('../services/auth');
 
@@ -40,31 +42,32 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           '[user, statuses, attachments, disputeTool]',
         );
 
-        if (!dispute) throw new NotFoundError();
+        if (!dispute) {
+          next(new NotFoundError());
+        } else {
+          dispute.statuses = _.sortBy(dispute.statuses, 'createdAt');
 
-        dispute.statuses = _.sortBy(dispute.statuses, 'createdAt');
+          // Used in template
+          const optionData = dispute.disputeTool.data.options[dispute.data.option];
+          if (optionData && optionData.more) {
+            optionData.more = marked(optionData.more);
+          }
 
-        // Used in template
-        const optionData = dispute.disputeTool.data.options[dispute.data.option];
-        if (optionData && optionData.more) {
-          optionData.more = marked(optionData.more);
+          req.dispute = res.locals.dispute = dispute;
+          next();
         }
-
-        req.dispute = res.locals.dispute = dispute;
-        next();
       } catch (e) {
         next(e);
       }
     },
 
     show(req, res) {
-      res.locals.lastStatus = req.dispute.statuses.filter(status => {
-        if (status.status !== 'User Update') {
-          return true;
-        }
-
-        return false;
-      })[0];
+      res.locals.lastStatus = _.last(
+        _.sortBy(
+          _.filter(req.dispute.statuses, ({ status }) => status !== DisputeStatuses.userUpdate),
+          'updatedAt',
+        ),
+      );
 
       if (req.user && req.user.id === req.dispute.userId) {
         res.render('disputes/show');
@@ -74,11 +77,11 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     },
 
     async create(req, res, next) {
-      try {
-        if (!(req.body.disputeToolId && req.body.option)) {
-          throw new BadRequest();
-        }
+      if (!(req.body.disputeToolId && req.body.option)) {
+        return next(new BadRequest());
+      }
 
+      try {
         const dispute = await Dispute.createFromTool({
           user: req.user,
           disputeToolId: req.body.disputeToolId,
@@ -104,57 +107,50 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
       ds
         .save()
-        .then(() =>
-          DisputeMailer.sendToAdmins({
-            dispute,
-            user: req.user,
-            disputeStatus: ds,
-          }).catch(e => {
-            logger.error('  ---> Failed to send mail to admins (on #update)');
-            logger.error(e.stack);
-          }),
-        )
+        .then(async () => {
+          const email = new MemberUpdatedDisputeEmail(req.user, dispute, ds);
+          try {
+            await email.send();
+            logger.info('Successfully sent dispute updated email to organizers', email.toString());
+          } catch (e) {
+            res.flash('error', 'Failed to send dispute update email to organizers');
+          }
+        })
         .then(() => dispute.save())
         .then(() => res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)))
         .catch(next);
     },
 
-    updateSubmission(req, res, next) {
+    async updateSubmission(req, res) {
       const dispute = res.locals.dispute;
       const pendingSubmission = req.body.pending_submission === '1';
 
-      dispute
-        .markAsCompleted(pendingSubmission)
-        .then(renderer =>
-          UserMailer.sendDispute(req.user.email, {
-            user: req.user,
-            renderer,
-            _options: {
-              subject: 'Dispute Documents - The Debt Collective',
-            },
-          })
-            .then(() =>
-              UserMailer.sendDisputeToAdmin({
-                user: req.user,
-                renderer,
-                _options: {
-                  subject: 'New Dispute Completed - The Debt Collective',
-                },
-              }),
-            )
-            .catch(e => {
-              logger.error('  ---> Failed to send smail to user (on #setSignature)');
-              logger.error(e.stack);
-            }),
-        )
-        .then(() => {
-          req.flash(
-            'success',
-            'Thank you for disputing your debt. A copy of your dispute has been sent to your email.',
-          );
-          res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
-        })
-        .catch(next);
+      try {
+        await dispute.markAsCompleted(pendingSubmission);
+      } catch (e) {
+        req.flash(
+          'error',
+          'An error occurred while completing your dispute. Please try again. If the problem persists, contact a Debt Syndicate organizer for assistance.',
+        );
+        logger.error('Unable to mark dispute as completed', e.message, e.stack);
+      }
+
+      const email = new CompletedDisputeEmail(req.user, dispute);
+
+      try {
+        await email.send();
+        req.flash(
+          'success',
+          'Thank you for disputing your debt. A copy of your dispute has been sent to your email.',
+        );
+      } catch (e) {
+        req.flash(
+          'error',
+          'Your dispute was successfully saved. However, an error was encountered while sending the confirmation email. Please contact a Debt Syndicate organizer to resolve this error.',
+        );
+      }
+
+      res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
     },
 
     updateDisputeData(req, res, next) {
@@ -209,24 +205,28 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         });
     },
 
-    addAttachment(req, res, next) {
+    async addAttachment(req, res, next) {
       const dispute = res.locals.dispute;
 
       if (!req.files || !req.files.attachment) {
         return next(new BadRequest());
       }
 
-      return Promise.each(req.files.attachment, attachment =>
-        dispute.addAttachment(req.body.name, attachment.path),
-      )
-        .then(() => dispute.save())
-        .catch(() => {
-          req.flash('error', 'A problem occurred trying to process the attachments');
-        })
-        .finally(() => {
-          req.flash('success', 'Attachment successfully added!');
-          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
-        });
+      try {
+        await Promise.each(req.files.attachment, attachment =>
+          dispute.addAttachment(req.body.name, attachment.path),
+        );
+        await dispute.save();
+        req.flash('success', 'Attachment successfully saved to your dispute');
+      } catch (e) {
+        req.flash(
+          'error',
+          'A problem occurred while attempting to upload your attachments. Please try again, and if the problem persists, contact a Debt Syndicate organizer.',
+        );
+        logger.error('Unable to upload attachment', e.message);
+      }
+
+      return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
     },
 
     removeAttachment(req, res) {

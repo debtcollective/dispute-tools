@@ -1,14 +1,16 @@
-/* globals Class, BaseController, logger, CONFIG, UserMailer, ContactMailer */
+/* globals Class, BaseController, logger, UserMailer */
 
 const stripe = require('stripe');
 const sso = require('../services/sso');
+const { ContactUsEmail, RecurringDonationEmail } = require('../services/email');
+const Router = require('../config/RouteMappings');
 
 const {
   sso: { cookieName },
   stripe: { secret: stripeSecret },
-  mailers: { contactEmail: CONTACT_EMAIL },
   siteURL,
-} = CONFIG;
+  mailers: { contactEmail },
+} = require('../config/config');
 
 const stripeClient = stripe(stripeSecret);
 
@@ -111,14 +113,20 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       if (req.body.subscribe) {
         createCustomer()
           .then(customer => createPlan().then(() => subscribe(customer.id)))
-          .then(subscription => {
+          .then(async subscription => {
             // send email for more info
-            UserMailer.sendSubscription(req.body.email, {
-              amount,
-              _options: {
-                subject: 'Your donation - The Debt Collective',
-              },
-            });
+            const email = new RecurringDonationEmail(req.user, amount);
+
+            try {
+              await email.send();
+              logger.info('Successfully sent RecurringDonationEmail', email.toString());
+            } catch (e) {
+              // TODO: Handle this better...
+              req.flash(
+                'error',
+                'Your recurring donation was saved but we were unable to send a confirmation email.',
+              );
+            }
 
             return subscription;
           })
@@ -159,7 +167,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
 
     index(req, res) {
       if (!req.user) res.render('home/index.pug');
-      else res.redirect(CONFIG.router.helpers.DisputeTools.url());
+      else res.redirect(Router.mappings.DisputeTools.url());
     },
 
     about(req, res) {
@@ -174,25 +182,27 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       res.render('home/contact');
     },
 
-    sendContact(req, res, next) {
+    async sendContact(req, res, next) {
       const { email, message, name } = req.body;
-      const emailerOptions = {
-        email,
-        message,
-        name,
-        _options: {
-          from: `${name} <${email}>`,
-        },
-      };
 
-      ContactMailer.sendMessage(CONTACT_EMAIL, emailerOptions)
-        .then(result => {
-          logger.info('ContactMailer.sendMessage result', result);
-          req.flash('success', 'Your message has been sent, thank you for contacting us.');
-          res.redirect(CONFIG.router.helpers.contact.url());
-          next();
-        })
-        .catch(next);
+      const contactUsEmail = new ContactUsEmail(message, email, name);
+      try {
+        await contactUsEmail.send();
+        logger.info(
+          `Successfully sent contact us email to ${name} <${email}> and the Debt Syndicate organizers`,
+          contactUsEmail.toString(),
+        );
+        req.flash('success', 'Your message has been sent, thank you for contacting us.');
+        res.redirect(Router.mappings.contact.url());
+        next();
+      } catch (e) {
+        logger.error('Unable to send contact us email', e.message, contactUsEmail.toString());
+        req.flash(
+          'error',
+          `Your message was not able to be sent. Please verify your contact information and try again. If the problem persists, please contact the organizers directly at ${contactEmail}`,
+        );
+        next(e);
+      }
     },
 
     dtr(req, res) {

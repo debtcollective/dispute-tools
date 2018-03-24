@@ -285,7 +285,7 @@ const Dispute = Class('Dispute')
       return this;
     },
 
-    addAttachment(name, filePath) {
+    async addAttachment(name, filePath) {
       const dispute = this;
 
       this.data.attachments = this.data.attachments || [];
@@ -295,32 +295,28 @@ const Dispute = Class('Dispute')
         foreignKey: this.id,
       });
 
-      return da
-        .save()
-        .then(() => {
-          return da.attach('file', filePath);
-        })
-        .then(() => {
-          return da.save();
-        })
-        .then(() => {
-          const path = da.file.url('original');
-          const fullPath = basePath + path;
-          const attachment = {
-            id: da.id,
-            name,
-            path: da.file.url('original'),
-            fullPath,
-          };
+      // Krypton is horrible.
+      // We have to save the attachment so that it has an id before we can give it a file...
+      await da.save();
+      await da.attach('file', filePath);
+      await da.save();
 
-          if (da.file.exists('thumb')) {
-            attachment.thumb = da.file.url('thumb');
-          }
+      const path = da.file.url('original');
+      const fullPath = basePath + path;
+      const attachment = {
+        id: da.id,
+        name,
+        path: da.file.url('original'),
+        fullPath,
+      };
 
-          dispute.data.attachments.push(attachment);
+      if (da.file.exists('thumb')) {
+        attachment.thumb = da.file.url('thumb');
+      }
 
-          return dispute.save();
-        });
+      dispute.data.attachments.push(attachment);
+
+      return dispute.save();
     },
 
     removeAttachment(id) {

@@ -3,6 +3,7 @@
 const { expect } = require('chai');
 const { createUser, createDispute } = require('../../utils');
 const DisputeStatuses = require('../../../shared/enum/DisputeStatuses');
+const { OrganizerUpdatedDisputeEmail } = require('../../../services/email');
 
 describe('Dispute Status', () => {
   let dispute;
@@ -11,6 +12,7 @@ describe('Dispute Status', () => {
   before(async () => {
     user = await createUser();
     dispute = await createDispute(user);
+    dispute.user = user;
   });
 
   it('Should create an new status', () => {
@@ -26,14 +28,12 @@ describe('Dispute Status', () => {
   });
 
   describe('notify', () => {
-    let _mailer;
     let called;
+    let send;
     before(() => {
-      _mailer = global.DisputeMailer;
-      global.DisputeMailer = {
-        sendStatusToUser() {
-          called = true;
-        },
+      send = OrganizerUpdatedDisputeEmail.prototype.send;
+      OrganizerUpdatedDisputeEmail.prototype.send = function send() {
+        called = true;
       };
     });
 
@@ -42,7 +42,7 @@ describe('Dispute Status', () => {
     });
 
     after(() => {
-      global.UserMailer = _mailer;
+      OrganizerUpdatedDisputeEmail.prototype.send = send;
     });
 
     it(', when true, should cause an email alerting the user of the status change to be sent', async () => {

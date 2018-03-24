@@ -1,58 +1,55 @@
-extends ../layouts/UserMailer.pug
+extends ./layouts/BaseEmail
 
 block title
-  div You have submitted a dispute with The Debt Collective.
+  div Thank you for disputing your debt
 
 block content
-  - var downloadURL = `${CONFIG.siteURL}${CONFIG.router.helpers.Disputes.download.url(renderer.disputeId)}`
+  - var downloadURL = `${CONFIG.siteURL}${CONFIG.router.helpers.Disputes.download.url(dispute.id)}`
 
   div(style="font-size: 16px; line-height: 142%;")
     div(style="font-family: monospace; color: #000000;")
-      div Thank you for disputing your debt. You can download copies of your dispute for your records by #[a(href=downloadURL style="color: #f04c34;") clicking here].
+      div To download a copy of your documents, #[a(href=downloadURL style="color: #f04c34;") click here] or copy and paste the following into your browser:
+      div &nbsp;
+      div #{downloadURL}
       div &nbsp;
       div If you opted to mail your forms yourself, here are some important addresses.
       div &nbsp;
       div IF YOUR TAXES ARE BEING SEIZED, MAIL A DISPUTE VIA CERTIFIED MAIL TO:
       div
         p
-          :verbatim
-            US DEPARTMENT OF EDUCATION <br/>
-            FEDERAL OFFSET UNIT <br/>
-            PO BOX PO Box 5609 <br/>
-            GREENVILLE, TX 75403-5227
+          |  US DEPARTMENT OF EDUCATION <br/>
+          |  FEDERAL OFFSET UNIT <br/>
+          |  PO BOX PO Box 5609 <br/>
+          |  GREENVILLE, TX 75403-5227
       div &nbsp;
       div IF YOUR WAGES ARE BEING GARNISHED, MAIL A DISPUTE VIA CERTIFIED MAIL TO:
       div
         p
-          :verbatim
-            US DEPARTMENT OF EDUCATION <br/>
-            ATTN: AWG HEARINGS BRANCH <br/>
-            PO BOX 5227 <br/>
-            GREENVILLE, TX 75403-5227
+          |  US DEPARTMENT OF EDUCATION <br/>
+          |  ATTN: AWG HEARINGS BRANCH <br/>
+          |  PO BOX 5227 <br/>
+          |  GREENVILLE, TX 75403-5227
       div &nbsp;
       div NOTE: If you have a FFEL loan, you should also send a copy of the dispute to your guarantor. If you do not know the name and address of your guarantor, please call the DOE hotline and ask them for the information: 1-800-621-3115.
       div &nbsp;
       div CREDIT REPORT DISPUTES SHOULD BE SENT CERTIFIED MAIL TO:
       div
         p
-          :verbatim
-            Experian <br/>
-            National Consumer Assistance Center <br/>
-            P.O. Box 2002 <br/>
-            Allen, TX 75013
+          |  Experian <br/>
+          |  National Consumer Assistance Center <br/>
+          |  P.O. Box 2002 <br/>
+          |  Allen, TX 75013
       div
         p
-          :verbatim
-            Equifax Credit Information Services, Inc. <br/>
-            P.O. Box 740241 <br/>
-            Atlanta, GA 30374
+          |  Equifax Credit Information Services, Inc. <br/>
+          |  P.O. Box 740241 <br/>
+          |  Atlanta, GA 30374
       div
         p
-          :verbatim
-            TransUnion LLC <br/>
-            Consumer Disclosure Center <br/>
-            P.O. Box 1000 <br/>
-            Chester, PA 19022
+          |  TransUnion LLC <br/>
+          |  Consumer Disclosure Center <br/>
+          |  P.O. Box 1000 <br/>
+          |  Chester, PA 19022
       div &nbsp;
       div For Private Student Loans and for General Debt Disputes, please send your dispute directly to the collector.
       div &nbsp;
