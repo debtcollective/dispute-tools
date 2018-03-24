@@ -86,7 +86,7 @@ export default {
         return {
           Agency: this.form.guarantyAgency,
           City: this.form.guarantyAgencyCity,
-          'Mailing Address': this.form.guarantyAgencyMailingAddress,
+          Address: this.form.guarantyAgencyMailingAddress,
           State: this.form.guarantyAgencyState,
           Zip: this.form.guarantyAgencyZipCode,
         };
