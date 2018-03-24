@@ -10,7 +10,12 @@
     <div
       v-else
       class="max-width-2">
-      <h3 class="pb3">Personal Information</h3>
+      <h3 class="pb1 center">
+        Personal Information
+      </h3>
+      <h4 class="pb3 center">
+        {{ pendingSubmission ? 'Debt Syndicate to mail dispute' : 'User to mail dispute' }}
+      </h4>
       <dl class="FormView">
         <span
           v-for="(val, key) in personalInformation"
@@ -24,15 +29,16 @@
 </template>
 
 <script>
-const getFormOrElse = ({ data, user, statuses: [{ status }] }) => {
+const getFormOrElse = ({ data, user, statuses: [{ status, pendingSubmission }] }) => {
   if (data && data.forms) {
     return {
       form: data.forms['personal-information-form'],
       status,
       user,
+      pendingSubmission,
     };
   }
-  return { form: false, status, user: false };
+  return { form: false, status, user: false, pendingSubmission };
 };
 
 export default {
@@ -63,10 +69,11 @@ export default {
   },
   methods: {
     updateData({ dispute }) {
-      const { form, user, status } = getFormOrElse(dispute);
+      const { form, user, status, pendingSubmission } = getFormOrElse(dispute);
       this.form = form;
       this.user = user;
       this.status = status;
+      this.pendingSubmission = pendingSubmission;
     },
   },
 };
