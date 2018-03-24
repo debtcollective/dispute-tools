@@ -1,7 +1,7 @@
-/* globals CONFIG */
-const { sso: { cookieName } } = CONFIG;
-
 const sso = require('../services/sso');
+const Raven = require('../lib/core/raven');
+const logger = require('../lib/core/logger');
+const { sso: { cookieName } } = require('../config/config');
 
 /**
  * Authentication middleware that will attempt to populate
@@ -15,6 +15,9 @@ module.exports = async (req, res, next) => {
   if (req.query.sig && req.query.sso) {
     const payload = sso.extractPayload(req.query);
     req.user = await sso.handlePayload(payload);
+
+    Raven.captureBreadcrumb('Authenticated', req.user);
+    logger.debug(`Authenticated ${req.user.email}`);
 
     sso.createCookie(req, res, next);
   } else if (req.cookies[cookieName]) {

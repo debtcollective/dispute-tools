@@ -14,6 +14,10 @@ const DisputeTool = Class('DisputeTool').inherits(Krypton.Model)({
     return dt;
   },
 
+  async findByDispute(dispute) {
+    return await DisputeTool.findById(dispute.disputeToolId);
+  },
+
   prototype: {
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
