@@ -29,7 +29,7 @@
     admin: [],
   }
 
-  if (currentUser && currentUser.role === 'Admin') {
+  if (hasAdminRoles) {
     _menuItemsData.admin = _menuItemsData.admin.concat([
       {
         text: 'Disputes',

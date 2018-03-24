@@ -1,4 +1,4 @@
-const sso = require('./sso');
+const sso = require('../sso');
 
 /**
  * This service closely matches the middleware {@link handleAuthentication}.

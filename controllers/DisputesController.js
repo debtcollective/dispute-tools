@@ -5,8 +5,7 @@ const marked = require('marked');
 const _ = require('lodash');
 const { BadRequest } = require('../lib/errors');
 
-const authenticate = require('../services/authentication');
-const authorize = require('../services/authorization');
+const { authenticate, authorize } = require('../services/auth');
 
 const DisputesController = Class('DisputesController').inherits(RestfulController)({
   beforeActions: [
