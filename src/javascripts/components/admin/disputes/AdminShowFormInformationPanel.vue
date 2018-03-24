@@ -25,6 +25,21 @@
         </span>
       </dl>
     </div>
+    <div
+      v-if="ffel !== null"
+      class="max-width-2 mt3">
+      <h3 class="pb1 center">
+        FFEL Loan Information
+      </h3>
+      <dl class="FormView">
+        <span
+          v-for="(val, key) in ffel"
+          :key="key">
+          <dt>{{ key }}</dt>
+          <dd>{{ val || '-' }}</dd>
+        </span>
+      </dl>
+    </div>
   </div>
 </template>
 
@@ -65,6 +80,19 @@ export default {
         'Phone 2': this.form.phone2,
         Creditor: this.form['agency-name'] || this.form['firm-name'],
       };
+    },
+    ffel() {
+      if (this.form['ffel-loan-radio-option'] === 'yes') {
+        return {
+          Agency: this.form.guarantyAgency,
+          City: this.form.guarantyAgencyCity,
+          'Mailing Address': this.form.guarantyAgencyMailingAddress,
+          State: this.form.guarantyAgencyState,
+          Zip: this.form.guarantyAgencyZipCode,
+        };
+      } else {
+        return null;
+      }
     },
   },
   methods: {
