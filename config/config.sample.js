@@ -50,6 +50,11 @@ module.exports = {
     staticAssets: process.env.STATIC_ASSETS_BUCKET_URL || 'https://s3.amazonaws.com/tds-static',
   },
   sentryEndpoint: process.env.SENTRY_ENDPOINT || '',
+  discourse: {
+    apiKey: process.env.DISCOURSE_API_KEY || '',
+    apiUsername: process.env.DISCOURSE_API_USERNAME || 'system',
+    baseUrl: process.env.DISCOURSE_API_BASE_URL || 'http://localhost:3000',
+  },
   database: require('./knexfile.sample'),
   middlewares: require('./middlewares'),
 };

@@ -1,4 +1,5 @@
-/* globals User */
+const User = require('../models/User');
+const discourse = require('../lib/discourse');
 
 exports.getSsoUserEnsuringCreated = async externalId => {
   let [user] = await User.query()
@@ -12,5 +13,6 @@ exports.getSsoUserEnsuringCreated = async externalId => {
     await user.save();
   }
 
+  user.setInfo(await discourse.admin.users.getById(externalId));
   return user;
 };
