@@ -355,7 +355,8 @@ const Dispute = Class('Dispute')
      */
     async updateAdmins(adminExternalIds) {
       const admins = await findAllDiscourseUsersEnsuringCreated(adminExternalIds);
-      const adminIds = admins.map(a => a.id);
+      const adminIds = admins.map(({ id }) => id);
+      const adminIdsToInsert = adminIds.filter(id => this.admins.find(a => a.id === id));
       const knex = Dispute.knex();
 
       return Dispute.transaction(trx => {
@@ -370,7 +371,7 @@ const Dispute = Class('Dispute')
               .table('AdminsDisputes')
               .transacting(trx)
               .insert(
-                adminIds.map(id => ({
+                adminIdsToInsert.map(id => ({
                   dispute_id: this.id,
                   admin_id: id,
                 })),
