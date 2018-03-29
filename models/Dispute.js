@@ -356,7 +356,7 @@ const Dispute = Class('Dispute')
     async updateAdmins(adminExternalIds) {
       const admins = await findAllDiscourseUsersEnsuringCreated(adminExternalIds);
       const adminIds = admins.map(({ id }) => id);
-      const adminIdsToInsert = adminIds.filter(id => this.admins.find(a => a.id === id));
+      const adminIdsToInsert = adminIds.filter(id => !this.admins.find(a => a.id === id));
       const knex = Dispute.knex();
 
       return Dispute.transaction(trx => {
@@ -397,7 +397,7 @@ const Dispute = Class('Dispute')
 
       return disputeAdmins.reduce(
         ({ assigned, available }, admin) => {
-          const isAssigned = assignedExternalIds.includes(admin.id);
+          const isAssigned = assignedExternalIds.includes(admin.externalId);
           return {
             assigned: isAssigned ? [...assigned, admin] : assigned,
             available: !isAssigned ? [...available, admin] : available,
