@@ -29,8 +29,7 @@
     "start:workers": "node workers/worker.js",
     "iron-node": "scripty",
     "watch": "webpack --progress --watch",
-    "svg":
-      "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
+    "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
     "post_deploy_staging": "scripty",
     "post_deploy_production": "./scripts/post_deploy_production",
     "disputes_sendto_admin": "./scripts/tasks/disputes-sendto-admin",
@@ -38,13 +37,23 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": ["prettier --write", "eslint --fix", "git add"],
-    "*.css": ["prettier-stylelint --write", "stylelint --fix", "git add"],
-    "*.vue": ["prettier --write", "git add"]
+    "*.js": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "*.css": [
+      "prettier-stylelint --write",
+      "stylelint --fix",
+      "git add"
+    ],
+    "*.vue": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "dependencies": {
     "@google/maps": "^0.4.5",
-    "discourse-node-api": "git://github.com/debtsyndicate/discourse-node-api.git#master",
     "archiver": "^1.1.0",
     "aws-sdk": "^2.130.0",
     "babel-core": "^6.26.0",
@@ -63,6 +72,7 @@
     "cookie-parser": "^1.4.3",
     "csurf": "^1.9.0",
     "datasets-us-states-names": "^1.0.0",
+    "discourse-node-api": "git://github.com/debtsyndicate/discourse-node-api.git#master",
     "express": "^4.14.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "fill-pdf": "^1.1.0",
