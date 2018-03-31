@@ -3,6 +3,7 @@ const uuid = require('uuid');
 const sso = require('../../services/sso');
 const sa = require('superagent');
 const { expect } = require('chai');
+const { execSync } = require('child_process');
 
 const { siteURL, sso: { endpoint } } = CONFIG;
 
@@ -185,6 +186,12 @@ const helpers = {
     req.catch(err => {
       expect(err.status).eq(400);
     }),
+
+  extractPdfText: path =>
+    execSync(`gs -dBATCH -dNOPAUSE -sDEVICE=txtwrite -sOutputFile=- ${path}`)
+      .toString('utf-8')
+      .replace(/\t/g, ' ')
+      .replace(/\r\n/g, '\n'),
 };
 
 module.exports = helpers;
