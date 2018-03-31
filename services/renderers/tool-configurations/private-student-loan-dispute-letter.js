@@ -23,7 +23,7 @@ module.exports = {
                 },
                 agency: {
                   name: form['firm-name'],
-                  address: form['firm-address'],
+                  address1: form['firm-address'],
                   address2: getAddress2({ form, prefix: 'firm-' }),
                 },
                 accountNumber: form['account-number'],
