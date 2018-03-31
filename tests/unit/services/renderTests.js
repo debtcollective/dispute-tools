@@ -9,9 +9,11 @@ const {
   taxOffsetReviews,
   wageGarnishmentDisputes,
 } = require('../../utils/sampleDisputeData');
+const { extractPdfText } = require('../../utils');
+const { formatDate } = require('../../../services/renderers/tool-configurations/shared/utils');
 
 function basicRenderTest(sampleData, docTemplates = [1]) {
-  return async function theTest() {
+  return async function theTest(generate = 'fdf') {
     const files = await render(sampleData);
     expect(files.length).to.eq(docTemplates.length);
     return Promise.all(
@@ -20,10 +22,12 @@ function basicRenderTest(sampleData, docTemplates = [1]) {
         return Promise.all(
           doc.map(async ({ rendered }) => {
             expect(rendered).to.be.defined;
-            return pdftk
-              .input(rendered)
-              .generateFdf()
-              .output();
+            return generate === 'fdf'
+              ? pdftk
+                  .input(rendered)
+                  .generateFdf()
+                  .output()
+              : rendered;
           }),
         );
       }),
@@ -68,10 +72,40 @@ const testNormalized = data => () => {
   });
 };
 
+/**
+ * Many of these tests run sequentially. We generally try
+ * to avoid that as much as possible. Here, however, it prevents
+ * us from having to re-render the various PDFs for each
+ * result we want to check. Instead we can break the tests
+ * down into three general steps:
+ *
+ * 1) Render the PDF:
+ *     This is a smoke test. It doesn't check anything other than
+ *     that the rendering pipeline works for the dispute tool configuration
+ *     we passed in.
+ * 2) Check that the rendered PDF the information we expect it to have:
+ *     Here we mostly end up reading the files from disk and parsing the
+ *     extracted FDF, in the case of a form, or the raw text in the case of
+ *     the letters.
+ * 3) Verify that the normalize impl does not return invalid values.
+ */
 describe('render', () => {
   describe('pug', () => {
     describe('general debt dispute', () => {
-      it('should render the pdf', basicRenderTest(generalDebtDispute));
+      let docs;
+      it('should render the pdf', async () => {
+        docs = await basicRenderTest(generalDebtDispute)('path');
+      });
+
+      it('should render all the form data into the letter', () => {
+        const [[path]] = docs;
+        const res = extractPdfText(path);
+        const form = generalDebtDispute.data.forms['personal-information-form'];
+        Object.keys(form).forEach(k => {
+          expect(res).includes(form[k]);
+        });
+      });
+
       it(
         'should not have undefined values after normalization',
         testNormalized(generalDebtDispute),
@@ -80,18 +114,76 @@ describe('render', () => {
 
     describe('private student debt dispute', () => {
       describe('when not debt not in default', () => {
-        it('should render the pdf', basicRenderTest(pslNotDefaulted));
+        let docs;
+        it('should render the pdf', async () => {
+          docs = await basicRenderTest(pslNotDefaulted)('path');
+        });
+
+        it('should render all the form data into the letter', () => {
+          const [[path]] = docs;
+          const res = extractPdfText(path);
+          const form = {
+            ...pslNotDefaulted.data.forms['personal-information-form'],
+            // Correspondence date not present in the defaulted letter
+            'last-correspondence-date': '',
+          };
+          // is-debt-in-default is 'no' in the form data to cause the non-defaulted letter to render.
+          // This snippet of text only exists in the non-defaulted letter so we can be sure it rendered
+          // the right letter and get rid of the 'no' that isn't going to be on the letter anyway
+          form['is-debt-in-default'] = 'Proof of amount owed';
+          Object.keys(form).forEach(k => {
+            expect(res).includes(form[k]);
+          });
+        });
+
         it('should not have undefined values after normalization', testNormalized(pslNotDefaulted));
       });
 
       describe('when debt is in default', () => {
-        it('should render the pdf', basicRenderTest(pslDefaulted));
+        let docs;
+        it('should render the pdf', async () => {
+          docs = await basicRenderTest(pslDefaulted)('path');
+        });
+
+        it('should render all the form data into the letter', () => {
+          const [[path]] = docs;
+          const res = extractPdfText(path);
+          const form = { ...pslDefaulted.data.forms['personal-information-form'] };
+          form['last-correspondence-date'] = formatDate(form['last-correspondence-date']);
+          // is-debt-in-default is 'yes' in the form data to cause the defaulted letter to render.
+          // This snippet of text only exists in the defaulted letter so we can be sure it rendered
+          // the right letter and get rid of the 'yes' that isn't going to be on the letter anyway
+          form['is-debt-in-default'] = 'Proof that the note is in default';
+          Object.keys(form).forEach(k => {
+            expect(res).includes(form[k]);
+          });
+        });
+
         it('should not have undefined values after normalization', testNormalized(pslNotDefaulted));
       });
     });
 
     describe('credit report dispute letter', () => {
-      it('should render the pdf', basicRenderTest(creditReportDispute, [2]));
+      let docs;
+      it('should render the pdf', async () => {
+        docs = await basicRenderTest(creditReportDispute, [2])('path');
+      });
+
+      it('should render all the form data into the letter', () => {
+        const [[path]] = docs;
+        const res = extractPdfText(path);
+
+        const form = {
+          ...creditReportDispute.data.forms['personal-information-form'],
+          // Doesn't actually render the agencies except into the agencies list document
+          agencies: '',
+        };
+
+        Object.keys(form).forEach(k => {
+          expect(res).includes(form[k]);
+        });
+      });
+
       it(
         'should not have undefined values after normalization',
         testNormalized(creditReportDispute),

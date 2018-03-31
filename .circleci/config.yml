@@ -3,7 +3,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/tdc-dispute-tools
   docker:
-    - image: circleci/node:8.9.1
+    - image: circleci/node:8.9.1-stretch
     - image: circleci/postgres:9.6.2-alpine
 
 jobs:
@@ -34,7 +34,7 @@ jobs:
       - attach_workspace:
           at: ~/tdc-dispute-tools
       - run: sudo apt-get update
-      - run: sudo apt-get install pdftk postgresql-client
+      - run: sudo apt-get install pdftk postgresql-client ghostscript
       - run: yarn test
       - run: yarn report
 
