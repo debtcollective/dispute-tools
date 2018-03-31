@@ -50,7 +50,7 @@ describe('Dispute Status', () => {
         comment: 'Test comment',
         status: DisputeStatuses.update,
         note: 'Just a friendly note',
-        notify: true,
+        notify: 'on',
       });
 
       expect(called).to.be.true;
@@ -61,7 +61,7 @@ describe('Dispute Status', () => {
         comment: 'Test comment',
         status: DisputeStatuses.update,
         note: 'Just a friendly note',
-        notify: false,
+        notify: 'off',
       });
 
       expect(called).to.be.false;
