@@ -188,7 +188,10 @@ const helpers = {
     }),
 
   extractPdfText: path =>
-    execSync(`gs -dBATCH -dNOPAUSE -sDEVICE=txtwrite -sOutputFile=- ${path}`).toString('utf-8'),
+    execSync(`gs -dBATCH -dNOPAUSE -sDEVICE=txtwrite -sOutputFile=- ${path}`)
+      .toString('utf-8')
+      .replace(/\t/g, ' ')
+      .replace(/\r\n/g, '\n'),
 };
 
 module.exports = helpers;

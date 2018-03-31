@@ -34,7 +34,8 @@ jobs:
       - attach_workspace:
           at: ~/tdc-dispute-tools
       - run: sudo apt-get update
-      - run: sudo apt-get install pdftk postgresql-client ghostscript
+      - run: sudo apt-get install pdftk postgresql-client
+      - run: sudo bash ./scripts/install_ghostscript_debian
       - run: yarn test
       - run: yarn report
 
