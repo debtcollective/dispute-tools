@@ -11,8 +11,9 @@ const {
   testAllowed,
   testForbidden,
 } = require('../../utils');
+const nock = require('nock');
 
-const urls = CONFIG.router.helpers;
+const { router: { helpers: urls }, discourse: { baseUrl: discourse } } = CONFIG;
 
 describe('Admin.DisputesController', () => {
   let user;
@@ -127,6 +128,20 @@ describe('Admin.DisputesController', () => {
     before(async () => {
       const dispute = await createDispute(await createUser());
       url = urls.Admin.Disputes.getAvailableAdmins.url(dispute.id);
+
+      nock(discourse)
+        .get('/groups/dispute-admin/members.json')
+        .query(true)
+        .times(2)
+        .reply(200, {
+          members: [
+            {
+              ...disputeAdmin,
+              id: disputeAdmin.externalId,
+            },
+          ],
+          owners: [],
+        });
     });
 
     describe('authorization', () => {
