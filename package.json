@@ -72,6 +72,7 @@
     "cookie-parser": "^1.4.3",
     "csurf": "^1.9.0",
     "datasets-us-states-names": "^1.0.0",
+    "discourse-node-api": "git://github.com/debtsyndicate/discourse-node-api.git#master",
     "express": "^4.14.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "fill-pdf": "^1.1.0",

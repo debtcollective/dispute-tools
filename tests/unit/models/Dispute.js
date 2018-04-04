@@ -308,7 +308,7 @@ describe('Dispute', () => {
     describe('admins', () => {
       describe('updateAdmin', () => {
         it('should assign the admin to the dispute', async () => {
-          await dispute.updateAdmins([user.id]);
+          await dispute.updateAdmins([user.externalId]);
           const disputeAdmins = await Dispute.knex()('AdminsDisputes').where({
             admin_id: user.id,
             dispute_id: dispute.id,
@@ -320,7 +320,7 @@ describe('Dispute', () => {
         });
 
         it('should remove the admin from being assigned to the dispute', async () => {
-          await dispute.updateAdmins([user.id]);
+          await dispute.updateAdmins([user.externalId]);
           await dispute.updateAdmins([]);
           const disputeAdmins = await Dispute.knex()('AdminsDisputes').where({
             admin_id: user.id,

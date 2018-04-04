@@ -49,13 +49,13 @@ export default {
   },
   methods: {
     save() {
-      return updateAdmins(this.disputeId, this.assigned.map(a => a.id)).then(
+      return updateAdmins(this.disputeId, this.assigned.map(a => a.externalId)).then(
         () =>
           new RestAlert({
             message: 'The list of administrators assigned has been updated.',
             type: 'success',
             containerRef: this.alertsContainer,
-          })
+          }),
       );
     },
     setAssigned(assigned) {
@@ -66,9 +66,7 @@ export default {
       this.getAvailableAndAssignedAdmins();
     },
     getAvailableAndAssignedAdmins() {
-      getAvailableAndAssignedAdmins(
-        this.disputeId
-      ).then(({ assigned, available }) => {
+      getAvailableAndAssignedAdmins(this.disputeId).then(({ assigned, available }) => {
         this.all = [...assigned, ...available];
         this.assigned = this.originalAssigned = [...assigned];
       });

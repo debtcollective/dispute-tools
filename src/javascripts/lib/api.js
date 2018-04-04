@@ -1,19 +1,11 @@
 /* global fetch, FormData */
 
-/**
- * Reference that holds the csrf token for the server to accept our requests.
- * @type {string}
- * @const
- */
-export const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-
 // quick helper
 export function req(opts, cb) {
   opts.headers = opts.headers || {};
 
-  opts.credentials = 'same-origin';
+  opts.credentials = 'include';
   opts.headers.Accept = 'application/json';
-  opts.headers['X-CSRF-Token'] = csrfToken;
 
   if (!(opts.body instanceof FormData)) {
     opts.headers['Content-Type'] = 'application/json';

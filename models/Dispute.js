@@ -5,6 +5,8 @@
 const _ = require('lodash');
 const { basePath } = require('../lib/AWS');
 const DisputeAttachment = require('./DisputeAttachment');
+const discourse = require('../lib/discourse');
+const { findAllDiscourseUsersEnsuringCreated } = require('../services/users');
 
 const Dispute = Class('Dispute')
   .inherits(Krypton.Model)
@@ -348,10 +350,13 @@ const Dispute = Class('Dispute')
     /**
      * Update the list of admins assigned to this dispute. Removes all admins
      * who are not present in the array of ids and assigns new ones.
-     * @param {string[]} adminIds Array of admin ids
+     * @param {number[]} adminExternalIds Array of admin ids
      * @return {Promise<void>}
      */
-    updateAdmins(adminIds) {
+    async updateAdmins(adminExternalIds) {
+      const admins = await findAllDiscourseUsersEnsuringCreated(adminExternalIds);
+      const adminIds = admins.map(({ id }) => id);
+      const adminIdsToInsert = adminIds.filter(id => !this.admins.find(a => a.id === id));
       const knex = Dispute.knex();
 
       return Dispute.transaction(trx => {
@@ -366,7 +371,7 @@ const Dispute = Class('Dispute')
               .table('AdminsDisputes')
               .transacting(trx)
               .insert(
-                adminIds.map(id => ({
+                adminIdsToInsert.map(id => ({
                   dispute_id: this.id,
                   admin_id: id,
                 })),
@@ -386,13 +391,20 @@ const Dispute = Class('Dispute')
      * or "available" to be assigned.
      * @return {Promise<{ assigned: AdminInfo[], available: AdminInfo[] }>}
      */
-    getAssignedAndAvailableAdmins() {
-      // const assigned = this.admins.reduce((acc, a) => {
-      //   acc[a.id] = a;
-      //   return acc;
-      // }, {});
+    async getAssignedAndAvailableAdmins() {
+      const assignedExternalIds = this.admins.map(a => a.externalId);
+      const { members: disputeAdmins } = await discourse.getDisputeAdmins();
 
-      return Promise.resolve({ assigned: [], available: [] });
+      return disputeAdmins.reduce(
+        ({ assigned, available }, admin) => {
+          const isAssigned = assignedExternalIds.includes(admin.externalId);
+          return {
+            assigned: isAssigned ? [...assigned, admin] : assigned,
+            available: !isAssigned ? [...available, admin] : available,
+          };
+        },
+        { assigned: [], available: [] },
+      );
     },
 
     destroy() {

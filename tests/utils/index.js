@@ -3,9 +3,10 @@ const uuid = require('uuid');
 const sso = require('../../services/sso');
 const sa = require('superagent');
 const { expect } = require('chai');
+const nock = require('nock');
 const { execSync } = require('child_process');
 
-const { siteURL, sso: { endpoint } } = CONFIG;
+const { siteURL, sso: { endpoint }, discourse: { baseUrl } } = require('../../config/config');
 
 const agent = sa.agent();
 
@@ -47,6 +48,15 @@ const helpers = {
     const user = new User(params);
 
     await user.save();
+
+    nock(baseUrl)
+      .get(`/admin/users/${params.externalId}.json`)
+      .query(true)
+      .times(100)
+      .reply(200, {
+        ...user,
+        id: user.externalId,
+      });
 
     return user.setInfo({
       groups,
