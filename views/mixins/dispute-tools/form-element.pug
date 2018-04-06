@@ -129,6 +129,7 @@ mixin toolsFormElementMixin(field, index)
         label.pl1.mr3.-ff-sec(for=`${field.name}-${field.value}`)!= field.label
         p.-on-error.-danger.-caption.-fw-500.mt1
 
+      when 'keyvalue'
       when 'group'
         fieldset.pb2
           if field.title
