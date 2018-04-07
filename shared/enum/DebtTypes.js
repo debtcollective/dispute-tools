@@ -1,4 +1,4 @@
-module.exports = Object.freeze({
+exports.DebtTypes = Object.freeze({
   federalStudentLoanDebt: 'Federal student loan debt',
   privateStudentLoanDebt: 'Private student loan debt',
   medicalDebt: 'Medical debt',
@@ -8,3 +8,14 @@ module.exports = Object.freeze({
   housingDebt: 'Housing debt',
   finesAndFees: 'Fines and fees',
 });
+
+exports.DebtTypesCollection = Object.keys(exports.DebtTypes).reduce(
+  (acc, key) => [
+    ...acc,
+    {
+      key,
+      value: exports.DebtTypes[key],
+    },
+  ],
+  [],
+);

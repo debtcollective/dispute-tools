@@ -6,13 +6,12 @@ import Widget from '../../lib/widget';
 import Button from '../../components/Button';
 import ConfirmInline from '../../components/ConfirmInline';
 import DebtAmounts from './DebtAmounts.vue';
-import extractDebtsFromForm from '../../../../shared/utils/extractDebtsFromForm';
 
-const mountDebtAmounts = debts =>
+const mountDebtAmounts = debt =>
   new Vue({
     el: '#debt-amounts-mount-point',
     render() {
-      return <DebtAmounts originalDebts={debts} />;
+      return <DebtAmounts originalDebt={debt} />;
     },
   }).$children[0];
 
@@ -32,18 +31,18 @@ export default class DisputesInformationForm extends Widget {
     const formData = data.steps.filter(step => step.type === 'form')[0];
 
     if (document.getElementById('debt-amounts-mount-point')) {
-      const existingDebts = get(
-        // _forms is used to save the form without overwriting
-        // the canonical `forms` which is used for rendering so
-        // we check it first in case the member has the form in
-        // progress
-        config.dispute.data._forms || config.dispute.data.forms,
-        'personal-information-form.debts',
-      );
+      const originalDebt = {
+        type: get(
+          config.dispute.data._forms || config.dispute.data.forms,
+          'personal-information-form.debt-type',
+        ),
+        amount: get(
+          config.dispute.data._forms || config.dispute.data.forms,
+          'personal-information-form.debt-amount',
+        ),
+      };
 
-      this.debtAmounts = mountDebtAmounts(
-        existingDebts ? extractDebtsFromForm(existingDebts) : undefined,
-      );
+      this.debtAmounts = mountDebtAmounts(originalDebt);
     }
 
     this.constraints = {};
