@@ -32,6 +32,14 @@ describe('Admin.DisputesController', () => {
     const url = urls.Admin.Disputes.url();
 
     describe('authorization', () => {
+      before(() => {
+        nock(discourse)
+          .get('/admin/users/list/active.json')
+          .times(2)
+          .query(true)
+          .reply(200, []);
+      });
+
       describe('when unauthenticated', () => {
         it('should redirect to login', () => testUnauthenticated(testGetPage(url)));
       });
