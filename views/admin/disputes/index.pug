@@ -138,7 +138,10 @@ block body
     button(class="Modal__close" aria-label="close")
       svg(class="-s18"): use(xlink:href="#svg-close")
     .Modal__body(role="document")
-      include ../../admin/disputes/show.pug
+      .px2.flex(data-component-form='show-dispute')
+        div(data-dispute-row)
+        div(data-dispute-wrapper)
+        div(data-attachment-list)
 
   .Modal(data-component-modal="add-status" aria-hidden="true" role="dialog" aria-labelledby="modalSignupTitle")
     button(class="Modal__close" aria-label="close")

@@ -13,9 +13,12 @@
       <h3 class="pb1 center">
         Personal Information
       </h3>
-      <h4 class="pb3 center">
-        {{ pendingSubmission ? 'Debt Syndicate to mail dispute' : 'User to mail dispute' }}
+      <h4 class="pb1 center">
+        {{ pendingSubmission ? 'Debt Collective to mail dispute' : 'User to mail dispute' }}
       </h4>
+      <h5 class="pb3 center">
+        <a class="-k-btn btn-primary -fw-700" :href="`/admin/disputes/${dispute.id}`">Edit dispute form data</a>
+      </h5>
       <dl class="FormView">
         <span
           v-for="(val, key) in personalInformation"
@@ -64,7 +67,7 @@ export default {
     },
   },
   data() {
-    return getFormOrElse(this.initialDispute);
+    return { ...getFormOrElse(this.initialDispute), dispute: this.initialDispute };
   },
   computed: {
     personalInformation() {
@@ -101,6 +104,7 @@ export default {
       this.form = form;
       this.user = user;
       this.status = status;
+      this.dispute = dispute;
       this.pendingSubmission = pendingSubmission;
     },
   },
