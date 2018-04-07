@@ -47,9 +47,10 @@ routeMapper.routes.forEach(route => {
     }
 
     if (!controllerMethod) {
-      throw new Error(
+      logger.warn(
         `Action '${action}' for '${controller}' is missing. Handler: ${route.handler.join('.')}`,
       );
+      return;
     }
 
     const args = [];
@@ -88,6 +89,9 @@ routeMapper.routes.forEach(route => {
 
     args.push(controllerMethod);
 
+    logger.info(
+      `Adding route: ${verb} ${route.path} ${route.path === '/admin/users' ? args.join() : ''}`,
+    );
     router.route(route.path)[verb](args);
   });
 });

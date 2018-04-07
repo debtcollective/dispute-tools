@@ -59,17 +59,19 @@ const routeMappings = RouteMappings()
 
   // Admin
   .namespace('/Admin', mapAdmins =>
-    mapAdmins().resources('/Disputes', mapAdminDisputes =>
-      mapAdminDisputes()
-        .get('/:id/admins', {
-          to: 'Disputes#getAvailableAdmins',
-          as: 'getAvailableAdmins',
-        })
-        .post('/:id/admins', {
-          to: 'Disputes#updateAdmins',
-          as: 'updateAdmins',
-        }),
-    ),
+    mapAdmins()
+      .resources('/Disputes', mapAdminDisputes =>
+        mapAdminDisputes()
+          .get('/:id/admins', {
+            to: 'Disputes#getAvailableAdmins',
+            as: 'getAvailableAdmins',
+          })
+          .post('/:id/admins', {
+            to: 'Disputes#updateAdmins',
+            as: 'updateAdmins',
+          }),
+      )
+      .resources('/Users'),
   )
 
   // Dispute Tools
