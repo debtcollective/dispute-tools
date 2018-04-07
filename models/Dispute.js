@@ -58,10 +58,14 @@ const Dispute = Class('Dispute')
 
     const records = await query;
 
+    const externalUserIds = qs.name
+      ? (await discourse.getUsers({ filter: qs.name })).map(u => u.externalId)
+      : [];
+
     return records.reduce((acc, record) => {
       const nameFound =
         // If no name passed in
-        !qs.name || record.user.username.toLowerCase().indexOf(qs.name.toLowerCase()) !== -1;
+        !qs.name || externalUserIds.find(id => id === record.user.externalId);
 
       const statusFound =
         // If no status passed in

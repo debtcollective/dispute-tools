@@ -17,8 +17,8 @@
   resolved "https://registry.yarnpkg.com/@std/esm/-/esm-0.19.7.tgz#8eeab6c54596a92e3557992621c91e8166a19852"
 
 "@types/node@*":
-  version "9.6.1"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-9.6.1.tgz#e2d374ef15b315b48e7efc308fa1a7cd51faa06c"
+  version "9.6.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-9.6.2.tgz#e49ac1adb458835e95ca6487bc20f916b37aff23"
 
 "@types/superagent@^3.5.7":
   version "3.5.7"
@@ -2538,7 +2538,7 @@ dir-glob@^2.0.0:
 
 "discourse-node-api@git://github.com/debtsyndicate/discourse-node-api.git#master":
   version "0.0.1"
-  resolved "git://github.com/debtsyndicate/discourse-node-api.git#b1db8db81f416a3e76d2eff74922c8c006dfb109"
+  resolved "git://github.com/debtsyndicate/discourse-node-api.git#25773be99092c38db6e065c5f3c47427bbdb3d03"
   dependencies:
     "@types/superagent" "^3.5.7"
     chai "^4.1.2"
