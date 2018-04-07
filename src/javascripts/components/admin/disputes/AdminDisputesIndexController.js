@@ -8,6 +8,7 @@ import AdminDisputesAddStatusForm from './AdminDisputesAddStatusForm';
 import AdminShowFormInformationPanel from './AdminShowFormInformationPanel.vue';
 import AssignedToMeButton from './AssignedToMeButton';
 import ManageDisputeAdmins from './ManageDisputeAdmins.vue';
+import { getUserByExternalId } from '../../../lib/api';
 
 /**
  * @param {string} disputeId The initial dispute id for which the component
@@ -153,7 +154,18 @@ export default class AdminDisputesIndexController extends Widget {
       if (this.adminShowInformationPanel) {
         this.adminShowInformationPanel.updateData(data);
       } else {
-        this.adminShowInformationPanel = mountAdminShowFormInformationPanel(data);
+        getUserByExternalId(data.dispute.user.externalId).then(user => {
+          this.adminShowInformationPanel = mountAdminShowFormInformationPanel({
+            ...data,
+            dispute: {
+              ...data.dispute,
+              user: {
+                ...data.dispute.user,
+                ...user,
+              },
+            },
+          });
+        });
       }
 
       this.viewDisputeModal.activate();
