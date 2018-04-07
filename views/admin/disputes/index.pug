@@ -87,8 +87,8 @@ block content
           tr
             td
               .flex.items-center
-                img(src=_dispute.user.imageURL alt=_dispute.user.fullname width="50" height="50")
-                p.pl2.-fw-700= _dispute.user.fullname
+                img(src=_dispute.user.imageURL alt=(_dispute.user.username || _dispute.user.name) width="50" height="50")
+                p.pl2.-fw-700= (_dispute.user.username || _dispute.user.name)
             td.-fw-400
               | #{_dispute.readableId}
             td.-fw-500

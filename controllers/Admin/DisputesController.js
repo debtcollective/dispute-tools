@@ -3,6 +3,7 @@
 const path = require('path');
 const Promise = require('bluebird');
 const Dispute = require('../../models/Dispute');
+const discourse = require('../../lib/discourse');
 
 const { authenticate, authorize, tests: { isDisputeAdmin } } = require('../../services/auth');
 
@@ -94,9 +95,15 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         .catch(next);
     },
 
-    index(req, res) {
+    async index(req, res) {
       res.locals.disputes = res.locals.results;
       res.locals.statuses = DisputeStatus.statuses;
+
+      const users = await discourse.getUsers();
+
+      res.locals.disputes.forEach(dispute => {
+        dispute.user.setInfo(users.find(u => u.externalId === dispute.user.externalId) || {});
+      });
 
       res.locals.headers = {
         total_count: ~~res._headers.total_count,
