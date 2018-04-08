@@ -31,8 +31,6 @@ const DisputeTool = Class('DisputeTool').inherits(Krypton.Model)({
         `${this.slug}.js`,
       );
 
-      delete require.cache[require.resolve(dataFile)];
-
       this.data = require(dataFile);
     },
   },
