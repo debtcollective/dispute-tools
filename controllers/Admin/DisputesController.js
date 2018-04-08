@@ -3,6 +3,7 @@
 const path = require('path');
 const Promise = require('bluebird');
 const Dispute = require('../../models/Dispute');
+const discourse = require('../../lib/discourse');
 
 const { authenticate, authorize, tests: { isDisputeAdmin } } = require('../../services/auth');
 
@@ -111,8 +112,10 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     async update(req, res, next) {
       const dispute = res.locals.dispute;
 
+      dispute.user = discourse.mapUser(await discourse.getUser(dispute.user));
+
       try {
-        await DisputeStatus.createForDispute(dispute, req.body);
+        await DisputeStatus.createForDispute(dispute, req.user, req.body);
 
         req.flash('success', 'The dispute status has been updated.');
         res.redirect(CONFIG.router.helpers.Admin.Disputes.url());
