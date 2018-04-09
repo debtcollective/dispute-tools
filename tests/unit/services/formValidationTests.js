@@ -68,21 +68,25 @@ describe('formValidations', () => {
           foldToOptionFieldsValidationsObject(extractToolFormValidations(taxOffsetDispute)).A,
         );
       });
+
       it('should cache the B option on load', () => {
         expect(getCheckitConfig({ ...dispute, data: { ...dispute.data, option: 'B' } })).eql(
           foldToOptionFieldsValidationsObject(extractToolFormValidations(taxOffsetDispute)).B,
         );
       });
+
       it('should cache the C option on load', () => {
         expect(getCheckitConfig({ ...dispute, data: { ...dispute.data, option: 'C' } })).eql(
           foldToOptionFieldsValidationsObject(extractToolFormValidations(taxOffsetDispute)).C,
         );
       });
+
       it('should cache the D option on load', () => {
         expect(getCheckitConfig({ ...dispute, data: { ...dispute.data, option: 'D' } })).eql(
           foldToOptionFieldsValidationsObject(extractToolFormValidations(taxOffsetDispute)).D,
         );
       });
+
       it('should cache the E option on load', () => {
         expect(getCheckitConfig({ ...dispute, data: { ...dispute.data, option: 'E' } })).eql(
           foldToOptionFieldsValidationsObject(extractToolFormValidations(taxOffsetDispute)).E,
@@ -101,21 +105,25 @@ describe('formValidations', () => {
           foldToOptionFieldsValidationsObject(extractToolFormValidations(wageGarnishmentDispute)).A,
         );
       });
+
       it('should cache the B option on load', () => {
         expect(getCheckitConfig({ ...dispute, data: { ...dispute.data, option: 'B' } })).eql(
           foldToOptionFieldsValidationsObject(extractToolFormValidations(wageGarnishmentDispute)).B,
         );
       });
+
       it('should cache the C option on load', () => {
         expect(getCheckitConfig({ ...dispute, data: { ...dispute.data, option: 'C' } })).eql(
           foldToOptionFieldsValidationsObject(extractToolFormValidations(wageGarnishmentDispute)).C,
         );
       });
+
       it('should cache the D option on load', () => {
         expect(getCheckitConfig({ ...dispute, data: { ...dispute.data, option: 'D' } })).eql(
           foldToOptionFieldsValidationsObject(extractToolFormValidations(wageGarnishmentDispute)).D,
         );
       });
+
       it('should cache the E option on load', () => {
         expect(getCheckitConfig({ ...dispute, data: { ...dispute.data, option: 'E' } })).eql(
           foldToOptionFieldsValidationsObject(extractToolFormValidations(wageGarnishmentDispute)).E,

@@ -19,6 +19,7 @@ const disputeOptions = {
       option: 'A',
       forms: {
         'personal-information-form': {
+          'debt-amount': 1000,
           ssn: '123231234',
           city: 'Charleston',
           name: 'Test Dispute Render User Name',
@@ -43,6 +44,7 @@ const disputeOptions = {
           employerZipCode: '94303',
           employerAddress1: '2727 Midtown Ct',
           'employment-radio-option': 'yes',
+          'ffel-loan-radio-option': 'no',
         },
       },
       signature: 'Alexandre Guerra Marcondes',
@@ -71,6 +73,7 @@ const disputeOptions = {
           'school-zip-code': '90434',
           'school-attended-to': '2015-11-30',
           'school-attended-from': '2011-11-30',
+          'ffel-loan-radio-option': 'no',
         },
       },
       signature: 'This is a SIGNATURE',
@@ -118,6 +121,7 @@ const disputeOptions = {
           'atb-entrance-exam-improper': 'yes',
           'atb-entrance-exam-improper-explain': 'The proctor was drunk',
           'atb-entrance-exam-radio-option': 'no',
+          'ffel-loan-radio-option': 'no',
         },
       },
       signature: 'This is a SIGNATURE',
@@ -167,6 +171,7 @@ const disputeOptions = {
           'atb-entrance-exam-improper': 'yes',
           'atb-entrance-exam-improper-explain': 'The proctor was drunk',
           'atb-entrance-exam-radio-option': 'no',
+          'ffel-loan-radio-option': 'no',
         },
       },
       signature: 'This is a SIGNATURE',
@@ -222,6 +227,7 @@ const disputeOptions = {
           'atb-entrance-exam-supporter-state': 'Bogus State That is not SC',
           'atb-entrance-exam-supporter-address': '392 College Avenue',
           'atb-entrance-exam-supporter-zip-code': '29660',
+          'ffel-loan-radio-option': 'no',
         },
       },
       signature: 'This is a SIGNATURE',
@@ -260,6 +266,7 @@ const disputeOptions = {
           'school-attended-from': '2012-11-02',
           'atbd-program-of-study': 'Philosophy',
           'atbd-reason-not-to-benefit': 'no',
+          'ffel-loan-radio-option': 'no',
         },
       },
       signature: 'This is a SIGNATURE',
@@ -300,6 +307,7 @@ const disputeOptions = {
           'school-attended-from': '2012-11-02',
           'atbd-program-of-study': 'Philosophy',
           'atbd-reason-not-to-benefit': 'no',
+          'ffel-loan-radio-option': 'no',
         },
       },
       signature: 'This is a SIGNATURE',
@@ -336,6 +344,7 @@ const disputeOptions = {
           'fc-tuition-payment': "Money from the gov't",
           'school-attended-to': '2017-12-03',
           'school-attended-from': '2016-12-03',
+          'ffel-loan-radio-option': 'no',
         },
       },
       signature: 'This is a SIGNATURE',
@@ -376,6 +385,7 @@ const disputeOptions = {
           'fc-tuition-payment': "Money from the gov't",
           'school-attended-to': '2017-12-03',
           'school-attended-from': '2016-12-03',
+          'ffel-loan-radio-option': 'no',
         },
       },
       signature: 'This is a SIGNATURE',
@@ -388,14 +398,14 @@ const disputeOptions = {
   },
 };
 
-const assignDisputeToolIds = function assign(disputeToolId) {
-  const newDict = {};
-  Object.keys(disputeOptions).map(option => {
-    newDict[option] = Object.assign({ disputeToolId }, disputeOptions[option]);
-    return null;
-  });
-  return newDict;
-};
+const assignDisputeToolIds = disputeToolId =>
+  Object.keys(disputeOptions).reduce(
+    (acc, option) => ({
+      ...acc,
+      [option]: { disputeToolId, ...disputeOptions[option] },
+    }),
+    {},
+  );
 
 module.exports = {
   generalDebtDispute: {

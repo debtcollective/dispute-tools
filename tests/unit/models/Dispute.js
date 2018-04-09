@@ -7,6 +7,7 @@ const uuid = require('uuid');
 const PrivateAttachmentStorage = require('../../../models/PrivateAttachmentStorage');
 const { createUser, createDispute, truncate } = require('../../utils');
 const DisputeStatuses = require('../../../shared/enum/DisputeStatuses');
+const { wageGarnishmentDisputes } = require('../../utils/sampleDisputeData');
 
 describe('Dispute', () => {
   let user;
@@ -152,13 +153,67 @@ describe('Dispute', () => {
       dispute = await createDispute(user);
     });
 
-    it('should require a form name', () => {
+    it('should require a form name', async () => {
+      let caught;
       try {
-        dispute.setForm({ fieldValues: {}, _isDirty: false });
-        expect(true, 'Did not throw error when calling setForm with invalid parameters').false;
+        await dispute.setForm({ fieldValues: {}, _isDirty: false });
       } catch (e) {
-        expect(e.message).string('The formName is required');
+        caught = e;
       }
+      expect(caught).exist;
+    });
+
+    it('should set the form', async () => {
+      const fieldValues = wageGarnishmentDisputes.A.data.forms['personal-information-form'];
+
+      dispute.data.option = 'A';
+
+      try {
+        await dispute.setForm({ formName: 'form-name', fieldValues });
+      } catch (e) {
+        console.error(e);
+      }
+
+      expect(dispute.data.forms['form-name']).to.be.equal(fieldValues);
+    });
+
+    it('should not allow a form missing required fields', async () => {
+      const fieldValues = {
+        ...wageGarnishmentDisputes.A.data.forms['personal-information-form'],
+        'debt-amount': undefined,
+      };
+
+      dispute.data.option = 'A';
+
+      let caught;
+      try {
+        await dispute.setForm({ formName: 'form-name', fieldValues });
+      } catch (e) {
+        caught = e;
+      }
+
+      expect(caught).exist;
+      expect(caught.errors['debt-amount'].message).eq('The debt-amount is required');
+    });
+
+    it('should toggle required fields that depend on other fields', async () => {
+      const fieldValues = {
+        ...wageGarnishmentDisputes.A.data.forms['personal-information-form'],
+        'ffel-loan-radio-option': 'on',
+      };
+
+      dispute.data.option = 'A';
+
+      let caught;
+      try {
+        await dispute.setForm({ formName: 'form-name', fieldValues });
+      } catch (e) {
+        caught = e;
+      }
+
+      expect(caught).exist;
+      expect(caught.errors.guarantyAgency).exist;
+      expect(caught.errors.guarantyAgency.errors.find(e => e.rule === 'required')).exist;
     });
   });
 
@@ -177,20 +232,9 @@ describe('Dispute', () => {
           .include('admins')
           .then(([d]) => {
             dispute = d;
+            dispute.disputeTool = tool;
           }),
       );
-    });
-
-    it('Should set a form', () => {
-      const fieldValues = {
-        name: 'Example Name',
-        address1: 'Address 1',
-        address2: 'Address 2',
-      };
-
-      dispute.setForm({ formName: 'form-name', fieldValues });
-
-      expect(dispute.data.forms['form-name']).to.be.equal(fieldValues);
     });
 
     describe('attachments', () => {

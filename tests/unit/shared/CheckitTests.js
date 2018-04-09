@@ -55,7 +55,9 @@ describe('Debt Collective Checkit extensions', () => {
       const [{ errors }, res] = checkit.validateSync({ enumed: 'Blarg' });
       expect(errors).exist;
       expect(errors.enumed).exist;
-      expect(errors.enumed.message).eq('Invalid option. Was not one of Hello, world, MONSTERS');
+      expect(errors.enumed.message).eq(
+        'Invalid option. The value of enumed was not one of Hello, world, MONSTERS',
+      );
       expect(res).null;
     });
 
@@ -87,6 +89,16 @@ describe('Debt Collective Checkit extensions', () => {
 
     it('should pass on empty array', () => {
       const [err, res] = checkit.validateSync({ enumed: [] });
+      expect(err).null;
+      expect(res).exist;
+    });
+  });
+
+  describe('parsableDate', () => {
+    const checkit = new Checkit({ d: ['parsableDate'] });
+
+    it('should accept MM/DD/YYYY format', () => {
+      const [err, res] = checkit.validateSync({ d: '05/16/1994' });
       expect(err).null;
       expect(res).exist;
     });

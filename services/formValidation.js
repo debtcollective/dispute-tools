@@ -22,7 +22,10 @@ const extractToolFormValidations = tool =>
     const form = option.steps.find(s => s.type === 'form');
 
     const fields = _.flattenDeep(form.fieldSets.map(flattenFieldSet)).reduce(
-      (acc, { name, validations }) => ({ ...acc, [name]: validations }),
+      (acc, { name, validations }) => ({
+        ...acc,
+        [name]: validations,
+      }),
       {},
     );
 
@@ -56,13 +59,36 @@ logger.info('Caching form validation configurations');
   'tax-offset-dispute',
   'wage-garnishment-dispute',
 ].forEach(slug => {
-  cachedConfigs[slug] = foldToOptionFieldsValidationsObject(
-    extractToolFormValidations(require(`${basePath}/${slug}`)),
-  );
+  const validations = extractToolFormValidations(require(`${basePath}/${slug}`));
+
+  cachedConfigs[slug] = foldToOptionFieldsValidationsObject(validations);
 });
+
+const isNegative = answer => ['no', 'off', false].includes(answer);
+
+const filterDependentFields = (form, config) =>
+  _.reduce(
+    config,
+    (filtered, validations, fieldName) => {
+      const hasDependency = validations.find(e => e.startsWith('dependsOn'));
+
+      if (!hasDependency) return { ...filtered, [fieldName]: validations };
+
+      const dependsOn = _.last(hasDependency.split(':'));
+
+      if (isNegative(form[dependsOn])) {
+        return filtered;
+      }
+
+      return { ...filtered, [fieldName]: validations.filter(e => !e.startsWith('dependsOn')) };
+    },
+    {},
+  );
 
 module.exports = {
   extractToolFormValidations,
   getCheckitConfig,
   foldToOptionFieldsValidationsObject,
+  filterDependentFields,
+  // cleanErrors,
 };
