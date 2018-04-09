@@ -1,8 +1,19 @@
 /* global Checkit */
+import Vue from 'vue';
 import Pisces from 'pisces';
+import get from 'lodash/get';
 import Widget from '../../lib/widget';
 import Button from '../../components/Button';
 import ConfirmInline from '../../components/ConfirmInline';
+import DebtAmounts from './DebtAmounts.vue';
+
+const mountDebtAmounts = debt =>
+  new Vue({
+    el: '#debt-amounts-mount-point',
+    render() {
+      return <DebtAmounts originalDebt={debt} />;
+    },
+  }).$children[0];
 
 export default class DisputesInformationForm extends Widget {
   constructor(config) {
@@ -16,10 +27,23 @@ export default class DisputesInformationForm extends Widget {
     );
 
     const _this = this;
-    const data = this.dispute.disputeTool.data.options[
-      this.dispute.data.option
-    ];
+    const data = this.dispute.disputeTool.data.options[this.dispute.data.option];
     const formData = data.steps.filter(step => step.type === 'form')[0];
+
+    if (document.getElementById('debt-amounts-mount-point')) {
+      const originalDebt = {
+        type: get(
+          config.dispute.data._forms || config.dispute.data.forms,
+          'personal-information-form.debt-type',
+        ),
+        amount: get(
+          config.dispute.data._forms || config.dispute.data.forms,
+          'personal-information-form.debt-amount',
+        ),
+      };
+
+      this.debtAmounts = mountDebtAmounts(originalDebt);
+    }
 
     this.constraints = {};
     this._constraintsAll = {};
@@ -27,6 +51,8 @@ export default class DisputesInformationForm extends Widget {
     function test(fs) {
       fs.fields.forEach(r => {
         r.forEach(f => {
+          if (f.type === 'mountable') return;
+
           if (f.type === 'group') {
             return test(f);
           }
@@ -56,9 +82,7 @@ export default class DisputesInformationForm extends Widget {
     this._handleFormSubmitRef = this._handleFormSubmit.bind(this);
     this.form.addEventListener('submit', this._handleFormSubmitRef);
 
-    this.togglers = [].slice.call(
-      document.querySelectorAll('[data-toggle-radio]'),
-    );
+    this.togglers = [].slice.call(document.querySelectorAll('[data-toggle-radio]'));
     this._handleContentToggleRef = this._handleContentToggle.bind(this);
     this.togglers.forEach(t => {
       t.addEventListener('change', this._handleContentToggleRef);
@@ -73,9 +97,7 @@ export default class DisputesInformationForm extends Widget {
       }
     });
 
-    this.toggleRadios = [].slice.call(
-      document.querySelectorAll('[data-partial-toggle-radio]'),
-    );
+    this.toggleRadios = [].slice.call(document.querySelectorAll('[data-partial-toggle-radio]'));
     this._toggleRadiosRef = {};
     this._handlePartialTogglerRef = this._handlePartialToggler.bind(this);
     this.toggleRadios.forEach(t => {
@@ -89,9 +111,7 @@ export default class DisputesInformationForm extends Widget {
       }
     });
 
-    this.handleAlertRadios = [].slice.call(
-      document.querySelectorAll('[data-alert]'),
-    );
+    this.handleAlertRadios = [].slice.call(document.querySelectorAll('[data-alert]'));
     if (this.handleAlertRadios.length) {
       this._handleAlertRadioChangeRef = this._handleAlertRadioChange.bind(this);
       this.handleAlertRadios.forEach(t => {
@@ -136,9 +156,7 @@ export default class DisputesInformationForm extends Widget {
     );
 
     this.ConfirmInline.bind('onCancel', () => {
-      parentElement
-        .querySelector(`[name="${ev.target.name}"][value="${oppositeAction}"]`)
-        .click();
+      parentElement.querySelector(`[name="${ev.target.name}"][value="${oppositeAction}"]`).click();
     });
 
     this.ConfirmInline.bind('onOk', () => {
@@ -154,9 +172,7 @@ export default class DisputesInformationForm extends Widget {
 
     if (fieldset) {
       const whitelist = 'input, select, textarea';
-      const names = [].slice
-        .call(fieldset.querySelectorAll(whitelist))
-        .map(i => i.dataset.name);
+      const names = [].slice.call(fieldset.querySelectorAll(whitelist)).map(i => i.dataset.name);
 
       if (target.value === 'no') {
         fieldset.style.display = 'none';
@@ -255,6 +271,10 @@ export default class DisputesInformationForm extends Widget {
 
     const [err] = this._checkit.validateSync(this._getFieldsData());
 
+    if (this.debtAmounts) {
+      console.error(this.debtAmounts.debts);
+    }
+
     if (err) {
       ev.preventDefault();
       this.Button.enable();
@@ -268,6 +288,8 @@ export default class DisputesInformationForm extends Widget {
 
   _displayFieldErrors(errors) {
     Object.keys(errors).forEach(key => {
+      if (!this.ui[key]) return;
+
       const parent = this.ui[key].parentNode;
       let errorLabel = parent.querySelector('.-on-error');
 
@@ -288,6 +310,7 @@ export default class DisputesInformationForm extends Widget {
 
     if (firstErrorKey) {
       const element = this.ui[firstErrorKey];
+      if (!element) return;
       const parent = element.parentElement;
       let y = parent.getBoundingClientRect().top;
 
@@ -306,7 +329,9 @@ export default class DisputesInformationForm extends Widget {
 
   _clearFieldErrors() {
     Object.keys(this.constraints).forEach(key => {
-      this.ui[key].parentNode.classList.remove('error');
+      if (this.ui[key]) {
+        this.ui[key].parentNode.classList.remove('error');
+      }
     });
   }
 
@@ -315,13 +340,14 @@ export default class DisputesInformationForm extends Widget {
     let val;
 
     Object.keys(this.constraints).forEach(key => {
-      if (this.ui[key].type === 'radio') {
-        val = document.querySelector(`[name="${this.ui[key].name}"]:checked`);
-      } else {
-        val = this.ui[key].value;
+      if (this.ui[key]) {
+        if (this.ui[key].type === 'radio') {
+          val = document.querySelector(`[name="${this.ui[key].name}"]:checked`);
+        } else {
+          val = this.ui[key].value;
+        }
+        data[key] = val;
       }
-
-      data[key] = val;
     });
 
     return data;

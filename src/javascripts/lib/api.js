@@ -62,17 +62,13 @@ export function updateDisputeData(args, callback) {
     throw new Error('Missing required params');
   }
 
-  req(
+  return req(
     {
       url: `/disputes/${args.disputeId}/update-dispute-data`,
       method: 'put',
       body: args.body || {},
     },
-    (err, res) => {
-      if (typeof callback === 'function') {
-        callback(err, res);
-      }
-    },
+    callback,
   );
 }
 

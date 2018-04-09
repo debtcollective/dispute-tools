@@ -129,6 +129,7 @@ mixin toolsFormElementMixin(field, index)
         label.pl1.mr3.-ff-sec(for=`${field.name}-${field.value}`)!= field.label
         p.-on-error.-danger.-caption.-fw-500.mt1
 
+      when 'mountable'
       when 'group'
         fieldset.pb2
           if field.title
@@ -143,11 +144,14 @@ mixin toolsFormElementMixin(field, index)
           if field.yesno
             +_toolsYesNoMixin(field)
 
-          fieldset
-            each row2 in field.fields
-              .clearfix.mxn2
-                each field2 in row2
-                  +toolsFormElementMixin(field2)
+          if field.type === 'mountable'
+            div(id= field.name)
+          else
+            fieldset
+              each row2 in field.fields
+                .clearfix.mxn2
+                  each field2 in row2
+                    +toolsFormElementMixin(field2)
 
       default
         label.inline-block.pb1.-fw-500= field.label

@@ -10,9 +10,7 @@ export default class DisputesInformation extends Widget {
     this.appendChild(
       new Modal({
         name: 'ModalInformationForm',
-        element: document.querySelector(
-          '[data-component-modal="personal-information-form"]',
-        ),
+        element: document.querySelector('[data-component-modal="personal-information-form"]'),
       }),
     );
 
@@ -20,9 +18,7 @@ export default class DisputesInformation extends Widget {
       new DisputesInformationForm({
         name: 'DisputesInformationForm',
         dispute: config.dispute,
-        element: document.querySelector(
-          '[data-component-form="dispute-personal-information"]',
-        ),
+        element: document.querySelector('[data-component-form="dispute-personal-information"]'),
       }),
     );
 
@@ -30,38 +26,26 @@ export default class DisputesInformation extends Widget {
       '.CloseAndSaveFormButton',
     );
 
-    this.personalInfoButton = this.element.querySelector(
-      '.js-trigger-personal-modal',
-    );
-    this.informationSubmitButton = document.getElementById(
-      'js-information-next-step',
-    );
+    this.personalInfoButton = this.element.querySelector('.js-trigger-personal-modal');
+    this.informationSubmitButton = document.getElementById('js-information-next-step');
 
     this._bindMoreInfoModal();
     this._bindEvents();
   }
 
   _bindEvents() {
-    this._handleSaveAndCloseModalButtonClick = this._handleSaveAndCloseModalButtonClick.bind(
-      this,
-    );
+    this._handleSaveAndCloseModalButtonClick = this._handleSaveAndCloseModalButtonClick.bind(this);
     this.saveAndCloseModalButton.addEventListener(
       'click',
       this._handleSaveAndCloseModalButtonClick,
     );
 
     this._handleButtonClickRef = this._handleButtonClick.bind(this);
-    this.personalInfoButton.addEventListener(
-      'click',
-      this._handleButtonClickRef,
-    );
+    this.personalInfoButton.addEventListener('click', this._handleButtonClickRef);
 
     if (this.informationSubmitButton) {
       this._displayNextStepRef = this._displayNextStep.bind(this);
-      this.informationSubmitButton.addEventListener(
-        'click',
-        this._displayNextStepRef,
-      );
+      this.informationSubmitButton.addEventListener('click', this._displayNextStepRef);
     }
   }
 
@@ -72,18 +56,14 @@ export default class DisputesInformation extends Widget {
     updateDisputeData({
       disputeId: this.dispute.id,
       body: data,
-    });
+    }).then(({ dispute }) => (this.dispute = dispute));
 
     this.ModalInformationForm.deactivate();
   }
 
   _bindMoreInfoModal() {
-    this.moreModalTrigger = this.element.querySelector(
-      '[id*=common-cases-toggler]',
-    );
-    this.moreModalElement = document.querySelector(
-      '[data-component-modal="dispute-more-modal"]',
-    );
+    this.moreModalTrigger = this.element.querySelector('[id*=common-cases-toggler]');
+    this.moreModalElement = document.querySelector('[data-component-modal="dispute-more-modal"]');
 
     if (!this.moreModalTrigger || !this.moreModalElement) {
       return;
@@ -96,13 +76,8 @@ export default class DisputesInformation extends Widget {
       }),
     );
 
-    this._handleMoreModalTriggerClickRef = this._handleMoreModalTriggerClick.bind(
-      this,
-    );
-    this.moreModalTrigger.addEventListener(
-      'click',
-      this._handleMoreModalTriggerClickRef,
-    );
+    this._handleMoreModalTriggerClickRef = this._handleMoreModalTriggerClick.bind(this);
+    this.moreModalTrigger.addEventListener('click', this._handleMoreModalTriggerClickRef);
   }
 
   _handleMoreModalTriggerClick(ev) {
