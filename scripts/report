@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 
 istanbul-combine -d coverage -p summary -r lcov \
-  coverage/{unit,integration}/coverage.raw.json
+  coverage/{unit,integration,form-validations}/coverage.raw.json
