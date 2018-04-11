@@ -1,4 +1,27 @@
-.px2.flex(data-component-form='show-dispute')
-  div(data-dispute-row)
-  div(data-dispute-wrapper)
-  div(data-attachment-list)
+extends ../../layouts/admin
+
+block title
+  | Admin/Disputes — The Debt Collective
+
+block content
+  -
+    var optionData = dispute.disputeTool.data.options[dispute.data.option]
+    var step = optionData.steps.find(s => s.name === 'personal-information-form')
+    var isAdmin = true
+
+  .mx-auto.max-width-2.center.pt3
+    a.-k-btn.btn-primary.-fw-700(href= routeMappings.Admin.Disputes.url()) Back to disputes table
+
+  include ../../includes/disputes/information-form
+
+block scripts
+  script.
+    window.addEventListener('load', function() {
+      var options = {
+        currentUser: !{JSON.stringify(UserRenderer(currentUser))},
+        currentURL: !{JSON.stringify(currentURL)},
+        isAdmin: true,
+      };
+
+      new ViewAdminDisputesShow(options);
+    }, true);

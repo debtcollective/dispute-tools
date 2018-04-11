@@ -1,2 +1,3 @@
 @import './base_admin.css';
 @import './_entries/admin/disputes/index.css';
+@import './_entries/admin/disputes/show.css';
