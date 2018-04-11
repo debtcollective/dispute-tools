@@ -1,5 +1,9 @@
 const middlewares = [
   {
+    name: 'HTTPS',
+    path: 'middlewares/https.js',
+  },
+  {
     name: 'Raven',
     path: 'middlewares/raven-request.js',
   },
