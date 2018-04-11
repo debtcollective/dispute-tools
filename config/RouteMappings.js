@@ -69,7 +69,7 @@ const routeMappings = RouteMappings()
           to: 'Disputes#updateAdmins',
           as: 'updateAdmins',
         })
-        .put('/:id/update-dispute-data', {
+        .put('/:id/data', {
           to: 'Disputes#updateDisputeData',
           as: 'updateDisputeData',
         }),
