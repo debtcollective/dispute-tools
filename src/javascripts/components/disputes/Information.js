@@ -91,7 +91,7 @@ export default class DisputesInformation extends Widget {
     updateDisputeData({
       disputeId: this.dispute.id,
       body: data,
-    });
+    }).then(({ dispute }) => (this.dispute = dispute));
 
     this.ModalInformationForm.deactivate();
   }

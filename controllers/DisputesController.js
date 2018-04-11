@@ -184,7 +184,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
               return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
             },
             json() {
-              return res.json({ status: 'confirmed' });
+              return res.json({ status: 'confirmed', dispute });
             },
           }),
         )
