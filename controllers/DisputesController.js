@@ -167,7 +167,10 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       } catch (e) {
         return res.format({
           html() {
-            req.flash('error', `${e.toString()} (on #${req.body.command})`);
+            req.flash(
+              'error',
+              'An error occurred while updating the dispute data. Please try again or contact a dispute administrator if the problem persists.',
+            );
             return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
           },
           json() {
@@ -184,7 +187,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
               return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
             },
             json() {
-              return res.json({ status: 'confirmed' });
+              return res.json({ status: 'confirmed', dispute });
             },
           }),
         )

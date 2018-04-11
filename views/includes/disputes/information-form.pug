@@ -2,7 +2,7 @@ include ../../mixins/dispute-tools/form-element
 
 .max-width-3.mx-auto(data-component-form="dispute-personal-information")
   form.px2(
-    action=routeMappings.Disputes.updateDisputeData.url(dispute.id)
+    action= (isAdmin ? routeMappings.Admin : routeMappings).Disputes.updateDisputeData.url(dispute.id)
     method="post"
   )
     //- input(type="hidden" name="_csrf" value=csrfToken)
@@ -18,7 +18,12 @@ include ../../mixins/dispute-tools/form-element
         _formData = dispute.data._forms[step.name]
       }
 
-    h3#modalToolPersonalInfoFormTitle.pb3.-accent= dispute.disputeTool.name
+    if isAdmin
+      h3.pt3.max-width-1.mx-auto.center= 'Editing ' + dispute.disputeTool.readableName + ' Form for:'
+      h4.pt3.center Username
+      h4.pb3.center User email
+    else
+      h3#modalToolPersonalInfoFormTitle.pb3.-accent= dispute.disputeTool.name
 
     each sets, i in step.fieldSets
       .pt2.pr3.pl3.pb2.mb2.-bg-neutral-dark
@@ -38,5 +43,9 @@ include ../../mixins/dispute-tools/form-element
                   each field, k in row
                     +toolsFormElementMixin(field, i + j + k)
 
-    .pt1.pb3: button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Continue to next step
+    if isAdmin
+      .col.md-col-6.pt1.pb3.px2: a.-k-btn.btn-dark.-fw.-fw-700(href= routeMappings.Admin.Disputes.url()) Cancel
+      .col.md-col-6.pt1.pb3.px2: button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Save updated form data
+    else
+      .pt1.pb3: button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Continue to next step
 

@@ -20,7 +20,14 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     },
     {
       before: '_loadDispute',
-      actions: ['update', 'destroy', 'updateAdmins', 'getAvailableAdmins'],
+      actions: [
+        'update',
+        'destroy',
+        'updateAdmins',
+        'getAvailableAdmins',
+        'show',
+        'updateDisputeData',
+      ],
     },
     {
       before(req, res, next) {
@@ -87,7 +94,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     _loadDispute(req, res, next) {
       Dispute.query()
         .where({ id: req.params.id })
-        .include('[user, statuses, attachments, disputeTool, admins.[account]]')
+        .include('[user, statuses, attachments, disputeTool, admins]')
         .then(([dispute]) => {
           res.locals.dispute = dispute;
           req.dispute = dispute;
@@ -118,6 +125,11 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       res.render('admin/disputes/index');
     },
 
+    async show(req, res) {
+      res.locals.dispute.user.setInfo(await discourse.getUser(res.locals.dispute.user));
+      res.render('admin/disputes/show');
+    },
+
     async update(req, res, next) {
       const dispute = res.locals.dispute;
 
@@ -144,6 +156,17 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         .then(() => {
           req.flash('success', 'The list of administrators assigned as been updated.');
           res.status(200).send({});
+        })
+        .catch(next);
+    },
+
+    updateDisputeData(req, res, next) {
+      req.dispute
+        .setForm(req.body)
+        .save()
+        .then(() => {
+          req.flash('success', 'The dispute has been updated.');
+          res.redirect(CONFIG.router.helpers.Admin.Disputes.show.url(req.dispute.id));
         })
         .catch(next);
     },

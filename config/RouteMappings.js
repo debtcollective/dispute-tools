@@ -69,6 +69,10 @@ const routeMappings = RouteMappings()
           .post('/:id/admins', {
             to: 'Disputes#updateAdmins',
             as: 'updateAdmins',
+          })
+          .put('/:id/data', {
+            to: 'Disputes#updateDisputeData',
+            as: 'updateDisputeData',
           }),
       )
       .resources('/Users'),

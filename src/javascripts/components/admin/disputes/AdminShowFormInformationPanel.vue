@@ -15,9 +15,13 @@
         <h4 class="center" v-if="status === 'Completed'">
           {{ pendingSubmission ? 'Debt Syndicate to mail dispute' : 'User to mail dispute' }}
         </h4>
-        <h4 class="pb3 center">
+        <h4 class="pb1 center">
           {{ status }}
         </h4>
+
+        <h5 class="pb3 center">
+          <a class="-k-btn btn-primary -fw-700" :href="`/admin/disputes/${dispute.id}`">Edit dispute form data</a>
+        </h5>
 
         <dl class="FormView mb1">
           <span v-for="(val, key) in userProfileInformation" :key="key">
@@ -87,7 +91,7 @@ export default {
     },
   },
   data() {
-    return getFormOrElse(this.initialDispute);
+    return { ...getFormOrElse(this.initialDispute), dispute: this.initialDispute };
   },
   computed: {
     personalInformation() {
@@ -132,6 +136,7 @@ export default {
       const { form, user, status, pendingSubmission } = getFormOrElse(dispute);
       this.form = form;
       this.status = status;
+      this.dispute = dispute;
       this.pendingSubmission = pendingSubmission;
 
       getUserByExternalId(user.externalId).then(u => {
