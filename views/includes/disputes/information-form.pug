@@ -19,9 +19,10 @@ include ../../mixins/dispute-tools/form-element
       }
 
     if isAdmin
-      h3.pt3.max-width-1.mx-auto.center= 'Editing ' + dispute.disputeTool.readableName + ' Form for:'
-      h4.pt3.center Username
-      h4.pb3.center User email
+      h3.pt3.center Editing
+      h3.max-width-2.mx-auto.center= dispute.disputeTool.readableName + ' Form'
+      h4.pt3.center= dispute.user.name
+      h4.pb3.center= dispute.user.username
     else
       h3#modalToolPersonalInfoFormTitle.pb3.-accent= dispute.disputeTool.name
 
