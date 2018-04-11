@@ -56,7 +56,7 @@ mixin _uploadCard(step, _completed)
               )
                 input(type='hidden' name='_csrf' value=csrfToken)
                 input(type='hidden' name='_method' value='PUT')
-                button.btn-clear
+                button.btn-clear(data-remove-upload-button)
                   svg.-danger(width='10' height='10'): use(xlink:href='#svg-close')
 
     form(
@@ -76,7 +76,7 @@ mixin _uploadCard(step, _completed)
           multiple= step.multiple
           class='absolute top-0 left-0 -fw -fh'
           style='opacity: 0;'
-          onchange='this.form.submit()'
+          data-upload-button=''
         )
     .Tool__Info__footer-caption.center.-caption
       | #{step.footerNotes}
@@ -148,3 +148,23 @@ mixin _uploadCard(step, _completed)
         id='js-information-next-step'
         disabled= !_ready
       )= _ready ? _readyButtonText : _defaultButtonText
+
+.Modal(
+  data-component-modal='block-while-uploading-modal'
+  aria-hidden='true' role='dialog'
+)
+  .Modal__body.flex.justify-center(role='document')
+    .p4
+      .max-width-2
+        h3.center.p4 Your document is being uploaded...
+        .spinner
+
+.Modal(
+  data-component-modal='block-while-removing-upload-modal'
+  aria-hidden='true' role='dialog'
+)
+  .Modal__body.flex.justify-center(role='document')
+    .p4
+      .max-width-2
+        h3.center.p4 Your document is being removed...
+        .spinner
