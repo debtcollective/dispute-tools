@@ -1,8 +1,10 @@
 /* globals neonode, Class, Admin, RestfulController, DisputeTool, CONFIG, Dispute,
  DisputeStatus, logger, User */
 const path = require('path');
+const _ = require('lodash');
 const Promise = require('bluebird');
 const Dispute = require('../../models/Dispute');
+const discourse = require('../../lib/discourse');
 
 const { authenticate, authorize, tests: { isDisputeAdmin } } = require('../../services/auth');
 
@@ -101,9 +103,17 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         .catch(next);
     },
 
-    index(req, res) {
+    async index(req, res) {
       res.locals.disputes = res.locals.results;
       res.locals.statuses = DisputeStatus.statuses;
+
+      const users = await discourse.getUsers({
+        params: { ids: _.uniq(res.locals.disputes.map(({ user }) => user.externalId)).join(',') },
+      });
+
+      res.locals.disputes.forEach(dispute => {
+        dispute.user.setInfo(users.find(u => u.externalId === dispute.user.externalId) || {});
+      });
 
       res.locals.headers = {
         total_count: ~~res._headers.total_count,
@@ -116,6 +126,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     },
 
     async show(req, res) {
+      res.locals.dispute.user.setInfo(await discourse.getUser(res.locals.dispute.user));
       res.render('admin/disputes/show');
     },
 

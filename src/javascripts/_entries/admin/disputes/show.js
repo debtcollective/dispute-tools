@@ -1,5 +1,6 @@
 import NodeSupport from '../../../lib/widget/NodeSupport';
 import Common from '../../../components/Common';
+import { mountDebtAmounts } from '../../../components/disputes/InformationForm';
 
 class ViewAdminDisputesShow extends NodeSupport {
   constructor(config) {
@@ -13,6 +14,8 @@ class ViewAdminDisputesShow extends NodeSupport {
         isAdmin: true,
       }),
     );
+
+    this.debtAmounts = mountDebtAmounts(config);
   }
 }
 

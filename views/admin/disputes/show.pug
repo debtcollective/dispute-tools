@@ -21,6 +21,7 @@ block scripts
         currentUser: !{JSON.stringify(UserRenderer(currentUser))},
         currentURL: !{JSON.stringify(currentURL)},
         isAdmin: true,
+        dispute: !{JSON.stringify(dispute)},
       };
 
       new ViewAdminDisputesShow(options);
