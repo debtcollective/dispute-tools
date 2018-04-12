@@ -230,6 +230,10 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       res.cookie(cookieName, '', { expires: new Date() });
       res.redirect(siteURL);
     },
+
+    healthCheck(req, res) {
+      res.send('service is running');
+    },
   },
 });
 
