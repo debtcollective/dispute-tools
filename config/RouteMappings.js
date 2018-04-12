@@ -57,6 +57,11 @@ const routeMappings = RouteMappings()
     as: 'logout',
   })
 
+  .get('/health-check', {
+    to: 'Home#healthCheck',
+    as: 'healthCheck',
+  })
+
   // Admin
   .namespace('/Admin', mapAdmins =>
     mapAdmins()

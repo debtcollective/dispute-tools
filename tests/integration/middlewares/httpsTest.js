@@ -23,4 +23,17 @@ describe('https', () => {
         expect(err.status).eq(302);
       });
   });
+
+  it('should not redirect when going to the /health-check route', () => {
+    const req = testGetPage('/health-check');
+
+    return req
+      .redirects(0)
+      .then(res => {
+        expect(res.status).eq(200);
+      })
+      .catch(() => {
+        expect.fail();
+      });
+  });
 });
