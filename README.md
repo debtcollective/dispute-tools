@@ -160,3 +160,9 @@ Please refer to `services/renderers/README.md` for a description of our renderin
 ## Create/update a new form definition
 
 Please refer to `lib/data/dispute-tools/README.md` for specific documentation about how the forms work.
+
+## Create a new email/discourse message template
+
+Please refer to `views/emails/README.md` for specific information for which template type to make.
+
+The doc-comments on the `Email` and `DiscourseMessage` classes are essential reading for understanding how best to build new emails and discourse messages.

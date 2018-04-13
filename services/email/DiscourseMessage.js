@@ -7,6 +7,20 @@ const discourse = require('../../lib/discourse');
  * Proxies the normal email sending function to send messages
  * using the discourse api instead of the regular transport.
  *
+ * Important to note that the recipients must all be _real_
+ * discourse users. The `to` and `from` properties in the constructor
+ * configuration object should be strings or arrays of strings
+ * of discourse usernames. Duplicates are filtered out before
+ * the message is sent.
+ *
+ * This will ultimately produce a private topic in Discourse
+ * in which the `system` user and all the users in the
+ * `from` and `to` configuration fields are included. If this doesn't
+ * make sense, please take some time to understand how Discourse
+ * treats private messages between users. At this time it is not
+ * possible to prevent the `system` user from being included in
+ * the private message.
+ *
  * @abstract
  */
 class DiscourseMessage extends Email {
