@@ -25,11 +25,13 @@ export default class Modal extends Widget {
     Modal._mainElement.setAttribute('aria-hidden', this.active);
     this.element.setAttribute('aria-hidden', !this.active);
 
-    this._clickHandler = this.deactivate.bind(this);
-    this.closeButton.addEventListener('click', this._clickHandler);
+    if (this.closeButton) {
+      this._clickHandler = this.deactivate.bind(this);
+      this.closeButton.addEventListener('click', this._clickHandler);
 
-    this._keyupHandlerRef = this._keyupHandler.bind(this);
-    document.addEventListener('keyup', this._keyupHandlerRef);
+      this._keyupHandlerRef = this._keyupHandler.bind(this);
+      document.addEventListener('keyup', this._keyupHandlerRef);
+    }
 
     return this;
   }
@@ -44,11 +46,13 @@ export default class Modal extends Widget {
     Modal._mainElement.setAttribute('aria-hidden', this.active);
     this.element.setAttribute('aria-hidden', !this.active);
 
-    this.closeButton.removeEventListener('click', this._clickHandler);
-    this._clickHandler = null;
+    if (this.closeButton) {
+      this.closeButton.removeEventListener('click', this._clickHandler);
+      this._clickHandler = null;
 
-    document.removeEventListener('keyup', this._keyupHandlerRef);
-    this._keyupHandlerRef = null;
+      document.removeEventListener('keyup', this._keyupHandlerRef);
+      this._keyupHandlerRef = null;
+    }
 
     requestAnimationFrame(() => {
       Modal._lastActiveElement.focus();

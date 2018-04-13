@@ -7,11 +7,13 @@ const {
   testPutPage,
   testGet,
   testPost,
+  testPut,
   testUnauthenticated,
   testAllowed,
   testForbidden,
 } = require('../../utils');
 const nock = require('nock');
+const { expect } = require('chai');
 
 const { router: { helpers: urls }, discourse: { baseUrl: discourse } } = CONFIG;
 
@@ -32,6 +34,14 @@ describe('Admin.DisputesController', () => {
     const url = urls.Admin.Disputes.url();
 
     describe('authorization', () => {
+      before(() => {
+        nock(discourse)
+          .get('/admin/users/list/active.json')
+          .times(2)
+          .query(true)
+          .reply(200, []);
+      });
+
       describe('when unauthenticated', () => {
         it('should redirect to login', () => testUnauthenticated(testGetPage(url)));
       });
@@ -118,6 +128,61 @@ describe('Admin.DisputesController', () => {
 
       describe('when moderator', () => {
         it('should reject', () => testForbidden(testPost(url, [], moderator)));
+      });
+    });
+  });
+
+  describe('updateDisputeData', () => {
+    let url;
+    let dispute;
+
+    before(async () => {
+      dispute = await createDispute(await createUser());
+      url = urls.Admin.Disputes.updateDisputeData.url(dispute.id);
+      console.error(url);
+    });
+
+    describe('authorization', () => {
+      let setForm;
+      before(() => {
+        setForm = Dispute.prototype.setForm;
+        Dispute.prototype.setForm = function setFormMock() {
+          return this;
+        };
+      });
+
+      after(() => {
+        Dispute.prototype.setForm = setForm;
+      });
+
+      describe('when unauthenticated', () => {
+        it('should redirect to login', () => testForbidden(testPut(url, {})));
+      });
+
+      describe('when user', () => {
+        it('should reject', () => testForbidden(testPut(url, {}, user)));
+      });
+
+      describe('when admin', () => {
+        it('should allow', () => testAllowed(testPut(url, {}, admin)));
+      });
+
+      describe('when dispute admin', () => {
+        it('should allow', () => testAllowed(testPut(url, {}, disputeAdmin)));
+      });
+
+      describe('when moderator', () => {
+        it('should reject', () => testForbidden(testPut(url, {}, moderator)));
+      });
+    });
+
+    it('should update the form', async () => {
+      const body = { formName: 'test-form-name', fieldValues: { foo: 'bar' } };
+      await testPut(url, body, disputeAdmin);
+
+      const updatedDispute = await Dispute.findById(dispute.id);
+      expect(updatedDispute.data.forms).eql({
+        'test-form-name': body.fieldValues,
       });
     });
   });

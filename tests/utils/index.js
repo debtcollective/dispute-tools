@@ -154,8 +154,12 @@ const helpers = {
    */
   testUnauthenticated: req =>
     req.redirects(0).catch(({ status, response: { headers } }) => {
-      expect(status).eq(302);
-      expect(headers.location.startsWith(endpoint)).true;
+      if (req.header.Accept === 'application/json') {
+        expect(status).eq(403);
+      } else {
+        expect(status).eq(302);
+        expect(headers.location.startsWith(endpoint)).true;
+      }
     }),
 
   /**

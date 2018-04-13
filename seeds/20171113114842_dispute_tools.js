@@ -88,7 +88,8 @@ If you don't have the name and address of the collection agency, you will not be
 exports.seed = knex =>
   knex('DisputeTools')
     .del()
-    .then(() => knex('DisputeTools').insert(
+    .then(() =>
+      knex('DisputeTools').insert(
         tools.map(tool => ({
           id: tool.id,
           name: tool.name,
@@ -99,4 +100,5 @@ exports.seed = knex =>
           created_at: new Date(),
           updated_at: new Date(),
         })),
-      ));
+      ),
+    );

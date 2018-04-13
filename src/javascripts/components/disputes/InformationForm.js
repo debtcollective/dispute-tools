@@ -7,13 +7,27 @@ import Button from '../../components/Button';
 import ConfirmInline from '../../components/ConfirmInline';
 import DebtAmounts from './DebtAmounts.vue';
 
-const mountDebtAmounts = debt =>
-  new Vue({
-    el: '#debt-amounts-mount-point',
-    render() {
-      return <DebtAmounts originalDebt={debt} />;
-    },
-  }).$children[0];
+export const mountDebtAmounts = config => {
+  if (document.getElementById('debt-amounts-mount-point')) {
+    const originalDebt = {
+      type: get(
+        config.dispute.data._forms || config.dispute.data.forms,
+        'personal-information-form.debt-type',
+      ),
+      amount: get(
+        config.dispute.data._forms || config.dispute.data.forms,
+        'personal-information-form.debt-amount',
+      ),
+    };
+
+    return new Vue({
+      el: '#debt-amounts-mount-point',
+      render() {
+        return <DebtAmounts originalDebt={originalDebt} />;
+      },
+    }).$children[0];
+  }
+};
 
 export default class DisputesInformationForm extends Widget {
   constructor(config) {

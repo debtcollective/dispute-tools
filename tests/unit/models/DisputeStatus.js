@@ -30,11 +30,17 @@ describe('Dispute Status', () => {
   describe('notify', () => {
     let called;
     let send;
+    let getAssignedAndAvailableAdmins;
+
     before(() => {
       send = OrganizerUpdatedDisputeEmail.prototype.send;
       OrganizerUpdatedDisputeEmail.prototype.send = function send() {
         called = true;
       };
+
+      getAssignedAndAvailableAdmins = Dispute.prototype.getAssignedAndAvailableAdmins;
+      Dispute.prototype.getAssignedAndAvailableAdmins = () =>
+        Promise.resolve({ assigned: [], available: [] });
     });
 
     beforeEach(() => {
@@ -43,28 +49,41 @@ describe('Dispute Status', () => {
 
     after(() => {
       OrganizerUpdatedDisputeEmail.prototype.send = send;
+      Dispute.prototype.getAssignedAndAvailableAdmins = getAssignedAndAvailableAdmins;
     });
 
-    it(', when true, should cause an email alerting the user of the status change to be sent', async () => {
-      await DisputeStatus.createForDispute(dispute, {
-        comment: 'Test comment',
-        status: DisputeStatuses.update,
-        note: 'Just a friendly note',
-        notify: 'on',
-      });
+    describe('when true', () => {
+      it('should cause an email alerting the user of the status change to be sent', async () => {
+        await DisputeStatus.createForDispute(
+          dispute,
+          {},
+          {
+            comment: 'Test comment',
+            status: DisputeStatuses.update,
+            note: 'Just a friendly note',
+            notify: 'on',
+          },
+        );
 
-      expect(called).to.be.true;
+        expect(called).to.be.true;
+      });
     });
 
-    it(', when false, should not cause an email alerting the user of the status change to be sent', async () => {
-      await DisputeStatus.createForDispute(dispute, {
-        comment: 'Test comment',
-        status: DisputeStatuses.update,
-        note: 'Just a friendly note',
-        notify: 'off',
-      });
+    describe('when false', () => {
+      it('should not cause an email alerting the user of the status change to be sent', async () => {
+        await DisputeStatus.createForDispute(
+          dispute,
+          {},
+          {
+            comment: 'Test comment',
+            status: DisputeStatuses.update,
+            note: 'Just a friendly note',
+            notify: 'off',
+          },
+        );
 
-      expect(called).to.be.false;
+        expect(called).to.be.false;
+      });
     });
   });
 

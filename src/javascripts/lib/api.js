@@ -127,3 +127,10 @@ export function login(url) {
     window.location = redirect;
   });
 }
+
+export function getUserByExternalId(externalId) {
+  return req({
+    url: `/admin/users?externalId=${externalId}`,
+    method: 'get',
+  });
+}

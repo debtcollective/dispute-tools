@@ -18,15 +18,15 @@ const transport = nodemailer.createTransport(SES !== null ? { SES } : smtp);
  * @prop {string} to The to address
  * @prop {string} subject The email's subject
  * @prop {string} text The email's body
+ * @prop {Object} locals Local variables passed to the HTML renderer
  */
 class Email {
   /**
    * @param {string} name The name of the email
    * @param {Object} email The email configuration
-   * @param {string} email.from The from address
-   * @param {string} email.to The to address
-   * @param {string} email.subject The subject of the email
-   * @param {string} email.text The text of the email
+   * @param {string} email.from The from address or discourse username
+   * @param {string} email.to The to address or discourse username
+   * @param {string} email.subject The subject of the email/message
    */
   constructor(name, { to, from, subject }) {
     this._name = name;

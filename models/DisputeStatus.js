@@ -33,7 +33,7 @@ const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
     ],
   },
 
-  async createForDispute(dispute, { comment, status, note, notify }) {
+  async createForDispute(dispute, disputeAdmin, { comment, status, note, notify }) {
     const disputeStatus = new DisputeStatus({
       comment,
       status,
@@ -48,7 +48,14 @@ const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
       return;
     }
 
-    const email = new OrganizerUpdatedDisputeEmail(dispute.user, dispute, disputeStatus);
+    const { assigned: assignedAdmins } = await dispute.getAssignedAndAvailableAdmins();
+
+    const email = new OrganizerUpdatedDisputeEmail(
+      dispute.user,
+      [disputeAdmin.username, ...assignedAdmins.map(u => u.username)],
+      dispute,
+      disputeStatus,
+    );
     return email.send();
   },
 

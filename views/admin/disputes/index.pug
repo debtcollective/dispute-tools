@@ -87,8 +87,8 @@ block content
           tr
             td
               .flex.items-center
-                img(src=_dispute.user.imageURL alt=_dispute.user.fullname width="50" height="50")
-                p.pl2.-fw-700= _dispute.user.fullname
+                img(src=_dispute.user.imageURL alt=(_dispute.user.username || _dispute.user.name) width="50" height="50")
+                p.pl2.-fw-700= (_dispute.user.username || _dispute.user.name)
             td.-fw-400
               | #{_dispute.readableId}
             td.-fw-500
@@ -138,7 +138,10 @@ block body
     button(class="Modal__close" aria-label="close")
       svg(class="-s18"): use(xlink:href="#svg-close")
     .Modal__body(role="document")
-      include ../../admin/disputes/show.pug
+      .px2.flex(data-component-form='show-dispute')
+        div(data-dispute-row)
+        div(data-dispute-wrapper)
+        div(data-attachment-list)
 
   .Modal(data-component-modal="add-status" aria-hidden="true" role="dialog" aria-labelledby="modalSignupTitle")
     button(class="Modal__close" aria-label="close")

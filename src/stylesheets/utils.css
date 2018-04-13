@@ -225,3 +225,25 @@ h4.-h-sec > span {
     text-align: left;
   }
 }
+
+/* https://stephanwagner.me/only-css-loading-spinner */
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner::before {
+  content: '';
+  box-sizing: border-box;
+  position: fixed;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin-top: 25px;
+  margin-left: -10px;
+  border-radius: 50%;
+  border: 2px solid var(--k-color);
+  border-top-color: var(--k-color-palette-primary);
+  animation: spinner 0.6s linear infinite;
+}
