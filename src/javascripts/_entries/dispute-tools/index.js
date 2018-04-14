@@ -18,6 +18,10 @@ class ViewDisputeToolsIndex extends NodeSupport {
 
     this.disputeIds = config.disputeIds;
 
+    this.DTRlink = document.getElementById('defense-to-repayment-link');
+    this.DTRstayButton = document.getElementById('stay-button');
+    this.DTRcontinueButton = document.getElementById('continue-button');
+
     this._bindEvents()
       ._bindScrollTo()
       ._applyGlitch();
