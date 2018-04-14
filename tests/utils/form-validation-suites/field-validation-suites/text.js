@@ -1,11 +1,15 @@
-const { performTest, expectRule } = require('../helpers');
 const required = require('./required');
+const maxLength = require('./maxLength');
 
-module.exports = (fieldName, getDispute, isRequired = true) => {
+const text = (fieldName, getDispute, isRequired = true, length = 128) => {
   required(fieldName, getDispute, isRequired);
 
-  it(
-    'should not be allowed to exceed 128 characters',
-    performTest(getDispute, fieldName, new Array(129).fill('a').join(''), expectRule('maxLength')),
-  );
+  maxLength(fieldName, length, getDispute);
 };
+
+text.medium = (fieldName, getDispute, isRequired = true) =>
+  text(fieldName, getDispute, isRequired, 152);
+text.long = (fieldName, getDispute, isRequired = true) =>
+  text(fieldName, getDispute, isRequired, 256);
+
+module.exports = text;

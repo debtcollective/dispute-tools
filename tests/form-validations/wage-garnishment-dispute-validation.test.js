@@ -2,6 +2,7 @@ const { createUser, createDispute } = require('../utils');
 const personalInformation = require('../utils/form-validation-suites/personalInformation');
 const ffelLoan = require('../utils/form-validation-suites/ffelLoan');
 const employment = require('../utils/form-validation-suites/employment');
+const atbFalseCert = require('../utils/form-validation-suites/atbFalseCertification');
 
 describe('wage garnishment dispute form validation', () => {
   let dispute;
@@ -28,15 +29,15 @@ describe('wage garnishment dispute form validation', () => {
 
   describe('option C', () => {
     before(() => {
-      dispute.data.option = 'B';
+      dispute.data.option = 'C';
     });
 
-    [personalInformation, ffelLoan, employment].forEach(fn => fn(() => dispute));
+    [personalInformation, ffelLoan, employment, atbFalseCert].forEach(fn => fn(() => dispute));
   });
 
   describe('option D', () => {
     before(() => {
-      dispute.data.option = 'B';
+      dispute.data.option = 'D';
     });
 
     [personalInformation, ffelLoan, employment].forEach(fn => fn(() => dispute));
@@ -44,7 +45,7 @@ describe('wage garnishment dispute form validation', () => {
 
   describe('option E', () => {
     before(() => {
-      dispute.data.option = 'B';
+      dispute.data.option = 'E';
     });
 
     [personalInformation, ffelLoan, employment].forEach(fn => fn(() => dispute));

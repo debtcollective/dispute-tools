@@ -17,6 +17,8 @@
     "test:debug:unit": "node --inspect=9220 --inspect-brk tests/unit.js",
     "pretest:debug:integration": "npm run utils:resetdb && npm run utils:knexreset",
     "test:debug:integration": "node --inspect=9220 --inspect-brk tests/integration.js",
+    "pretest:debug:form-validations": "npm run utils:resetdb && npm run utils:knexreset",
+    "test:debug:form-validations": "node --inspect=9220 --inspect-brk tests/form-validations.js",
     "utils:resetdb": "scripty",
     "utils:knexreset": "scripty",
     "utils:copybadges": "scripty",
