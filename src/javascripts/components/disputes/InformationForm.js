@@ -45,18 +45,7 @@ export default class DisputesInformationForm extends Widget {
     const formData = data.steps.filter(step => step.type === 'form')[0];
 
     if (document.getElementById('debt-amounts-mount-point')) {
-      const originalDebt = {
-        type: get(
-          config.dispute.data._forms || config.dispute.data.forms,
-          'personal-information-form.debt-type',
-        ),
-        amount: get(
-          config.dispute.data._forms || config.dispute.data.forms,
-          'personal-information-form.debt-amount',
-        ),
-      };
-
-      this.debtAmounts = mountDebtAmounts(originalDebt);
+      this.debtAmounts = mountDebtAmounts(config);
     }
 
     this.constraints = {};
