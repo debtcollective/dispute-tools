@@ -12,7 +12,9 @@ const {
   testAllowed,
   testForbidden,
 } = require('../../utils');
-const formValidation = require('../../../services/formValidation');
+const {
+  wageGarnishmentDisputes: { A: { data: { forms: { 'personal-information-form': sampleData } } } },
+} = require('../../utils/sampleDisputeData');
 
 const nock = require('nock');
 const { expect } = require('chai');
@@ -137,17 +139,10 @@ describe('Admin.DisputesController', () => {
   describe('updateDisputeData', () => {
     let url;
     let dispute;
-    let getCheckitConfig;
 
     before(async () => {
       dispute = await createDispute(await createUser());
       url = urls.Admin.Disputes.updateDisputeData.url(dispute.id);
-      getCheckitConfig = formValidation.getCheckitConfig;
-      formValidation.getCheckitConfig = () => ({ foo: [] });
-    });
-
-    after(() => {
-      formValidation.getCheckitConfig = getCheckitConfig;
     });
 
     describe('authorization', () => {
@@ -185,12 +180,15 @@ describe('Admin.DisputesController', () => {
     });
 
     it('should update the form', async () => {
-      const body = { formName: 'test-form-name', fieldValues: { foo: 'bar' } };
+      const body = {
+        formName: 'personal-information-form',
+        fieldValues: { ...sampleData, city: 'TEST CiTyName' },
+      };
       await testPut(url, body, disputeAdmin);
 
       const updatedDispute = await Dispute.findById(dispute.id);
       expect(updatedDispute.data.forms).eql({
-        'test-form-name': body.fieldValues,
+        'personal-information-form': body.fieldValues,
       });
     });
   });

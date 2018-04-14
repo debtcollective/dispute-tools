@@ -162,15 +162,15 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         .catch(next);
     },
 
-    updateDisputeData(req, res, next) {
-      req.dispute
-        .setForm(req.body)
-        .save()
-        .then(() => {
-          req.flash('success', 'The dispute has been updated.');
-          res.redirect(CONFIG.router.helpers.Admin.Disputes.show.url(req.dispute.id));
-        })
-        .catch(next);
+    async updateDisputeData(req, res, next) {
+      try {
+        await req.dispute.setForm(req.body);
+        await req.dispute.save();
+        req.flash('success', 'The dispute has been updated.');
+        res.redirect(CONFIG.router.helpers.Admin.Disputes.show.url(req.dispute.id));
+      } catch (e) {
+        next(e);
+      }
     },
 
     destroy(req, res, next) {
