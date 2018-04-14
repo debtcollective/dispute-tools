@@ -4,4 +4,4 @@ These tests describe the behavior of our form-validation suite built on top of C
 
 As much as we can, we've tried to encapsulate each form into it's own module of tests that can be repeated on any dispute configuration. For this reason, everything past the top level takes a callback that should return the configured dispute being tested. This lets Mocha configure the test suite before running the tests without any magic of juggling dispute variable instances.
 
-There are a lot of tests here, approximately 10000 run each time. Luckily, they're very fast to run and pretty fun to write.
+There are a lot of tests here, approximately 23 thousand run each time. Luckily, they're very fast to run and pretty fun to write.

@@ -118,11 +118,6 @@ describe('formValidations', () => {
         );
       });
 
-      it('should have all the right fields in C', () => {
-        const config = getCheckitConfig({ ...dispute, data: { ...dispute.data, option: 'C' } });
-        console.error(config);
-      });
-
       it('should cache the D option on load', () => {
         expect(getCheckitConfig({ ...dispute, data: { ...dispute.data, option: 'D' } })).eql(
           foldToOptionFieldsValidationsObject(extractToolFormValidations(wageGarnishmentDispute)).D,

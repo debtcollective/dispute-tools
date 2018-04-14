@@ -2,6 +2,7 @@ const { expect } = require('chai');
 
 const settings = {
   baseFormData: {},
+  // Set this to true when there will be absolutely no errors
   expectNoErrors: false,
 };
 

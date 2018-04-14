@@ -12,6 +12,8 @@ const {
   testAllowed,
   testForbidden,
 } = require('../../utils');
+const formValidation = require('../../../services/formValidation');
+
 const nock = require('nock');
 const { expect } = require('chai');
 
@@ -135,11 +137,17 @@ describe('Admin.DisputesController', () => {
   describe('updateDisputeData', () => {
     let url;
     let dispute;
+    let getCheckitConfig;
 
     before(async () => {
       dispute = await createDispute(await createUser());
       url = urls.Admin.Disputes.updateDisputeData.url(dispute.id);
-      console.error(url);
+      getCheckitConfig = formValidation.getCheckitConfig;
+      formValidation.getCheckitConfig = () => ({ foo: [] });
+    });
+
+    after(() => {
+      formValidation.getCheckitConfig = getCheckitConfig;
     });
 
     describe('authorization', () => {
