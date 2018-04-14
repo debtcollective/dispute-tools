@@ -153,7 +153,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
     },
 
-    updateDisputeData(req, res, next) {
+    async updateDisputeData(req, res, next) {
       const dispute = res.locals.dispute;
 
       const commands = ['setForm', 'setDisputeProcess', 'setConfirmFollowUp'];
@@ -163,7 +163,10 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       }
 
       try {
-        dispute[req.body.command](req.body);
+        const res = dispute[req.body.command](req.body);
+        if (typeof res.then === 'function') {
+          await res;
+        }
       } catch (e) {
         return res.format({
           html() {
