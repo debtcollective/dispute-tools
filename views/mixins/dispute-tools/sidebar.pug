@@ -7,7 +7,7 @@
     'Follow up'
   ]
 
-mixin toolsSidebarMixin(disputeTool, currentStep = 1, steps = _toolSteps)
+mixin toolsSidebarMixin(disputeTool, currentStep = 1, steps = _toolSteps, currentSection = null)
   .Tool__sidebar
     h4.pb1.-ttu.-h-sec.-accent
       span
@@ -37,6 +37,10 @@ mixin toolsSidebarMixin(disputeTool, currentStep = 1, steps = _toolSteps)
             _disabled = true;
           } else if (currentStep < _index) {
             _disabled = false;
+          }
+
+          if (step === 'Follow up' && currentSection !== 'follow-up') {
+            _disabled = true;
           }
 
         li.relative

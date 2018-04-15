@@ -44,9 +44,9 @@ block content
             'Let’s get this dispute started!',
             'Gather information',
             'Follow up'
-          ])
+          ], currentSection)
         else
-          +toolsSidebarMixin(dispute.disputeTool, currentStep)
+          +toolsSidebarMixin(dispute.disputeTool, currentStep, undefined, currentSection)
 
       .col.lg-col-9.col-12.px2
         include ../includes/disputes/information
