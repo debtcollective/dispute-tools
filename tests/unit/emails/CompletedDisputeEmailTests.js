@@ -26,7 +26,7 @@ describe('CompletedDisputeEmail', () => {
   });
 
   it('should send the ForAdmin email', async () => {
-    const email = new CompletedDisputeEmail({ fullname: 'Mercedes Member' }, { id: 12345 });
+    const email = new CompletedDisputeEmail({ name: 'Mercedes Member' }, { id: 12345 });
 
     await email.send();
 
@@ -34,7 +34,7 @@ describe('CompletedDisputeEmail', () => {
   });
 
   it('should send the ForVisitor email', async () => {
-    const email = new CompletedDisputeEmail({ fullname: 'Mercedes Member' }, { id: 12345 });
+    const email = new CompletedDisputeEmail({ name: 'Mercedes Member' }, { id: 12345 });
 
     await email.send();
 

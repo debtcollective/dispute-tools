@@ -80,7 +80,7 @@
             .StatusItem-Avatar.left
               if userUpdate
                 //- if (dispute.user.account.image.exists('small'))
-                //-   img.block.-fw(src=dispute.user.account.image.urls['small'] alt=dispute.user.account.fullname)
+                //-   img.block.-fw(src=dispute.user.account.image.urls['small'] alt=dispute.user.account.name)
                 //- else
                 //- TODO Use Discourse provided profile image
                 img.block(width='50' height='50' src=avatarUrl)
@@ -109,7 +109,7 @@
           .py2.clearfix
             .StatusItem-Avatar.left
               //- if (currentUser.account.image.exists('small'))
-              //-   img.block.-fw(src=currentUser.account.image.urls['small'] alt=currentUser.account.fullname)
+              //-   img.block.-fw(src=currentUser.account.image.urls['small'] alt=currentUser.account.name)
               //- else
               //- TODO Use Discourse provided profile picture
               img.block(width='50' height='50' src='/images/profile/placeholder-small.png')

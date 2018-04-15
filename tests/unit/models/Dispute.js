@@ -301,7 +301,7 @@ describe('Dispute', () => {
 
       // TODO Re-enable once discourse sends the person's fullname
       xit("should search by the user's name", () =>
-        Dispute.search({ name: user.fullname }).then(containsDispute));
+        Dispute.search({ name: user.name }).then(containsDispute));
 
       it('should search by the dispute human readable id', () =>
         Dispute.search({ filters: { readable_id: dispute.readableId } }).then(containsDispute));

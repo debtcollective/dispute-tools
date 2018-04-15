@@ -11,7 +11,7 @@ class ForMember extends Email {
    */
   constructor(member, dispute) {
     super('CompletedDisputeEmail.ForMember', {
-      to: `${member.fullname} <${member.email}>`,
+      to: `${member.name} <${member.email}>`,
       from: ForMember.from,
       subject: 'Your completed dispute documents',
     });

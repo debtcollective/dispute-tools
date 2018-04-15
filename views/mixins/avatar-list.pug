@@ -7,5 +7,5 @@ mixin avatarListMixin(accountList, imageKey)
           - _avatarUrl = account.image.urls[imageKey]
         a.block(
           href=routeMappings.Users.show.url(account.user_id)
-          title=`${account.fullname}’s profile`
-        ): img(src=_avatarUrl alt=account.fullname width='50' height='50')
+          title=`${account.name}’s profile`
+        ): img(src=_avatarUrl alt=account.name width='50' height='50')

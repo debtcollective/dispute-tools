@@ -55,6 +55,9 @@ const helpers = {
       .times(100)
       .reply(200, {
         ...user,
+        email: `${uuid.v4()}@example.com`,
+        username: uuid.v4(),
+        avatar_template: '{size}',
         id: user.externalId,
       });
 
@@ -64,6 +67,7 @@ const helpers = {
       moderator,
       email: `${uuid.v4()}@example.com`,
       username: uuid.v4(),
+      avatarTemplate: '{size}',
     });
   },
 

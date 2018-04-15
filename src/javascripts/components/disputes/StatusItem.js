@@ -16,7 +16,7 @@ export default class StatusItem extends Widget {
     // let avatar = this.constructor.TDCAvatar;
 
     if (userUpdate) {
-      name = data.dispute.user.fullname;
+      name = data.dispute.user.name;
       nameClass = '';
       // avatar = this._getUserAvatar(data.dispute.user.account);
     }
