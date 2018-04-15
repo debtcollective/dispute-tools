@@ -33,8 +33,8 @@ class ForAdmin extends Email {
   constructor(member, dispute) {
     super('CompletedDisputeEmail.ForAdmin', {
       to: `The Debt Syndicate Organizers <${disputesBCCAddress}>`,
-      from: `${member.fullname} <${contactEmail}>`,
-      subject: `${member.fullname} just completed a dispute`,
+      from: `${member.name} <${contactEmail}>`,
+      subject: `${member.name} just completed a dispute`,
     });
 
     this.locals = { member, dispute };

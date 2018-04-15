@@ -7,6 +7,8 @@
     return dispute.data.disputeConfirmFollowUp;
   }
 
+  var avatarUrl = CONFIG.discourse.baseUrl + currentUser.avatarTemplate.replace('{size}', '240')
+
 .Dispute__step-content(
   data-dispute-follow-up
   aria-hidden= (currentSection !== 'follow-up').toString()
@@ -81,7 +83,7 @@
                 //-   img.block.-fw(src=dispute.user.account.image.urls['small'] alt=dispute.user.account.fullname)
                 //- else
                 //- TODO Use Discourse provided profile image
-                img.block(width='50' height='50' src='/images/profile/placeholder-small.png')
+                img.block(width='50' height='50' src=avatarUrl)
               else
                 .StatusItem-TDC-placeholder
 
@@ -89,7 +91,7 @@
               .clearfix
                 .left
                   if userUpdate
-                    p.-fw-700= dispute.user.account.fullname
+                    p.-fw-700= dispute.user.name
                   else
                     p.-fw-700.-primary= 'The Debt Collective'
                   .-caption.-neutral-mid
