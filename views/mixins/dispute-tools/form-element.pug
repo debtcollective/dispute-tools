@@ -147,7 +147,8 @@ mixin toolsFormElementMixin(field, index)
           if field.type === 'mountable'
             div(id= field.name)
           else
-            fieldset
+            .clearfix.mxn2
+            fieldset(style='width:100%')
               each row2 in field.fields
                 .clearfix.mxn2
                   each field2 in row2
