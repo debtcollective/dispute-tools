@@ -12,7 +12,7 @@ const { render } = require('../services/render');
 
 const LOCAL_URI_REGEXP = /^\//;
 const REMOTE_URI_REGEXP = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=+$,\w]+@)[A-Za-z0-9.-]+)((?:\/[+~%/.\w-_]*)?\??(?:[-+=&;%@.\w_]*)#?(?:[\w]*))?)/;
-const { assignDefaultConfig, getSignedURL } = require('../lib/AWS');
+const { assignDefaultConfig } = require('../lib/AWS');
 const PrivateAttachmentStorage = require('./PrivateAttachmentStorage');
 
 const DisputeRenderer = Class('DisputeRenderer')
@@ -57,7 +57,11 @@ const DisputeRenderer = Class('DisputeRenderer')
       );
 
       return Promise.map(attachments, attachment =>
-        attachment.save().then(() => attachment.attach('file', attachment._filePath).then(() => attachment.save())),
+        attachment
+          .save()
+          .then(() =>
+            attachment.attach('file', attachment._filePath).then(() => attachment.save()),
+          ),
       );
     },
 
@@ -83,7 +87,7 @@ const DisputeRenderer = Class('DisputeRenderer')
       const handleAttachment = async attachment => {
         let readStream;
 
-        const url = getSignedURL(attachment.file.url('original'));
+        const url = attachment.file.url('original');
 
         if (LOCAL_URI_REGEXP.test(url)) {
           readStream = fs.createReadStream(path.join(process.cwd(), 'public', url));

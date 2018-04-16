@@ -216,18 +216,22 @@ describe('DisputesController', () => {
       const dispute = await createDispute(owner);
       url = urls.Disputes.addAttachment.url(dispute.id);
 
-      // Prevent uploading files to S3
-      sinon.stub(PrivateAttachmentStorage.prototype, 'saveStream').returns(
-        Promise.resolve({
-          original: {
-            ext: 'jpeg',
-            mimeType: 'image/jpeg',
-            width: 1280,
-            height: 1335,
-            key: 'test/DisputeAttachment/6595579a-b170-4ffd-87b3-2439f3d032fc/file/original.jpeg',
-          },
-        }),
-      );
+      try {
+        // Prevent uploading files to S3
+        sinon.stub(PrivateAttachmentStorage.prototype, 'saveStream').returns(
+          Promise.resolve({
+            original: {
+              ext: 'jpeg',
+              mimeType: 'image/jpeg',
+              width: 1280,
+              height: 1335,
+              key: 'test/DisputeAttachment/6595579a-b170-4ffd-87b3-2439f3d032fc/file/original.jpeg',
+            },
+          }),
+        );
+      } catch (e) {
+        if (e.message !== 'Attempted to wrap saveStream which is already wrapped') throw e;
+      }
     });
 
     describe('authorization', () => {

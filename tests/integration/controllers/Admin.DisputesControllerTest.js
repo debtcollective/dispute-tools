@@ -16,6 +16,9 @@ const {
   wageGarnishmentDisputes: { A: { data: { forms: { 'personal-information-form': sampleData } } } },
 } = require('../../utils/sampleDisputeData');
 
+const { join } = require('path');
+const PrivateAttachmentStorage = require('../../../models/PrivateAttachmentStorage');
+const sinon = require('sinon');
 const nock = require('nock');
 const { expect } = require('chai');
 
@@ -235,6 +238,62 @@ describe('Admin.DisputesController', () => {
       describe('when moderator', () => {
         it('should reject', () => testForbidden(testGet(url, moderator)));
       });
+    });
+  });
+
+  describe('downloadAttachment', () => {
+    let url;
+
+    before(async () => {
+      const dispute = await createDispute(await createUser());
+      const assetPath = join(process.cwd(), 'tests/assets/hubble.jpg');
+      await dispute.addAttachment('test-attachment', assetPath);
+      const attachment = dispute.data.attachments[0];
+      url = `${urls.Admin.Disputes.url()}/${dispute.id}/attachment/${attachment.id}`;
+
+      try {
+        // Prevent uploading files to S3
+        sinon.stub(PrivateAttachmentStorage.prototype, 'saveStream').returns(
+          Promise.resolve({
+            original: {
+              ext: 'jpeg',
+              mimeType: 'image/jpeg',
+              width: 1280,
+              height: 1335,
+              key: 'test/DisputeAttachment/6595579a-b170-4ffd-87b3-2439f3d032fc/file/original.jpeg',
+            },
+          }),
+        );
+      } catch (e) {
+        if (e.message !== 'Attempted to wrap saveStream which is already wrapped') throw e;
+      }
+    });
+
+    describe('authorization', () => {
+      describe('when unauthenticated', () => {
+        it('should redirect to login', () => testUnauthenticated(testGetPage(url)));
+      });
+
+      describe('when user', () => {
+        it('should reject', () => testForbidden(testGetPage(url, user)));
+      });
+
+      describe('when admin', () => {
+        it('should allow', () => testAllowed(testGetPage(url, admin)));
+      });
+
+      describe('when dispute admin', () => {
+        it('should allow', () => testAllowed(testGetPage(url, disputeAdmin)));
+      });
+
+      describe('when moderator', () => {
+        it('should reject', () => testForbidden(testGetPage(url, moderator)));
+      });
+    });
+
+    it('should redirect to the signed AWS url', async () => {
+      const res = await testGetPage(url, disputeAdmin);
+      expect(res.redirects.find(r => r.includes('s3.amazonaws.com'))).exist;
     });
   });
 });
