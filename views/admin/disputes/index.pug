@@ -17,12 +17,12 @@ block content
     table.-fw(cellpadding='0' cellspacing='0')
       thead
         tr
-          th
+          th(style="width: 25%")
             .-input-group-icon
               svg(width='18' height='18'): use(xlink:href='#svg-search')
               input.-k-input.-clean.-fw-700(
                 name="disputesListValue[search]"
-                placeholder='Search...'
+                placeholder='Email, username or IP address'
                 value= queryName
               )
           th
@@ -31,8 +31,9 @@ block content
                 name='disputesListValue[readableId]'
                 placeholder='Search ids...'
                 value= queryFilters && queryFilters.readable_id
+                style="width: 8em"
               )
-          th
+          th(style="width: 15%")
             .-k-select.-clean
               select.-fw-700.-fw(name='disputesListValue[tools]')
                 option(value="") Tools
@@ -41,7 +42,7 @@ block content
                     value= tool.id
                     selected= queryFilters && queryFilters.dispute_tool_id === tool.id
                   )= tool.name
-          th
+          th(style="width: 12%")
             .-k-select.-clean
               select.-fw-700.-fw(name='disputesListValue[status]')
                 option(value="") Status
@@ -87,8 +88,8 @@ block content
           tr
             td
               .flex.items-center
-                img(src=_dispute.user.imageURL alt=(_dispute.user.username || _dispute.user.name) width="50" height="50")
-                p.pl2.-fw-700= (_dispute.user.username || _dispute.user.name)
+                img(src=_dispute.user.imageURL alt=(_dispute.user.name) width="50" height="50")
+                p.pl2.-fw-700= (_dispute.user.name)
             td.-fw-400
               | #{_dispute.readableId}
             td.-fw-500
