@@ -40,10 +40,12 @@ const cleanUser = user => ({
   id: user.id,
   groups: user.groups,
   email: user.email,
+  name: user.name,
   username: user.username,
   admin: user.admin,
   moderator: user.moderator,
   externalId: user.externalId,
+  avatarTemplate: user.avatar_template,
 });
 
 const sso = {

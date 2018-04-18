@@ -45,7 +45,8 @@ mixin _uploadCard(step, _completed)
         ul.pt1.list-reset
           each _att in _attachments
             - var img = dispute.attachments.filter(a => a.id === _att.id)[0]
-            - var ext = _att.path.split('.').pop()
+            //- Split on ? to remove any query parameters
+            - var ext = _att.path.split('.').pop().split('?')[0]
             li.-caption.flex.pb1
               .flex-auto.pr1.-ell
                 span.Tool__Info-badge.inline-block.center.-fw-700.-ttu.rounded(class= `-${ext}`)= ext

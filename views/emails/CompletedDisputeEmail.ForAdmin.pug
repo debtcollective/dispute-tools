@@ -1,7 +1,7 @@
 extends ./layouts/BaseEmail
 
 block title
-  div #{member.fullname} has completed a dispute
+  div #{member.name} has completed a dispute
 
 block content
   - var downloadURL = `${CONFIG.siteURL}${CONFIG.router.helpers.Disputes.download.url(dispute.id)}`

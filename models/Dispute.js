@@ -7,6 +7,8 @@ const { basePath } = require('../lib/AWS');
 const DisputeAttachment = require('./DisputeAttachment');
 const discourse = require('../lib/discourse');
 const { findAllDiscourseUsersEnsuringCreated } = require('../services/users');
+const { getCheckitConfig, filterDependentFields } = require('../services/formValidation');
+const Checkit = require('../shared/Checkit');
 
 const Dispute = Class('Dispute')
   .inherits(Krypton.Model)
@@ -251,7 +253,7 @@ const Dispute = Class('Dispute')
       });
     },
 
-    setForm({ formName, fieldValues, _isDirty }) {
+    async setForm({ formName, fieldValues, _isDirty }) {
       if (!formName) {
         throw new Error('The formName is required');
       }
@@ -264,6 +266,8 @@ const Dispute = Class('Dispute')
         this.data._forms = {};
         this.data._forms[formName] = fieldValues;
       } else {
+        await this.validateForm(fieldValues);
+
         delete this.data._forms;
         this.data.forms = {};
         this.data.forms[formName] = fieldValues;
@@ -409,6 +413,11 @@ const Dispute = Class('Dispute')
         },
         { assigned: [], available: [] },
       );
+    },
+
+    validateForm(newForm) {
+      const config = filterDependentFields(newForm, getCheckitConfig(this));
+      return new Checkit(config).validate(newForm);
     },
 
     destroy() {

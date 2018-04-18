@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const { RecurringDonationEmail } = require('../../../services/email');
 
 describe('RecurringDonationEmail', () => {
-  const member = { fullname: 'Devon Donator', email: 'dev.don@example.com' };
+  const member = { name: 'Devon Donator', email: 'dev.don@example.com' };
   describe('constructor', () => {
     it('should set the from address to the contact email', () => {
       const email = new RecurringDonationEmail(member, 1000);
@@ -13,7 +13,7 @@ describe('RecurringDonationEmail', () => {
     it("should set the to address to the visitor's", () => {
       const email = new RecurringDonationEmail(member, 1000);
       expect(email.to).exist;
-      expect(email.to).eq(`${member.fullname} <${member.email}>`);
+      expect(email.to).eq(`${member.name} <${member.email}>`);
     });
 
     it('should set the locals with the passed in member', () => {

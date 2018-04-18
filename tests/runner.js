@@ -26,7 +26,9 @@ module.exports = function runTests(testDir) {
       mocha.addFile(path.join(testDir, file));
     });
 
-  // mocha.addFile(path.resolve(__dirname, 'integration', 'controllers', 'DisputesControllerTest.js'));
+  // mocha.addFile(
+  //   path.resolve(__dirname, 'form-validations', 'private-student-loan-dispute-validation.test.js'),
+  // );
 
   // run Mocha
   mocha.run(failures => {

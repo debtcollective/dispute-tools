@@ -5,8 +5,8 @@ class MemberUpdatedDisputeEmail extends Email {
   constructor(member, dispute, disputeStatus) {
     super('MemberUpdatedDisputeEmail', {
       to: MemberUpdatedDisputeEmail.to,
-      from: `${member.fullname} <${contactEmail}>`,
-      subject: `${member.fullname} has updated their dispute...`,
+      from: `${member.name} <${contactEmail}>`,
+      subject: `${member.name} has updated their dispute...`,
     });
 
     this.locals = { member, dispute, disputeStatus };

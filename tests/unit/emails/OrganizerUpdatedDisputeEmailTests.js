@@ -47,7 +47,7 @@ describe('OrganizerUpdatedDisputeEmail', () => {
       const email = new OrganizerUpdatedDisputeEmail(member, from, dispute, disputeStatus);
       const md = email.render();
       expect(md).exist;
-      expect(md).include(email.locals.member.fullname);
+      expect(md).include(email.locals.member.name);
     });
   });
 });

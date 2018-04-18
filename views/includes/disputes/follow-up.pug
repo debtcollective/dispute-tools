@@ -7,6 +7,8 @@
     return dispute.data.disputeConfirmFollowUp;
   }
 
+  var avatarUrl = CONFIG.discourse.baseUrl + currentUser.avatarTemplate.replace('{size}', '240')
+
 .Dispute__step-content(
   data-dispute-follow-up
   aria-hidden= (currentSection !== 'follow-up').toString()
@@ -78,10 +80,10 @@
             .StatusItem-Avatar.left
               if userUpdate
                 //- if (dispute.user.account.image.exists('small'))
-                //-   img.block.-fw(src=dispute.user.account.image.urls['small'] alt=dispute.user.account.fullname)
+                //-   img.block.-fw(src=dispute.user.account.image.urls['small'] alt=dispute.user.account.name)
                 //- else
                 //- TODO Use Discourse provided profile image
-                img.block(width='50' height='50' src='/images/profile/placeholder-small.png')
+                img.block(width='50' height='50' src=avatarUrl)
               else
                 .StatusItem-TDC-placeholder
 
@@ -89,7 +91,7 @@
               .clearfix
                 .left
                   if userUpdate
-                    p.-fw-700= dispute.user.account.fullname
+                    p.-fw-700= dispute.user.name
                   else
                     p.-fw-700.-primary= 'The Debt Collective'
                   .-caption.-neutral-mid
@@ -107,7 +109,7 @@
           .py2.clearfix
             .StatusItem-Avatar.left
               //- if (currentUser.account.image.exists('small'))
-              //-   img.block.-fw(src=currentUser.account.image.urls['small'] alt=currentUser.account.fullname)
+              //-   img.block.-fw(src=currentUser.account.image.urls['small'] alt=currentUser.account.name)
               //- else
               //- TODO Use Discourse provided profile picture
               img.block(width='50' height='50' src='/images/profile/placeholder-small.png')

@@ -3,7 +3,7 @@ const { MemberUpdatedDisputeEmail } = require('../../../services/email');
 const { mailers: { contactEmail } } = require('../../../config/config');
 
 describe('MemberUpdatedDisputeEmail', () => {
-  const member = { fullname: 'Devon Disputer' };
+  const member = { name: 'Devon Disputer' };
   const dispute = { disputeTool: { name: 'Student Debt Dispute' } };
   const disputeStatus = { comment: 'How great is disputing debt?!' };
   describe('constructor', () => {
@@ -43,7 +43,7 @@ describe('MemberUpdatedDisputeEmail', () => {
       const email = new MemberUpdatedDisputeEmail(member, dispute, disputeStatus);
       const html = email.render();
       expect(html).exist;
-      expect(html).include(email.locals.member.fullname);
+      expect(html).include(email.locals.member.name);
     });
   });
 });

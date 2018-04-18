@@ -45,18 +45,7 @@ export default class DisputesInformationForm extends Widget {
     const formData = data.steps.filter(step => step.type === 'form')[0];
 
     if (document.getElementById('debt-amounts-mount-point')) {
-      const originalDebt = {
-        type: get(
-          config.dispute.data._forms || config.dispute.data.forms,
-          'personal-information-form.debt-type',
-        ),
-        amount: get(
-          config.dispute.data._forms || config.dispute.data.forms,
-          'personal-information-form.debt-amount',
-        ),
-      };
-
-      this.debtAmounts = mountDebtAmounts(originalDebt);
+      this.debtAmounts = mountDebtAmounts(config);
     }
 
     this.constraints = {};
@@ -76,7 +65,7 @@ export default class DisputesInformationForm extends Widget {
             return undefined;
           }
 
-          _this.constraints[f.name] = f.validations;
+          _this.constraints[f.name] = f.validations.filter(v => !v.startsWith('dependsOn'));
           _this._constraintsAll[f.name] = f.validations;
           return undefined;
         });
@@ -285,10 +274,6 @@ export default class DisputesInformationForm extends Widget {
 
     const [err] = this._checkit.validateSync(this._getFieldsData());
 
-    if (this.debtAmounts) {
-      console.error(this.debtAmounts.debts);
-    }
-
     if (err) {
       ev.preventDefault();
       this.Button.enable();
@@ -356,7 +341,7 @@ export default class DisputesInformationForm extends Widget {
     Object.keys(this.constraints).forEach(key => {
       if (this.ui[key]) {
         if (this.ui[key].type === 'radio') {
-          val = document.querySelector(`[name="${this.ui[key].name}"]:checked`);
+          val = document.querySelector(`[name="${this.ui[key].name}"]:checked`).value;
         } else {
           val = this.ui[key].value;
         }
