@@ -20,15 +20,13 @@ const DisputeTool = Class('DisputeTool').inherits(Krypton.Model)({
   },
 
   async findBySlug(slug) {
-    const [tool] = await DisputeTool.query()
-      .where(
-        'readable_name',
-        slug
-          .split('-')
-          .map(_.capitalize)
-          .join(' '),
-      )
-      .first();
+    const [tool] = await DisputeTool.query().where(
+      'readable_name',
+      slug
+        .split('-')
+        .map(_.capitalize)
+        .join(' '),
+    );
 
     return tool;
   },
