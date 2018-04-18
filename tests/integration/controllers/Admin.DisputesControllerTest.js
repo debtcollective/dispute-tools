@@ -245,12 +245,6 @@ describe('Admin.DisputesController', () => {
     let url;
 
     before(async () => {
-      const dispute = await createDispute(await createUser());
-      const assetPath = join(process.cwd(), 'tests/assets/hubble.jpg');
-      await dispute.addAttachment('test-attachment', assetPath);
-      const attachment = dispute.data.attachments[0];
-      url = `${urls.Admin.Disputes.url()}/${dispute.id}/attachment/${attachment.id}`;
-
       try {
         // Prevent uploading files to S3
         sinon.stub(PrivateAttachmentStorage.prototype, 'saveStream').returns(
@@ -267,6 +261,12 @@ describe('Admin.DisputesController', () => {
       } catch (e) {
         if (e.message !== 'Attempted to wrap saveStream which is already wrapped') throw e;
       }
+
+      const dispute = await createDispute(await createUser());
+      const assetPath = join(process.cwd(), 'tests/assets/hubble.jpg');
+      await dispute.addAttachment('test-attachment', assetPath);
+      const attachment = dispute.data.attachments[0];
+      url = `${urls.Admin.Disputes.url()}/${dispute.id}/attachment/${attachment.id}`;
     });
 
     describe('authorization', () => {
@@ -292,8 +292,16 @@ describe('Admin.DisputesController', () => {
     });
 
     it('should redirect to the signed AWS url', async () => {
-      const res = await testGetPage(url, disputeAdmin);
-      expect(res.redirects.find(r => r.includes('s3.amazonaws.com'))).exist;
+      let caught;
+      try {
+        await testGetPage(url, disputeAdmin).redirects(0);
+      } catch (e) {
+        caught = e;
+      }
+
+      expect(caught).exist;
+      expect(caught.status).eq(302);
+      expect(caught.response.headers.location.includes('s3.amazonaws.com')).true;
     });
   });
 });
