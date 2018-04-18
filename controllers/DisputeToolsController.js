@@ -3,6 +3,8 @@ const marked = require('marked');
 const { authenticate, authorize, tests: { loggedIn } } = require('../services/auth');
 const { NotFoundError } = require('../lib/errors');
 
+const idRegex = /^1{8}-1{4}-[12346]{4}-1{4}-1{12}$/;
+
 const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulController)({
   beforeActions: [
     {
@@ -11,7 +13,10 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulC
         authorize(loggedIn),
         async (req, res, next) => {
           try {
-            const disputeTool = await DisputeTool.findById(req.params.id);
+            const disputeTool = idRegex.test(req.params.id)
+              ? await DisputeTool.findById(req.params.id)
+              : await DisputeTool.findBySlug(req.params.id);
+
             if (disputeTool) {
               res.locals.disputeTool = disputeTool;
               next();
@@ -41,6 +46,7 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulC
               about: marked(disputeTool.about),
               completed: disputeTool.completed,
               data: disputeTool.data,
+              slug: disputeTool.slug,
             });
           });
           res.render('dispute-tools/index');
