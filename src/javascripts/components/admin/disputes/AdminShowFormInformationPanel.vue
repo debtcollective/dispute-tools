@@ -70,6 +70,7 @@
 <script>
 import get from 'lodash/get';
 import { getUserByExternalId } from '../../../lib/api';
+import { DebtTypes } from '../../../../../shared/enum/DebtTypes';
 
 const getFormOrElse = ({ data, user, statuses: [{ status, pendingSubmission }] }) => {
   if (data && (data.forms || data._forms)) {
@@ -106,7 +107,7 @@ export default {
         Phone: this.form.phone || this.user.phone,
         'Phone 2': this.form.phone2,
         Creditor: this.form['agency-name'] || this.form['firm-name'],
-        'Debt type': this.form['debt-type'] || null,
+        'Debt type': DebtTypes[this.form['debt-type']] || null,
         'Debt amount': this.form['debt-amount'],
       };
     },
