@@ -1,6 +1,7 @@
 /* global Krypton, Class, CONFIG, AWS, S3Uploader */
 
 const { assignDefaultConfig } = require('../lib/AWS');
+const PrivateAttachmentStorage = require('./PrivateAttachmentStorage');
 
 const Attachment = Class('Attachment')
   .inherits(Krypton.Model)
@@ -11,7 +12,7 @@ const Attachment = Class('Attachment')
     type: ['required'],
   },
   attributes: ['id', 'type', 'foreignKey', 'filePath', 'fileMeta', 'createdAt', 'updatedAt'],
-  attachmentStorage: new Krypton.AttachmentStorage.S3(
+  attachmentStorage: new PrivateAttachmentStorage(
     assignDefaultConfig({
       acceptedMimeTypes: [/image/, /application/],
       maxFileSize: 20971520, // 20MB

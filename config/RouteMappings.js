@@ -78,6 +78,10 @@ const routeMappings = RouteMappings()
           .put('/:id/data', {
             to: 'Disputes#updateDisputeData',
             as: 'updateDisputeData',
+          })
+          .get('/:id/attachment/:aid', {
+            to: 'Disputes#downloadAttachment',
+            as: 'downloadAttachment',
           }),
       )
       .resources('/Users'),

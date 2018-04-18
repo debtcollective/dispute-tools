@@ -39,6 +39,18 @@
           </div>
         </div>
 
+        <div class="FormView mb1">
+          <h4 class="center mb1">Attachments</h4>
+          <div class="flex">
+            <div v-if="attachments && attachments.length">
+              <div v-for="attachment in attachments" :key="attachment.name">
+                <a :href="attachment.href" target="_blank" class="-k-btn btn-link">{{attachment.name}}</a>
+              </div>
+            </div>
+            <h3 v-else class="center">None</h3>
+          </div>
+        </div>
+
         <dl class="FormView">
           <span
             v-for="(val, key) in personalInformation"
@@ -72,13 +84,24 @@ import get from 'lodash/get';
 import { getUserByExternalId } from '../../../lib/api';
 import { DebtTypes } from '../../../../../shared/enum/DebtTypes';
 
-const getFormOrElse = ({ data, user, statuses: [{ status, pendingSubmission }] }) => {
+const getFormOrElse = ({
+  id,
+  data,
+  user,
+  attachments = [],
+  statuses: [{ status, pendingSubmission }],
+}) => {
   if (data && (data.forms || data._forms)) {
     return {
+      disputeId: id,
       form: get(data._forms || data.forms, 'personal-information-form'),
       status,
       user,
       pendingSubmission,
+      attachments: attachments.map(a => ({
+        href: `/admin/disputes/${a.foreignKey}/attachment/${a.id}`,
+        name: a.fileMeta.original.originalFileName,
+      })),
     };
   }
   return { form: false, status, user: false, pendingSubmission };

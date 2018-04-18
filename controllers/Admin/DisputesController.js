@@ -5,6 +5,7 @@ const _ = require('lodash');
 const Promise = require('bluebird');
 const Dispute = require('../../models/Dispute');
 const discourse = require('../../lib/discourse');
+const { NotFoundError } = require('../../lib/errors');
 
 const { authenticate, authorize, tests: { isDisputeAdmin } } = require('../../services/auth');
 
@@ -27,6 +28,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         'getAvailableAdmins',
         'show',
         'updateDisputeData',
+        'downloadAttachment',
       ],
     },
     {
@@ -181,6 +183,18 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
           return res.redirect(CONFIG.router.helpers.Admin.Disputes.url());
         })
         .catch(next);
+    },
+
+    async downloadAttachment(req, res, next) {
+      const attachment = req.dispute.attachments.find(a => a.id === req.params.aid);
+      if (!attachment) {
+        next(
+          // prettier-ignore
+          new NotFoundError(`Could not find attachment with id ${req.params.aid} for dispute with id ${req.params.id}`),
+        );
+      } else {
+        res.redirect(attachment.file.url('original'));
+      }
     },
   },
 });
