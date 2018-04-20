@@ -61,6 +61,11 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       }
     },
 
+    async myDisputes(req, res) {
+      res.locals.disputes = await Dispute.findByUser(req.user, '[disputeTool, statuses]');
+      res.render('disputes/my');
+    },
+
     show(req, res) {
       res.locals.lastStatus = _.last(
         _.sortBy(

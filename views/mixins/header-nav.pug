@@ -21,6 +21,11 @@
       onclick: `window.login('${routeMappings.login.url()}')`,
     }],
     loggedIn: [{
+      text: 'My disputes',
+      title: 'My disputes',
+      className: 'link',
+      url: routeMappings.Disputes.myDisputes.url()
+    }, {
       text: 'Log out',
       title: 'Log out',
       className: 'logout-link',
@@ -44,7 +49,7 @@ mixin _linkMixin(item, responsive = false)
     - _className = 'ResponsiveMenu__link -fw-700 block'
   if (item.url === currentURL) || (currentURL.startsWith(item.url))
     - _className += ' active'
-  if item.url === '/dispute-tools' && currentURL.startsWith('/disputes')
+  if item.url === '/dispute-tools' && currentURL.startsWith('/disputes') && currentURL !== '/disputes/my'
     - _className += ' active'
   - _className = _className + (item.className ? ' ' + item.className : '')
   a(href!=item.url, class=_className, title=item.title || item.text, onclick=item.onclick || '')&attributes(attributes)
@@ -93,7 +98,6 @@ mixin _defaultMenuMixin
                 li: a.Header__dropdown-item(href=item.url role='button' tabindex='0')
                   svg.mr1(width='18' height='11'): use(xlink:href='#svg-key')
                   | #{item.text}
-              li.-separator
 
   ul.list-reset.-fh.md-hide.lg-hide
     li: button.js-hamburger-menu.-white.-k-btn.btn-link(style='padding: 13px 0 13px 16px;')

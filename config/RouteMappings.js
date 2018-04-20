@@ -118,6 +118,10 @@ const routeMappings = RouteMappings()
       .put('/:id/remove-attachment/:attachment_id', {
         to: 'Disputes#removeAttachment',
         as: 'removeAttachment',
+      })
+      .get('/my', {
+        to: 'Disputes#myDisputes',
+        as: 'myDisputes',
       }),
   )
 

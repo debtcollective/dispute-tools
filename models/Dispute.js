@@ -95,6 +95,14 @@ const Dispute = Class('Dispute')
     return dispute;
   },
 
+  findByUser(user, include = null) {
+    const query = Dispute.query().where('user_id', user.id);
+    if (typeof include === 'string') {
+      query.include(include);
+    }
+    return query;
+  },
+
   createFromTool({ user, disputeToolId, option }) {
     const dispute = new Dispute({
       disputeToolId,
