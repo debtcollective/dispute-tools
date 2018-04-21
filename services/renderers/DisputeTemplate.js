@@ -49,6 +49,11 @@ class DisputeTemplate {
      * by the `pdf` rendering pipeline
      */
     post = null,
+    /**
+     * Predicate accepting the dispute data and returning true if the document should be included
+     * in the dispute render and false if it should be skipped.
+     */
+    iff = () => true,
   }) {
     this.type = type;
 
@@ -65,6 +70,7 @@ class DisputeTemplate {
       this.post = (Array.isArray(post) ? post : [post]).map(fn => fn.bind(this));
     }
     this.data = data;
+    this.iff = iff;
   }
 
   execDataFunctions(form) {

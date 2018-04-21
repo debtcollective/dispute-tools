@@ -9,8 +9,13 @@ const render = async ({ disputeToolId, data }) => {
     values(
       mapValues(documents, (document, name) =>
         Promise.all(
-          document.templates.map(template =>
-            getRenderer(template.type)(template, data, name),
+          document.templates.reduce(
+            // eslint-disable-next-line no-confusing-arrow
+            (renders, template) =>
+              template.iff(data)
+                ? [...renders, getRenderer(template.type)(template, data, name)]
+                : renders,
+            [],
           ),
         ),
       ),
