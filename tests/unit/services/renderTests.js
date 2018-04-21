@@ -10,7 +10,11 @@ const {
   wageGarnishmentDisputes,
 } = require('../../utils/sampleDisputeData');
 const { extractPdfText } = require('../../utils');
-const { formatDate } = require('../../../services/renderers/tool-configurations/shared/utils');
+const {
+  formatDate,
+  normalizeSsn,
+} = require('../../../services/renderers/tool-configurations/shared/utils');
+const { doeDisclosure } = require('../../../config/config');
 
 function basicRenderTest(sampleData, docTemplates = [1]) {
   return async function theTest(generate = 'fdf') {
@@ -533,6 +537,33 @@ describe('render', () => {
         expectContains(fdf, form, personalInfoKeys.concat(['ssn']));
         expectContains(fdf, form, employmentInfoKeys, 'employ');
       };
+
+      // No need to write multiple tests for the DOE privacy disclosure form
+      // as if it gets included/rendered when we don't expect it then the number
+      // of documents will be wrong and the tests will begin to fail.
+      describe('DOE privacy disclosure form', () => {
+        it('should have been rendered', async () => {
+          const [[, path]] = await basicRenderTest(wageGarnishmentDisputes.AwithRelease, [2])(
+            'path',
+          );
+
+          const res = extractPdfText(path);
+          const form = wageGarnishmentDisputes.AwithRelease.data.forms['personal-information-form'];
+          ['name', 'address1', 'email', 'city', 'state', 'zip-code'].forEach(k => {
+            expect(res).includes(form[k]);
+          });
+
+          expect(res).includes(wageGarnishmentDisputes.AwithRelease.data.signature);
+          expect(res).includes(normalizeSsn(form.ssn).join('-'));
+          expect(res).includes(formatDate(form.dob, 'MM/DD/YY'));
+
+          ['representatives', 'address', 'city', 'state', 'zip', 'phones', 'relationship'].forEach(
+            doeDisclosureKey => {
+              expect(res).includes(doeDisclosure[doeDisclosureKey]);
+            },
+          );
+        });
+      });
 
       it('a: should render the pdf', async () => {
         const [[fdf]] = await basicRenderTest(wageGarnishmentDisputes.A, [1])();

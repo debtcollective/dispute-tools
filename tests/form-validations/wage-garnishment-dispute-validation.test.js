@@ -8,6 +8,7 @@ const employment = require('../utils/form-validation-suites/employment');
 const atbFalseCert = require('../utils/form-validation-suites/atbFalseCertification');
 const atbDisqualifyingStatus = require('../utils/form-validation-suites/atbDisqualifyingStatus');
 const unauthorizedSignature = require('../utils/form-validation-suites/unauthorizedSignature');
+const privacyRelease = require('../utils/form-validation-suites/privacyRelease');
 
 describe('wage garnishment dispute form validation', () => {
   let dispute;
@@ -24,7 +25,9 @@ describe('wage garnishment dispute form validation', () => {
       dispute.data.option = 'A';
     });
 
-    [personalInformation, yourSchool, ffelLoan, employment].forEach(fn => fn(() => dispute));
+    [personalInformation, yourSchool, ffelLoan, employment, privacyRelease].forEach(fn =>
+      fn(() => dispute),
+    );
   });
 
   describe('option B', () => {
@@ -32,7 +35,9 @@ describe('wage garnishment dispute form validation', () => {
       dispute.data.option = 'B';
     });
 
-    [personalInformation, yourSchool, ffelLoan, employment].forEach(fn => fn(() => dispute));
+    [personalInformation, yourSchool, ffelLoan, employment, privacyRelease].forEach(fn =>
+      fn(() => dispute),
+    );
   });
 
   describe('option C', () => {
@@ -40,8 +45,8 @@ describe('wage garnishment dispute form validation', () => {
       dispute.data.option = 'C';
     });
 
-    [personalInformation, yourSchool, ffelLoan, employment, atbFalseCert].forEach(fn =>
-      fn(() => dispute),
+    [personalInformation, yourSchool, ffelLoan, employment, atbFalseCert, privacyRelease].forEach(
+      fn => fn(() => dispute),
     );
   });
 
@@ -50,9 +55,14 @@ describe('wage garnishment dispute form validation', () => {
       dispute.data.option = 'D';
     });
 
-    [personalInformation, yourSchool, ffelLoan, employment, atbDisqualifyingStatus].forEach(fn =>
-      fn(() => dispute),
-    );
+    [
+      personalInformation,
+      yourSchool,
+      ffelLoan,
+      employment,
+      atbDisqualifyingStatus,
+      privacyRelease,
+    ].forEach(fn => fn(() => dispute));
   });
 
   describe('option E', () => {
@@ -60,8 +70,13 @@ describe('wage garnishment dispute form validation', () => {
       dispute.data.option = 'E';
     });
 
-    [personalInformation, yourSchool, ffelLoan, employment, unauthorizedSignature].forEach(fn =>
-      fn(() => dispute),
-    );
+    [
+      personalInformation,
+      yourSchool,
+      ffelLoan,
+      employment,
+      unauthorizedSignature,
+      privacyRelease,
+    ].forEach(fn => fn(() => dispute));
   });
 });
