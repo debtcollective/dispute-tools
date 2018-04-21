@@ -22,5 +22,6 @@ class ViewDefault extends NodeSupport {
 window.ViewDefault = ViewDefault;
 
 window.Checkit = Checkit;
+window.logger = console;
 
 window.login = login;
