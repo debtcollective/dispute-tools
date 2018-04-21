@@ -285,6 +285,10 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           return true;
         }
 
+        if (dispute.updatedAt > renderer.updatedAt) {
+          return true;
+        }
+
         const currentStatus = _.sortBy(dispute.statuses, 'updatedAt').slice(-1)[0];
 
         return currentStatus.status !== 'Completed' || currentStatus.updatedAt > renderer.updatedAt;
