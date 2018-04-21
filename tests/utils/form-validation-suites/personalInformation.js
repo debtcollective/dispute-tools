@@ -1,10 +1,13 @@
-const currency = require('./field-validation-suites/currency');
-const text = require('./field-validation-suites/text');
-const ssn = require('./field-validation-suites/ssn');
-const zip = require('./field-validation-suites/zip');
-const usStates = require('./field-validation-suites/usStates');
-const email = require('./field-validation-suites/email');
-const phone = require('./field-validation-suites/phone');
+const {
+  date,
+  phone,
+  email,
+  usStates,
+  zip,
+  ssn,
+  text,
+  currency,
+} = require('./field-validation-suites');
 
 /**
  * Builds the personal information form fields test suite for the passed
@@ -23,6 +26,10 @@ module.exports = getDispute => {
 
   describe('ssn', () => {
     ssn('ssn', getDispute);
+  });
+
+  describe('dob', () => {
+    date('dob', getDispute);
   });
 
   describe('address1', () => {

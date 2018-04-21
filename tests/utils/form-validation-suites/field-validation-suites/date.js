@@ -1,14 +1,11 @@
 const { expectRule, performTest } = require('../helpers');
 const required = require('./required');
-const maxLength = require('./maxLength');
 
 const expectParsableDate = expectRule('parsableDate');
 
 module.exports = (fieldName, getDispute, isRequired = true) => {
   describe('date', () => {
     required(fieldName, getDispute, isRequired);
-
-    maxLength(fieldName, 20, getDispute);
 
     [
       '05/16/1994',
