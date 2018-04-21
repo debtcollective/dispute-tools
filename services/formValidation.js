@@ -13,7 +13,14 @@ const flattenFieldSet = fieldSet =>
           field => (Array.isArray(field.fields) ? [field, flattenFieldSet(field)] : field),
         ),
       ),
-    ]).filter(f => f instanceof Field && f.validations !== undefined && f.type !== 'mountable'),
+    ]).filter(
+      f =>
+        f instanceof Field &&
+        f.validations !== undefined &&
+        f.type !== 'mountable' &&
+        f.name &&
+        f.name !== 'undefined',
+    ),
     'name',
   );
 

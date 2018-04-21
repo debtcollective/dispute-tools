@@ -173,11 +173,17 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           await res;
         }
       } catch (e) {
+        logger.error(
+          `Error occured while updated dispute data for dispute ${dispute.id}`,
+          e.message || (e.toString && e.toString()) || e,
+        );
         return res.format({
           html() {
             req.flash(
               'error',
-              'An error occurred while updating the dispute data. Please try again or contact a dispute administrator if the problem persists.',
+              e.errors
+                ? `An error ocurred while validating your form data: ${e.errors[0]}`
+                : 'An error occurred while updating the dispute data. Please try again or contact a dispute administrator if the problem persists.',
             );
             return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
           },

@@ -39,7 +39,7 @@ const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
       status,
       note,
       disputeId: dispute.id,
-      notify: typeof notify === 'boolean' || notify === 'on' ? notify : false,
+      notify: typeof notify === 'boolean' || notify === 'on' || notify === 'yes' ? notify : false,
     });
 
     await disputeStatus.save();
