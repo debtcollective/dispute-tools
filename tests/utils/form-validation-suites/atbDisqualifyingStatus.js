@@ -55,8 +55,8 @@ module.exports = getDispute => {
     describe('atbd-option5', () => {
       checkbox('atbd-option5', getDispute);
 
-      describe('when on', () => {
-        before(() => setBaseFormData({ 'atbd-option5': 'on' }));
+      describe('when yes', () => {
+        before(() => setBaseFormData({ 'atbd-option5': 'yes' }));
         after(() => setBaseFormData({}));
 
         describe('atbd-option5-text', () => {
@@ -64,9 +64,9 @@ module.exports = getDispute => {
         });
       });
 
-      describe('when off', () => {
+      describe('when no', () => {
         before(() => {
-          setBaseFormData({ 'atbd-option5': 'off' });
+          setBaseFormData({ 'atbd-option5': 'no' });
           setExpectNoErrors(true);
         });
 

@@ -6,6 +6,7 @@ import Widget from '../../lib/widget';
 import Button from '../../components/Button';
 import ConfirmInline from '../../components/ConfirmInline';
 import DebtAmounts from './DebtAmounts.vue';
+import FormValidation from '../../../../services/formValidation';
 
 export const mountDebtAmounts = config => {
   if (document.getElementById('debt-amounts-mount-point')) {
@@ -40,46 +41,17 @@ export default class DisputesInformationForm extends Widget {
       }),
     );
 
-    const _this = this;
-    const data = this.dispute.disputeTool.data.options[this.dispute.data.option];
-    const formData = data.steps.filter(step => step.type === 'form')[0];
-
     if (document.getElementById('debt-amounts-mount-point')) {
       this.debtAmounts = mountDebtAmounts(config);
     }
 
-    this.constraints = {};
-    this._constraintsAll = {};
-
-    function test(fs) {
-      fs.fields.forEach(r => {
-        r.forEach(f => {
-          if (f.type === 'mountable') return;
-
-          if (f.type === 'group') {
-            return test(f);
-          }
-
-          if (!f.validations) {
-            console.warn('skipped', f.name, f.validations);
-            return undefined;
-          }
-
-          _this.constraints[f.name] = f.validations.filter(v => !v.startsWith('dependsOn'));
-          _this._constraintsAll[f.name] = f.validations;
-          return undefined;
-        });
-      });
-    }
-
-    formData.fieldSets.forEach(test);
+    this.constraints = this._constraintsAll = FormValidation.getCheckitConfig(this.dispute);
 
     this.ui = {};
     Object.keys(this.constraints).forEach(key => {
       const query = `[name="fieldValues[${key}]"]`;
       this.ui[key] = this.element.querySelector(query);
     });
-    this._checkit = new Checkit(this.constraints);
 
     this.form = this.element.querySelector('form');
     this._handleFormSubmitRef = this._handleFormSubmit.bind(this);
@@ -200,8 +172,6 @@ export default class DisputesInformationForm extends Widget {
           if (vals) this.constraints[name] = vals;
         });
       }
-
-      this._checkit = new Checkit(this.constraints);
     }
   }
 
@@ -230,8 +200,6 @@ export default class DisputesInformationForm extends Widget {
         parent,
       };
     });
-
-    this._checkit = new Checkit(this.constraints);
   }
 
   _handlePartialToggler(ev) {
@@ -264,20 +232,21 @@ export default class DisputesInformationForm extends Widget {
 
       return;
     });
-
-    this._checkit = new Checkit(this.constraints);
   }
 
   _handleFormSubmit(ev) {
     this.Button.disable();
     this._clearFieldErrors();
 
-    const [err] = this._checkit.validateSync(this._getFieldsData());
+    const form = this._getFieldsData();
+    const [err] = new Checkit(
+      FormValidation.filterDependentFields(form, this.constraints),
+    ).validateSync(form);
 
     if (err) {
       ev.preventDefault();
       this.Button.enable();
-      return this._displayFieldErrors(err.errors);
+      return this._displayFieldErrors(FormValidation.makeErrorsReadable(this.dispute, err.errors));
     }
 
     this.Button.updateText();
@@ -342,6 +311,8 @@ export default class DisputesInformationForm extends Widget {
       if (this.ui[key]) {
         if (this.ui[key].type === 'radio') {
           val = document.querySelector(`[name="${this.ui[key].name}"]:checked`).value;
+        } else if (this.ui[key].type === 'checkbox') {
+          val = this.ui[key].checked === true ? 'yes' : 'no';
         } else {
           val = this.ui[key].value;
         }
