@@ -1,3 +1,5 @@
+const qs = require('query-string');
+
 module.exports = (req, res, next) => {
   if (req.query.flash) {
     res.locals.flash = JSON.parse(req.query.flash);
@@ -12,7 +14,12 @@ module.exports = (req, res, next) => {
   const redirect = res.redirect;
   res.redirect = function redirectWithFlash(location, ...args) {
     if (res.locals.flash) {
-      redirect.call(this, `${location}?flash=${JSON.stringify(res.locals.flash)}`, ...args);
+      const [loc, query = ''] = location.split('?');
+      location = `${loc}?${qs.stringify({
+        ...qs.parse(query),
+        flash: JSON.stringify(res.locals.flash),
+      })}`;
+      redirect.call(this, location, ...args);
     } else {
       redirect.call(this, location, ...args);
     }
