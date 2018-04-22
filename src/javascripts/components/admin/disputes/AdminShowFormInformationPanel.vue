@@ -1,88 +1,127 @@
 <template>
   <div class="mx-auto">
-    <h3
-      v-if="!form"
-      class="max-width-2 pb3">
-      No saved form data.
-      <br>
-      Dispute Status: {{ status }}
-    </h3>
-    <div v-else>
-      <div class="max-width-2">
-        <h3 class="pb1 center">
-          Personal Information
-        </h3>
-        <h4 class="center" v-if="status === 'Completed'">
-          {{ pendingSubmission ? 'Debt Syndicate to mail dispute' : 'User to mail dispute' }}
-        </h4>
-        <h4 class="pb1 center">
-          {{ status }}
-        </h4>
+    <alert :alerts="alerts" />
+    <span v-if="!(uploading || loading)">
+      <h3
+        v-if="!form"
+        class="max-width-2 pb3">
+        No saved form data.
+        <br>
+        Dispute Status: {{ status }}
+      </h3>
+      <div v-else>
+        <div class="max-width-2">
+          <h3 class="pb1 center">
+            Personal Information
+          </h3>
+          <h4 class="center" v-if="status === 'Completed'">
+            {{ pendingSubmission ? 'Debt Syndicate to mail dispute' : 'User to mail dispute' }}
+          </h4>
+          <h4 class="pb1 center">
+            {{ status }}
+          </h4>
 
-        <h5 class="pb3 center">
-          <a class="-k-btn btn-primary -fw-700" :href="`/admin/disputes/${dispute.id}`">Edit dispute form data</a>
-        </h5>
+          <h5 class="pb3 center">
+            <a class="-k-btn btn-primary -fw-700" :href="`/admin/disputes/${dispute.id}`">Edit dispute form data</a>
+          </h5>
 
-        <dl class="FormView mb1">
-          <span v-for="(val, key) in userProfileInformation" :key="key">
-            <dt>{{ key }}</dt>
-            <dd>{{ val || '-' }}</dd>
-          </span>
-        </dl>
+          <dl class="FormView mb1">
+            <span v-for="(val, key) in userProfileInformation" :key="key">
+              <dt>{{ key }}</dt>
+              <dd>{{ val || '-' }}</dd>
+            </span>
+          </dl>
 
-        <div class="FormView mb1" v-if="user.groups && user.groups.filter(g => g.full_name).length">
-          <h4 class="center mb1">Groups</h4>
-          <div class="flex">
-            <div v-for="group in user.groups.filter(g => g.full_name)" :key="group.full_name">
-              <span>{{group.full_name}}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="FormView mb1">
-          <h4 class="center mb1">Attachments</h4>
-          <div class="flex">
-            <div v-if="attachments && attachments.length">
-              <div v-for="attachment in attachments" :key="attachment.name">
-                <a :href="attachment.href" target="_blank" class="-k-btn btn-link">{{attachment.name}}</a>
+          <div class="FormView mb1" v-if="user.groups && user.groups.filter(g => g.full_name).length">
+            <h4 class="center mb1">Groups</h4>
+            <div class="flex">
+              <div v-for="group in user.groups.filter(g => g.full_name)" :key="group.full_name">
+                <span>{{group.full_name}}</span>
               </div>
             </div>
-            <h3 v-else class="center">None</h3>
           </div>
-        </div>
 
-        <dl class="FormView">
-          <span
-            v-for="(val, key) in personalInformation"
-            :key="key">
-            <dt>{{ key }}</dt>
-            <dd>{{ val || '-' }}</dd>
-          </span>
-        </dl>
+          <div class="FormView mb1">
+            <h4 class="center mb1">Attachments</h4>
+            <div v-if="attachments && attachments.length" class="-fw">
+                <attachment
+                  v-for="attachment in attachments"
+                  :key="attachment.id"
+                  :attachment="attachment"
+                  entity-name="disputes"
+                  :on-delete="handleAttachmentDelete"
+                />
+            </div>
+            <h3 v-else class="center">None</h3>
+
+            <form class="center mt2" @submit="e => e.preventDefault()">
+              <div class="relative -k-btn -sm btn-primary -fw-500 -fw">
+                Upload attachments to dispute
+                <input
+                  type="file"
+                  name="attachment"
+                  accept="pdf,png,jpeg"
+                  multiple="true"
+                  class="absolute top-0 left-0 -fw -fh"
+                  style="opacity: 0"
+                  @change="handleAttachmentUpload">
+              </div>
+            </form>
+          </div>
+
+          <dl class="FormView">
+            <span
+              v-for="(val, key) in personalInformation"
+              v-if="val !== null"
+              :key="key">
+              <dt>{{ key }}</dt>
+              <dd>{{ val || '-' }}</dd>
+            </span>
+          </dl>
+        </div>
+        <div
+          v-if="ffel !== null"
+          class="max-width-2 mt3">
+          <h3 class="pb1 center">
+            FFEL Loan Information
+          </h3>
+          <dl class="FormView">
+            <span
+              v-for="(val, key) in ffel"
+              :key="key">
+              <dt>{{ key }}</dt>
+              <dd>{{ val || '-' }}</dd>
+            </span>
+          </dl>
+        </div>
       </div>
-      <div
-        v-if="ffel !== null"
-        class="max-width-2 mt3">
-        <h3 class="pb1 center">
-          FFEL Loan Information
-        </h3>
-        <dl class="FormView">
-          <span
-            v-for="(val, key) in ffel"
-            :key="key">
-            <dt>{{ key }}</dt>
-            <dd>{{ val || '-' }}</dd>
-          </span>
-        </dl>
+    </span>
+    <span v-if="uploading || loading">
+      <div class="p4">
+        <div class="max-width-2">
+          <h3 class="center p4">
+            {{
+              uploading
+                ? 'The documents are being uploaded...'
+                : loading
+                  ? 'Loading dispute and member data...'
+                  : ''
+            }}
+            <div class="spinner"></div>
+          </h3>
+        </div>
       </div>
-    </div>
+    </span>
   </div>
 </template>
 
 <script>
 import get from 'lodash/get';
-import { getUserByExternalId } from '../../../lib/api';
+import { getUserByExternalId, uploadAttachment, getDispute } from '../../../lib/api';
 import { DebtTypes } from '../../../../../shared/enum/DebtTypes';
+import Modal from '../../Modal';
+import Alert from '../../../components/Alerts.vue';
+import Attachment from '../../../components/Attachment.vue';
 
 const getFormOrElse = ({
   id,
@@ -98,16 +137,17 @@ const getFormOrElse = ({
       status,
       user,
       pendingSubmission,
-      attachments: attachments.map(a => ({
-        href: `/admin/disputes/${a.foreignKey}/attachment/${a.id}`,
-        name: a.fileMeta.original.originalFileName,
-      })),
+      attachments,
     };
   }
   return { form: false, status, user: false, pendingSubmission };
 };
 
 export default {
+  components: {
+    Alert,
+    Attachment,
+  },
   props: {
     initialDispute: {
       type: Object,
@@ -115,7 +155,17 @@ export default {
     },
   },
   data() {
-    return { ...getFormOrElse(this.initialDispute), dispute: this.initialDispute };
+    return {
+      ...getFormOrElse(this.initialDispute),
+      dispute: this.initialDispute,
+      uploadSpinnerModal: new Modal({
+        name: 'UploadSpinnerModal',
+        element: document.querySelector('[data-component-modal="block-while-uploading-modal"]'),
+      }),
+      uploading: false,
+      alerts: [],
+      loading: false,
+    };
   },
   computed: {
     personalInformation() {
@@ -156,17 +206,91 @@ export default {
     },
   },
   methods: {
-    updateData({ dispute }) {
-      const { form, user, status, pendingSubmission } = getFormOrElse(dispute);
-      this.form = form;
-      this.status = status;
-      this.dispute = dispute;
-      this.pendingSubmission = pendingSubmission;
+    updateData({ dispute }, clearAlerts = true) {
+      this.loading = clearAlerts;
+      // Ensures we always have the most up-to-date information about the dispute,
+      // not just what was passed as a property of the paginated table
+      return getDispute(dispute.id)
+        .then(dispute => {
+          this.alerts = clearAlerts ? [] : this.alerts;
+          const { form, user, status, pendingSubmission, attachments } = getFormOrElse(dispute);
+          this.form = form;
+          this.status = status;
+          this.dispute = dispute;
+          this.pendingSubmission = pendingSubmission;
+          this.attachments = attachments;
 
-      getUserByExternalId(user.externalId).then(u => {
-        this.user = { ...user, ...u };
-      });
+          if (user.externalId) {
+            return getUserByExternalId(user.externalId).then(u => {
+              this.user = { ...user, ...u };
+              this.loading = false;
+            });
+          } else {
+            this.loading = false;
+          }
+        })
+        .catch(e => {
+          this.loading = false;
+          this.alerts = [
+            {
+              type: 'error',
+              message:
+                'Unable to retrieve most up-to-date dispute data. Please reload the page and try again and contact a system administrator if the problem persists.',
+            },
+          ];
+        });
     },
+    handleAttachmentUpload({ target }) {
+      if (target.files.length) {
+        this.alerts = [];
+        this.uploadSpinnerModal.activate();
+        this.uploading = true;
+        uploadAttachment(this.dispute, new FormData(target.form))
+          .then(() => {
+            this.updateData(this, false).then(() => {
+              this.uploading = false;
+              this.alerts = [
+                {
+                  type: 'success',
+                  message: `Attachment${target.files.length > 1 ? 's' : ''} successfully uploaded.`,
+                },
+              ];
+            });
+          })
+          .catch(e => {
+            console.error(e);
+            this.uploading = false;
+            this.alerts = [
+              {
+                message: `An error occurred while uploading the attachment. Please try again or contact a system administrator if the problem persists.`,
+                type: 'error',
+              },
+            ];
+          });
+      }
+    },
+    handleAttachmentDelete(attachment) {
+      if (attachment !== null) {
+        this.alerts = [
+          {
+            type: 'success',
+            message: 'Attachment successfully deleted',
+          },
+        ];
+        this.attachments = this.attachments.filter(a => a.id !== attachment.id);
+      } else {
+        this.alerts = [
+          {
+            type: 'error',
+            message:
+              'Unable to delete the attachment. Please try again and contact a system administrator if the problem persists.',
+          },
+        ];
+      }
+    },
+  },
+  beforeDestroy() {
+    this.uploadSpinnerModal.destroy();
   },
 };
 </script>

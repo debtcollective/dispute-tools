@@ -8,9 +8,12 @@ const {
   testGet,
   testPost,
   testPut,
+  testDelete,
   testUnauthenticated,
   testAllowed,
+  testNoContent,
   testForbidden,
+  testNotFound,
 } = require('../../utils');
 const {
   wageGarnishmentDisputes: { A: { data: { forms: { 'personal-information-form': sampleData } } } },
@@ -302,6 +305,67 @@ describe('Admin.DisputesController', () => {
       expect(caught).exist;
       expect(caught.status).eq(302);
       expect(caught.response.headers.location.includes('s3.amazonaws.com')).true;
+    });
+  });
+
+  describe('deleteAttachment', () => {
+    let url1;
+    let url2;
+
+    before(async () => {
+      try {
+        // Prevent uploading files to S3
+        sinon.stub(PrivateAttachmentStorage.prototype, 'saveStream').returns(
+          Promise.resolve({
+            original: {
+              ext: 'jpeg',
+              mimeType: 'image/jpeg',
+              width: 1280,
+              height: 1335,
+              key: 'test/DisputeAttachment/6595579a-b170-4ffd-87b3-2439f3d032fc/file/original.jpeg',
+            },
+          }),
+        );
+      } catch (e) {
+        if (e.message !== 'Attempted to wrap saveStream which is already wrapped') throw e;
+      }
+
+      const dispute = await createDispute(await createUser());
+      const assetPath = join(process.cwd(), 'tests/assets/hubble.jpg');
+
+      await dispute.addAttachment('test-attachment', assetPath);
+      const attachment1 = dispute.data.attachments[0];
+      url1 = `${urls.Admin.Disputes.url()}/${dispute.id}/attachment/${attachment1.id}`;
+
+      await dispute.addAttachment('test-attachment', assetPath);
+      const attachment2 = dispute.data.attachments[1];
+      url2 = `${urls.Admin.Disputes.url()}/${dispute.id}/attachment/${attachment2.id}`;
+    });
+
+    describe('authorization', () => {
+      describe('when unauthenticated', () => {
+        it('should redirect to login', () => testUnauthenticated(testDelete(url1)));
+      });
+
+      describe('when user', () => {
+        it('should reject', () => testForbidden(testDelete(url1, user)));
+      });
+
+      describe('when admin', () => {
+        it('should allow', () => testNoContent(testDelete(url1, admin)));
+
+        it('should have deleted the attachment', () => testNotFound(testGet(url1, admin)));
+      });
+
+      describe('when dispute admin', () => {
+        it('should allow', () => testNoContent(testDelete(url2, disputeAdmin)));
+
+        it('should have deleted the attachment', () => testNotFound(testGet(url2, disputeAdmin)));
+      });
+
+      describe('when moderator', () => {
+        it('should reject', () => testForbidden(testDelete(url1, moderator)));
+      });
     });
   });
 });

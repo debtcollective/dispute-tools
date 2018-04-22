@@ -25,7 +25,7 @@ export function req(opts, cb) {
     }
   }
 
-  const request = fetch(opts.url, opts).then(res => res.json());
+  const request = fetch(opts.url, opts).then(res => (res.status !== 204 ? res.json() : undefined));
 
   if (typeof cb === 'function') {
     request
@@ -132,5 +132,20 @@ export function getUserByExternalId(externalId) {
   return req({
     url: `/admin/users?externalId=${externalId}`,
     method: 'get',
+  });
+}
+
+export function uploadAttachment(dispute, form) {
+  return req({
+    method: 'post',
+    url: `/disputes/${dispute.id}/attachment`,
+    body: form,
+  });
+}
+
+export function getDispute(disputeId) {
+  return req({
+    method: 'get',
+    url: `/admin/disputes/${disputeId}`,
   });
 }
