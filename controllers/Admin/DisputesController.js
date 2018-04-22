@@ -29,6 +29,8 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         'show',
         'updateDisputeData',
         'downloadAttachment',
+        'addAttachment',
+        'deleteAttachment',
       ],
     },
     {
@@ -129,7 +131,14 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
 
     async show(req, res) {
       res.locals.dispute.user.setInfo(await discourse.getUser(res.locals.dispute.user));
-      res.render('admin/disputes/show');
+      res.format({
+        html() {
+          res.render('admin/disputes/show');
+        },
+        json() {
+          res.send(res.locals.dispute);
+        },
+      });
     },
 
     async update(req, res, next) {
@@ -194,6 +203,19 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         );
       } else {
         res.redirect(attachment.file.url('original'));
+      }
+    },
+
+    async deleteAttachment(req, res, next) {
+      const attachment = req.dispute.attachments.find(a => a.id === req.params.aid);
+      if (!attachment) {
+        next(
+          // prettier-ignore
+          new NotFoundError(`Could not find attachment with id ${req.params.aid} for dispute with id ${req.params.id}`),
+        );
+      } else {
+        await attachment.destroy();
+        res.send(204, {});
       }
     },
   },

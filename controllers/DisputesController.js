@@ -7,7 +7,7 @@ const { BadRequest } = require('../lib/errors');
 const DisputeStatuses = require('../shared/enum/DisputeStatuses');
 const { CompletedDisputeEmail, MemberUpdatedDisputeEmail } = require('../services/email');
 
-const { authenticate, authorize } = require('../services/auth');
+const { authenticate, authorize, tests: { ownerOrAdmin } } = require('../services/auth');
 
 const DisputesController = Class('DisputesController').inherits(RestfulController)({
   beforeActions: [
@@ -16,10 +16,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       actions: ['*'],
     },
     {
-      before: [
-        '_loadDispute',
-        authorize((req, res) => req.user.id === res.locals.dispute.userId || req.user.admin),
-      ],
+      before: ['_loadDispute', authorize(ownerOrAdmin)],
       actions: [
         'show',
         'edit',
@@ -218,6 +215,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         return next(new BadRequest());
       }
 
+      let caught = null;
       try {
         await Promise.each(req.files.attachment, attachment =>
           dispute.addAttachment(req.body.name, attachment.path),
@@ -227,12 +225,24 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       } catch (e) {
         req.flash(
           'error',
-          'A problem occurred while attempting to upload your attachments. Please try again, and if the problem persists, contact a Debt Syndicate organizer.',
+          'A problem occurred while attempting to upload your attachments. Please try again, and if the problem persists, contact a Debt Collective organizer.',
         );
         logger.error('Unable to upload attachment', e.message);
+        caught = e;
       }
 
-      return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+      res.format({
+        html() {
+          res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+        },
+        json() {
+          if (caught !== null) {
+            res.status(400).json({ error: caught.toString() });
+          } else {
+            res.status(204).send({});
+          }
+        },
+      });
     },
 
     removeAttachment(req, res) {

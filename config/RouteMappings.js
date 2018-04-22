@@ -82,6 +82,10 @@ const routeMappings = RouteMappings()
           .get('/:id/attachment/:aid', {
             to: 'Disputes#downloadAttachment',
             as: 'downloadAttachment',
+          })
+          .delete('/:id/attachment/:aid', {
+            to: 'Disputes#deleteAttachment',
+            as: 'deleteAttachment',
           }),
       )
       .resources('/Users'),
@@ -111,7 +115,7 @@ const routeMappings = RouteMappings()
         to: 'Disputes#setSignature',
         as: 'setSignature',
       })
-      .post('/:id/add-attachment', {
+      .post('/:id/attachment', {
         to: 'Disputes#addAttachment',
         as: 'addAttachment',
       })
