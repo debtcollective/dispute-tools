@@ -289,8 +289,5 @@ export default {
       }
     },
   },
-  beforeDestroy() {
-    this.uploadSpinnerModal.destroy();
-  },
 };
 </script>
