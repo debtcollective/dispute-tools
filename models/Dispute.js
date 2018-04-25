@@ -95,6 +95,14 @@ const Dispute = Class('Dispute')
     return dispute;
   },
 
+  findByUser(user, include = null) {
+    const query = Dispute.query().where('user_id', user.id);
+    if (typeof include === 'string') {
+      query.include(include);
+    }
+    return query;
+  },
+
   createFromTool({ user, disputeToolId, option }) {
     const dispute = new Dispute({
       disputeToolId,
@@ -266,7 +274,15 @@ const Dispute = Class('Dispute')
         this.data._forms = {};
         this.data._forms[formName] = fieldValues;
       } else {
-        await this.validateForm(fieldValues);
+        try {
+          await this.validateForm(fieldValues);
+        } catch (e) {
+          // Save the form as a dirty form anyway so that we can tell the user
+          // what went wrong during the validation and they can fix it without
+          // losing any progress on filling out the form
+          await this.setForm({ formName, fieldValues, _isDirty: true });
+          throw e;
+        }
 
         delete this.data._forms;
         this.data.forms = {};
