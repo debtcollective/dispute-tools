@@ -81,7 +81,10 @@ const makeErrorsReadable = (dispute, errors) => {
       ...errs,
       [fieldName]: {
         ...err,
-        message: err.message.replace(fieldName, `"${cached[fieldName].toLowerCase()}" field`),
+        message: err.message.replace(
+          fieldName,
+          `"${cached[fieldName] ? cached[fieldName].toLowerCase() : ''}" field`,
+        ),
       },
     }),
     {},
