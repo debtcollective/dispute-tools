@@ -1,4 +1,4 @@
-const { isDate } = require('lodash');
+const moment = require('moment');
 
 exports.pathHelper = (subform = 0) => (page = 1) => (field, idx = 0) =>
   `topmostSubform[${subform}].Page${page}[0].${field}[${idx}]`;
@@ -6,12 +6,10 @@ exports.pathHelper = (subform = 0) => (page = 1) => (field, idx = 0) =>
 /**
  * Formats the date for pug templates
  * @param {string} d date string
+ * @param {string} format Moment format string, defaults to MM/DD/YYYY
  * @returns {string} MM/DD/YYYY
  */
-exports.formatDate = d => {
-  if (!isDate(d)) d = new Date(d);
-  return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
-};
+exports.formatDate = (d, format = 'MM/DD/YYYY') => moment(d).format(format);
 
 /**
  * Strips non-numeric charactesr from the passed in string

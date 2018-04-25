@@ -55,6 +55,16 @@ module.exports = {
     apiUsername: process.env.DISCOURSE_API_USERNAME || 'system',
     baseUrl: process.env.DISCOURSE_API_BASE_URL || 'http://localhost:3000',
   },
+  doeDisclosure: {
+    representatives:
+      process.env.DOE_DISCLOSURE_REPRESENTATIVES || 'Admin One, Admin Two, Admin Three',
+    phones: process.env.DOE_DISCLOSURE_PHONES || '(555) 555-5555, (555) 551-5555, (555) 552-5555',
+    relationship: process.env.DOE_DISCLOSURE_RELATIONSHIP || 'Organizers with the Debt Collective',
+    address: process.env.DOE_DISCLOSURE_ADDRESS || '123 DOE Disclosure Lane',
+    city: process.env.DOE_DISCLOSURE_CITY || 'Anchorage',
+    state: process.env.DOE_DISCLOSURE_STATE || 'Alaska',
+    zip: process.env.DOE_DISCLOSURE_ZIP || '12345',
+  },
   database: require('./knexfile.sample'),
   middlewares: require('./middlewares'),
 };

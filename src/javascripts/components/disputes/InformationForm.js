@@ -94,7 +94,44 @@ export default class DisputesInformationForm extends Widget {
       });
     }
 
+    this.handleConfirmRadios = [].slice.call(document.querySelectorAll('[data-confirm]'));
+    if (this.handleConfirmRadios.length) {
+      this._handleConfirmRadioChangeRef = this._handleConfirmRadioChange.bind(this);
+      this.handleConfirmRadios.forEach(t =>
+        t.addEventListener('change', this._handleConfirmRadioChangeRef),
+      );
+    }
+
     this.pisces = new Pisces(this.element.parentElement);
+  }
+
+  _handleConfirmRadioChange({ target: { parentElement, dataset, value, name } }) {
+    const data = JSON.parse(dataset.confirm);
+    const matched = data[value];
+
+    if (!matched) return;
+
+    const oppositeAction = value === 'yes' ? 'no' : 'yes';
+
+    this.appendChild(
+      new ConfirmInline({
+        name: 'ConfirmInline',
+        className: '-warning mt2',
+        data: {
+          text: `▲ ${matched.message}`,
+          cancelButtonText: 'No',
+          okButtonText: 'Yes',
+        },
+      }),
+    );
+
+    this.ConfirmInline.bind('onCancel', () => {
+      parentElement.querySelector(`[name="${name}"][value="${oppositeAction}"]`).click();
+    });
+
+    this.ConfirmInline.bind('onOk', () => {} /* ConfirmInline handles deactivation */);
+
+    this.ConfirmInline.render(parentElement).activate();
   }
 
   /**

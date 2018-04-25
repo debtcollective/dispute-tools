@@ -20,6 +20,7 @@ mixin _toolsYesNoMixin(field)
     data-partial-toggle-radio= field.toggle
     data-toggle-radio= field.yesno && field.yesno.toString()
     data-alert!= field.alert
+    data-confirm!= field.confirm
   )&attributes(field.attributes)
   label.pl1.mr3.-ff-sec(for=`${field.name}-yes`) Yes
 
@@ -36,6 +37,7 @@ mixin _toolsYesNoMixin(field)
     data-partial-toggle-radio= field.toggle
     data-toggle-radio= field.yesno && field.yesno.toString()
     data-alert!= field.alert
+    data-confirm!= field.confirm
   )&attributes(field.attributes)
   label.pl1.-ff-sec(for=`${field.name}-no`) No
 
