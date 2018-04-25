@@ -190,6 +190,16 @@ const helpers = {
         );
       }),
 
+  testNoContent: req =>
+    req.then(res => {
+      expect(res.status).eq(204);
+    }),
+
+  testNotFound: req =>
+    req.catch(res => {
+      expect(res.status).eq(404);
+    }),
+
   testOk: req =>
     req.then(res => {
       expect(res.status).eq(200);

@@ -342,7 +342,8 @@ const Dispute = Class('Dispute')
 
       dispute.data.attachments.push(attachment);
 
-      return dispute.save();
+      await dispute.save();
+      return da;
     },
 
     removeAttachment(id) {
