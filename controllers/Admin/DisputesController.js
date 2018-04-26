@@ -45,7 +45,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
           RESTfulAPI.createMiddleware({
             queryBuilder: query
               .where('deactivated', false)
-              .include('[user, attachments, disputeTool, admins]'),
+              .include('[user, attachments, disputeTool, admins, data]'),
             order: {
               default: '-updated_at',
               allowedFields: ['created_at', 'updated_at'],
