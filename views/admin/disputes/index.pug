@@ -78,18 +78,31 @@ block content
         each _dispute in disputes
 
           -
-            // add the user accout image to be accesible on the front-end
+            // add the user account image to be accesible on the front-end
             _dispute.user.imageURL = '/images/profile/placeholder-small.png';
 
             //- TODO Use Discourse provided profile image
             //- if (_dispute.user.account.image.exists('small'))
             //-   _dispute.user.account.imageURL = _dispute.user.account.image.urls['small'];
 
+            // find the debtor's name in the form data
+            var debtorName = "";
+            if (_dispute.data.forms && _dispute.data.forms["personal-information-form"]) {
+              debtorName = _dispute.data.forms["personal-information-form"].name
+            } else if (_dispute.data._forms && _dispute.data._forms["personal-information-form"]) {
+              debtorName = _dispute.data._forms["personal-information-form"].name
+            }
+
           tr
             td
               .flex.items-center
                 img(src=_dispute.user.imageURL alt=(_dispute.user.name) width="50" height="50")
-                p.pl2.-fw-600= (_dispute.user.name)
+                p.pl2
+                  .-fw-600= debtorName
+                  .-fw-300.pl1
+                    span= "(by "
+                    span.-fw-400.-danger= _dispute.user.name
+                    span= ")"
             td.-fw-400
               | #{_dispute.readableId}
             td.-fw-500
