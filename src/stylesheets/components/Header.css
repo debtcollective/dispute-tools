@@ -21,6 +21,7 @@
   right: 0;
   height: var(--header-height);
   color: var(--k-color);
+  border-bottom: 1px solid var(--text-4);
 
   &__bg {
     z-index: -1;
@@ -31,6 +32,19 @@
   & .Dropdown__label {
     max-width: 150px;
   }
+
+  .table.-fh {
+    &:focus,
+    &:active,
+    a:focus,
+    a:hover {
+      outline: 0;
+      border: none !important;
+      border-color: transparent !important;
+      box-shadow: none !important;
+      color: var(--k-color) !important;
+    }
+  }
 }
 
 .Header__logo {
@@ -38,7 +52,8 @@
 
   &-svg {
     display: block;
-    height: 20px;
+    height: var(--logo-height);
+    margin: 9px 9px;
 
     &.-small {
       display: none;
@@ -67,10 +82,12 @@
       position: absolute;
       left: 0;
       bottom: 0;
-      height: 3px;
-      width: 100%;
-      background-color: var(--k-color-palette-primary);
-      transform: translateY(-10px);
+      height: 0;
+      border: 2px solid var(--k-color-palette-dc-red);
+      border-radius: 5px;
+      width: 85%;
+      background-color: var(--k-color-palette-dc-red);
+      transform: translateY(-16px) translateX(10px);
     }
   }
 }
@@ -83,12 +100,30 @@
   font: inherit;
   font-weight: 500;
   text-align: left;
-  color: var(--k-background-color);
+  color: var(--k-color);
   background-color: inherit;
   cursor: pointer;
   transition: color 260ms;
+}
+
+.nav-item-wrapper {
+  padding: 6px 18px;
+  border-radius: 4px;
+  box-sizing: border-box;
 
   &:hover {
-    color: var(--k-color-palette-primary);
+    border: 1px solid var(--text-2);
+    padding-left: 17px;
+    padding-right: 17px;
+    color: var(--k-color) !important;
+  }
+}
+
+.active {
+  .nav-item-wrapper {
+    &:hover {
+      border: none;
+      padding: 6px 18px;
+    }
   }
 }

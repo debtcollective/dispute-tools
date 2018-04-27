@@ -6,6 +6,6 @@
   }
 
   &__about-trigger {
-    padding: 0;
+    padding-left: 0 !important;
   }
 }

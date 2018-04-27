@@ -20,14 +20,14 @@ block content
           th(style="width: 25%")
             .-input-group-icon
               svg(width='18' height='18'): use(xlink:href='#svg-search')
-              input.-k-input.-clean.-fw-700(
+              input.-k-input.-clean.-fw-600(
                 name="disputesListValue[search]"
                 placeholder='Email, username or IP address'
                 value= queryName
               )
           th
             .-input
-              input.-k-input.-clean.-fw-700(
+              input.-k-input.-clean.-fw-600(
                 name='disputesListValue[readableId]'
                 placeholder='Search ids...'
                 value= queryFilters && queryFilters.readable_id
@@ -35,7 +35,7 @@ block content
               )
           th(style="width: 15%")
             .-k-select.-clean
-              select.-fw-700.-fw(name='disputesListValue[tools]')
+              select.-fw-600.-fw(name='disputesListValue[tools]')
                 option(value="") Tools
                 each tool in disputeTools
                   option(
@@ -44,7 +44,7 @@ block content
                   )= tool.name
           th(style="width: 12%")
             .-k-select.-clean
-              select.-fw-700.-fw(name='disputesListValue[status]')
+              select.-fw-600.-fw(name='disputesListValue[status]')
                 option(value="") Status
                 each status in statuses
                   option(
@@ -53,7 +53,7 @@ block content
                   )= status
           th
             .-k-select.-clean
-              select.-fw-700.-fw(name='disputesListValue[order]')
+              select.-fw-600.-fw(name='disputesListValue[order]')
                 option(value="") Date
                 option(
                   value='created_at'
@@ -65,7 +65,7 @@ block content
                 )= 'DESC'
 
           th.-wsnw
-            button.-k-btn.btn-primary.-fw-700(
+            button.-k-btn.btn-primary.-fw-600(
               name='disputesListValue[applyFilters]'
               disabled= true
             ) Apply
@@ -89,14 +89,14 @@ block content
             td
               .flex.items-center
                 img(src=_dispute.user.imageURL alt=(_dispute.user.name) width="50" height="50")
-                p.pl2.-fw-700= (_dispute.user.name)
+                p.pl2.-fw-600= (_dispute.user.name)
             td.-fw-400
               | #{_dispute.readableId}
             td.-fw-500
               | #{_dispute.disputeTool.name}
               if _dispute.data.option !== 'none'
                 |  / #{_dispute.data.option}
-            td.-fw-700(
+            td.-fw-600(
               class=`-status-${_dispute.statuses[0].status.toLowerCase().replace(/\W/g, '-')}`
             )
               span=_dispute.statuses[0].status

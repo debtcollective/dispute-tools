@@ -22,7 +22,7 @@
           </h4>
 
           <h5 class="pb3 center">
-            <a class="-k-btn btn-primary -fw-700" :href="`/admin/disputes/${dispute.id}`">Edit dispute form data</a>
+            <a class="-k-btn btn-primary -fw-600" :href="`/admin/disputes/${dispute.id}`">Edit dispute form data</a>
           </h5>
 
           <dl class="FormView mb1">

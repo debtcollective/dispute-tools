@@ -11,7 +11,7 @@
         :custom-label="o => o.name"
       />
       <button
-        class="-fw -k-btn btn-primary -fw-700 mt2 mb2"
+        class="-fw -k-btn btn-primary -fw-600 mt2 mb2"
         @click="save"
         type="button"
       >

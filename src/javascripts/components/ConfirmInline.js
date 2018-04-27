@@ -13,10 +13,10 @@ export default class ConfirmInline extends Widget {
         <div class="ConfirmInline__body p2">
           <p class="-fw-500">${data.text}</p>
           <div class="pt2">
-            <button data-btn-cancel class="-k-btn -sm btn-light -fw-700 mr1">
+            <button data-btn-cancel class="-k-btn -sm btn-light -fw-600 mr1">
               ${data.cancelButtonText}
             </button>
-            <button data-btn-ok class="-k-btn -sm btn-primary -fw-700">
+            <button data-btn-ok class="-k-btn -sm btn-primary -fw-600">
               ${data.okButtonText}
             </button>
           </div>

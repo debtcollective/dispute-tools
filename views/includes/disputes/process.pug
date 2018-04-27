@@ -82,14 +82,14 @@ unless dispute.disputeTool.data.disputeProcess
                               )= city
                         p(class="-on-error -danger -caption -fw-500 mt1") ▲ Please choose a city
 
-                  .-fw-700(role="button" tabindex="0")
-                    .-k-btn.btn-dark.-fw.-fw-700.css-btn-selected
+                  .-fw-600(role="button" tabindex="0")
+                    .-k-btn.btn-dark.-fw.-fw-600.css-btn-selected
                       svg.mr1(width="14" height="10"): use(xlink:href="#svg-checkmark")
                       | Selected
-                    .-k-btn.btn-outline.-fw.-white.-fw-700 Choose this process
+                    .-k-btn.btn-outline.-fw.-white.-fw-600 Choose this process
 
       .py3
-        button.-k-btn.btn-primary.-fw.-fw-700(
+        button.-k-btn.btn-primary.-fw.-fw-600(
           type="submit"
           disabled= !dispute.data.disputeProcess
         ) Continue to sign your dispute&hellip;

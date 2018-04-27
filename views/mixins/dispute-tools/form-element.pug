@@ -1,8 +1,8 @@
 mixin _toolsYesNoMixin(field)
   if field.caption
-    p.py1.-caption.-fw-700.-neutral-mid!= field.caption
+    p.py1.-caption.-fw-600.-neutral-mid!= field.caption
 
-  p.-ff-sec.-accent.-fw-700= field.label
+  p.-ff-sec.-fw-600= field.label
 
   - var _checked = field.default !== undefined ? field.default : null
   if _formData[field.name]
@@ -169,4 +169,4 @@ mixin toolsFormElementMixin(field, index)
         p.-on-error.-danger.-caption.-fw-500.mt1
 
     if field.subLabel
-      p.pt1.-caption.-fw-700.-neutral-mid= field.subLabel
+      p.pt1.-caption.-fw-600.-neutral-mid= field.subLabel

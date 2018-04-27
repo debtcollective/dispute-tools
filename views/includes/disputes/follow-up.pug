@@ -22,7 +22,7 @@
             div: svg.block.-primary(width='46' height='56'): use(xlink:href='#svg-fingerprint')
             .pl2.-ff-sec
               - var _formData = dispute.data.forms && dispute.data.forms['personal-information-form'] || {}
-              .-fw-700= _formData && _formData.name || ''
+              .-fw-600= _formData && _formData.name || ''
 
       .col.md-col-8.col-12.px2
 
@@ -37,7 +37,7 @@
           default
             - _headingText = `Thank you for disputing ${dispute.disputeTool.name}`;
 
-        h4.Dispute__FollowUp__Title.pb3.pt2.-accent= _headingText
+        h4.Dispute__FollowUp__Title.pb3.pt2= _headingText
         h3.pb3 Now what?
         .-fw-500!= dispute.disputeTool.data.nowWhat
 
@@ -53,7 +53,7 @@
                   li.mb2: label
                     input(type='radio' name='pending_submission' value='0' required)
                     span.ml2 I prefer to print and mail it myself
-                button(type='submit' name='submitButton').-fw-700.-k-btn.btn-primary Save changes
+                button(type='submit' name='submitButton').-fw-600.-k-btn.btn-primary Save changes
             else
               if lastStatus.pendingSubmission
                 p Your dispute is being processed, thank you.
@@ -62,7 +62,7 @@
 
 
     if dispute.data.disputeConfirmFollowUp
-      .-caption.-neutral-mid.-ttu.-fw-700 Your dispute status:
+      .-caption.-neutral-mid.-ttu.-fw-600 Your dispute status:
       h4.Dispute__FollowUp__MainStatus.pb1.mb2.-ttu(
         class=`-status-${lastStatus.status.toLowerCase().replace(/\W/g, '-')}`
       )= lastStatus.status
@@ -91,16 +91,16 @@
               .clearfix
                 .left
                   if userUpdate
-                    p.-fw-700= dispute.user.name
+                    p.-fw-600= dispute.user.name
                   else
-                    p.-fw-700.-primary= 'The Debt Collective'
+                    p.-fw-600.-primary= 'The Debt Collective'
                   .-caption.-neutral-mid
                     <svg class="inline-block" width="13" height="11">
                       <use xlink:href="#svg-reply"></use>
                     </svg>
-                    .ml1.inline-block.-fw-700= new Date(status.createdAt).toString()
+                    .ml1.inline-block.-fw-600= new Date(status.createdAt).toString()
                 .right
-                  p.-caption.-fw-700.-ttu(
+                  p.-caption.-fw-600.-ttu(
                     class=`-status-${status.status.toLowerCase().replace(/\W/g, '-')}`
                   )= status.status
               p.-fw-500= status.comment
@@ -123,8 +123,8 @@
                 input(name='_csrf' type='hidden' value=csrfToken)
                 input(name='_method' type='hidden' value='PUT')
 
-                h4.-accent Got a reply?
-                p.-accent Tell us when you receive a response or any further communication from the creditor or collector.
+                h4 Got a reply?
+                p Tell us when you receive a response or any further communication from the creditor or collector.
 
                 textarea.-k-textarea.block.my2.-fw(
                   name='comment'
@@ -133,7 +133,7 @@
                 )
                 .flex
                   p.mt1.mr3.-caption.-fw-500 We follow very closely what happens with these disputes so that we can find out which creditors are not breaking the law.
-                  button.Dispute__FollowUp__SendBtn.-k-btn.btn-primary.-fw-700(
+                  button.Dispute__FollowUp__SendBtn.-k-btn.btn-primary.-fw-600(
                     type='submit'
                   ) Send
 
@@ -145,5 +145,5 @@
           button.btn-clear.-k-popover__close(aria-label='close')
             svg(width='13' height='13')
               use(xlink:href='#svg-close')
-          .-dark.-fw-700 Access your filled tools
+          .-dark.-fw-600 Access your filled tools
           p.-fw-500 You can follow up your tools anytime through your Profile

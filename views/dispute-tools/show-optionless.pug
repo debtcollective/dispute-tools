@@ -18,13 +18,13 @@ block content
           )
             input(name="_csrf" type="hidden" value=csrfToken)
             input(name="disputeToolId" type="hidden" value=disputeTool.id)
-            input(name="option" type="hidden" value="none") 
+            input(name="option" type="hidden" value="none")
 
             .Tool__Optionless__Content.pb3
-              h4.pb2 We #[span.-accent ❤] debt resisters. Let's get this dispute started!
+              h4.pb2 We #[span ❤] debt resisters. Let's get this dispute started!
               != marked(disputeTool.about)
 
-            button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Start Dispute
+            button.-k-btn.btn-primary.-fw.-fw-600(type="submit") Start Dispute
 
 block scripts
   script.

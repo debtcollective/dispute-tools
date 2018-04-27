@@ -9,7 +9,7 @@
 
 mixin toolsSidebarMixin(disputeTool, currentStep = 1, steps = _toolSteps, currentSection = null)
   .Tool__sidebar
-    h4.pb1.-ttu.-h-sec.-accent
+    h4.pb1.-ttu.-h-sec
       span
         | #{disputeTool.name}
         if dispute && dispute.data.option !== 'none'
@@ -44,7 +44,7 @@ mixin toolsSidebarMixin(disputeTool, currentStep = 1, steps = _toolSteps, curren
           }
 
         li.relative
-          button.Tool__sidebar-step.relative.btn-clear.left-align.-fw-700.-fw(
+          button.Tool__sidebar-step.relative.btn-clear.left-align.-fw-600.-fw(
             class= _className
             data-index= _index
             disabled!= _disabled

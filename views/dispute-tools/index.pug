@@ -12,7 +12,7 @@ block content
             img#glitch-image-1.sm-hide.xs-hide.-fw(src='/images/tools/hand.png')
 
           .relative.col.md-col-7.col-12.px2.pb3
-            h2.pb3 Together, we own the bank.
+            h2.pb3.tight Together, we own the bank.
             p.pb2.-fw-500 For decades we have been forced to debt finance basic needs as the cost of living has skyrocketed and wages have flatlined. While we have struggled to keep food on the table and care for our families our wages have been garnished, our tax returns seized, and our credit destroyed.
             .pt3
               button#tools-anchor.-k-btn.btn-primary.inline-block.mr2
@@ -20,9 +20,9 @@ block content
               p.inline-block.pb2.-fw-500 We made these tools to fight back.
 
     #tools.max-width-4.mx-auto.py4
-      div
+      div.flex.items-end.justify-between
         .inline-block: h2 The Tools
-        .inline-block.align-bottom: button#why-file-dispute-anchor.-k-btn.btn-link.-fw-700.-primary.-h4 Why file a dispute?
+        .inline-block.pb1: button#why-file-dispute-anchor.-k-btn.btn-outline-primary.-fw-600.-h4 Why file a dispute?
       .clearfix.mxn2.flex.flex-wrap
         include ../mixins/dispute-tools/tool-card
         each tool in disputeTools
@@ -35,10 +35,10 @@ block content
               h3.ToolCard__name.mb2 Defense to Repayment for Federal Student Loans
               p.pb1.-fw-500 A federal law that says the government must cancel your debt if you were defrauded by your school.
               p.py1
-                a.ToolCard__about-trigger.-k-btn.btn-link.-primary.-fw-700(href='/dispute-tools/defense-to-repayment') › About This Dispute
+                a.ToolCard__about-trigger.-k-btn.btn-link-nb.-fw-600(href='/dispute-tools/defense-to-repayment') › About This Dispute
               .ToolCard__caption.-caption.-fw-500 (Federal student loans only)
             hr.mb2
-            a.-k-btn.btn-primary.-fw.-fw-700(
+            a.-k-btn.btn-primary.-fw.-fw-600(
               id='defense-to-repayment-link'
               href='https://borrowerdischarge.ed.gov/FormWizard/BDU/BDULanding.aspx' rel='noopener noreferrer'
               target='_blank'
@@ -65,7 +65,7 @@ block content
             .center.relative
               img#glitch-image-2.fit.inline-block(src="/images/tools/bullfighter.jpg")
             .pt3
-              .relative.pl4.-h4.-ff-sec.-accent
+              .relative.pl4.-h4.-ff-sec
                 svg.absolute.left-0(width="32" height="23" style="top: 10px;"): use(xlink:href="#svg-quote")
                 p By disputing your debt you are joining with others to build collective power and demand access to public goods.
 
@@ -79,7 +79,7 @@ block content
           p.pb3 #[a.js-donate(href='#') Make a donation] to the Debt Collective General Fund to help more people dispute debts of all kinds.
           p.pb2 Thank you.
           .my2(style="width: 23px; height: 3px; background-color: #d8d8d8;")
-          p.-caption.-fw-700 The tools we provide here are not the only ways you can dispute your debt.
+          p.-caption.-fw-600 The tools we provide here are not the only ways you can dispute your debt.
           p.-caption.-fw-500.-neutral-mid For a complete list of discharge options, go here: #[a(href="https://studentaid.ed.gov/sa/repay-loans/forgiveness-cancellation" target="_blank" rel="noopener noreferrer") https://studentaid.ed.gov/sa/repay-loans/forgiveness-cancellation]
         .col.md-col-6.col-12.px2
           .center.relative: img#glitch-image-3.fit.inline-block(src="/images/tools/file.jpg")
@@ -117,11 +117,11 @@ block append body
           p You are being redirected to the Department of Education's <b>Application for Borrower Defense to Repayment</b> form.
           p.mt3.center Continue to the Department of Education's website?
           .mt3.flex
-            a.-k-btn.btn-outline.-fw.-fw-700.mr2(
+            a.-k-btn.btn-outline.-fw.-fw-600.mr2(
               href='about:blank'
               id='stay-button'
             ) Stay
-            a.-k-btn.btn-primary.-fw.-fw-700.ml2(
+            a.-k-btn.btn-primary.-fw.-fw-600.ml2(
               href='https://borrowerdischarge.ed.gov/FormWizard/BDU/BDULanding.aspx' rel='noopener noreferrer'
               target='_blank'
               id='continue-button'

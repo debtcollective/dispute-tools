@@ -25,13 +25,8 @@ fieldset {
 /* information */
 .Tool__Info {
   padding: var(--space-3) var(--space-3) 40px;
-  background-color: #333;
+  background-color: var(--text-5);
   border-radius: var(--border-radius);
-
-  &.-upload {
-    border: 2px dashed rgba(255, 255, 255, 0.3);
-    background-color: rgba(0, 0, 0, 0.3);
-  }
 
   &.-completed {
     position: relative;

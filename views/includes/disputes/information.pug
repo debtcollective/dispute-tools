@@ -3,15 +3,15 @@ mixin _formCard(step, _completed)
     class= `-${step.type} ${_completed && '-completed'}`
   )
     .flex-auto.pb3
-      .pb1.-fw-700.-ttu= step.title
+      .pb1.-fw-600.-ttu= step.title
       if _completed
         .pb1.-caption.-success.flex
           div: svg.mr1(width='11' height='8'): use(xlink:href='#svg-checkmark')
           .flex-auto This form is completed now.
       else
         .-caption= step.description
-    button.-k-btn.-sm.btn-outline.-fw-500.js-trigger-personal-modal(
-      class=_completed ? '-primary' : '-white'
+    button.-k-btn.btn-sm.-fw-500.js-trigger-personal-modal(
+      class=_completed ? ' btn-secondary' : ' btn-primary'
     )= _completed ? 'Update the form' : 'Fill out the form'
 
 mixin _informationCard(step, _completed)
@@ -19,7 +19,7 @@ mixin _informationCard(step, _completed)
     class= `-${step.type} ${_completed && '-completed'}`
   )
     .flex-auto.pb3
-      .pb1.-fw-700.-ttu= step.title
+      .pb1.-fw-600.-ttu= step.title
       if _completed
         .pb1.-caption.-success.flex
           div: svg.mr1(width='11' height='8'): use(xlink:href='#svg-checkmark')
@@ -34,9 +34,9 @@ mixin _uploadCard(step, _completed)
     input(type='hidden' name='_csrf' value=csrfToken)
     input(type='hidden' name='name' value=step.name)
     .flex-auto.pb3
-      .pb1.-fw-700.-ttu= step.title
+      .pb1.-fw-600.-ttu= step.title
       if step.optional
-        span.Tool__Info-optional-badge.inline-block.rounded.px1.mb2.-caption.-fw-700 OPTIONAL
+        span.Tool__Info-optional-badge.inline-block.rounded.px1.mb2.-caption.-fw-600 OPTIONAL
       - var _attachments = dispute.data.attachments && dispute.data.attachments.filter(a => a.name === step.name)
 
       if !_attachments || !_attachments.length
@@ -49,7 +49,7 @@ mixin _uploadCard(step, _completed)
             - var ext = _att.path.split('.').pop().split('?')[0]
             li.-caption.flex.pb1
               .flex-auto.pr1.-ell
-                span.Tool__Info-badge.inline-block.center.-fw-700.-ttu.rounded(class= `-${ext}`)= ext
+                span.Tool__Info-badge.inline-block.center.-fw-600.-ttu.rounded(class= `-${ext}`)= ext
                 span.pl1= img.fileMeta.original.originalFileName
               form(
                 action=routeMappings.Disputes.removeAttachment.url(dispute.id, _att.id)
@@ -67,8 +67,8 @@ mixin _uploadCard(step, _completed)
     )
       input(type='hidden' name='_csrf' value=csrfToken)
       input(type='hidden' name='name' value=step.name)
-      div.relative.-k-btn.-sm.btn-outline.-fw-500.-fw(
-        class=_completed ? '-primary' : '-white'
+      div.relative.-k-btn.btn-sm.-fw-500.-fw(
+        class=_completed ? 'btn-white' : 'btn-primary'
       ) #{step.uploadButtonText}
         input(
           type='file'
@@ -90,7 +90,7 @@ mixin _uploadCard(step, _completed)
     - var _deactivateDisputeButtonText = '← This is not my case (deactivate dispute)';
 
     if dispute.data.option !== 'none'
-      h2.-accent= dispute.data.option
+      h2.tight= dispute.data.option
     else
       - _deactivateDisputeButtonText = '← Return to the beginning (deactivate dispute)'
 
@@ -108,7 +108,7 @@ mixin _uploadCard(step, _completed)
       )
         input(name='_csrf' type='hidden' value=csrfToken)
         input(type='hidden' name='_method' value='DELETE')
-        button.-k-btn.btn-link.-primary.-fw-700(type='submit')= _deactivateDisputeButtonText
+        button.-k-btn.btn-outline-info.btn-sm.-primary.-fw-600(type='submit')= _deactivateDisputeButtonText
     hr.my2
 
     if optionData.steps
@@ -141,11 +141,11 @@ mixin _uploadCard(step, _completed)
           input(type='hidden' name='_csrf' value=csrfToken)
           input(type='hidden' name='_method' value='PUT')
           input(type='hidden' name='signature' value='TDC')
-          button.-k-btn.btn-primary.-fw.-fw-700(
+          button.-k-btn.btn-primary.-fw.-fw-600(
             disabled= !_ready
           )= _ready ? _readyButtonText : _defaultButtonText
     else
-      button.-k-btn.btn-primary.-fw.-fw-700(
+      button.-k-btn.btn-primary.-fw.-fw-600(
         id='js-information-next-step'
         disabled= !_ready
       )= _ready ? _readyButtonText : _defaultButtonText

@@ -23,11 +23,11 @@ if dispute.disputeTool.data.signature
 
               case _disputeProcessNumber
                 when 1
-                  span.-accent Written records
+                  span Written records
                 when 2
-                  span.-accent In-person hearing
+                  span In-person hearing
                 when 3
-                  span.-accent Telephone hearing
+                  span Telephone hearing
 
             .-h4.-ff-sec= dispute.disputeTool.data.signature
 
@@ -37,4 +37,4 @@ if dispute.disputeTool.data.signature
                 input.-k-input.-fw(type="text" name="signature" value=dispute.data.signature)
                 p(class="-on-error -danger -caption -fw-500 mt1") ▲ You must write your full name to submit your dispute
 
-      .py3: button.-k-btn.btn-primary.-fw.-fw-700.-ttu(type="submit") Submit my dispute
+      .py3: button.-k-btn.btn-primary.-fw.-fw-600.-ttu(type="submit") Submit my dispute
