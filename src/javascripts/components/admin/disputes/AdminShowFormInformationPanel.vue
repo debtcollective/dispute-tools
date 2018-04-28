@@ -15,7 +15,7 @@
             Personal Information
           </h3>
           <h4 class="center" v-if="status === 'Completed'">
-            {{ pendingSubmission ? 'Debt Syndicate to mail dispute' : 'User to mail dispute' }}
+            {{ pendingSubmission ? 'Debt Collective to mail dispute' : 'User to mail dispute' }}
           </h4>
           <h4 class="pb1 center">
             {{ status }}
@@ -55,7 +55,7 @@
             <h3 v-else class="center">None</h3>
 
             <form class="center mt2" @submit="e => e.preventDefault()">
-              <div class="relative -k-btn -sm btn-primary -fw-500 -fw">
+              <div class="relative -k-btn btn-sm btn-primary -fw-500 -fw">
                 Upload attachments to dispute
                 <input
                   type="file"

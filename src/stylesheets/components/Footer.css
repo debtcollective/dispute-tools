@@ -2,6 +2,14 @@ footer {
   min-height: var(--footer-height);
   background-color: var(--k-color);
   border-top: 3px solid var(--k-color-palette-neutral-dark);
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      color: var(--text-4);
+    }
+  }
 }
 
 .Footer__circle-btn {

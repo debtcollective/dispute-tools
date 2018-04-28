@@ -661,7 +661,7 @@
 }
 
 .btn-lg,
-.btn-group-lg > .btn {
+.btn-group-lg > .-k-btn {
   padding: 0.5rem 1rem;
   font-size: 1.25rem;
   line-height: 1.5;
@@ -669,9 +669,81 @@
 }
 
 .btn-sm,
-.btn-group-sm > .btn {
+.btn-group-sm > .-k-btn {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
   border-radius: 0.2rem;
+}
+
+form > .-k-btn,
+form.dispute-tool button[type='submit'] {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.btn-group,
+.btn-group-vertical {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.btn-group > .-k-btn,
+.btn-group-vertical > .-k-btn {
+  position: relative;
+  flex: 0 1 auto;
+}
+
+.btn-group > .-k-btn:hover,
+.btn-group-vertical > .-k-btn:hover {
+  z-index: 1;
+}
+
+.btn-group > .-k-btn:focus,
+.btn-group > .-k-btn:active,
+.btn-group > .-k-btn.active,
+.btn-group-vertical > .-k-btn:focus,
+.btn-group-vertical > .-k-btn:active,
+.btn-group-vertical > .-k-btn.active {
+  z-index: 1;
+}
+
+.btn-group .-k-btn + .-k-btn,
+.btn-group .-k-btn + .btn-group,
+.btn-group .btn-group + .-k-btn,
+.btn-group .btn-group + .btn-group,
+.btn-group-vertical .-k-btn + .-k-btn,
+.btn-group-vertical .-k-btn + .btn-group,
+.btn-group-vertical .btn-group + .-k-btn,
+.btn-group-vertical .btn-group + .btn-group {
+  margin-left: -1px;
+}
+
+.btn-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.btn-toolbar .input-group {
+  width: auto;
+}
+
+.btn-group > .-k-btn:first-child {
+  margin-left: 0;
+}
+
+.btn-group > .-k-btn:not(:last-child):not(.dropdown-toggle),
+.btn-group > .btn-group:not(:last-child) > .-k-btn {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-right: 0;
+  margin-left: -1px;
+}
+
+.btn-group > .-k-btn:not(:first-child),
+.btn-group > .btn-group:not(:first-child) > .-k-btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }

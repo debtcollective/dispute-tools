@@ -5,10 +5,13 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #000;
   opacity: 0;
   transform: translate3d(0, 150px, 0);
   transition: visibility 0ms linear 300ms, opacity 160ms linear, transform 300ms ease-in;
+  background: var(--k-background-color)
+    url('https://s3.amazonaws.com/tds-static/img/debtcollective/0.0.1/bg-tile.png');
+  background-repeat: repeat;
+  background-size: 20%;
 
   &[aria-hidden='false'] {
     opacity: 1;
@@ -25,12 +28,12 @@
   border: none;
   padding: 0.5rem;
   background-color: transparent;
-  color: white;
+  color: var(--text-1);
 
   & > svg {
     display: inline-block;
     vertical-align: top;
-    fill: #fff;
+    fill: var(--text_1);
     transform: scale(1);
     transition: transform 100ms ease-out;
   }
@@ -45,5 +48,5 @@
   overflow: auto;
   padding: 5rem 0;
   height: 100%;
-  color: #fff;
+  color: var(--text-0);
 }

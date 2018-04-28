@@ -1,54 +1,56 @@
 mixin _toolsYesNoMixin(field)
   if field.caption
-    p.py1.-caption.-fw-600.-neutral-mid!= field.caption
+    p.py1.-caption.-fw-600.-text-1!= field.caption
 
-  p.-ff-sec.-fw-600= field.label
+  p.-fw-600.mb1= field.label
 
   - var _checked = field.default !== undefined ? field.default : null
   if _formData[field.name]
     - _checked = _formData[field.name]
-  input(
-    type="radio"
-    name=`fieldValues[${field.name}]`
-    id=`${field.name}-yes`
-    value="yes"
-    checked= _checked === 'yes'
-    aria-label= 'Yes'
-    data-name= field.name
-    data-hidden= field.hidden && field.hidden.toString()
-    data-default= '' + field.default
-    data-partial-toggle-radio= field.toggle
-    data-toggle-radio= field.yesno && field.yesno.toString()
-    data-alert!= field.alert
-    data-confirm!= field.confirm
-  )&attributes(field.attributes)
-  label.pl1.mr3.-ff-sec(for=`${field.name}-yes`) Yes
+  .form-check.form-check-inline
+    input(
+      type="radio"
+      name=`fieldValues[${field.name}]`
+      id=`${field.name}-yes`
+      value="yes"
+      checked= _checked === 'yes'
+      aria-label= 'Yes'
+      data-name= field.name
+      data-hidden= field.hidden && field.hidden.toString()
+      data-default= '' + field.default
+      data-partial-toggle-radio= field.toggle
+      data-toggle-radio= field.yesno && field.yesno.toString()
+      data-alert!= field.alert
+      data-confirm!= field.confirm
+    )&attributes(field.attributes)
+    label.form-check-label(for=`${field.name}-yes`) Yes
 
-  input(
-    type="radio"
-    name=`fieldValues[${field.name}]`
-    id=`${field.name}-no`
-    value="no"
-    checked= _checked === 'no'
-    aria-label= 'No'
-    data-name= field.name
-    data-hidden= field.hidden && field.hidden.toString()
-    data-default= field.default
-    data-partial-toggle-radio= field.toggle
-    data-toggle-radio= field.yesno && field.yesno.toString()
-    data-alert!= field.alert
-    data-confirm!= field.confirm
-  )&attributes(field.attributes)
-  label.pl1.-ff-sec(for=`${field.name}-no`) No
+  .form-check.form-check-inline
+    input(
+      type="radio"
+      name=`fieldValues[${field.name}]`
+      id=`${field.name}-no`
+      value="no"
+      checked= _checked === 'no'
+      aria-label= 'No'
+      data-name= field.name
+      data-hidden= field.hidden && field.hidden.toString()
+      data-default= field.default
+      data-partial-toggle-radio= field.toggle
+      data-toggle-radio= field.yesno && field.yesno.toString()
+      data-alert!= field.alert
+      data-confirm!= field.confirm
+    )&attributes(field.attributes)
+    label.form-check-label(for=`${field.name}-no`) No
 
 
 mixin toolsFormElementMixin(field, index)
   .col.col-12.p2(class=field.columnClassName)
     case field.type
       when 'dropdown'
-        label.inline-block.pb1.-fw-500= field.label
+        label.inline-block.pb1.-fw-600= field.label
         if field.multiple
-          select.-k-select-multiple.-fw(
+          select.form-control.-multiple.-fw(
             name=`fieldValues[${field.name}]`
             multiple= field.multiple
             data-name= field.name
@@ -61,24 +63,23 @@ mixin toolsFormElementMixin(field, index)
                 selected!= _formData[field.name] && _formData[field.name].includes(option)
               )= option
         else
-          .-k-select
-            select.-fw(
-              name=`fieldValues[${field.name}]`
-              aria-label= field.label
-              data-name= field.name
-              data-hidden= field.hidden && field.hidden.toString()
-            )&attributes(field.attributes)
-              option(value="") Choose an option
-              each option in field.options
-                option(
-                  value= option
-                  selected!= _formData[field.name] === option
-                )= option
+          select.-fw.form-control(
+            name=`fieldValues[${field.name}]`
+            aria-label= field.label
+            data-name= field.name
+            data-hidden= field.hidden && field.hidden.toString()
+          )&attributes(field.attributes)
+            option(value="") Choose an option
+            each option in field.options
+              option(
+                value= option
+                selected!= _formData[field.name] === option
+              )= option
         p.-on-error.-danger.-caption.-fw-500.mt1
 
       when 'date'
-        label.inline-block.pb1.-fw-500= field.label
-        input.-k-input.-fw(
+        label.inline-block.pb1.-fw-600= field.label
+        input.form-control.-k-input.-fw(
           type="date"
           name=`fieldValues[${field.name}]`
           value=_formData[field.name]
@@ -93,8 +94,8 @@ mixin toolsFormElementMixin(field, index)
         p.-on-error.-danger.-caption.-fw-500.mt1
 
       when 'text'
-        label.inline-block.pb1.-fw-500= field.label
-        textarea.-k-textarea.block.-fw(
+        label.inline-block.pb1.-fw-600= field.label
+        textarea.form-control.block.-fw(
           name=`fieldValues[${field.name}]`
           value=_formData[field.name]
           aria-label= field.label
@@ -104,7 +105,7 @@ mixin toolsFormElementMixin(field, index)
         p.-on-error.-danger.-caption.-fw-500.mt1
 
       when 'checkbox'
-        .-ff-sec
+        .-ff-sec.form-check.form-check-inline
           label.mr3
             input.mr1(
               type="checkbox"
@@ -138,7 +139,7 @@ mixin toolsFormElementMixin(field, index)
             h4= field.title
 
           if field.subtitle
-            p.pb2.-ff-sec= field.subtitle
+            h5.pb2.-fw-600= field.subtitle
 
           if field.text
             div.pb2!= field.text
@@ -157,8 +158,8 @@ mixin toolsFormElementMixin(field, index)
                     +toolsFormElementMixin(field2)
 
       default
-        label.inline-block.pb1.-fw-500= field.label
-        input.-k-input.-fw(
+        label.inline-block.pb1.-fw-600= field.label
+        input.form-control.-fw(
           type="text"
           name=`fieldValues[${field.name}]`
           value=_formData[field.name]
@@ -169,4 +170,4 @@ mixin toolsFormElementMixin(field, index)
         p.-on-error.-danger.-caption.-fw-500.mt1
 
     if field.subLabel
-      p.pt1.-caption.-fw-600.-neutral-mid= field.subLabel
+      p.pt1.-caption.-fw-600.-text-1= field.subLabel

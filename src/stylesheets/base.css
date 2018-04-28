@@ -49,12 +49,31 @@
   --k-bg-blue: rgba(219, 248, 255, 0.8);
   --k-color: #2b2b2b;
   --principal-green: #24ba9d;
+  --dc-red: #ff4630;
+  --red: #f23f56;
+  --blue: #007fff;
+  --blue-dark: #0059b3;
+  --green: #70de54;
+  --purple: #9460d6;
+  --orange: #f17129;
+  --yellow: #ffc957;
+  --blue-tint: #a6dfff;
+  --red-tint: #ffb5c2;
+  --green-tint: #d8ffba;
+  --purple-tint: #dcc6f7;
+  --orange-tint: #ffb78f;
+  --yellow-tint: #ffef9e;
   --k-color-palette-primary: var(--principal-green);
-  --k-color-palette-dc-red: #ff4630;
-  --k-color-palette-ex-blue: #007fff;
-  --k-color-palette-danger: #f23f56;
-  --k-color-palette-success: #70de54;
-  --k-color-palette-accent: #ffef9e;
+  --k-color-palette-dc-red: var(--red);
+  --k-color-palette-ex-blue: var(--blue);
+  --k-color-palette-danger: var(--red);
+  --k-color-palette-success: var(--green);
+  --k-color-palette-accent: var(--yellow-tint);
+  --success: var(--green-tint);
+  --error: var(--red-tint);
+  --info: var(--blue-tint);
+  --warning: var(--orange-tint);
+  --k-ex-info: var(--yellow);
   --text-0: #2b2b2b;
   --text-1: #4f4f4f;
   --text-2: #828282;
@@ -66,10 +85,12 @@
   --k-color-palette-neutral-mid: var(--text-2);
   --k-color-palette-neutral-mid-x: var(--text-4);
   --k-color-palette-neutral-light: var(--text-5);
-  --k-h1: 7.4375rem; /* 119px */
-  --k-h2: 4.1875rem; /* 67px */
-  --k-h3: 2.3125rem; /* 37px; */
-  --k-h4: 1.3125rem; /* 21px; */
+  --k-h1: 6.625rem; /* 119px */
+  --k-h2: 3.25rem; /* 67px */
+  --k-h3: 2rem; /* 37px; */
+  --k-h4: 1.5rem; /* 21px; */
+  --k-h5: 1.125rem;
+  --k-h6: 0.8125rem;
   --k-font-caption-size: 0.75rem; /* 12px; */
   --k-xs-fs: 12px;
   --k-xs-p: 7px 1em 6px;
@@ -130,6 +151,10 @@ body {
   }
 }
 
+html {
+  font-size: 16px;
+}
+
 * {
   margin: 0;
 }
@@ -156,12 +181,13 @@ blockquote {
 }
 
 a {
-  color: var(--k-color-palette-ex-blue);
-  text-decoration: none;
+  color: var(--blue);
+  text-decoration: underline;
   transition: color 260ms;
 
   &:hover {
-    color: var(--primary-lighter);
+    color: var(--blue-dark);
+    text-decoration: underlind;
   }
 
   &:not([href]) {
@@ -203,6 +229,7 @@ select {
 main {
   padding-top: var(--header-height);
   background: linear-gradient(var(--k-bg-blue), rgba(245, 245, 245, 0) 1000px);
+  min-height: 98vh;
 }
 
 .wrapper {

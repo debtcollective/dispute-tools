@@ -1,7 +1,7 @@
 <template>
   <div>
     <alert :alerts="alerts" />
-    <div class="pb3">
+    <form class="pb3" @submit="e => e.preventDefault()">
       <h3 class="pb3">Manage Admins</h3>
       <Multiselect
         v-model="assigned"
@@ -17,7 +17,7 @@
       >
         Save
       </button>
-    </div>
+    </form>
   </div>
 </template>
 

@@ -68,7 +68,7 @@ export default class DisputesInformationForm extends Widget {
 
       // Initialize fieldsets for toggles that do not have defaults
       if (t.dataset.default === 'undefined') {
-        t.parentElement.querySelector('fieldset').style.display = 'none';
+        t.parentElement.parentElement.querySelector('fieldset').style.display = 'none';
       }
     });
 
@@ -106,6 +106,8 @@ export default class DisputesInformationForm extends Widget {
   }
 
   _handleConfirmRadioChange({ target: { parentElement, dataset, value, name } }) {
+    // Radios are nested two deep
+    parentElement = parentElement.parentElement;
     const data = JSON.parse(dataset.confirm);
     const matched = data[value];
 
@@ -145,7 +147,7 @@ export default class DisputesInformationForm extends Widget {
    */
   _handleAlertRadioChange(ev) {
     const target = ev.target;
-    const parentElement = target.parentElement;
+    const parentElement = target.parentElement.parentElement;
     const data = JSON.parse(target.dataset.alert);
     const matched = data[target.value];
 
@@ -180,7 +182,7 @@ export default class DisputesInformationForm extends Widget {
 
   _handleContentToggle(ev) {
     const target = ev.currentTarget;
-    const fieldset = target.parentElement.querySelector('fieldset');
+    const fieldset = target.parentElement.parentElement.querySelector('fieldset');
 
     if (fieldset) {
       const whitelist = 'input, select, textarea';

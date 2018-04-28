@@ -12,24 +12,24 @@ block content
   .ProfileWrapper.wrapper.py4.px2.flex.items-center.relative
     .max-width-3.mx-auto.relative.-fw
       .clearfix
-        .Profile__image-wrapper.relative.right.sm-col-4.col-12
-          img.block.-fw(src=avatarUrl)
-        .col.sm-col-8.col-12
-          .Profile__info-wrapper.flex.flex-column.pt3.pr3.pb2.pl3
+        .col.col-12
+          .relative.left.sm-col-4
+              img.block(src=avatarUrl width='150' height='150')
+          .flex.flex-column.pt3.pr3.pb2.pl3
             .flex-auto
               h3.pb2= currentUser.name
-            .flex.pt4
               a(href=profileUrl class='-caption -fw-600' role='button' tabindex='0' rel="noreferrer noopener")
                 svg.mr1(width='11' height='11'): use(xlink:href='#svg-external')
                 | Go to my community profile
 
           .-bg-neutral-dark.px3.pb2
-            hr.mb3
-            h4.pb1 My disputes
+            .col.col-4.sm-col-12
+              hr.mb3(aria-hidden="true")
+              h4.pb1 My disputes
             ul.list-reset
               each dispute in disputes
                 li
-                  a.block.clearfix.py1.mxn1.-white(href=routeMappings.Disputes.show.url(dispute.id))
+                  a.block.clearfix.py1.mxn1(href=routeMappings.Disputes.show.url(dispute.id))
                     .col.col-8.px1
                       .-fw-600
                         | #{dispute.disputeTool.name}

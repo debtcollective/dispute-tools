@@ -2,8 +2,8 @@
   <div>
     <div :class="`col col-${typeSelected === 'other' ? '4' : '8'} py2 pr2`">
       <label class="inline-block pb1 -fw-500" :for="typeSelected !== 'other' ? 'fieldValues[debt-type]' : 'debt-type[other]'" id="debt-type-l">Debt type</label>
-      <div class="-k-select">
-        <select class="-fw" @input="handleTypeSelection" :value="typeSelected" :name="typeSelected !== 'other' ? 'fieldValues[debt-type]' : 'debt-type[other]'" aria-labelledby="debt-type-l" required="required">
+      <div>
+        <select class="-fw form-control" @input="handleTypeSelection" :value="typeSelected" :name="typeSelected !== 'other' ? 'fieldValues[debt-type]' : 'debt-type[other]'" aria-labelledby="debt-type-l" required="required">
           <option v-for="debtType in DebtTypes" :key="debtType.key" :value="debtType.key">{{debtType.value}}</option>
         </select>
       </div>

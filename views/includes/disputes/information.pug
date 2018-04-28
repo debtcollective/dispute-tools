@@ -68,7 +68,7 @@ mixin _uploadCard(step, _completed)
       input(type='hidden' name='_csrf' value=csrfToken)
       input(type='hidden' name='name' value=step.name)
       div.relative.-k-btn.btn-sm.-fw-500.-fw(
-        class=_completed ? 'btn-white' : 'btn-primary'
+        class=_completed ? 'btn-secondary' : 'btn-primary'
       ) #{step.uploadButtonText}
         input(
           type='file'

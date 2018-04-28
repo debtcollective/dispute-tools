@@ -53,27 +53,28 @@ unless dispute.disputeTool.data.disputeProcess
 
           each process in _disputeProcesses
             .col.md-col-4.col-12.p2
-              label.Tool__process-option
+              .form-check.form-check-inline
                 input(
                   type="radio"
                   name="process"
                   value=process.value
                   checked=(process.value === dispute.data.disputeProcess)
                 )
-                .Tool__process-option-inner.flex.flex-column.-fh
-                  .flex-auto.pb2
-                    .Tool__process-option-icon
-                      svg(width=process.icon.width height=process.icon.height)
-                        use(xlink:href=`#svg-${process.icon.name}`)
-                    h4.pb2= process.title
-                    p.-caption= process.description
+                label.form-check-label
+                  .Tool__process-option-inner.flex.flex-column.-fh
+                    .flex-auto.pb2
+                      .Tool__process-option-icon
+                        svg(width=process.icon.width height=process.icon.height)
+                          use(xlink:href=`#svg-${process.icon.name}`)
+                      h4.pb2= process.title
+                      p.-caption= process.description
 
                   if dispute.disputeTool.id === '11111111-1111-1111-1111-111111111111'
                     if process.value === '2'
                       .pb2
                         - var _processCities = ['Atlanta', 'Chicago', 'San Francisco'];
-                        .-k-select
-                          select.-fw(name="processCity")
+                        div
+                          select.form-control.-fw(name="processCity")
                             option(value="") I’ll go to...
                             each city in _processCities
                               option(
@@ -86,7 +87,7 @@ unless dispute.disputeTool.data.disputeProcess
                     .-k-btn.btn-dark.-fw.-fw-600.css-btn-selected
                       svg.mr1(width="14" height="10"): use(xlink:href="#svg-checkmark")
                       | Selected
-                    .-k-btn.btn-outline.-fw.-white.-fw-600 Choose this process
+                    .-k-btn.btn-outline-primary.-fw.-fw-600 Choose this process
 
       .py3
         button.-k-btn.btn-primary.-fw.-fw-600(

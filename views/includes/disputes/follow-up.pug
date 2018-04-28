@@ -47,13 +47,13 @@
               form(method='post' action=routeMappings.Disputes.updateSubmission.url(dispute.id) onsubmit="this.submitButton.disabled = true")
                 input(type='hidden' name='_method' value='put')
                 ul.list-reset
-                  li.mb2: label
-                    input(type='radio' name='pending_submission' value='1' required)
-                    span.ml2 I want the Debt Collective to mail a hard copy of my dispute
-                  li.mb2: label
-                    input(type='radio' name='pending_submission' value='0' required)
-                    span.ml2 I prefer to print and mail it myself
-                button(type='submit' name='submitButton').-fw-600.-k-btn.btn-primary Save changes
+                  li.form-check.form-check-inline
+                    input(type='radio' name='pending_submission' id='pending-submission-dc-to-mail' value='1' required)
+                    label.form-check-label(for='pending-submission-dc-to-mail') I want the Debt Collective to mail a hard copy of my dispute
+                  li.form-check.form-check-inline
+                    input(type='radio' name='pending_submission' id='pending-submission-member-to-mail' value='0' required)
+                    label.form-check-label(for='pending-submission-member-to-mail') I prefer to print and mail it myself
+                button(type='submit' name='submitButton').-fw-600.-k-btn.btn-primary.mt2 Save changes
             else
               if lastStatus.pendingSubmission
                 p Your dispute is being processed, thank you.
@@ -126,7 +126,7 @@
                 h4 Got a reply?
                 p Tell us when you receive a response or any further communication from the creditor or collector.
 
-                textarea.-k-textarea.block.my2.-fw(
+                textarea.form-control.block.my2.-fw(
                   name='comment'
                   rows='5'
                   placeholder='Briefly describe the response you got…'
@@ -146,4 +146,4 @@
             svg(width='13' height='13')
               use(xlink:href='#svg-close')
           .-dark.-fw-600 Access your filled tools
-          p.-fw-500 You can follow up your tools anytime through your Profile
+          p.-fw-500 You can follow up your tools anytime through your My Disputes page

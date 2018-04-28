@@ -92,8 +92,6 @@ mixin _defaultMenuMixin
               each item in _menuItemsData.loggedIn
                 li: a.Header__dropdown-item(href=item.url role='button' tabindex='0' onclick=item.onclick)= item.text
               each item, index in _menuItemsData.admin
-                if index === 0
-                  li.-separator
                 li: a.Header__dropdown-item(href=item.url role='button' tabindex='0')
                   svg.mr1(width='18' height='11'): use(xlink:href='#svg-key')
                   | #{item.text}

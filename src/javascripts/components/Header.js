@@ -30,13 +30,12 @@ export default class Header extends Widget {
   }
 
   _bindEvents() {
-    this._handleHamburgerMenuClickRef = this._handleHamburgerMenuClick.bind(this);
-    this.hamburgerMenuElement.addEventListener('click', this._handleHamburgerMenuClickRef);
+    this.hamburgerMenuElement.addEventListener('click', this._handleHamburgerMenuClick);
   }
 
-  _handleHamburgerMenuClick() {
+  _handleHamburgerMenuClick = () => {
     this.ResponsiveMenu.activate();
-  }
+  };
 
   _handleLoggedUser() {
     [].slice

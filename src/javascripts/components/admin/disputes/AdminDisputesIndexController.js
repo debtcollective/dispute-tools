@@ -98,7 +98,7 @@ export default class AdminDisputesIndexController extends Widget {
     });
     this.assignedToMeButtonContainer.appendChild(this.assignedToMeButton.element);
 
-    this.pagination = document.querySelector('.Pagination ul');
+    this.pagination = document.querySelector('.Pagination .btn-group');
 
     this._bindEvents();
   }

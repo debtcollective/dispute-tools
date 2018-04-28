@@ -61,8 +61,8 @@ fieldset {
   }
 
   &-optional-badge {
-    background-color: color(var(--k-color-palette-accent) alpha(25%));
-    color: var(--k-color-palette-accent);
+    background-color: var(--k-ex-info);
+    color: var(--text-1);
   }
 
   &-badge {

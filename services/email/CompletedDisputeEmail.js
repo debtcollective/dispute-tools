@@ -6,7 +6,7 @@ const { mailers: { disputesBCCAddress, contactEmail } } = require('../../config/
  */
 class ForMember extends Email {
   /**
-   * @param {Object} member The Debt Syndicate member who completed the dispute
+   * @param {Object} member The Debt Collective member who completed the dispute
    * @param {Object} dispute The complete dispute
    */
   constructor(member, dispute) {
@@ -20,19 +20,19 @@ class ForMember extends Email {
   }
 }
 
-ForMember.from = `The Debt Syndicate Organizers <${contactEmail}>`;
+ForMember.from = `The Debt Collective Organizers <${contactEmail}>`;
 
 /**
- * Sends a completed dispute email to the Debt Syndicate organizers
+ * Sends a completed dispute email to the Debt Collective organizers
  */
 class ForAdmin extends Email {
   /**
-   * @param {Object} member The Debt Syndicate member who completed the dispute
+   * @param {Object} member The Debt Collective member who completed the dispute
    * @param {Object} dispute The complete dispute
    */
   constructor(member, dispute) {
     super('CompletedDisputeEmail.ForAdmin', {
-      to: `The Debt Syndicate Organizers <${disputesBCCAddress}>`,
+      to: `The Debt Collective Organizers <${disputesBCCAddress}>`,
       from: `${member.name} <${contactEmail}>`,
       subject: `${member.name} just completed a dispute`,
     });
@@ -46,7 +46,7 @@ class ForAdmin extends Email {
  */
 class CompletedDisputeEmail {
   /**
-   * @param {Object} member The Debt Syndicate member who completed the dispute
+   * @param {Object} member The Debt Collective member who completed the dispute
    * @param {Object} dispute The complete dispute
    */
   constructor(member, dispute) {

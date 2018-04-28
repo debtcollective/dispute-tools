@@ -1,7 +1,7 @@
 include ../../mixins/dispute-tools/form-element
 
 .max-width-3.mx-auto(data-component-form="dispute-personal-information")
-  form.px2(
+  form.dispute-tool.px2(
     action= (isAdmin ? routeMappings.Admin : routeMappings).Disputes.updateDisputeData.url(dispute.id)
     method="post"
   )
@@ -24,13 +24,13 @@ include ../../mixins/dispute-tools/form-element
       h4.pt3.center= dispute.user.name
       h4.pb3.center= dispute.user.username
     else
-      h3#modalToolPersonalInfoFormTitle.pb3= dispute.disputeTool.name
+      h3#modalToolPersonalInfoFormTitle= dispute.disputeTool.name
 
     each sets, i in step.fieldSets
-      .pt2.pr3.pl3.pb2.mb2.-bg-neutral-dark
+      .pt2.pr3.pl3.pb2.mb2.-bg-forms
         fieldset
           h4= sets.title
-          p.-ff-sec!= sets.subtitle
+          p.-fw-600!= sets.subtitle
 
           if sets.yesno
             +_toolsYesNoMixin(sets)

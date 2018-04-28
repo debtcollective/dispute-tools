@@ -26,5 +26,12 @@ module.exports = function locals(req, res, next) {
   // DonationFlow
   res.locals.STRIPE_PUBLISHABLE_KEY = publishable;
 
+  res.locals.logo = {
+    primary:
+      'https://s3.amazonaws.com/tds-static/img/debtcollective/0.0.1/DC-logo_FULL_WHITE@3x.png',
+    secondary:
+      'https://s3.amazonaws.com/tds-static/img/debtcollective/0.0.1/DC-logo_FULL_DARK_CUTOUTfoot_@3x.png',
+  };
+
   return next();
 };

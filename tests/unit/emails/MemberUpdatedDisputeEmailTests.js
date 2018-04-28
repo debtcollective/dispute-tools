@@ -16,7 +16,7 @@ describe('MemberUpdatedDisputeEmail', () => {
     it("should set the to address to the visitor's", () => {
       const email = new MemberUpdatedDisputeEmail(member, dispute, disputeStatus);
       expect(email.to).exist;
-      expect(email.to).eq(`The Debt Syndicate Organizers <${contactEmail}>`);
+      expect(email.to).eq(`The Debt Collective Organizers <${contactEmail}>`);
     });
 
     it('should set the locals with the passed in member', () => {
