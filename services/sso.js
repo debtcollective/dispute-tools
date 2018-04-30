@@ -3,7 +3,10 @@
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { errors: { AuthenticationFailure }, Raven, logger } = require('../lib');
-const { siteURL, sso: { endpoint, secret, jwtSecret, cookieName } } = require('../config/config');
+const {
+  siteURL,
+  sso: { endpoint, secret, jwtSecret, cookieName, cookieDomain },
+} = require('../config/config');
 const { getSsoUserEnsuringCreated } = require('./users');
 
 const nonces = {};
@@ -101,6 +104,7 @@ const sso = {
       // when the browser session ends
       expires: null,
       httpOnly: true,
+      domain: cookieDomain,
     });
 
     next();

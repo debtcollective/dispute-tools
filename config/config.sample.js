@@ -13,6 +13,7 @@ module.exports = {
     secret: process.env.SSO_SECRET || uuid.v4(),
     jwtSecret: process.env.JWT_SECRET || uuid.v4(),
     cookieName: process.env.SSO_COOKIE_NAME || '_dispute_tools',
+    cookieDomain: process.env.SSO_COOKIE_DOMAIN || '.localhost',
   },
   siteURL: process.env.SITE_URL || `http://localhost:${port}`,
   mailers: {
