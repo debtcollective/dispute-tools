@@ -15,12 +15,12 @@ block content
       // in that case, it will return the parent's name
       var displayName = "";
       if (forms["personal-information-form"]) {
-        if (forms["personal-information-form"]["atb-student-name"] &&
-            forms["personal-information-form"]["atb-student-name"] !== "") {
-          displayName = forms["personal-information-form"]["atb-student-name"]
-        } else {
-          displayName = forms["personal-information-form"]["name"]
-        }
+        name_keys = ["atb-student-name", "atbd-student-name", "fc-student-name", "name"]
+        name_keys.forEach(key => {
+          if (displayName === "" && forms["personal-information-form"][key]) {
+            displayName = forms["personal-information-form"][key]
+          }
+        })
       }
       return displayName;
     };
