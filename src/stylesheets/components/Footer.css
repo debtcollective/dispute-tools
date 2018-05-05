@@ -10,6 +10,13 @@ footer {
       color: var(--text-4);
     }
   }
+
+  .logo {
+    font-size: 1rem;
+    display: block;
+    height: var(--logo-height);
+    margin: 9px 9px;
+  }
 }
 
 .Footer__circle-btn {

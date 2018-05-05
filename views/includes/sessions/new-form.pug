@@ -4,12 +4,10 @@
     p#modalLoginDesc.-fw-500.mb3 Log In
 
     form(method="post" action=routeMappings.login.url())
-      input(type="hidden" name="_csrf" value=csrfToken)
-
       .clearfix.mb2.mxn1
         .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500 Email
         .col.sm-col-9.col-12.px1(class=errors && errors.email ? 'error' : '')
-          input.-k-input.-fw(
+          input.-fw.form-control(
             type="email"
             name="email",
             value=(_formData && _formData.email) || ''
@@ -19,7 +17,7 @@
       .clearfix.mb2.mxn1
         .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500 Password
         .col.sm-col-9.col-12.px1(class=errors && errors.password ? 'error' : '')
-          input(name="password" class="-k-input -fw" type="password" autocomplete="off")
+          input.form-control(name="password" class="form-control -fw" type="password" autocomplete="off")
           p(class="-on-error -danger -caption -fw-500 mt1") ▲ Invalid password
 
       .clearfix.mb3

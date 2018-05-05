@@ -24,9 +24,14 @@ html(lang='en')
     link(rel='stylesheet' href='/build/index.css')
     link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Space+Mono')
 
+    script(src=`https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.${NODE_ENV === 'production' ? 'min.' : ''}js`)
+    link(rel='stylesheet' href='https://s3.amazonaws.com/tds-static/css/dc-vue-header/0.0.1/index.min.css')
+    script(src='https://s3.amazonaws.com/tds-static/js/dc-vue-header/0.0.1/index.min.js')
+    script.
+      Vue.component(DebtCollectiveHeader.name, DebtCollectiveHeader)
+
   body
     include ../includes/svg/sprite.svg
-    include ../mixins/header-nav
 
     main(aria-hidden='false' role='main')
       if errors || error || flash
@@ -49,17 +54,6 @@ html(lang='en')
       include ../includes/header
       block content
       include ../includes/footer
-
-    .ResponsiveMenu(aria-hidden='true')
-      .ResponsiveMenu__Header.px2.clearfix
-        .left.-fh
-          a.block(href=routeMappings.root.url() style='padding: 11px 0;')
-            svg(width='64' height='31'): use(xlink:href='#svg-logo')
-            .sr-only The Collective Homepage
-        .right.-fh
-          button.js-close-responsive-menu.btn-clear(aria-label='close' style='padding: 19px 0 19px 19px;')
-            svg.-s18(width='32' height='32'): use(xlink:href='#svg-close')
-      +mixinHeaderNav(true)
 
     block body
       include ../includes/donation-flow

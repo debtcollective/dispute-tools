@@ -26,15 +26,12 @@
 @import '../lib/kabinett/utilities/aria';
 @import '../lib/kabinett/utilities/sizes';
 @import './utils';
-@import './components/Header';
 @import './components/Footer';
 @import './components/Modal';
-@import './components/Dropdown';
 @import './components/DonationFlow';
 @import './components/Alert';
 @import './components/Button';
 @import './components/Popover';
-@import './components/ResponsiveMenu';
 @import 'flatpickr/dist/flatpickr';
 @import url('https://fonts.googleapis.com/css?family=Libre+Franklin:400,600,800');
 @import url('https://s3.amazonaws.com/tds-static/fonts/moregothic/1.0.0/More+Gothic+Bold.css');
@@ -123,7 +120,7 @@
   --space-4: 3.75rem;
 
   /* Platform Variables */
-  --header-height: 72px;
+  --header-height: 71px;
   --logo-height: 54px;
   --footer-height: 316px;
   --primary-lighter: color(var(--k-color-palette-primary) tint(15%));
@@ -240,4 +237,9 @@ main {
 
 .hide {
   display: none;
+}
+
+.nav-item-wrapper {
+  line-height: 1;
+  font-size: 1.0125rem;
 }

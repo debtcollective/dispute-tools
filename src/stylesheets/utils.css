@@ -158,7 +158,7 @@
   display: block;
 }
 
-.error .-k-input,
+.error,
 .error .-k-textarea,
 .error.-k-select {
   color: var(--k-color-palette-danger);

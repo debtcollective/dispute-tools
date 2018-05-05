@@ -10,6 +10,9 @@ module.exports = {
     index: './src/javascripts/index.js',
     admin: './src/javascripts/admin.js',
   },
+  externals: {
+    vue: 'Vue',
+  },
   plugins: [
     // This plugin tears out the common parts of index.js and admin.js
     // into a shared `shared.js` file to be included in both the back-office
@@ -54,18 +57,18 @@ module.exports = {
               dev
                 ? []
                 : [
-                  require('cssnano')({
-                    autoprefixer: false,
-                    preset: [
-                      'default',
-                      {
-                        discardComments: {
-                          removeAll: true,
+                    require('cssnano')({
+                      autoprefixer: false,
+                      preset: [
+                        'default',
+                        {
+                          discardComments: {
+                            removeAll: true,
+                          },
                         },
-                      },
-                    ],
-                  }),
-                ],
+                      ],
+                    }),
+                  ],
             ),
           },
         },
@@ -75,6 +78,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
         },
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/,
@@ -107,18 +111,18 @@ module.exports = {
                     dev
                       ? []
                       : [
-                        require('cssnano')({
-                          autoprefixer: false,
-                          preset: [
-                            'default',
-                            {
-                              discardComments: {
-                                removeAll: true,
+                          require('cssnano')({
+                            autoprefixer: false,
+                            preset: [
+                              'default',
+                              {
+                                discardComments: {
+                                  removeAll: true,
+                                },
                               },
-                            },
-                          ],
-                        }),
-                      ],
+                            ],
+                          }),
+                        ],
                   );
                 },
               },

@@ -10,12 +10,12 @@
     </div>
     <div v-if="typeSelected === 'other'" class="col col-4 p2">
       <label class="inline-block pb1 -fw-500" aria-hidden="true" for="fieldValues[debt-type]" id="other-debt-type-l">Other debt type</label>
-      <input type="text" class="-k-input -fw" placeholder="..." name="fieldValues[debt-type]" aria-labelledby="other-debt-type-l" v-model="type" required="required" />
+      <input type="text" class="form-control -fw" placeholder="..." name="fieldValues[debt-type]" aria-labelledby="other-debt-type-l" v-model="type" required="required" />
     </div>
     <div class="col col-4 py2 pl2">
       <label class="inline-block pb1 -fw-500">Amount</label>
       <input
-        class="-k-input -fw"
+        class="form-control -fw"
         type="number"
         min="0"
         step="0.01"

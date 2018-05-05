@@ -7,7 +7,6 @@ if dispute.disputeTool.data.signature
       action=routeMappings.Disputes.setSignature.url(dispute.id)
       method="post"
     )
-      input(type="hidden" name="_csrf" value=csrfToken)
       input(name="_method" type="hidden" value="PUT")
 
       .p3.-bg-neutral-dark
@@ -34,7 +33,7 @@ if dispute.disputeTool.data.signature
             .clearfix.mxn2.pt4
               .col.sm-col-2.col-12.pb1.px2: p.pt1.-fw-500 Full name
               .col.sm-col-10.col-12.pb1.px2
-                input.-k-input.-fw(type="text" name="signature" value=dispute.data.signature)
+                input.form-control.-fw(type="text" name="signature" value=dispute.data.signature)
                 p(class="-on-error -danger -caption -fw-500 mt1") ▲ You must write your full name to submit your dispute
 
       .py3: button.-k-btn.btn-primary.-fw.-fw-600.-ttu(type="submit") Submit my dispute

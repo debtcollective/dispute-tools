@@ -4,13 +4,12 @@
       "env",
       {
         "targets": {
-          "browsers": [
-            "last 2 versions"
-          ]
+          "browsers": ["last 2 versions"]
         }
       }
     ],
     "stage-2",
-    "vue"
+    // "vue",
+    "vue-app"
   ]
 }

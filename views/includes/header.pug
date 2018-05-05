@@ -1,37 +1,31 @@
-header.Header(data-component-header)
-  .Header__bg.absolute.top-0.right-0.bottom-0.left-0
-  .wrapper.clearfix.px2.-fh.sm-hide.xs-hide
-    h1.Header__logo.left.-fh
-      a.block(href=routeMappings.root.url())
-        img.Header__logo-svg(src= logo.primary)
-        .sr-only The Debt Collective Homepage
-    nav.right.-fh
-      +mixinHeaderNav()
-  
-  .Header__height.px2.md-hide.lg-hide.flex.justify-between.items-center
-    button.navbar-toggler.js-hamburger-menu(type='button' aria-label='Toggle navigation')
-      span.navbar-toggler-icon
-    .Header__logo.-fh
-      a.block(href=routeMappings.root.url())
-        img.Header__logo-svg(src= logo.primary)
-        .sr-only The Debt Collective Homepage
-    if currentUser
-      svg.mr1(aria-label='Toggle notifications' width='40' height='40' viewbox='0 0 40 40' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink')
-        g#Canvas(fill='none')
-          g(id='Group 2.2')
-            g(id='Mask Group')
-              mask#mask0(mask-type='alpha' maskunits='userSpaceOnUse' x='0' y='0' width='40' height='40')
-                g#profile-pic
-                  circle(cx='20' cy='20' r='20' fill='#C4C4C4')
-              g(mask='url(#mask0)')
-                g#profile-pic_2
-                  circle(cx='20' cy='20' r='20' fill='#C4C4C4')
-                g(id='Group 8')
-                  g#Vector
-                    path(d='M -5.82524e-09 11.8452C -5.82524e-09 5.30243 4.3185 9.44011e-07 9.64638 9.44011e-07L 18.3536 9.44011e-07C 23.6823 9.44011e-07 28 5.30243 28 11.8452' transform='translate(6 28.0156)' fill='#828282')
-                  g#Vector_2
-                    path(d='M 8.10482 16.0174C 12.581 16.0174 16.2096 12.4318 16.2096 8.00872C 16.2096 3.58563 12.581 0 8.10482 0C 3.62865 0 0 3.58563 0 8.00872C 0 12.4318 3.62865 16.0174 8.10482 16.0174Z' transform='translate(11.8947 8)' fill='#828282')
-    else
-      a.Header__link.-fw-600.-fh(href='#' onclick= `window.login('${routeMappings.login.url()}')`)
-        p.nav-item-wrapper Log In
+#debt-collective-header
 
+script.
+  /**
+   * Do this here so that the header mounts as soon as the mount point is available.
+   * This prevents the page from waiting for the whole JS bundle to load before
+   * beginning to render the header. Otherwise we end up with a hole in where the
+   * header goes until the bundle is done loading & has begun execution
+   */
+  new Vue({
+    el: '#debt-collective-header',
+    render(h) {
+      return h('debt-collective-header', {
+        attrs: {
+          'header-links': [
+            { text: 'Dispute Your Debt', href: '/dispute-tools' },
+            { text: 'Campaigns', href: '#campaigns' },
+            { text: 'Events', href: '#events' },
+          ],
+          'dropdown-links': [
+            { text: 'News', href: '#news' },
+            { text: 'Dispute Your Debt', href: '#dispute-your-debt', onclick: 'window.loggit()' },
+            { text: 'About the Debt Collective', href: '#about' },
+            { text: 'Community Wiki', href: '#wiki' },
+            { text: 'Medicare For All', href: '#m4a' },
+          ],
+          'discourse-endpoint': !{JSON.stringify(discourseEndpoint)},
+        },
+      });
+    }
+  });

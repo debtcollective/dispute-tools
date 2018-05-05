@@ -31,7 +31,6 @@ mixin _uploadCard(step, _completed)
   .Tool__Info.flex.flex-column.-fh(
     class= `-${step.type} ${_completed && '-completed'}`
   )
-    input(type='hidden' name='_csrf' value=csrfToken)
     input(type='hidden' name='name' value=step.name)
     .flex-auto.pb3
       .pb1.-fw-600.-ttu= step.title
@@ -55,7 +54,6 @@ mixin _uploadCard(step, _completed)
                 action=routeMappings.Disputes.removeAttachment.url(dispute.id, _att.id)
                 method='post'
               )
-                input(type='hidden' name='_csrf' value=csrfToken)
                 input(type='hidden' name='_method' value='PUT')
                 button.btn-clear(data-remove-upload-button)
                   svg.-danger(width='10' height='10'): use(xlink:href='#svg-close')
@@ -65,7 +63,6 @@ mixin _uploadCard(step, _completed)
       method='post'
       enctype='multipart/form-data'
     )
-      input(type='hidden' name='_csrf' value=csrfToken)
       input(type='hidden' name='name' value=step.name)
       div.relative.-k-btn.btn-sm.-fw-500.-fw(
         class=_completed ? 'btn-secondary' : 'btn-primary'
@@ -138,7 +135,6 @@ mixin _uploadCard(step, _completed)
           action=routeMappings.Disputes.setSignature.url(dispute.id)
           method='post'
         )
-          input(type='hidden' name='_csrf' value=csrfToken)
           input(type='hidden' name='_method' value='PUT')
           input(type='hidden' name='signature' value='TDC')
           button.-k-btn.btn-primary.-fw.-fw-600(

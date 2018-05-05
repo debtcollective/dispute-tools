@@ -54,16 +54,6 @@ html(lang='en')
               .sr-only The Collective Homepage
       block content
 
-    .ResponsiveMenu(aria-hidden='true')
-      .ResponsiveMenu__Header.px2.clearfix
-        .left.-fh
-          a.block(href=routeMappings.root.url() style='padding: 11px 0;')
-            svg(width='64' height='31'): use(xlink:href='#svg-logo')
-            .sr-only The Collective Homepage
-        .right.-fh
-          button.js-close-responsive-menu.btn-clear(aria-label='close' style='padding: 19px 0 19px 19px;')
-            svg.-s18(width='32' height='32'): use(xlink:href='#svg-close')
-
     block body
       include ../includes/donation-flow
 

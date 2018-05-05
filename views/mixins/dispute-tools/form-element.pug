@@ -79,7 +79,7 @@ mixin toolsFormElementMixin(field, index)
 
       when 'date'
         label.inline-block.pb1.-fw-600= field.label
-        input.form-control.-k-input.-fw(
+        input.form-control.-fw(
           type="date"
           name=`fieldValues[${field.name}]`
           value=_formData[field.name]
@@ -106,17 +106,17 @@ mixin toolsFormElementMixin(field, index)
 
       when 'checkbox'
         .-ff-sec.form-check.form-check-inline
-          label.mr3
-            input.mr1(
-              type="checkbox"
-              name=`fieldValues[${field.name}]`
-              checked= _formData[field.name]
-              value='yes'
-              aria-label= field.label
-              data-name=field.name
-              data-hidden= field.hidden && field.hidden.toString()
-            )&attributes(field.attributes)
-            | !{field.label}
+          input.form-check-input.mr1(
+            type="checkbox"
+            name=`fieldValues[${field.name}]`
+            id= field.name + field.attributes.value
+            checked= Array.isArray(_formData[field.name]) ? _formData[field.name].includes(field.attributes.value) : _formData[field.name]
+            value='yes'
+            aria-label= field.label
+            data-name=field.name
+            data-hidden= field.hidden && field.hidden.toString()
+          )&attributes(field.attributes)
+          label(for= field.name + field.attributes.value).mr3 !{field.label}
         p.-on-error.-danger.-caption.-fw-500.mt1
 
       when 'radio'
