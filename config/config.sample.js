@@ -2,16 +2,14 @@
 const environment = process.env.NODE_ENV || 'development';
 const port = process.env.PORT || 8080;
 
-const uuid = require('uuid');
-
 module.exports = {
   environment,
   port,
   appName: process.env.APP_NAME || 'TDC Dispute Tools',
   sso: {
     endpoint: process.env.SSO_ENDPOINT || 'http://localhost:3000/session/sso_provider',
-    secret: process.env.SSO_SECRET || uuid.v4(),
-    jwtSecret: process.env.JWT_SECRET || uuid.v4(),
+    secret: process.env.SSO_SECRET || 'this is the sso secret',
+    jwtSecret: process.env.JWT_SECRET || 'this is the jwt secret',
     cookieName: process.env.SSO_COOKIE_NAME || '_dispute_tools',
   },
   siteURL: process.env.SITE_URL || `http://localhost:${port}`,
