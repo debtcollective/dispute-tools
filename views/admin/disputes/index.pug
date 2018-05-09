@@ -9,6 +9,21 @@ block content
     var queryFilters = headers.query && headers.query.filters
     var queryStatus = headers.query && headers.query.status
     var queryOrder = headers.query && headers.query.order
+    const findDisplayName = function (forms) {
+      // find the name to display in the form data, which will be the debtor's name unless
+      // a parent who is disputing a student's debt has not filled in the student's name.
+      // in that case, it will return the parent's name
+      var displayName = "";
+      if (forms["personal-information-form"]) {
+        name_keys = ["atb-student-name", "atbd-student-name", "fc-student-name", "name"]
+        name_keys.forEach(key => {
+          if (displayName === "" && forms["personal-information-form"][key]) {
+            displayName = forms["personal-information-form"][key]
+          }
+        })
+      }
+      return displayName;
+    };
 
   .wrapper.px2.pb3
     h2.pt4.pb2.flex.justify-between.items-end
@@ -85,12 +100,11 @@ block content
             //- if (_dispute.user.account.image.exists('small'))
             //-   _dispute.user.account.imageURL = _dispute.user.account.image.urls['small'];
 
-            // find the debtor's name in the form data
-            var debtorName = "";
-            if (_dispute.data.forms && _dispute.data.forms["personal-information-form"]) {
-              debtorName = _dispute.data.forms["personal-information-form"].name
-            } else if (_dispute.data._forms && _dispute.data._forms["personal-information-form"]) {
-              debtorName = _dispute.data._forms["personal-information-form"].name
+            var displayName = "";
+            if (_dispute.data.forms) {
+              displayName = findDisplayName(_dispute.data.forms)
+            } else if (_dispute.data._forms) {
+              displayName = findDisplayName(_dispute.data._forms)
             }
 
           tr
@@ -98,7 +112,7 @@ block content
               .flex.items-center
                 img(src=_dispute.user.imageURL alt=(_dispute.user.name) width="50" height="50")
                 p.pl2
-                  .-fw-600= debtorName
+                  .-fw-600= displayName
                   .-fw-300.pl1
                     span= "(by "
                     span.-fw-400.-danger= _dispute.user.name
