@@ -4,7 +4,7 @@
 .ToolCard {
   &__name,
   &__stats {
-    color: var(--k-color-palette-accent);
+    color: var(--text-0);
   }
 
   &__caption {

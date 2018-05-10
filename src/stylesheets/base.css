@@ -26,35 +26,68 @@
 @import '../lib/kabinett/utilities/aria';
 @import '../lib/kabinett/utilities/sizes';
 @import './utils';
-@import './components/Header';
 @import './components/Footer';
 @import './components/Modal';
-@import './components/Dropdown';
 @import './components/DonationFlow';
 @import './components/Alert';
 @import './components/Button';
 @import './components/Popover';
-@import './components/ResponsiveMenu';
 @import 'flatpickr/dist/flatpickr';
+@import url('https://fonts.googleapis.com/css?family=Libre+Franklin:400,600,800');
+@import url('https://s3.amazonaws.com/tds-static/fonts/moregothic/1.0.0/More+Gothic+Bold.css');
 
 :root {
   /* KABINETT CONFIGURATION */
-  --k-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --k-background-color: #000;
-  --k-color: #fff;
-  --k-color-palette-primary: #f04c34;
-  --k-color-palette-danger: #d0021b;
-  --k-color-palette-success: #bae88b;
-  --k-color-palette-accent: #fefac0;
-  --k-color-palette-neutral-dark: #242424;
-  --k-color-palette-neutral-mid-dark: #4a4a4a;
-  --k-color-palette-neutral-mid: #9b9b9b;
-  --k-color-palette-neutral-mid-x: #d8d8d8;
-  --k-color-palette-neutral-light: #f5f5f5;
-  --k-h1: 7.4375rem; /* 119px */
-  --k-h2: 4.1875rem; /* 67px */
-  --k-h3: 2.3125rem; /* 37px; */
-  --k-h4: 1.3125rem; /* 21px; */
+  --k-font-family: 'Libre Franklin', 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol';
+  --k-background-color: #fcfbf7;
+  --k-blue: #dbf8ff;
+  --k-bg-tan: var(--k-background-color);
+  --k-bg-blue: rgba(219, 248, 255, 0.8);
+  --k-color: #2b2b2b;
+  --principal-green: #24ba9d;
+  --dc-red: #ff4630;
+  --red: #f23f56;
+  --blue: #007fff;
+  --blue-dark: #0059b3;
+  --green: #70de54;
+  --purple: #9460d6;
+  --orange: #f17129;
+  --yellow: #ffc957;
+  --blue-tint: #a6dfff;
+  --red-tint: #ffb5c2;
+  --green-tint: #d8ffba;
+  --purple-tint: #dcc6f7;
+  --orange-tint: #ffb78f;
+  --yellow-tint: #ffef9e;
+  --k-color-palette-primary: var(--principal-green);
+  --k-color-palette-dc-red: var(--red);
+  --k-color-palette-ex-blue: var(--blue);
+  --k-color-palette-danger: var(--red);
+  --k-color-palette-success: var(--green);
+  --k-color-palette-accent: var(--yellow-tint);
+  --success: var(--green-tint);
+  --error: var(--red-tint);
+  --info: var(--blue-tint);
+  --warning: var(--orange-tint);
+  --k-ex-info: var(--yellow);
+  --text-0: #2b2b2b;
+  --text-1: #4f4f4f;
+  --text-2: #828282;
+  --text-3: #bdbdbd;
+  --text-4: #e0e0e0;
+  --text-5: #f2f2f2;
+  --k-color-palette-neutral-dark: var(--text-0);
+  --k-color-palette-neutral-mid-dark: var(--text-1);
+  --k-color-palette-neutral-mid: var(--text-2);
+  --k-color-palette-neutral-mid-x: var(--text-4);
+  --k-color-palette-neutral-light: var(--text-5);
+  --k-h1: 6.625rem; /* 119px */
+  --k-h2: 3.25rem; /* 67px */
+  --k-h3: 2rem; /* 37px; */
+  --k-h4: 1.5rem; /* 21px; */
+  --k-h5: 1.125rem;
+  --k-h6: 0.8125rem;
   --k-font-caption-size: 0.75rem; /* 12px; */
   --k-xs-fs: 12px;
   --k-xs-p: 7px 1em 6px;
@@ -87,8 +120,9 @@
   --space-4: 3.75rem;
 
   /* Platform Variables */
-  --header-height: 60px;
-  --footer-height: 187px;
+  --header-height: 71px;
+  --logo-height: 54px;
+  --footer-height: 316px;
   --primary-lighter: color(var(--k-color-palette-primary) tint(15%));
   --primary-darker: color(var(--k-color-palette-primary) shade(15%));
 }
@@ -107,8 +141,15 @@ body {
     bottom: 0;
     z-index: -1;
     will-change: transform;
-    background: var(--k-background-color) url('/images/global/bg-black-pattern.gif') 50% 0 repeat;
+    background: var(--k-background-color)
+      url('https://s3.amazonaws.com/tds-static/img/debtcollective/0.0.1/bg-tile.png');
+    background-repeat: repeat;
+    background-size: 20%;
   }
+}
+
+html {
+  font-size: 16px;
 }
 
 * {
@@ -137,12 +178,13 @@ blockquote {
 }
 
 a {
-  color: var(--k-color-palette-primary);
-  text-decoration: none;
+  color: var(--blue);
+  text-decoration: underline;
   transition: color 260ms;
 
   &:hover {
-    color: var(--primary-lighter);
+    color: var(--blue-dark);
+    text-decoration: underlind;
   }
 
   &:not([href]) {
@@ -183,6 +225,8 @@ select {
 
 main {
   padding-top: var(--header-height);
+  background: linear-gradient(var(--k-bg-blue), rgba(245, 245, 245, 0) 1000px);
+  min-height: 98vh;
 }
 
 .wrapper {
@@ -193,4 +237,9 @@ main {
 
 .hide {
   display: none;
+}
+
+.nav-item-wrapper {
+  line-height: 1;
+  font-size: 1.0125rem;
 }

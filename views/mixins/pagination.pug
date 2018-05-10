@@ -1,11 +1,13 @@
 mixin paginationItem(page, text)
-  li.inline-block: button.btn.-k-btn.-fw-500(
+  button.-k-btn.-fw-500(
     data-page= page
+    type='button'
+    class= attributes.disabled && (!['First', 'Previous', 'Next', 'Last'].includes(attributes['aria-label'])) ? 'btn-info' : 'btn-outline-info'
   )&attributes(attributes)= text
 
 mixin mixinPagination(current_page, total_pages)
   .Pagination.center&attributes(attributes)
-    ul.list-reset
+    .btn-group(role='group')
       //- first
       +paginationItem(1, '«')(
         disabled= current_page === 1 || !total_pages
@@ -18,12 +20,11 @@ mixin mixinPagination(current_page, total_pages)
         aria-label= 'Previous'
       )
 
-      //- window
+      //- available pages
       if total_pages <= 5
         - for (let i = 1; i <= total_pages; i++)
           +paginationItem(i, i)(
             disabled= (i === current_page)
-            class= (i === current_page) && '-active'
           )
       else
         -
@@ -42,7 +43,6 @@ mixin mixinPagination(current_page, total_pages)
           - var page = (init + added);
           +paginationItem(page, page)(
             disabled= (page === current_page)
-            class= (page === current_page) && '-active'
           )
           - added++;
 

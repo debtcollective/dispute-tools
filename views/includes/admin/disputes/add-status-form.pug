@@ -8,15 +8,14 @@
       width='50'
     )
     .pl2.overflow-hidden
-      h4.-fw-700.-ell(data-user-name) ${dispute.user.name}
-      p.-accent.-fw-500.-ell(data-dispute-name) ${dispute.disputeTool.name}
+      h4.-fw-600.-ell(data-user-name) ${dispute.user.name}
+      p.-fw-500.-ell(data-dispute-name) ${dispute.disputeTool.name}
 
   form(method='post' action='')
-    input(type='hidden' name='_csrf' value=csrfToken)
     input(name='_method' type='hidden' value='PUT')
     .pb2
-      .-k-select
-        select.-fw-700.-fw(name='status')
+      div
+        select.form-control.-fw-600.-fw(name='status')
           option(value='' disabled hidden) Status
           each status in statuses
             if status !== 'User Update'
@@ -24,7 +23,7 @@
       p(class='-on-error -danger -caption -fw-500 mt1')
 
     .pb2
-      textarea.-k-textarea.block.-fw(
+      textarea.form-control.block.-fw(
         name='comment'
         rows='6'
         placeholder='Comment'
@@ -32,21 +31,22 @@
       p(class='-on-error -danger -caption -fw-500 mt1')
 
     .pb2
-      textarea.-k-textarea.block.-fw(
+      textarea.form-control.block.-fw(
         name='note'
         rows='5'
         placeholder='Note for Admins'
       )
       p(class='-on-error -danger -caption -fw-500 mt1')
 
-    label.-ff-sec.block.pb2
-      input.mr1(
+    .form-check.form-check-inline
+      input.mr1.form-control(
         name='notify'
         type='checkbox'
         checked
+        id='notify-checkbox'
       )
-      | Notify the user?
+      label.-ff-sec.block(for='notify-checkbox') Notify the member?
 
-    button.-fw.-k-btn.btn-primary.-fw-700(type='submit') Send
+    button.-fw.-k-btn.btn-primary.-fw-600.mt1(type='submit') Send
 
   .pt4(data-statuses-wrapper)

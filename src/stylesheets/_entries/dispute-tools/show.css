@@ -9,6 +9,11 @@
 }
 
 .Tool__About {
+  &__Wrapper {
+    border: 1px solid var(--text-4);
+    border-radius: 8px;
+  }
+
   &__Content {
     background-color: var(--k-color-palette-accent);
     padding: var(--space-2) var(--space-3);

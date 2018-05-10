@@ -70,7 +70,7 @@ block append body
     each step in optionData.steps
       if step.type === 'form' && step.name === 'personal-information-form' && step.fieldSets
         .Modal(data-component-modal="personal-information-form" aria-hidden="true" role="dialog" aria-labelledby="modalToolPersonalInfoFormTitle")
-          button.CloseAndSaveFormButton.-k-btn.btn-light.btn-info-outline.-fw-500 Save for later
+          button.CloseAndSaveFormButton.-k-btn.btn-sm.btn-info-outline.-fw-500 Save for later
           .Modal__body(role="document")
             include ../includes/disputes/information-form
 

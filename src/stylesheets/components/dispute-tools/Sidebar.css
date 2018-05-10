@@ -10,7 +10,7 @@
 
 .Tool__sidebar-step {
   padding: var(--space-1) 0 var(--space-1) var(--space-3);
-  color: var(--k-color-palette-neutral-mid);
+  color: var(--text-0);
 
   & > svg {
     opacity: 0;
@@ -29,7 +29,7 @@
   }
 
   &.-done {
-    color: #fff;
+    color: var(--text-2);
 
     & .svg-done {
       opacity: 1;
@@ -42,7 +42,7 @@
   }
 
   &.-current {
-    color: var(--k-color-palette-accent);
+    color: var(--k-color-palette-dc-red);
 
     & .svg-current {
       opacity: 1;

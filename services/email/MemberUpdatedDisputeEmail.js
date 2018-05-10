@@ -13,6 +13,6 @@ class MemberUpdatedDisputeEmail extends Email {
   }
 }
 
-MemberUpdatedDisputeEmail.to = `The Debt Syndicate Organizers <${contactEmail}>`;
+MemberUpdatedDisputeEmail.to = `The Debt Collective Organizers <${contactEmail}>`;
 
 module.exports = MemberUpdatedDisputeEmail;

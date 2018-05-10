@@ -132,7 +132,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       } catch (e) {
         req.flash(
           'error',
-          'An error occurred while completing your dispute. Please try again. If the problem persists, contact a Debt Syndicate organizer for assistance.',
+          'An error occurred while completing your dispute. Please try again. If the problem persists, contact a Debt Collective organizer for assistance.',
         );
         logger.error('Unable to mark dispute as completed', e.message, e.stack);
       }
@@ -148,7 +148,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       } catch (e) {
         req.flash(
           'error',
-          'Your dispute was successfully saved. However, an error was encountered while sending the confirmation email. Please contact a Debt Syndicate organizer to resolve this error.',
+          'Your dispute was successfully saved. However, an error was encountered while sending the confirmation email. Please contact a Debt Collective organizer to resolve this error.',
         );
       }
 

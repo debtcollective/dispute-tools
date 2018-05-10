@@ -189,7 +189,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       try {
         await contactUsEmail.send();
         logger.info(
-          `Successfully sent contact us email to ${name} <${email}> and the Debt Syndicate organizers`,
+          `Successfully sent contact us email to ${name} <${email}> and the Debt Collective organizers`,
           contactUsEmail.toString(),
         );
         req.flash('success', 'Your message has been sent, thank you for contacting us.');

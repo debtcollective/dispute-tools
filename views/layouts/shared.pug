@@ -14,23 +14,11 @@ html(lang='en')
 
   body
     include ../includes/svg/sprite.svg
-    include ../mixins/header-nav
 
     main(aria-hidden='false' role='main')
       include ../includes/header
       block content
       include ../includes/footer
-
-    .ResponsiveMenu(aria-hidden='true')
-      .ResponsiveMenu__Header.px2.clearfix
-        .left.-fh
-          a.block(href=routeMappings.root.url() style='padding: 11px 0;')
-            svg(width='64' height='31'): use(xlink:href='#svg-logo')
-            .sr-only The Collective Homepage
-        .right.-fh
-          button.js-close-responsive-menu.btn-clear(aria-label='close' style='padding: 19px 0 19px 19px;')
-            svg.-s18(width='32' height='32'): use(xlink:href='#svg-close')
-      +mixinHeaderNav(true)
 
     include ../includes/donation-flow
 
