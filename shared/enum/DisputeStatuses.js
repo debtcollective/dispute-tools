@@ -6,6 +6,6 @@ module.exports = Object.freeze({
   secondDispute: '2nd Dispute',
   discharged: 'Discharged',
   contactAdmin: 'Contact Admin',
-  readyToMail: 'Ready to Mail',
+  userToMail: 'User to Mail',
   userUpdate: 'User Update',
 });
