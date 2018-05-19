@@ -59,7 +59,7 @@ describe('Dispute Status', () => {
           {},
           {
             comment: 'Test comment',
-            status: DisputeStatuses.update,
+            status: DisputeStatuses.inReview,
             note: 'Just a friendly note',
             notify: 'on',
           },
@@ -76,7 +76,7 @@ describe('Dispute Status', () => {
           {},
           {
             comment: 'Test comment',
-            status: DisputeStatuses.update,
+            status: DisputeStatuses.inReview,
             note: 'Just a friendly note',
             notify: 'off',
           },

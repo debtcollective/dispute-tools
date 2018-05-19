@@ -3,6 +3,9 @@ module.exports = Object.freeze({
   completed: 'Completed',
   inReview: 'In Review',
   documentsSent: 'Documents Sent',
-  update: 'Update',
+  secondDispute: '2nd Dispute',
+  discharged: 'Discharged',
+  contactAdmin: 'Contact Admin',
+  userToMail: 'User to Mail',
   userUpdate: 'User Update',
 });
