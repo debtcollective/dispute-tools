@@ -7,25 +7,33 @@ script.
    * beginning to render the header. Otherwise we end up with a hole in where the
    * header goes until the bundle is done loading & has begun execution
    */
-  new Vue({
-    el: '#debt-collective-header',
-    render(h) {
-      return h('debt-collective-header', {
-        attrs: {
-          'header-links': [
-            { text: 'Dispute Your Debt', href: '/dispute-tools' },
-            { text: 'Campaigns', href: '#campaigns' },
-            { text: 'Events', href: '#events' },
-          ],
-          'dropdown-links': [
-            { text: 'News', href: '#news' },
-            { text: 'Dispute Your Debt', href: '#dispute-your-debt', onclick: 'window.loggit()' },
-            { text: 'About the Debt Collective', href: '#about' },
-            { text: 'Community Wiki', href: '#wiki' },
-            { text: 'Medicare For All', href: '#m4a' },
-          ],
-          'discourse-endpoint': !{JSON.stringify(discourseEndpoint)},
-        },
-      });
+  (function() {
+    var dropdownLinks = [
+      { text: 'News', href: '#news' },
+      { text: 'Dispute Your Debt', href: '#dispute-your-debt', onclick: 'window.loggit()' },
+      { text: 'About the Debt Collective', href: '#about' },
+      { text: 'Community Wiki', href: '#wiki' },
+      { text: 'Medicare For All', href: '#m4a' },
+    ];
+
+    if (!{currentUser.admin || (currentUser.groups && currentUser.groups.includes('dispute-admin'))}) {
+      dropdownLinks = [{ text: 'Dispute Administration', href: '/admin/disputes' }].concat(dropdownLinks);
     }
-  });
+
+    new Vue({
+      el: '#debt-collective-header',
+      render(h) {
+        return h('debt-collective-header', {
+          attrs: {
+            'header-links': [
+              { text: 'Dispute Your Debt', href: '/dispute-tools' },
+              { text: 'Campaigns', href: '#campaigns' },
+              { text: 'Events', href: '#events' },
+            ],
+            'dropdown-links': dropdownLinks,
+            'discourse-endpoint': !{JSON.stringify(discourseEndpoint)},
+          },
+        });
+      }
+    });
+  })();
