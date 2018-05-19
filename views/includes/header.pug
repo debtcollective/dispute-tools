@@ -16,7 +16,7 @@ script.
       { text: 'Medicare For All', href: '#m4a' },
     ];
 
-    if (!{currentUser.admin || (currentUser.groups && currentUser.groups.includes('dispute-admin'))}) {
+    if (!{currentUser && (currentUser.admin || (currentUser.groups && currentUser.groups.includes('dispute-admin')))}) {
       dropdownLinks = [{ text: 'Dispute Administration', href: '/admin/disputes' }].concat(dropdownLinks);
     }
 
