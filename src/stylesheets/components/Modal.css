@@ -33,7 +33,7 @@
   & > svg {
     display: inline-block;
     vertical-align: top;
-    fill: var(--text_1);
+    fill: var(--text-1);
     transform: scale(1);
     transition: transform 100ms ease-out;
   }
