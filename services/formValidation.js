@@ -28,8 +28,10 @@ const extractToolFormValidations = tool =>
   _.map(tool.options, (option, optionName) => {
     const form = option.steps.find(s => s.type === 'form');
 
-    const { fields, nameLabels } = _.flattenDeep(form.fieldSets.map(flattenFieldSet)).reduce(
-      ({ fields, nameLabels }, { name, validations, label }) => ({
+    const { fields, nameLabels, customSelectors } = _.flattenDeep(
+      form.fieldSets.map(flattenFieldSet),
+    ).reduce(
+      ({ fields, nameLabels, customSelectors }, { name, validations, label, customSelector }) => ({
         fields: {
           ...fields,
           [name]: validations,
@@ -38,8 +40,12 @@ const extractToolFormValidations = tool =>
           ...nameLabels,
           [name]: label,
         },
+        customSelectors: {
+          ...customSelectors,
+          [name]: customSelector,
+        },
       }),
-      { fields: {}, nameLabels: {} },
+      { fields: {}, nameLabels: {}, customSelectors: {} },
     );
 
     return {
@@ -47,11 +53,18 @@ const extractToolFormValidations = tool =>
       optionName,
       fields,
       nameLabels,
+      customSelectors,
     };
   });
 
 const foldToOptionFieldsValidationsObject = validations =>
   validations.reduce((acc, { optionName, fields }) => ({ ...acc, [optionName]: fields }), {});
+
+const foldToOptionNameCustomSelectorsObject = validations =>
+  validations.reduce(
+    (acc, { optionName, customSelectors }) => ({ ...acc, [optionName]: customSelectors }),
+    {},
+  );
 
 const foldToOptionNameLabelsObject = validations =>
   validations.reduce(
@@ -61,10 +74,18 @@ const foldToOptionNameLabelsObject = validations =>
 
 const cachedConfigs = {};
 const cachedNameToLabels = {};
+const cachedCustomSelectors = {};
 
 const getCheckitConfig = dispute => {
   const cached = _.get(cachedConfigs, `${dispute.disputeTool.slug}.${dispute.data.option}`);
   if (cached) return cached;
+
+  throw new InvalidValidationCacheConfiguration(dispute.disputeTool.slug, dispute.data.option);
+};
+
+const getCustomSelector = (dispute, fieldName) => {
+  const cached = _.get(cachedCustomSelectors, `${dispute.disputeTool.slug}.${dispute.data.option}`);
+  if (cached) return cached[fieldName];
 
   throw new InvalidValidationCacheConfiguration(dispute.disputeTool.slug, dispute.data.option);
 };
@@ -81,7 +102,10 @@ const makeErrorsReadable = (dispute, errors) => {
       ...errs,
       [fieldName]: {
         ...err,
-        message: err.message.replace(fieldName, `"${cached[fieldName].toLowerCase()}" field`),
+        message: err.message.replace(
+          fieldName,
+          `"${cached[fieldName] ? cached[fieldName].toLowerCase() : ''}" field`,
+        ),
       },
     }),
     {},
@@ -102,6 +126,7 @@ logger.info('Caching form validation configurations');
 
   cachedConfigs[slug] = foldToOptionFieldsValidationsObject(validations);
   cachedNameToLabels[slug] = foldToOptionNameLabelsObject(validations);
+  cachedCustomSelectors[slug] = foldToOptionNameCustomSelectorsObject(validations);
 });
 
 const isNegative = answer => ['no', 'off', false, undefined].includes(answer);
@@ -131,5 +156,6 @@ module.exports = {
   foldToOptionFieldsValidationsObject,
   filterDependentFields,
   makeErrorsReadable,
+  getCustomSelector,
   // cleanErrors,
 };

@@ -29,20 +29,20 @@ export default class StatusItem extends Widget {
         <div class="StatusItem-Text">
           <div class="clearfix">
             <div class="left">
-              <p class="-fw-700 ${nameClass}">
+              <p class="-fw-600 ${nameClass}">
                 ${name}
               </p>
               <div class="-caption -neutral-mid">
                 <svg class="inline-block" width="13" height="11">
                   <use xlink:href="#svg-reply"></use>
                 </svg>
-                <div class="ml1 inline-block -fw-700">
+                <div class="ml1 inline-block -fw-600">
                   ${date}
                 </div>
               </div>
             </div>
             <div class="right">
-              <p class="-caption -fw-700 -ttu ${statusClass}">
+              <p class="-caption -fw-600 -ttu ${statusClass}">
                 ${data.status.status}
               </p>
             </div>

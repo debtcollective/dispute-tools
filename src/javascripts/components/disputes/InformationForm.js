@@ -6,7 +6,12 @@ import Widget from '../../lib/widget';
 import Button from '../../components/Button';
 import ConfirmInline from '../../components/ConfirmInline';
 import DebtAmounts from './DebtAmounts.vue';
-import FormValidation from '../../../../services/formValidation';
+import {
+  getCustomSelector,
+  getCheckitConfig,
+  filterDependentFields,
+  makeErrorsReadable,
+} from '../../../../services/formValidation';
 
 export const mountDebtAmounts = config => {
   if (document.getElementById('debt-amounts-mount-point')) {
@@ -45,7 +50,7 @@ export default class DisputesInformationForm extends Widget {
       this.debtAmounts = mountDebtAmounts(config);
     }
 
-    this.constraints = this._constraintsAll = FormValidation.getCheckitConfig(this.dispute);
+    this.constraints = this._constraintsAll = getCheckitConfig(this.dispute);
 
     this.ui = {};
     Object.keys(this.constraints).forEach(key => {
@@ -68,7 +73,7 @@ export default class DisputesInformationForm extends Widget {
 
       // Initialize fieldsets for toggles that do not have defaults
       if (t.dataset.default === 'undefined') {
-        t.parentElement.querySelector('fieldset').style.display = 'none';
+        t.parentElement.parentElement.querySelector('fieldset').style.display = 'none';
       }
     });
 
@@ -106,6 +111,8 @@ export default class DisputesInformationForm extends Widget {
   }
 
   _handleConfirmRadioChange({ target: { parentElement, dataset, value, name } }) {
+    // Radios are nested two deep
+    parentElement = parentElement.parentElement;
     const data = JSON.parse(dataset.confirm);
     const matched = data[value];
 
@@ -145,7 +152,7 @@ export default class DisputesInformationForm extends Widget {
    */
   _handleAlertRadioChange(ev) {
     const target = ev.target;
-    const parentElement = target.parentElement;
+    const parentElement = target.parentElement.parentElement;
     const data = JSON.parse(target.dataset.alert);
     const matched = data[target.value];
 
@@ -180,7 +187,7 @@ export default class DisputesInformationForm extends Widget {
 
   _handleContentToggle(ev) {
     const target = ev.currentTarget;
-    const fieldset = target.parentElement.querySelector('fieldset');
+    const fieldset = target.parentElement.parentElement.querySelector('fieldset');
 
     if (fieldset) {
       const whitelist = 'input, select, textarea';
@@ -276,14 +283,12 @@ export default class DisputesInformationForm extends Widget {
     this._clearFieldErrors();
 
     const form = this._getFieldsData();
-    const [err] = new Checkit(
-      FormValidation.filterDependentFields(form, this.constraints),
-    ).validateSync(form);
+    const [err] = new Checkit(filterDependentFields(form, this.constraints)).validateSync(form);
 
     if (err) {
       ev.preventDefault();
       this.Button.enable();
-      return this._displayFieldErrors(FormValidation.makeErrorsReadable(this.dispute, err.errors));
+      return this._displayFieldErrors(makeErrorsReadable(this.dispute, err.errors));
     }
 
     this.Button.updateText();
@@ -345,13 +350,19 @@ export default class DisputesInformationForm extends Widget {
     let val;
 
     Object.keys(this.constraints).forEach(key => {
-      if (this.ui[key]) {
-        if (this.ui[key].type === 'radio') {
-          val = document.querySelector(`[name="${this.ui[key].name}"]:checked`).value;
-        } else if (this.ui[key].type === 'checkbox') {
-          val = this.ui[key].checked === true ? 'yes' : 'no';
+      /**
+       * @type {HTMLInputElement}
+       */
+      const element = this.ui[key];
+      if (element.dataset.customSelector) {
+        data[key] = getCustomSelector(this.dispute, key).DOM();
+      } else if (element) {
+        if (element.type === 'radio') {
+          val = document.querySelector(`[name="${element.name}"]:checked`).value;
+        } else if (element.type === 'checkbox') {
+          val = element.checked === true ? 'yes' : 'no';
         } else {
-          val = this.ui[key].value;
+          val = element.value;
         }
         data[key] = val;
       }

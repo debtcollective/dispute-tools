@@ -8,11 +8,9 @@
     transform: translateY(-50%);
   }
 
-  & .-k-input {
-    display: block;
-    width: 100%;
-    padding-left: 3em;
-  }
+  display: block;
+  width: 100%;
+  padding-left: 3em;
 }
 
 .-clean {

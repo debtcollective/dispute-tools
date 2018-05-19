@@ -4,8 +4,9 @@ mixin toolCardMixin(tool)
       h3.ToolCard__name.pb1= tool.name
       p.pb1.-fw-500= tool.excerpt
       p.py1
-        button.ToolCard__about-trigger.-k-btn.btn-link.-primary.-fw-700(
+        a.ToolCard__about-trigger.-k-btn.btn-link-nb.-fw-600(
           id=`tool-modal-toggler-${tool.id}`
+          href='#'
         ) › About This Dispute
 
       - var _label = '';
@@ -18,7 +19,7 @@ mixin toolCardMixin(tool)
       if _label
         .ToolCard__caption.-caption.-fw-500 (#{_label})
     hr.mb2
-    a.-k-btn.btn-primary.-fw.-fw-700(
+    a.-k-btn.btn-primary.-fw.-fw-600(
       href=routeMappings.DisputeTools.show.url(tool.slug)
       class= !user && 'js-login-link'
     ) Get started

@@ -1,6 +1,8 @@
-- var supportEmail = 'support@debtcollective.org'
-- var websiteURL = 'https://debtsyndicate.org'
-- var assetsPath = `${CONFIG.aws.staticAssets}/img/debtsyndicate/0.0.1`
+-
+  var supportEmail = 'support@debtcollective.org'
+  var websiteURL = 'https://debtcollective.org'
+  var contactURL = websiteURL + '/contact'
+  var assetsPath = `${CONFIG.aws.staticAssets}/img/debtcollective/0.0.1`
 
 center(style="width: 100%; background-color: #ebebeb;")
   table(width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;")
@@ -18,7 +20,7 @@ center(style="width: 100%; background-color: #ebebeb;")
                     div &nbsp;
                     div
                       a(href=websiteURL target='_blank')
-                        img(src=`${assetsPath}/name1x.png` width="191" height="20" alt="The Debt Syndicate")
+                        img(src=`${assetsPath}/DC-logo_FULL_WHITE@3x.png` width="191" height="20" alt="The Debt Collective")
                     div &nbsp;
                     div &nbsp;
 
@@ -36,9 +38,9 @@ center(style="width: 100%; background-color: #ebebeb;")
                     div &nbsp;
                     div &nbsp;
                     div
-                      | You are receiving this email because of an action you took on or because this email address was listed as the contact point for a dispute at #[a(href=websiteURL style="color: inherit;" target='_blank') The Debt Syndicate]. If you don't think this email was intended for you, ignore it or #[a(href="https://debtsyndicate.org/contact" target='_blank') contact us] to report the mistake.
+                      | You are receiving this email because of an action you took on or because this email address was listed as the contact point for a dispute at #[a(href=websiteURL style="color: inherit;" target='_blank') The Debt Collective]. If you don't think this email was intended for you, ignore it or #[a(href=contactURL target='_blank') contact us] to report the mistake.
                     div
-                      | To report abuse, please #[a(href="https://debtsyndicate.org/contact" target='_blank') contact us].
+                      | To report abuse, please #[a(href=contactURL target='_blank') contact us].
                     div &nbsp;
                     div &nbsp;
                     div &nbsp;

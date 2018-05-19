@@ -2,38 +2,6 @@
 
 Corporate elites control our government and by extension our lives. They cheat workers, don’t pay their taxes, and then force us into debt for the basic necessities of life: shelter, food, education, and healthcare. We have the power to change this.
 
-# Getting Started
-
-The easiest way to get started running the dispute-tools locally is through [Docker](https://www.docker.com/).
-
-1. Build the image
-
-```bash
-docker build -t tdc-dispute-tools .
-```
-
-2. Copy the env-file
-
-```bash
-cp config/config.env.env config/config.local.env
-```
-
-3. Edit the env-file as needed.
-
-    Some convenient defaults are provided, but the follow _must_ be provided
-
-    * AWS credentials for uploading generated dispute documents
-    * Discourse host sso endpoint
-    * SSO secret shared between the dispute tools service and Discourse for securing SSO
-
-4. Run the container
-
-```bash
-docker run -idt --env-file ./config/config.local.env --name tdc-dispute-tools -p 8080:8080 tdc-dispute-tools:latest
-```
-
-5. Navigate to localhost:8080 in your browser and you should see the home page!
-
 # Dependencies
 
 You will need to install the following libraries/packages in order for
@@ -67,16 +35,13 @@ cp config/config.sample.js config/config.js
 cp config/knexfile.sample.js knexfile.js
 ```
 
-3. (optional, recommended) Disable account activation
-   Update `./debtcollective/config/config.js` to include `disableActivation` attribute
-
 # Run server
 
 Ensure Postgres is running.
 
-1. Run migrations `yarn db:migrate`
-2. Run seeds `yarn db:seed`
-3. Install dependencies `yarn`
+1. Install dependencies `yarn`
+2. Run migrations `yarn db:migrate`
+3. Run seeds `yarn db:seed`
 4. Build assets `yarn build`
 5. Run app `yarn start`
 
@@ -166,3 +131,35 @@ Please refer to `lib/data/dispute-tools/README.md` for specific documentation ab
 Please refer to `views/emails/README.md` for specific information for which template type to make.
 
 The doc-comments on the `Email` and `DiscourseMessage` classes are essential reading for understanding how best to build new emails and discourse messages.
+
+# (future) Getting Started
+
+The easiest way to get started running the dispute-tools locally is through [Docker](https://www.docker.com/).
+
+1. Build the image
+
+```bash
+docker build -t tdc-dispute-tools .
+```
+
+2. Copy the env-file
+
+```bash
+cp config/config.env.env config/config.local.env
+```
+
+3. Edit the env-file as needed.
+
+    Some convenient defaults are provided, but the follow _must_ be provided
+
+    * AWS credentials for uploading generated dispute documents
+    * Discourse host sso endpoint
+    * SSO secret shared between the dispute tools service and Discourse for securing SSO
+
+4. Run the container
+
+```bash
+docker run -idt --env-file ./config/config.local.env --name tdc-dispute-tools -p 8080:8080 tdc-dispute-tools:latest
+```
+
+5. Navigate to localhost:8080 in your browser and you should see the home page!

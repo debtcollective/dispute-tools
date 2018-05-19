@@ -1,7 +1,12 @@
 const config = require('../config/config');
 const Router = require('../config/RouteMappings');
 
-const { sso: { logout }, environment, stripe: { publishable } } = config;
+const {
+  sso: { logout },
+  discourse: { baseUrl: discourseEndpoint },
+  environment,
+  stripe: { publishable },
+} = config;
 
 const marked = require('marked');
 const { US_STATES } = require('../lib/data');
@@ -16,6 +21,7 @@ module.exports = function locals(req, res, next) {
     },
   };
   res.locals.currentURL = req.url;
+  res.locals.discourseEndpoint = discourseEndpoint;
   res.locals.NODE_ENV = environment;
   res.locals.marked = marked;
   res.locals.US_STATES = US_STATES;
@@ -25,6 +31,13 @@ module.exports = function locals(req, res, next) {
 
   // DonationFlow
   res.locals.STRIPE_PUBLISHABLE_KEY = publishable;
+
+  res.locals.logo = {
+    primary:
+      'https://s3.amazonaws.com/tds-static/img/debtcollective/0.0.1/DC-logo_FULL_WHITE@3x.png',
+    secondary:
+      'https://s3.amazonaws.com/tds-static/img/debtcollective/0.0.1/DC-logo_FULL_DARK_CUTOUTfoot_@3x.png',
+  };
 
   return next();
 };

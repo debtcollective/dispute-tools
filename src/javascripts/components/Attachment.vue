@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-between items-center my1" v-if="!deleted">
-    <!-- <span class="Tool__Info-badge inline-block center -fw-700 -ttu-rounded">{{ext}}</span> -->
+    <!-- <span class="Tool__Info-badge inline-block center -fw-600 -ttu-rounded">{{ext}}</span> -->
     <a class="-k-btn btn-dark -fw" target="_blank" :href="href" aria-label="Download attachment">{{name}}</a>
     <button class="-k-btn btn-clear ml2" type="button" @click="handleDelete">
       <svg class="-danger" width="10" height="10">

@@ -2,20 +2,20 @@
   <div>
     <div :class="`col col-${typeSelected === 'other' ? '4' : '8'} py2 pr2`">
       <label class="inline-block pb1 -fw-500" :for="typeSelected !== 'other' ? 'fieldValues[debt-type]' : 'debt-type[other]'" id="debt-type-l">Debt type</label>
-      <div class="-k-select">
-        <select class="-fw" @input="handleTypeSelection" :value="typeSelected" :name="typeSelected !== 'other' ? 'fieldValues[debt-type]' : 'debt-type[other]'" aria-labelledby="debt-type-l" required="required">
+      <div>
+        <select class="-fw form-control" @input="handleTypeSelection" :value="typeSelected" :name="typeSelected !== 'other' ? 'fieldValues[debt-type]' : 'debt-type[other]'" aria-labelledby="debt-type-l" required="required">
           <option v-for="debtType in DebtTypes" :key="debtType.key" :value="debtType.key">{{debtType.value}}</option>
         </select>
       </div>
     </div>
     <div v-if="typeSelected === 'other'" class="col col-4 p2">
       <label class="inline-block pb1 -fw-500" aria-hidden="true" for="fieldValues[debt-type]" id="other-debt-type-l">Other debt type</label>
-      <input type="text" class="-k-input -fw" placeholder="..." name="fieldValues[debt-type]" aria-labelledby="other-debt-type-l" v-model="type" required="required" />
+      <input type="text" class="form-control -fw" placeholder="..." name="fieldValues[debt-type]" aria-labelledby="other-debt-type-l" v-model="type" required="required" />
     </div>
     <div class="col col-4 py2 pl2">
       <label class="inline-block pb1 -fw-500">Amount</label>
       <input
-        class="-k-input -fw"
+        class="form-control -fw"
         type="number"
         min="0"
         step="0.01"

@@ -3,7 +3,7 @@ import Widget from '../../../lib/widget';
 export default class DisputeAdmin extends Widget {
   template() {
     const margin = this.side === 'available' ? 'mr1' : 'ml1';
-    const input = `<input class="${margin}"
+    const input = `<input class="${margin} form-control"
         type="checkbox"
         id="${this.id}"
         value="${this.id}"

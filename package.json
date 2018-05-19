@@ -32,8 +32,7 @@
     "start:workers": "node workers/worker.js",
     "iron-node": "scripty",
     "watch": "webpack --progress --watch",
-    "svg":
-      "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
+    "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
     "post_deploy_staging": "scripty",
     "post_deploy_production": "./scripts/post_deploy_production",
     "disputes_sendto_admin": "./scripts/tasks/disputes-sendto-admin",
@@ -41,15 +40,27 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": ["prettier --write", "eslint --fix", "git add"],
-    "*.css": ["prettier-stylelint --write", "stylelint --fix", "git add"],
-    "*.vue": ["prettier --write", "git add"]
+    "*.js": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "*.css": [
+      "prettier-stylelint --write",
+      "stylelint --fix",
+      "git add"
+    ],
+    "*.vue": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "dependencies": {
     "@google/maps": "^0.4.5",
     "archiver": "^1.1.0",
     "aws-sdk": "^2.130.0",
     "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.3",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-preset-vue": "^2.0.0",
@@ -65,7 +76,8 @@
     "cookie-parser": "^1.4.3",
     "csurf": "^1.9.0",
     "datasets-us-states-names": "^1.0.0",
-    "discourse-node-api": "git://github.com/debtsyndicate/discourse-node-api.git#master",
+    "dc-vue-header": "git://github.com/debtcollective/dc-vue-header.git#master",
+    "discourse-node-api": "git://github.com/debtcollective/discourse-node-api.git#master",
     "express": "^4.14.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "fill-pdf": "^1.1.0",
@@ -91,6 +103,7 @@
     "morgan": "^1.7.0",
     "multer": "^1.2.0",
     "neon": "^2.0.0",
+    "node-sass": "^4.9.0",
     "nodemailer": "^2.5.0",
     "nodemailer-mailgun-transport": "^1.3.5",
     "pg": "^6.0.3",
@@ -103,6 +116,7 @@
     "response-time": "^2.3.1",
     "rimraf": "^2.5.4",
     "route-mappings": "^0.3.2",
+    "sass-loader": "^7.0.1",
     "scripty": "^1.6.0",
     "scroll-into-view-if-needed": "^1.0.2",
     "share-url": "^1.0.0",
@@ -127,10 +141,11 @@
     "babel-plugin-syntax-jsx": "^6.8.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-plugin-transform-vue-jsx": "^3.5.0",
+    "babel-preset-vue-app": "^2.0.0",
     "chai": "^3.5.0",
     "css-loader": "^0.28.8",
     "cssnano": "^4.0.0-rc.2",
-    "eslint": "^3.2.2",
+    "eslint": "4.19.1",
     "eslint-config-airbnb-base": "^5.0.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "^1.12.0",

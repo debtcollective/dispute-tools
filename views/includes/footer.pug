@@ -4,44 +4,64 @@
   var twitterAccountURL = "https://twitter.com/0debtzone"
   var facebookAccountURL = "https://www.facebook.com/DebtCollective"
 
+  var columns = [
+    {
+      header: 'Organize',
+      links: [
+        { name: 'Collectives', href: '#' },
+        { name: 'Campaigns', href: '#' },
+        { name: 'Debt Map', href: '#' }
+      ]
+    },
+    {
+      header: 'Take Action',
+      links: [
+        { name: 'Dispute your debt', href: '/dispute-tools' },
+        { name: 'Campaigns', href: '#' }
+      ]
+    },
+    {
+      header: 'Learn',
+      links: [
+        { name: 'The Power Report', href: '#' },
+        { name: 'About Us', href: routeMappings.about.url() },
+        { name: 'Community Wiki', href: wikiURL }
+      ]
+    },
+    {
+      header: 'More',
+      links: [
+        { name: 'Contact', href: routeMappings.contact.url() },
+        { name: 'Donate', href: '#', className: 'js-donate' },
+        { name: 'Open Source', href: repoURL }
+      ]
+    }
+  ]
+
 footer.mx-auto.px2
-  .max-width-4.mx-auto.pt3
+  .max-width-4.pt1
     .clearfix.mxn1
-      .col.md-col-9.col-12.p1.pt3
-        ul.list-reset
-          li.inline-block.pr3
-            a(href=routeMappings.about.url() class="-white -fw-500") About
-          li.inline-block.pr3
-            a(href='#' class="-white -fw-500 js-donate") Donate
-          li.inline-block.pr3
-            a(href=wikiURL class="-white -fw-500" rel="noopener noreferrer" target="_blank") Community Wiki
-          li.inline-block.pr3
-            a(href=repoURL class="-white -fw-500" rel="noopener noreferrer" target="_blank") Open Source
-          li.inline-block.pr3
-            a(href=routeMappings.contact.url() class="-white -fw-500") Contact
+      each column in columns
+        .col.md-col-3.col-3.p1.pt3
+          .-text-2.-ttu.-fw-600= column.header
+          ul.list-reset
+            each link in column.links
+              - var isExternal = link.href[0] !== '/'
+              li.pr3.py1
+                a(
+                  href=link.href
+                  class="-white -fw-600" + (link.class || '')
+                  rel= isExternal ? "noopener noreferrer" : ''
+                  target= isExternal ? "_blank" : ''
+                )= link.name
 
-      .col.md-col-3.col-12.p1.right-align.md-left-align
-        if ((currentURL === routeMappings.about.url()) || (currentURL.indexOf('about') >= 0))
-          a.inline-block(href='//shuttleworthfoundation.org' target='_blank' rel='noopener noreferrer')
-            img.fit(
-              src='/images/global/footer/shuttleworth-logo.svg'
-              title='Shuttleworth Funded'
-            )
-
-  .max-width-4.mx-auto.pb2
+  .max-width-4.mt3
     .clearfix.mxn1
-      .col.md-col-10.col-12.p1.-caption.-fw-500
-        span.-neutral-mid The Debt Collective. Copyright #{new Date().getFullYear()}
-        span.px2 •
+      .flex.items-center.justify-start
+        a.mr4.block(href=routeMappings.root.url())
+          img.logo(src= logo.secondary)
+          .sr-only The Collective Homepage
+
+        span.mr4.-neutral-mid Copyright #{new Date().getFullYear()}
+
         a(href=routeMappings.tos.url() class="-white") Terms and Conditions
-
-      .col.md-col-2.col-12.p1.right-align.md-left-align
-        ul.list-reset
-          li.inline-block.pr2
-            a.Footer__circle-btn.-white(href=twitterAccountURL rel="noopener noreferrer" target="_blank")
-              svg(width='15' height='13'): use(xlink:href="#svg-twitter")
-              .sr-only Twitter
-          li.inline-block
-            a.Footer__circle-btn.-white(href=facebookAccountURL rel="noopener noreferrer" target="_blank")
-              svg(width='7' height='15'): use(xlink:href="#svg-facebook")
-              .sr-only Facebook

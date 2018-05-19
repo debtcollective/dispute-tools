@@ -15,6 +15,7 @@
   transform: none;
   transition: visibility 0ms linear 260ms opacity 260ms,
     transform 260ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  color: var(--text-0);
 
   &[aria-hidden='true'] {
     transform: rotateX(-90deg);
@@ -22,23 +23,19 @@
   }
 
   &.-success {
-    background-color: #bae88b;
-    color: #2c5200;
+    background-color: var(--success);
   }
 
   &.-error {
-    background-color: #f99;
-    color: #7a0000;
+    background-color: var(--error);
   }
 
   &.-warning {
-    background-color: #f0e990;
-    color: #784e00;
+    background-color: var(--warning);
   }
 
   &.-info {
-    background-color: #96c5fa;
-    color: #00499c;
+    background-color: var(--info);
   }
 }
 

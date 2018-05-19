@@ -1,5 +1,4 @@
 import Widget from '../lib/widget';
-import Header from '../components/Header';
 import Alert from '../components/Alert';
 import Modal from '../components/Modal';
 import DonationFlow from '../components/DonationFlow'; // rename: DonationFlowForm
@@ -10,16 +9,6 @@ export default class Common extends Widget {
     super(config);
 
     currentUser.set(config.currentUser);
-
-    this.appendChild(
-      new Header({
-        name: 'Header',
-        currentUser: this.currentUser,
-        currentURL: this.currentURL,
-        element: document.querySelector('[data-component-header]'),
-        isAdmin: this.isAdmin,
-      }),
-    );
 
     const alertElements = [].slice.call(document.querySelectorAll('.Alert'));
 
@@ -49,9 +38,7 @@ export default class Common extends Widget {
     ).appendChild(
       new DonationFlow({
         name: 'donationFlow',
-        element: donationFlowModal.querySelector(
-          '[data-component-donationform]',
-        ),
+        element: donationFlowModal.querySelector('[data-component-donationform]'),
       }),
     );
 
@@ -60,13 +47,11 @@ export default class Common extends Widget {
     });
 
     // Activate DonationFlow triggers
-    Array.prototype.slice
-      .call(document.querySelectorAll('.js-donate'))
-      .forEach(trigger =>
-        trigger.addEventListener('click', ev => {
-          ev.preventDefault();
-          this.donationFlowModal.activate();
-        }),
-      );
+    Array.prototype.slice.call(document.querySelectorAll('.js-donate')).forEach(trigger =>
+      trigger.addEventListener('click', ev => {
+        ev.preventDefault();
+        this.donationFlowModal.activate();
+      }),
+    );
   }
 }

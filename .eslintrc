@@ -8,8 +8,12 @@
   "plugins": ["mocha"],
   "extends": ["airbnb-base", "plugin:vue/recommended"],
   "parserOptions": {
+    "parser": "babel-eslint",
     "ecmaVersion": 8,
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "rules": {
     "comma-dangle": [2, "always-multiline"],

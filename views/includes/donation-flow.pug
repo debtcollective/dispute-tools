@@ -33,11 +33,11 @@ script(type="text/javascript").
             .clearfix.my3
               .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500 Amount
               .col.sm-col-9.col-12.px1
-                input.-k-input.-fw(type="text" name="custom-amount" data-donation-custom-input)
+                input.form-control.-fw(type="text" name="custom-amount" data-donation-custom-input)
                 p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Amount
             .clearfix
               .col-12
-                button.-k-btn.btn-primary.-fw.-fw-700(type="submit") Donate
+                button.-k-btn.btn-primary.-fw.-fw-600(type="submit") Donate
         section.Payment
           h3.pb2 Donate
           .PaymentMethods--stripe Powered by Stripe.
@@ -73,39 +73,39 @@ script(type="text/javascript").
           .clearfix.mb2
             .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Email
             .col.sm-col-8.col-12.px1
-              input.-k-input.-fw(type="email" name="email")
+              input.form-control.-fw(type="email" name="email")
               p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid email
           .clearfix.mb2
             .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Card #
             .col.sm-col-8.col-12.px1
-              input.-k-input.-fw(type="text" name="number" maxLength="16")
+              input.form-control.-fw(type="text" name="number" maxLength="16")
               p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Card Number
           .clearfix.mb2
             .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Expires on
             .col.sm-col-8.col-12.px1
               .col.col-7
-                input.-k-input.-fw(type="text" name="exp" placeholder="MM/YY" maxLength="5")
+                input.form-control.-fw(type="text" name="exp" placeholder="MM/YY" maxLength="5")
                 p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Expiration
           .clearfix.mb4
             .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 CVC
             .col.sm-col-8.col-12.px1
               .col.col-5
-                input.-k-input.-fw(type="text" name="cvc" maxLength="5")
+                input.form-control.-fw(type="text" name="cvc" maxLength="5")
                 p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid CVC
 
           .clearfix.mb4
             h4.mb1 Want to support more than once?
             label.block
-              input.js-donate-monthly(type='checkbox')
+              input.form-control.js-donate-monthly(type='checkbox')
               span.ml1 Yes, I agree to donate $#[span.js-amount-value 10]/#[b month].
 
           .flex
             .flex-none.mr1
-              div.btn-back.btn-primary.-k-btn.-fw-700
+              div.btn-back.btn-primary.-k-btn.-fw-600
                 svg(width=14 height=14)
                   use(xlink:href="#svg-arrow-backward")
             .flex-auto
-              button.-k-btn.btn-primary.-fw.-fw-700.js-donate-amount(type="submit") Donate $#[span.js-amount-value 10]
+              button.-k-btn.btn-primary.-fw.-fw-600.js-donate-amount(type="submit") Donate $#[span.js-amount-value 10]
         section.Success
           .DonationResponse
             img(src="/svg/heart.svg")

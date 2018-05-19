@@ -34,7 +34,7 @@ describe('RecurringDonationEmail', () => {
       const email = new RecurringDonationEmail(member, 1000);
       const html = email.render();
       expect(html).exist;
-      expect(html).include('Thanks for your donation to Debt Syndicate');
+      expect(html).include('Thanks for your donation to Debt Collective');
     });
   });
 });

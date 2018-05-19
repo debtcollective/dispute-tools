@@ -13,12 +13,9 @@ export default class AssignedToMeButton extends Widget {
       if (this.currentlyFiltering) {
         delete this.queryReference.filters.admin_id;
       } else {
-        this.queryReference.filters = Object.assign(
-          this.queryReference.filters,
-          {
-            admin_id: this.adminId,
-          },
-        );
+        this.queryReference.filters = Object.assign(this.queryReference.filters, {
+          admin_id: this.adminId,
+        });
       }
 
       this.applyFilters();
@@ -38,7 +35,7 @@ export default class AssignedToMeButton extends Widget {
       <button id="${this.id}"
         data-current-user-id="${this.adminId}"
         type="button"
-        class="-k-btn btn-primary -fw-700">
+        class="-k-btn btn-primary -fw-600">
         ${this.currentlyFiltering ? 'Assigned to any admin' : 'Assigned to me'}
       </button>`;
   }

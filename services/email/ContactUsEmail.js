@@ -2,13 +2,13 @@ const { mailers: { contactEmail } } = require('../../config/config');
 const Email = require('./Email');
 
 /**
- * Sends contact us emails to the Debt Syndicate organizers
+ * Sends contact us emails to the Debt Collective organizers
  */
 class ForAdmin extends Email {
   /**
-   * @param {string} message Message for the Debt Syndicate organizers
-   * @param {string} email The email address of the visitor contacting the Debt Syndicate
-   * @param {string} name The name of the visitor contact the Debt Syndicate
+   * @param {string} message Message for the Debt Collective organizers
+   * @param {string} email The email address of the visitor contacting the Debt Collective
+   * @param {string} name The name of the visitor contact the Debt Collective
    */
   constructor(message, email, name) {
     super('ContactUsEmail.ForAdmin', {
@@ -31,9 +31,9 @@ class ForAdmin extends Email {
  */
 class ForVisitor extends Email {
   /**
-   * @param {string} message Message for the Debt Syndicate organizers
-   * @param {string} email The email address of the visitor contacting the Debt Syndicate
-   * @param {string} name The name of the visitor contact the Debt Syndicate
+   * @param {string} message Message for the Debt Collective organizers
+   * @param {string} email The email address of the visitor contacting the Debt Collective
+   * @param {string} name The name of the visitor contact the Debt Collective
    */
   constructor(message, email, name) {
     super('ContactUsEmail.ForVisitor', {
@@ -50,16 +50,16 @@ class ForVisitor extends Email {
 }
 
 ForVisitor.subject = 'Thank you for contacting us...';
-ForAdmin.to = ForVisitor.from = `The Debt Syndicate Organizers <${contactEmail}>`;
+ForAdmin.to = ForVisitor.from = `The Debt Collective Organizers <${contactEmail}>`;
 
 /**
  * Wraps the ForVisitor and ForAdmin emails to make sending both cleaner
  */
 class ContactUsEmail {
   /**
-   * @param {string} message Message for the Debt Syndicate organizers
-   * @param {string} email The email address of the visitor contacting the Debt Syndicate
-   * @param {string} name The name of the visitor contact the Debt Syndicate
+   * @param {string} message Message for the Debt Collective organizers
+   * @param {string} email The email address of the visitor contacting the Debt Collective
+   * @param {string} name The name of the visitor contact the Debt Collective
    */
   constructor(message, email, name) {
     this.forAdmin = new ForAdmin(message, email, name);

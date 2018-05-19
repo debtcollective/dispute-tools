@@ -2,10 +2,13 @@
   background: white;
   color: black;
   padding: 1rem;
+  background-color: var(--k-color-palette-neutral-light);
+  border-radius: 5px;
+  border: 1px solid var(--text-4);
 }
 
 .FormView dt {
-  font-weight: 700;
+  font-weight: 600;
   float: left;
   width: 100px;
   overflow: hidden;
