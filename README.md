@@ -10,7 +10,7 @@ the app to work correctly
 * [Node](https://nodejs.org/) 8.9.1
 * [PostgreSQL](https://www.postgresql.org/) 9.5 or greater
 * [Discourse](https://github.com/discourse/discourse) is our community hub and SSO provider (the latter of which is critical for the dispute tools)
-* PDFtk (user this [Installer](`https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-mac_osx-10.11-setup.pkg`) if you are on macOS)
+* PDFtk (use this [Installer](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-mac_osx-10.11-setup.pkg) if you are on macOS)
 * [Yarn](https://yarnpkg.com/) 1.3 or greater
 
 ## Optional Dependencies
