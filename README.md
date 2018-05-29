@@ -41,6 +41,8 @@ In particular, you may need to edit `aws.bucket`, `aws.secrets`, and `discourse.
 # Run server
 
 Ensure Postgres is running (e.g., with `ps aux | grep postgres`).
+Also, spin up the discourse server (the [best
+instructions](https://github.com/discourse/discourse/blob/master/docs/DEVELOPER-ADVANCED.md)).
 
 1. Install dependencies `yarn`
 1. Set up the database `yarn utils:resetdb`
