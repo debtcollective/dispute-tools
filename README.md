@@ -8,9 +8,10 @@ You will need to install the following libraries/packages in order for
 the app to work correctly
 
 * [Node](https://nodejs.org/) 8.9.1
+  * version 10.x.x is [incompatible](http://pdfhummus.com/post/173608369726/hummusjs-1087) with `hummus`
 * [PostgreSQL](https://www.postgresql.org/) 9.5 or greater
 * [Discourse](https://github.com/discourse/discourse) is our community hub and SSO provider (the latter of which is critical for the dispute tools)
-* PDFtk (user this [Installer](`https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-mac_osx-10.11-setup.pkg`) if you are on macOS)
+* PDFtk (use this [Installer](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-mac_osx-10.11-setup.pkg) if you are on macOS)
 * [Yarn](https://yarnpkg.com/) 1.3 or greater
 
 ## Optional Dependencies
@@ -35,11 +36,16 @@ cp config/config.sample.js config/config.js
 cp config/knexfile.sample.js knexfile.js
 ```
 
+In particular, you may need to edit `aws.bucket`, `aws.secrets`, and `discourse.apiKey`.
+
 # Run server
 
-Ensure Postgres is running.
+Ensure Postgres is running (e.g., with `ps aux | grep postgres`).
+Also, spin up the discourse server (the [best
+instructions](https://github.com/discourse/discourse/blob/master/docs/DEVELOPER-ADVANCED.md)).
 
 1. Install dependencies `yarn`
+1. Set up the database `yarn utils:resetdb`
 2. Run migrations `yarn db:migrate`
 3. Run seeds `yarn db:seed`
 4. Build assets `yarn build`
