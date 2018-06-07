@@ -19,7 +19,9 @@ module.exports = async (req, res, next) => {
     Raven.captureBreadcrumb('Authenticated', req.user);
     logger.debug(`Authenticated ${req.user.email}`);
 
-    sso.createCookie(req, res, next);
+    sso.createCookie(req, res);
+    // redirect to the requested page, gets rid of the SSO query parameters
+    res.redirect(req.path);
   } else if (req.cookies[cookieName]) {
     sso.extractCookie(req, res, next);
   } else {
