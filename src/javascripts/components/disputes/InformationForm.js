@@ -66,14 +66,11 @@ export default class DisputesInformationForm extends Widget {
     this._handleContentToggleRef = this._handleContentToggle.bind(this);
     this.togglers.forEach(t => {
       t.addEventListener('change', this._handleContentToggleRef);
-      if (t.value === 'no' && t.checked) {
-        t.checked = false;
-        t.click();
-      }
 
-      // Initialize fieldsets for toggles that do not have defaults
-      if (t.dataset.default === 'undefined') {
-        t.parentElement.parentElement.querySelector('fieldset').style.display = 'none';
+      // if 'yes' is not checked, don't show it
+      // doesn't matter if the 'no' radio button is checked or not
+      if (t.value === 'yes' && !t.checked) {
+        t.parentElement.querySelector('fieldset').style.display = 'none';
       }
     });
 
