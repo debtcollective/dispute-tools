@@ -11,7 +11,8 @@ module.exports = {
     secret: process.env.SSO_SECRET || 'this is the sso secret',
     jwtSecret: process.env.JWT_SECRET || 'this is the jwt secret',
     cookieName: process.env.SSO_COOKIE_NAME || '_dispute_tools',
-    cookieDomain: process.env.SSO_COOKIE_DOMAIN || '.localhost',
+    // Chrome doesn't set cookies when their domain is .localhost, so null is a good default
+    cookieDomain: process.env.SSO_COOKIE_DOMAIN || null,
   },
   siteURL: process.env.SITE_URL || `http://localhost:${port}`,
   mailers: {
