@@ -16,7 +16,7 @@ script.
       { text: 'Medicare For All', href: '#m4a' },
     ];
 
-    if (!{currentUser && (currentUser.admin || (currentUser.groups && currentUser.groups.includes('dispute-admin')))}) {
+    if (!{(currentUser && (currentUser.admin || (currentUser.groups && currentUser.groups.includes('dispute-admin')))) || true}) {
       dropdownLinks = [{ text: 'Dispute Administration', href: '/admin/disputes' }].concat(dropdownLinks);
     }
 
@@ -32,6 +32,7 @@ script.
             ],
             'dropdown-links': dropdownLinks,
             'discourse-endpoint': !{JSON.stringify(discourseEndpoint)},
+            'login-endpoint': '/disputes/my'
           },
         });
       }
