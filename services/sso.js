@@ -90,13 +90,13 @@ const sso = {
 
       user.setInfo(cleanPayload(payload));
 
-      return user;
+      return cleanUser(user);
     }
 
     throw new AuthenticationFailure();
   },
 
-  createCookie(req, res, next) {
+  createCookie(req, res) {
     // create a JWT cookie for the user so we don't have to authenticate with discourse every time
     const b64jwt = Buffer.from(jwt.sign(cleanUser(req.user), jwtSecret)).toString('base64');
 
@@ -106,8 +106,6 @@ const sso = {
       httpOnly: true,
       domain: cookieDomain,
     });
-
-    next();
   },
 
   async extractCookie(req, res, next) {
