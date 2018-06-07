@@ -32,7 +32,9 @@ script.
             ],
             'dropdown-links': dropdownLinks,
             'discourse-endpoint': !{JSON.stringify(discourseEndpoint)},
-            'login-endpoint': '/disputes/my'
+            'login-endpoint': '/disputes/my',
+            // This should be blank so as to send the logout to just `/logout`
+            'tools-endpoint': ''
           },
         });
       }
