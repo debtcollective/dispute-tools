@@ -67,10 +67,20 @@ export default class DisputesInformationForm extends Widget {
     this.togglers.forEach(t => {
       t.addEventListener('change', this._handleContentToggleRef);
 
-      // if 'yes' is not checked, don't show it
-      // doesn't matter if the 'no' radio button is checked or not
-      if (t.value === 'yes' && !t.checked) {
-        t.parentElement.querySelector('fieldset').style.display = 'none';
+      console.assert(t.value in ['yes', 'no'], 'this code assumes only yes/no answers');
+
+      // show/hide the fieldset based on saved data
+      if (t.value === 'no') {
+        return; // the equivalent 'yes' toggle tells us to show or hide
+      }
+
+      if (t.checked) {
+        // 'yes' was selected in the saved data
+        this._showFieldset(t);
+      } else {
+        // there was no saved data for this question
+        // OR 'no' was selected in the saved data
+        this._hideFieldset(t);
       }
     });
 
@@ -184,36 +194,56 @@ export default class DisputesInformationForm extends Widget {
 
   _handleContentToggle(ev) {
     const target = ev.currentTarget;
-    const fieldset = target.parentElement.parentElement.querySelector('fieldset');
+    console.assert(
+      target.checked,
+      'this should only fire when the user has just checked "yes" or "no"',
+    );
+    if (target.value === 'yes') {
+      this._showFieldset(target);
+    } else {
+      this._hideFieldset(target);
+    }
+  }
 
+  _extractFieldset(target) {
+    const fieldset = target.parentElement.parentElement.querySelector('fieldset');
     if (fieldset) {
       const whitelist = 'input, select, textarea';
       const names = [].slice.call(fieldset.querySelectorAll(whitelist)).map(i => i.dataset.name);
-
-      if (target.value === 'no') {
-        fieldset.style.display = 'none';
-        names.forEach(name => {
-          const el = this.ui[name];
-
-          if (el) {
-            el.disabled = true;
-          }
-
-          if (this.constraints[name]) {
-            delete this.constraints[name];
-          }
-        });
-      } else {
-        fieldset.style.display = 'initial';
-        names.forEach(name => {
-          const el = this.ui[name];
-          const vals = this._constraintsAll[name];
-
-          if (el) el.disabled = false;
-          if (vals) this.constraints[name] = vals;
-        });
-      }
+      return { fieldset, names };
     }
+    return { fieldset, names: [] };
+  }
+
+  _hideFieldset(toggle) {
+    // also disables constraints
+    const { fieldset, names } = this._extractFieldset(toggle);
+
+    fieldset.style.display = 'none';
+    names.forEach(name => {
+      const el = this.ui[name];
+
+      if (el) {
+        el.disabled = true;
+      }
+
+      if (this.constraints[name]) {
+        delete this.constraints[name];
+      }
+    });
+  }
+
+  _showFieldset(toggle) {
+    // also enables constraints
+    const { fieldset, names } = this._extractFieldset(toggle);
+    fieldset.style.display = 'initial';
+    names.forEach(name => {
+      const el = this.ui[name];
+      const vals = this._constraintsAll[name];
+
+      if (el) el.disabled = false;
+      if (vals) this.constraints[name] = vals;
+    });
   }
 
   _initHiddenElements(element) {
