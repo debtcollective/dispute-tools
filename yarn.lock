@@ -2778,7 +2778,7 @@ dateformat@^3.0.3:
 
 "dc-vue-header@git://github.com/debtcollective/dc-vue-header.git#master":
   version "1.0.0"
-  resolved "git://github.com/debtcollective/dc-vue-header.git#1ddb754d202a81e562da38623fabe84215a1dfed"
+  resolved "git://github.com/debtcollective/dc-vue-header.git#c775fa2b0ccb1ca84b59871f8289f9dd0e44c7d2"
   dependencies:
     postcss-css-variables "^0.8.1"
     postcss-nested "^3.0.0"

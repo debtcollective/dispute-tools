@@ -94,21 +94,13 @@ command
 
 # Deployment
 
-Infrastructure setup is handled by [debtcollective-terrraform](https://gitlab.com/debtcollective/debtcollective-terraform). Once you have you environment running, you can deploying using:
-
-1. `pm2 deploy ecosystem.json <environment> setup`
-2. `pm2 deploy ecosystem.json <environment>`
-
-For example to deploy to production run
-
-1. `pm2 deploy ecosystem.json production setup`
-2. `pm2 deploy ecosystem.json production`
-
-If you need to change branches, servers etc, feel free to edit `ecosystem.json`
+Infrastructure setup is handled by [debtcollective-terrraform](https://gitlab.com/debtcollective/debtcollective-terraform). Once you have you environment running, you can deploy it using Docker.
 
 ## Configuration Variables
 
-This part is handled by [debtcollective-terrraform](https://gitlab.com/debtcollective/debtcollective-terraform) too, since we are using files for configuration.
+`config.js` is the file that holds all the configuration, you can edit
+this file with values in development, but for production and staging we
+are using environment variables. This part is handled by [debtcollective-terrraform](https://gitlab.com/debtcollective/debtcollective-terraform).
 
 # Design
 
@@ -138,7 +130,7 @@ Please refer to `views/emails/README.md` for specific information for which temp
 
 The doc-comments on the `Email` and `DiscourseMessage` classes are essential reading for understanding how best to build new emails and discourse messages.
 
-# (future) Getting Started
+## Use Docker for development
 
 The easiest way to get started running the dispute-tools locally is through [Docker](https://www.docker.com/).
 
@@ -169,3 +161,46 @@ docker run -idt --env-file ./config/config.local.env --name tdc-dispute-tools -p
 ```
 
 5. Navigate to localhost:8080 in your browser and you should see the home page!
+
+## Discourse
+
+### Enable CORS
+
+Go to the Discourse admin settings and search for _cors_, you need to:
+
+* Set **cors origins** to http://localhost:8080, and any other URL you
+  that needs to login with Discourse
+
+You also need to run Discourse with the env variable `DISCOURSE_ENABLE_CORS=true`
+
+```bash
+env DISCOURSE_ENABLE_CORS=true rails s
+```
+
+### Enable Discourse as SSO provider
+
+Go to the Discourse admin settings and search for _sso_, you need to:
+
+* Set **sso secret** to the same value you have in the config.js
+* Enable **enable sso provider**
+* Enable **sso allows all return paths**
+* Enable **enable sso provider**
+
+### Use production Discourse configuration
+
+We have the configuration that is used by production and staging in
+Terraform, you can take a look at the `discourse` module in the repo and
+take the configuration file from there. With this file you can apply the
+same settings we use in prod locally.
+
+Inside the Discourse directory run
+
+```bash
+rails site_settings:import < settings.yml
+```
+
+To export settings to update the Terraform repo use
+
+```bash
+rails site_settings:export > settings.yml
+```

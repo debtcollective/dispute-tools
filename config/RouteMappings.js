@@ -47,7 +47,7 @@ const routeMappings = RouteMappings()
     as: 'tool',
   })
 
-  .post('/login', {
+  .get('/login', {
     to: 'Home#login',
     as: 'login',
   })
