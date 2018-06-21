@@ -130,14 +130,15 @@ block content
               small(class=`${_dispute.statuses[0].pendingSubmission ? 'Tag': ''} ml2` title=`${_dispute.statuses[0].pendingSubmission ? 'TDC mailed' : ''}`)=`${(_dispute.statuses[0].pendingSubmission ? 'attention':  '')}`
             td.-fw-500.-wsnw= new Date(_dispute.createdAt).toDateString()
             td.center.flex.pt2
-              button.mr2.btn-clear.p1.align-top(data-show)
+              button.mr2.btn-clear.p1.align-top(data-show title="View")
                 svg.-pen.block.align-top(width='15' height='15'): use(xlink:href='#svg-external')
-              button.mr2.btn-clear.p1.align-top(data-add-status)
+              button.mr2.btn-clear.p1.align-top(data-add-status title="Edit")
                 svg.-pen.block.align-top(width='15' height='15'): use(xlink:href='#svg-pencil')
 
               if _dispute.data.signature
                 a.btn-clear.-primary.p1.align-top.inline-block(
-                  href= routeMappings.Disputes.download.url(_dispute.id)
+                  href=routeMappings.Disputes.download.url(_dispute.id)
+                  title="Download"
                 ): svg.-pen.block.align-top(width='14' height='17'): use(xlink:href='#svg-download')
               else
                  button.btn-clear.p1.align-top.-download-disabled(disabled)
@@ -152,6 +153,7 @@ block content
                 input(type="hidden" name="_method" value="DELETE")
                 button.btn-clear.p1(
                   type="submit"
+                  title="Deactivate"
                   data-deactivate-dispute
                 )
                   svg.-pen.block.align-top(width='14' height='18'): use(xlink:href='#svg-ban-circle')

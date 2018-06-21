@@ -8,10 +8,6 @@ const middlewares = [
     path: 'middlewares/raven-request.js',
   },
   {
-    name: 'Authentication handler',
-    path: 'middlewares/handleAuthentication.js',
-  },
-  {
     name: 'CORS',
     path: 'middlewares/cors.js',
   },
@@ -30,6 +26,10 @@ const middlewares = [
   {
     name: 'Method Override',
     path: 'middlewares/MethodOverride.js',
+  },
+  {
+    name: 'Authentication handler',
+    path: 'middlewares/handleAuthentication.js',
   },
   {
     name: 'Locals',

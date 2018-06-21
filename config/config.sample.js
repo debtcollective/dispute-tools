@@ -8,8 +8,8 @@ module.exports = {
   appName: process.env.APP_NAME || 'TDC Dispute Tools',
   sso: {
     endpoint: process.env.SSO_ENDPOINT || 'http://localhost:3000/session/sso_provider',
-    secret: process.env.SSO_SECRET || 'this is the sso secret',
-    jwtSecret: process.env.JWT_SECRET || 'this is the jwt secret',
+    secret: process.env.SSO_SECRET || 'change-me-please',
+    jwtSecret: process.env.JWT_SECRET || 'change-me-please',
     cookieName: process.env.SSO_COOKIE_NAME || '_dispute_tools',
     // Chrome doesn't set cookies when their domain is .localhost, so null is a good default
     cookieDomain: process.env.SSO_COOKIE_DOMAIN || null,

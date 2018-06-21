@@ -222,7 +222,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
     },
 
     login(req, res) {
-      res.send({ redirect: sso.buildRedirect(req, req.body.returnTo) });
+      res.redirect(sso.buildRedirect(req, '/'));
     },
 
     logout(req, res) {

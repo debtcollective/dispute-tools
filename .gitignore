@@ -65,3 +65,4 @@ views/includes/svg/sprite.symbol.html
 views/includes/svg/sprite.svg
 .tarima
 config.*.env
+*.sql
