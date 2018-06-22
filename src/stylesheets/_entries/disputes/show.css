@@ -11,7 +11,7 @@
 
 hr {
   height: 3px;
-  background-color: rgba(235, 235, 235, 0.2);
+  background-color: black;
   border: none;
 }
 
@@ -98,9 +98,8 @@ fieldset {
   }
 
   &-inner {
-    padding: var(--space-3);
+    padding: 1.6rem;
     border-radius: var(--border-radius);
-    background-color: var(--k-color-palette-neutral-mid-dark);
   }
 
   &-icon {

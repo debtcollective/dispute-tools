@@ -15,10 +15,8 @@
   }
 
   &__Content {
-    background-color: var(--k-color-palette-accent);
-    padding: var(--space-2) var(--space-3);
     color: var(--k-color-palette-neutral-dark);
-    margin: var(--space-3);
+    margin: 20px 0 0;
 
     & h3 {
       margin-bottom: 15px;

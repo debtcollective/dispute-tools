@@ -1,20 +1,6 @@
 @import '../../../components/ConfirmInline';
 
-.-bg-neutral-dark {
-  background-color: unset;
-
-  fieldset {
-    background-color: #fff;
-    border: 1px solid black;
-    border-radius: 8px;
-  }
-
-  hr {
-    border: none;
-  }
-
-  .-accent,
-  .-white {
-    color: #000;
-  }
+fieldset {
+  border: 0;
+  padding: 0;
 }

@@ -23,8 +23,12 @@ script.
 
     const currentUser = !{JSON.stringify(currentUser)};
 
-    if (currentUser && (currentUser.admin || (currentUser.groups && currentUser.groups.includes('dispute-admin')))) {
-      headerLinks.push({ text: 'Admin', href: '/admin/disputes' });
+    if (currentUser) {
+      headerLinks.push({ text: 'My Disputes', href: '/disputes/my' });
+
+      if (currentUser.admin || (currentUser.groups && currentUser.groups.includes('dispute-admin'))) {
+        headerLinks.push({ text: 'Admin', href: '/admin/disputes' });
+      }
     }
 
     new Vue({
