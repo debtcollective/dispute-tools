@@ -1,3 +1,4 @@
+import every from 'lodash/every';
 import { updateDisputeData } from '../../lib/api';
 import Widget from '../../lib/widget';
 import DisputesInformationForm from './InformationForm';
@@ -52,6 +53,31 @@ export default class DisputesInformation extends Widget {
     this._bindEvents();
   }
 
+  _fileInputOnChange(button) {
+    const files = button.files;
+
+    if (!files.length) {
+      return;
+    }
+
+    // validate size
+    const MAX_FILE_SIZE = 6000000;
+    const allFilesUnderMaxSize = every(files, file => file.size < MAX_FILE_SIZE);
+
+    // show error message
+    if (!allFilesUnderMaxSize) {
+      const form = button.form;
+      const footerNotes = form.parentElement.querySelector('[data-footer-notes]');
+      footerNotes.innerText = 'Max file size is 6MB';
+      footerNotes.classList.add('error');
+
+      return;
+    }
+
+    this.UploadSpinnerModal.activate();
+    button.form.submit();
+  }
+
   _bindEvents() {
     this._handleSaveAndCloseModalButtonClick = this._handleSaveAndCloseModalButtonClick.bind(this);
     this.saveAndCloseModalButton.addEventListener(
@@ -68,12 +94,7 @@ export default class DisputesInformation extends Widget {
     }
 
     for (const button of this.uploadButtons) {
-      button.onchange = () => {
-        if (button.files.length) {
-          this.UploadSpinnerModal.activate();
-          button.form.submit();
-        }
-      };
+      button.onchange = this._fileInputOnChange.bind(this, button);
     }
 
     for (const button of this.removeUploadButtons) {

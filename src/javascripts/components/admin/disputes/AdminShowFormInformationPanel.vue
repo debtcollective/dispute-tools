@@ -117,6 +117,7 @@
 
 <script>
 import get from 'lodash/get';
+import every from 'lodash/every';
 import { getUserByExternalId, uploadAttachment, getDispute } from '../../../lib/api';
 import { DebtTypes } from '../../../../../shared/enum/DebtTypes';
 import Modal from '../../Modal';
@@ -241,33 +242,51 @@ export default {
         });
     },
     handleAttachmentUpload({ target }) {
-      if (target.files.length) {
-        this.alerts = [];
-        this.uploadSpinnerModal.activate();
-        this.uploading = true;
-        uploadAttachment(this.dispute, new FormData(target.form))
-          .then(() => {
-            this.updateData(this, false).then(() => {
-              this.uploading = false;
-              this.alerts = [
-                {
-                  type: 'success',
-                  message: `Attachment${target.files.length > 1 ? 's' : ''} successfully uploaded.`,
-                },
-              ];
-            });
-          })
-          .catch(e => {
-            console.error(e);
+      if (!target.files.length) {
+        return;
+      }
+
+      // validate size
+      const MAX_FILE_SIZE = 6000000;
+      const allFilesUnderMaxSize = every(target.files, file => file.size < MAX_FILE_SIZE);
+
+      if (!allFilesUnderMaxSize) {
+        this.alerts = [
+          {
+            type: 'error',
+            message: 'Max file size is 6MB',
+          },
+        ];
+
+        return;
+      }
+
+      this.alerts = [];
+      this.uploadSpinnerModal.activate();
+      this.uploading = true;
+
+      uploadAttachment(this.dispute, new FormData(target.form))
+        .then(() => {
+          this.updateData(this, false).then(() => {
             this.uploading = false;
             this.alerts = [
               {
-                message: `An error occurred while uploading the attachment. Please try again or contact a system administrator if the problem persists.`,
-                type: 'error',
+                type: 'success',
+                message: `Attachment${target.files.length > 1 ? 's' : ''} successfully uploaded.`,
               },
             ];
           });
-      }
+        })
+        .catch(e => {
+          console.error(e);
+          this.uploading = false;
+          this.alerts = [
+            {
+              message: `An error occurred while uploading the attachment. Please try again or contact a system administrator if the problem persists.`,
+              type: 'error',
+            },
+          ];
+        });
     },
     handleAttachmentDelete(attachment) {
       if (attachment !== null) {

@@ -45,7 +45,7 @@ mixin _toolsYesNoMixin(field)
 
 
 mixin toolsFormElementMixin(field, index)
-  .col.col-12.p2(class=field.columnClassName)
+  .col.col-12.pb2.pr1(class=field.columnClassName)
     case field.type
       when 'dropdown'
         label.inline-block.pb1.-fw-600= field.label
@@ -134,12 +134,12 @@ mixin toolsFormElementMixin(field, index)
 
       when 'mountable'
       when 'group'
-        fieldset.pb2
+        fieldset.pb1
           if field.title
             h4= field.title
 
           if field.subtitle
-            h5.pb2.-fw-600= field.subtitle
+            h5.-fw-600= field.subtitle
 
           if field.text
             div.pb2!= field.text
