@@ -2,6 +2,7 @@
   &__body {
     position: relative;
     z-index: 3;
+    overflow: auto;
   }
 
   &.-warning > .ConfirmInline__body {

@@ -152,8 +152,8 @@ export default class DisputesInformationForm extends Widget {
         className: '-warning mt2',
         data: {
           text: `▲ ${matched.message}`,
-          cancelButtonText: 'No',
-          okButtonText: 'Yes',
+          cancelButtonText: matched.cancelButtonText || 'No',
+          okButtonText: matched.okButtonText || 'Yes',
         },
       }),
     );
