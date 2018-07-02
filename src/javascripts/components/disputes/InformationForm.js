@@ -6,6 +6,7 @@ import Widget from '../../lib/widget';
 import Button from '../../components/Button';
 import ConfirmInline from '../../components/ConfirmInline';
 import DebtAmounts from './DebtAmounts.vue';
+import CurrencyInput from './CurrencyInput.vue';
 import {
   getCustomSelector,
   getCheckitConfig,
@@ -35,6 +36,17 @@ export const mountDebtAmounts = config => {
   }
 };
 
+export const mountDebtAmount = () => {
+  if (document.getElementById('debt-amount-mount-point')) {
+    return new Vue({
+      el: '#debt-amount-mount-point',
+      render() {
+        return <CurrencyInput name="fieldValues[debt-amount]" />;
+      },
+    }).$children[0];
+  }
+};
+
 export default class DisputesInformationForm extends Widget {
   constructor(config) {
     super(config);
@@ -46,9 +58,8 @@ export default class DisputesInformationForm extends Widget {
       }),
     );
 
-    if (document.getElementById('debt-amounts-mount-point')) {
-      this.debtAmounts = mountDebtAmounts(config);
-    }
+    this.debtAmounts = mountDebtAmounts(config);
+    this.debtAmount = mountDebtAmount();
 
     this.constraints = this._constraintsAll = getCheckitConfig(this.dispute);
 
