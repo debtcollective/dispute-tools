@@ -165,7 +165,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       }
 
       try {
-        const res = dispute[req.body.command](req.body);
+        const res = dispute[req.body.command](req.body, req);
         if (typeof res.then === 'function') {
           await res;
         }
