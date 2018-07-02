@@ -44,7 +44,7 @@
 
 <script>
 import MaskedInput from 'vue-text-mask';
-import createNumberMask from 'text-mask-addons/src/createNumberMask';
+import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import { DebtTypesCollection } from '../../../../shared/enum/DebtTypes';
 
 const DebtTypeKeys = DebtTypesCollection.map(a => a.key);

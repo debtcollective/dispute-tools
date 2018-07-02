@@ -16,7 +16,7 @@
 
 <script>
 import MaskedInput from 'vue-text-mask';
-import createNumberMask from 'text-mask-addons/src/createNumberMask';
+import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
 export default {
   components: { MaskedInput },
