@@ -125,11 +125,13 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
     "superagent": "^3.8.2",
+    "text-mask-addons": "^3.7.2",
     "uuid": "^2.0.2",
     "vue": "^2.5.9",
     "vue-flatpickr-component": "^6.0.0",
     "vue-multiselect": "^2.0.8",
     "vue-template-compiler": "^2.5.9",
+    "vue-text-mask": "^6.1.1",
     "webpack": "^3.10.0",
     "winston": "^2.2.0",
     "winston-loggly-bulk": "^1.3.4"

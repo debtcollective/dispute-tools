@@ -10,35 +10,45 @@
     </div>
     <div v-if="typeSelected === 'other'" class="col col-4 p2">
       <label class="inline-block pb1 -fw-500" aria-hidden="true" for="fieldValues[debt-type]" id="other-debt-type-l">Other debt type</label>
-      <input type="text" class="form-control -fw" placeholder="..." name="fieldValues[debt-type]" aria-labelledby="other-debt-type-l" v-model="type" required="required" />
+      <input
+        type="text"
+        class="form-control -fw"
+        placeholder="..."
+        name="fieldValues[debt-type]"
+        aria-labelledby="other-debt-type-l"
+        v-model="type"
+        required="required"
+      />
     </div>
     <div class="col col-4 py2 pl2">
       <label class="inline-block pb1 -fw-500">Amount</label>
-      <input
+      <masked-input
         class="form-control -fw"
-        type="number"
-        min="0"
-        step="0.01"
+        type="text"
         placeholder="$0.00"
         v-model="amount"
         required="required"
         :name="`fieldValues[debt-amount]`"
+        :mask="numberMask"
       />
     </div>
   </div>
 </template>
 
 <script>
+import MaskedInput from 'vue-text-mask';
+import createNumberMask from 'text-mask-addons/src/createNumberMask';
 import { DebtTypesCollection } from '../../../../shared/enum/DebtTypes';
 
 const DebtTypeKeys = DebtTypesCollection.map(a => a.key);
 
 export default {
+  components: { MaskedInput },
   props: {
     originalDebt: {
       type: Object,
       required: false,
-      default: () => ({ type: '', amount: undefined }),
+      default: () => ({ type: '', amount: '' }),
     },
   },
   data() {
@@ -62,6 +72,12 @@ export default {
 
       this.typeSelected = value;
     },
+    numberMask: createNumberMask({
+      prefix: '$',
+      // Limits the length before the decimal, not the amount
+      allowDecimal: true,
+      integerLimit: 6,
+    }),
   },
   created() {
     this.DebtTypes = [...DebtTypesCollection, { key: 'other', value: 'Other' }];
