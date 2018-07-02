@@ -261,7 +261,7 @@ const Dispute = Class('Dispute')
       });
     },
 
-    async setForm({ formName, fieldValues, _isDirty }, req) {
+    async setForm({ formName, fieldValues, _isDirty }) {
       if (!formName) {
         throw new Error('The formName is required');
       }
@@ -289,7 +289,6 @@ const Dispute = Class('Dispute')
         this.data.forms[formName] = fieldValues;
       }
 
-      req.flash('success', 'Your information was successfully updated');
       return this;
     },
 

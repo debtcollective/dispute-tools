@@ -1,11 +1,12 @@
 /* globals Dispute, RestfulController, Class, DisputeTool, CONFIG, DisputeStatus,
-    UserMailer, NotFoundError, DisputeRenderer, Dispute, logger */
+    UserMailer, NotFoundError, DisputeRenderer, Dispute */
 const Promise = require('bluebird');
 const marked = require('marked');
 const _ = require('lodash');
 const { BadRequest } = require('../lib/errors');
 const DisputeStatuses = require('../shared/enum/DisputeStatuses');
 const { CompletedDisputeEmail, MemberUpdatedDisputeEmail } = require('../services/email');
+const { Raven, logger } = require('../lib');
 
 const { authenticate, authorize, tests: { ownerOrAdmin } } = require('../services/auth');
 
@@ -165,11 +166,12 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       }
 
       try {
-        const res = dispute[req.body.command](req.body, req);
+        const res = dispute[req.body.command](req.body);
         if (typeof res.then === 'function') {
           await res;
         }
       } catch (e) {
+        Raven.captureException(e);
         logger.error(
           `Error occured while updated dispute data for dispute ${dispute.id}`,
           e.message || (e.toString && e.toString()) || e,
@@ -195,6 +197,9 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         .then(() =>
           res.format({
             html() {
+              if (req.body.command === 'setForm') {
+                req.flash('success', 'Your information was successfully updated');
+              }
               return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
             },
             json() {
