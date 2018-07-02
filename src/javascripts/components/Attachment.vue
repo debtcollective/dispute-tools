@@ -4,7 +4,7 @@
     <a class="-k-btn btn-dark -fw" target="_blank" :href="href" aria-label="Download attachment">{{name}}</a>
     <button class="-k-btn btn-clear ml2" type="button" @click="handleDelete">
       <svg class="-danger" width="10" height="10">
-        <use xlink:href="#svg-close" />
+        <use xlink:href="#svg-trash" />
       </svg>
     </button>
   </div>

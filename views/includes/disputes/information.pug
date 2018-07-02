@@ -56,7 +56,7 @@ mixin _uploadCard(step, _completed)
               )
                 input(type='hidden' name='_method' value='PUT')
                 button.btn-clear(data-remove-upload-button)
-                  svg.-danger(width='10' height='10'): use(xlink:href='#svg-close')
+                  svg.-danger(width='10' height='10'): use(xlink:href='#svg-trash')
 
     form(
       action=routeMappings.Disputes.addAttachment.url(dispute.id)
