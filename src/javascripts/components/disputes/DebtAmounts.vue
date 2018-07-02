@@ -21,15 +21,22 @@
       />
     </div>
     <div class="col col-4 py2 pl2">
-      <label class="inline-block pb1 -fw-500">Amount</label>
+      <label for="fieldValues[debt-amount]_masked" class="inline-block pb1 -fw-500">Amount</label>
       <masked-input
         class="form-control -fw"
         type="text"
         placeholder="$0.00"
         v-model="amount"
         required="required"
-        :name="`fieldValues[debt-amount]`"
+        name="fieldValues[debt-amount]_masked"
         :mask="numberMask"
+      />
+      <input
+        type="text"
+        aria-hidden="true"
+        class="d-none"
+        name="fieldValues[debt-amount]"
+        :value="cleanedValue"
       />
     </div>
   </div>
@@ -60,6 +67,11 @@ export default {
       amount: this.originalDebt.amount,
       cachedOther: '',
     };
+  },
+  computed: {
+    cleanedValue() {
+      return this.amount ? this.amount.replace(/[^0-9.]/g, '') : '';
+    },
   },
   methods: {
     handleTypeSelection({ target: { value } }) {
