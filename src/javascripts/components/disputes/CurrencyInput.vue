@@ -1,8 +1,8 @@
 <template>
   <div>
-    <label :for="`${name}_masked`" class="inline-block pb1 -fw-600">Amount of Disputed Debt</label>
+    <label :for="`masked-${name}`" class="inline-block pb1 -fw-600">Amount of Disputed Debt</label>
     <masked-input
-      :name="`${name}_masked`"
+      :name="`masked-${name}`"
       :mask="numberMask"
       class="form-control -fw"
       placeholder="$0.00"
@@ -25,10 +25,15 @@ export default {
       type: String,
       required: true,
     },
+    initialAmount: {
+      type: String,
+      required: false,
+      default: '',
+    },
   },
   data() {
     return {
-      amount: '',
+      amount: this.initialAmount,
     };
   },
   computed: {

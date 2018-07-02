@@ -21,14 +21,14 @@
       />
     </div>
     <div class="col col-4 py2 pl2">
-      <label for="fieldValues[debt-amount]_masked" class="inline-block pb1 -fw-500">Amount</label>
+      <label for="masked-fieldValues[debt-amount]" class="inline-block pb1 -fw-500">Amount</label>
       <masked-input
         class="form-control -fw"
         type="text"
         placeholder="$0.00"
         v-model="amount"
         required="required"
-        name="fieldValues[debt-amount]_masked"
+        name="masked-fieldValues[debt-amount]"
         :mask="numberMask"
       />
       <input

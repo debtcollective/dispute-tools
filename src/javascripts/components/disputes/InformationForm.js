@@ -36,12 +36,20 @@ export const mountDebtAmounts = config => {
   }
 };
 
-export const mountDebtAmount = () => {
+export const mountDebtAmount = config => {
   if (document.getElementById('debt-amount-mount-point')) {
     return new Vue({
       el: '#debt-amount-mount-point',
       render() {
-        return <CurrencyInput name="fieldValues[debt-amount]" />;
+        return (
+          <CurrencyInput
+            name="fieldValues[debt-amount]"
+            initialAmount={get(
+              config.dispute.data._forms || config.dispute.data.forms,
+              'personal-information-form.debt-amount',
+            )}
+          />
+        );
       },
     }).$children[0];
   }
@@ -59,7 +67,7 @@ export default class DisputesInformationForm extends Widget {
     );
 
     this.debtAmounts = mountDebtAmounts(config);
-    this.debtAmount = mountDebtAmount();
+    this.debtAmount = mountDebtAmount(config);
 
     this.constraints = this._constraintsAll = getCheckitConfig(this.dispute);
 
