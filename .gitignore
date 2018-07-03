@@ -66,3 +66,4 @@ views/includes/svg/sprite.svg
 .tarima
 config.*.env
 *.sql
+.vscode

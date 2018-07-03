@@ -23,7 +23,7 @@ include ../../mixins/dispute-tools/form-element
       h4.pt3.center= dispute.user.name
       h4.pb3.center= dispute.user.username
     else
-      h3#modalToolPersonalInfoFormTitle= dispute.disputeTool.name
+      h3.pb2#modalToolPersonalInfoFormTitle= dispute.disputeTool.name
 
     each sets, i in step.fieldSets
       .pt2.pr3.pl3.pb2.mb2.-bg-forms
@@ -48,4 +48,3 @@ include ../../mixins/dispute-tools/form-element
       .col.md-col-6.pt1.pb3.px2: button.-k-btn.btn-primary.-fw.-fw-600(type="submit") Save updated form data
     else
       .pt1.pb3: button.-k-btn.btn-primary.-fw.-fw-600(type="submit") Submit for review
-

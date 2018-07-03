@@ -76,7 +76,7 @@ mixin _uploadCard(step, _completed)
           style='opacity: 0;'
           data-upload-button=''
         )
-    .Tool__Info__footer-caption.center.-caption
+    .Tool__Info__footer-caption.center.-caption(data-footer-notes)
       | #{step.footerNotes}
 
 .Dispute__step-content(

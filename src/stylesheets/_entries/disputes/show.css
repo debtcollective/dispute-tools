@@ -56,7 +56,7 @@ fieldset {
   }
 
   &__footer-caption {
-    padding-top: 5px;
+    padding: 5px 0;
     margin-bottom: -26px;
   }
 
