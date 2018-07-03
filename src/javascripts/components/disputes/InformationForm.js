@@ -6,6 +6,7 @@ import Widget from '../../lib/widget';
 import Button from '../../components/Button';
 import ConfirmInline from '../../components/ConfirmInline';
 import DebtAmounts from './DebtAmounts.vue';
+import CurrencyInput from './CurrencyInput.vue';
 import {
   getCustomSelector,
   getCheckitConfig,
@@ -35,6 +36,25 @@ export const mountDebtAmounts = config => {
   }
 };
 
+export const mountDebtAmount = config => {
+  if (document.getElementById('debt-amount-mount-point')) {
+    return new Vue({
+      el: '#debt-amount-mount-point',
+      render() {
+        return (
+          <CurrencyInput
+            name="fieldValues[debt-amount]"
+            initialAmount={get(
+              config.dispute.data._forms || config.dispute.data.forms,
+              'personal-information-form.debt-amount',
+            )}
+          />
+        );
+      },
+    }).$children[0];
+  }
+};
+
 export default class DisputesInformationForm extends Widget {
   constructor(config) {
     super(config);
@@ -46,9 +66,8 @@ export default class DisputesInformationForm extends Widget {
       }),
     );
 
-    if (document.getElementById('debt-amounts-mount-point')) {
-      this.debtAmounts = mountDebtAmounts(config);
-    }
+    this.debtAmounts = mountDebtAmounts(config);
+    this.debtAmount = mountDebtAmount(config);
 
     this.constraints = this._constraintsAll = getCheckitConfig(this.dispute);
 
@@ -133,8 +152,8 @@ export default class DisputesInformationForm extends Widget {
         className: '-warning mt2',
         data: {
           text: `▲ ${matched.message}`,
-          cancelButtonText: 'No',
-          okButtonText: 'Yes',
+          cancelButtonText: matched.cancelButtonText || 'No',
+          okButtonText: matched.okButtonText || 'Yes',
         },
       }),
     );
