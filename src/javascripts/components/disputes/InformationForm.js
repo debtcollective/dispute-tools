@@ -86,7 +86,7 @@ export default class DisputesInformationForm extends Widget {
     this.togglers.forEach(t => {
       t.addEventListener('change', this._handleContentToggleRef);
 
-      console.assert(t.value in ['yes', 'no'], 'this code assumes only yes/no answers');
+      console.assert(['yes', 'no'].includes(t.value), 'this code assumes only yes/no answers');
 
       // show/hide the fieldset based on saved data
       if (t.value === 'no') {

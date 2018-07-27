@@ -19,6 +19,15 @@ fieldset {
   padding: 0;
   border: none;
 
+  input[type='radio'] {
+    visibility: visible;
+    width: 1px;
+  }
+
+  input[type='checkbox'] {
+    visibility: visible;
+  }
+
   /* box-shadow: 0 0 0 1px dodgerblue; */
 }
 
