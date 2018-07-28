@@ -36,7 +36,7 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulC
       DisputeTool.query()
         .orderBy('id', 'ASC')
         .then(disputeTools => {
-          res.locals.disputeTools = [null, null, null, null, null];
+          res.locals.disputeTools = new Array(5).fill(null);
 
           disputeTools.forEach(disputeTool => {
             const slugOrder = [
