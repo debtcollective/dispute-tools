@@ -36,10 +36,21 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulC
       DisputeTool.query()
         .orderBy('id', 'ASC')
         .then(disputeTools => {
-          res.locals.disputeTools = [];
+          res.locals.disputeTools = [null, null, null, null, null];
 
           disputeTools.forEach(disputeTool => {
-            res.locals.disputeTools.push({
+            const slugOrder = [
+              'general-debt-dispute',
+              'credit-report-dispute',
+              'wage-garnishment-dispute',
+              'tax-offset-dispute',
+              'private-student-loan-dispute',
+            ];
+
+            const index = slugOrder.indexOf(disputeTool.slug);
+            console.assert(index !== -1);
+
+            res.locals.disputeTools[index] = {
               id: disputeTool.id,
               name: disputeTool.name,
               excerpt: disputeTool.excerpt,
@@ -47,8 +58,10 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulC
               completed: disputeTool.completed,
               data: disputeTool.data,
               slug: disputeTool.slug,
-            });
+            };
           });
+          console.assert(res.locals.disputeTools.indexOf(null) === -1);
+
           res.render('dispute-tools/index');
         })
         .catch(next);
