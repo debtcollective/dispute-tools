@@ -20,28 +20,18 @@ mixin toolsSidebarMixin(disputeTool, currentStep = 1, steps = _toolSteps, curren
       each step, index in steps
         -
           var _index = index + 1
-          var _className = ''
-          var _disabled = true
 
-          // _disabled will strikethrough
-          // '-done' will gray out the text
+          // Everything before the current step is done
+          // '-done' will gray out the text and display a checkmark
+          var _className = (currentStep === _index ? '-current'
+                     : _index < currentStep ? '-done'
+                     : '');
 
-          if (_index === 1) {
-            _className = '-done';
-            _disabled = true;
-          } else if (currentStep === _index) {
-            _className = '-current';
-            _disabled = false;
-          } else if (currentStep > _index) {
-            _className = '-done';
-            _disabled = true;
-          } else if (currentStep < _index) {
-            _disabled = false;
-          }
-
-          if (step === 'Follow up' && currentSection !== 'follow-up') {
-            _disabled = true;
-          }
+          // disable the first step and all the steps after the current step
+          // _disabled will strikethrough and be unclickable
+          var _disabled = (_index === 1
+              || currentStep < _index
+              || step === 'Follow up' && currentSection !== 'follow-up');
 
         li.relative
           button.Tool__sidebar-step.relative.btn-clear.left-align.-fw-600.-fw(
