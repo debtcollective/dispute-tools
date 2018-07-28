@@ -406,8 +406,8 @@ label.required::after {
 
 input[type='radio'] {
   position: absolute;
-  width: 0;
-  visibility: hidden;
+  width: 1px;
+  visibility: visible;
 }
 
 input[type='radio'] ~ label::before {
