@@ -1,7 +1,7 @@
 .Tools__Text-Modal {
   & h3,
   & strong {
-    color: var(--k-color-palette-accent);
+    color: var(--blue);
   }
 
   & h3 {
