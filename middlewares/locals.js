@@ -44,5 +44,7 @@ module.exports = function locals(req, res, next) {
   res.locals.lodash = _;
   res.locals.moment = moment;
 
+  res.locals.slugify = (str = '') => str.toLowerCase().replace(/\W/g, '-');
+
   return next();
 };
