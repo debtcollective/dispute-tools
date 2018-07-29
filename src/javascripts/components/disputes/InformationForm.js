@@ -346,7 +346,8 @@ export default class DisputesInformationForm extends Widget {
     Object.keys(errors).forEach(key => {
       if (!this.ui[key]) return;
 
-      const parent = this.ui[key].parentNode;
+      // Select this each time to avoid dynamically added fields getting left out
+      const parent = this._getElementForKey(key).parentNode;
       let errorLabel = parent.querySelector('.-on-error');
 
       parent.classList.add('error');
@@ -399,7 +400,8 @@ export default class DisputesInformationForm extends Widget {
       /**
        * @type {HTMLInputElement}
        */
-      const element = this.ui[key];
+      // Select this each time to avoid dynamically added fields getting left out
+      const element = this._getElementForKey(key);
       if (element.dataset.customSelector) {
         data[key] = getCustomSelector(this.dispute, key).DOM();
       } else if (element) {
@@ -415,5 +417,9 @@ export default class DisputesInformationForm extends Widget {
     });
 
     return data;
+  }
+
+  _getElementForKey(key) {
+    return this.element.querySelector(`[for="fieldValues[${key}]"]`);
   }
 }

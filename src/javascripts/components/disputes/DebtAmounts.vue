@@ -6,6 +6,7 @@
         <select class="-fw form-control" @input="handleTypeSelection" :value="typeSelected" :name="typeSelected !== 'other' ? 'fieldValues[debt-type]' : 'debt-type[other]'" aria-labelledby="debt-type-l" required="required">
           <option v-for="debtType in DebtTypes" :key="debtType.key" :value="debtType.key">{{debtType.value}}</option>
         </select>
+        <p class="-on-error -danger -caption -fw-500 mt1"></p>
       </div>
     </div>
     <div v-if="typeSelected === 'other'" class="col col-4 p2">
@@ -19,6 +20,7 @@
         v-model="type"
         required="required"
       />
+      <p class="-on-error -danger -caption -fw-500 mt1"></p>
     </div>
     <div class="col col-4 py2 pl2">
       <label for="masked-fieldValues[debt-amount]" class="inline-block pb1 -fw-500">Amount</label>
@@ -38,6 +40,7 @@
         name="fieldValues[debt-amount]"
         :value="cleanedValue"
       />
+      <p class="-on-error -danger -caption -fw-500 mt1"></p>
     </div>
   </div>
 </template>
