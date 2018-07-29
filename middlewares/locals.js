@@ -1,5 +1,7 @@
 const config = require('../config/config');
 const Router = require('../config/RouteMappings');
+const _ = require('lodash');
+const moment = require('moment');
 
 const {
   sso: { logout },
@@ -38,6 +40,9 @@ module.exports = function locals(req, res, next) {
     secondary:
       'https://s3.amazonaws.com/tds-static/img/debtcollective/0.0.1/DC-logo_FULL_DARK_CUTOUTfoot_@3x.png',
   };
+
+  res.locals.lodash = _;
+  res.locals.moment = moment;
 
   return next();
 };
