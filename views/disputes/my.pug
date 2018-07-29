@@ -22,31 +22,37 @@ block content
                 svg.mr1(width='11' height='11'): use(xlink:href='#svg-external')
                 | Go to my community profile
 
-          .-bg-neutral-dark.px3.pb2
-            .col.col-4.sm-col-12
+          if disputes.length > 0
+            .-bg-neutral-dark.px3.pb2
+              .col.col-4.sm-col-12
+                hr.mb3(aria-hidden="true")
+                h4.pb1 My disputes
+              ul.list-reset
+                each dispute in lodash.reverse(lodash.orderBy(disputes, d => lodash.get(lodash.head(d.statuses), 'updatedAt', d.updatedAt)))
+                  li
+                    - const latestStatus = lodash.head(dispute.statuses);
+                    a.block.clearfix.py1.mxn1(href=routeMappings.Disputes.show.url(dispute.id))
+                      .col.col-8.px1
+                        .-fw-600
+                          | #{dispute.disputeTool.name}
+                          if dispute.data.option !== 'none'
+                            |  / #{dispute.data.option}
+                      .col.col-4.px1.right-align
+                        - const latestStatusType = lodash.get(latestStatus, 'status', 'incomplete');
+                        .pt1.-caption.-ttu.-fw-600(
+                          class=`-status-${slugify(latestStatusType)}`
+                        )= latestStatusType
+                      .col.col-12.pl1
+                        .-caption.-ttu
+                          -
+                            // Ensure that if there's no status for some reason then we safely use the dispute's updated date
+                            const lastUpdated = lodash.get(latestStatus, 'updatedAt', lodash.get(dispute, 'updatedAt'));
+                          | #{moment(lastUpdated).format('MM-DD-YYYY hh:mm:ss a')}
+          else
+            .col.sm-col-12.text-center
               hr.mb3(aria-hidden="true")
-              h4.pb1 My disputes
-            ul.list-reset
-              each dispute in disputes
-                li
-                  - const latestStatus = lodash.head(dispute.statuses);
-                  a.block.clearfix.py1.mxn1(href=routeMappings.Disputes.show.url(dispute.id))
-                    .col.col-8.px1
-                      .-fw-600
-                        | #{dispute.disputeTool.name}
-                        if dispute.data.option !== 'none'
-                          |  / #{dispute.data.option}
-                    .col.col-4.px1.right-align
-                      - const latestStatusType = lodash.get(latestStatus, 'status', 'incomplete');
-                      .pt1.-caption.-ttu.-fw-600(
-                        class=`-status-${slugify(latestStatusType)}`
-                      )= latestStatusType
-                    .col.col-12.pl1
-                      .-caption.-ttu
-                        -
-                          // Ensure that if there's no status for some reason then we safely use the dispute's updated date
-                          const lastUpdated = lodash.get(latestStatus, 'updatedAt', lodash.get(dispute, 'updatedAt'));
-                        | #{moment(lastUpdated).format('MM-DD-YYYY hh:mm:ss a')}
+              h5 You currently do not have have any disputes.
+              h5.pt1 #[a(href="/dispute-tools") Click here] to begin filing your first dispute.
 
 block scripts
   script.
