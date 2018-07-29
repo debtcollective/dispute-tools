@@ -39,6 +39,13 @@ block content
                       .pt1.-caption.-ttu.-fw-600(
                         class=`-status-${dispute.statuses[0].status.toLowerCase().replace(/\W/g, '-')}`
                       )= dispute.statuses[0].status
+                    .col.col-12.pl1
+                      .-caption.-ttu
+                        -
+                          const latestStatus = lodash.head(dispute.statuses);
+                          // Ensure that if there's no status for some reason then we safely use the dispute's updated date
+                          const lastUpdated = lodash.get(latestStatus, 'updatedAt', lodash.get(dispute, 'updatedAt'));
+                        | #{moment(lastUpdated).format('MM-DD-YYYY hh:mm:ss a')}
 
 block scripts
   script.
