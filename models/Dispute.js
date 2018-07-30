@@ -32,7 +32,7 @@ const Dispute = Class('Dispute')
   defaultIncludes: '[user, statuses]',
 
   async search(qs) {
-    const query = this.query().where({ deactivated: false });
+    const query = this.query();
 
     if (qs.filters) {
       // If we're passed a human readable id just search by that and ignore everything else
@@ -444,5 +444,12 @@ const Dispute = Class('Dispute')
     },
   },
 });
+
+// filter out deactivated disputes by default
+Dispute.oldQuery = Dispute.query;
+Dispute.query = function (knex, includeDeactivated = false) {
+  const query = Dispute.oldQuery(knex);
+  return includeDeactivated ? query : query.andWhere({ deactivated: false });
+};
 
 module.exports = Dispute;
