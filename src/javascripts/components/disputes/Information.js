@@ -49,6 +49,10 @@ export default class DisputesInformation extends Widget {
     this.uploadButtons = document.querySelectorAll('[data-upload-button]');
     this.removeUploadButtons = document.querySelectorAll('[data-remove-upload-button]');
 
+    this.deactivateDisputeForm = this.element.querySelector(
+      '[data-component-form="deactivate-dispute"]',
+    );
+
     this._bindMoreInfoModal();
     this._bindEvents();
   }
@@ -88,6 +92,9 @@ export default class DisputesInformation extends Widget {
     this._handleButtonClickRef = this._handleButtonClick.bind(this);
     this.personalInfoButton.addEventListener('click', this._handleButtonClickRef);
 
+    this._handleDeactivateDisputeRef = this._handleDeactivateDispute.bind(this);
+    this.DisputesInformationForm.bind('deactivateDispute', this._handleDeactivateDisputeRef);
+
     if (this.informationSubmitButton) {
       this._displayNextStepRef = this._displayNextStep.bind(this);
       this.informationSubmitButton.addEventListener('click', this._displayNextStepRef);
@@ -115,6 +122,16 @@ export default class DisputesInformation extends Widget {
     }).then(({ dispute }) => (this.dispute = dispute));
 
     this.ModalInformationForm.deactivate();
+  }
+
+  /**
+   * Submits the `deactivate-dispute` form.
+   * @private
+   * @listens @module:DisputesInformationForm~event:deactivateDispute
+   * @return undefined
+   */
+  _handleDeactivateDispute() {
+    this.deactivateDisputeForm.submit();
   }
 
   _bindMoreInfoModal() {
