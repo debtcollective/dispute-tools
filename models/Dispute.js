@@ -32,6 +32,7 @@ const Dispute = Class('Dispute')
   defaultIncludes: '[user, statuses]',
 
   async search(qs) {
+    // back-end search
     const query = this.query();
 
     if (qs.filters) {
@@ -87,7 +88,8 @@ const Dispute = Class('Dispute')
   },
 
   async findById(id, include = null) {
-    const query = Dispute.query().where({ id });
+    const INCLUDE_DEACTIVATED = true;
+    const query = Dispute.query(null, INCLUDE_DEACTIVATED).where({ id });
     if (typeof include === 'string') {
       query.include(include);
     }
