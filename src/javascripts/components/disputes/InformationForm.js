@@ -195,7 +195,7 @@ export default class DisputesInformationForm extends Widget {
         data: {
           text: `▲ ${matched.message}`,
           cancelButtonText: `Select ${oppositeAction}`,
-          okButtonText: 'Exit form',
+          okButtonText: 'Exit and deactivate dispute',
         },
       }),
     );
