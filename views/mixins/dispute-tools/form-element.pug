@@ -79,7 +79,7 @@ mixin toolsFormElementMixin(field, index)
 
       when 'date'
         label.inline-block.pb1.-fw-600= field.label
-        input.form-control.-fw(
+        input.form-control.date-form-control.-fw(
           type="date"
           name=`fieldValues[${field.name}]`
           value=_formData[field.name]

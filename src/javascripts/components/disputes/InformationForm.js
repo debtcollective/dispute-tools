@@ -2,6 +2,7 @@
 import Vue from 'vue';
 import Pisces from 'pisces';
 import get from 'lodash/get';
+import flatpickr from 'flatpickr';
 import Widget from '../../lib/widget';
 import Button from '../../components/Button';
 import ConfirmInline from '../../components/ConfirmInline';
@@ -58,6 +59,8 @@ export const mountDebtAmount = config => {
 export default class DisputesInformationForm extends Widget {
   constructor(config) {
     super(config);
+
+    flatpickr('.date-form-control');
 
     this.appendChild(
       new Button({
