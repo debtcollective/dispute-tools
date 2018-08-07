@@ -71,11 +71,7 @@ export default class DisputesInformationForm extends Widget {
 
     this.constraints = this._constraintsAll = getCheckitConfig(this.dispute);
 
-    this.ui = {};
-    Object.keys(this.constraints).forEach(key => {
-      const query = `[name="fieldValues[${key}]"]`;
-      this.ui[key] = this.element.querySelector(query);
-    });
+    this._refreshFieldNames();
 
     this.form = this.element.querySelector('form');
     this._handleFormSubmitRef = this._handleFormSubmit.bind(this);
@@ -395,6 +391,8 @@ export default class DisputesInformationForm extends Widget {
     const data = {};
     let val;
 
+    this._refreshFieldNames();
+
     Object.keys(this.constraints).forEach(key => {
       /**
        * @type {HTMLInputElement}
@@ -415,5 +413,13 @@ export default class DisputesInformationForm extends Widget {
     });
 
     return data;
+  }
+
+  _refreshFieldNames() {
+    this.ui = {};
+    Object.keys(this.constraints).forEach(key => {
+      const query = `[name="fieldValues[${key}]"]`;
+      this.ui[key] = this.element.querySelector(query);
+    });
   }
 }
