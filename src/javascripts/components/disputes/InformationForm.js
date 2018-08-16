@@ -144,7 +144,6 @@ export default class DisputesInformationForm extends Widget {
       allowInput: true,
       dateFormat: 'm-d-Y',
       altFormat: 'm-d-Y',
-      altInput: true,
     });
 
     // set the date when user uses keyboard to input, then tabs/clicks away
