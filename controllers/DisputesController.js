@@ -173,7 +173,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       } catch (e) {
         Raven.captureException(e);
         logger.error(
-          `Error occured while updated dispute data for dispute ${dispute.id}`,
+          `Error occurred while updated dispute data for dispute ${dispute.id}`,
           e.message || (e.toString && e.toString()) || e,
         );
         return res.format({
