@@ -214,23 +214,23 @@ h4.-h-sec > span {
 /* status colors */
 .-status {
   &-incomplete {
-    color: #f8e71c;
+    color: var(--orange);
   }
 
   &-completed {
-    color: #7ed321;
+    color: var(--red);
   }
 
   &-in-review {
-    color: #268aff;
+    color: var(--blue);
   }
 
   &-documents-sent {
-    color: #f04c34;
+    color: var(--purple);
   }
 
   &-update {
-    color: #50e3c2;
+    color: var(--green);
   }
 }
 
