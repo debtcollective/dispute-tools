@@ -32,7 +32,8 @@ const Dispute = Class('Dispute')
   defaultIncludes: '[user, statuses]',
 
   async search(qs) {
-    const query = this.query().where({ deactivated: false });
+    // back-end search
+    const query = this.query();
 
     if (qs.filters) {
       // If we're passed a human readable id just search by that and ignore everything else
@@ -87,7 +88,8 @@ const Dispute = Class('Dispute')
   },
 
   async findById(id, include = null) {
-    const query = Dispute.query().where({ id });
+    const INCLUDE_DEACTIVATED = true;
+    const query = Dispute.query(null, INCLUDE_DEACTIVATED).where({ id });
     if (typeof include === 'string') {
       query.include(include);
     }
@@ -444,5 +446,12 @@ const Dispute = Class('Dispute')
     },
   },
 });
+
+// filter out deactivated disputes by default
+Dispute.oldQuery = Dispute.query;
+Dispute.query = function (knex, includeDeactivated = false) {
+  const query = Dispute.oldQuery(knex);
+  return includeDeactivated ? query : query.andWhere({ deactivated: false });
+};
 
 module.exports = Dispute;
