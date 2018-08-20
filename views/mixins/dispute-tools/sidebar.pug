@@ -27,11 +27,13 @@ mixin toolsSidebarMixin(disputeTool, currentStep = 1, steps = _toolSteps, curren
                      : _index < currentStep ? '-done'
                      : '');
 
-          // disable the first step and all the steps after the current step
           // _disabled will strikethrough and be unclickable
-          var _disabled = (_index === 1
-              || currentStep < _index
-              || step === 'Follow up' && currentSection !== 'follow-up');
+          // disable the first step and all the steps after the current step
+          var _disabled = (_index === 1 || currentStep < _index
+              // disable 'Follow up' step unless dispute is complete
+              || step === 'Follow up' && currentSection !== 'follow-up'
+              // if dispute is complete, disable all steps except 'Follow up'
+              || step !== 'Follow up' && currentSection === 'follow-up');
 
         li.relative
           button.Tool__sidebar-step.relative.btn-clear.left-align.-fw-600.-fw(
