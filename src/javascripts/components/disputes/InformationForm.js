@@ -2,6 +2,7 @@
 import Vue from 'vue';
 import Pisces from 'pisces';
 import get from 'lodash/get';
+import flatpickr from 'flatpickr';
 import Widget from '../../lib/widget';
 import Button from '../../components/Button';
 import ConfirmInline from '../../components/ConfirmInline';
@@ -58,6 +59,8 @@ export const mountDebtAmount = config => {
 export default class DisputesInformationForm extends Widget {
   constructor(config) {
     super(config);
+
+    this._setupDatePickers();
 
     this.appendChild(
       new Button({
@@ -134,6 +137,22 @@ export default class DisputesInformationForm extends Widget {
     }
 
     this.pisces = new Pisces(this.element.parentElement);
+  }
+
+  _setupDatePickers() {
+    const flatpickrs = flatpickr('.date-form-control', {
+      allowInput: true,
+      dateFormat: 'm-d-Y',
+      altFormat: 'm-d-Y',
+    });
+
+    // set the date when user uses keyboard to input, then tabs/clicks away
+    // https://github.com/flatpickr/flatpickr/issues/828
+    (Array.isArray(flatpickrs) ? flatpickrs : [flatpickrs]).forEach(picker => {
+      picker._input.addEventListener('blur', () => {
+        picker.setDate(picker._input.value);
+      });
+    });
   }
 
   _handleConfirmRadioChange({ target: { parentElement, dataset, value, name } }) {

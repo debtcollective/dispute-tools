@@ -79,8 +79,9 @@ mixin toolsFormElementMixin(field, index)
 
       when 'date'
         label.inline-block.pb1.-fw-600= field.label
-        input.form-control.-fw(
-          type="date"
+        //- use type="text" to avoid triggering browser's native datepicker
+        input.form-control.date-form-control.-fw(
+          type="text"
           name=`fieldValues[${field.name}]`
           value=_formData[field.name]
           aria-label= field.label
