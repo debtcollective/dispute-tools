@@ -110,6 +110,23 @@ For styling, we use `basscss`.
 Layout and typography are declared inside the templates (e.g. using `basscss` layout utilities like `pb3`).
 CSS is used for for specific stylings or shortcuts for obvious stuff.
 
+# Development Guide
+
+## Error handling
+
+We'll want to report errors into Sentry using [Raven](https://docs.sentry.io/clients/node/). This helps us keep track of recurring errors. Raven also wraps our application in a Raven context that allows it to trace the failure in better ways than a standard stack trace.
+
+```javascript
+const { Raven, logger } = require('/lib');
+
+try {
+    // something that fails
+} catch (e) {
+    Raven.captureException(e);
+    logger.error('Error occurred while trying to do something important', JSON.stringify(e));
+}
+```
+
 # How Tos
 
 ## Create an admin user
