@@ -29,7 +29,7 @@ module.exports = function locals(req, res, next) {
   res.locals.US_STATES = US_STATES;
   res.locals.CONFIG = config;
   res.locals.hasAdminRoles =
-    req.user && (req.user.admin || req.user.groups.includes('dispute-admin'));
+    req.user && (req.user.admin || req.user.groups.includes('dispute_pro'));
 
   // DonationFlow
   res.locals.STRIPE_PUBLISHABLE_KEY = publishable;

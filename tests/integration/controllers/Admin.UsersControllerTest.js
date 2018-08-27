@@ -8,7 +8,9 @@ const {
   testForbidden,
 } = require('../../utils');
 
-const { router: { helpers: urls } } = CONFIG;
+const {
+  router: { helpers: urls },
+} = CONFIG;
 
 describe('Admin.UsersController', () => {
   let user;
@@ -19,7 +21,7 @@ describe('Admin.UsersController', () => {
   before(async () => {
     user = await createUser();
     admin = await createUser({ admin: true });
-    disputeAdmin = await createUser({ groups: ['dispute-admin'] });
+    disputeAdmin = await createUser({ groups: ['dispute_pro'] });
     moderator = await createUser({ moderator: true });
   });
 
