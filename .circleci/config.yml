@@ -3,7 +3,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/tdc-dispute-tools
   docker:
-    - image: circleci/node:8.9.1-stretch
+    - image: circleci/node:8.11.4-stretch
     - image: circleci/postgres:9.6.2-alpine
 
 jobs:
@@ -14,8 +14,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "yarn.lock" }}
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            - v1-dependencies-
       - run: yarn install
       - save_cache:
           paths:
