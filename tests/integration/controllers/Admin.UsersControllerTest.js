@@ -21,7 +21,7 @@ describe('Admin.UsersController', () => {
   before(async () => {
     user = await createUser();
     admin = await createUser({ admin: true });
-    disputeAdmin = await createUser({ groups: ['dispute_pro'] });
+    disputeAdmin = await createUser({ groups: [{ name: 'dispute_pro' }] });
     moderator = await createUser({ moderator: true });
   });
 
