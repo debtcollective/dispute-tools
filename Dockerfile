@@ -1,9 +1,10 @@
-FROM node:8.11.4
+FROM node:8.11.4-alpine
 
 WORKDIR /usr/src/app
 
-RUN apt-get update
-RUN apt-get install -y pdftk
+RUN apk update \
+    && apk upgrade \
+    && apk add build-base python git pdftk
 
 COPY . .
 
