@@ -27,7 +27,7 @@ script.
       headerLinks.push({ text: 'My Disputes', href: '/disputes/my' });
 
       var groupNames = (currentUser.groups || []).map(function (group) { return group.name; });
-      var hasAdminRole = groupNames.includes('dispute_pro');
+      var hasAdminRole = groupNames.indexOf('dispute_pro') > -1;
 
       if (currentUser.admin || hasAdminRole) {
         headerLinks.push({ text: 'Admin', href: '/admin/disputes' });
