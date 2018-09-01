@@ -51,6 +51,7 @@ module.exports = {
   },
   sentryEndpoint: process.env.SENTRY_ENDPOINT || '',
   discourse: {
+    adminRole: process.env.DISCOURSE_ADMIN_ROLE || 'dispute_pro',
     apiKey: process.env.DISCOURSE_API_KEY || '',
     apiUsername: process.env.DISCOURSE_API_USERNAME || 'system',
     baseUrl: process.env.DISCOURSE_API_BASE_URL || 'http://localhost:3000',

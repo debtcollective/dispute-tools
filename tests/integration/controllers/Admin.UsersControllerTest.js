@@ -10,6 +10,7 @@ const {
 
 const {
   router: { helpers: urls },
+  discourse: { adminRole },
 } = CONFIG;
 
 describe('Admin.UsersController', () => {
@@ -21,7 +22,7 @@ describe('Admin.UsersController', () => {
   before(async () => {
     user = await createUser();
     admin = await createUser({ admin: true });
-    disputeAdmin = await createUser({ groups: [{ name: 'dispute_pro' }] });
+    disputeAdmin = await createUser({ groups: [{ name: adminRole }] });
     moderator = await createUser({ moderator: true });
   });
 

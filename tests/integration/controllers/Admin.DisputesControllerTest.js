@@ -33,7 +33,7 @@ const { expect } = require('chai');
 
 const {
   router: { helpers: urls },
-  discourse: { baseUrl: discourse },
+  discourse: { adminRole, baseUrl: discourse },
 } = CONFIG;
 
 describe('Admin.DisputesController', () => {
@@ -45,7 +45,7 @@ describe('Admin.DisputesController', () => {
   before(async () => {
     user = await createUser();
     admin = await createUser({ admin: true });
-    disputeAdmin = await createUser({ groups: [{ name: 'dispute_pro' }] });
+    disputeAdmin = await createUser({ groups: [{ name: adminRole }] });
     moderator = await createUser({ moderator: true });
   });
 
@@ -216,7 +216,7 @@ describe('Admin.DisputesController', () => {
       url = urls.Admin.Disputes.getAvailableAdmins.url(dispute.id);
 
       nock(discourse)
-        .get('/groups/dispute_pro/members.json')
+        .get(`/groups/${adminRole}/members.json`)
         .query(true)
         .times(2)
         .reply(200, {

@@ -5,7 +5,7 @@ const moment = require('moment');
 
 const {
   sso: { logout },
-  discourse: { baseUrl: discourseEndpoint },
+  discourse: { adminRole, baseUrl: discourseEndpoint },
   environment,
   stripe: { publishable },
 } = config;
@@ -32,7 +32,7 @@ module.exports = function locals(req, res, next) {
 
   if (req.user) {
     const groupNames = (req.user.groups || []).map(group => group.name);
-    res.locals.hasAdminRoles = groupNames.includes('dispute_pro');
+    res.locals.hasAdminRoles = groupNames.includes(adminRole);
   }
 
   // DonationFlow
