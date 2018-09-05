@@ -13,10 +13,10 @@
   },
   "scripts": {
     "build": "scripty",
-    "test": "yarn test:unit && yarn test:integration",
+    "test": "yarn test:unit && yarn test:integration && yarn test:form-validations",
     "test:unit": "yarn utils:resetdb && yarn utils:knexreset && yarn nyc --reporter=lcov --report-dir coverage/unit node tests/unit.js",
     "test:integration": "yarn utils:resetdb && yarn utils:knexreset && yarn nyc --reporter=lcov --report-dir coverage/integration node tests/integration.js",
-    "test:form-validations": "scripty",
+    "test:form-validations": "yarn utils:resetdb && yarn utils:knexreset && yarn nyc --reporter=lcov --report-dir coverage/form-validations node tests/form-validations.js",
     "pretest:debug:unit": "npm run utils:resetdb && npm run utils:knexreset",
     "test:debug:unit": "node --inspect=9220 --inspect-brk tests/unit.js",
     "pretest:debug:integration": "npm run utils:resetdb && npm run utils:knexreset",
