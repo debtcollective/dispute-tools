@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-WINSTON_COLORIZE=false iron-node bin/server.js
