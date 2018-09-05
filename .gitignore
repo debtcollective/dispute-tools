@@ -68,3 +68,4 @@ config.*.env
 *.sql
 .vscode
 .node-version
+.nyc_output

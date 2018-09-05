@@ -6,7 +6,7 @@ const isDisputeAdmin = ({ user }) => {
   if (user) {
     const groupNames = (user.groups || []).map(group => group.name);
 
-    return groupNames.includes(adminRole);
+    return groupNames.includes(adminRole) || user.admin;
   }
 
   return false;

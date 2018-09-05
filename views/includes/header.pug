@@ -29,7 +29,7 @@ script.
       var groupNames = (currentUser.groups || []).map(function (group) { return group.name; });
       var hasAdminRole = groupNames.indexOf('dispute_pro') > -1;
 
-      if (hasAdminRole) {
+      if (hasAdminRole || currentUser.admin) {
         headerLinks.push({ text: 'Admin', href: '/admin/disputes' });
       }
     }
