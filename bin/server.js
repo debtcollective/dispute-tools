@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+require('module-alias/register');
+
 const path = require('path');
 
 const neonode = require(path.join(process.cwd(), '/lib/core'));

@@ -1,8 +1,12 @@
+const {
+  discourse: { adminRole },
+} = require('$config/config');
+
 const isDisputeAdmin = ({ user }) => {
   if (user) {
     const groupNames = (user.groups || []).map(group => group.name);
 
-    return groupNames.includes('dispute_pro');
+    return groupNames.includes(adminRole);
   }
 
   return false;

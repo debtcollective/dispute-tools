@@ -1,11 +1,12 @@
-const config = require('../config/config');
-const Router = require('../config/RouteMappings');
+const config = require('$config/config');
+const Router = require('$config/RouteMappings');
 const _ = require('lodash');
 const moment = require('moment');
+const { utils } = require('$root/services/auth');
 
 const {
   sso: { logout },
-  discourse: { adminRole, baseUrl: discourseEndpoint },
+  discourse: { baseUrl: discourseEndpoint },
   environment,
   stripe: { publishable },
 } = config;
@@ -31,8 +32,7 @@ module.exports = function locals(req, res, next) {
   res.locals.hasAdminRoles = false;
 
   if (req.user) {
-    const groupNames = (req.user.groups || []).map(group => group.name);
-    res.locals.hasAdminRoles = groupNames.includes(adminRole);
+    res.locals.hasAdminRoles = utils.isDisputeAdmin({ user: req.user });
   }
 
   // DonationFlow

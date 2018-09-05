@@ -26,10 +26,6 @@ module.exports = function runTests(testDir) {
       mocha.addFile(path.join(testDir, file));
     });
 
-  // mocha.addFile(
-  //   path.resolve(__dirname, 'integration', 'controllers', 'Admin.DisputesControllerTest.js'),
-  // );
-
   // run Mocha
   mocha.run(failures => {
     process.on('exit', () => {
