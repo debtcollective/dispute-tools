@@ -21,12 +21,15 @@ script.
       { text: 'Events', href: '#events' }
     ];
 
-    const currentUser = !{JSON.stringify(currentUser)};
+    var currentUser = !{JSON.stringify(currentUser)};
 
     if (currentUser) {
       headerLinks.push({ text: 'My Disputes', href: '/disputes/my' });
 
-      if (currentUser.admin || (currentUser.groups && currentUser.groups.includes('dispute-admin'))) {
+      var groupNames = (currentUser.groups || []).map(function (group) { return group.name; });
+      var hasAdminRole = groupNames.indexOf('dispute_pro') > -1;
+
+      if (hasAdminRole || currentUser.admin) {
         headerLinks.push({ text: 'Admin', href: '/admin/disputes' });
       }
     }

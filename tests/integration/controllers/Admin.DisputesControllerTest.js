@@ -16,7 +16,13 @@ const {
   testNotFound,
 } = require('../../utils');
 const {
-  wageGarnishmentDisputes: { A: { data: { forms: { 'personal-information-form': sampleData } } } },
+  wageGarnishmentDisputes: {
+    A: {
+      data: {
+        forms: { 'personal-information-form': sampleData },
+      },
+    },
+  },
 } = require('../../utils/sampleDisputeData');
 
 const { join } = require('path');
@@ -25,7 +31,10 @@ const sinon = require('sinon');
 const nock = require('nock');
 const { expect } = require('chai');
 
-const { router: { helpers: urls }, discourse: { baseUrl: discourse } } = CONFIG;
+const {
+  router: { helpers: urls },
+  discourse: { adminRole, baseUrl: discourse },
+} = CONFIG;
 
 describe('Admin.DisputesController', () => {
   let user;
@@ -36,7 +45,7 @@ describe('Admin.DisputesController', () => {
   before(async () => {
     user = await createUser();
     admin = await createUser({ admin: true });
-    disputeAdmin = await createUser({ groups: ['dispute-admin'] });
+    disputeAdmin = await createUser({ groups: [{ name: adminRole }] });
     moderator = await createUser({ moderator: true });
   });
 
@@ -207,7 +216,7 @@ describe('Admin.DisputesController', () => {
       url = urls.Admin.Disputes.getAvailableAdmins.url(dispute.id);
 
       nock(discourse)
-        .get('/groups/dispute-admin/members.json')
+        .get(`/groups/${adminRole}/members.json`)
         .query(true)
         .times(2)
         .reply(200, {

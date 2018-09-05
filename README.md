@@ -18,7 +18,7 @@ the app to work correctly
 
 You may need to install the following for certain parts of the app to work correctly
 
-* GhostScript
+* GhostScript (`brew install ghostscript`)
 
 # Installation
 

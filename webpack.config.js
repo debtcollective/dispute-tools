@@ -2,6 +2,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 const dev = process.env.NODE_ENV !== 'production';
 
@@ -19,6 +20,7 @@ module.exports = {
     // and the client-side deployments. This will include things like
     // babel-polyfill, Vuejs, lodash functions used in both places, and
     // the NodeSupport CustomEvent lib used to build most of the front end
+    new ProgressBarPlugin(),
     new webpack.optimize.CommonsChunkPlugin('shared'),
     // This plugin will wholesale replace 'process.env.NODE_ENV' with the
     // value on the right so we need to make sure to wrap it in quotes

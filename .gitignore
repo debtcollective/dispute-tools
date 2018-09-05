@@ -67,3 +67,5 @@ views/includes/svg/sprite.svg
 config.*.env
 *.sql
 .vscode
+.node-version
+.nyc_output

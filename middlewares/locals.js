@@ -1,7 +1,8 @@
-const config = require('../config/config');
-const Router = require('../config/RouteMappings');
+const config = require('$config/config');
+const Router = require('$config/RouteMappings');
 const _ = require('lodash');
 const moment = require('moment');
+const { utils } = require('$root/services/auth');
 
 const {
   sso: { logout },
@@ -28,8 +29,11 @@ module.exports = function locals(req, res, next) {
   res.locals.marked = marked;
   res.locals.US_STATES = US_STATES;
   res.locals.CONFIG = config;
-  res.locals.hasAdminRoles =
-    req.user && (req.user.admin || req.user.groups.includes('dispute-admin'));
+  res.locals.hasAdminRoles = false;
+
+  if (req.user) {
+    res.locals.hasAdminRoles = utils.isDisputeAdmin({ user: req.user });
+  }
 
   // DonationFlow
   res.locals.STRIPE_PUBLISHABLE_KEY = publishable;
