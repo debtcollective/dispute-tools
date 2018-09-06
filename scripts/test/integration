@@ -6,4 +6,4 @@ export PORT=9090
 yarn utils:resetdb
 yarn utils:knexreset
 
-yarn nyc --reporter=lcov --report-dir coverage/form-validations node tests/form-validations.js
+yarn nyc --reporter=lcov --report-dir coverage/integration node tests/integration.js

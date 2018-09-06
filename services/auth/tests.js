@@ -1,18 +1,6 @@
-const {
-  discourse: { adminRole },
-} = require('$config/config');
+const isDisputeAdmin = ({ user }) => user.admin;
 
-const isDisputeAdmin = ({ user }) => {
-  if (user) {
-    const groupNames = (user.groups || []).map(group => group.name);
-
-    return groupNames.includes(adminRole) || user.admin;
-  }
-
-  return false;
-};
-
-const loggedIn = ({ user }) => user !== undefined;
+const loggedIn = ({ user }) => !!user;
 const isDisputeOwner = ({ dispute, user }) => user.id === dispute.userId;
 const ownerOrAdmin = req => [isDisputeAdmin, isDisputeOwner].some(test => test(req));
 

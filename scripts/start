@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-
-npx knex migrate:latest
-node bin/server.js

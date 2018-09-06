@@ -28,8 +28,8 @@ const middlewares = [
     path: 'middlewares/MethodOverride.js',
   },
   {
-    name: 'Authentication handler',
-    path: 'middlewares/handleAuthentication.js',
+    name: 'Sessions',
+    path: 'middlewares/sessions.js',
   },
   {
     name: 'Locals',
@@ -38,6 +38,14 @@ const middlewares = [
   {
     name: 'Flash Messages',
     path: 'middlewares/flashMessages.js',
+  },
+  {
+    name: 'Passport Initialize',
+    path: 'middlewares/PassportInit.js',
+  },
+  {
+    name: 'Passport Session',
+    path: 'middlewares/PassportSession.js',
   },
   {
     name: 'SafeLocals',

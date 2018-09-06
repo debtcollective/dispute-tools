@@ -1,0 +1,76 @@
+/* globals Class, BaseController, User, UserMailer */
+const Raven = require('raven');
+const passport = require('$lib/passport');
+const sso = require('$services/sso');
+const config = require('$config/config');
+
+const SessionsController = Class('SessionsController').inherits(BaseController)({
+  prototype: {
+    create(req, res) {
+      if (req.user) {
+        req.flash('info', 'You are already logged in');
+
+        return res.redirect(config.router.helpers.root.url());
+      }
+
+      return res.redirect(sso.buildRedirect(config.router.helpers.callback.url()));
+    },
+
+    destroy(req, res, next) {
+      req.session.destroy(err => {
+        if (err) return next(err);
+
+        req.logout();
+        req.flash('success', 'Signed off');
+
+        res.redirect(config.router.helpers.root.url());
+      });
+    },
+
+    callback(req, res, next) {
+      return passport.authenticate('discourse', (err, user) => {
+        if (err) {
+          req.flash(
+            'error',
+            'Unable to login. Please try again or <a href="/contact">Contact us</a> if the error persists.',
+          );
+
+          Raven.captureException(err);
+          return res.redirect(config.router.helpers.root.url());
+        }
+
+        if (user.banned) {
+          req.flash('warning', 'This account is suspended.');
+
+          return res.redirect(config.router.helpers.root.url());
+        }
+
+        return req.logIn(user, loginError => {
+          if (loginError) {
+            return next(loginError);
+          }
+
+          req.flash('success', 'Welcome to The Debt Collective');
+
+          return req.session.save(() => {
+            Raven.setContext({
+              user: {
+                email: user.email,
+                id: user.id,
+                external_id: user.external_id,
+              },
+            });
+
+            if (user.admin) {
+              return res.redirect(config.router.mappings.Admin.Disputes.url());
+            }
+
+            res.redirect(config.router.mappings.Disputes.myDisputes.url());
+          });
+        });
+      })(req, res, next);
+    },
+  },
+});
+
+module.exports = new SessionsController();

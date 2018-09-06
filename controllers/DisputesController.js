@@ -120,7 +120,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           const email = new MemberUpdatedDisputeEmail(req.user, dispute, ds);
           try {
             await email.send();
-            logger.info('Successfully sent dispute updated email to organizers', email.toString());
+            logger.info('Successfully sent dispute updated email to organizers');
           } catch (e) {
             res.flash('error', 'Failed to send dispute update email to organizers');
           }

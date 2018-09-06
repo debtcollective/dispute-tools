@@ -6,8 +6,8 @@ block title
 
 block content
   -
-    var avatarUrl = CONFIG.discourse.baseUrl + currentUser.avatarTemplate.replace('{size}', '512')
-    var profileUrl = CONFIG.discourse.baseUrl + `/u/${currentUser.username}`
+    var avatarUrl = currentUser.getAvatarUrl();
+    var profileUrl = currentUser.getProfileUrl();
 
   .ProfileWrapper.wrapper.py4.px2.flex.items-center.relative
     .max-width-3.mx-auto.relative.-fw

@@ -7,7 +7,7 @@
     return dispute.data.disputeConfirmFollowUp;
   }
 
-  var avatarUrl = CONFIG.discourse.baseUrl + currentUser.avatarTemplate.replace('{size}', '240')
+  var avatarUrl = currentUser.getAvatarUrl();
 
 .Dispute__step-content(
   data-dispute-follow-up

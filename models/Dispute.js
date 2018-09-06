@@ -38,6 +38,7 @@ const Dispute = Class('Dispute')
   async search(qs) {
     // back-end search
     const query = this.query();
+    query.include(Dispute.defaultIncludes);
 
     if (qs.filters) {
       // If we're passed a human readable id just search by that and ignore everything else
@@ -61,19 +62,17 @@ const Dispute = Class('Dispute')
       }
     }
 
-    query.include(Dispute.defaultIncludes);
+    // Filter by user name
+    if (qs.name) {
+      query
+        .select(['Disputes.*', 'Users.name'])
+        .join('Users', 'Disputes.user_id', 'Users.id')
+        .where('Users.name', 'ILIKE', `%${qs.name}%`);
+    }
 
     const records = await query;
 
-    const externalUserIds = qs.name
-      ? (await discourse.getUsers({ filter: qs.name })).map(u => u.externalId)
-      : [];
-
     return records.reduce((acc, record) => {
-      const nameFound =
-        // If no name passed in
-        !qs.name || externalUserIds.find(id => id === record.user.externalId);
-
       const statusFound =
         // If no status passed in
         !qs.status ||
@@ -83,7 +82,7 @@ const Dispute = Class('Dispute')
           // so we know the first one will be the most recent, no need to order
           record.statuses[0].status === qs.status);
 
-      if (nameFound && statusFound) {
+      if (statusFound) {
         return [...acc, record.id];
       }
 

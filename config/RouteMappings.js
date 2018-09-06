@@ -48,12 +48,17 @@ const routeMappings = RouteMappings()
   })
 
   .get('/login', {
-    to: 'Home#login',
+    to: 'Sessions#create',
     as: 'login',
   })
 
+  .get('/auth/discourse/callback', {
+    to: 'Sessions#callback',
+    as: 'callback',
+  })
+
   .get('/logout', {
-    to: 'Home#logout',
+    to: 'Sessions#destroy',
     as: 'logout',
   })
 
