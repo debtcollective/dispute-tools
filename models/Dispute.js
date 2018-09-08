@@ -27,6 +27,7 @@ const Dispute = Class('Dispute')
     'deactivated',
     'createdAt',
     'updatedAt',
+    'disputeThreadId',
   ],
 
   defaultIncludes: '[user, statuses]',
