@@ -1,12 +1,14 @@
-/* globals CONFIG, User */
-
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const { errors: { AuthenticationFailure }, Raven, logger } = require('../lib');
+const {
+  errors: { AuthenticationFailure },
+  Raven,
+  logger,
+} = require('$lib');
 const {
   siteURL,
   sso: { endpoint, secret, jwtSecret, cookieName, cookieDomain },
-} = require('../config/config');
+} = require('$config/config');
 const { getSsoUserEnsuringCreated } = require('./users');
 
 const nonces = {};

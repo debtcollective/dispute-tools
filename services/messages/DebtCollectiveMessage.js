@@ -1,9 +1,9 @@
 const pug = require('pug');
 const { join } = require('path');
 const nodemailer = require('nodemailer');
-const { smtp } = require('../../config/config');
-const { sesInstance: SES } = require('../../lib/AWS');
-const { Raven, logger } = require('../../lib');
+const { smtp } = require('$config/config');
+const { sesInstance: SES } = require('$lib/AWS');
+const { Raven, logger } = require('$lib');
 
 const transport = nodemailer.createTransport(SES !== null ? { SES } : smtp);
 

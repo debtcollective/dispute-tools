@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const Field = require('../../lib/data/form-definitions/validations');
+const Field = require('$form-definitions/validations');
 
 describe('Field', () => {
   describe('constructor', () => {

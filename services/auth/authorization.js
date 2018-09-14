@@ -1,4 +1,7 @@
-const { logger, errors: { ForbiddenError } } = require('../../lib');
+const {
+  logger,
+  errors: { ForbiddenError },
+} = require('$lib');
 
 /**
  * Creates an authorization middleware that will allow

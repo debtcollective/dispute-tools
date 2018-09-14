@@ -14,7 +14,8 @@
     "$lib": "./lib",
     "$shared": "./shared",
     "$services": "./services",
-    "$tests": "./tests"
+    "$tests": "./tests",
+    "$form-definitions": "./lib/data/form-definitions"
   },
   "scripts": {
     "build": "scripty",

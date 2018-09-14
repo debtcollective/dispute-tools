@@ -2,9 +2,8 @@
 
 process.env.HEADLESS = 1;
 
-require('../../lib/core');
-
-/* global DisputeRenderer */
+require('$lib/core');
+const DisputeRenderer = require('$models/DisputeRenderer');
 
 const disputeId = process.argv[2];
 

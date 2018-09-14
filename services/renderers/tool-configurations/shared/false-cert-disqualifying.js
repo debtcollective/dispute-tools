@@ -1,4 +1,4 @@
-const DisputeTemplate = require('../../DisputeTemplate');
+const DisputeTemplate = require('$services/renderers/DisputeTemplate');
 const { pathHelper, normalizeSsn, formatDate } = require('./utils');
 
 const page1 = pathHelper(0)(1);
@@ -86,10 +86,7 @@ module.exports = {
 
           return ret;
         },
-        getWasAsked({
-          'atbd-reason-not-to-benefit': asked,
-          'atbd-inform': inform,
-        }) {
+        getWasAsked({ 'atbd-reason-not-to-benefit': asked, 'atbd-inform': inform }) {
           const ret = {};
 
           if (asked === 'yes') {
@@ -115,9 +112,7 @@ module.exports = {
           }, ${form.state}, ${form['zip-code']}`;
         const schoolAddress2 =
           form['school-address2'] ||
-          `${form['school-city']}, ${form['school-state']}, ${
-            form['school-zip-code']
-          }`;
+          `${form['school-city']}, ${form['school-state']}, ${form['school-zip-code']}`;
 
         const schoolFrom = new Date(form['school-attended-from']);
         const schoolTo = new Date(form['school-attended-to']);
@@ -133,9 +128,7 @@ module.exports = {
             [page1('Email')]: form.email,
             [page1('SchoolName')]: form.schoolName,
             [page1('ProgramName')]: form['atbd-program-of-study'],
-            [page1('SchoolAddress')]: `${
-              form['school-address']
-            }, ${schoolAddress2}`,
+            [page1('SchoolAddress')]: `${form['school-address']}, ${schoolAddress2}`,
             [page1('DateFrom')]: formatDate(schoolFrom),
             [page1('DateTo')]: formatDate(schoolTo),
             // This one has the wrong name...

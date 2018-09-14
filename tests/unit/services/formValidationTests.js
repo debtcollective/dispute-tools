@@ -3,12 +3,12 @@ const {
   extractToolFormValidations,
   getCheckitConfig,
   foldToOptionFieldsValidationsObject,
-} = require('../../../services/formValidation');
-const creditReportDispute = require('../../../lib/data/form-definitions/credit-report-dispute');
-const generalDebtDispute = require('../../../lib/data/form-definitions/general-debt-dispute');
-const privateStudentLoanDispute = require('../../../lib/data/form-definitions/private-student-loan-dispute');
-const taxOffsetDispute = require('../../../lib/data/form-definitions/tax-offset-dispute');
-const wageGarnishmentDispute = require('../../../lib/data/form-definitions/wage-garnishment-dispute');
+} = require('$services/formValidation');
+const creditReportDispute = require('$form-definitions/credit-report-dispute');
+const generalDebtDispute = require('$form-definitions/general-debt-dispute');
+const privateStudentLoanDispute = require('$form-definitions/private-student-loan-dispute');
+const taxOffsetDispute = require('$form-definitions/tax-offset-dispute');
+const wageGarnishmentDispute = require('$form-definitions/wage-garnishment-dispute');
 
 describe('formValidations', () => {
   describe('checkit configuration cache', () => {

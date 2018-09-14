@@ -1,4 +1,4 @@
-/* globals Class, Krypton, CONFIG, Attachment, Dispute, DisputeRenderer */
+/* globals Class, Krypton, Attachment */
 /* eslint max-len: 0 */
 
 const path = require('path');
@@ -8,12 +8,13 @@ const OS = require('os');
 const fs = require('fs-extra');
 const request = require('request');
 const archiver = require('archiver');
-const { render } = require('../services/render');
+const { render } = require('$services/render');
+const Dispute = require('$models/Dispute');
 
 const LOCAL_URI_REGEXP = /^\//;
 const REMOTE_URI_REGEXP = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=+$,\w]+@)[A-Za-z0-9.-]+)((?:\/[+~%/.\w-_]*)?\??(?:[-+=&;%@.\w_]*)#?(?:[\w]*))?)/;
-const { assignDefaultConfig } = require('../lib/AWS');
-const PrivateAttachmentStorage = require('./PrivateAttachmentStorage');
+const { assignDefaultConfig } = require('$lib/AWS');
+const PrivateAttachmentStorage = require('$models/PrivateAttachmentStorage');
 
 const DisputeRenderer = Class('DisputeRenderer')
   .inherits(Krypton.Model)

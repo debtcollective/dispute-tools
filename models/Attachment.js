@@ -1,7 +1,7 @@
 /* global Krypton, Class, CONFIG, AWS, S3Uploader */
 
-const { assignDefaultConfig } = require('../lib/AWS');
-const PrivateAttachmentStorage = require('./PrivateAttachmentStorage');
+const { assignDefaultConfig } = require('$lib/AWS');
+const PrivateAttachmentStorage = require('$models/PrivateAttachmentStorage');
 
 const Attachment = Class('Attachment')
   .inherits(Krypton.Model)

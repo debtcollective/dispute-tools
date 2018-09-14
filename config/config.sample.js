@@ -67,6 +67,6 @@ module.exports = {
     state: process.env.DOE_DISCLOSURE_STATE || 'Alaska',
     zip: process.env.DOE_DISCLOSURE_ZIP || '12345',
   },
-  database: require('../knexfile.js'),
-  middlewares: require('./middlewares'),
+  database: require('$root/knexfile.js'),
+  middlewares: require('$config/middlewares'),
 };

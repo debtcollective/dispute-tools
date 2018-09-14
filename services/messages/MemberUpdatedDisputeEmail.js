@@ -1,7 +1,7 @@
 const DebtCollectiveMessage = require('./DebtCollectiveMessage');
 const {
   mailers: { contactEmail },
-} = require('../../config/config');
+} = require('$config/config');
 
 class MemberUpdatedDisputeEmail extends DebtCollectiveMessage {
   constructor(member, dispute, disputeStatus) {

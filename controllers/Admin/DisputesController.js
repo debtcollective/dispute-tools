@@ -1,19 +1,21 @@
-/* globals neonode, Class, Admin, RestfulController, DisputeTool, CONFIG, Dispute,
- DisputeStatus, logger, User */
-const path = require('path');
+/* globals Class, Admin */
 const _ = require('lodash');
 const Promise = require('bluebird');
-const Dispute = require('../../models/Dispute');
-const discourse = require('../../lib/discourse');
-const { NotFoundError } = require('../../lib/errors');
+const Dispute = require('$models/Dispute');
+const { discourse } = require('$lib');
+const { NotFoundError } = require('$lib/errors');
+const DisputeTool = require('$models/DisputeTool');
+const DisputeStatus = require('$models/DisputeStatus');
+const config = require('$config/config');
+const RestfulController = require('$lib/core/controllers/RestfulController');
 
 const {
   authenticate,
   authorize,
   tests: { isDisputeAdmin },
-} = require('../../services/auth');
+} = require('$services/auth');
 
-const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
+const RESTfulAPI = require('$lib/RESTfulAPI');
 
 global.Admin = global.Admin || {};
 
@@ -154,7 +156,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         await DisputeStatus.createForDispute(dispute, req.body);
 
         req.flash('success', 'The dispute status has been updated.');
-        res.redirect(CONFIG.router.helpers.Admin.Disputes.url());
+        res.redirect(config.router.helpers.Admin.Disputes.url());
       } catch (e) {
         next(e);
       }
@@ -182,7 +184,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         await req.dispute.setForm(req.body);
         await req.dispute.save();
         req.flash('success', 'The dispute has been updated.');
-        res.redirect(CONFIG.router.helpers.Admin.Disputes.show.url(req.dispute.id));
+        res.redirect(config.router.helpers.Admin.Disputes.show.url(req.dispute.id));
       } catch (e) {
         next(e);
       }
@@ -193,7 +195,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         .destroy()
         .then(() => {
           req.flash('warning', 'The Dispute has been deactivated.');
-          return res.redirect(CONFIG.router.helpers.Admin.Disputes.url());
+          return res.redirect(config.router.helpers.Admin.Disputes.url());
         })
         .catch(next);
     },

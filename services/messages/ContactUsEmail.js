@@ -1,6 +1,6 @@
 const {
   mailers: { contactEmail },
-} = require('../../config/config');
+} = require('$config/config');
 const DebtCollectiveMessage = require('./DebtCollectiveMessage');
 
 /**
