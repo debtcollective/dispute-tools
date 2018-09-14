@@ -7,7 +7,11 @@ const Dispute = require('../../models/Dispute');
 const discourse = require('../../lib/discourse');
 const { NotFoundError } = require('../../lib/errors');
 
-const { authenticate, authorize, tests: { isDisputeAdmin } } = require('../../services/auth');
+const {
+  authenticate,
+  authorize,
+  tests: { isDisputeAdmin },
+} = require('../../services/auth');
 
 const RESTfulAPI = require(path.join(process.cwd(), 'lib', 'RESTfulAPI'));
 
@@ -147,7 +151,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       dispute.user = discourse.mapUser(await discourse.getUser(dispute.user));
 
       try {
-        await DisputeStatus.createForDispute(dispute, req.user, req.body);
+        await DisputeStatus.createForDispute(dispute, req.body);
 
         req.flash('success', 'The dispute status has been updated.');
         res.redirect(CONFIG.router.helpers.Admin.Disputes.url());

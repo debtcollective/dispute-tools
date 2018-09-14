@@ -1,13 +1,15 @@
-/* globals User, CONFIG, DisputeStatus, Dispute, DisputeTool, Attachment */
-
-const expect = require('chai').expect;
+const { expect } = require('chai');
 const sinon = require('sinon');
-const path = require('path');
 const uuid = require('uuid');
-const PrivateAttachmentStorage = require('../../../models/PrivateAttachmentStorage');
-const { createUser, createDispute, truncate } = require('../../utils');
-const DisputeStatuses = require('../../../shared/enum/DisputeStatuses');
-const { wageGarnishmentDisputes } = require('../../utils/sampleDisputeData');
+const path = require('path');
+const PrivateAttachmentStorage = require('$models/PrivateAttachmentStorage');
+const DisputeStatuses = require('$shared/enum/DisputeStatuses');
+const DisputeStatus = require('$models/DisputeStatus');
+const Dispute = require('$models/Dispute');
+const DisputeTool = require('$models/DisputeTool');
+
+const { createUser, createDispute, truncate } = require('$tests/utils');
+const { wageGarnishmentDisputes } = require('$tests/utils/sampleDisputeData');
 
 describe('Dispute', () => {
   let user;
@@ -63,6 +65,10 @@ describe('Dispute', () => {
       const statuses = await DisputeStatus.query().where('dispute_id', dispute.id);
       expect(statuses.length).eq(1);
       expect(statuses[0].status).eq(DisputeStatuses.incomplete);
+    });
+
+    it('should create the dispute and save a new discourse topic thread id', async () => {
+      expect(dispute.disputeThreadId).not.undefined;
     });
   });
 

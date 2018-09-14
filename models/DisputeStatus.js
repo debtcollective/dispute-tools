@@ -1,8 +1,6 @@
-/* globals Krypton, Class, Dispute, DisputeStatus */
-
-const DisputeStatuses = require('../shared/enum/DisputeStatuses');
-const { OrganizerUpdatedDisputeEmail } = require('../services/email');
+/* globals Krypton, Class */
 const _ = require('lodash');
+const DisputeStatuses = require('$shared/enum/DisputeStatuses');
 
 const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
   tableName: 'DisputeStatuses',
@@ -33,30 +31,19 @@ const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
     ],
   },
 
-  async createForDispute(dispute, disputeAdmin, { comment, status, note, notify }) {
+  async createForDispute(dispute, { comment, status, note, notify }) {
     const disputeStatus = new DisputeStatus({
       comment,
       status,
       note,
       disputeId: dispute.id,
+      // This is legacy but let's keep storing it for now
+      // not sure there's a good reason to remove it right away
       notify: typeof notify === 'boolean' || notify === 'on' || notify === 'yes' ? notify : false,
     });
 
     await disputeStatus.save();
-
-    if (!disputeStatus.notify) {
-      return;
-    }
-
-    const { assigned: assignedAdmins } = await dispute.getAssignedAndAvailableAdmins();
-
-    const email = new OrganizerUpdatedDisputeEmail(
-      dispute.user,
-      [disputeAdmin.username, ...assignedAdmins.map(u => u.username)],
-      dispute,
-      disputeStatus,
-    );
-    return email.send();
+    return disputeStatus;
   },
 
   prototype: {

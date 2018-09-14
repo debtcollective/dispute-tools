@@ -1,14 +1,17 @@
-/* globals Class, Krypton, Attachment, DisputeTool, DisputeStatus, DisputeRenderer, UserMailer
- User, logger */
+/* globals Class, Krypton */
 /* eslint arrow-body-style: 0 */
 
 const _ = require('lodash');
-const { basePath } = require('../lib/AWS');
-const DisputeAttachment = require('./DisputeAttachment');
-const discourse = require('../lib/discourse');
-const { findAllDiscourseUsersEnsuringCreated } = require('../services/users');
-const { getCheckitConfig, filterDependentFields } = require('../services/formValidation');
-const Checkit = require('../shared/Checkit');
+const { basePath } = require('$lib/AWS');
+const DisputeAttachment = require('$models/DisputeAttachment');
+const DisputeTool = require('$models/DisputeTool');
+const DisputeStatus = require('$models/DisputeStatus');
+const DisputeRenderer = require('$models/DisputeRenderer');
+const { logger, discourse } = require('$lib');
+const { findAllDiscourseUsersEnsuringCreated } = require('$services/users');
+const { getCheckitConfig, filterDependentFields } = require('$services/formValidation');
+const Checkit = require('$shared/Checkit');
+const { DisputeThreadOriginMessage } = require('$services/email');
 
 const Dispute = Class('Dispute')
   .inherits(Krypton.Model)
@@ -106,8 +109,8 @@ const Dispute = Class('Dispute')
     return query;
   },
 
-  createFromTool({ user, disputeToolId, option }) {
-    const dispute = new Dispute({
+  async createFromTool({ user, disputeToolId, option }) {
+    let dispute = new Dispute({
       disputeToolId,
       userId: user.id,
     });
@@ -116,17 +119,30 @@ const Dispute = Class('Dispute')
       status: 'Incomplete',
     });
 
+    const disputeTool = await DisputeTool.findById(disputeToolId);
+
     dispute.setOption(option);
 
-    return Dispute.transaction(async trx => {
+    await Dispute.transaction(async trx => {
       dispute.transacting(trx);
       status.transacting(trx);
 
-      await dispute.save();
       status.disputeId = dispute.id;
+
       await status.save();
-      return dispute;
     });
+
+    // do this to get the readable id the database created
+    // needed for the discourse topic subject
+    dispute = await Dispute.findById(dispute.id);
+
+    const {
+      post: { topic_id: topicId },
+    } = await new DisputeThreadOriginMessage(user, dispute, disputeTool).send();
+
+    dispute.disputeThreadId = topicId;
+    await dispute.save();
+    return dispute;
   },
 
   prototype: {
@@ -450,7 +466,7 @@ const Dispute = Class('Dispute')
 
 // filter out deactivated disputes by default
 Dispute.oldQuery = Dispute.query;
-Dispute.query = function (knex, includeDeactivated = false) {
+Dispute.query = (knex, includeDeactivated = false) => {
   const query = Dispute.oldQuery(knex);
   return includeDeactivated ? query : query.andWhere({ deactivated: false });
 };

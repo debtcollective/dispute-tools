@@ -9,7 +9,12 @@
   },
   "_moduleAliases": {
     "$root": ".",
-    "$config": "./config"
+    "$config": "./config",
+    "$models": "./models",
+    "$lib": "./lib",
+    "$shared": "./shared",
+    "$services": "./services",
+    "$tests": "./tests"
   },
   "scripts": {
     "build": "scripty",

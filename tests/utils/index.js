@@ -1,12 +1,16 @@
 /* globals CONFIG, User, Dispute, DisputeTool */
 const uuid = require('uuid');
-const sso = require('../../services/sso');
 const sa = require('superagent');
 const { expect } = require('chai');
 const nock = require('nock');
 const { execSync } = require('child_process');
+const sso = require('$services/sso');
 
-const { siteURL, sso: { endpoint }, discourse: { baseUrl } } = require('../../config/config');
+const {
+  siteURL,
+  sso: { endpoint },
+  discourse: { baseUrl },
+} = require('$config/config');
 
 const agent = sa.agent();
 
@@ -27,8 +31,36 @@ const withSiteUrl = url => {
   return `${siteURL}${url.startsWith('/') ? '' : '/'}${url}`;
 };
 
+nock(baseUrl)
+  .post('/posts')
+  .times(1000)
+  .reply(200, (uri, sent) => ({
+    sent,
+    post: { topic_id: ids.nextExternal() },
+  }));
+
+const testGroups = {
+  dispute_pro: {
+    members: ['ann_l', 'dawn_l'],
+    owners: [],
+  },
+  dispute_coordinator: { members: ['dawn_l'], owners: [] },
+};
+
+Object.keys(testGroups).forEach(groupName =>
+  nock(baseUrl)
+    .get(`/groups/${groupName}/members.json`)
+    .query(true)
+    .times(1000)
+    .reply(200, {
+      members: testGroups[groupName].members.map((username, id) => ({ username, id })),
+      owners: testGroups[groupName].owners.map((username, id) => ({ username, id })),
+    }),
+);
+
 // create objects helper
 const helpers = {
+  testGroups,
   truncate(...models) {
     if (models.length === 1 && Array.isArray(models[0])) {
       models = models[0];
@@ -49,14 +81,18 @@ const helpers = {
 
     await user.save();
 
+    const username = uuid.v4();
+    const email = `${username}@example.com`;
+
     nock(baseUrl)
       .get(`/admin/users/${params.externalId}.json`)
       .query(true)
       .times(100)
       .reply(200, {
         ...user,
-        email: `${uuid.v4()}@example.com`,
-        username: uuid.v4(),
+        email,
+        username,
+        name: username,
         avatar_template: '{size}',
         id: user.externalId,
       });
@@ -65,8 +101,9 @@ const helpers = {
       groups,
       admin,
       moderator,
-      email: `${uuid.v4()}@example.com`,
-      username: uuid.v4(),
+      email,
+      username,
+      name: username,
       avatarTemplate: '{size}',
     });
   },
@@ -90,6 +127,7 @@ const helpers = {
     if (tool === null) {
       tool = await DisputeTool.first();
     }
+
     const dispute = await Dispute.createFromTool({
       user,
       disputeToolId: tool.id,
