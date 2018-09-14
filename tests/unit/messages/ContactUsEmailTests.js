@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { ContactUsEmail } = require('../../../services/email');
+const { ContactUsEmail } = require('$services/messages');
 
 const { ForAdmin, ForVisitor } = ContactUsEmail;
 

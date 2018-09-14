@@ -1,6 +1,8 @@
 const { expect } = require('chai');
-const { ContactUsEmail } = require('../../../services/email');
-const { mailers: { contactEmail } } = require('../../../config/config');
+const { ContactUsEmail } = require('$services/messages');
+const {
+  mailers: { contactEmail },
+} = require('$config/config');
 
 const { ForAdmin } = ContactUsEmail;
 

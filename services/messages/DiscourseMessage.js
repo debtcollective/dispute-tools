@@ -1,6 +1,6 @@
 const { uniq, flatten, isNil, identity } = require('lodash');
 const { join } = require('path');
-const Email = require('./Email');
+const DebtCollectiveMessage = require('./DebtCollectiveMessage');
 const discourse = require('$lib/discourse');
 
 /**
@@ -23,7 +23,7 @@ const discourse = require('$lib/discourse');
  *
  * @abstract
  */
-class DiscourseMessage extends Email {
+class DiscourseMessage extends DebtCollectiveMessage {
   constructor(name, topicId, config) {
     super(name, config);
     this.isThreaded = !isNil(topicId);
@@ -58,7 +58,7 @@ class DiscourseMessage extends Email {
 
   render(locals = this.locals, templateName = this._name) {
     const getMarkdown = require(join(
-      Email.templatesDirectory,
+      DebtCollectiveMessage.templatesDirectory,
       `${templateName}${templateName.endsWith('.md.js') ? '' : '.md.js'}`,
     ));
 

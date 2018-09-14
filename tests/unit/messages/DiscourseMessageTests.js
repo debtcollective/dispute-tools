@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const DiscourseMessage = require('$services/email/DiscourseMessage');
+const DiscourseMessage = require('$services/messages/DiscourseMessage');
 const discourse = require('$lib/discourse');
 
 describe('DiscourseMessage', () => {

@@ -1,7 +1,10 @@
 const { expect } = require('chai');
 const { createUser, createDispute, testGroups } = require('$tests/utils');
-const { DisputeThreadOriginMessage } = require('$services/email');
+const { DisputeThreadOriginMessage } = require('$services/messages');
 const DisputeTool = require('$models/DisputeTool');
+const {
+  discourse: { coordinatorRole },
+} = require('$config/config');
 
 describe(DisputeThreadOriginMessage.name, () => {
   let dispute;
@@ -38,10 +41,8 @@ describe(DisputeThreadOriginMessage.name, () => {
     });
 
     it('should send to the coordinators', () => {
-      expect(sent).contain(
-        `name=\\"target_usernames\\"\\r\\n\\r\\n${member.username},${
-          testGroups.dispute_coordinator.members
-        }`,
+      expect(sent).match(
+        new RegExp(`name="target_usernames"\r\n\r\n${member.username},${coordinatorRole}`),
       );
     });
 

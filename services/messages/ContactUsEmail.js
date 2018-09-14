@@ -1,10 +1,12 @@
-const { mailers: { contactEmail } } = require('../../config/config');
-const Email = require('./Email');
+const {
+  mailers: { contactEmail },
+} = require('../../config/config');
+const DebtCollectiveMessage = require('./DebtCollectiveMessage');
 
 /**
  * Sends contact us emails to the Debt Collective organizers
  */
-class ForAdmin extends Email {
+class ForAdmin extends DebtCollectiveMessage {
   /**
    * @param {string} message Message for the Debt Collective organizers
    * @param {string} email The email address of the visitor contacting the Debt Collective
@@ -29,7 +31,7 @@ class ForAdmin extends Email {
 /**
  * Sends a confirmation message to the visitor attempting to contact the organizers
  */
-class ForVisitor extends Email {
+class ForVisitor extends DebtCollectiveMessage {
   /**
    * @param {string} message Message for the Debt Collective organizers
    * @param {string} email The email address of the visitor contacting the Debt Collective

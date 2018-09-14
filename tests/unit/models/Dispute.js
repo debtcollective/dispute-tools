@@ -23,7 +23,12 @@ describe('Dispute', () => {
   describe('findById', () => {
     let dispute;
     beforeEach(async () => {
-      dispute = await createDispute(user);
+      try {
+        dispute = await createDispute(user);
+      } catch (e) {
+        console.error(JSON.stringify(e, null, 2));
+        throw e;
+      }
     });
 
     afterEach(() => truncate(Dispute));

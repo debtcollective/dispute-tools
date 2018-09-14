@@ -1,7 +1,9 @@
-const Email = require('./Email');
-const { mailers: { contactEmail } } = require('../../config/config');
+const DebtCollectiveMessage = require('./DebtCollectiveMessage');
+const {
+  mailers: { contactEmail },
+} = require('../../config/config');
 
-class MemberUpdatedDisputeEmail extends Email {
+class MemberUpdatedDisputeEmail extends DebtCollectiveMessage {
   constructor(member, dispute, disputeStatus) {
     super('MemberUpdatedDisputeEmail', {
       to: MemberUpdatedDisputeEmail.to,

@@ -1,8 +1,14 @@
-/* globals CONFIG, Dispute, DisputeTool, User, Account */
-
 const path = require('path');
-const expect = require('chai').expect;
+const { expect } = require('chai');
 const sinon = require('sinon');
+const Dispute = require('$models/Dispute');
+const DisputeTool = require('$models/DisputeTool');
+const { MemberUpdatedDisputeEmail } = require('$services/messages');
+const PrivateAttachmentStorage = require('$models/PrivateAttachmentStorage');
+
+const {
+  router: { helpers: urls },
+} = require('$config/config');
 
 const {
   createUser,
@@ -16,11 +22,7 @@ const {
   testForbidden,
   testBadRequest,
   testOk,
-} = require('../../utils');
-const { MemberUpdatedDisputeEmail } = require('../../../services/email');
-const PrivateAttachmentStorage = require('../../../models/PrivateAttachmentStorage');
-
-const urls = CONFIG.router.helpers;
+} = require('$tests/utils');
 
 describe('DisputesController', () => {
   let user;

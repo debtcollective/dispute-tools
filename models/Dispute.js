@@ -11,7 +11,7 @@ const { logger, discourse } = require('$lib');
 const { findAllDiscourseUsersEnsuringCreated } = require('$services/users');
 const { getCheckitConfig, filterDependentFields } = require('$services/formValidation');
 const Checkit = require('$shared/Checkit');
-const { DisputeThreadOriginMessage } = require('$services/email');
+const { DisputeThreadOriginMessage } = require('$services/messages');
 
 const Dispute = Class('Dispute')
   .inherits(Krypton.Model)
@@ -127,7 +127,9 @@ const Dispute = Class('Dispute')
       dispute.transacting(trx);
       status.transacting(trx);
 
-      status.disputeId = dispute.id;
+      const [disputeId] = await dispute.save();
+
+      status.disputeId = disputeId;
 
       await status.save();
     });

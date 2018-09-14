@@ -1,14 +1,21 @@
-/* globals Dispute, RestfulController, Class, DisputeTool, CONFIG, DisputeStatus,
-    UserMailer, NotFoundError, DisputeRenderer, Dispute */
+/* globals RestfulController, Class */
 const Promise = require('bluebird');
 const marked = require('marked');
 const _ = require('lodash');
-const { BadRequest } = require('../lib/errors');
-const DisputeStatuses = require('../shared/enum/DisputeStatuses');
-const { CompletedDisputeEmail, MemberUpdatedDisputeEmail } = require('../services/email');
-const { Raven, logger } = require('../lib');
+const { BadRequest, NotFoundError } = require('$lib/errors');
+const DisputeStatuses = require('$shared/enum/DisputeStatuses');
+const { CompletedDisputeEmail, MemberUpdatedDisputeEmail } = require('$services/messages');
+const { Raven, logger } = require('$lib');
+const Dispute = require('$models/Dispute');
+const DisputeRenderer = require('$models/DisputeRenderer');
+const DisputeStatus = require('$models/DisputeStatus');
+const config = require('$config/config');
 
-const { authenticate, authorize, tests: { ownerOrAdmin } } = require('../services/auth');
+const {
+  authenticate,
+  authorize,
+  tests: { ownerOrAdmin },
+} = require('$services/auth');
 
 const DisputesController = Class('DisputesController').inherits(RestfulController)({
   beforeActions: [
@@ -91,7 +98,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           option: req.body.option,
         });
 
-        res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+        res.redirect(config.router.helpers.Disputes.show.url(dispute.id));
       } catch (e) {
         next(e);
       }
@@ -108,8 +115,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         status: 'User Update',
       });
 
-      ds
-        .save()
+      ds.save()
         .then(async () => {
           const email = new MemberUpdatedDisputeEmail(req.user, dispute, ds);
           try {
@@ -120,7 +126,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           }
         })
         .then(() => dispute.save())
-        .then(() => res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)))
+        .then(() => res.redirect(config.router.helpers.Disputes.show.url(dispute.id)))
         .catch(next);
     },
 
@@ -153,7 +159,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         );
       }
 
-      res.redirect(CONFIG.router.helpers.Disputes.show.url(req.params.id));
+      res.redirect(config.router.helpers.Disputes.show.url(req.params.id));
     },
 
     async updateDisputeData(req, res, next) {
@@ -184,7 +190,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
                 ? `An error ocurred while validating your form data: ${e.errors[0]}`
                 : 'An error occurred while updating the dispute data. Please try again or contact a dispute administrator if the problem persists.',
             );
-            return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+            return res.redirect(config.router.helpers.Disputes.show.url(dispute.id));
           },
           json() {
             return res.json({ error: e.toString() });
@@ -200,7 +206,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
               if (req.body.command === 'setForm') {
                 req.flash('success', 'Your information was successfully updated');
               }
-              return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+              return res.redirect(config.router.helpers.Disputes.show.url(dispute.id));
             },
             json() {
               return res.json({ status: 'confirmed', dispute });
@@ -217,10 +223,10 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
       dispute
         .setSignature(req.body.signature)
-        .then(() => res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id)))
+        .then(() => res.redirect(config.router.helpers.Disputes.show.url(dispute.id)))
         .catch(e => {
           req.flash('error', `${e.toString()} (on #setSignature)`);
-          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+          return res.redirect(config.router.helpers.Disputes.show.url(dispute.id));
         });
     },
 
@@ -249,7 +255,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
       res.format({
         html() {
-          res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+          res.redirect(config.router.helpers.Disputes.show.url(dispute.id));
         },
         json() {
           if (caught !== null) {
@@ -266,18 +272,18 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
       if (!req.params.attachment_id) {
         req.flash('error', 'Missing attachment id');
-        return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+        return res.redirect(config.router.helpers.Disputes.show.url(dispute.id));
       }
 
       return dispute
         .removeAttachment(req.params.attachment_id)
         .then(() => {
           req.flash('success', 'Attachment removed');
-          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+          return res.redirect(config.router.helpers.Disputes.show.url(dispute.id));
         })
         .catch(err => {
           req.flash('error', err.message);
-          return res.redirect(CONFIG.router.helpers.Disputes.show.url(dispute.id));
+          return res.redirect(config.router.helpers.Disputes.show.url(dispute.id));
         });
     },
 
@@ -365,7 +371,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         .destroy()
         .then(() => {
           req.flash('warning', 'The Dispute you started has been deactivated.');
-          return res.redirect(CONFIG.router.helpers.DisputeTools.url());
+          return res.redirect(config.router.helpers.DisputeTools.url());
         })
         .catch(next);
     },
