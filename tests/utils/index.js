@@ -5,6 +5,7 @@ const { expect } = require('chai');
 const nock = require('nock');
 const { execSync } = require('child_process');
 const sso = require('$services/sso');
+const qs = require('querystring');
 
 const {
   siteURL,
@@ -17,7 +18,7 @@ const agent = sa.agent();
 const ids = {
   _external: 0,
   nextExternal() {
-    return ++ids._external;
+    return ++this._external;
   },
 };
 
@@ -33,9 +34,11 @@ const withSiteUrl = url => {
 
 nock(baseUrl)
   .post('/posts')
+  .query(true)
   .times(1000)
-  .reply(200, (uri, sent) => ({
-    sent,
+  .reply(200, (uri, body) => ({
+    body,
+    sent: qs.parse(uri.split('?')[1]),
     post: { topic_id: ids.nextExternal() },
   }));
 

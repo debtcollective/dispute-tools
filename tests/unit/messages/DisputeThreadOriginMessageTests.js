@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { createUser, createDispute, testGroups } = require('$tests/utils');
+const { createUser, createDispute } = require('$tests/utils');
 const { DisputeThreadOriginMessage } = require('$services/messages');
 const DisputeTool = require('$models/DisputeTool');
 const {
@@ -41,13 +41,11 @@ describe(DisputeThreadOriginMessage.name, () => {
     });
 
     it('should send to the coordinators', () => {
-      expect(sent).match(
-        new RegExp(`name="target_usernames"\r\n\r\n${member.username},${coordinatorRole}`),
-      );
+      expect(sent.target_usernames).eq(`${member.username},${coordinatorRole}`);
     });
 
     it('should not send a topic id', () => {
-      expect(sent).not.contain('topic_id');
+      expect(sent.topic_id).undefined;
     });
   });
 });
