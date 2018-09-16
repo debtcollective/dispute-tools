@@ -1,4 +1,3 @@
-const { discourse } = require('$lib');
 const {
   discourse: { coordinatorRole },
 } = require('$config/config');
@@ -9,7 +8,9 @@ class DisputeThreadOriginMessage extends DiscourseMessage {
     super(DisputeThreadOriginMessage.name, null, {
       to: member.username,
       from: coordinatorRole,
-      subject: `${dispute.readableId} - ${member.name} - ${disputeTool.readableName}`,
+      subject: `${dispute.readableId} - ${member.name || member.username} - ${
+        disputeTool.readableName
+      }`,
     });
 
     this.locals = { member };

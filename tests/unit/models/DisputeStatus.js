@@ -2,6 +2,7 @@ const { expect } = require('chai');
 const { createUser, createDispute } = require('$tests/utils');
 const DisputeStatuses = require('$shared/enum/DisputeStatuses');
 const DisputeStatus = require('$models/DisputeStatus');
+const { DisputeStatusUpdatedMessage } = require('$services/messages');
 
 describe('Dispute Status', () => {
   let dispute;
@@ -30,19 +31,56 @@ describe('Dispute Status', () => {
       const comment = 'hello!';
       const status = DisputeStatuses.completed;
       const note = 'a note!';
-      const notify = false;
 
       const newStatus = await DisputeStatus.createForDispute(dispute, {
         comment,
         status,
         note,
-        notify,
       });
 
       expect(newStatus.comment).eq(comment);
       expect(newStatus.status).eq(status);
       expect(newStatus.note).eq(note);
-      expect(newStatus.notify).eq(notify);
+    });
+
+    describe('notification', () => {
+      let sent;
+      let safeSend;
+      let notifyStatuses;
+
+      beforeEach(() => {
+        safeSend = DisputeStatusUpdatedMessage.prototype.safeSend;
+        sent = false;
+        DisputeStatusUpdatedMessage.prototype.safeSend = () => (sent = true);
+        notifyStatuses = DisputeStatus.notifyStatuses;
+      });
+
+      afterEach(() => {
+        DisputeStatusUpdatedMessage.prototype.safeSend = safeSend;
+        DisputeStatus.notifyStatuses = notifyStatuses;
+      });
+
+      it('should send a message when the status is in the notifyStatuses array', async () => {
+        DisputeStatus.notifyStatuses = [DisputeStatuses.documentsSent];
+        await DisputeStatus.createForDispute(dispute, {
+          status: DisputeStatuses.documentsSent,
+          note: '',
+          comment: '',
+        });
+
+        expect(sent).eq(true);
+      });
+
+      it('should not send the message if the status is not in the notifyStatuses array', async () => {
+        DisputeStatus.notifyStatuses = [];
+        await DisputeStatus.createForDispute(dispute, {
+          status: DisputeStatuses.documentsSent,
+          note: '',
+          comment: '',
+        });
+
+        expect(sent).eq(false);
+      });
     });
   });
 

@@ -1,7 +1,7 @@
 const { uniq, flatten, isNil, identity } = require('lodash');
 const { join } = require('path');
 const DebtCollectiveMessage = require('./DebtCollectiveMessage');
-const discourse = require('$lib/discourse');
+const { Raven, logger, discourse } = require('$lib');
 
 /**
  * Proxies the normal email sending function to send messages
@@ -21,15 +21,24 @@ const discourse = require('$lib/discourse');
  * possible to prevent the `system` user from being included in
  * the private message.
  *
+ * Config can be undefined. In the cases of most discourse messages
+ * the only thing that should be passed in is the topicId, which
+ * makes the to, from, and subject fields irrelevant.
+ *
  * @abstract
  */
 class DiscourseMessage extends DebtCollectiveMessage {
-  constructor(name, topicId, config) {
+  constructor(name, topicId, config = {}) {
     super(name, config);
     this.isThreaded = !isNil(topicId);
     this.topicId = topicId;
   }
 
+  /**
+   * Handles the list of usernames/groups and turns them into
+   * the comma delimited list that discourse expects.
+   * @return {string} a comma delimited list of usernames and groups
+   */
   get targetUsernames() {
     return uniq(flatten([this.to, this.from]).filter(identity)).join(',');
   }
@@ -37,23 +46,42 @@ class DiscourseMessage extends DebtCollectiveMessage {
   get topicIdOrUsernames() {
     return this.isThreaded
       ? { topic_id: this.topicId }
-      : { target_usernames: this.targetUsernames };
+      : { target_usernames: this.targetUsernames, title: this.subject };
   }
 
   /**
    * Sends the discourse message between one to many people
-   * @param {string} html Body of the email to send
+   * @param {string} markdown Raw markdown of the message body
    * @returns {Promise<{ post: DiscourseMessagePostResult }>}
-   * A promise representing the completion of the email send operation
+   *                           Promise representing the completion of
+   *                           the message send operation
    */
-  send(html = this.render()) {
+  send(markdown = this.render()) {
     return discourse.admin.messages.create({
-      // Need to ensure the usernames are unique otherwise Discourse blows up
-      raw: html,
-      title: this.subject,
+      raw: markdown,
       archetype: 'private_message',
       ...this.topicIdOrUsernames,
     });
+  }
+
+  /**
+   * Same as `send` but automatically recovers from and logs errors.
+   * Useful for when you don't really care for programatic reasons whether
+   * the message you're sending was successful but still want to capture
+   * the exception. Cuts down on boilerplate
+   * @param  {string} markdown Raw markdown of the message body
+   * @return {Promise<{ post: DiscourseMessagePostResult }>}
+   *                          Promise representing the completion of the
+   *                          message send operation. In this case the promise
+   *                          will also resolve and never reject.
+   */
+  async safeSend(markdown = this.render()) {
+    try {
+      await this.send(markdown);
+    } catch (e) {
+      Raven.captureException(e);
+      logger.error('Failed to send message %s with locals', this._name, { ...this.locals }, e);
+    }
   }
 
   render(locals = this.locals, templateName = this._name) {

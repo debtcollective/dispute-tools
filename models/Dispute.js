@@ -7,7 +7,7 @@ const DisputeAttachment = require('$models/DisputeAttachment');
 const DisputeTool = require('$models/DisputeTool');
 const DisputeStatus = require('$models/DisputeStatus');
 const DisputeRenderer = require('$models/DisputeRenderer');
-const { logger, discourse } = require('$lib');
+const { logger, discourse, Raven } = require('$lib');
 const { findAllDiscourseUsersEnsuringCreated } = require('$services/users');
 const { getCheckitConfig, filterDependentFields } = require('$services/formValidation');
 const Checkit = require('$shared/Checkit');
@@ -138,12 +138,23 @@ const Dispute = Class('Dispute')
     // needed for the discourse topic subject
     dispute = await Dispute.findById(dispute.id);
 
-    const {
-      post: { topic_id: topicId },
-    } = await new DisputeThreadOriginMessage(user, dispute, disputeTool).send();
+    try {
+      const {
+        post: { topic_id: topicId },
+      } = await new DisputeThreadOriginMessage(user, dispute, disputeTool).send();
 
-    dispute.disputeThreadId = topicId;
-    await dispute.save();
+      dispute.disputeThreadId = topicId;
+      await dispute.save();
+    } catch (e) {
+      Raven.captureException(e);
+      logger.error(
+        'Failure creating the %s for dispute with id %s and tool %s',
+        DisputeThreadOriginMessage.name,
+        dispute.readableId,
+        disputeTool.name,
+      );
+    }
+
     return dispute;
   },
 

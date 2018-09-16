@@ -4,4 +4,5 @@ module.exports = {
   MemberUpdatedDisputeEmail: require('./MemberUpdatedDisputeEmail'),
   RecurringDonationEmail: require('./RecurringDonationEmail'),
   DisputeThreadOriginMessage: require('./DisputeThreadOriginMessage'),
+  DisputeStatusUpdatedMessage: require('./DisputeStatusUpdatedMessage'),
 };

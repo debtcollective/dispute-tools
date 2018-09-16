@@ -6,6 +6,7 @@ module.exports = {
   environment,
   port,
   appName: process.env.APP_NAME || 'TDC Dispute Tools',
+  notifyStatuses: (process.env.NOTIFY_STATUSES || 'Documents Sent').split(','),
   sso: {
     endpoint: process.env.SSO_ENDPOINT || 'http://localhost:3000/session/sso_provider',
     secret: process.env.SSO_SECRET || 'change-me-please',
