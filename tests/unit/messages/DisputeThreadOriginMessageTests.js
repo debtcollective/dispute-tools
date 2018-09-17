@@ -6,7 +6,7 @@ const {
   discourse: { coordinatorRole },
 } = require('$config/config');
 
-describe(DisputeThreadOriginMessage.name, () => {
+describe('DisputeThreadOriginMessage', () => {
   let dispute;
   let member;
   let disputeTool;
