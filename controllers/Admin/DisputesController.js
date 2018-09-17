@@ -7,7 +7,7 @@ const { NotFoundError } = require('$lib/errors');
 const DisputeTool = require('$models/DisputeTool');
 const DisputeStatus = require('$models/DisputeStatus');
 const config = require('$config/config');
-const RestfulController = require('$libcore/controllers/RestfulController');
+const RestfulController = require('$lib/core/controllers/RestfulController');
 
 const {
   authenticate,

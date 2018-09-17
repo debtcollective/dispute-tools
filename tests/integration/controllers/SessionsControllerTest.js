@@ -10,7 +10,7 @@ describe('SessionsController', () => {
         const req = testGetPage(url);
 
         // check redirection to sso
-        req.redirects(0).catch(({ status, response: { headers } }) => {
+        return req.redirects(0).catch(({ status, response: { headers } }) => {
           expect(status).eq(302);
           expect(headers.location.startsWith(config.sso.endpoint)).true;
         });
@@ -23,7 +23,7 @@ describe('SessionsController', () => {
         const url = config.router.helpers.login.url();
         const req = testGetPage(url, user);
 
-        req.redirects(0).catch(({ status, response: { headers } }) => {
+        return req.redirects(0).catch(({ status, response: { headers } }) => {
           expect(status).eq(302);
           expect(headers.location).eq(config.router.helpers.root.url());
         });
@@ -37,7 +37,7 @@ describe('SessionsController', () => {
       const url = config.router.helpers.logout.url();
       const req = testGetPage(url, user);
 
-      req.redirects(0).catch(({ status, response: { headers } }) => {
+      return req.redirects(0).catch(({ status, response: { headers } }) => {
         expect(status).eq(302);
         expect(headers.location).eq(config.router.helpers.root.url());
       });

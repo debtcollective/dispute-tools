@@ -3,10 +3,57 @@
 const uuid = require('uuid');
 const sa = require('superagent');
 const { expect } = require('chai');
+const nock = require('nock');
 const { execSync } = require('child_process');
 const _ = require('lodash');
+const qs = require('querystring');
+const faker = require('faker');
 
-// used to mock sessions
+const {
+  sessions,
+  router,
+  siteURL,
+  discourse: { baseUrl },
+} = require('$config/config');
+
+const ids = {
+  _external: 0,
+  nextExternal() {
+    return ++this._external;
+  },
+};
+
+// mocking calls to Discourse
+nock(baseUrl)
+  .post('/posts')
+  .query(true)
+  .times(1000)
+  .reply(200, (uri, body) => ({
+    body,
+    sent: qs.parse(uri.split('?')[1]),
+    post: { topic_id: ids.nextExternal() },
+  }));
+
+const testGroups = {
+  dispute_pro: {
+    members: ['ann_l', 'dawn_l'],
+    owners: [],
+  },
+  dispute_coordinator: { members: ['dawn_l'], owners: [] },
+};
+
+Object.keys(testGroups).forEach(groupName =>
+  nock(baseUrl)
+    .get(`/groups/${groupName}/members.json`)
+    .query(true)
+    .times(1000)
+    .reply(200, {
+      members: testGroups[groupName].members.map((username, id) => ({ username, id })),
+      owners: testGroups[groupName].owners.map((username, id) => ({ username, id })),
+    }),
+);
+
+// mocking sessions
 const expressSession = require('express-session');
 const RedisStore = require('connect-redis')(expressSession);
 const cookieSignature = require('cookie-signature');
@@ -20,16 +67,7 @@ const redisStoreInstance = new RedisStore({
   client: redisClient,
 });
 
-const { sessions, router, siteURL } = require('$config/config');
-
 const agent = sa.agent();
-
-const ids = {
-  _external: 0,
-  nextExternal() {
-    return ++this._external;
-  },
-};
 
 const withSiteUrl = url => {
   if (url.startsWith(siteURL)) {
@@ -37,14 +75,6 @@ const withSiteUrl = url => {
   }
 
   return `${siteURL}${url.startsWith('/') ? '' : '/'}${url}`;
-};
-
-const testGroups = {
-  dispute_pro: {
-    members: ['ann_l', 'dawn_l'],
-    owners: [],
-  },
-  dispute_coordinator: { members: ['dawn_l'], owners: [] },
 };
 
 // create objects helper
@@ -64,9 +94,10 @@ const helpers = {
     _.defaults(params, {
       externalId: ids.nextExternal(),
       admin: false,
-      email: `${uuid.v4()}@example.com`,
-      username: uuid.v4(),
-      avatarUrl: '{size}',
+      email: faker.internet.email(),
+      name: faker.name.findName(),
+      username: faker.internet.userName(),
+      avatarUrl: faker.image.imageUrl(),
     });
 
     const user = new User(params);

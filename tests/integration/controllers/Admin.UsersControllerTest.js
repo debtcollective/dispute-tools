@@ -37,8 +37,9 @@ describe('Admin.UsersController', () => {
       });
 
       describe('when admin', () => {
-        // this endpoint is making requests to get user data from discourse
-        // right now is failing due Nock not matching the request
+        // this endpoint is making requests to get user data from discourse and is failing due Nock not matching the request
+        // but we don't need to be doing that request in the first place and is going to be removed
+        // I'm disabling this test until then
         xit('should allow', () => testAllowed(testGet(url, admin)));
       });
     });
