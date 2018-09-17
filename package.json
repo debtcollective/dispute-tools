@@ -37,6 +37,7 @@
     "db:seed": "knex seed:run",
     "report": "yarn istanbul-combine -d coverage -p summary -r lcov coverage/{unit,integration,form-validations}/coverage.raw.json",
     "start": "node bin/server.js",
+    "start:dev": "nodemon --inspect=9220 bin/server.js -i src/**/*",
     "start:prod": "yarn db:migrate && node bin/server.js",
     "watch": "webpack --progress --watch",
     "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",

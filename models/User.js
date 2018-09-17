@@ -1,5 +1,4 @@
 /* global Krypton, Class */
-const _ = require('lodash');
 const config = require('$config/config');
 
 const User = Class('User').inherits(Krypton.Model)({
@@ -23,7 +22,7 @@ const User = Class('User').inherits(Krypton.Model)({
       Krypton.Model.prototype.init.call(this, config);
     },
     setInfo(info) {
-      const hasAdminRole = _.includes(info.groups, config.discourse.adminRole);
+      const hasAdminRole = info.groups.includes(config.discourse.adminRole);
       const isDiscourseAdmin = info.admin === 'true';
       const admin = hasAdminRole || isDiscourseAdmin;
       const externalId = info.external_id || this.externalId;

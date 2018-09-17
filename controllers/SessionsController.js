@@ -1,15 +1,14 @@
-/* globals Class, BaseController, User, UserMailer */
-const Raven = require('raven');
+/* globals Class */
+const { Raven } = require('$lib');
 const passport = require('$lib/passport');
 const sso = require('$services/sso');
 const config = require('$config/config');
+const BaseController = require('$lib/core/controllers/BaseController');
 
 const SessionsController = Class('SessionsController').inherits(BaseController)({
   prototype: {
     create(req, res) {
       if (req.user) {
-        req.flash('info', 'You are already logged in');
-
         return res.redirect(config.router.helpers.root.url());
       }
 
@@ -57,7 +56,7 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
               user: {
                 email: user.email,
                 id: user.id,
-                external_id: user.external_id,
+                externalId: user.externalId,
               },
             });
 
