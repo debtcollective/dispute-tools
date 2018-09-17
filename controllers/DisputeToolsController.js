@@ -1,7 +1,13 @@
-/* globals RestfulController, DisputeTool, Class */
+/* globals Class */
 const marked = require('marked');
-const { authenticate, authorize, tests: { loggedIn } } = require('../services/auth');
-const { NotFoundError } = require('../lib/errors');
+const {
+  authenticate,
+  authorize,
+  tests: { loggedIn },
+} = require('$services/auth');
+const DisputeTool = require('$models/DisputeTool');
+const { NotFoundError } = require('$lib/errors');
+const RestfulController = require('$lib/core/controllers/RestfulController');
 
 const idRegex = /^1{8}-1{4}-[12346]{4}-1{4}-1{12}$/;
 

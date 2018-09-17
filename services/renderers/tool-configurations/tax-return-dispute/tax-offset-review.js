@@ -1,4 +1,4 @@
-const DisputeTemplate = require('../../DisputeTemplate');
+const DisputeTemplate = require('$services/renderers/DisputeTemplate');
 const { formatDate, getAddress2 } = require('../shared/utils');
 const { range } = require('lodash');
 const {

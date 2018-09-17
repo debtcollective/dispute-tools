@@ -1,8 +1,8 @@
-/* globals Krypton, Class, Dispute, DisputeStatus */
-
-const DisputeStatuses = require('../shared/enum/DisputeStatuses');
-const { OrganizerUpdatedDisputeEmail } = require('../services/email');
+/* globals Krypton, Class */
 const _ = require('lodash');
+const DisputeStatuses = require('$shared/enum/DisputeStatuses');
+const { notifyStatuses } = require('$config/config');
+const { DisputeStatusUpdatedMessage } = require('$services/messages');
 
 const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
   tableName: 'DisputeStatuses',
@@ -12,12 +12,14 @@ const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
     'status',
     'note',
     'comment',
-    'notify',
     'pendingSubmission',
     'createdAt',
     'updatedAt',
   ],
+
   statuses: _.values(DisputeStatuses),
+  notifyStatuses,
+
   validations: {
     disputeId: ['required'],
     status: [
@@ -33,30 +35,22 @@ const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
     ],
   },
 
-  async createForDispute(dispute, disputeAdmin, { comment, status, note, notify }) {
+  async createForDispute(dispute, { comment, status, note }) {
     const disputeStatus = new DisputeStatus({
       comment,
       status,
       note,
       disputeId: dispute.id,
-      notify: typeof notify === 'boolean' || notify === 'on' || notify === 'yes' ? notify : false,
     });
 
     await disputeStatus.save();
 
-    if (!disputeStatus.notify) {
-      return;
+    if (DisputeStatus.notifyStatuses.includes(status)) {
+      // Don't need to await this
+      new DisputeStatusUpdatedMessage(dispute, disputeStatus).safeSend();
     }
 
-    const { assigned: assignedAdmins } = await dispute.getAssignedAndAvailableAdmins();
-
-    const email = new OrganizerUpdatedDisputeEmail(
-      dispute.user,
-      [disputeAdmin.username, ...assignedAdmins.map(u => u.username)],
-      dispute,
-      disputeStatus,
-    );
-    return email.send();
+    return disputeStatus;
   },
 
   prototype: {

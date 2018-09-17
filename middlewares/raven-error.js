@@ -1,4 +1,3 @@
-/* globals logger */
-const Raven = require('../lib/core/raven');
+const { Raven } = require('$lib');
 
 module.exports = Raven.errorHandler();

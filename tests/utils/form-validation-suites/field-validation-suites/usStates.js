@@ -1,5 +1,5 @@
 const required = require('./required');
-const { US_STATES } = require('../../../../lib/data/form-definitions/validations');
+const { US_STATES } = require('$form-definitions/validations');
 
 const oneOf = require('./oneOf');
 

@@ -1,7 +1,8 @@
-const sso = require('../services/sso');
-const Raven = require('../lib/core/raven');
-const logger = require('../lib/core/logger');
-const { sso: { cookieName } } = require('../config/config');
+const sso = require('$services/sso');
+const { Raven, logger } = require('$lib');
+const {
+  sso: { cookieName },
+} = require('$config/config');
 
 /**
  * Authentication middleware that will attempt to populate

@@ -1,7 +1,7 @@
 // Maps the user-input responses to the fields in the wage garnishment PDF form.
 // Note that a lot of the PDF form's field names are long and weird.
 
-const DisputeTemplate = require('../../DisputeTemplate');
+const DisputeTemplate = require('$services/renderers/DisputeTemplate');
 const { formatDate, getAddress2, normalizeSsn } = require('../shared/utils');
 const {
   requestAdditionalFacts,
@@ -9,8 +9,8 @@ const {
   DisputeProcess: { WRITTEN, INPERSON, BYPHONE },
   CheckboxAnswer: { YES },
 } = require('../shared/federal-student-loan-disputes.js');
-const { doeDisclosure } = require('../../../../config/config');
-const doeDisclosureConfig = require('../../../../lib/assets/document_templates/wage_garnishment/consent-to-disclosure');
+const { doeDisclosure } = require('$config/config');
+const doeDisclosureConfig = require('$lib/assets/document_templates/wage_garnishment/consent-to-disclosure');
 
 const cityFieldNames = {
   // key is disputeProcessCity; value is the field name in 0.fdf
@@ -150,7 +150,13 @@ module.exports = {
       iff: ({ forms: { 'personal-information-form': form } }) =>
         form['doe-privacy-release'] === 'yes',
       normalize: () => null,
-      post(pdf, { signature, forms: { 'personal-information-form': form } }) {
+      post(
+        pdf,
+        {
+          signature,
+          forms: { 'personal-information-form': form },
+        },
+      ) {
         pdf.editPage(1);
 
         const name = form.name;

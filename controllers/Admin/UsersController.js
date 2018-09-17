@@ -1,7 +1,12 @@
-/* globals Class, BaseController, Admin */
+/* globals Class, Admin */
 
-const { authenticate, authorize, tests: { isDisputeAdmin } } = require('../../services/auth');
-const discourse = require('../../lib/discourse');
+const {
+  authenticate,
+  authorize,
+  tests: { isDisputeAdmin },
+} = require('$services/auth');
+const { discourse } = require('$lib');
+const BaseController = require('$lib/core/controllers/BaseController');
 
 global.Admin = global.Admin || {};
 

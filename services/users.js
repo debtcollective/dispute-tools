@@ -1,5 +1,5 @@
-const User = require('../models/User');
-const discourse = require('../lib/discourse');
+const User = require('$models/User');
+const { discourse } = require('$lib');
 
 exports.makeUserFromExternalId = async externalId => {
   const user = new User({

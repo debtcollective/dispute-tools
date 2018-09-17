@@ -2,7 +2,7 @@ const config = require('$config/config');
 const Router = require('$config/RouteMappings');
 const _ = require('lodash');
 const moment = require('moment');
-const { utils } = require('$root/services/auth');
+const { utils } = require('$services/auth');
 
 const {
   sso: { logout },
@@ -12,7 +12,7 @@ const {
 } = config;
 
 const marked = require('marked');
-const { US_STATES } = require('../lib/data');
+const { US_STATES } = require('$lib/data');
 
 module.exports = function locals(req, res, next) {
   res.locals.routeMappings = Router.mappings;

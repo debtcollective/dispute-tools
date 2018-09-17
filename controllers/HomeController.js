@@ -1,16 +1,17 @@
-/* globals Class, BaseController, logger, UserMailer */
+/* globals Class, BaseController */
 
 const stripe = require('stripe');
-const sso = require('../services/sso');
-const { ContactUsEmail, RecurringDonationEmail } = require('../services/email');
-const Router = require('../config/RouteMappings');
+const sso = require('$services/sso');
+const { ContactUsEmail, RecurringDonationEmail } = require('$services/messages');
+const Router = require('$config/RouteMappings');
+const { logger } = require('$lib');
 
 const {
   sso: { cookieName },
   stripe: { secret: stripeSecret },
   siteURL,
   mailers: { contactEmail },
-} = require('../config/config');
+} = require('$config/config');
 
 const stripeClient = stripe(stripeSecret);
 

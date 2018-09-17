@@ -1,9 +1,8 @@
-/* globals User, Account, CONFIG, Dispute, DisputeTool, DisputeStatus */
-
 const { expect } = require('chai');
-const { createUser, createDispute } = require('../../utils');
-const DisputeStatuses = require('../../../shared/enum/DisputeStatuses');
-const { OrganizerUpdatedDisputeEmail } = require('../../../services/email');
+const { createUser, createDispute } = require('$tests/utils');
+const DisputeStatuses = require('$shared/enum/DisputeStatuses');
+const DisputeStatus = require('$models/DisputeStatus');
+const { DisputeStatusUpdatedMessage } = require('$services/messages');
 
 describe('Dispute Status', () => {
   let dispute;
@@ -27,62 +26,60 @@ describe('Dispute Status', () => {
     });
   });
 
-  describe('notify', () => {
-    let called;
-    let send;
-    let getAssignedAndAvailableAdmins;
+  describe('createForDispute', () => {
+    it('should create a new DisputeStatus for the passed in dispute', async () => {
+      const comment = 'hello!';
+      const status = DisputeStatuses.completed;
+      const note = 'a note!';
 
-    before(() => {
-      send = OrganizerUpdatedDisputeEmail.prototype.send;
-      OrganizerUpdatedDisputeEmail.prototype.send = function send() {
-        called = true;
-      };
-
-      getAssignedAndAvailableAdmins = Dispute.prototype.getAssignedAndAvailableAdmins;
-      Dispute.prototype.getAssignedAndAvailableAdmins = () =>
-        Promise.resolve({ assigned: [], available: [] });
-    });
-
-    beforeEach(() => {
-      called = false;
-    });
-
-    after(() => {
-      OrganizerUpdatedDisputeEmail.prototype.send = send;
-      Dispute.prototype.getAssignedAndAvailableAdmins = getAssignedAndAvailableAdmins;
-    });
-
-    describe('when true', () => {
-      it('should cause an email alerting the user of the status change to be sent', async () => {
-        await DisputeStatus.createForDispute(
-          dispute,
-          {},
-          {
-            comment: 'Test comment',
-            status: DisputeStatuses.inReview,
-            note: 'Just a friendly note',
-            notify: 'on',
-          },
-        );
-
-        expect(called).to.be.true;
+      const newStatus = await DisputeStatus.createForDispute(dispute, {
+        comment,
+        status,
+        note,
       });
+
+      expect(newStatus.comment).eq(comment);
+      expect(newStatus.status).eq(status);
+      expect(newStatus.note).eq(note);
     });
 
-    describe('when false', () => {
-      it('should not cause an email alerting the user of the status change to be sent', async () => {
-        await DisputeStatus.createForDispute(
-          dispute,
-          {},
-          {
-            comment: 'Test comment',
-            status: DisputeStatuses.inReview,
-            note: 'Just a friendly note',
-            notify: 'off',
-          },
-        );
+    describe('notification', () => {
+      let sent;
+      let safeSend;
+      let notifyStatuses;
 
-        expect(called).to.be.false;
+      beforeEach(() => {
+        safeSend = DisputeStatusUpdatedMessage.prototype.safeSend;
+        sent = false;
+        DisputeStatusUpdatedMessage.prototype.safeSend = () => (sent = true);
+        notifyStatuses = DisputeStatus.notifyStatuses;
+      });
+
+      afterEach(() => {
+        DisputeStatusUpdatedMessage.prototype.safeSend = safeSend;
+        DisputeStatus.notifyStatuses = notifyStatuses;
+      });
+
+      it('should send a message when the status is in the notifyStatuses array', async () => {
+        DisputeStatus.notifyStatuses = [DisputeStatuses.documentsSent];
+        await DisputeStatus.createForDispute(dispute, {
+          status: DisputeStatuses.documentsSent,
+          note: '',
+          comment: '',
+        });
+
+        expect(sent).eq(true);
+      });
+
+      it('should not send the message if the status is not in the notifyStatuses array', async () => {
+        DisputeStatus.notifyStatuses = [];
+        await DisputeStatus.createForDispute(dispute, {
+          status: DisputeStatuses.documentsSent,
+          note: '',
+          comment: '',
+        });
+
+        expect(sent).eq(false);
       });
     });
   });

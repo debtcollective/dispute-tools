@@ -2,8 +2,8 @@
 const gm = require('gm').subClass({
   imageMagick: process.env.GM === 'true' || false,
 });
-const { assignDefaultConfig } = require('../lib/AWS');
-const PrivateAttachmentStorage = require('./PrivateAttachmentStorage');
+const { assignDefaultConfig } = require('$lib/AWS');
+const PrivateAttachmentStorage = require('$models/PrivateAttachmentStorage');
 
 const DisputeAttachment = Class({}, 'DisputeAttachment').inherits(Attachment)({
   attachmentStorage: new PrivateAttachmentStorage(

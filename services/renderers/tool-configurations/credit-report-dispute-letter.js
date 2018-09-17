@@ -1,4 +1,4 @@
-const DisputeTemplate = require('../DisputeTemplate');
+const DisputeTemplate = require('$services/renderers/DisputeTemplate');
 const { getAddress2 } = require('./shared/utils');
 
 module.exports = {
@@ -46,7 +46,11 @@ module.exports = {
                 'Chester, PA 19022',
               ] // eslint-disable-line
             },
-            normalize({ forms: { 'personal-information-form': { agencies } } }) {
+            normalize({
+              forms: {
+                'personal-information-form': { agencies },
+              },
+            }) {
               if (!Array.isArray(agencies)) {
                 agencies = [agencies];
               }

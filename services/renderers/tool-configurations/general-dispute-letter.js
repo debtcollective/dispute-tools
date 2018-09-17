@@ -1,4 +1,4 @@
-const DisputeTemplate = require('../DisputeTemplate');
+const DisputeTemplate = require('$services/renderers/DisputeTemplate');
 const { getAddress2 } = require('./shared/utils');
 
 module.exports = {

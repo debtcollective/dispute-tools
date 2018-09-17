@@ -1,4 +1,4 @@
-const DisputeTemplate = require('../../DisputeTemplate');
+const DisputeTemplate = require('$services/renderers/DisputeTemplate');
 const { pathHelper, normalizeSsn, formatDate, getAddress2 } = require('./utils');
 
 const page1 = pathHelper(0)(1);

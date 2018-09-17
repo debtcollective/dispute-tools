@@ -1,11 +1,6 @@
 /* globals logger, CONFIG */
 
-const {
-  ForbiddenError,
-  AuthenticationFailure,
-  NotFoundError,
-  BadRequest,
-} = require('../lib/errors');
+const { ForbiddenError, AuthenticationFailure, NotFoundError, BadRequest } = require('$lib/errors');
 
 // Needs four parameters so that Express knows it's an error handler
 // eslint-disable-next-line

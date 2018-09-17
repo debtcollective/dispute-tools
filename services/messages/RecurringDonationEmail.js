@@ -1,7 +1,9 @@
-const Email = require('./Email');
-const { mailers: { contactEmail } } = require('../../config/config');
+const DebtCollectiveMessage = require('./DebtCollectiveMessage');
+const {
+  mailers: { contactEmail },
+} = require('$config/config');
 
-class RecurringDonationEmail extends Email {
+class RecurringDonationEmail extends DebtCollectiveMessage {
   constructor(member, amount) {
     super('RecurringDonationEmail', {
       to: `${member.name} <${member.email}>`,

@@ -1,10 +1,12 @@
-const Email = require('./Email');
-const { mailers: { disputesBCCAddress, contactEmail } } = require('../../config/config');
+const {
+  mailers: { disputesBCCAddress, contactEmail },
+} = require('$config/config');
+const DebtCollectiveMessage = require('./DebtCollectiveMessage');
 
 /**
  * Sends a completed dispute email to the member who completed the dispute
  */
-class ForMember extends Email {
+class ForMember extends DebtCollectiveMessage {
   /**
    * @param {Object} member The Debt Collective member who completed the dispute
    * @param {Object} dispute The complete dispute
@@ -25,7 +27,7 @@ ForMember.from = `The Debt Collective Organizers <${contactEmail}>`;
 /**
  * Sends a completed dispute email to the Debt Collective organizers
  */
-class ForAdmin extends Email {
+class ForAdmin extends DebtCollectiveMessage {
   /**
    * @param {Object} member The Debt Collective member who completed the dispute
    * @param {Object} dispute The complete dispute

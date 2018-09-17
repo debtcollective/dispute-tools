@@ -1,4 +1,4 @@
-const DisputeTemplate = require('../DisputeTemplate');
+const DisputeTemplate = require('$services/renderers/DisputeTemplate');
 const { formatDate, getAddress2 } = require('./shared/utils');
 
 module.exports = {
@@ -8,7 +8,11 @@ module.exports = {
         templates: [
           new DisputeTemplate({
             type: DisputeTemplate.RENDER_TYPE.PUG,
-            file({ forms: { 'personal-information-form': { 'is-debt-in-default': inDefault } } }) {
+            file({
+              forms: {
+                'personal-information-form': { 'is-debt-in-default': inDefault },
+              },
+            }) {
               return [
                 'private_student_loan_dispute_letter',
                 inDefault === 'yes' ? 'defaulted.pug' : 'non-defaulted.pug',

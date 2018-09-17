@@ -9,7 +9,13 @@
   },
   "_moduleAliases": {
     "$root": ".",
-    "$config": "./config"
+    "$config": "./config",
+    "$models": "./models",
+    "$lib": "./lib",
+    "$shared": "./shared",
+    "$services": "./services",
+    "$tests": "./tests",
+    "$form-definitions": "./lib/data/form-definitions"
   },
   "scripts": {
     "build": "scripty",

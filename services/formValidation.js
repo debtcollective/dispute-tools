@@ -1,8 +1,10 @@
-/* globals logger */
-
+/* global logger */
 const _ = require('lodash');
+// use relative path here until babel plugin for module aliasing is added
 const Field = require('../lib/data/form-definitions/validations');
 const { InvalidValidationCacheConfiguration } = require('../lib/errors');
+
+logger = logger || console;
 
 const flattenFieldSet = fieldSet =>
   _.uniqBy(

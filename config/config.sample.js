@@ -6,6 +6,7 @@ module.exports = {
   environment,
   port,
   appName: process.env.APP_NAME || 'TDC Dispute Tools',
+  notifyStatuses: (process.env.NOTIFY_STATUSES || 'Documents Sent').split(','),
   sso: {
     endpoint: process.env.SSO_ENDPOINT || 'http://localhost:3000/session/sso_provider',
     secret: process.env.SSO_SECRET || 'change-me-please',
@@ -52,6 +53,7 @@ module.exports = {
   sentryEndpoint: process.env.SENTRY_ENDPOINT || '',
   discourse: {
     adminRole: process.env.DISCOURSE_ADMIN_ROLE || 'dispute_pro',
+    coordinatorRole: process.env.DISCOURSE_COORDINATOR_ROLE || 'dispute_coordinator',
     apiKey: process.env.DISCOURSE_API_KEY || '',
     apiUsername: process.env.DISCOURSE_API_USERNAME || 'system',
     baseUrl: process.env.DISCOURSE_API_BASE_URL || 'http://localhost:3000',
@@ -66,6 +68,6 @@ module.exports = {
     state: process.env.DOE_DISCLOSURE_STATE || 'Alaska',
     zip: process.env.DOE_DISCLOSURE_ZIP || '12345',
   },
-  database: require('../knexfile.js'),
-  middlewares: require('./middlewares'),
+  database: require('$root/knexfile.js'),
+  middlewares: require('$config/middlewares'),
 };

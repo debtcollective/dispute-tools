@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { RecurringDonationEmail } = require('../../../services/email');
+const { RecurringDonationEmail } = require('$services/messages');
 
 describe('RecurringDonationEmail', () => {
   const member = { name: 'Devon Donator', email: 'dev.don@example.com' };

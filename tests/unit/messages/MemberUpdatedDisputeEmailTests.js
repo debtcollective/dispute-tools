@@ -1,6 +1,8 @@
 const { expect } = require('chai');
-const { MemberUpdatedDisputeEmail } = require('../../../services/email');
-const { mailers: { contactEmail } } = require('../../../config/config');
+const { MemberUpdatedDisputeEmail } = require('$services/messages');
+const {
+  mailers: { contactEmail },
+} = require('$config/config');
 
 describe('MemberUpdatedDisputeEmail', () => {
   const member = { name: 'Devon Disputer' };
