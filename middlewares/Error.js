@@ -5,8 +5,6 @@ const { ForbiddenError, AuthenticationFailure, NotFoundError, BadRequest } = req
 // Needs four parameters so that Express knows it's an error handler
 // eslint-disable-next-line
 module.exports = (err, req, res, next) => {
-  logger.error(err);
-
   let status;
 
   if (err instanceof ForbiddenError) {

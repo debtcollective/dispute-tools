@@ -22,14 +22,12 @@ script.
     ];
 
     var currentUser = !{JSON.stringify(currentUser)};
+    var isAdmin = !{JSON.stringify(!!isAdmin)};
 
     if (currentUser) {
       headerLinks.push({ text: 'My Disputes', href: '/disputes/my' });
 
-      var groupNames = (currentUser.groups || []).map(function (group) { return group.name; });
-      var hasAdminRole = groupNames.indexOf('dispute_pro') > -1;
-
-      if (hasAdminRole || currentUser.admin) {
+      if (isAdmin) {
         headerLinks.push({ text: 'Admin', href: '/admin/disputes' });
       }
     }

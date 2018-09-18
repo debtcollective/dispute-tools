@@ -54,7 +54,6 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulC
             ];
 
             const index = slugOrder.indexOf(disputeTool.slug);
-            console.assert(index !== -1);
 
             res.locals.disputeTools[index] = {
               id: disputeTool.id,
@@ -66,7 +65,6 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulC
               slug: disputeTool.slug,
             };
           });
-          console.assert(res.locals.disputeTools.indexOf(null) === -1);
 
           res.render('dispute-tools/index');
         })

@@ -310,8 +310,7 @@ describe('Dispute', () => {
     describe('search', () => {
       const containsDispute = ids => expect(ids).to.contain(dispute.id);
 
-      // TODO Re-enable once discourse sends the person's fullname
-      xit("should search by the user's name", () =>
+      it("should search by the user's name", () =>
         Dispute.search({ name: user.name }).then(containsDispute));
 
       it('should search by the dispute human readable id', () =>

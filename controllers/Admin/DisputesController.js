@@ -136,7 +136,6 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     },
 
     async show(req, res) {
-      res.locals.dispute.user.setInfo(await discourse.getUser(res.locals.dispute.user));
       res.format({
         html() {
           res.render('admin/disputes/show');
@@ -149,8 +148,6 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
 
     async update(req, res, next) {
       const dispute = res.locals.dispute;
-
-      dispute.user = discourse.mapUser(await discourse.getUser(dispute.user));
 
       try {
         await DisputeStatus.createForDispute(dispute, req.body);

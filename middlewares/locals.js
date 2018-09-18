@@ -2,7 +2,6 @@ const config = require('$config/config');
 const Router = require('$config/RouteMappings');
 const _ = require('lodash');
 const moment = require('moment');
-const { utils } = require('$services/auth');
 
 const {
   sso: { logout },
@@ -29,11 +28,8 @@ module.exports = function locals(req, res, next) {
   res.locals.marked = marked;
   res.locals.US_STATES = US_STATES;
   res.locals.CONFIG = config;
-  res.locals.hasAdminRoles = false;
-
-  if (req.user) {
-    res.locals.hasAdminRoles = utils.isDisputeAdmin({ user: req.user });
-  }
+  res.locals.lodash = _;
+  res.locals.moment = moment;
 
   // DonationFlow
   res.locals.STRIPE_PUBLISHABLE_KEY = publishable;
@@ -44,9 +40,6 @@ module.exports = function locals(req, res, next) {
     secondary:
       'https://s3.amazonaws.com/tds-static/img/debtcollective/0.0.1/DC-logo_FULL_DARK_CUTOUTfoot_@3x.png',
   };
-
-  res.locals.lodash = _;
-  res.locals.moment = moment;
 
   res.locals.slugify = (str = '') => str.toLowerCase().replace(/\W/g, '-');
 

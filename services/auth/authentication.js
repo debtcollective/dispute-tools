@@ -1,4 +1,4 @@
-const sso = require('$services/sso');
+const config = require('$config/config');
 
 /**
  * This service closely matches the middleware {@link handleAuthentication}.
@@ -17,7 +17,7 @@ module.exports = async (req, res, next) => {
   if (!req.user) {
     res.format({
       html() {
-        return res.redirect(sso.buildRedirect(req));
+        return res.redirect(config.router.mappings.login.url());
       },
       json() {
         return res.status(403).end();

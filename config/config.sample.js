@@ -10,10 +10,6 @@ module.exports = {
   sso: {
     endpoint: process.env.SSO_ENDPOINT || 'http://localhost:3000/session/sso_provider',
     secret: process.env.SSO_SECRET || 'change-me-please',
-    jwtSecret: process.env.JWT_SECRET || 'change-me-please',
-    cookieName: process.env.SSO_COOKIE_NAME || '_dispute_tools',
-    // Chrome doesn't set cookies when their domain is .localhost, so null is a good default
-    cookieDomain: process.env.SSO_COOKIE_DOMAIN || null,
   },
   siteURL: process.env.SITE_URL || `http://localhost:${port}`,
   mailers: {
@@ -41,7 +37,7 @@ module.exports = {
     apiKey: process.env.GMAPS_KEY || '',
   },
   aws: {
-    bucket: process.env.AWS_UPLOAD_BUCKET || 'debt-collective',
+    bucket: process.env.AWS_UPLOAD_BUCKET || 'debtcollective-development',
     secrets: {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
@@ -67,6 +63,10 @@ module.exports = {
     city: process.env.DOE_DISCLOSURE_CITY || 'Anchorage',
     state: process.env.DOE_DISCLOSURE_STATE || 'Alaska',
     zip: process.env.DOE_DISCLOSURE_ZIP || '12345',
+  },
+  sessions: {
+    key: process.env.SESSION_NAME || `dispute_tools_${environment}`,
+    secret: process.env.SESSION_SECRET || 'SECRET',
   },
   database: require('$root/knexfile.js'),
   middlewares: require('$config/middlewares'),

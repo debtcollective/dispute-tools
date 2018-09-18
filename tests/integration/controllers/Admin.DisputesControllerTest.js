@@ -14,7 +14,7 @@ const {
   testNoContent,
   testForbidden,
   testNotFound,
-} = require('../../utils');
+} = require('$tests/utils');
 const {
   wageGarnishmentDisputes: {
     A: {
@@ -39,14 +39,10 @@ const {
 describe('Admin.DisputesController', () => {
   let user;
   let admin;
-  let disputeAdmin;
-  let moderator;
 
   before(async () => {
     user = await createUser();
     admin = await createUser({ admin: true });
-    disputeAdmin = await createUser({ groups: [{ name: adminRole }] });
-    moderator = await createUser({ moderator: true });
   });
 
   describe('index', () => {
@@ -71,14 +67,6 @@ describe('Admin.DisputesController', () => {
 
       describe('when admin', () => {
         it('should allow', () => testAllowed(testGetPage(url, admin)));
-      });
-
-      describe('when dispute admin', () => {
-        it('should allow', () => testAllowed(testGetPage(url, disputeAdmin)));
-      });
-
-      describe('when moderator', () => {
-        it('should reject', () => testForbidden(testGetPage(url, moderator)));
       });
     });
   });
@@ -109,14 +97,6 @@ describe('Admin.DisputesController', () => {
       describe('when admin', () => {
         it('should allow', () => testAllowed(testPutPage(url, status, admin)));
       });
-
-      describe('when dispute admin', () => {
-        it('should allow', () => testAllowed(testPutPage(url, status, disputeAdmin)));
-      });
-
-      describe('when moderator', () => {
-        it('should reject', () => testForbidden(testPutPage(url, status, moderator)));
-      });
     });
   });
 
@@ -139,14 +119,6 @@ describe('Admin.DisputesController', () => {
 
       describe('when admin', () => {
         it('should allow', () => testAllowed(testPost(url, [], admin)));
-      });
-
-      describe('when dispute admin', () => {
-        it('should allow', () => testAllowed(testPost(url, [], disputeAdmin)));
-      });
-
-      describe('when moderator', () => {
-        it('should reject', () => testForbidden(testPost(url, [], moderator)));
       });
     });
   });
@@ -184,14 +156,6 @@ describe('Admin.DisputesController', () => {
       describe('when admin', () => {
         it('should allow', () => testAllowed(testPut(url, {}, admin)));
       });
-
-      describe('when dispute admin', () => {
-        it('should allow', () => testAllowed(testPut(url, {}, disputeAdmin)));
-      });
-
-      describe('when moderator', () => {
-        it('should reject', () => testForbidden(testPut(url, {}, moderator)));
-      });
     });
 
     it('should update the form', async () => {
@@ -199,9 +163,21 @@ describe('Admin.DisputesController', () => {
         formName: 'personal-information-form',
         fieldValues: { ...sampleData, city: 'TEST CiTyName' },
       };
-      await testPut(url, body, disputeAdmin);
 
-      const updatedDispute = await Dispute.findById(dispute.id);
+      try {
+        await testPut(url, body, admin);
+      } catch (e) {
+        expect.fail(e);
+      }
+
+      let updatedDispute = null;
+
+      try {
+        updatedDispute = await Dispute.findById(dispute.id);
+      } catch (e) {
+        expect.fail(e);
+      }
+
       expect(updatedDispute.data.forms).eql({
         'personal-information-form': body.fieldValues,
       });
@@ -222,8 +198,8 @@ describe('Admin.DisputesController', () => {
         .reply(200, {
           members: [
             {
-              ...disputeAdmin,
-              id: disputeAdmin.externalId,
+              ...admin,
+              id: admin.externalId,
             },
           ],
           owners: [],
@@ -241,14 +217,6 @@ describe('Admin.DisputesController', () => {
 
       describe('when admin', () => {
         it('should allow', () => testAllowed(testGet(url, admin)));
-      });
-
-      describe('when dispute admin', () => {
-        it('should allow', () => testAllowed(testGet(url, disputeAdmin)));
-      });
-
-      describe('when moderator', () => {
-        it('should reject', () => testForbidden(testGet(url, moderator)));
       });
     });
   });
@@ -293,20 +261,12 @@ describe('Admin.DisputesController', () => {
       describe('when admin', () => {
         it('should allow', () => testAllowed(testGetPage(url, admin)));
       });
-
-      describe('when dispute admin', () => {
-        it('should allow', () => testAllowed(testGetPage(url, disputeAdmin)));
-      });
-
-      describe('when moderator', () => {
-        it('should reject', () => testForbidden(testGetPage(url, moderator)));
-      });
     });
 
     it('should redirect to the signed AWS url', async () => {
       let caught;
       try {
-        await testGetPage(url, disputeAdmin).redirects(0);
+        await testGetPage(url, admin).redirects(0);
       } catch (e) {
         caught = e;
       }
@@ -319,7 +279,6 @@ describe('Admin.DisputesController', () => {
 
   describe('deleteAttachment', () => {
     let url1;
-    let url2;
 
     before(async () => {
       try {
@@ -347,8 +306,6 @@ describe('Admin.DisputesController', () => {
       url1 = `${urls.Admin.Disputes.url()}/${dispute.id}/attachment/${attachment1.id}`;
 
       await dispute.addAttachment('test-attachment', assetPath);
-      const attachment2 = dispute.data.attachments[1];
-      url2 = `${urls.Admin.Disputes.url()}/${dispute.id}/attachment/${attachment2.id}`;
     });
 
     describe('authorization', () => {
@@ -364,16 +321,6 @@ describe('Admin.DisputesController', () => {
         it('should allow', () => testNoContent(testDelete(url1, admin)));
 
         it('should have deleted the attachment', () => testNotFound(testGet(url1, admin)));
-      });
-
-      describe('when dispute admin', () => {
-        it('should allow', () => testNoContent(testDelete(url2, disputeAdmin)));
-
-        it('should have deleted the attachment', () => testNotFound(testGet(url2, disputeAdmin)));
-      });
-
-      describe('when moderator', () => {
-        it('should reject', () => testForbidden(testDelete(url1, moderator)));
       });
     });
   });

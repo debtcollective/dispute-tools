@@ -1,19 +1,20 @@
-/* globals CONFIG, User, Dispute, DisputeTool */
+/* globals User, Dispute, DisputeTool */
+
 const uuid = require('uuid');
 const sa = require('superagent');
 const { expect } = require('chai');
 const nock = require('nock');
 const { execSync } = require('child_process');
-const sso = require('$services/sso');
+const _ = require('lodash');
 const qs = require('querystring');
+const faker = require('faker');
 
 const {
+  sessions,
+  router,
   siteURL,
-  sso: { endpoint },
   discourse: { baseUrl },
 } = require('$config/config');
-
-const agent = sa.agent();
 
 const ids = {
   _external: 0,
@@ -22,16 +23,7 @@ const ids = {
   },
 };
 
-const cookieCache = {};
-
-const withSiteUrl = url => {
-  if (url.startsWith(siteURL)) {
-    return url;
-  }
-
-  return `${siteURL}${url.startsWith('/') ? '' : '/'}${url}`;
-};
-
+// mocking calls to Discourse
 nock(baseUrl)
   .post('/posts')
   .query(true)
@@ -61,6 +53,30 @@ Object.keys(testGroups).forEach(groupName =>
     }),
 );
 
+// mocking sessions
+const expressSession = require('express-session');
+const RedisStore = require('connect-redis')(expressSession);
+const cookieSignature = require('cookie-signature');
+const redis = require('redis');
+
+const redisClient = redis.createClient({
+  host: process.env.REDIS_HOST || 'localhost',
+});
+
+const redisStoreInstance = new RedisStore({
+  client: redisClient,
+});
+
+const agent = sa.agent();
+
+const withSiteUrl = url => {
+  if (url.startsWith(siteURL)) {
+    return url;
+  }
+
+  return `${siteURL}${url.startsWith('/') ? '' : '/'}${url}`;
+};
+
 // create objects helper
 const helpers = {
   testGroups,
@@ -74,56 +90,21 @@ const helpers = {
     );
   },
 
-  async createUser({
-    params = { externalId: ids.nextExternal() },
-    groups = [],
-    admin = false,
-    moderator = false,
-  } = {}) {
+  async createUser(params = {}) {
+    _.defaults(params, {
+      externalId: ids.nextExternal(),
+      admin: false,
+      email: faker.internet.email(),
+      name: faker.name.findName(),
+      username: faker.internet.userName(),
+      avatarUrl: faker.image.imageUrl(),
+    });
+
     const user = new User(params);
 
     await user.save();
 
-    const username = uuid.v4();
-    const email = `${username}@example.com`;
-
-    nock(baseUrl)
-      .get(`/admin/users/${params.externalId}.json`)
-      .query(true)
-      .times(100)
-      .reply(200, {
-        ...user,
-        email,
-        username,
-        name: username,
-        avatar_template: '{size}',
-        id: user.externalId,
-      });
-
-    return user.setInfo({
-      groups,
-      admin,
-      moderator,
-      email,
-      username,
-      name: username,
-      avatarTemplate: '{size}',
-    });
-  },
-
-  getUserCookie(user) {
-    const exists = cookieCache[JSON.stringify(user)];
-    if (exists) return exists;
-
-    const ret = {};
-    sso.createCookie(
-      { user },
-      { cookie: (name, cookie, config) => Object.assign(ret, { name, cookie, config }) },
-      () => {},
-    );
-
-    cookieCache[JSON.stringify(user)] = ret;
-    return ret;
+    return user;
   },
 
   async createDispute(user, tool = null) {
@@ -140,12 +121,37 @@ const helpers = {
     return dispute;
   },
 
-  setCookie(req, user) {
+  // Generate a session for user
+  // express-session just stores a session id in the cookie
+  // so we need to create both a session and a cookie
+  generateSessionFor(user) {
+    const sessionID = uuid.v4();
+    const name = sessions.key;
+    const secret = sessions.secret;
+    const cookie = new expressSession.Cookie();
+    const session = {
+      passport: {
+        user: user.id,
+      },
+      cookie,
+    };
+
+    // create session
+    redisStoreInstance.set(sessionID, session, _.noop);
+
+    // create cookie
+    const signed = `s:${cookieSignature.sign(sessionID, secret)}`;
+    const cookieData = cookie.serialize(name, signed, cookie.options);
+
+    return cookieData;
+  },
+
+  // Creates a session for the user
+  signInAs(req, user) {
     if (user) {
-      const { name, cookie } = helpers.getUserCookie(user);
-      req.set('Cookie', `${name}=${cookie}`);
-    } else {
-      req.set('Cookie', null);
+      const cookie = helpers.generateSessionFor(user);
+
+      req.set('Cookie', cookie);
     }
   },
 
@@ -153,7 +159,7 @@ const helpers = {
 
   testGet(url, user = null, accept = 'application/json') {
     const req = agent.get(withSiteUrl(url)).set('Accept', accept);
-    helpers.setCookie(req, user);
+    helpers.signInAs(req, user);
     return req;
   },
 
@@ -166,7 +172,7 @@ const helpers = {
       req.send(body);
     }
 
-    helpers.setCookie(req, user);
+    helpers.signInAs(req, user);
     return req;
   },
 
@@ -179,7 +185,7 @@ const helpers = {
       req.send(body);
     }
 
-    helpers.setCookie(req, user);
+    helpers.signInAs(req, user);
     return req;
   },
 
@@ -187,7 +193,7 @@ const helpers = {
 
   testDelete(url, user = null, accept = 'application/json') {
     const req = agent.delete(withSiteUrl(url)).set('Accept', accept);
-    helpers.setCookie(req, user);
+    helpers.signInAs(req, user);
     return req;
   },
 
@@ -203,7 +209,7 @@ const helpers = {
         expect(status).eq(403);
       } else {
         expect(status).eq(302);
-        expect(headers.location.startsWith(endpoint)).true;
+        expect(headers.location.startsWith(router.mappings.login.url())).true;
       }
     }),
 
@@ -225,10 +231,11 @@ const helpers = {
       .catch(({ status, response: { headers } }) => {
         // Default redirect status for Express's res.redirect is a 302
         expect(status).eq(302);
-        // Make sure we didn't get redirected to the sso login page
-        expect(headers.location.slice(0, endpoint.length), 'Redirected to SSO endpoint').not.eq(
-          endpoint,
-        );
+        // Make sure we didn't get redirected to the login page
+        expect(
+          headers.location.slice(0, router.mappings.login.url().length),
+          'Redirected to login',
+        ).not.eq(router.mappings.login.url());
       }),
 
   testNoContent: req =>
