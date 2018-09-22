@@ -4,7 +4,8 @@ const RedisStore = require('connect-redis')(session);
 const config = require('$config/config');
 
 const redisClient = redis.createClient({
-  host: process.env.REDIS_HOST || 'localhost',
+  host: config.redis.host,
+  port: config.redis.port,
 });
 
 const redisStoreInstance = new RedisStore({

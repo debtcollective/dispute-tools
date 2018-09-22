@@ -69,6 +69,10 @@ module.exports = {
     key: process.env.SESSION_NAME || `dispute_tools_${environment}`,
     secret: process.env.SESSION_SECRET || 'SECRET',
   },
+  redis: {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: process.env.REDIS_PORT || '6379',
+  },
   database: require('$root/knexfile.js'),
   middlewares: require('$config/middlewares'),
 };
