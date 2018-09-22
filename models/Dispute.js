@@ -12,6 +12,9 @@ const { findAllDiscourseUsersEnsuringCreated } = require('$services/users');
 const { getCheckitConfig, filterDependentFields } = require('$services/formValidation');
 const Checkit = require('$shared/Checkit');
 const { DisputeThreadOriginMessage } = require('$services/messages');
+const {
+  discourse: { baseUrl: discourseEndpoint },
+} = require('$config/config');
 
 const Dispute = Class('Dispute')
   .inherits(Krypton.Model)
@@ -31,6 +34,14 @@ const Dispute = Class('Dispute')
     'createdAt',
     'updatedAt',
     'disputeThreadId',
+  ],
+
+  processors: [
+    disputes =>
+      disputes.map(d => ({
+        ...d,
+        disputeThreadLink: `${discourseEndpoint}/t/${d.disputeThreadId}`,
+      })),
   ],
 
   defaultIncludes: '[user, statuses]',
