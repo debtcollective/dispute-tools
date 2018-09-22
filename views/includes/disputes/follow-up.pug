@@ -115,16 +115,9 @@
               img.block(width='50' height='50' src='/images/profile/placeholder-small.png')
 
             .StatusItem-Text
-              form(
-                action=routeMappings.Disputes.update.url(dispute.id)
-                method='post'
-                data-component-form='dispute-comment'
-              )
-                input(name='_method' type='hidden' value='PUT')
-
-                h4 Got a question?
-                p #[a(href=dispute.disputeThreadLink rel='noreferrer noopener' target='_blank') Click here] to communicate directly with the organizers about this dispute.
-                p Tell us when you receive a response or any further communication from the creditor or collector.
+              h4 Got a question?
+              p #[a(href=dispute.disputeThreadLink rel='noreferrer noopener' target='_blank') Click here] to communicate directly with the organizers about this dispute.
+              p Tell us when you receive a response or any further communication from the creditor or collector.
 
   if _isDisputeOwner() && !_isFollowUpConfirmed()
     .-k-popover.-bottom-right.-success.absolute(data-component-popover='dispute-completed' aria-hidden='true' style='width: 290px;')
