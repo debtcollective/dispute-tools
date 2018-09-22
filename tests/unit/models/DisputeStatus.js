@@ -1,13 +1,9 @@
-const chai = require('chai');
+const { expect } = require('chai');
 const { createUser, createDispute } = require('$tests/utils');
 const DisputeStatuses = require('$shared/enum/DisputeStatuses');
 const DisputeStatus = require('$models/DisputeStatus');
 const Dispute = require('$models/Dispute');
 const { DisputeStatusUpdatedMessage } = require('$services/messages');
-
-chai.use(require('chai-as-promised'));
-
-const { expect } = chai;
 
 describe('Dispute Status', () => {
   let dispute;

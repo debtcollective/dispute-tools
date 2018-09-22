@@ -5,6 +5,8 @@ const path = require('path');
 const Mocha = require('mocha');
 const _ = require('lodash');
 
+require('chai').use(require('chai-as-promised'));
+
 const mocha = new Mocha();
 mocha.reporter('spec');
 mocha.timeout(5000);

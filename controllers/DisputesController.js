@@ -4,11 +4,10 @@ const marked = require('marked');
 const _ = require('lodash');
 const { BadRequest, NotFoundError } = require('$lib/errors');
 const DisputeStatuses = require('$shared/enum/DisputeStatuses');
-const { CompletedDisputeEmail, MemberUpdatedDisputeEmail } = require('$services/messages');
+const { CompletedDisputeEmail } = require('$services/messages');
 const { Raven, logger } = require('$lib');
 const Dispute = require('$models/Dispute');
 const DisputeRenderer = require('$models/DisputeRenderer');
-const DisputeStatus = require('$models/DisputeStatus');
 const config = require('$config/config');
 
 const {
@@ -102,32 +101,6 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       } catch (e) {
         next(e);
       }
-    },
-
-    update(req, res, next) {
-      const dispute = res.locals.dispute;
-
-      const { comment } = req.body;
-
-      const ds = new DisputeStatus({
-        comment,
-        disputeId: dispute.id,
-        status: 'User Update',
-      });
-
-      ds.save()
-        .then(async () => {
-          const email = new MemberUpdatedDisputeEmail(req.user, dispute, ds);
-          try {
-            await email.send();
-            logger.info('Successfully sent dispute updated email to organizers');
-          } catch (e) {
-            res.flash('error', 'Failed to send dispute update email to organizers');
-          }
-        })
-        .then(() => dispute.save())
-        .then(() => res.redirect(config.router.helpers.Disputes.show.url(dispute.id)))
-        .catch(next);
     },
 
     async updateSubmission(req, res) {
