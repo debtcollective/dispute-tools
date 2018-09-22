@@ -1,4 +1,4 @@
-const chai = require('chai');
+const { expect } = require('chai');
 const sinon = require('sinon');
 const uuid = require('uuid');
 const path = require('path');
@@ -13,10 +13,6 @@ const {
 
 const { createUser, createDispute, truncate } = require('$tests/utils');
 const { wageGarnishmentDisputes } = require('$tests/utils/sampleDisputeData');
-
-chai.use(require('chai-as-promised'));
-
-const { expect } = chai;
 
 describe('Dispute', () => {
   let user;
