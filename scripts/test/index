@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 export NODE_ENV=test
+export DISCOURSE_NODE_SUPPRESS_LOGS=1
 
 set -e
 
