@@ -67,9 +67,9 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         DisputeTool.query()
           .orderBy('created_at', 'ASC')
           .then(disputeTools => {
-            res.locals.disputeTools = disputeTools.map(dispute => ({
-              id: dispute.id,
-              name: dispute.name,
+            res.locals.disputeTools = disputeTools.map(tool => ({
+              id: tool.id,
+              name: tool.name,
             }));
             next();
           })
