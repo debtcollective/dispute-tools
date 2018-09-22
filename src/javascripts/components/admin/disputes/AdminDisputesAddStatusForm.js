@@ -43,6 +43,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
     this.disputeNameElement = this.element.querySelector('[data-dispute-name]');
     this.userAvatarElement = this.element.querySelector('[data-user-avatar]');
     this.statusesWrapper = this.element.querySelector('[data-statuses-wrapper]');
+    this.disputeThreadLink = this.element.querySelector('#js-dispute-thread-link');
 
     this._bindEvents();
     this._initCheckit();
@@ -155,5 +156,9 @@ export default class AdminDisputesAddStatusForm extends Widget {
     });
 
     this.statusesWrapper.appendChild(fragmentStatus);
+
+    this.disputeThreadLink.href = `${this.disputeThreadLink.dataset.discourseBaseUrl}/t/${
+      dispute.disputeThreadId
+    }`;
   }
 }
