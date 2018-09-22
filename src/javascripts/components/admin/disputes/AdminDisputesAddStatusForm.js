@@ -5,7 +5,7 @@ import DisputeStatusItem from '../../../components/disputes/StatusItem';
 
 export default class AdminDisputesAddStatusForm extends Widget {
   static get fields() {
-    return ['comment', 'notify', 'status'];
+    return ['status'];
   }
 
   static get constraints() {
@@ -50,9 +50,6 @@ export default class AdminDisputesAddStatusForm extends Widget {
 
   _initCheckit() {
     const checkit = new Checkit(AdminDisputesAddStatusForm.constraints);
-
-    // Only require comment if notify is true
-    checkit.maybe({ comment: ['required'] }, input => input.notify);
 
     this._checkit = checkit;
   }
@@ -115,9 +112,6 @@ export default class AdminDisputesAddStatusForm extends Widget {
       data[key] = this.ui[key].value;
     });
 
-    // For checkboxes we need to use the checked attribute
-    data.notify = this.ui.notify.checked;
-
     return data;
   }
 
@@ -127,7 +121,6 @@ export default class AdminDisputesAddStatusForm extends Widget {
    */
   updateData(dispute) {
     this.ui.status.selectedIndex = 0;
-    this.ui.comment.value = '';
     this._clearFieldErrors();
 
     const lastStatus = dispute.statuses[0].status;

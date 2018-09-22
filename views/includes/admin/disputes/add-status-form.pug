@@ -24,28 +24,11 @@
 
     .pb2
       textarea.form-control.block.-fw(
-        name='comment'
-        rows='6'
-        placeholder='Comment'
-      )
-      p(class='-on-error -danger -caption -fw-500 mt1')
-
-    .pb2
-      textarea.form-control.block.-fw(
         name='note'
         rows='5'
         placeholder='Note for Admins'
       )
       p(class='-on-error -danger -caption -fw-500 mt1')
-
-    .form-check.form-check-inline
-      input.mr1.form-control(
-        name='notify'
-        type='checkbox'
-        checked
-        id='notify-checkbox'
-      )
-      label.-ff-sec.block(for='notify-checkbox') Notify the member?
 
     button.-fw.-k-btn.btn-primary.-fw-600.mt1(type='submit') Send
 

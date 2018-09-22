@@ -1,8 +1,13 @@
-const { expect } = require('chai');
+const chai = require('chai');
 const { createUser, createDispute } = require('$tests/utils');
 const DisputeStatuses = require('$shared/enum/DisputeStatuses');
 const DisputeStatus = require('$models/DisputeStatus');
+const Dispute = require('$models/Dispute');
 const { DisputeStatusUpdatedMessage } = require('$services/messages');
+
+chai.use(require('chai-as-promised'));
+
+const { expect } = chai;
 
 describe('Dispute Status', () => {
   let dispute;
@@ -10,6 +15,9 @@ describe('Dispute Status', () => {
 
   before(async () => {
     user = await createUser();
+  });
+
+  beforeEach(async () => {
     dispute = await createDispute(user);
     dispute.user = user;
   });
@@ -17,7 +25,6 @@ describe('Dispute Status', () => {
   it('Should create an new status', () => {
     const status = new DisputeStatus({
       status: DisputeStatuses.incomplete,
-      comment: 'Incomplete status',
       disputeId: dispute.id,
     });
 
@@ -28,17 +35,14 @@ describe('Dispute Status', () => {
 
   describe('createForDispute', () => {
     it('should create a new DisputeStatus for the passed in dispute', async () => {
-      const comment = 'hello!';
       const status = DisputeStatuses.completed;
       const note = 'a note!';
 
       const newStatus = await DisputeStatus.createForDispute(dispute, {
-        comment,
         status,
         note,
       });
 
-      expect(newStatus.comment).eq(comment);
       expect(newStatus.status).eq(status);
       expect(newStatus.note).eq(note);
     });
@@ -60,15 +64,49 @@ describe('Dispute Status', () => {
         DisputeStatus.notifyStatuses = notifyStatuses;
       });
 
-      it('should send a message when the status is in the notifyStatuses array', async () => {
+      it('should send a message when the status is in the notifyStatuses array and the status is not a repeat', async () => {
+        // Set the status to incomplete so it's not a repeat status
+        await DisputeStatus.createForDispute(dispute, {
+          status: DisputeStatuses.incomplete,
+          note: '',
+        });
+
+        // Set the notify statuses to be just documentsSent
         DisputeStatus.notifyStatuses = [DisputeStatuses.documentsSent];
+
+        // Set the status to documentsSent
         await DisputeStatus.createForDispute(dispute, {
           status: DisputeStatuses.documentsSent,
           note: '',
-          comment: '',
         });
 
         expect(sent).eq(true);
+      });
+
+      it('should not send a message when the status is a repeat', async () => {
+        // Set the notify statuses to be just documents sent
+        DisputeStatus.notifyStatuses = [DisputeStatuses.documentsSent];
+
+        // Set the status to documents sent
+        await DisputeStatus.createForDispute(dispute, {
+          status: DisputeStatuses.documentsSent,
+          note: '',
+        });
+
+        // Set sent back to false (will have been set to true by setting the status to documentsSent)
+        sent = false;
+
+        // re-retrieve the dispute so that the statuses are up to date
+        dispute = await Dispute.findById(dispute.id, Dispute.defaultIncludes);
+
+        // set the status to the same as before but with a note so that it
+        // doesn't complain about repeat status and no note
+        await DisputeStatus.createForDispute(dispute, {
+          status: DisputeStatuses.documentsSent,
+          note: 'this is a note',
+        });
+
+        expect(sent).eq(false);
       });
 
       it('should not send the message if the status is not in the notifyStatuses array', async () => {
@@ -76,10 +114,23 @@ describe('Dispute Status', () => {
         await DisputeStatus.createForDispute(dispute, {
           status: DisputeStatuses.documentsSent,
           note: '',
-          comment: '',
         });
 
         expect(sent).eq(false);
+      });
+
+      it('should throw an error if repeated status with no note', async () => {
+        await DisputeStatus.createForDispute(dispute, {
+          status: DisputeStatuses.completed,
+          note: '',
+        });
+
+        // re-retrieve the dispute so that the statuses are up to date
+        dispute = await Dispute.findById(dispute.id, Dispute.defaultIncludes);
+
+        await expect(
+          DisputeStatus.createForDispute(dispute, { status: DisputeStatuses.completed, note: '' }),
+        ).rejectedWith('Invalid status creation. Empty note with repeat status.');
       });
     });
   });
@@ -88,7 +139,6 @@ describe('Dispute Status', () => {
     it('Should fail when status is invalid', () => {
       const status = new DisputeStatus({
         status: 'NONSENSE BEEP BOOP ERRRRROR',
-        comment: 'Incomplete status',
         disputeId: dispute.id,
       });
 
@@ -100,7 +150,6 @@ describe('Dispute Status', () => {
     it('Should fail when there is no dispute id', () => {
       const status = new DisputeStatus({
         status: DisputeStatuses.incomplete,
-        comment: 'Incomplete status',
       });
 
       return status.save().catch(err => {
