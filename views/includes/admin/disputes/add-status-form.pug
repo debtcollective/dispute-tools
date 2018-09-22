@@ -2,32 +2,23 @@
   #manage-assigned-admin-vue
   h3#modalAddStatusTitle.pb3 Edit Dispute Status
   .flex.items-center.pb3
-    img(
-      data-user-avatar
+    img#js-user-avatar(
       src='/images/profile/placeholder-small.png'
       width='50'
     )
     .pl2.overflow-hidden
-      h4.-fw-600.-ell(data-user-name) ${dispute.user.name}
-      p.-fw-500.-ell(data-dispute-name) ${dispute.disputeTool.name}
+      h4.-fw-600.-ell#js-user-name ${dispute.user.name}
+      p.-fw-500.-ell#js-dispute-name ${dispute.disputeTool.name}
 
-  form(method='post' action='')
+  form#js-status-form(method='post' action='')
     input(name='_method' type='hidden' value='PUT')
     .pb2
       div
-        select.form-control.-fw-600.-fw(name='status')
+        select.form-control.-fw-600.-fw#js-status-select(name='status')
           option(value='' disabled hidden) Status
           each status in statuses
             if status !== 'User Update'
               option(value= status)= status
-      p(class='-on-error -danger -caption -fw-500 mt1')
-
-    .pb2
-      textarea.form-control.block.-fw(
-        name='comment'
-        rows='6'
-        placeholder='Comment'
-      )
       p(class='-on-error -danger -caption -fw-500 mt1')
 
     .pb2
@@ -38,15 +29,9 @@
       )
       p(class='-on-error -danger -caption -fw-500 mt1')
 
-    .form-check.form-check-inline
-      input.mr1.form-control(
-        name='notify'
-        type='checkbox'
-        checked
-        id='notify-checkbox'
-      )
-      label.-ff-sec.block(for='notify-checkbox') Notify the member?
-
     button.-fw.-k-btn.btn-primary.-fw-600.mt1(type='submit') Send
 
-  .pt4(data-statuses-wrapper)
+    a.-fw.-k-btn.btn-secondary.-fw-600.mt1#js-dispute-thread-link(href='#' data-discourse-base-url=discourseEndpoint target='_blank' rel='noopener noreferrer')
+      | Open Discourse Dispute Thread
+
+  .pt4.pb4#js-statuses-wrapper

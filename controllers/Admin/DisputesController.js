@@ -1,8 +1,6 @@
 /* globals Class, Admin */
-const _ = require('lodash');
 const Promise = require('bluebird');
 const Dispute = require('$models/Dispute');
-const { discourse } = require('$lib');
 const { NotFoundError } = require('$lib/errors');
 const DisputeTool = require('$models/DisputeTool');
 const DisputeStatus = require('$models/DisputeStatus');
@@ -69,9 +67,9 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         DisputeTool.query()
           .orderBy('created_at', 'ASC')
           .then(disputeTools => {
-            res.locals.disputeTools = disputeTools.map(dispute => ({
-              id: dispute.id,
-              name: dispute.name,
+            res.locals.disputeTools = disputeTools.map(tool => ({
+              id: tool.id,
+              name: tool.name,
             }));
             next();
           })
@@ -117,14 +115,6 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       res.locals.disputes = res.locals.results;
       res.locals.statuses = DisputeStatus.statuses;
 
-      const users = await discourse.getUsers({
-        params: { ids: _.uniq(res.locals.disputes.map(({ user }) => user.externalId)).join(',') },
-      });
-
-      res.locals.disputes.forEach(dispute => {
-        dispute.user.setInfo(users.find(u => u.externalId === dispute.user.externalId) || {});
-      });
-
       res.locals.headers = {
         total_count: ~~res._headers.total_count,
         total_pages: ~~res._headers.total_pages,
@@ -146,17 +136,17 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       });
     },
 
-    async update(req, res, next) {
+    async update(req, res) {
       const dispute = res.locals.dispute;
 
       try {
         await DisputeStatus.createForDispute(dispute, req.body);
 
         req.flash('success', 'The dispute status has been updated.');
-        res.redirect(config.router.helpers.Admin.Disputes.url());
       } catch (e) {
-        next(e);
+        req.flash('error', e.message);
       }
+      res.redirect(config.router.helpers.Admin.Disputes.url());
     },
 
     getAvailableAdmins(req, res, next) {

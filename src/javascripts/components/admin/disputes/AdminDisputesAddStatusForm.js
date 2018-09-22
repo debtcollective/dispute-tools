@@ -5,7 +5,7 @@ import DisputeStatusItem from '../../../components/disputes/StatusItem';
 
 export default class AdminDisputesAddStatusForm extends Widget {
   static get fields() {
-    return ['comment', 'notify', 'status'];
+    return ['status'];
   }
 
   static get constraints() {
@@ -36,13 +36,14 @@ export default class AdminDisputesAddStatusForm extends Widget {
       }),
     );
 
-    this.formElement = this.element.getElementsByTagName('form')[0];
-    this.statusElement = this.formElement.querySelector('[name="status"]');
+    this.formElement = this.element.querySelector('#js-status-form');
+    this.statusElement = this.formElement.querySelector('#js-status-select');
     this.statusOptions = [].slice.call(this.statusElement.options);
-    this.userNameElement = this.element.querySelector('[data-user-name]');
-    this.disputeNameElement = this.element.querySelector('[data-dispute-name]');
-    this.userAvatarElement = this.element.querySelector('[data-user-avatar]');
-    this.statusesWrapper = this.element.querySelector('[data-statuses-wrapper]');
+    this.userNameElement = this.element.querySelector('#js-user-name');
+    this.disputeNameElement = this.element.querySelector('#js-dispute-name');
+    this.userAvatarElement = this.element.querySelector('#js-user-avatar');
+    this.statusesWrapper = this.element.querySelector('#js-statuses-wrapper');
+    this.disputeThreadLink = this.element.querySelector('#js-dispute-thread-link');
 
     this._bindEvents();
     this._initCheckit();
@@ -50,9 +51,6 @@ export default class AdminDisputesAddStatusForm extends Widget {
 
   _initCheckit() {
     const checkit = new Checkit(AdminDisputesAddStatusForm.constraints);
-
-    // Only require comment if notify is true
-    checkit.maybe({ comment: ['required'] }, input => input.notify);
 
     this._checkit = checkit;
   }
@@ -115,9 +113,6 @@ export default class AdminDisputesAddStatusForm extends Widget {
       data[key] = this.ui[key].value;
     });
 
-    // For checkboxes we need to use the checked attribute
-    data.notify = this.ui.notify.checked;
-
     return data;
   }
 
@@ -127,7 +122,6 @@ export default class AdminDisputesAddStatusForm extends Widget {
    */
   updateData(dispute) {
     this.ui.status.selectedIndex = 0;
-    this.ui.comment.value = '';
     this._clearFieldErrors();
 
     const lastStatus = dispute.statuses[0].status;
@@ -162,5 +156,9 @@ export default class AdminDisputesAddStatusForm extends Widget {
     });
 
     this.statusesWrapper.appendChild(fragmentStatus);
+
+    this.disputeThreadLink.href = `${this.disputeThreadLink.dataset.discourseBaseUrl}/t/${
+      dispute.disputeThreadId
+    }`;
   }
 }

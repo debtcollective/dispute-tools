@@ -2,8 +2,9 @@
 
 export NODE_ENV=test
 export PORT=9090
+export DISCOURSE_NODE_SUPPRESS_LOGS=1
 
 yarn utils:resetdb
 yarn utils:knexreset
 
-yarn nyc --reporter=lcov --report-dir coverage/form-validations node tests/form-validations.js
+yarn nyc --reporter=lcov --report-dir coverage/form-validations node tests/form-validations.js "$1"

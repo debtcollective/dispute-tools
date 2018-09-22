@@ -3,6 +3,7 @@
 const glob = require('glob');
 const path = require('path');
 const Mocha = require('mocha');
+const _ = require('lodash');
 
 const mocha = new Mocha();
 mocha.reporter('spec');
@@ -16,8 +17,20 @@ module.exports = function runTests(testDir) {
     matchBase: true, // search entire tree to find tests in subfolders
   };
 
+  // Allow passing in a regex and only run files that match
+  // otherwise just run every file
+  const matches =
+    process.argv.length > 2
+      ? (() => {
+          const r = new RegExp(_.last(process.argv));
+          return file => r.test(file);
+        })()
+      : _.identity;
+
   glob.sync('*.js', globOptions).forEach(file => {
-    mocha.addFile(path.join(testDir, file));
+    if (matches(file)) {
+      mocha.addFile(path.join(testDir, file));
+    }
   });
 
   // run Mocha
