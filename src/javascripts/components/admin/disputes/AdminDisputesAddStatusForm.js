@@ -157,8 +157,6 @@ export default class AdminDisputesAddStatusForm extends Widget {
 
     this.statusesWrapper.appendChild(fragmentStatus);
 
-    this.disputeThreadLink.href = `${this.disputeThreadLink.dataset.discourseBaseUrl}/t/${
-      dispute.disputeThreadId
-    }`;
+    this.disputeThreadLink.href = dispute.disputeThreadLink;
   }
 }
