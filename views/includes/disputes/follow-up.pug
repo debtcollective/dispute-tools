@@ -122,19 +122,9 @@
               )
                 input(name='_method' type='hidden' value='PUT')
 
-                h4 Got a reply?
+                h4 Got a question?
+                p #[a(href=dispute.disputeThreadLink rel='noreferrer noopener' target='_blank') Click here] to communicate directly with the organizers about this dispute.
                 p Tell us when you receive a response or any further communication from the creditor or collector.
-
-                textarea.form-control.block.my2.-fw(
-                  name='comment'
-                  rows='5'
-                  placeholder='Briefly describe the response you got…'
-                )
-                .flex
-                  p.mt1.mr3.-caption.-fw-500 We follow very closely what happens with these disputes so that we can find out which creditors are not breaking the law.
-                  button.Dispute__FollowUp__SendBtn.-k-btn.btn-primary.-fw-600(
-                    type='submit'
-                  ) Send
 
   if _isDisputeOwner() && !_isFollowUpConfirmed()
     .-k-popover.-bottom-right.-success.absolute(data-component-popover='dispute-completed' aria-hidden='true' style='width: 290px;')
