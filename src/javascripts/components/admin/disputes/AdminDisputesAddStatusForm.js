@@ -36,13 +36,13 @@ export default class AdminDisputesAddStatusForm extends Widget {
       }),
     );
 
-    this.formElement = this.element.getElementsByTagName('form')[0];
-    this.statusElement = this.formElement.querySelector('[name="status"]');
+    this.formElement = this.element.querySelector('#js-status-form');
+    this.statusElement = this.formElement.querySelector('#js-status-select');
     this.statusOptions = [].slice.call(this.statusElement.options);
-    this.userNameElement = this.element.querySelector('[data-user-name]');
-    this.disputeNameElement = this.element.querySelector('[data-dispute-name]');
-    this.userAvatarElement = this.element.querySelector('[data-user-avatar]');
-    this.statusesWrapper = this.element.querySelector('[data-statuses-wrapper]');
+    this.userNameElement = this.element.querySelector('#js-user-name');
+    this.disputeNameElement = this.element.querySelector('#js-dispute-name');
+    this.userAvatarElement = this.element.querySelector('#js-user-avatar');
+    this.statusesWrapper = this.element.querySelector('#js-statuses-wrapper');
     this.disputeThreadLink = this.element.querySelector('#js-dispute-thread-link');
 
     this._bindEvents();
