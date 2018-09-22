@@ -3,7 +3,6 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const Dispute = require('$models/Dispute');
 const DisputeTool = require('$models/DisputeTool');
-const { MemberUpdatedDisputeEmail } = require('$services/messages');
 const PrivateAttachmentStorage = require('$models/PrivateAttachmentStorage');
 
 const {
@@ -65,57 +64,6 @@ describe('DisputesController', () => {
       describe('when moderator', () => {
         it('should reject', () => testForbidden(testGetPage(url, moderator)));
       });
-    });
-  });
-
-  describe('update', () => {
-    let url;
-    let owner;
-    let send;
-    let dispute;
-
-    before(async () => {
-      owner = await createUser();
-      dispute = await createDispute(owner);
-      url = urls.Disputes.update.url(dispute.id);
-
-      send = MemberUpdatedDisputeEmail.prototype.send;
-      MemberUpdatedDisputeEmail.prototype.send = () => Promise.resolve();
-    });
-
-    after(() => {
-      MemberUpdatedDisputeEmail.prototype.send = send;
-    });
-
-    describe('authorization', () => {
-      const body = { comment: 'hello' };
-      describe('when unauthenticated', () => {
-        it('should redirect to login', () => testUnauthenticated(testPutPage(url, body)));
-      });
-
-      describe('when owner', () => {
-        it('should allow', () => testAllowed(testPutPage(url, body, owner)));
-      });
-
-      describe('when user but not owner', () => {
-        it('should reject', () => testForbidden(testPutPage(url, body, user)));
-      });
-
-      describe('when admin', () => {
-        it('should allow', () => testAllowed(testPutPage(url, body, admin)));
-      });
-
-      describe('when moderator', () => {
-        it('should reject', () => testForbidden(testPutPage(url, body, moderator)));
-      });
-    });
-
-    it('should set the status to User Update', async () => {
-      await testPutPage(url, { comment: 'Something such' }, admin);
-      const { statuses } = await Dispute.findById(dispute.id, '[statuses]');
-      const updatedStatus = statuses.find(s => s.comment === 'Something such');
-      expect(updatedStatus).exist;
-      expect(updatedStatus.status).eq('User Update');
     });
   });
 
