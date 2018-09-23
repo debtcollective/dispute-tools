@@ -475,14 +475,30 @@ const Dispute = Class('Dispute')
         ...usernamesToInvite.map(user =>
           discourse.topics
             .invite(this.disputeThreadId, { user })
-            .then(res => logger.info('invited', res))
-            .catch(logger.error),
+            .then(res => logger.debug('invited', res))
+            .catch(e => {
+              Raven.captureException(e);
+              logger.error(
+                'Failed to invite [user=%s] to [thread=%s] for [dispute=%s]',
+                user,
+                this.disputeThreadId,
+                this.id,
+              );
+            }),
         ),
         ...usernamesToUninvite.map(user =>
           discourse.topics
             .removeAllowedUser(this.disputeThreadId, user)
-            .then(res => logger.info('uninvited', res))
-            .catch(logger.error),
+            .then(res => logger.debug('uninvited', res))
+            .catch(e => {
+              Raven.captureException(e);
+              logger.error(
+                'Failed to uninvite [user=%s] to [thread=%s] for [dispute=%s]',
+                user,
+                this.disputeThreadId,
+                this.id,
+              );
+            }),
         ),
       ]);
     },
