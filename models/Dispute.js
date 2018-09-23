@@ -7,8 +7,8 @@ const DisputeAttachment = require('$models/DisputeAttachment');
 const DisputeTool = require('$models/DisputeTool');
 const DisputeStatus = require('$models/DisputeStatus');
 const DisputeRenderer = require('$models/DisputeRenderer');
+const User = require('$models/User');
 const { logger, discourse, Raven } = require('$lib');
-const { findAllDiscourseUsersEnsuringCreated } = require('$services/users');
 const { getCheckitConfig, filterDependentFields } = require('$services/formValidation');
 const Checkit = require('$shared/Checkit');
 const { DisputeThreadOriginMessage } = require('$services/messages');
@@ -417,16 +417,24 @@ const Dispute = Class('Dispute')
     /**
      * Update the list of admins assigned to this dispute. Removes all admins
      * who are not present in the array of ids and assigns new ones.
-     * @param {number[]} adminExternalIds Array of admin ids
+     * @param {string[]} adminIds Array of admin ids
      * @return {Promise<void>}
      */
-    async updateAdmins(adminExternalIds) {
-      const admins = await findAllDiscourseUsersEnsuringCreated(adminExternalIds);
+    async updateAdmins(requestedAdminIds) {
+      logger.debug('requestedAdminIds %s', requestedAdminIds);
+      const admins = await User.knex()
+        .table('Users')
+        .whereIn('id', requestedAdminIds)
+        .andWhere('admin', true);
+      logger.debug('admins', admins);
+      // Ensure we ignore bad ids and only allow admin ids
       const adminIds = admins.map(({ id }) => id);
-      const adminIdsToInsert = adminIds.filter(id => !this.admins.find(a => a.id === id));
+      const assignedAdminIds = _.map(this.admins, 'id');
+      const adminIdsToInsert = _.difference(adminIds, assignedAdminIds);
+      const adminIdsToRemove = _.difference([...assignedAdminIds, ...adminIds], adminIdsToInsert);
       const knex = Dispute.knex();
 
-      return Dispute.transaction(trx => {
+      await Dispute.transaction(trx =>
         knex
           .table('AdminsDisputes')
           .transacting(trx)
@@ -445,26 +453,53 @@ const Dispute = Class('Dispute')
               ),
           )
           .then(trx.commit)
-          .catch(trx.rollback);
-      });
+          .catch(trx.rollback),
+      );
+
+      const usernamesToInvite = admins.reduce(
+        (toInvite, a) => (adminIdsToInsert.includes(a.id) ? [...toInvite, a.username] : toInvite),
+        [],
+      );
+
+      const usernamesToUninvite = this.admins.reduce(
+        (toUninvite, a) =>
+          (adminIdsToRemove.includes(a.id) ? [...toUninvite, a.username] : toUninvite),
+        [],
+      );
+
+      logger.debug('usernamesToInvite %s', usernamesToInvite);
+      logger.debug('usernamesToUninvite %s', usernamesToUninvite);
+
+      // This.... could present some problems #RateLimiting
+      return Promise.all([
+        ...usernamesToInvite.map(user =>
+          discourse.topics
+            .invite(this.disputeThreadId, { user })
+            .then(res => logger.info('invited', res))
+            .catch(logger.error),
+        ),
+        ...usernamesToUninvite.map(user =>
+          discourse.topics
+            .removeAllowedUser(this.disputeThreadId, user)
+            .then(res => logger.info('uninvited', res))
+            .catch(logger.error),
+        ),
+      ]);
     },
 
-    /**
-     * @typedef {{ name: string, id: string }} AdminInfo
-     */
     /**
      * Compiles a two lists of the administrators on the platform,
      * those already assigned to the dispute and those unassigned,
      * or "available" to be assigned.
-     * @return {Promise<{ assigned: AdminInfo[], available: AdminInfo[] }>}
+     * @return {Promise<{ assigned: User[], available: User[] }>}
      */
     async getAssignedAndAvailableAdmins() {
-      const assignedExternalIds = this.admins.map(a => a.externalId);
-      const { members: disputeAdmins } = await discourse.getDisputeAdmins();
+      const assignedIds = this.admins.map(a => a.id);
+      const disputeAdmins = await User.getAdmins();
 
       return disputeAdmins.reduce(
         ({ assigned, available }, admin) => {
-          const isAssigned = assignedExternalIds.includes(admin.externalId);
+          const isAssigned = assignedIds.includes(admin.id);
           return {
             assigned: isAssigned ? [...assigned, admin] : assigned,
             available: !isAssigned ? [...available, admin] : available,
