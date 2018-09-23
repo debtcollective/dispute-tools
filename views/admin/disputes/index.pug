@@ -110,12 +110,12 @@ block content
           tr
             td
               .flex.items-center
-                img(src=_dispute.user.imageURL alt=(_dispute.user.name) width="50" height="50")
+                img(src=_dispute.user.imageURL alt=(_dispute.user.safeName) width="50" height="50")
                 p.pl2
                   .-fw-600= displayName
                   .-fw-300.pl1
                     span= "(by "
-                    span.-fw-400.-danger= _dispute.user.name
+                    span.-fw-400.-danger= _dispute.user.safeName
                     span= ")"
             td.-fw-400
               | #{_dispute.readableId}

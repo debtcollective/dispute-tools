@@ -7,7 +7,7 @@
       width='50'
     )
     .pl2.overflow-hidden
-      h4.-fw-600.-ell#js-user-name ${dispute.user.name}
+      h4.-fw-600.-ell#js-user-name ${dispute.user.safeName}
       p.-fw-500.-ell#js-dispute-name ${dispute.disputeTool.name}
 
   form#js-status-form(method='post' action='')

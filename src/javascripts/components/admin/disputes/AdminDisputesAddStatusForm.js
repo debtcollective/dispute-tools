@@ -138,7 +138,7 @@ export default class AdminDisputesAddStatusForm extends Widget {
     }
 
     this.formElement.action = this.constructor.updateUrlString.replace('${id}', dispute.id);
-    this.userNameElement.textContent = dispute.user.name;
+    this.userNameElement.textContent = dispute.user.safeName;
     this.disputeNameElement.textContent = disputeToolName;
     // TODO Use Discourse provided profile image url
     // this.userAvatarElement.src = dispute.user.imageURL;

@@ -8,7 +8,7 @@
         :options="all"
         :multiple="true"
         track-by="id"
-        :custom-label="o => o.name"
+        :custom-label="o => o.safeName"
       />
       <button
         class="-fw -k-btn btn-primary -fw-600 mt2 mb2"
@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     save() {
-      return updateAdmins(this.disputeId, this.assigned.map(a => a.externalId)).then(
+      return updateAdmins(this.disputeId, this.assigned.map(a => a.id)).then(
         () =>
           (this.alerts = [
             {
