@@ -7,6 +7,7 @@ const DisputeStatuses = require('$shared/enum/DisputeStatuses');
 const DisputeStatus = require('$models/DisputeStatus');
 const Dispute = require('$models/Dispute');
 const DisputeTool = require('$models/DisputeTool');
+const { discourse } = require('$lib');
 const {
   discourse: { baseUrl: discourseEndpoint },
 } = require('$config/config');
@@ -372,33 +373,76 @@ describe('Dispute', () => {
           ));
       });
     });
+  });
 
-    describe('admins', () => {
-      describe('updateAdmin', () => {
-        it('should assign the admin to the dispute', async () => {
-          await dispute.updateAdmins([user.externalId]);
-          const disputeAdmins = await Dispute.knex()('AdminsDisputes').where({
-            admin_id: user.id,
-            dispute_id: dispute.id,
-          });
+  describe('updateAdmin', () => {
+    let dispute;
+    let admin;
 
-          expect(disputeAdmins).to.be.truthy;
-          expect(disputeAdmins.length).to.eq(1);
-          expect(disputeAdmins.find(da => da.admin_id === user.id)).to.be.defined;
-        });
+    let originalTopics;
+    let invited;
+    let uninvited;
 
-        it('should remove the admin from being assigned to the dispute', async () => {
-          await dispute.updateAdmins([user.externalId]);
-          await dispute.updateAdmins([]);
-          const disputeAdmins = await Dispute.knex()('AdminsDisputes').where({
-            admin_id: user.id,
-            dispute_id: dispute.id,
-          });
+    before(() => {
+      originalTopics = { ...discourse.topics };
+      discourse.topics.invite = (...args) => Promise.resolve(invited.push(args));
+      discourse.topics.removeAllowedUser = (...args) => Promise.resolve(uninvited.push(args));
+    });
 
-          expect(disputeAdmins.length).to.eq(0);
-          expect(disputeAdmins.find(da => da.admin_id === user.id)).to.be.undefined;
-        });
+    beforeEach(async () => {
+      dispute = await createDispute(user);
+      dispute = await Dispute.findById(dispute.id, '[admins]');
+      admin = await createUser({ admin: true });
+
+      invited = [];
+      uninvited = [];
+    });
+
+    after(() => {
+      discourse.topics = originalTopics;
+    });
+
+    it('should assign the admin to the dispute', async () => {
+      await dispute.updateAdmins([admin.id]);
+      const disputeAdmins = await Dispute.knex()('AdminsDisputes').where({
+        admin_id: admin.id,
+        dispute_id: dispute.id,
       });
+
+      expect(disputeAdmins).to.be.truthy;
+      expect(disputeAdmins.length).to.eq(1);
+      expect(disputeAdmins.find(da => da.admin_id === admin.id)).to.be.defined;
+    });
+
+    it('should invite the admin to the dispute thread', async () => {
+      await dispute.updateAdmins([admin.id]);
+      expect(invited).to.have.lengthOf(1);
+      const [threadId, { user }] = invited[0];
+      expect(threadId).eq(dispute.disputeThreadId);
+      expect(user).eq(admin.username);
+    });
+
+    it('should remove the admin from being assigned to the dispute', async () => {
+      await dispute.updateAdmins([admin.id]);
+      await dispute.updateAdmins([]);
+      const disputeAdmins = await Dispute.knex()('AdminsDisputes').where({
+        admin_id: admin.id,
+        dispute_id: dispute.id,
+      });
+
+      expect(disputeAdmins.length).to.eq(0);
+      expect(disputeAdmins.find(da => da.admin_id === admin.id)).to.be.undefined;
+    });
+
+    it('should remove the admin from the dispute thread', async () => {
+      await dispute.updateAdmins([admin.id]);
+      expect(uninvited).to.have.lengthOf(0);
+      dispute = await Dispute.findById(dispute.id, '[admins]');
+      await dispute.updateAdmins([]);
+      expect(uninvited).to.have.lengthOf(1);
+      const [threadId, user] = uninvited[0];
+      expect(threadId).eq(dispute.disputeThreadId);
+      expect(user).eq(admin.username);
     });
   });
 });
