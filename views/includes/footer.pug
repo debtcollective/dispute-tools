@@ -3,6 +3,7 @@
   var repoURL = "https://github.com/debtcollective/"
   var twitterAccountURL = "https://twitter.com/0debtzone"
   var facebookAccountURL = "https://www.facebook.com/DebtCollective"
+  var powerReportURL = "https://powerreport.debtcollective.org"
 
   var columns = [
     {
@@ -23,7 +24,7 @@
     {
       header: 'Learn',
       links: [
-        { name: 'The Power Report', href: '#' },
+        { name: 'The Power Report', href: powerReportURL },
         { name: 'About Us', href: routeMappings.about.url() },
         { name: 'Community Wiki', href: wikiURL }
       ]
@@ -32,7 +33,7 @@
       header: 'More',
       links: [
         { name: 'Contact', href: routeMappings.contact.url() },
-        { name: 'Donate', href: '#', className: 'js-donate' },
+        { name: 'Donate', href: '/#', class: 'js-donate' },
         { name: 'Open Source', href: repoURL }
       ]
     }
@@ -50,7 +51,7 @@ footer.mx-auto.px2
               li.pr3.py1
                 a(
                   href=link.href
-                  class="-white -fw-600" + (link.class || '')
+                  class="-white -fw-600 " + (link.class || '')
                   rel= isExternal ? "noopener noreferrer" : ''
                   target= isExternal ? "_blank" : ''
                 )= link.name
