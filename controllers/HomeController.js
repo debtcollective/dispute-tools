@@ -164,8 +164,11 @@ const HomeController = Class('HomeController').inherits(BaseController)({
     },
 
     index(req, res) {
-      if (!req.user) res.render('home/index.pug');
-      else res.redirect(Router.mappings.DisputeTools.url());
+      if (!req.user || req.query.hasOwnProperty('donate')) {
+        res.render('home/index.pug');
+      } else {
+        res.redirect(Router.mappings.DisputeTools.url());
+      }
     },
 
     about(req, res) {

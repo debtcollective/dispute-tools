@@ -53,5 +53,9 @@ export default class Common extends Widget {
         this.donationFlowModal.activate();
       }),
     );
+
+    if (window.location.search.includes('donate')) {
+      this.donationFlowModal.activate();
+    }
   }
 }
