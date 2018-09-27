@@ -44,6 +44,7 @@ module.exports = {
     'jsx-uses-vars': 0,
     indent: 0,
     'max-len': [2, { code: 100, ignoreStrings: true, ignoreTemplateLiterals: true }],
+    'no-prototype-builtins': [0],
   },
   settings: {
     'import/resolver': {
