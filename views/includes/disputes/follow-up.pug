@@ -91,7 +91,7 @@
               .clearfix
                 .left
                   if userUpdate
-                    p.-fw-600= dispute.user.name
+                    p.-fw-600= dispute.user.safeName
                   else
                     p.-fw-600.-primary= 'The Debt Collective'
                   .-caption.-neutral-mid

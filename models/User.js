@@ -17,6 +17,12 @@ const User = Class('User').inherits(Krypton.Model)({
     'updatedAt',
   ],
 
+  processors: [users => users.map(u => ({ ...u, safeName: u.name || u.username }))],
+
+  getAdmins() {
+    return User.query().where({ admin: true });
+  },
+
   prototype: {
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
