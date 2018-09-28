@@ -431,7 +431,7 @@ const Dispute = Class('Dispute')
       const adminIds = admins.map(({ id }) => id);
       const assignedAdminIds = _.map(this.admins, 'id');
       const adminIdsToInsert = _.difference(adminIds, assignedAdminIds);
-      const adminIdsToRemove = _.difference([...assignedAdminIds, ...adminIds], adminIdsToInsert);
+      const adminIdsToRemove = _.difference(assignedAdminIds, adminIds);
       const knex = Dispute.knex();
 
       await Dispute.transaction(trx =>

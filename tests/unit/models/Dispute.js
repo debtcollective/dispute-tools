@@ -378,6 +378,8 @@ describe('Dispute', () => {
   describe('updateAdmin', () => {
     let dispute;
     let admin;
+    let admin2;
+    let admin3;
 
     let originalTopics;
     let invited;
@@ -393,6 +395,8 @@ describe('Dispute', () => {
       dispute = await createDispute(user);
       dispute = await Dispute.findById(dispute.id, '[admins]');
       admin = await createUser({ admin: true });
+      admin2 = await createUser({ admin: true });
+      admin3 = await createUser({ admin: true });
 
       invited = [];
       uninvited = [];
@@ -415,15 +419,22 @@ describe('Dispute', () => {
     });
 
     it('should invite the admin to the dispute thread', async () => {
-      await dispute.updateAdmins([admin.id]);
-      expect(invited).to.have.lengthOf(1);
-      const [threadId, { user }] = invited[0];
-      expect(threadId).eq(dispute.disputeThreadId);
-      expect(user).eq(admin.username);
+      await dispute.updateAdmins([admin.id, admin2.id]);
+      expect(invited).to.have.lengthOf(2);
+
+      const [threadId1, { user: user1 }] = invited[0];
+      expect(threadId1).eq(dispute.disputeThreadId);
+      expect(user1).eq(admin.username);
+
+      const [threadId2, { user: user2 }] = invited[1];
+      expect(threadId2).eq(dispute.disputeThreadId);
+      expect(user2).eq(admin2.username);
     });
 
     it('should remove the admin from being assigned to the dispute', async () => {
-      await dispute.updateAdmins([admin.id]);
+      await dispute.updateAdmins([admin.id, admin2.id]);
+      dispute = await Dispute.findById(dispute.id, '[admins]');
+
       await dispute.updateAdmins([]);
       const disputeAdmins = await Dispute.knex()('AdminsDisputes').where({
         admin_id: admin.id,
@@ -435,14 +446,21 @@ describe('Dispute', () => {
     });
 
     it('should remove the admin from the dispute thread', async () => {
-      await dispute.updateAdmins([admin.id]);
+      await dispute.updateAdmins([admin.id, admin2.id]);
       expect(uninvited).to.have.lengthOf(0);
       dispute = await Dispute.findById(dispute.id, '[admins]');
-      await dispute.updateAdmins([]);
-      expect(uninvited).to.have.lengthOf(1);
-      const [threadId, user] = uninvited[0];
-      expect(threadId).eq(dispute.disputeThreadId);
-      expect(user).eq(admin.username);
+
+      await dispute.updateAdmins([admin3.id]);
+
+      expect(uninvited).to.have.lengthOf(2);
+
+      const [threadId1, user1] = uninvited[0];
+      expect(threadId1).eq(dispute.disputeThreadId);
+      expect(user1).eq(admin.username);
+
+      const [threadId2, user2] = uninvited[1];
+      expect(threadId2).eq(dispute.disputeThreadId);
+      expect(user2).eq(admin2.username);
     });
   });
 });
