@@ -421,12 +421,10 @@ const Dispute = Class('Dispute')
      * @return {Promise<void>}
      */
     async updateAdmins(requestedAdminIds) {
-      logger.debug('requestedAdminIds %s', requestedAdminIds);
       const admins = await User.knex()
         .table('Users')
         .whereIn('id', requestedAdminIds)
         .andWhere('admin', true);
-      logger.debug('admins', admins);
       // Ensure we ignore bad ids and only allow admin ids
       const adminIds = admins.map(({ id }) => id);
       const assignedAdminIds = _.map(this.admins, 'id');
@@ -467,15 +465,21 @@ const Dispute = Class('Dispute')
         [],
       );
 
-      logger.debug('usernamesToInvite %s', usernamesToInvite);
-      logger.debug('usernamesToUninvite %s', usernamesToUninvite);
-
-      // This.... could present some problems #RateLimiting
+      // This.... could present some problems with rate limiting
+      // but this endpoint will not get hit often with more than one
+      // change, so it shouldn't be a problem...
       return Promise.all([
         ...usernamesToInvite.map(user =>
           discourse.topics
             .invite(this.disputeThreadId, { user })
-            .then(res => logger.debug('invited', res))
+            .then(() =>
+              logger.info(
+                'Invited [user=%s] to [thread=%s] for [dispute=%s]',
+                user,
+                this.disputeThreadId,
+                this.id,
+              ),
+            )
             .catch(e => {
               Raven.captureException(e);
               logger.error(
@@ -489,7 +493,14 @@ const Dispute = Class('Dispute')
         ...usernamesToUninvite.map(user =>
           discourse.topics
             .removeAllowedUser(this.disputeThreadId, user)
-            .then(res => logger.debug('uninvited', res))
+            .then(() =>
+              logger.info(
+                'Uninvited [user=%s] to [thread=%s] for [dispute=%s]',
+                user,
+                this.disputeThreadId,
+                this.id,
+              ),
+            )
             .catch(e => {
               Raven.captureException(e);
               logger.error(
