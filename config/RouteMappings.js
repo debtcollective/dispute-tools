@@ -69,31 +69,29 @@ const routeMappings = RouteMappings()
 
   // Admin
   .namespace('/Admin', mapAdmins =>
-    mapAdmins()
-      .resources('/Disputes', mapAdminDisputes =>
-        mapAdminDisputes()
-          .get('/:id/admins', {
-            to: 'Disputes#getAvailableAdmins',
-            as: 'getAvailableAdmins',
-          })
-          .post('/:id/admins', {
-            to: 'Disputes#updateAdmins',
-            as: 'updateAdmins',
-          })
-          .put('/:id/data', {
-            to: 'Disputes#updateDisputeData',
-            as: 'updateDisputeData',
-          })
-          .get('/:id/attachment/:aid', {
-            to: 'Disputes#downloadAttachment',
-            as: 'downloadAttachment',
-          })
-          .delete('/:id/attachment/:aid', {
-            to: 'Disputes#deleteAttachment',
-            as: 'deleteAttachment',
-          }),
-      )
-      .resources('/Users'),
+    mapAdmins().resources('/Disputes', mapAdminDisputes =>
+      mapAdminDisputes()
+        .get('/:id/admins', {
+          to: 'Disputes#getAvailableAdmins',
+          as: 'getAvailableAdmins',
+        })
+        .post('/:id/admins', {
+          to: 'Disputes#updateAdmins',
+          as: 'updateAdmins',
+        })
+        .put('/:id/data', {
+          to: 'Disputes#updateDisputeData',
+          as: 'updateDisputeData',
+        })
+        .get('/:id/attachment/:aid', {
+          to: 'Disputes#downloadAttachment',
+          as: 'downloadAttachment',
+        })
+        .delete('/:id/attachment/:aid', {
+          to: 'Disputes#deleteAttachment',
+          as: 'deleteAttachment',
+        }),
+    ),
   )
 
   // Dispute Tools

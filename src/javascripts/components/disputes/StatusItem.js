@@ -12,19 +12,18 @@ export default class StatusItem extends Widget {
 
     let name = 'The Debt Collective';
     let nameClass = '-primary';
-    // TODO Use Discourse provided profile image
-    // let avatar = this.constructor.TDCAvatar;
+    let avatar = this.constructor.TDCAvatar;
 
     if (userUpdate) {
       name = data.dispute.user.safeName;
       nameClass = '';
-      // avatar = this._getUserAvatar(data.dispute.user.account);
+      avatar = this._getUserAvatar(data.dispute.user);
     }
 
     return `
       <div class='StatusItem py2 clearfix'>
         <div class="StatusItem-Avatar left">
-
+          ${avatar}
         </div>
         <div class="StatusItem-Text">
           <div class="clearfix">
@@ -55,6 +54,6 @@ export default class StatusItem extends Widget {
   }
 
   _getUserAvatar(user) {
-    return `<img class="block -fw" src=${user.imageURL} />`;
+    return `<img class="block -fw" src=${user.avatarUrl} />`;
   }
 }

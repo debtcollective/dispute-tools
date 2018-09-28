@@ -128,13 +128,6 @@ export function login(url) {
   });
 }
 
-export function getUserByExternalId(externalId) {
-  return req({
-    url: `/admin/users?externalId=${externalId}`,
-    method: 'get',
-  });
-}
-
 export function uploadAttachment(dispute, form) {
   return req({
     method: 'post',
