@@ -4,7 +4,7 @@ const marked = require('marked');
 const _ = require('lodash');
 const { BadRequest, NotFoundError } = require('$lib/errors');
 const DisputeStatuses = require('$shared/enum/DisputeStatuses');
-const { CompletedDisputeEmail } = require('$services/messages');
+const { CompletedDisputeMessage } = require('$services/messages');
 const { Raven, logger } = require('$lib');
 const Dispute = require('$models/Dispute');
 const DisputeRenderer = require('$models/DisputeRenderer');
@@ -122,7 +122,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       }
 
       try {
-        await new CompletedDisputeEmail(req.user, dispute).send();
+        await new CompletedDisputeMessage(dispute).send();
         req.flash(
           'success',
           'Thank you for disputing your debt. A copy of your dispute has been sent to your email.',
