@@ -9,7 +9,6 @@ const fs = require('fs-extra');
 const request = require('request');
 const archiver = require('archiver');
 const { render } = require('$services/render');
-const Dispute = require('$models/Dispute');
 
 const LOCAL_URI_REGEXP = /^\//;
 const REMOTE_URI_REGEXP = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=+$,\w]+@)[A-Za-z0-9.-]+)((?:\/[+~%/.\w-_]*)?\??(?:[-+=&;%@.\w_]*)#?(?:[\w]*))?)/;
@@ -77,6 +76,9 @@ const DisputeRenderer = Class('DisputeRenderer')
     },
 
     async buildZip(_renderer) {
+      // Prevent circular require
+      const Dispute = require('$models/Dispute');
+
       const renderer = this;
 
       const zip = archiver.create('zip', {});
