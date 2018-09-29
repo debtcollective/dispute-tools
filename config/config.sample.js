@@ -50,6 +50,7 @@ module.exports = {
   discourse: {
     adminRole: process.env.DISCOURSE_ADMIN_ROLE || 'dispute_pro',
     coordinatorRole: process.env.DISCOURSE_COORDINATOR_ROLE || 'dispute_coordinator',
+    basicRole: process.env.DISCOURSE_BASIC_ROLE || 'trust_level_0',
     apiKey: process.env.DISCOURSE_API_KEY || '',
     apiUsername: process.env.DISCOURSE_API_USERNAME || 'system',
     baseUrl: process.env.DISCOURSE_API_BASE_URL || 'http://localhost:3000',
