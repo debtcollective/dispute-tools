@@ -106,21 +106,23 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     async updateSubmission(req, res) {
       const dispute = res.locals.dispute;
       const pendingSubmission = req.body.pending_submission === '1';
+      const redirect = () => res.redirect(config.router.helpers.Disputes.show.url(req.params.id));
 
       try {
         await dispute.markAsCompleted(pendingSubmission);
       } catch (e) {
+        // `markAsCompleted` handles logging the exception and sending it to Raven
+        // so we just need to tell the user that something went wrong.
+
         req.flash(
           'error',
           'An error occurred while completing your dispute. Please try again. If the problem persists, contact a Debt Collective organizer for assistance.',
         );
-        logger.error('Unable to mark dispute as completed', e.message, e.stack);
+        return redirect();
       }
 
-      const email = new CompletedDisputeEmail(req.user, dispute);
-
       try {
-        await email.send();
+        await new CompletedDisputeEmail(req.user, dispute).send();
         req.flash(
           'success',
           'Thank you for disputing your debt. A copy of your dispute has been sent to your email.',
@@ -132,7 +134,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         );
       }
 
-      res.redirect(config.router.helpers.Disputes.show.url(req.params.id));
+      return redirect();
     },
 
     async updateDisputeData(req, res, next) {

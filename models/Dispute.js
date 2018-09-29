@@ -268,15 +268,25 @@ const Dispute = Class('Dispute')
             });
           })
           .then(resolve)
-          .catch(reject);
+          .catch(err => {
+            Raven.captureException(err);
+            logger.error('Error while giving [dispute=%s] a completed status', dispute.id, err);
+            reject(err);
+          });
       }).then(() => {
         const renderer = new DisputeRenderer({
           disputeId: dispute.id,
         });
 
-        function fail(msg) {
+        function fail(step) {
           return err => {
-            logger.log(msg, err);
+            Raven.captureException(err);
+            logger.error(
+              'Error during [step=%s] while rendering [dispute=%s]',
+              step,
+              dispute.id,
+              err,
+            );
             throw err;
           };
         }
