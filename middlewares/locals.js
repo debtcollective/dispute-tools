@@ -5,7 +5,7 @@ const moment = require('moment');
 
 const {
   sso: { logout },
-  discourse: { baseUrl: discourseEndpoint },
+  discourse: { baseUrl: discourseEndpoint, adminRole, basicRole },
   environment,
   stripe: { publishable },
 } = config;
@@ -30,6 +30,8 @@ module.exports = function locals(req, res, next) {
   res.locals.CONFIG = config;
   res.locals.lodash = _;
   res.locals.moment = moment;
+  res.locals.adminRole = adminRole;
+  res.locals.basicRole = basicRole;
 
   // DonationFlow
   res.locals.STRIPE_PUBLISHABLE_KEY = publishable;

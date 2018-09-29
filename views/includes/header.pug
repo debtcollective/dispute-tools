@@ -9,6 +9,7 @@ script.
    */
   (function() {
     var dropdownLinks = [
+      { text: 'Admin', href: '/admin/disputes', roles: [!{JSON.stringify(adminRole)}] },
       { text: 'News', href: '#news' },
       { text: 'About the Debt Collective', href: '#about' },
       { text: 'Community Wiki', href: '#wiki' },
@@ -18,19 +19,9 @@ script.
     var headerLinks = [
       { text: 'Dispute Your Debt', href: '/dispute-tools' },
       { text: 'Campaigns', href: '#campaigns' },
-      { text: 'Events', href: '#events' }
+      { text: 'Events', href: '#events' },
+      { text: 'My Disputes', href: '/disputes/my', roles: [!{JSON.stringify(basicRole)}] }
     ];
-
-    var currentUser = !{JSON.stringify(currentUser)};
-    var isAdmin = !{JSON.stringify(!!isAdmin)};
-
-    if (currentUser) {
-      headerLinks.push({ text: 'My Disputes', href: '/disputes/my' });
-
-      if (isAdmin) {
-        headerLinks.push({ text: 'Admin', href: '/admin/disputes' });
-      }
-    }
 
     new Vue({
       el: '#debt-collective-header',
