@@ -1,6 +1,6 @@
 module.exports = {
   ContactUsEmail: require('./ContactUsEmail'),
-  CompletedDisputeEmail: require('./CompletedDisputeEmail'),
+  CompletedDisputeMessage: require('./CompletedDisputeMessage'),
   RecurringDonationEmail: require('./RecurringDonationEmail'),
   DisputeThreadOriginMessage: require('./DisputeThreadOriginMessage'),
   DisputeStatusUpdatedMessage: require('./DisputeStatusUpdatedMessage'),
