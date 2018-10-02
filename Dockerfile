@@ -2,9 +2,7 @@ FROM node:8.11.4-alpine
 
 WORKDIR /usr/src/app
 
-RUN apk update \
-    && apk upgrade \
-    && apk add build-base python git pdftk
+RUN apk --no-cache add build-base python git pdftk
 
 COPY . .
 
@@ -17,4 +15,4 @@ EXPOSE 8080
 RUN yarn install
 RUN yarn build
 
-CMD ["yarn", "start"]
+CMD ["yarn", "start:prod"]
