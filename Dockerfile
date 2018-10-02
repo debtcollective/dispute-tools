@@ -2,8 +2,7 @@ FROM node:8.11.4-alpine
 
 WORKDIR /usr/src/app
 
-RUN apk add build-base python git pdftk --update \
-    && rm -rf /var/cache/apk/*
+RUN apk --no-cache add build-base python git pdftk
 
 COPY . .
 
