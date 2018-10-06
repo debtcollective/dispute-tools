@@ -323,7 +323,7 @@ const Dispute = Class('Dispute')
       }
 
       if (_isDirty) {
-        this.data._forms = {};
+        this.data._forms = this.data._forms || {};
         this.data._forms[formName] = fieldValues;
       } else {
         try {
@@ -336,8 +336,8 @@ const Dispute = Class('Dispute')
           throw e;
         }
 
-        delete this.data._forms;
-        this.data.forms = {};
+        delete this.data._forms[formName];
+        this.data.forms = this.data.forms || {};
         this.data.forms[formName] = fieldValues;
       }
 
