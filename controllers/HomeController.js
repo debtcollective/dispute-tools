@@ -6,17 +6,18 @@ const Router = require('$config/RouteMappings');
 const { logger } = require('$lib');
 
 const {
-  stripe: { secret: stripeSecret },
+  stripe: { private: stripePrivateKey },
   mailers: { contactEmail },
 } = require('$config/config');
 
-const stripeClient = stripe(stripeSecret);
+const stripeClient = stripe(stripePrivateKey);
 
 const HomeController = Class('HomeController').inherits(BaseController)({
   prototype: {
     donate(req, res) {
       const token = req.body.token;
       const amount = Math.floor(Number(req.body.amount));
+      const email = req.body.email;
 
       // recurrent donations requires customers and plans
       const planId = `monthly-${req.body.amount}c-plan`;
@@ -25,7 +26,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
         new Promise((resolve, reject) => {
           stripeClient.customers.create(
             {
-              email: req.body.email,
+              email,
               source: token,
             },
             (err, customer) => {
@@ -112,11 +113,21 @@ const HomeController = Class('HomeController').inherits(BaseController)({
         createCustomer()
           .then(customer => createPlan().then(() => subscribe(customer.id)))
           .then(async subscription => {
+            let user = req.user;
+
+            // if there's no user, build one for the email
+            if (!user) {
+              user = {
+                name: 'The Debt Collective Supporter',
+                email,
+              };
+            }
+
             // send email for more info
-            const email = new RecurringDonationEmail(req.user, amount);
+            const recurringDonationEmail = new RecurringDonationEmail(user, amount);
 
             try {
-              await email.send();
+              await recurringDonationEmail.send();
               logger.info('Successfully sent RecurringDonationEmail');
             } catch (e) {
               // TODO: Handle this better...
