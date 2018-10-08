@@ -335,12 +335,12 @@ const Dispute = Class('Dispute')
           await this.setForm({ formName, fieldValues, _isDirty: true });
           throw e;
         }
-
-        delete this.data._forms[formName];
+        if (this.data._forms) {
+          delete this.data._forms[formName];
+        }
         this.data.forms = this.data.forms || {};
         this.data.forms[formName] = fieldValues;
       }
-
       return this;
     },
 

@@ -4,6 +4,7 @@ const sinon = require('sinon');
 const Dispute = require('$models/Dispute');
 const DisputeTool = require('$models/DisputeTool');
 const PrivateAttachmentStorage = require('$models/PrivateAttachmentStorage');
+const { wageGarnishmentDisputes } = require('$tests/utils/sampleDisputeData');
 
 const {
   router: { helpers: urls },
@@ -12,6 +13,7 @@ const {
 const {
   createUser,
   createDispute,
+  testGet,
   testGetPage,
   testPostPage,
   testPutPage,
@@ -317,6 +319,35 @@ describe('DisputesController', () => {
 
     describe('model validation', () => {
       it('should require a signature', () => testBadRequest(testPutPage(url, {}, owner)));
+    });
+  });
+  describe('download', () => {
+    it('should download the rendered dispute', async done => {
+      try {
+        const owner = await createUser();
+        const dispute = await createDispute(owner);
+        const updateUrl = urls.Disputes.updateDisputeData.url(dispute.id);
+
+        await testPutPage(
+          updateUrl,
+          {
+            command: 'setForm',
+            formName: 'personal-information-form',
+            fieldValues: wageGarnishmentDisputes.A.data.forms['personal-information-form'],
+          },
+          owner,
+        );
+
+        await testPutPage(updateUrl, { command: 'setDisputeProcess', process: 'yay' }, owner);
+
+        await testPutPage(urls.Disputes.setSignature.url(dispute.id), { signature: 'X' }, owner);
+
+        const res = await testGet(urls.Disputes.download.url(dispute.id), owner);
+        console.log(res);
+        done();
+      } catch (e) {
+        done(e);
+      }
     });
   });
 });

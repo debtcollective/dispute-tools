@@ -9,6 +9,7 @@ const { Raven, logger } = require('$lib');
 const Dispute = require('$models/Dispute');
 const DisputeRenderer = require('$models/DisputeRenderer');
 const config = require('$config/config');
+const disputeForms = require('$shared/utils/disputeForms');
 
 const {
   authenticate,
@@ -45,6 +46,8 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           req.params.id,
           '[user, statuses, attachments, disputeTool]',
         );
+
+        res.locals.formsUtils = disputeForms;
 
         if (!dispute) {
           next(new NotFoundError());

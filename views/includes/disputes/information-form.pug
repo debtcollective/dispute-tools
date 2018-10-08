@@ -10,12 +10,7 @@ include ../../mixins/dispute-tools/form-element
     input(type="hidden" name="formName" value=step.name)
 
     -
-      var _formData = {};
-      if (dispute.data.forms && dispute.data.forms[step.name]) {
-        _formData = dispute.data.forms[step.name]
-      } else if (dispute.data._forms && dispute.data._forms[step.name]) {
-        _formData = dispute.data._forms[step.name]
-      }
+      var _formData = formsUtils.getData(dispute.data)[step.name] || {};
 
     if isAdmin
       h3.pt3.center Editing

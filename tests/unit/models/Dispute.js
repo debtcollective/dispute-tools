@@ -199,11 +199,10 @@ describe('Dispute', () => {
       } catch (e) {
         console.error(e);
       }
-
       expect(dispute.data.forms['form-name']).to.be.equal(fieldValues);
     });
 
-    it('should not allow a form missing required fields', async () => {
+    it('should not allow a form missing required fields when submitting', async () => {
       const fieldValues = {
         ...wageGarnishmentDisputes.A.data.forms['personal-information-form'],
         'debt-amount': undefined,
@@ -222,7 +221,7 @@ describe('Dispute', () => {
       expect(caught.errors['debt-amount'].message).eq('The debt-amount is required');
     });
 
-    it('should toggle required fields that depend on other fields', async () => {
+    it('should toggle required fields that depend on other fields when submitting', async () => {
       const fieldValues = {
         ...wageGarnishmentDisputes.A.data.forms['personal-information-form'],
         'ffel-loan-radio-option': 'on',
@@ -240,6 +239,37 @@ describe('Dispute', () => {
       expect(caught).exist;
       expect(caught.errors.guarantyAgency).exist;
       expect(caught.errors.guarantyAgency.errors.find(e => e.rule === 'required')).exist;
+    });
+
+    it('should allow invalid/incomplete forms to be saved (i.e. "continue later")', async () => {
+      const fieldValues = JSON.parse(
+        JSON.stringify(wageGarnishmentDisputes.A.data.forms['personal-information-form']),
+      );
+      fieldValues['debt-amount'] = '';
+
+      dispute.data.option = 'A';
+
+      await dispute.setForm({ formName: 'form-name', fieldValues, _isDirty: true });
+
+      expect(dispute.data._forms['form-name']['debt-amount']).to.equal('');
+      expect(dispute.data._forms['form-name']).to.be.equal(fieldValues);
+    });
+
+    it('should allow saving of forms after submitting', async () => {
+      const fieldValues = wageGarnishmentDisputes.A.data.forms['personal-information-form'];
+
+      dispute.data.option = 'A';
+
+      await dispute.setForm({ formName: 'form-name', fieldValues });
+
+      const validated = dispute.data.forms['form-name'];
+
+      fieldValues['debt-amount'] = 0;
+
+      await dispute.setForm({ formName: 'form-name', fieldValues, _isDirty: true });
+
+      expect(dispute.data._forms['form-name']['debt-amount']).to.equal(0);
+      expect(dispute.data.forms['form-name']).to.be.equal(validated);
     });
   });
 
