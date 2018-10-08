@@ -15,7 +15,7 @@ block content
     case step.type
       when 'form'
         - step2require++;
-        if formsUtils.hasValidData(dispute, step.name)
+        if formsUtils.hasValidData(dispute.data, step.name)
           - step2value++;
       when 'upload'
         if step.optional === false

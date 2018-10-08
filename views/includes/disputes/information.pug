@@ -1,9 +1,11 @@
-mixin _formCard(step, _completed)
+mixin _formCard(step, _completed, hasDraft)
   .Tool__Info.flex.flex-column.-fh(
     class= `-${step.type} ${_completed && '-completed'}`
   )
     .flex-auto.pb3
       .pb1.-fw-600.-ttu= step.title
+      if hasDraft
+        span.Tool__Info-optional-badge.inline-block.rounded.px1.mb2.-caption.-fw-600 DRAFT
       if _completed
         .pb1.-caption.-success.flex
           div: svg.mr1(width='11' height='8'): use(xlink:href='#svg-checkmark')
@@ -115,10 +117,10 @@ mixin _uploadCard(step, _completed)
           - var _completed = false
           case step.type
             when 'form'
-              - _completed = dispute.data.forms && dispute.data.forms[step.name] ? true : false
-              +_formCard(step, _completed)
+              - _completed = formsUtils.hasValidData(dispute.data, 'personal-information-form')
+              +_formCard(step, _completed, formsUtils.hasDraft(dispute.data, 'personal-information-form'))
             when 'information'
-              - _completed = dispute.data.forms && dispute.data.forms['personal-information-form'] ? true : false
+              - _completed = formsUtils.hasValidData(dispute.data, 'personal-information-form')
               +_informationCard(step, _completed)
             when 'upload'
               - _completed = dispute.data.attachments && dispute.data.attachments.filter(a => a.name === step.name)[0]

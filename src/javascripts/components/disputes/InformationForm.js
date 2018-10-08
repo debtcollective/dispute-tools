@@ -15,7 +15,7 @@ import {
   filterDependentFields,
   makeErrorsReadable,
 } from '../../../../services/formValidation';
-import disputeForms from '../../../../shared/disputeForms';
+import disputeForms from '../../../../shared/utils/disputeForms';
 
 export const mountDebtAmounts = config => {
   if (document.getElementById('debt-amounts-mount-point')) {
