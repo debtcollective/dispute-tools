@@ -1,31 +1,24 @@
 const RouteMappings = require('route-mappings');
 
 const routeMappings = RouteMappings()
-  // Information, content
-
   .get('/', {
     to: 'Home#index',
     as: 'root',
   })
 
-  .get('/terms', {
-    to: 'Home#tos',
-    as: 'tos',
+  .get('/defense-to-repayment', {
+    to: 'DisputeTools#dtr',
+    as: 'dtr',
   })
 
   .get('/dispute-tools/defense-to-repayment', {
     to: 'Home#dtr',
-    as: 'dtr',
+    as: 'dtrRedirect',
   })
 
   .get('/about', {
     to: 'Home#about',
     as: 'about',
-  })
-
-  .get('/startpage', {
-    to: 'Home#startpage',
-    as: 'startpage',
   })
 
   .get('/vision', {

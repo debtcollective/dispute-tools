@@ -11,6 +11,7 @@ module.exports = {
     endpoint: process.env.SSO_ENDPOINT || 'http://localhost:3000/session/sso_provider',
     secret: process.env.SSO_SECRET || 'change-me-please',
   },
+  landingPageURL: process.env.LANDING_PAGE_URL || `http://localhost:${port}`,
   siteURL: process.env.SITE_URL || `http://localhost:${port}`,
   mailers: {
     contactEmail: process.env.EMAIL_CONTACT || 'contact@example.com',

@@ -84,6 +84,10 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulC
 
       return res.render('dispute-tools/show');
     },
+
+    dtr(req, res) {
+      res.render('home/dtr.pug');
+    },
   },
 });
 
