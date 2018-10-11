@@ -16,7 +16,6 @@ const PAGE_SUCCESS = 'PAGE_SUCCESS';
 const PAGE_ERROR = 'PAGE_ERROR';
 
 const PAYMENT_METHOD_CREDIT_CARD = 'PAYMENT_METHOD_CREDIT_CARD';
-const PAYMENT_METHOD_PAYPAL = 'PAYMENT_METHOD_PAYPAL';
 
 const formatCurrency = amount => `${amount.toFixed(2)}`;
 
@@ -31,7 +30,7 @@ export default class DonationFlow extends Widget {
       amount: AMOUNT_PRESETS[0],
       page: PAGE_DONATE,
       fund: FUND_GENERAL,
-      paymentMethod: null,
+      paymentMethod: PAYMENT_METHOD_CREDIT_CARD,
       email: '',
       number: '',
       cvc: '',
@@ -116,19 +115,15 @@ export default class DonationFlow extends Widget {
       });
     });
 
+    // Try another card button
+    this.sectionErrorEl
+      .querySelector('.btn-back')
+      .addEventListener('click', () => this.setState({ page: PAGE_PAYMENT }));
+
     // Return to Donation options
     this.sectionPaymentEl
       .querySelector('.btn-back')
       .addEventListener('click', () => this.setState({ page: PAGE_DONATE }));
-
-    // Toggle Payment option (paypal will trigger redirect, other will enable form inputs)
-    this.sectionPaymentMethodCreditCardEl.addEventListener('click', () =>
-      this.setState({ paymentMethod: PAYMENT_METHOD_CREDIT_CARD }),
-    );
-    this.sectionPaymentMethodPayPalEl.addEventListener('click', () => {
-      this.setState({ paymentMethod: PAYMENT_METHOD_PAYPAL });
-      this.sectionPaymentPayPalFormEl.submit();
-    });
 
     // Initial render
     this.customDonationCustomInputEl.value = formatCurrency(this.state.amount / 100);
