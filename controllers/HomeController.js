@@ -171,14 +171,6 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       res.render('home/admin.pug');
     },
 
-    index(req, res) {
-      if (!req.user || req.query.hasOwnProperty('donate')) {
-        res.render('home/index.pug');
-      } else {
-        res.redirect(Router.mappings.DisputeTools.url());
-      }
-    },
-
     about(req, res) {
       res.redirect(`${config.landingPageUrl}/#about`);
     },
@@ -193,6 +185,14 @@ const HomeController = Class('HomeController').inherits(BaseController)({
 
     dtr(req, res) {
       res.redirect(Router.mappings.dtr.url());
+    },
+
+    tools(req, res) {
+      res.redirect(Router.mappings.root.url());
+    },
+
+    tool(req, res) {
+      res.redirect(Router.mappings.tool.url(req.params.id));
     },
 
     healthCheck(req, res) {

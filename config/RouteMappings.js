@@ -1,21 +1,9 @@
 const RouteMappings = require('route-mappings');
 
 const routeMappings = RouteMappings()
-  .get('/', {
-    to: 'Home#index',
-    as: 'root',
-  })
-
-  .get('/defense-to-repayment', {
-    to: 'DisputeTools#dtr',
-    as: 'dtr',
-  })
-
-  .get('/dispute-tools/defense-to-repayment', {
-    to: 'Home#dtr',
-    as: 'dtrRedirect',
-  })
-
+  /*
+   * Base links
+   */
   .get('/about', {
     to: 'Home#about',
     as: 'about',
@@ -33,11 +21,6 @@ const routeMappings = RouteMappings()
 
   .post('/contact', {
     to: 'Home#sendContact',
-  })
-
-  .get('/tools-and-services/tool', {
-    to: 'Home#tool',
-    as: 'tool',
   })
 
   .get('/login', {
@@ -60,7 +43,14 @@ const routeMappings = RouteMappings()
     as: 'healthCheck',
   })
 
-  // Admin
+  .post('/donate', {
+    to: 'Home#donate',
+    as: 'donate',
+  })
+
+  /*
+   * Admin
+   */
   .namespace('/Admin', mapAdmins =>
     mapAdmins().resources('/Disputes', mapAdminDisputes =>
       mapAdminDisputes()
@@ -87,12 +77,9 @@ const routeMappings = RouteMappings()
     ),
   )
 
-  // Dispute Tools
-
-  .resources('/DisputeTools')
-
-  // Disputes
-
+  /*
+   * Disputes
+   */
   .resources('/Disputes', mapDisputes =>
     mapDisputes()
       .get('/:id/download', {
@@ -125,9 +112,38 @@ const routeMappings = RouteMappings()
       }),
   )
 
-  .post('/donate', {
-    to: 'Home#donate',
-    as: 'donate',
+  /*
+   * Dispute Tools
+   */
+
+  // Redirects to keep old links working
+  .get('/dispute-tools/defense-to-repayment', {
+    to: 'Home#dtr',
+    as: 'dtrRedirect',
+  })
+
+  .get('/dispute-tools', {
+    to: 'Home#tools',
+    as: 'toolsRedirect',
+  })
+
+  .get('/dispute-tools/:id', {
+    to: 'Home#tool',
+    as: 'toolRedirect',
+  })
+  .get('/', {
+    to: 'DisputeTools#index',
+    as: 'root',
+  })
+
+  .get('/defense-to-repayment', {
+    to: 'DisputeTools#dtr',
+    as: 'dtr',
+  })
+
+  .get('/:id', {
+    to: 'DisputeTools#show',
+    as: 'tool',
   });
 
 module.exports = routeMappings;
