@@ -2,6 +2,32 @@
 const environment = process.env.NODE_ENV || 'development';
 const port = process.env.PORT || 8080;
 
+/*
+ * S3 configuration
+ */
+const aws = {
+  bucket: process.env.AWS_UPLOAD_BUCKET || 'dispute-tools-development',
+  secrets: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
+    region: process.env.AWS_DEFAULT_REGION || '',
+  },
+  useSes: process.env.USE_SES === 'true',
+  staticAssets: process.env.STATIC_ASSETS_BUCKET_URL || 'https://s3.amazonaws.com/tds-static',
+};
+
+// Use Minio locally for S3 uploads
+if (['development', 'test'].includes(environment)) {
+  aws.secrets = {
+    ...aws.secrets,
+    endpoint: 'http://127.0.0.1:9000',
+    accessKeyId: 'access_key',
+    secretAccessKey: 'secret_key',
+    s3ForcePathStyle: true,
+    signatureVersion: 'v4',
+  };
+}
+
 module.exports = {
   environment,
   port,
@@ -9,7 +35,7 @@ module.exports = {
   notifyStatuses: (process.env.NOTIFY_STATUSES || 'Documents Sent').split(','),
   sso: {
     endpoint: process.env.SSO_ENDPOINT || 'http://localhost:3000/session/sso_provider',
-    secret: process.env.SSO_SECRET || 'change-me-please',
+    secret: process.env.SSO_SECRET || 'sso_secret',
   },
   landingPageURL: process.env.LANDING_PAGE_URL || `http://localhost:${port}`,
   siteURL: process.env.SITE_URL || `http://localhost:${port}`,
@@ -37,16 +63,7 @@ module.exports = {
   googleMaps: {
     apiKey: process.env.GMAPS_KEY || '',
   },
-  aws: {
-    bucket: process.env.AWS_UPLOAD_BUCKET || 'debtcollective-development',
-    secrets: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
-      region: process.env.AWS_DEFAULT_REGION || '',
-    },
-    useSes: process.env.USE_SES === 'true',
-    staticAssets: process.env.STATIC_ASSETS_BUCKET_URL || 'https://s3.amazonaws.com/tds-static',
-  },
+  aws,
   sentryEndpoint: process.env.SENTRY_ENDPOINT || '',
   discourse: {
     adminRole: process.env.DISCOURSE_ADMIN_ROLE || 'dispute_pro',

@@ -9,11 +9,6 @@ const routeMappings = RouteMappings()
     as: 'about',
   })
 
-  .get('/vision', {
-    to: 'Home#vision',
-    as: 'vision',
-  })
-
   .get('/contact', {
     to: 'Home#contact',
     as: 'contact',
@@ -132,14 +127,14 @@ const routeMappings = RouteMappings()
     as: 'toolRedirect',
   })
 
-  .get('/', {
-    to: 'DisputeTools#index',
-    as: 'root',
-  })
-
   .get('/defense-to-repayment', {
     to: 'DisputeTools#dtr',
     as: 'dtr',
+  })
+
+  .get('/', {
+    to: 'DisputeTools#index',
+    as: 'root',
   })
 
   .get('/:id', {

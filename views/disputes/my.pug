@@ -5,45 +5,31 @@ block title
 
 
 block content
-  -
-    var avatarUrl = currentUser.getAvatarUrl();
-    var profileUrl = currentUser.getProfileUrl();
-
   .ProfileWrapper.wrapper.py4.px2.flex.items-center.relative
     .max-width-3.mx-auto.relative.-fw
       .clearfix
-        .col.col-12
-          .relative.left.sm-col-4
-              img.block(src=avatarUrl width='150' height='150')
-          .flex.flex-column.pt3.pr3.pb2.pl3
-            .flex-auto
-              h3.pb2= currentUser.name
-              a(href=profileUrl class='-caption -fw-600' role='button' tabindex='0' rel="noreferrer noopener")
-                svg.mr1(width='11' height='11'): use(xlink:href='#svg-external')
-                | Go to my community profile
-
+        .flex.flex-column.p3
           if disputes.length > 0
-            .-bg-neutral-dark.px3.pb2
+            .-bg-neutral-dark.p3
               .col.col-4.sm-col-12
-                hr.mb3(aria-hidden="true")
-                h4.pb1 My disputes
+                h4.mb3 My disputes
               ul.list-reset
                 each dispute in lodash.reverse(lodash.orderBy(disputes, d => lodash.get(lodash.head(d.statuses), 'updatedAt', d.updatedAt)))
                   li
                     - const latestStatus = lodash.head(dispute.statuses);
-                    a.block.clearfix.py1.mxn1(href=routeMappings.Disputes.show.url(dispute.id))
+                    a.inline-block.w-100(href=routeMappings.Disputes.show.url(dispute.id))
                       .col.col-8.px1
-                        .-fw-600
+                        p.-fw-600
                           | #{dispute.disputeTool.name}
                           if dispute.data.option !== 'none'
                             |  / #{dispute.data.option}
                       .col.col-4.px1.right-align
                         - const latestStatusType = lodash.get(latestStatus, 'status', 'incomplete');
-                        .pt1.-caption.-ttu.-fw-600(
+                        p.pt1.-caption.-ttu.-fw-600(
                           class=`-status-${slugify(latestStatusType)}`
                         )= latestStatusType
                       .col.col-12.pl1
-                        .-caption.-ttu
+                        p.-caption.-ttu
                           -
                             // Ensure that if there's no status for some reason then we safely use the dispute's updated date
                             const lastUpdated = lodash.get(latestStatus, 'updatedAt', lodash.get(dispute, 'updatedAt'));
