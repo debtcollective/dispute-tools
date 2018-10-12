@@ -11,14 +11,14 @@ then
   if [ "$NODE_ENV" = "test" ]
   then
     echo "${GREEN}Resetting test database${NC}"
-    psql -h ${POSTGRES_HOST:-localhost} -U ${POSTGRES_USER:-$(whoami)} -c 'DROP DATABASE IF EXISTS "debtcollective_test"'
+    psql -h ${POSTGRES_HOST:-localhost} -U ${POSTGRES_USER:-$(whoami)} -c 'DROP DATABASE IF EXISTS "dispute_tools_test"'
 
-    psql -h ${POSTGRES_HOST:-localhost} -U ${POSTGRES_USER:-$(whoami)} -c 'CREATE DATABASE "debtcollective_test"'
+    psql -h ${POSTGRES_HOST:-localhost} -U ${POSTGRES_USER:-$(whoami)} -c 'CREATE DATABASE "dispute_tools_test"'
   else
     echo "${GREEN}Resetting development database${NC}"
-    psql -h ${POSTGRES_HOST:-localhost} -U ${POSTGRES_USER:-$(whoami)} -c 'DROP DATABASE IF EXISTS "debtcollective_development"'
+    psql -h ${POSTGRES_HOST:-localhost} -U ${POSTGRES_USER:-$(whoami)} -c 'DROP DATABASE IF EXISTS "dispute_tools_development"'
 
-    psql -h ${POSTGRES_HOST:-localhost} -U ${POSTGRES_USER:-$(whoami)} -c 'CREATE DATABASE "debtcollective_development"'
+    psql -h ${POSTGRES_HOST:-localhost} -U ${POSTGRES_USER:-$(whoami)} -c 'CREATE DATABASE "dispute_tools_development"'
   fi
   exit 0
 else
