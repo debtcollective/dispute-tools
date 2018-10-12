@@ -2,29 +2,22 @@ import NodeSupport from '../../lib/widget/NodeSupport';
 import DisputesInformation from './Information';
 import DisputesProcess from './Process';
 import DisputesSignature from './Signature';
-import DisputesFollowUp from './FollowUp';
 
 export default class DisputesController extends NodeSupport {
   constructor(config) {
     super();
 
     this._currentStep = config.currentStep;
-    this.sidebarItems = [].slice.call(
-      document.querySelectorAll('.Tool__sidebar-step'),
-    );
+    this.sidebarItems = [].slice.call(document.querySelectorAll('.Tool__sidebar-step'));
     this.contentItems = [];
 
     if (!config.dispute.data.signature) {
       this._registerSteps(config);
-    } else {
-      this._finalize(config);
     }
   }
 
   _registerSteps(config) {
-    const InformationElement = document.querySelector(
-      '[data-dispute-information]',
-    );
+    const InformationElement = document.querySelector('[data-dispute-information]');
     const ProcessElement = document.querySelector('[data-dispute-process]');
     const SignatureElement = document.querySelector('[data-dispute-signature]');
 
@@ -66,22 +59,6 @@ export default class DisputesController extends NodeSupport {
     }
 
     this._bindSidebarEvents();
-  }
-
-  _finalize(config) {
-    const FollowUpElement = document.querySelector('[data-dispute-follow-up]');
-
-    if (FollowUpElement) {
-      this.contentItems.push(
-        this.appendChild(
-          new DisputesFollowUp({
-            name: 'DisputesFollowUp',
-            element: FollowUpElement,
-            dispute: config.dispute,
-          }),
-        ),
-      );
-    }
   }
 
   _bindSidebarEvents() {

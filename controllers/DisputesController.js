@@ -49,7 +49,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         if (!dispute) {
           next(new NotFoundError());
         } else {
-          dispute.statuses = _.sortBy(dispute.statuses, 'createdAt');
+          dispute.statuses = _.orderBy(dispute.statuses, 'createdAt', 'desc');
 
           // Used in template
           const optionData = dispute.disputeTool.data.options[dispute.data.option];
@@ -140,7 +140,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     async updateDisputeData(req, res, next) {
       const dispute = res.locals.dispute;
 
-      const commands = ['setForm', 'setDisputeProcess', 'setConfirmFollowUp'];
+      const commands = ['setForm', 'setDisputeProcess'];
 
       if (!commands.includes(req.body.command)) {
         return next(new BadRequest());

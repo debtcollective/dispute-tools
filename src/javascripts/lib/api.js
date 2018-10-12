@@ -54,7 +54,7 @@ export function req(opts, cb) {
  * @param {string} args.disputeId - dispute’s id to update its data.
  * @param {Object} [args.body={}] - the request body.
  * @param {string} args.body.command - one of
- *  ['setForm', 'setDisputeProcess', 'setConfirmFollowUp']
+ *  ['setForm', 'setDisputeProcess']
  * @param {function} [callback] - the callback that handles the response.
  */
 export function updateDisputeData(args, callback) {
