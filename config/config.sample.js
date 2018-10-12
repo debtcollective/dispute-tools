@@ -17,7 +17,7 @@ const aws = {
 };
 
 // Use Minio locally for S3 uploads
-if (['development', 'test'].includes(environment)) {
+if (environment === 'development') {
   aws.secrets = {
     ...aws.secrets,
     endpoint: 'http://127.0.0.1:9000',
