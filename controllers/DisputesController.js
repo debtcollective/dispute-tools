@@ -346,7 +346,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         .destroy()
         .then(() => {
           req.flash('warning', 'The Dispute you started has been deactivated.');
-          return res.redirect(config.router.helpers.DisputeTools.url());
+          return res.redirect(config.router.helpers.Disputes.myDisputes.url());
         })
         .catch(next);
     },

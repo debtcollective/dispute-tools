@@ -131,6 +131,7 @@ const routeMappings = RouteMappings()
     to: 'Home#tool',
     as: 'toolRedirect',
   })
+
   .get('/', {
     to: 'DisputeTools#index',
     as: 'root',
