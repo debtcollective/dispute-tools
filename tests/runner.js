@@ -37,11 +37,7 @@ module.exports = function runTests(testDir) {
 
   // run Mocha
   mocha.run(failures => {
-    process.on('exit', () => {
-      process.exit(failures);
-    });
-
-    process.exit();
+    process.exit(failures);
   });
 
   process.on('error', err => {
