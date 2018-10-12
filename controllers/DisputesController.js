@@ -128,6 +128,9 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           'Thank you for disputing your debt. A copy of your dispute has been sent to your email.',
         );
       } catch (e) {
+        Raven.captureException(e);
+        logger.error(e);
+
         req.flash(
           'error',
           'Your dispute was successfully saved. However, an error was encountered while sending the confirmation email. Please contact a Debt Collective organizer to resolve this error.',
