@@ -28,6 +28,7 @@ module.exports = function locals(req, res, next) {
   res.locals.marked = marked;
   res.locals.US_STATES = US_STATES;
   res.locals.CONFIG = config;
+  res.locals.config = config;
   res.locals.lodash = _;
   res.locals.moment = moment;
   res.locals.adminRole = adminRole;

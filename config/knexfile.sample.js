@@ -4,7 +4,7 @@ module.exports = {
   connection: process.env.DB_CONNECTION_STRING || {
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'postgres',
-    database: process.env.DB_SCHEMA || `debtcollective_${process.env.NODE_ENV || 'development'}`,
+    database: process.env.DB_SCHEMA || `dispute_tools_${process.env.NODE_ENV || 'development'}`,
   },
   pool: {
     min: process.env.DB_POOL_MIN || 2,

@@ -4,6 +4,7 @@ const stripe = require('stripe');
 const { ContactUsEmail, RecurringDonationEmail } = require('$services/messages');
 const Router = require('$config/RouteMappings');
 const { logger } = require('$lib');
+const config = require('$config/config');
 
 const {
   stripe: { private: stripePrivateKey },
@@ -170,20 +171,8 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       res.render('home/admin.pug');
     },
 
-    startpage(req, res) {
-      res.render('home/startpage.pug');
-    },
-
-    index(req, res) {
-      if (!req.user || req.query.hasOwnProperty('donate')) {
-        res.render('home/index.pug');
-      } else {
-        res.redirect(Router.mappings.DisputeTools.url());
-      }
-    },
-
     about(req, res) {
-      res.render('home/about');
+      res.redirect(`${config.landingPageUrl}/#about`);
     },
 
     vision(req, res) {
@@ -192,6 +181,22 @@ const HomeController = Class('HomeController').inherits(BaseController)({
 
     contact(req, res) {
       res.render('home/contact');
+    },
+
+    dtr(req, res) {
+      res.redirect(Router.mappings.dtr.url());
+    },
+
+    tools(req, res) {
+      res.redirect(Router.mappings.root.url());
+    },
+
+    tool(req, res) {
+      res.redirect(Router.mappings.tool.url(req.params.id));
+    },
+
+    healthCheck(req, res) {
+      res.send('service is running');
     },
 
     async sendContact(req, res, next) {
@@ -215,26 +220,6 @@ const HomeController = Class('HomeController').inherits(BaseController)({
         );
         next(e);
       }
-    },
-
-    dtr(req, res) {
-      res.render('home/dtr.pug');
-    },
-
-    tos(req, res) {
-      res.render('home/tos.pug');
-    },
-
-    tools(req, res) {
-      res.render('home/tools');
-    },
-
-    tool(req, res) {
-      res.render('home/tool');
-    },
-
-    healthCheck(req, res) {
-      res.send('service is running');
     },
   },
 });

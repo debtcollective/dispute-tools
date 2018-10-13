@@ -8,18 +8,18 @@ script.
    * header goes until the bundle is done loading & has begun execution
    */
   (function() {
-    var dropdownLinks = [
-      { text: 'The Power Report', href: 'https://powerreport.debtcollective.org' }
-      { text: 'Community Wiki', href: 'http://wiki.debtcollective.org' },
-      { text: 'About the Debt Collective', href: 'https://debtcollective.org#about' },
-    ];
-
     var headerLinks = [
       { text: 'Dispute Your Debt', href: '/dispute-tools' },
       { text: 'Campaigns', href: 'https://community.debtcollective.org' },
-      { text: 'Events', href: 'https://community.debtcollective.org' },
+      { text: 'Events', href: 'https://community.debtcollective.org/calendar' },
       { text: 'My Disputes', href: '/disputes/my', roles: [!{JSON.stringify(basicRole)}] },
       { text: 'Admin', href: '/admin/disputes', roles: [!{JSON.stringify(adminRole)}] }
+    ];
+
+    var dropdownLinks = [
+      { text: 'The Power Report', href: 'https://powerreport.debtcollective.org' },
+      { text: 'Community Wiki', href: 'http://wiki.debtcollective.org' },
+      { text: 'About the Debt Collective', href: 'https://debtcollective.org#about' }
     ];
 
     new Vue({

@@ -241,8 +241,11 @@ const Dispute = Class('Dispute')
      * TODO This method does too much, refactor to be multiple method calls and use async/await
      * @param {boolean} pendingSubmission
      */
-    markAsCompleted(pendingSubmission) {
+    async markAsCompleted(pendingSubmission) {
       const dispute = this;
+      this.data.disputeConfirmFollowUp = true;
+
+      await dispute.save();
 
       return new Promise((resolve, reject) => {
         const disputeStatus = new DisputeStatus({
@@ -355,11 +358,6 @@ const Dispute = Class('Dispute')
         this.data.disputeProcessCity = processCity;
       }
 
-      return this;
-    },
-
-    setConfirmFollowUp() {
-      this.data.disputeConfirmFollowUp = true;
       return this;
     },
 

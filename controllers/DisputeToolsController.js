@@ -1,10 +1,5 @@
 /* globals Class */
 const marked = require('marked');
-const {
-  authenticate,
-  authorize,
-  tests: { loggedIn },
-} = require('$services/auth');
 const DisputeTool = require('$models/DisputeTool');
 const { NotFoundError } = require('$lib/errors');
 const RestfulController = require('$lib/core/controllers/RestfulController');
@@ -15,8 +10,6 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulC
   beforeActions: [
     {
       before: [
-        authenticate,
-        authorize(loggedIn),
         async (req, res, next) => {
           try {
             const disputeTool = idRegex.test(req.params.id)
@@ -83,6 +76,10 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulC
       });
 
       return res.render('dispute-tools/show');
+    },
+
+    dtr(req, res) {
+      res.render('home/dtr.pug');
     },
   },
 });

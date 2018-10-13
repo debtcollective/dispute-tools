@@ -20,7 +20,7 @@ mixin toolCardMixin(tool)
         .ToolCard__caption.-caption.-fw-500 (#{_label})
     hr.mb2
     a.-k-btn.btn-primary.-fw.-fw-600(
-      href=routeMappings.DisputeTools.show.url(tool.slug)
+      href=routeMappings.tool.url(tool.slug)
       class= !user && 'js-login-link'
     ) Get started
     p.ToolCard__stats.pt2.-caption.-ttu.-fw-500 #[b= tool.completed] People filled

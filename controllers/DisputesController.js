@@ -49,7 +49,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         if (!dispute) {
           next(new NotFoundError());
         } else {
-          dispute.statuses = _.sortBy(dispute.statuses, 'createdAt');
+          dispute.statuses = _.orderBy(dispute.statuses, 'createdAt', 'desc');
 
           // Used in template
           const optionData = dispute.disputeTool.data.options[dispute.data.option];
@@ -128,6 +128,9 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           'Thank you for disputing your debt. A copy of your dispute has been sent to your email.',
         );
       } catch (e) {
+        Raven.captureException(e);
+        logger.error(e);
+
         req.flash(
           'error',
           'Your dispute was successfully saved. However, an error was encountered while sending the confirmation email. Please contact a Debt Collective organizer to resolve this error.',
@@ -140,7 +143,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     async updateDisputeData(req, res, next) {
       const dispute = res.locals.dispute;
 
-      const commands = ['setForm', 'setDisputeProcess', 'setConfirmFollowUp'];
+      const commands = ['setForm', 'setDisputeProcess'];
 
       if (!commands.includes(req.body.command)) {
         return next(new BadRequest());
@@ -346,7 +349,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         .destroy()
         .then(() => {
           req.flash('warning', 'The Dispute you started has been deactivated.');
-          return res.redirect(config.router.helpers.DisputeTools.url());
+          return res.redirect(config.router.helpers.Disputes.myDisputes.url());
         })
         .catch(next);
     },

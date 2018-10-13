@@ -49,8 +49,6 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
             return next(loginError);
           }
 
-          req.flash('success', 'Welcome to The Debt Collective');
-
           return req.session.save(() => {
             Raven.setContext({
               user: {
@@ -60,11 +58,7 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
               },
             });
 
-            if (user.admin) {
-              return res.redirect(config.router.mappings.Admin.Disputes.url());
-            }
-
-            res.redirect(config.router.mappings.Disputes.myDisputes.url());
+            res.redirect(config.router.mappings.root.url());
           });
         });
       })(req, res, next);

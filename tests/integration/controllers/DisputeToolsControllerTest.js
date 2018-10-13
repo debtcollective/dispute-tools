@@ -1,10 +1,10 @@
-/* globals CONFIG, DisputeTool, User, Account */
+/* globals DisputeTool, User, Account */
 
 const { expect } = require('chai');
+const { createUser, testGetPage, testUnauthenticated, testAllowed } = require('$tests/utils');
+const config = require('$config/config');
 
-const { createUser, testGetPage, testUnauthenticated, testAllowed } = require('../../utils');
-
-const urls = CONFIG.router.helpers;
+const urls = config.router.helpers;
 
 describe('DisputeToolsController', () => {
   let user;
@@ -17,7 +17,7 @@ describe('DisputeToolsController', () => {
 
   describe('index', () => {
     describe('authorization', () => {
-      const index = urls.DisputeTools.url();
+      const index = urls.root.url();
       describe('when unauthenticated', () => {
         it('should allow', () => testAllowed(testGetPage(index)));
       });
@@ -38,8 +38,8 @@ describe('DisputeToolsController', () => {
 
     before(async () => {
       const tool = await DisputeTool.first();
-      url = urls.DisputeTools.show.url(tool.id);
-      slugUrl = urls.DisputeTools.show.url(tool.slug);
+      url = urls.tool.url(tool.id);
+      slugUrl = urls.tool.url(tool.slug);
     });
 
     describe('authorization', () => {

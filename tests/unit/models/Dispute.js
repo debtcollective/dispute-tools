@@ -160,19 +160,6 @@ describe('Dispute', () => {
     });
   });
 
-  describe('setConfirmFollowUp', () => {
-    let dispute;
-    before(async () => {
-      dispute = await createDispute(user);
-    });
-
-    it('should set disputeConfirmFollowUp to true on the dispute data', () => {
-      dispute.data.disputeConfirmFollowUp = false;
-      dispute.setConfirmFollowUp();
-      expect(dispute.data.disputeConfirmFollowUp).true;
-    });
-  });
-
   describe('setForm', () => {
     let dispute;
     before(async () => {

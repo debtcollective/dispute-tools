@@ -518,3 +518,8 @@ input[type='checkbox'] ~ label {
 .text-left {
   text-align: left;
 }
+
+/* sizes */
+.w-100 {
+  width: 100%;
+}
