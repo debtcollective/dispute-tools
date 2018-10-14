@@ -1,6 +1,7 @@
 /* global Checkit */
 import Vue from 'vue';
 import Pisces from 'pisces';
+import assert from 'assert';
 import get from 'lodash/get';
 import flatpickr from 'flatpickr';
 import Widget from '../../lib/widget';
@@ -14,16 +15,14 @@ import {
   filterDependentFields,
   makeErrorsReadable,
 } from '../../../../services/formValidation';
+import disputeForms from '../../../../shared/utils/disputeForms';
 
 export const mountDebtAmounts = config => {
   if (document.getElementById('debt-amounts-mount-point')) {
     const originalDebt = {
-      type: get(
-        config.dispute.data._forms || config.dispute.data.forms,
-        'personal-information-form.debt-type',
-      ),
+      type: get(disputeForms.getData(config.dispute.data), 'personal-information-form.debt-type'),
       amount: get(
-        config.dispute.data._forms || config.dispute.data.forms,
+        disputeForms.getData(config.dispute.data),
         'personal-information-form.debt-amount',
       ),
     };
@@ -46,7 +45,7 @@ export const mountDebtAmount = config => {
           <CurrencyInput
             name="fieldValues[debt-amount]"
             initialAmount={get(
-              config.dispute.data._forms || config.dispute.data.forms,
+              disputeForms.getData(config.dispute.data),
               'personal-information-form.debt-amount',
             )}
           />
@@ -89,7 +88,7 @@ export default class DisputesInformationForm extends Widget {
     this.togglers.forEach(t => {
       t.addEventListener('change', this._handleContentToggleRef);
 
-      console.assert(['yes', 'no'].includes(t.value), 'this code assumes only yes/no answers');
+      assert(['yes', 'no'].includes(t.value), 'this code assumes only yes/no answers');
 
       // show/hide the fieldset based on saved data
       if (t.value === 'no') {
@@ -232,10 +231,7 @@ export default class DisputesInformationForm extends Widget {
 
   _handleContentToggle(ev) {
     const target = ev.currentTarget;
-    console.assert(
-      target.checked,
-      'this should only fire when the user has just checked "yes" or "no"',
-    );
+    assert(target.checked, 'this should only fire when the user has just checked "yes" or "no"');
     if (target.value === 'yes') {
       this._showFieldset(target);
     } else {

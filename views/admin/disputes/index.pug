@@ -100,12 +100,7 @@ block content
             //- if (_dispute.user.account.image.exists('small'))
             //-   _dispute.user.account.imageURL = _dispute.user.account.image.urls['small'];
 
-            var displayName = "";
-            if (_dispute.data.forms) {
-              displayName = findDisplayName(_dispute.data.forms)
-            } else if (_dispute.data._forms) {
-              displayName = findDisplayName(_dispute.data._forms)
-            }
+            var displayName = findDisplayName(disputeFormsUtils.getData(_dispute.data))
 
           tr
             td

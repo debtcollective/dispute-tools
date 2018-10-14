@@ -6,6 +6,7 @@ const DisputeTool = require('$models/DisputeTool');
 const DisputeStatus = require('$models/DisputeStatus');
 const config = require('$config/config');
 const RestfulController = require('$lib/core/controllers/RestfulController');
+const disputeForms = require('$shared/utils/disputeForms');
 
 const {
   authenticate,
@@ -43,7 +44,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
 
         Promise.coroutine(function* restfulAPI() {
           const disputeIds = yield Dispute.search(req.query);
-
+          res.locals.disputeFormsUtils = disputeForms;
           query.whereIn('id', disputeIds);
         })().then(() => {
           RESTfulAPI.createMiddleware({

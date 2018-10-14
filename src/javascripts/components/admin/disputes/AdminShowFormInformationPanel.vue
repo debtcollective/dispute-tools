@@ -120,6 +120,7 @@ import get from 'lodash/get';
 import every from 'lodash/every';
 import { getUserByExternalId, uploadAttachment, getDispute } from '../../../lib/api';
 import { DebtTypes } from '../../../../../shared/enum/DebtTypes';
+import disputeForms from '../../../../../shared/utils/disputeForms';
 import Modal from '../../Modal';
 import Alert from '../../../components/Alerts.vue';
 import Attachment from '../../../components/Attachment.vue';
@@ -131,10 +132,10 @@ const getFormOrElse = ({
   attachments = [],
   statuses: [{ status, pendingSubmission }],
 }) => {
-  if (data && (data.forms || data._forms)) {
+  if (data) {
     return {
       disputeId: id,
-      form: get(data._forms || data.forms, 'personal-information-form'),
+      form: get(disputeForms.getData(data), 'personal-information-form'),
       status,
       user,
       pendingSubmission,
