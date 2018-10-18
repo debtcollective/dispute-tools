@@ -49,7 +49,7 @@ This tool generates a dispute letter demanding that the creditor or collector se
 
 If you are not in default on the debt you wish to dispute, this tool will assist you to ask the creditor for the original contract or promissory note. If you are in default on the debt, this tool will assist you to demand that the collector send a series of documents called the "chain of title." If you are not sure whether or not you are in default, you can still use this dispute.
 
-Before you begin you will need the name and address of the creditor or the collector that is billing you. After you complete the dispute, you will receive a copy of the dispute by email which you can print and mail the yourself. You will also be given a chance to ask us to mail it for you. We also encourage all debt disputers to use our online system to report the responses you get from the collector. The more information we have about how creditors and collectors are responding to individual disputes, the better we can organize collectively against them.`,
+Before you begin you will need the name and address of the creditor or the collector that is billing you. After you complete the dispute, you will receive a copy of the dispute by email which you can print and mail yourself. You will also be given a chance to ask us to mail it for you. We also encourage all debt disputers to use our online system to report the responses you get from the collector. The more information we have about how creditors and collectors are responding to individual disputes, the better we can organize collectively against them.`,
     completed: 0,
   },
   {
