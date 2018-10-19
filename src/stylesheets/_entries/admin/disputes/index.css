@@ -8,3 +8,7 @@ button[data-add-status] {
     opacity: 0.6;
   }
 }
+
+.profile-link {
+  line-height: 0;
+}
