@@ -91,32 +91,28 @@ block content
 
       tbody
         each _dispute in disputes
-
           -
-            // add the user account image to be accessible on the front-end
+            var username = _dispute.user.username;
+            var discourseUrl = config.discourse.baseUrl;
+            var profileUrl = `${discourseUrl}/u/${username}`;
+
             _dispute.user.imageURL = '/images/profile/placeholder-small.png';
-
-            //- TODO Use Discourse provided profile image
-            //- if (_dispute.user.account.image.exists('small'))
-            //-   _dispute.user.account.imageURL = _dispute.user.account.image.urls['small'];
-
-            var displayName = "";
-            if (_dispute.data.forms) {
-              displayName = findDisplayName(_dispute.data.forms)
-            } else if (_dispute.data._forms) {
-              displayName = findDisplayName(_dispute.data._forms)
+            if (_dispute.user.avatarUrl) {
+              _dispute.user.imageURL = _dispute.user.avatarUrl;
             }
 
+            var displayName = "No Name"
+            if (_dispute.data.forms) {
+              displayName = findDisplayName(_dispute.data.forms);
+            } else if (_dispute.data._forms) {
+              displayName = findDisplayName(_dispute.data._forms);
+            }
           tr
             td
               .flex.items-center
-                img(src=_dispute.user.imageURL alt=(_dispute.user.safeName) width="50" height="50")
-                p.pl2
-                  .-fw-600= displayName
-                  .-fw-300.pl1
-                    span= "(by "
-                    span.-fw-400.-danger= _dispute.user.safeName
-                    span= ")"
+                a(href=profileUrl target="_blank" title=username class="profile-link")
+                  img(src=_dispute.user.imageURL width="50" height="50")
+                .pl2.-fw-600= displayName
             td.-fw-400
               | #{_dispute.readableId}
             td.-fw-500

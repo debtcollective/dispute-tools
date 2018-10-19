@@ -55,7 +55,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
               allowedFields: ['created_at', 'updated_at'],
             },
             paginate: {
-              pageSize: 5,
+              pageSize: 25,
             },
           })(req, res, next);
         });
