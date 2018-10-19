@@ -18,14 +18,14 @@ describe('SessionsController', () => {
     });
 
     describe('when authenticated', () => {
-      it('should redirect to root', async () => {
+      it('should redirect to discourse', async () => {
         const user = await createUser();
         const url = config.router.helpers.login.url();
         const req = testGetPage(url, user);
 
         return req.redirects(0).catch(({ status, response: { headers } }) => {
           expect(status).eq(302);
-          expect(headers.location).eq(config.router.helpers.root.url());
+          expect(headers.location.startsWith(config.sso.endpoint)).true;
         });
       });
     });
