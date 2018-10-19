@@ -8,10 +8,6 @@ const BaseController = require('$lib/core/controllers/BaseController');
 const SessionsController = Class('SessionsController').inherits(BaseController)({
   prototype: {
     create(req, res) {
-      if (req.user) {
-        return res.redirect(config.router.helpers.root.url());
-      }
-
       return res.redirect(sso.buildRedirect(config.router.helpers.callback.url()));
     },
 
