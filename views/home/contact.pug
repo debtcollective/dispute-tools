@@ -12,29 +12,31 @@ block content
         .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500
           b Your name
         .col.sm-col-9.col-12.px1
-          input.form-control.-fw(type="text" name="name" maxLength="200")
+          input.form-control.-fw(type="text" name="name" maxLength="200" value=name)
           p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Name
       .clearfix.mb3
         .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500
           b Your email
         .col.sm-col-9.col-12.px1
-          input.form-control.-fw(type="email" name="email")
+          input.form-control.-fw(type="email" name="email", value=email)
           p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid email
       .clearfix.mb2
         .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500
           b Your message
         .col.sm-col-9.col-12.px1
           textarea.form-control.-fw(type="text" name="message" maxLength="32768")
+            = message
           p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid message
+      .clearfix.mb2
+        .g-recaptcha(data-sitekey=config.recaptcha.siteKey)
       button.-k-btn.btn-primary.-fw.-fw-600.js-donate-amount(type="submit") Contact Us
     .clearfix
       .col.col-6
-        p
-          a(href='//facebook.com/DebtCollective' target='_blank' rel='noopener noreferrer') facebook.com/DebtCollective
         p.mb2
           a(href='//twitter.com/0debtzone' target='_blank' rel='noopener noreferrer') twitter.com/0debtzone
 
 block scripts
+  script(src='https://www.google.com/recaptcha/api.js')
   script.
     window.addEventListener('load', function() {
       var options = {
