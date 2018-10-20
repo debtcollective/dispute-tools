@@ -60,6 +60,11 @@ module.exports = {
     private: process.env.STRIPE_PRIVATE || '',
     publishable: process.env.STRIPE_PUBLISHABLE || false,
   },
+  recaptcha: {
+    url: 'https://www.google.com/recaptcha/api/siteverify',
+    siteKey: process.env.RECAPTCHA_SITE_KEY || '',
+    secretKey: process.env.RECAPTCHA_SECRET_KEY || '',
+  },
   googleMaps: {
     apiKey: process.env.GMAPS_KEY || '',
   },

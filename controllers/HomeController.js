@@ -3,8 +3,9 @@
 const stripe = require('stripe');
 const { ContactUsEmail, RecurringDonationEmail } = require('$services/messages');
 const Router = require('$config/RouteMappings');
-const { logger } = require('$lib');
+const { Raven, logger } = require('$lib');
 const config = require('$config/config');
+const request = require('request');
 
 const {
   stripe: { private: stripePrivateKey },
@@ -199,27 +200,60 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       res.send('service is running');
     },
 
-    async sendContact(req, res, next) {
-      const { email, message, name } = req.body;
+    sendContact(req, res, next) {
+      const { name, email, message, 'g-recaptcha-response': recaptchaResponse } = req.body;
+      const recaptcha = config.recaptcha;
 
       const contactUsEmail = new ContactUsEmail(message, email, name);
-      try {
-        await contactUsEmail.send();
-        logger.info(
-          `Successfully sent contact us email to ${name} <${email}> and the Debt Collective organizers`,
-          contactUsEmail.toString(),
-        );
-        req.flash('success', 'Your message has been sent, thank you for contacting us.');
-        res.redirect(Router.mappings.contact.url());
-        next();
-      } catch (e) {
-        logger.error('Unable to send contact us email', e.message, contactUsEmail.toString());
-        req.flash(
-          'error',
-          `Your message was not able to be sent. Please verify your contact information and try again. If the problem persists, please contact the organizers directly at ${contactEmail}`,
-        );
-        next(e);
-      }
+
+      request.post(
+        {
+          url: recaptcha.url,
+          form: {
+            secret: recaptcha.secretKey,
+            response: recaptchaResponse,
+            remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+          },
+          json: true,
+        },
+        async (error, response, body) => {
+          if (error) {
+            req.flash('error', 'Theres was a problem sending your message, please try again');
+            return res.render('home/contact', {
+              name,
+              email,
+              message,
+            });
+          }
+
+          if (!body.success) {
+            req.flash('error', 'Invalid captcha, please try again');
+            return res.render('home/contact', {
+              name,
+              email,
+              message,
+            });
+          }
+
+          try {
+            await contactUsEmail.send();
+            req.flash(
+              'success',
+              'Thank you for getting in touch! One of our colleagues will get back to you shortly.',
+            );
+            res.redirect(Router.mappings.root.url());
+            next();
+          } catch (e) {
+            Raven.captureException(e);
+            logger.error('Unable to send contact us email', e.message, contactUsEmail.toString());
+            req.flash(
+              'error',
+              `Theres was a problem sending your message, please contact the organizers directly at ${contactEmail}`,
+            );
+            next();
+          }
+        },
+      );
     },
   },
 });

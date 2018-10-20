@@ -7,3 +7,7 @@
 .ContactWrapper textarea {
   height: 160px;
 }
+
+.ContactWrapper .g-recaptcha > div {
+  margin: 0 auto;
+}
