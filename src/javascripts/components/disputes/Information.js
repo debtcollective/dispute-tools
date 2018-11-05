@@ -1,4 +1,4 @@
-import every from 'lodash/every';
+import _ from 'lodash';
 import { updateDisputeData } from '../../lib/api';
 import Widget from '../../lib/widget';
 import DisputesInformationForm from './InformationForm';
@@ -66,7 +66,7 @@ export default class DisputesInformation extends Widget {
 
     // validate size
     const MAX_FILE_SIZE = 6000000;
-    const allFilesUnderMaxSize = every(files, file => file.size < MAX_FILE_SIZE);
+    const allFilesUnderMaxSize = _.every(files, file => file.size < MAX_FILE_SIZE);
 
     // show error message
     if (!allFilesUnderMaxSize) {
@@ -89,11 +89,11 @@ export default class DisputesInformation extends Widget {
       this._handleSaveAndCloseModalButtonClick,
     );
 
-    this._handleButtonClickRef = this._handleButtonClick.bind(this);
-    this.personalInfoButton.addEventListener('click', this._handleButtonClickRef);
+    this._handleButtonClick = this._handleButtonClick.bind(this);
+    this.personalInfoButton.addEventListener('click', this._handleButtonClick);
 
-    this._handleDeactivateDisputeRef = this._handleDeactivateDispute.bind(this);
-    this.DisputesInformationForm.bind('deactivateDispute', this._handleDeactivateDisputeRef);
+    this._handleDeactivateDispute = this._handleDeactivateDispute.bind(this);
+    this.deactivateDisputeForm.addEventListener('submit', this._handleDeactivateDispute);
 
     if (this.informationSubmitButton) {
       this._displayNextStepRef = this._displayNextStep.bind(this);
@@ -124,14 +124,19 @@ export default class DisputesInformation extends Widget {
     this.ModalInformationForm.deactivate();
   }
 
-  /**
-   * Submits the `deactivate-dispute` form.
-   * @private
-   * @listens @module:DisputesInformationForm~event:deactivateDispute
-   * @return undefined
-   */
-  _handleDeactivateDispute() {
-    this.deactivateDisputeForm.submit();
+  _handleDeactivateDispute(event) {
+    const { data } = this.dispute;
+    const disputeHasData = _.has(data, 'forms') || _.has(data, '_forms');
+
+    if (!disputeHasData) {
+      return this.deactivateDisputeForm.submit();
+    }
+
+    if (confirm('Are you sure you want to delete this dispute?')) {
+      this._confirmDeactivateDispute();
+    }
+
+    event.preventDefault();
   }
 
   _bindMoreInfoModal() {

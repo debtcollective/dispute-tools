@@ -184,7 +184,7 @@ describe('Dispute', () => {
       try {
         await dispute.setForm({ formName: 'form-name', fieldValues });
       } catch (e) {
-        console.error(e);
+        expect.fail(e);
       }
 
       expect(dispute.data.forms['form-name']).to.be.equal(fieldValues);
@@ -360,94 +360,93 @@ describe('Dispute', () => {
           ));
       });
     });
-  });
+    describe('updateAdmins', () => {
+      let dispute;
+      let admin;
+      let admin2;
+      let admin3;
 
-  describe('updateAdmin', () => {
-    let dispute;
-    let admin;
-    let admin2;
-    let admin3;
+      let originalTopics;
+      let invited;
+      let uninvited;
 
-    let originalTopics;
-    let invited;
-    let uninvited;
-
-    before(() => {
-      originalTopics = { ...discourse.topics };
-      discourse.topics.invite = (...args) => Promise.resolve(invited.push(args));
-      discourse.topics.removeAllowedUser = (...args) => Promise.resolve(uninvited.push(args));
-    });
-
-    beforeEach(async () => {
-      dispute = await createDispute(user);
-      dispute = await Dispute.findById(dispute.id, '[admins]');
-      admin = await createUser({ admin: true });
-      admin2 = await createUser({ admin: true });
-      admin3 = await createUser({ admin: true });
-
-      invited = [];
-      uninvited = [];
-    });
-
-    after(() => {
-      discourse.topics = originalTopics;
-    });
-
-    it('should assign the admin to the dispute', async () => {
-      await dispute.updateAdmins([admin.id]);
-      const disputeAdmins = await Dispute.knex()('AdminsDisputes').where({
-        admin_id: admin.id,
-        dispute_id: dispute.id,
+      before(() => {
+        originalTopics = { ...discourse.topics };
+        discourse.topics.invite = (...args) => Promise.resolve(invited.push(args));
+        discourse.topics.removeAllowedUser = (...args) => Promise.resolve(uninvited.push(args));
       });
 
-      expect(disputeAdmins).to.be.truthy;
-      expect(disputeAdmins.length).to.eq(1);
-      expect(disputeAdmins.find(da => da.admin_id === admin.id)).to.be.defined;
-    });
+      beforeEach(async () => {
+        dispute = await createDispute(user);
+        dispute = await Dispute.findById(dispute.id, '[admins]');
+        admin = await createUser({ admin: true });
+        admin2 = await createUser({ admin: true });
+        admin3 = await createUser({ admin: true });
 
-    it('should invite the admin to the dispute thread', async () => {
-      await dispute.updateAdmins([admin.id, admin2.id]);
-      expect(invited).to.have.lengthOf(2);
-
-      const [threadId1, { user: user1 }] = invited[0];
-      expect(threadId1).eq(dispute.disputeThreadId);
-      expect(user1).eq(admin.username);
-
-      const [threadId2, { user: user2 }] = invited[1];
-      expect(threadId2).eq(dispute.disputeThreadId);
-      expect(user2).eq(admin2.username);
-    });
-
-    it('should remove the admin from being assigned to the dispute', async () => {
-      await dispute.updateAdmins([admin.id, admin2.id]);
-      dispute = await Dispute.findById(dispute.id, '[admins]');
-
-      await dispute.updateAdmins([]);
-      const disputeAdmins = await Dispute.knex()('AdminsDisputes').where({
-        admin_id: admin.id,
-        dispute_id: dispute.id,
+        invited = [];
+        uninvited = [];
       });
 
-      expect(disputeAdmins.length).to.eq(0);
-      expect(disputeAdmins.find(da => da.admin_id === admin.id)).to.be.undefined;
-    });
+      after(() => {
+        discourse.topics = originalTopics;
+      });
 
-    it('should remove the admin from the dispute thread', async () => {
-      await dispute.updateAdmins([admin.id, admin2.id]);
-      expect(uninvited).to.have.lengthOf(0);
-      dispute = await Dispute.findById(dispute.id, '[admins]');
+      it('should assign the admin to the dispute', async () => {
+        await dispute.updateAdmins([admin.id]);
+        const disputeAdmins = await Dispute.knex()('AdminsDisputes').where({
+          admin_id: admin.id,
+          dispute_id: dispute.id,
+        });
 
-      await dispute.updateAdmins([admin3.id]);
+        expect(disputeAdmins).to.be.truthy;
+        expect(disputeAdmins.length).to.eq(1);
+        expect(disputeAdmins.find(da => da.admin_id === admin.id)).to.be.defined;
+      });
 
-      expect(uninvited).to.have.lengthOf(2);
+      it('should invite the admin to the dispute thread', async () => {
+        await dispute.updateAdmins([admin.id, admin2.id]);
+        expect(invited).to.have.lengthOf(2);
 
-      const [threadId1, user1] = uninvited[0];
-      expect(threadId1).eq(dispute.disputeThreadId);
-      expect(user1).eq(admin.username);
+        const [threadId1, { user: user1 }] = invited[0];
+        expect(threadId1).eq(dispute.disputeThreadId);
+        expect(user1).eq(admin.username);
 
-      const [threadId2, user2] = uninvited[1];
-      expect(threadId2).eq(dispute.disputeThreadId);
-      expect(user2).eq(admin2.username);
+        const [threadId2, { user: user2 }] = invited[1];
+        expect(threadId2).eq(dispute.disputeThreadId);
+        expect(user2).eq(admin2.username);
+      });
+
+      it('should remove the admin from being assigned to the dispute', async () => {
+        await dispute.updateAdmins([admin.id, admin2.id]);
+        dispute = await Dispute.findById(dispute.id, '[admins]');
+
+        await dispute.updateAdmins([]);
+        const disputeAdmins = await Dispute.knex()('AdminsDisputes').where({
+          admin_id: admin.id,
+          dispute_id: dispute.id,
+        });
+
+        expect(disputeAdmins.length).to.eq(0);
+        expect(disputeAdmins.find(da => da.admin_id === admin.id)).to.be.undefined;
+      });
+
+      it('should remove the admin from the dispute thread', async () => {
+        await dispute.updateAdmins([admin.id, admin2.id]);
+        expect(uninvited).to.have.lengthOf(0);
+        dispute = await Dispute.findById(dispute.id, '[admins]');
+
+        await dispute.updateAdmins([admin3.id]);
+
+        expect(uninvited).to.have.lengthOf(2);
+
+        const [threadId1, user1] = uninvited[0];
+        expect(threadId1).eq(dispute.disputeThreadId);
+        expect(user1).eq(admin.username);
+
+        const [threadId2, user2] = uninvited[1];
+        expect(threadId2).eq(dispute.disputeThreadId);
+        expect(user2).eq(admin2.username);
+      });
     });
   });
 });

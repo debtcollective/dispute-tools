@@ -84,12 +84,8 @@ mixin _uploadCard(step, _completed)
   aria-hidden= (currentSection !== 'information').toString()
 )
   .pt3.pr3.pl3.pb2.-bg-neutral-dark
-    - var _deactivateDisputeButtonText = '← This is not my case (deactivate dispute)';
-
     if dispute.data.option !== 'none'
       h2.tight= dispute.data.option
-    else
-      - _deactivateDisputeButtonText = '← Return to the beginning (deactivate dispute)'
 
     h4.pb1= optionData.title
     -
@@ -105,7 +101,7 @@ mixin _uploadCard(step, _completed)
       )
         input(name='_csrf' type='hidden' value=csrfToken)
         input(type='hidden' name='_method' value='DELETE')
-        button.-k-btn.btn-outline-info.btn-sm.-primary.-fw-600(type='submit')= _deactivateDisputeButtonText
+        button.-k-btn.btn-outline-danger.btn-sm.-fw-600(type='submit')= 'Go back and delete this dispute'
     hr.my2
 
     if optionData.steps

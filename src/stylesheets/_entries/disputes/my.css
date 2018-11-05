@@ -1,0 +1,11 @@
+.dispute-list-item {
+  a {
+    text-decoration: none;
+  }
+}
+
+@media (--media-sm-up) {
+  .dispute-list-container {
+    padding: 0;
+  }
+}

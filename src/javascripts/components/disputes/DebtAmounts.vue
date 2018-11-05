@@ -14,7 +14,7 @@
       <input
         type="text"
         class="form-control -fw"
-        placeholder="..."
+        placeholder="Debt type"
         name="fieldValues[debt-type]"
         aria-labelledby="other-debt-type-l"
         v-model="type"
