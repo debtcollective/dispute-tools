@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const utils = {
   months: [
     'January',
@@ -13,13 +15,7 @@ const utils = {
     'November',
     'December',
   ],
-  get monthString() {
-    return this.months[new Date().getMonth()];
-  },
-  get currDateFormatted() {
-    const now = new Date();
-    return `${this.monthString} ${now.getDate()}, ${now.getFullYear()}`;
-  },
+  moment,
 };
 
 module.exports = Object.assign(utils, {
