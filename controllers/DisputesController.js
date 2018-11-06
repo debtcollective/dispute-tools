@@ -123,10 +123,6 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
       try {
         await new CompletedDisputeMessage(dispute).send();
-        req.flash(
-          'success',
-          'Thank you for disputing your debt. A copy of your dispute has been sent to your email.',
-        );
       } catch (e) {
         Raven.captureException(e);
         logger.error(e);

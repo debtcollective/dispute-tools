@@ -21,6 +21,9 @@ module.exports = {
                   address1: form['agency-address1'] || form['agency-address'],
                   address2: getAddress2({ form, prefix: 'agency-' }),
                 },
+                collectionNotice: {
+                  date: form['collection-notice-date'],
+                },
               };
             },
           }),
