@@ -44,21 +44,20 @@
         h3.pb3 Now what?
         .-fw-500!= dispute.disputeTool.data.nowWhat
 
-        if lastStatus.status !== 'Documents Sent'
-          .mt2
-            if lastStatus.status !== 'Completed'
-              form(method='post' action=routeMappings.Disputes.updateSubmission.url(dispute.id) onsubmit="this.submitButton.disabled = true")
-                input(type='hidden' name='_method' value='put')
-                ul.list-reset
-                  li.form-check.form-check-inline
-                    input(type='radio' name='pending_submission' id='pending-submission-dc-to-mail' value='1' required)
-                    label.form-check-label(for='pending-submission-dc-to-mail') I want the Debt Collective to mail a hard copy of my dispute
-                  li.form-check.form-check-inline
-                    input(type='radio' name='pending_submission' id='pending-submission-member-to-mail' value='0' required)
-                    label.form-check-label(for='pending-submission-member-to-mail') I prefer to print and mail it myself
-                button(type='submit' name='submitButton').-fw-600.-k-btn.btn-primary.mt2 Save changes
-            else
-              p #[a(href=dispute.disputeThreadLink rel='noreferrer noopener' target='_blank') Click here] to access your dispute or to talk to a dispute pro.
+        .mt2
+          if lastStatus.status === 'Incomplete'
+            form(method='post' action=routeMappings.Disputes.updateSubmission.url(dispute.id) onsubmit="this.submitButton.disabled = true")
+              input(type='hidden' name='_method' value='put')
+              ul.list-reset
+                li.form-check.form-check-inline
+                  input(type='radio' name='pending_submission' id='pending-submission-dc-to-mail' value='1' required)
+                  label.form-check-label(for='pending-submission-dc-to-mail') I want the Debt Collective to mail a hard copy of my dispute
+                li.form-check.form-check-inline
+                  input(type='radio' name='pending_submission' id='pending-submission-member-to-mail' value='0' required)
+                  label.form-check-label(for='pending-submission-member-to-mail') I prefer to print and mail it myself
+              button(type='submit' name='submitButton').-fw-600.-k-btn.btn-primary.mt2 Save changes
+          else
+            p #[a(href=dispute.disputeThreadLink rel='noreferrer noopener' target='_blank') Click here] to access your dispute or to talk to a dispute pro.
 
 
     if dispute.data.disputeConfirmFollowUp
