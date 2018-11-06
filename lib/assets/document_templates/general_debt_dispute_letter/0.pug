@@ -1,5 +1,8 @@
 -
-  var date = UTILS.currDateFormatted
+  var moment = UTILS.moment;
+  var date = moment().format('MMMM Do YYYY');
+  var letterDate = moment(collectionNotice.date, 'MM-DD-YYYY')
+  var letterDateFormated = letterDate.isValid() ? letterDate.format('MMMM Do YYYY') : date
 
 #letter
   header
@@ -17,7 +20,7 @@
 
   section#body
     p Dear #{agency.name},
-    p I am writing in response to your letter dated #{date}, (copy enclosed) because I am disputing the alleged debt.
+    p I am writing in response to your letter dated #{letterDateFormated}, (copy enclosed) because I am disputing the alleged debt.
     p If you are the original creditor, please send a copy of the contract or promissory note that I signed to initiate this debt.
     p.mb0 If you are not the original creditor, please send the following documentation as required by the FDCPA 15 U.S.C. §1692g:
       ul

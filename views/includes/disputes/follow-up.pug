@@ -31,6 +31,9 @@
           // General Debt Dispute Letter
           when '11111111-1111-3333-1111-111111111111'
             - _headingText = 'Thank you for disputing your debt.'
+          // Credit Report Letter
+          when '11111111-1111-4444-1111-111111111111'
+            - _headingText = 'Thank you for disputing your credit report.'
           // Private Student Loan Dispute Letter
           when '11111111-1111-6666-1111-111111111111'
             - _headingText = 'Thank you for disputing your private student debt.'
@@ -55,67 +58,10 @@
                     label.form-check-label(for='pending-submission-member-to-mail') I prefer to print and mail it myself
                 button(type='submit' name='submitButton').-fw-600.-k-btn.btn-primary.mt2 Save changes
             else
-              if lastStatus.pendingSubmission
-                p Your dispute is being processed. Thank you.
-              else
-                p A copy of your dispute has been sent to your email.
-                p You can also find a download link #[a(href=dispute.disputeThreadLink rel='noreferrer noopener' target='_blank') here]
+              p #[a(href=dispute.disputeThreadLink rel='noreferrer noopener' target='_blank') Click here] to access your dispute or to talk to a dispute pro.
 
 
     if dispute.data.disputeConfirmFollowUp
       .-caption.-neutral-mid.-ttu.-fw-600 Your dispute status:
-      h4.Dispute__FollowUp__MainStatus.pb1.mb2.-ttu(
-        class=`-status-${lastStatus.status.toLowerCase().replace(/\W/g, '-')}`
-      )= lastStatus.status
-
-      .mb3
-        each status in dispute.statuses
-          -
-            var userUpdate = false;
-
-            if (status.status === 'User Update') {
-              userUpdate = true;
-            }
-
-          .StatusItem.pt3.clearfix
-            .StatusItem-Avatar.left
-              if userUpdate
-                //- if (dispute.user.account.image.exists('small'))
-                //-   img.block.-fw(src=dispute.user.account.image.urls['small'] alt=dispute.user.account.name)
-                //- else
-                //- TODO Use Discourse provided profile image
-                img.block(width='50' height='50' src=avatarUrl)
-              else
-                .StatusItem-TDC-placeholder
-
-            .StatusItem-Text
-              .clearfix
-                .left
-                  if userUpdate
-                    p.-fw-600= dispute.user.safeName
-                  else
-                    p.-fw-600.-primary= 'The Debt Collective'
-                  .-caption.-neutral-mid
-                    <svg class="inline-block" width="13" height="11">
-                      <use xlink:href="#svg-reply"></use>
-                    </svg>
-                    .ml1.inline-block.-fw-600= new Date(status.createdAt).toString()
-                .right
-                  p.-caption.-fw-600.-ttu(
-                    class=`-status-${status.status.toLowerCase().replace(/\W/g, '-')}`
-                  )= status.status
-              p.-fw-500= status.comment
-
-        if _isDisputeOwner()
-          .py2.clearfix
-            .StatusItem-Avatar.left
-              //- if (currentUser.account.image.exists('small'))
-              //-   img.block.-fw(src=currentUser.account.image.urls['small'] alt=currentUser.account.name)
-              //- else
-              //- TODO Use Discourse provided profile picture
-              img.block(width='50' height='50' src='/images/profile/placeholder-small.png')
-
-            .StatusItem-Text
-              h4 Got a question?
-              p #[a(href=dispute.disputeThreadLink rel='noreferrer noopener' target='_blank') Click here] to communicate directly with the organizers about this dispute.
-              p Tell us when you receive a response or any further communication from the creditor or collector.
+      h4.Dispute__FollowUp__MainStatus.pb1.mb2.-ttu
+        = lastStatus.status

@@ -1,4 +1,5 @@
 const pdftk = require('node-pdftk');
+const moment = require('moment');
 const { expect } = require('chai');
 const { render } = require('../../../services/render');
 const { getConfiguration } = require('../../../services/disputeToolConfigurations');
@@ -105,9 +106,13 @@ describe('render', () => {
         const [[path]] = docs;
         const res = extractPdfText(path);
         const form = generalDebtDispute.data.forms['personal-information-form'];
-        Object.keys(form).forEach(k => {
-          expect(res).includes(form[k]);
+        const { 'collection-notice-date': collectionDate, ...formFields } = form;
+
+        Object.keys(formFields).forEach(field => {
+          expect(res).includes(formFields[field]);
         });
+
+        expect(res).includes(moment(collectionDate, 'MM-DD-YYYY').format('MMMM Do YYYY'));
       });
 
       it(

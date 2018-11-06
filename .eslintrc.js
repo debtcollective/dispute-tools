@@ -45,6 +45,7 @@ module.exports = {
     indent: 0,
     'max-len': [2, { code: 100, ignoreStrings: true, ignoreTemplateLiterals: true }],
     'no-prototype-builtins': [0],
+    'no-alert': 0,
   },
   settings: {
     'import/resolver': {

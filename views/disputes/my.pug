@@ -3,37 +3,38 @@ extends ../layouts/application.pug
 block title
   | My Disputes — The Debt Collective
 
-
 block content
   .ProfileWrapper.wrapper.py4.px2.flex.items-center.relative
     .max-width-3.mx-auto.relative.-fw
       .clearfix
-        .flex.flex-column.p3
+        .dispute-list-container.flex.flex-column.p3
           if disputes.length > 0
-            .-bg-neutral-dark.p3
-              .col.col-4.sm-col-12
-                h4.mb3 My disputes
-              ul.list-reset
+            .-bg-neutral-dark.p2
+              .col.col-12.mb2
+                h4 My disputes
+              div.dispute-list
                 each dispute in lodash.reverse(lodash.orderBy(disputes, d => lodash.get(lodash.head(d.statuses), 'updatedAt', d.updatedAt)))
-                  li
-                    - const latestStatus = lodash.head(dispute.statuses);
-                    a.inline-block.w-100(href=routeMappings.Disputes.show.url(dispute.id))
-                      .col.col-8.px1
-                        p.-fw-600
-                          | #{dispute.disputeTool.name}
-                          if dispute.data.option !== 'none'
-                            |  / #{dispute.data.option}
-                      .col.col-4.px1.right-align
-                        - const latestStatusType = lodash.get(latestStatus, 'status', 'incomplete');
-                        p.pt1.-caption.-ttu.-fw-600(
+                  - const latestStatus = lodash.head(dispute.statuses);
+                  .dispute-list-item.clearfix.mb2
+                    - const latestStatusType = lodash.get(latestStatus, 'status', 'incomplete');
+                    .col.col-9
+                      a.inline-block.w-100(href=routeMappings.Disputes.show.url(dispute.id))
+                        p.-fw-600 #{dispute.readableId} - #{dispute.user.name} - #{dispute.disputeTool.readableName}
+                        p.-caption.-ttu.-fw-600(
                           class=`-status-${slugify(latestStatusType)}`
                         )= latestStatusType
-                      .col.col-12.pl1
-                        p.-caption.-ttu
-                          -
-                            // Ensure that if there's no status for some reason then we safely use the dispute's updated date
-                            const lastUpdated = lodash.get(latestStatus, 'updatedAt', lodash.get(dispute, 'updatedAt'));
-                          | #{moment(lastUpdated).format('MM-DD-YYYY hh:mm:ss a')}
+                    .col.col-3.right-align
+                      if dispute.disputeThreadId
+                        a.btn-clear.-primary.p1.align-top.inline-block(
+                          target="_blank"
+                          href=dispute.disputeThreadLink
+                          title="View messages"
+                        ): svg.block.align-top(width='14' height='17'): use(xlink:href='#svg-email')
+                      if dispute.data.signature
+                        a.btn-clear.-primary.p1.align-top.inline-block(
+                          href=routeMappings.Disputes.download.url(dispute.id)
+                          title="Download documents"
+                        ): svg.block.align-top(width='14' height='17'): use(xlink:href='#svg-download')
           else
             .col.sm-col-12.text-center
               hr.mb3(aria-hidden="true")

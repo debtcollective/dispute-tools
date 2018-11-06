@@ -181,7 +181,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       res.locals.dispute
         .destroy()
         .then(() => {
-          req.flash('warning', 'The Dispute has been deactivated.');
+          req.flash('success', 'The dispute has been deleted.');
           return res.redirect(config.router.helpers.Admin.Disputes.url());
         })
         .catch(next);

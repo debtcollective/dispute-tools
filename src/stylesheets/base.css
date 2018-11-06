@@ -125,6 +125,12 @@
   --footer-height: 316px;
   --primary-lighter: color(var(--k-color-palette-primary) tint(15%));
   --primary-darker: color(var(--k-color-palette-primary) shade(15%));
+
+  /* custom media queries */
+  @custom-media --media-xs-up (max-width: 575px);
+  @custom-media --media-sm-up (max-width: 768px);
+  @custom-media --media-md-up (max-width: 992px);
+  @custom-media --media-lg-up (max-width: 1200px);
 }
 
 /* CUSTOM STYLES */
@@ -201,6 +207,7 @@ a {
    * For now we might want to disable them permanently
    * as they're causing problems in production.
    */
+
   /*
   &[href*="//"]:not([rel*="noopener"]),
   &[href*="//"]:not([rel*="noreferrer"]) {

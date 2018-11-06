@@ -89,8 +89,6 @@ export default class DisputesInformationForm extends Widget {
     this.togglers.forEach(t => {
       t.addEventListener('change', this._handleContentToggleRef);
 
-      console.assert(['yes', 'no'].includes(t.value), 'this code assumes only yes/no answers');
-
       // show/hide the fieldset based on saved data
       if (t.value === 'no') {
         return; // the equivalent 'yes' toggle tells us to show or hide
@@ -214,7 +212,7 @@ export default class DisputesInformationForm extends Widget {
         data: {
           text: `▲ ${matched.message}`,
           cancelButtonText: `Select ${oppositeAction}`,
-          okButtonText: 'Exit and deactivate dispute',
+          okButtonText: 'Exit and delete this dispute',
         },
       }),
     );
@@ -223,19 +221,14 @@ export default class DisputesInformationForm extends Widget {
       parentElement.querySelector(`[name="${ev.target.name}"][value="${oppositeAction}"]`).click();
     });
 
-    this.ConfirmInline.bind('onOk', () => {
-      this.dispatch('deactivateDispute');
-    });
+    this.ConfirmInline.bind('onOk', () => {});
 
     this.ConfirmInline.render(parentElement).activate();
   }
 
   _handleContentToggle(ev) {
     const target = ev.currentTarget;
-    console.assert(
-      target.checked,
-      'this should only fire when the user has just checked "yes" or "no"',
-    );
+
     if (target.value === 'yes') {
       this._showFieldset(target);
     } else {

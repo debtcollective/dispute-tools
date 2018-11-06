@@ -482,6 +482,7 @@ module.exports = {
           'agency-address': 'Test Dispute Render Agency Address1',
           'agency-zip-code': '29999',
           'letter-or-phonecall': 'letter',
+          'collection-notice-date': '11-19-2018',
         },
       },
       option: 'none',

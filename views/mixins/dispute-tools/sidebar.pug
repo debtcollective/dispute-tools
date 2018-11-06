@@ -14,8 +14,6 @@ mixin toolsSidebarMixin(disputeTool, currentStep = 1, steps = _toolSteps, curren
         | #{disputeTool.name}
         if dispute && dispute.data.option !== 'none'
           |  / #{dispute.data.option}
-    p.pb3.-caption.-ttu.-fw-500
-      | #{disputeTool.completed} People Filled
     ul.list-reset.Tool__sidebar-steps
       each step, index in steps
         -

@@ -101,6 +101,17 @@ const Dispute = Class('Dispute')
     }, []);
   },
 
+  /**
+   * Check if a dispute is empty or not
+   *
+   * @returns {bool} true if the dispute doesn't have any data
+   */
+  isEmpty() {
+    const { data } = this;
+
+    return _.has(data, 'forms') || _.has(data, '_forms');
+  },
+
   async findById(id, include = null) {
     const INCLUDE_DEACTIVATED = true;
     const query = Dispute.query(null, INCLUDE_DEACTIVATED).where({ id });

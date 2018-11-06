@@ -218,7 +218,7 @@ h4.-h-sec > span {
   }
 
   &-completed {
-    color: var(--red);
+    color: var(--yellow);
   }
 
   &-in-review {

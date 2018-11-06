@@ -66,7 +66,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
     },
 
     async myDisputes(req, res) {
-      res.locals.disputes = await Dispute.findByUser(req.user, '[disputeTool, statuses]');
+      res.locals.disputes = await Dispute.findByUser(req.user, '[disputeTool, statuses, user]');
       res.render('disputes/my');
     },
 
@@ -123,18 +123,9 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
       try {
         await new CompletedDisputeMessage(dispute).send();
-        req.flash(
-          'success',
-          'Thank you for disputing your debt. A copy of your dispute has been sent to your email.',
-        );
       } catch (e) {
         Raven.captureException(e);
         logger.error(e);
-
-        req.flash(
-          'error',
-          'Your dispute was successfully saved. However, an error was encountered while sending the confirmation email. Please contact a Debt Collective organizer to resolve this error.',
-        );
       }
 
       return redirect();
@@ -348,7 +339,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       res.locals.dispute
         .destroy()
         .then(() => {
-          req.flash('warning', 'The Dispute you started has been deactivated.');
+          req.flash('success', 'The dispute has been deleted.');
           return res.redirect(config.router.helpers.Disputes.myDisputes.url());
         })
         .catch(next);
