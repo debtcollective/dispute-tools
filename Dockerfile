@@ -6,6 +6,9 @@ RUN apt-get update && apt-get install -y \
   pdftk \
   && rm -rf /var/lib/apt/lists/*
 
+ADD ./package.json package.json
+RUN yarn install
+
 COPY . .
 
 # Copy default config pointing to ENV
@@ -14,7 +17,6 @@ COPY config/knexfile.sample.js knexfile.js
 
 EXPOSE 8080
 
-RUN yarn install
 RUN yarn build
 
 CMD ["yarn", "start:prod"]
