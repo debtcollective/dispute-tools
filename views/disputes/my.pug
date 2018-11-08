@@ -9,13 +9,16 @@ block content
       .clearfix
         .dispute-list-container.flex.flex-column.p3
           if disputes.length > 0
-            .-bg-neutral-dark.p2
-              .col.col-12.mb2
+            .my-disputes-header.mb2
+              .col.col-6
                 h4 My disputes
+              .col.col-6.text-right
+                a.-k-btn.btn-primary.btn-sm.-fw-600(href= routeMappings.root.url()) New Dispute
+            .-bg-neutral-dark.p2
               div.dispute-list
-                each dispute in lodash.reverse(lodash.orderBy(disputes, d => lodash.get(lodash.head(d.statuses), 'updatedAt', d.updatedAt)))
+                each dispute, index in lodash.reverse(lodash.orderBy(disputes, d => lodash.get(lodash.head(d.statuses), 'updatedAt', d.updatedAt)))
                   - const latestStatus = lodash.head(dispute.statuses);
-                  .dispute-list-item.clearfix.mb2
+                  .dispute-list-item.clearfix(class=(index != disputes.length - 1 ? 'mb2' : '' ))
                     - const latestStatusType = lodash.get(latestStatus, 'status', 'incomplete');
                     .col.col-9
                       a.inline-block.w-100(href=routeMappings.Disputes.show.url(dispute.id))
@@ -39,7 +42,7 @@ block content
             .col.sm-col-12.text-center
               hr.mb3(aria-hidden="true")
               h5 You currently do not have any disputes.
-              h5.pt1 #[a(href="/dispute-tools") Click here] to begin filing your first dispute.
+              a.-k-btn.btn-primary.btn-sm.-fw-600(href= routeMappings.root.url()) New Dispute
 
 block scripts
   script.

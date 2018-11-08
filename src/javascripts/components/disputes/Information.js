@@ -39,9 +39,7 @@ export default class DisputesInformation extends Widget {
       }),
     );
 
-    this.saveAndCloseModalButton = this.ModalInformationForm.element.querySelector(
-      '.CloseAndSaveFormButton',
-    );
+    this.saveForLater = this.ModalInformationForm.element.querySelector('.save-for-later');
 
     this.personalInfoButton = this.element.querySelector('.js-trigger-personal-modal');
     this.informationSubmitButton = document.getElementById('js-information-next-step');
@@ -83,11 +81,8 @@ export default class DisputesInformation extends Widget {
   }
 
   _bindEvents() {
-    this._handleSaveAndCloseModalButtonClick = this._handleSaveAndCloseModalButtonClick.bind(this);
-    this.saveAndCloseModalButton.addEventListener(
-      'click',
-      this._handleSaveAndCloseModalButtonClick,
-    );
+    this._handleSaveForLater = this._handleSaveForLater.bind(this);
+    this.saveForLater.addEventListener('click', this._handleSaveForLater);
 
     this._handleButtonClick = this._handleButtonClick.bind(this);
     this.personalInfoButton.addEventListener('click', this._handleButtonClick);
@@ -112,16 +107,14 @@ export default class DisputesInformation extends Widget {
     }
   }
 
-  _handleSaveAndCloseModalButtonClick() {
+  _handleSaveForLater() {
     const data = new FormData(this.DisputesInformationForm.form);
     data.set('_isDirty', true);
 
     updateDisputeData({
       disputeId: this.dispute.id,
       body: data,
-    }).then(({ dispute }) => (this.dispute = dispute));
-
-    this.ModalInformationForm.deactivate();
+    }).then(() => window.location.replace('/disputes/my'));
   }
 
   _handleDeactivateDispute(event) {
