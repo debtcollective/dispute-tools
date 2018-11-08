@@ -54,7 +54,7 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
               },
             });
 
-            res.redirect(config.router.mappings.root.url());
+            res.redirect(config.router.mappings.Disputes.myDisputes.url());
           });
         });
       })(req, res, next);
