@@ -12,8 +12,11 @@ export default class Alert extends Widget {
       return;
     }
 
-    this._closeHandlerRef = this.deactivate.bind(this);
-    this.closeButton.addEventListener('click', this._closeHandlerRef);
+    this.deactivate = this.deactivate.bind(this);
+    this.closeButton.addEventListener('click', this.deactivate);
+
+    // remove after 3 seconds
+    this.autoClose = setTimeout(this.deactivate, 3000);
   }
 
   /**
@@ -27,6 +30,8 @@ export default class Alert extends Widget {
   }
 
   destroy() {
+    clearTimeout(this.autoClose);
+
     this.closeButton.removeEventListener('click', this._closeHandlerRef);
     this._closeHandlerRef = null;
 
