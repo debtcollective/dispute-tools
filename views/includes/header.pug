@@ -27,6 +27,7 @@ script.
       render: function(h) {
         return h('debt-collective-header', {
           attrs: {
+            'id': 'main-header',
             'header-links': headerLinks,
             'dropdown-links': dropdownLinks,
             'discourse-endpoint': !{JSON.stringify(discourseEndpoint)},

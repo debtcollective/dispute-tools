@@ -74,7 +74,8 @@ class ViewDisputeToolsIndex extends NodeSupport {
     this.whyFileDisputeAnchor = document.getElementById('why-file-dispute-anchor');
     this.whyFileDisputeSection = document.getElementById('why-file-dispute');
     this.whyFileDisputeAnchor.addEventListener('click', () => {
-      const y = this.whyFileDisputeSection.offsetTop;
+      const mainHeader = document.getElementById('main-header');
+      const y = this.whyFileDisputeSection.offsetTop - mainHeader.offsetHeight;
       this.pisces.scrollToPosition({ y });
     });
 

@@ -120,7 +120,7 @@
   --space-4: 3.75rem;
 
   /* Platform Variables */
-  --header-height: 71px;
+  --header-height: 72px;
   --logo-height: 54px;
   --footer-height: 316px;
   --primary-lighter: color(var(--k-color-palette-primary) tint(15%));
