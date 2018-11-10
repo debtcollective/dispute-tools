@@ -3,7 +3,7 @@
     <div :class="`col col-${typeSelected === 'other' ? '4' : '8'} py2 pr2`">
       <label class="inline-block pb1 -fw-500" :for="typeSelected !== 'other' ? 'fieldValues[debt-type]' : 'debt-type[other]'" id="debt-type-l">Debt type</label>
       <div>
-        <select class="-fw form-control" @input="handleTypeSelection" :value="typeSelected" :name="typeSelected !== 'other' ? 'fieldValues[debt-type]' : 'debt-type[other]'" aria-labelledby="debt-type-l" required="required">
+        <select class="-fw form-control" @change="handleTypeSelection" :value="typeSelected" :name="typeSelected !== 'other' ? 'fieldValues[debt-type]' : 'debt-type[other]'" aria-labelledby="debt-type-l" required="required">
           <option value="" disabled hidden :selected="typeSelected == ''">Select debt type</option>
           <option v-for="debtType in DebtTypes" :key="debtType.key" :value="debtType.key">{{debtType.value}}</option>
         </select>
@@ -63,9 +63,9 @@ export default {
     },
   },
   data() {
-    let typeSelected = this.originalDebt.type ? this.originalDebt.type : '';
+    let typeSelected = this.originalDebt.type;
 
-    if (typeSelected && DebtTypeKeys.includes(this.originalDebt.type)) {
+    if (typeSelected && !DebtTypeKeys.includes(this.originalDebt.type)) {
       typeSelected = 'other';
     }
 
