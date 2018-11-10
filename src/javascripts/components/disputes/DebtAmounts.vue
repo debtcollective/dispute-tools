@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="`col col-${typeSelected === 'other' ? '4' : '8'} py2 pr2`">
+    <div :class="`col col-${typeSelected === 'other' ? '4' : '8'} pt2 pr2`">
       <label class="inline-block pb1 -fw-500" :for="typeSelected !== 'other' ? 'fieldValues[debt-type]' : 'debt-type[other]'" id="debt-type-l">Debt type</label>
       <div>
         <select class="-fw form-control" @change="handleTypeSelection" :value="typeSelected" :name="typeSelected !== 'other' ? 'fieldValues[debt-type]' : 'debt-type[other]'" aria-labelledby="debt-type-l" required="required">
@@ -11,7 +11,7 @@
       </div>
     </div>
     <div v-if="typeSelected === 'other'" class="col col-4 p2">
-      <label class="inline-block pb1 -fw-500" aria-hidden="true" for="fieldValues[debt-type]" id="other-debt-type-l">Other debt type</label>
+      <label class="inline-block pb1 -fw-500" aria-hidden="true" for="fieldValues[debt-type]" id="other-debt-type-l">Value</label>
       <input
         type="text"
         class="form-control -fw"
@@ -23,7 +23,7 @@
       />
       <p class="-on-error -danger -caption -fw-500 mt1"></p>
     </div>
-    <div class="col col-4 py2 pl2">
+    <div class="col col-4 pt2 pl2">
       <label for="masked-fieldValues[debt-amount]" class="inline-block pb1 -fw-500">Amount</label>
       <masked-input
         class="form-control -fw"
