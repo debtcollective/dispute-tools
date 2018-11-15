@@ -13,7 +13,7 @@ the app to work correctly
 -   [Discourse](https://github.com/discourse/discourse) is our community hub and SSO provider (the latter of which is critical for the dispute tools)
 -   PDFtk (use this [Installer](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-mac_osx-10.11-setup.pkg))
 -   [Redis](https://redis.io/) 4.x
--   [Yarn](https://yarnpkg.com/) 1.3 or greater
+-   [Yarn](https://yarnpkg.com/)
 -   [GhostScript](https://www.ghostscript.com/) (`brew install ghostscript`)
 
 # Installation

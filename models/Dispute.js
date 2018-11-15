@@ -489,25 +489,15 @@ const Dispute = Class('Dispute')
       // change, so it shouldn't be a problem...
       return Promise.all([
         ...usernamesToInvite.map(user =>
-          discourse.topics
-            .invite(this.disputeThreadId, { user })
-            .then(() =>
-              logger.info(
-                'Invited [user=%s] to [thread=%s] for [dispute=%s]',
-                user,
-                this.disputeThreadId,
-                this.id,
-              ),
-            )
-            .catch(e => {
-              Raven.captureException(e);
-              logger.error(
-                'Failed to invite [user=%s] to [thread=%s] for [dispute=%s]',
-                user,
-                this.disputeThreadId,
-                this.id,
-              );
-            }),
+          discourse.topics.invite(this.disputeThreadId, { user }).catch(e => {
+            Raven.captureException(e);
+            logger.error(
+              'Failed to invite [user=%s] to [thread=%s] for [dispute=%s]',
+              user,
+              this.disputeThreadId,
+              this.id,
+            );
+          }),
         ),
         ...usernamesToUninvite.map(user =>
           discourse.topics

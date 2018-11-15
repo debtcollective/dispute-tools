@@ -19,7 +19,7 @@
   },
   "scripts": {
     "build": "scripty",
-    "test": "yarn test:unit && yarn test:integration && yarn test:form-validations",
+    "test": "yarn test:unit && yarn test:integration",
     "test:unit": "scripty",
     "test:integration": "scripty",
     "test:form-validations": "scripty",
