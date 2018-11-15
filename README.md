@@ -235,3 +235,9 @@ To export settings to update the Terraform repo use
 ```bash
 rails site_settings:export > settings.yml
 ```
+
+## BrowserStack
+
+[<img src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" alt="BrowserStack" width="219"/>](http://browserstack.com/)
+
+We use [BrowserStack](http://browserstack.com/) to test this application in multiple browsers and devices
