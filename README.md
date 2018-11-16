@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/debtcollective/dispute-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/debtcollective/dispute-tools)
+
 # The Debt Collective - Dispute Tools
 
 Corporate elites control our government and by extension our lives. They cheat workers, don’t pay their taxes, and then force us into debt for the basic necessities of life: shelter, food, education, and healthcare. We have the power to change this.
