@@ -1,0 +1,28 @@
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - test
+
+test:
+  image: debtcollective/dispute-tools-test:latest
+  stage: test
+  services:
+    - postgres:10
+    - redis:4
+  variables:
+    POSTGRES_DB: dispute_tools_test
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: ''
+    DB_HOST: postgres
+    DB_USER: postgres
+    REDIS_HOST: redis
+  before_script:
+    - cp config/config.sample.js config/config.js
+    - cp config/knexfile.sample.js knexfile.js
+    - yarn install
+    - yarn build
+  script:
+    - yarn test
+    - yarn report
