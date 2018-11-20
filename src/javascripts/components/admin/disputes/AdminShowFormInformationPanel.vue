@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto">
     <alert :alerts="alerts" />
-    <span v-if="!(uploading || loading)">
+    <div v-if="!(uploading || loading)">
       <h3
         v-if="!form"
         class="max-width-2 pb3">
@@ -10,7 +10,7 @@
         Dispute Status: {{ status }}
       </h3>
       <div v-else>
-        <div class="max-width-2">
+        <div class="max-width-2 mx-auto">
           <h3 class="pb1 center">
             Personal Information
           </h3>
@@ -31,15 +31,6 @@
               <dd>{{ val || '-' }}</dd>
             </span>
           </dl>
-
-          <div class="FormView mb1" v-if="user.groups && user.groups.filter(g => g.full_name).length">
-            <h4 class="center mb1">Groups</h4>
-            <div class="flex">
-              <div v-for="group in user.groups.filter(g => g.full_name)" :key="group.full_name">
-                <span>{{group.full_name}}</span>
-              </div>
-            </div>
-          </div>
 
           <div class="FormView mb1">
             <h4 class="center mb1">Attachments</h4>
@@ -81,7 +72,7 @@
         </div>
         <div
           v-if="ffel !== null"
-          class="max-width-2 mt3">
+          class="max-width-2 mt3 mx-auto">
           <h3 class="pb1 center">
             FFEL Loan Information
           </h3>
@@ -95,8 +86,9 @@
           </dl>
         </div>
       </div>
-    </span>
-    <span v-if="uploading || loading">
+    </div>
+
+    <div v-if="uploading || loading">
       <div class="p4">
         <div class="max-width-2">
           <h3 class="center p4">
@@ -111,14 +103,14 @@
           </h3>
         </div>
       </div>
-    </span>
+    </div>
   </div>
 </template>
 
 <script>
 import get from 'lodash/get';
 import every from 'lodash/every';
-import { getUserByExternalId, uploadAttachment, getDispute } from '../../../lib/api';
+import { uploadAttachment, getDispute } from '../../../lib/api';
 import { DebtTypes } from '../../../../../shared/enum/DebtTypes';
 import Modal from '../../Modal';
 import Alert from '../../../components/Alerts.vue';
@@ -209,6 +201,7 @@ export default {
   methods: {
     updateData({ dispute }, clearAlerts = true) {
       this.loading = clearAlerts;
+
       // Ensures we always have the most up-to-date information about the dispute,
       // not just what was passed as a property of the paginated table
       return getDispute(dispute.id)
@@ -218,17 +211,11 @@ export default {
           this.form = form;
           this.status = status;
           this.dispute = dispute;
+          this.user = user;
           this.pendingSubmission = pendingSubmission;
           this.attachments = attachments;
 
-          if (user.externalId) {
-            return getUserByExternalId(user.externalId).then(u => {
-              this.user = { ...user, ...u };
-              this.loading = false;
-            });
-          } else {
-            this.loading = false;
-          }
+          this.loading = false;
         })
         .catch(e => {
           this.loading = false;
@@ -236,7 +223,7 @@ export default {
             {
               type: 'error',
               message:
-                'Unable to retrieve most up-to-date dispute data. Please reload the page and try again and contact a system administrator if the problem persists.',
+                'Unable to fetch most up-to-date dispute data. Please reload the page and try again.',
             },
           ];
         });
@@ -282,7 +269,7 @@ export default {
           this.uploading = false;
           this.alerts = [
             {
-              message: `An error occurred while uploading the attachment. Please try again or contact a system administrator if the problem persists.`,
+              message: `Unable to upload attachment. Please try again.`,
               type: 'error',
             },
           ];
@@ -301,8 +288,7 @@ export default {
         this.alerts = [
           {
             type: 'error',
-            message:
-              'Unable to delete the attachment. Please try again and contact a system administrator if the problem persists.',
+            message: 'Unable to delete the attachment. Please try again.',
           },
         ];
       }
