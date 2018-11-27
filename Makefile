@@ -14,3 +14,14 @@ build-test:
 
 push-test:
 	docker push debtcollective/dispute-tools-test:$(tag)
+
+config:
+	cp config/config.sample.js config/config.js
+	cp config/knexfile.sample.js knexfile.js
+
+project:
+	yarn &&
+	yarn utils:resetdb &&
+	yarn db:migrate &&
+	yarn db:seed &&
+	yarn build
