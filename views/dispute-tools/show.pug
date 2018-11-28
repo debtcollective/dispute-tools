@@ -4,21 +4,15 @@ block title
   | #{disputeTool.name} — The Debt Collective
 
 block content
-  mixin DisputeCard(key, dispute)
+  mixin DisputeCard(option, dispute)
     .col.md-col-6.col-12.p2
-      form.Tool__DisputeCard.flex.flex-column.rounded.-fh(
-        action=routeMappings.Disputes.create.url()
-        method="POST"
-      )
-        input(name="disputeToolId" type="hidden" value=disputeTool.id)
-        input(name="option" type="hidden" value=key)
-
+      .Tool__DisputeCard.flex.flex-column.rounded.-fh
         .flex-auto.pb3
-          h2= key
+          h2= option
           p.pb2.-fw-600= dispute.title
           p.pb2!= dispute.description
 
-        button.-k-btn.btn-primary.-fw.-fw-600(type="submit") This is my situation
+        a.-k-btn.btn-primary.-fw.-fw-600(href=`${routeMappings.startDispute.url(disputeTool.id)}?option=${option}`) Start Dispute
 
   .wrapper.px2.py3
     .clearfix.mxn2
@@ -38,14 +32,7 @@ block content
               each val, key in disputeTool.data.options
                 +DisputeCard(key, val)
           else
-            form(
-              action=routeMappings.Disputes.create.url()
-              method="post"
-            )
-              input(name="disputeToolId" type="hidden" value=disputeTool.id)
-              input(name="option" type="hidden" value="none")
-
-              button.-k-btn.btn-primary.-fw.-fw-600(type="submit") Start Dispute
+            a.-k-btn.btn-primary.-fw.-fw-600(href=`${routeMappings.startDispute.url(disputeTool.id)}?option=none`) Start Dispute
 
 block append body
   each option, key in disputeTool.data.options

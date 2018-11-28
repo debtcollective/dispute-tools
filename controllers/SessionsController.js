@@ -46,6 +46,12 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
           }
 
           return req.session.save(() => {
+            const redirectTo =
+              req.session.redirectTo || config.router.mappings.Disputes.myDisputes.url();
+
+            // remove redirectTo
+            req.session.redirectTo = '';
+
             Raven.setContext({
               user: {
                 email: user.email,
@@ -54,7 +60,7 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
               },
             });
 
-            res.redirect(config.router.mappings.Disputes.myDisputes.url());
+            res.redirect(redirectTo);
           });
         });
       })(req, res, next);
