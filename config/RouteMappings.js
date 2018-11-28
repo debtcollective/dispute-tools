@@ -137,6 +137,11 @@ const routeMappings = RouteMappings()
     as: 'root',
   })
 
+  .get('/:id/start', {
+    to: 'DisputeTools#startDispute',
+    as: 'startDispute',
+  })
+
   .get('/:id', {
     to: 'DisputeTools#show',
     as: 'tool',

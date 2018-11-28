@@ -12,18 +12,11 @@ block content
 
       .col.lg-col-9.col-12.px2
         .Tool__Optionless.pt3.pr3.pl3.pb2.-bg-neutral-dark
-          form(
-            action=routeMappings.Disputes.create.url()
-            method="post"
-          )
-            input(name="disputeToolId" type="hidden" value=disputeTool.id)
-            input(name="option" type="hidden" value="none")
+          .Tool__Optionless__Content.pb3
+            h4.pb2 We #[span ❤] debt resisters. Let's get this dispute started!
+            != marked(disputeTool.about)
 
-            .Tool__Optionless__Content.pb3
-              h4.pb2 We #[span ❤] debt resisters. Let's get this dispute started!
-              != marked(disputeTool.about)
-
-            button.-k-btn.btn-primary.-fw.-fw-600(type="submit") Start Dispute
+          a.-k-btn.btn-primary.-fw.-fw-600(href=`${routeMappings.startDispute.url(disputeTool.id)}?option=none`) Start Dispute
 
 block scripts
   script.
