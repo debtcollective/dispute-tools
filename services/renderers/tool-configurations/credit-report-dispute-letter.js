@@ -25,26 +25,23 @@ module.exports = {
             type: DisputeTemplate.RENDER_TYPE.PUG,
             file: ['credit_report_dispute_letter', '1.pug'],
             data: {
-              // prettier-ignore
               Experian: [
                 'Experian',
                 'National Consumer Assistance Center',
-                'P.O. Box 2002',
+                'PO Box 2002',
                 'Allen, TX 75013',
               ],
-              // prettier-ignore
               Equifax: [
                 'Equifax Credit Information Services, Inc.',
-                'P.O. Box 740241',
+                'PO Box 740241',
                 'Atlanta, GA 30374',
               ],
-              // prettier-ignore
               TransUnion: [
                 'TransUnion LLC',
                 'Consumer Disclosure Center',
-                'P.O. Box 1000',
-                'Chester, PA 19022',
-              ] // eslint-disable-line
+                'PO Box 2000',
+                'Chester, PA 19016',
+              ],
             },
             normalize({
               forms: {
