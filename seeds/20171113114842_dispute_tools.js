@@ -63,6 +63,7 @@ Before you begin you will need the name and address of the creditor or the colle
 Millions of us have errors on our credit reports, which makes it harder to do basic things like get a job or rent an apartment. Fight back! You can get a free copy of your credit report once per year at <a href="http://annualcreditreport.com" target="_blank" rel="noopener noreferrer">annualcreditreport.com</a> or call 1-877-322-8228.  If you do not have a social security number, you cannot use this service online. The Debt Collective is working on convincing <a href="http://annualcreditreport.com" target="_blank" rel="noopener noreferrer">annualcreditreport.com</a> to address this problem. For now, to access your report, please send a letter with the following information:
 
 - Your full name
+- Your Individual Taxpayer Identification Number (ITIN)
 - Your date of birth
 - Your current mailing address
 - Your previous mailing address (if you have lived at your current address for less than 2 years)
