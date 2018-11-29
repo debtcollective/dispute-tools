@@ -11,21 +11,20 @@
       links: [
         { name: 'Collectives', href: '#' },
         { name: 'Campaigns', href: '#' },
-        { name: 'Debt Map', href: '#' }
       ]
     },
     {
       header: 'Take Action',
       links: [
-        { name: 'Dispute your debt', href: '/dispute-tools' },
-        { name: 'Campaigns', href: '#' }
+        { name: 'Events', href: `${config.discourse.baseUrl}/calendar` },
+        { name: 'Dispute your debt', href: '/' },
       ]
     },
     {
       header: 'Learn',
       links: [
         { name: 'The Power Report', href: powerReportURL },
-        { name: 'About Us', href: routeMappings.about.url() },
+        { name: 'About Us', href: `${config.landingPageURL}/#about`  },
         { name: 'Community Wiki', href: wikiURL }
       ]
     },
@@ -33,7 +32,7 @@
       header: 'More',
       links: [
         { name: 'Contact', href: routeMappings.contact.url() },
-        { name: 'Donate', href: '/#', class: 'js-donate' },
+        { name: 'Donate', href: '/#donate', class: 'js-donate' },
         { name: 'Open Source', href: repoURL }
       ]
     }
