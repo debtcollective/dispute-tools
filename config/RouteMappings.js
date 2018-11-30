@@ -38,9 +38,14 @@ const routeMappings = RouteMappings()
     as: 'healthCheck',
   })
 
-  .post('/donate', {
+  .get('/donate', {
     to: 'Home#donate',
     as: 'donate',
+  })
+
+  .post('/donate', {
+    to: 'Home#donation',
+    as: 'donation',
   })
 
   /*
