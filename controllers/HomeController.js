@@ -17,6 +17,10 @@ const stripeClient = stripe(stripePrivateKey);
 const HomeController = Class('HomeController').inherits(BaseController)({
   prototype: {
     donate(req, res) {
+      res.redirect('/?donate');
+    },
+
+    donation(req, res) {
       const token = req.body.token;
       const amount = Math.floor(Number(req.body.amount));
       const email = req.body.email;
@@ -174,10 +178,6 @@ const HomeController = Class('HomeController').inherits(BaseController)({
 
     about(req, res) {
       res.redirect(`${config.landingPageUrl}/#about`);
-    },
-
-    vision(req, res) {
-      res.render('home/vision');
     },
 
     contact(req, res) {
