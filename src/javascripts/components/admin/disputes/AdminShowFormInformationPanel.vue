@@ -1,28 +1,25 @@
 <template>
   <div class="mx-auto">
-    <alert :alerts="alerts" />
+    <alert :alerts="alerts"/>
     <div v-if="!(uploading || loading)">
-      <h3
-        v-if="!form"
-        class="max-width-2 pb3">
-        No saved form data.
+      <h3 v-if="!form" class="max-width-2 pb3">No saved form data.
         <br>
         Dispute Status: {{ status }}
       </h3>
       <div v-else>
         <div class="max-width-2 mx-auto">
-          <h3 class="pb1 center">
-            Personal Information
-          </h3>
-          <h4 class="center" v-if="status === 'Completed'">
-            {{ pendingSubmission ? 'Debt Collective to mail dispute' : 'User to mail dispute' }}
-          </h4>
-          <h4 class="pb1 center">
-            {{ status }}
-          </h4>
+          <h3 class="pb1 center">Personal Information</h3>
+          <h4
+            class="center"
+            v-if="status === 'Completed'"
+          >{{ pendingSubmission ? 'Debt Collective to mail dispute' : 'User to mail dispute' }}</h4>
+          <h4 class="pb1 center">{{ status }}</h4>
 
           <h5 class="pb3 center">
-            <a class="-k-btn btn-primary -fw-600" :href="`/admin/disputes/${dispute.id}`">Edit dispute form data</a>
+            <a
+              class="-k-btn btn-primary -fw-600"
+              :href="`/admin/disputes/${dispute.id}`"
+            >Edit dispute form data</a>
           </h5>
 
           <dl class="FormView mb1">
@@ -35,13 +32,13 @@
           <div class="FormView mb1">
             <h4 class="center mb1">Attachments</h4>
             <div v-if="attachments && attachments.length" class="-fw">
-                <attachment
-                  v-for="attachment in attachments"
-                  :key="attachment.id"
-                  :attachment="attachment"
-                  entity-name="disputes"
-                  :on-delete="handleAttachmentDelete"
-                />
+              <attachment
+                v-for="attachment in attachments"
+                :key="attachment.id"
+                :attachment="attachment"
+                entity-name="disputes"
+                :on-delete="handleAttachmentDelete"
+              />
             </div>
             <h3 v-else class="center">None</h3>
 
@@ -51,35 +48,27 @@
                 <input
                   type="file"
                   name="attachment"
-                  accept="pdf,png,jpeg"
+                  accept="pdf, png, jpeg"
                   multiple="true"
                   class="absolute top-0 left-0 -fw -fh"
                   style="opacity: 0"
-                  @change="handleAttachmentUpload">
+                  @change="handleAttachmentUpload"
+                >
               </div>
             </form>
           </div>
 
           <dl class="FormView">
-            <span
-              v-for="(val, key) in personalInformation"
-              v-if="val !== null"
-              :key="key">
+            <span v-for="(val, key) in personalInformation" v-if="val !== null" :key="key">
               <dt>{{ key }}</dt>
               <dd>{{ val || '-' }}</dd>
             </span>
           </dl>
         </div>
-        <div
-          v-if="ffel !== null"
-          class="max-width-2 mt3 mx-auto">
-          <h3 class="pb1 center">
-            FFEL Loan Information
-          </h3>
+        <div v-if="ffel !== null" class="max-width-2 mt3 mx-auto">
+          <h3 class="pb1 center">FFEL Loan Information</h3>
           <dl class="FormView">
-            <span
-              v-for="(val, key) in ffel"
-              :key="key">
+            <span v-for="(val, key) in ffel" :key="key">
               <dt>{{ key }}</dt>
               <dd>{{ val || '-' }}</dd>
             </span>
@@ -93,11 +82,11 @@
         <div class="max-width-2">
           <h3 class="center p4">
             {{
-              uploading
-                ? 'The documents are being uploaded...'
-                : loading
-                  ? 'Loading dispute and member data...'
-                  : ''
+            uploading
+            ? 'The documents are being uploaded...'
+            : loading
+            ? 'Loading dispute and member data...'
+            : ''
             }}
             <div class="spinner"></div>
           </h3>
@@ -195,6 +184,9 @@ export default {
         Username: this.user.username,
         Fullname: this.user.name,
         Email: this.user.email,
+        Zip: this.user.zip,
+        State: this.user.state,
+        Phone: this.user.phoneNumber,
       };
     },
   },
