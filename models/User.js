@@ -12,6 +12,9 @@ const User = Class('User').inherits(Krypton.Model)({
     'username',
     'avatarUrl',
     'admin',
+    'phoneNumber',
+    'state',
+    'zip',
     'externalId',
     'createdAt',
     'updatedAt',
@@ -27,12 +30,16 @@ const User = Class('User').inherits(Krypton.Model)({
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
     },
+
     setInfo(info) {
       const hasAdminRole = info.groups.includes(config.discourse.adminRole);
       const isDiscourseAdmin = info.admin === 'true';
       const admin = hasAdminRole || isDiscourseAdmin;
       const externalId = info.external_id || this.externalId;
       const avatarUrl = info.avatar_url || '';
+      const zip = info['custom.user_zip'];
+      const state = info['custom.user_state'];
+      const phoneNumber = info['custom.user_phone_number'];
 
       // Discourse returns + instead of spaces for names
       const name = (info.name || '').replace(/\+/g, ' ');
@@ -44,10 +51,14 @@ const User = Class('User').inherits(Krypton.Model)({
         externalId,
         admin,
         avatarUrl,
+        zip,
+        state,
+        phoneNumber,
       });
 
       return this;
     },
+
     getProfileUrl() {
       return `${config.discourse.baseUrl}/u/${this.username}`;
     },
