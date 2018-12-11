@@ -28,7 +28,12 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulC
               res.locals.disputeTool = disputeTool;
               next();
             } else {
-              throw new NotFoundError();
+              // We don't want this error get to Sentry, due bots and crawlers
+              // Raven ignores errors with status < 500
+              const err = new NotFoundError();
+              err.status = 404;
+
+              throw err;
             }
           } catch (e) {
             next(e);
