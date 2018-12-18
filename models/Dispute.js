@@ -101,18 +101,7 @@ const Dispute = Class('Dispute')
     }, []);
   },
 
-  /**
-   * Check if a dispute is empty or not
-   *
-   * @returns {bool} true if the dispute doesn't have any data
-   */
-  isEmpty() {
-    const { data } = this;
-
-    return _.has(data, 'forms') || _.has(data, '_forms');
-  },
-
-  async findById(id, include = null) {
+  async findById(id, include = Dispute.defaultIncludes) {
     const INCLUDE_DEACTIVATED = true;
     const query = Dispute.query(null, INCLUDE_DEACTIVATED).where({ id });
     if (typeof include === 'string') {
@@ -122,7 +111,7 @@ const Dispute = Class('Dispute')
     return dispute;
   },
 
-  findByUser(user, include = null) {
+  findByUser(user, include = Dispute.defaultIncludes) {
     const query = Dispute.query().where('user_id', user.id);
     if (typeof include === 'string') {
       query.include(include);
@@ -131,16 +120,15 @@ const Dispute = Class('Dispute')
   },
 
   async createFromTool({ user, disputeToolId, option }) {
-    let dispute = new Dispute({
+    const dispute = new Dispute({
       disputeToolId,
       userId: user.id,
+      statuses: [],
     });
 
     const status = new DisputeStatus({
       status: 'New',
     });
-
-    const disputeTool = await DisputeTool.findById(disputeToolId);
 
     dispute.setOption(option);
 
@@ -155,9 +143,18 @@ const Dispute = Class('Dispute')
       await status.save();
     });
 
-    // do this to get the readable id the database created
-    // needed for the discourse topic subject
-    dispute = await Dispute.findById(dispute.id);
+    dispute.statuses.push(status);
+
+    return dispute;
+  },
+
+  async createDiscourseThread(dispute) {
+    if (dispute.disputeThreadId || !dispute.id) {
+      return false;
+    }
+
+    const disputeTool = await DisputeTool.findById(dispute.disputeToolId);
+    const user = dispute.user;
 
     try {
       const {
@@ -175,8 +172,6 @@ const Dispute = Class('Dispute')
         disputeTool.name,
       );
     }
-
-    return dispute;
   },
 
   prototype: {
@@ -253,17 +248,24 @@ const Dispute = Class('Dispute')
      * @param {boolean} saved returns true if the status was changed correctly, false otherwise
      */
     async markAsIncompleted() {
-      if (!this.isNew()) {
+      const dispute = this;
+
+      if (!dispute.isNew()) {
         return false;
       }
 
       // create incomplete status and persist
       const incompleteStatus = new DisputeStatus({
         status: 'Incomplete',
-        disputeId: this.id,
+        disputeId: dispute.id,
       });
 
       await incompleteStatus.save();
+
+      dispute.statuses.push(incompleteStatus);
+
+      // create discourse thread
+      await Dispute.createDiscourseThread(dispute);
 
       return true;
     },
@@ -274,9 +276,50 @@ const Dispute = Class('Dispute')
      * @param {boolean} isNew true if dispute status is equal to 'New'
      */
     isNew() {
-      const status = _.first(this.statuses);
+      const dispute = this;
+      const status = _.first(dispute.statuses);
 
-      return status.status === 'New';
+      return status && status.status === 'New';
+    },
+
+    /**
+     * Check if a dispute is empty or not
+     *
+     * @returns {bool} true if the dispute doesn't have any data
+     */
+    isEmpty() {
+      const { data } = this;
+
+      if (_.has(data, 'forms')) {
+        return false;
+      }
+
+      if (_.has(data, '_forms')) {
+        let isEmpty = true;
+
+        // check that at least one field is not empty
+        const forms = Object.keys(data._forms);
+
+        _.forEach(forms, formKey => {
+          const formData = data._forms[formKey];
+
+          _.forEach(formData, value => {
+            if (!_.isEmpty(value)) {
+              isEmpty = false;
+
+              return false;
+            }
+          });
+
+          if (!isEmpty) {
+            return false;
+          }
+        });
+
+        return isEmpty;
+      }
+
+      return true;
     },
 
     /**

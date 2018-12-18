@@ -167,27 +167,28 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         });
       }
 
-      return dispute
-        .save()
-        .then(() => {
-          // After the first save with data, we mark the Dispute as incompleted
-          if (dispute.isNew() && !dispute.isEmpty()) {
-            dispute.markAsIncompleted();
-          }
+      try {
+        await dispute.save();
 
-          return res.format({
-            html() {
-              if (req.body.command === 'setForm') {
-                req.flash('success', 'Your information was successfully updated');
-              }
-              return res.redirect(config.router.helpers.Disputes.show.url(dispute.id));
-            },
-            json() {
-              return res.json({ status: 'confirmed', dispute });
-            },
-          });
-        })
-        .catch(next);
+        // After the first save with data, we mark the Dispute as incompleted
+        if (dispute.isNew() && !dispute.isEmpty()) {
+          await dispute.markAsIncompleted();
+        }
+
+        return res.format({
+          html() {
+            if (req.body.command === 'setForm') {
+              req.flash('success', 'Your information was successfully updated');
+            }
+            return res.redirect(config.router.helpers.Disputes.show.url(dispute.id));
+          },
+          json() {
+            return res.json({ status: 'confirmed', dispute });
+          },
+        });
+      } catch (e) {
+        next(e);
+      }
     },
 
     setSignature(req, res, next) {

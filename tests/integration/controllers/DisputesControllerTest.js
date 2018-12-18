@@ -124,11 +124,11 @@ describe('DisputesController', () => {
     };
     const setFormBody = {
       command: 'setForm',
-      name: 'the-form',
+      formName: 'personal-information-form',
       fieldValues: {
-        name: 'name',
-        address1: 'address 1 street',
+        name: 'Orlando Del Aguila',
       },
+      _isDirty: true,
     };
 
     before(async () => {
@@ -159,30 +159,23 @@ describe('DisputesController', () => {
       });
     });
 
-    describe('after first save', () => {
+    describe('first update', () => {
       before(async () => {});
 
       it('should set status to incomplete', async () => {
         let dispute = await createDispute(owner);
         let status = _.first(dispute.statuses);
         const url = urls.Disputes.updateDisputeData.url(dispute.id);
-        const setFormBody = {
-          command: 'setForm',
-          name: 'personal-form',
-          fieldValues: {
-            name: 'name',
-            address1: 'address 1 street',
-          },
-        };
 
         // check dispute status is new
         expect(status.status).eql('New');
 
         // make a request to update the form
-        testPutPage(url, setFormBody, owner);
+        await testPutPage(url, setFormBody, owner);
 
         // reload dispute
-        dispute = Dispute.findById(dispute.id);
+        dispute = await Dispute.findById(dispute.id);
+        expect(dispute.statuses.length).eql(2);
         status = _.first(dispute.statuses);
 
         // check dispute status is incomplete

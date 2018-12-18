@@ -8,10 +8,6 @@ const DisputeStatus = require('$models/DisputeStatus');
 const Dispute = require('$models/Dispute');
 const DisputeTool = require('$models/DisputeTool');
 const { discourse } = require('$lib');
-const {
-  discourse: { baseUrl: discourseEndpoint },
-} = require('$config/config');
-
 const { createUser, createDispute, truncate } = require('$tests/utils');
 const { wageGarnishmentDisputes } = require('$tests/utils/sampleDisputeData');
 
@@ -22,17 +18,6 @@ describe('Dispute', () => {
   before(async () => {
     user = await createUser();
     tool = await DisputeTool.first();
-  });
-
-  describe('processors', () => {
-    it('should add the disputeThreadLink', async () => {
-      const dispute = await createDispute(user);
-
-      await expect(Dispute.findById(dispute.id)).to.eventually.have.property(
-        'disputeThreadLink',
-        `${discourseEndpoint}/t/${dispute.disputeThreadId}`,
-      );
-    });
   });
 
   describe('findById', () => {
@@ -85,10 +70,6 @@ describe('Dispute', () => {
       const statuses = await DisputeStatus.query().where('dispute_id', dispute.id);
       expect(statuses.length).eq(1);
       expect(statuses[0].status).eq(DisputeStatuses.new);
-    });
-
-    it('should create the dispute and save a new discourse topic thread id', async () => {
-      expect(dispute.disputeThreadId).not.undefined;
     });
   });
 
