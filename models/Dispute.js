@@ -137,7 +137,7 @@ const Dispute = Class('Dispute')
     });
 
     const status = new DisputeStatus({
-      status: 'Incomplete',
+      status: 'New',
     });
 
     const disputeTool = await DisputeTool.findById(disputeToolId);
@@ -244,6 +244,39 @@ const Dispute = Class('Dispute')
           .then(resolve)
           .catch(reject);
       });
+    },
+
+    /**
+     * Moves the dispute into the incompleted status.
+     * This method can only be called if the Dispute has New as status
+     *
+     * @param {boolean} saved returns true if the status was changed correctly, false otherwise
+     */
+    async markAsIncompleted() {
+      if (!this.isNew()) {
+        return false;
+      }
+
+      // create incomplete status and persist
+      const incompleteStatus = new DisputeStatus({
+        status: 'Incomplete',
+        disputeId: this.id,
+      });
+
+      await incompleteStatus.save();
+
+      return true;
+    },
+
+    /**
+     * returns true if the dispute status is equal to 'New'
+     *
+     * @param {boolean} isNew true if dispute status is equal to 'New'
+     */
+    isNew() {
+      const status = _.first(this.statuses);
+
+      return status.status === 'New';
     },
 
     /**

@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const path = require('path');
 const { expect } = require('chai');
 const sinon = require('sinon');
@@ -158,19 +159,43 @@ describe('DisputesController', () => {
       });
     });
 
+    describe('after first save', () => {
+      before(async () => {});
+
+      it('should set status to incomplete', async () => {
+        let dispute = await createDispute(owner);
+        let status = _.first(dispute.statuses);
+        const url = urls.Disputes.updateDisputeData.url(dispute.id);
+        const setFormBody = {
+          command: 'setForm',
+          name: 'personal-form',
+          fieldValues: {
+            name: 'name',
+            address1: 'address 1 street',
+          },
+        };
+
+        // check dispute status is new
+        expect(status.status).eql('New');
+
+        // make a request to update the form
+        testPutPage(url, setFormBody, owner);
+
+        // reload dispute
+        dispute = Dispute.findById(dispute.id);
+        status = _.first(dispute.statuses);
+
+        // check dispute status is incomplete
+        expect(status.status).eql('Incomplete');
+      });
+    });
+
     describe('model validation', () => {
       it('should require a command', () => testBadRequest(testPutPage(url, {}, owner)));
       it('should allow setDisputeProcess', () => testOk(testPutPage(url, body, owner)));
       it('should allow setForm', () => testOk(testPutPage(url, setFormBody, owner)));
       it('should require a valid command', () =>
         testBadRequest(testPutPage(url, { command: 'bogus' }, owner)));
-
-      // This test sucks. I wish this endpoint wasn't implemented this way.
-      it('should catch errors inside the command execution', () =>
-        testPutPage(url, { command: 'setDisputeProcess' }, owner).catch(err => {
-          expect(err.status).eq(302);
-          expect(err.response.headers.location).eq(urls.Disputes.show.url(dispute.id));
-        }));
     });
   });
 

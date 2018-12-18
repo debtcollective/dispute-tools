@@ -169,8 +169,13 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
       return dispute
         .save()
-        .then(() =>
-          res.format({
+        .then(() => {
+          // After the first save with data, we mark the Dispute as incompleted
+          if (dispute.isNew() && !dispute.isEmpty()) {
+            dispute.markAsIncompleted();
+          }
+
+          return res.format({
             html() {
               if (req.body.command === 'setForm') {
                 req.flash('success', 'Your information was successfully updated');
@@ -180,8 +185,8 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
             json() {
               return res.json({ status: 'confirmed', dispute });
             },
-          }),
-        )
+          });
+        })
         .catch(next);
     },
 

@@ -1,4 +1,5 @@
 module.exports = Object.freeze({
+  new: 'New',
   incomplete: 'Incomplete',
   completed: 'Completed',
   inReview: 'In Review',

@@ -84,7 +84,7 @@ describe('Dispute', () => {
     it('should create a dispute with a default status', async () => {
       const statuses = await DisputeStatus.query().where('dispute_id', dispute.id);
       expect(statuses.length).eq(1);
-      expect(statuses[0].status).eq(DisputeStatuses.incomplete);
+      expect(statuses[0].status).eq(DisputeStatuses.new);
     });
 
     it('should create the dispute and save a new discourse topic thread id', async () => {
