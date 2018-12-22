@@ -1,7 +1,5 @@
 import Widget from '../lib/widget';
 import Alert from '../components/Alert';
-import Modal from '../components/Modal';
-import DonationFlow from '../components/DonationFlow'; // rename: DonationFlowForm
 import currentUser from '../lib/currentUser';
 
 export default class Common extends Widget {
@@ -21,41 +19,6 @@ export default class Common extends Widget {
           }),
         );
       });
-    }
-
-    // DonationFlow modal
-    const donationFlowModal = document.querySelector('.DonationFlow');
-
-    if (!donationFlowModal) {
-      return;
-    }
-
-    this.appendChild(
-      new Modal({
-        name: 'donationFlowModal',
-        element: donationFlowModal,
-      }),
-    ).appendChild(
-      new DonationFlow({
-        name: 'donationFlow',
-        element: donationFlowModal.querySelector('[data-component-donationform]'),
-      }),
-    );
-
-    this.donationFlowModal.bind('activate', () => {
-      this.donationFlowModal.donationFlow.reset();
-    });
-
-    // Activate DonationFlow triggers
-    Array.prototype.slice.call(document.querySelectorAll('.js-donate')).forEach(trigger =>
-      trigger.addEventListener('click', ev => {
-        ev.preventDefault();
-        this.donationFlowModal.activate();
-      }),
-    );
-
-    if (window.location.search.includes('donate')) {
-      this.donationFlowModal.activate();
     }
   }
 }
