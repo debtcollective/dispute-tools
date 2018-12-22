@@ -9,16 +9,16 @@ script.
    */
   (function() {
     var headerLinks = [
+      { text: 'Admin', href: '/admin/disputes', roles: [!{JSON.stringify(adminRole)}] },
       { text: 'My Disputes', href: '/disputes/my' },
       { text: 'Dispute Your Debt', href: '/' },
       { text: 'Community', href: 'https://community.debtcollective.org' },
       { text: 'Events', href: 'https://community.debtcollective.org/calendar' },
-      { text: 'Admin', href: '/admin/disputes', roles: [!{JSON.stringify(adminRole)}] }
+      { text: 'The Power Report', href: 'https://powerreport.debtcollective.org' },
+      { text: "Donate", href: "http://tools.debtcollective.org/donate" }
     ];
 
     var dropdownLinks = [
-      { text: 'The Power Report', href: 'https://powerreport.debtcollective.org' },
-      { text: 'Wiki', href: 'http://wiki.debtcollective.org' },
       { text: 'About the Debt Collective', href: 'https://debtcollective.org#about' }
     ];
 
