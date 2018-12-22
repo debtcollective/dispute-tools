@@ -1,14 +1,15 @@
 /* eslint-disable max-len */
-/* global Checkit */
+/* global Stripe */
+
 import Widget from '../lib/widget';
 import { postStripePayment } from '../lib/api';
-
-/* global Stripe */
 
 const AMOUNT_PRESETS = [1000, 2000, 3000, 5000, 10000, 25000];
 
 const FUND_GENERAL = 'FUND_GENERAL';
 const FUND_STRIKE = 'FUND_STRIKE';
+
+const VALID_EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const PAGE_DONATE = 'PAGE_DONATE';
 const PAGE_PAYMENT = 'PAGE_PAYMENT';
@@ -223,10 +224,7 @@ export default class DonationFlow extends Widget {
     }
 
     // Data: Credit Card Inputs
-    const emailIsValid = Checkit.checkSync('email', this.sectionPaymentInputEmailEl.value, [
-      'required',
-      'email',
-    ])[1];
+    const emailIsValid = VALID_EMAIL_REGEX.test(this.sectionPaymentInputEmailEl.value);
     const numberIsValid = Stripe.card.validateCardNumber(this.sectionPaymentInputNumberEl.value);
     const expiryIsValid = Stripe.card.validateExpiry(this.sectionPaymentInputExpEl.value);
     const cvcIsValid = Stripe.card.validateCVC(this.sectionPaymentInputCvcEl.value);

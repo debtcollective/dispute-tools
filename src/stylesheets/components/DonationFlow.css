@@ -182,6 +182,12 @@ section.Payment .flex div:first-child .PaymentMethod {
   margin-right: 30px;
 }
 
+.DonationForm {
+  display: flex;
+  align-items: center;
+  min-height: 500px;
+}
+
 .DonationForm .btn-back {
   cursor: pointer;
 }
@@ -195,21 +201,14 @@ section.Payment .flex div:first-child .PaymentMethod {
 * Success section
 */
 
+section.Error,
 section.Success {
   position: relative;
-  padding-top: 200px;
 }
 
 /**
 * Error section
 */
-
-section.Error {
-  position: relative;
-  width: 380px;
-  height: 380px;
-  padding-top: 120px;
-}
 
 section.Error .DonationResponse {
   padding: 0 10px;

@@ -10,6 +10,7 @@ module.exports = {
   entry: {
     index: './src/javascripts/index.js',
     admin: './src/javascripts/admin.js',
+    donate: './src/javascripts/donate.js',
   },
   externals: {
     vue: 'Vue',
@@ -21,7 +22,10 @@ module.exports = {
     // babel-polyfill, Vuejs, lodash functions used in both places, and
     // the NodeSupport CustomEvent lib used to build most of the front end
     new ProgressBarPlugin(),
-    new webpack.optimize.CommonsChunkPlugin('shared'),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'shared',
+      chunks: ['index', 'admin'],
+    }),
     // This plugin will wholesale replace 'process.env.NODE_ENV' with the
     // value on the right so we need to make sure to wrap it in quotes
     // so it doesn't try to evaluate `production` or `development`
@@ -35,6 +39,7 @@ module.exports = {
         NODE_ENV: `"${process.env.NODE_ENV}"`,
       },
     }),
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new ExtractTextPlugin('[name].css'),
   ],
   devtool: dev ? 'eval-source-map' : 'source-map',

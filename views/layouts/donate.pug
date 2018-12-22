@@ -30,6 +30,9 @@ html(lang='en')
     script.
       Vue.component(DebtCollectiveHeader.name, DebtCollectiveHeader)
 
+    script(src='https://js.stripe.com/v2/')
+    script(src='/build/donate.js')
+
   body
     include ../includes/svg/sprite.svg
     include ../includes/header
@@ -54,12 +57,6 @@ html(lang='en')
       block content
       include ../includes/footer
 
-    block body
-
-    script(src='/build/shared.js')
-    script(src='/build/index.js')
     include ../mixins/utils.pug
-
-    script(src='https://js.stripe.com/v2/' async)
 
     block scripts

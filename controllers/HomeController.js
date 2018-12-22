@@ -17,7 +17,7 @@ const stripeClient = stripe(stripePrivateKey);
 const HomeController = Class('HomeController').inherits(BaseController)({
   prototype: {
     donate(req, res) {
-      res.redirect('/?donate');
+      res.render('donate/index.pug');
     },
 
     donation(req, res) {
