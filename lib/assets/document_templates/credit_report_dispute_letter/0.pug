@@ -1,31 +1,57 @@
+-
+  var moment = UTILS.moment;
+  var date = moment(createdAt).format('MMMM Do YYYY');
+
 #letter
+  p 
+    | Date: 
+    strong #{date}
+
+  p Re: Credit Report Errors
+
   p Dear Sir or Madam:
-  p I have discovered inaccurate information on my credit reports. The reports are in my name, #{name}.
+
+  p 
+    | I have discovered inaccurate information on my credit reports. The reports are in my name, 
+    strong #{name}
+    | . 
+
+    if creditors
+      | The creditors or collectors that are reporting me for debts that I do not owe include: 
+      strong #{creditors}
+      |.
+
   p Please find enclosed a copy of the portions of the credit reports containing the mistaken data.
-  p Please investigate all of the above matters with the creditors in question and send me written confirmation that the items have been removed. In addition, please make this letter a permanent part of my credit report.
-  p According to the Fair Credit Reporting Act, it is your duty to investigate my dispute within a 30-day period after receiving this request. If you find that the disputed items are inaccurate or that they cannot be verified, it is your duty to remove the items from my report. Please send me a corrected copy of my report. If you have any questions about my request or any of the credit information in question, please do not hesitate to call me at #{phone}.
+
+  p Please investigate all of the above matters with the creditors in question and send me written confirmation that the items have been removed. In addition, please make this letter a permanent part of my credit record.
+
+  p 
+    | According to the Fair Credit Reporting Act, it is your duty to investigate my dispute within a 30 day period after receiving this request. 
+    If you find that the disputed items are inaccurate or that they cannot be verified, it is your duty to remove the items from my report. 
+    Please send me a corrected copy of my report. If you have any questions about my request or any of the credit information in question, please do not hesitate to call me at 
+    strong #{phone}
+    | .
+
   p Thank you for your prompt attention to my request.
 
-  p #{name}
-
   br
-  br
-
   .user-info
+    p #{name}
+    p #{address}
+    p #{address2}
+    br
     p Date of Birth: #{dob}
-    p SSN: #{ssn}
-    p Address:
-      .address
-        p #{address}
-        p #{address2}
+    p Social Security Number: #{ssn}
     p Email: #{email}
     p Phone: #{phone}
 
 style.
-  .user-info > p {
-    margin: 0;
+  #letter {
+    font-size: 10pt;
+    font-family: "Times New Roman", Times, serif;
+    text-align: justify;
   }
 
-  .address > p {
-    margin: 0 0 0 20px;
+  .user-info > p {
+    margin: 0;
   }

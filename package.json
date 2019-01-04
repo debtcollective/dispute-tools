@@ -21,6 +21,7 @@
     "build": "scripty",
     "test": "yarn test:unit && yarn test:integration",
     "test:unit": "scripty",
+    "test:documents": "scripty",
     "test:integration": "scripty",
     "test:form-validations": "scripty",
     "pretest:debug:unit": "npm run utils:resetdb && npm run utils:knexreset",

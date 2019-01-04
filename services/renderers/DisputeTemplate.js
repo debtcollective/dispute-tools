@@ -64,11 +64,11 @@ class DisputeTemplate {
 
     this.pdf = pdf;
     this.normalize = normalize.bind(this);
-    if (post === null) {
-      this.post = null;
-    } else {
+
+    if (post !== null) {
       this.post = (Array.isArray(post) ? post : [post]).map(fn => fn.bind(this));
     }
+
     this.data = data;
     this.iff = iff;
   }

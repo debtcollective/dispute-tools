@@ -1,5 +1,6 @@
 const DisputeTemplate = require('$services/renderers/DisputeTemplate');
 const { getAddress2 } = require('./shared/utils');
+const _ = require('lodash');
 
 module.exports = {
   '11111111-1111-4444-1111-111111111111': {
@@ -9,8 +10,10 @@ module.exports = {
           new DisputeTemplate({
             type: DisputeTemplate.RENDER_TYPE.PUG,
             file: ['credit_report_dispute_letter', '0.pug'],
-            normalize({ forms: { 'personal-information-form': form } }) {
+            normalize({ createdAt, forms: { 'personal-information-form': form } }) {
               return {
+                createdAt,
+                creditors: _.join(_.filter([form.currentCreditor, form.originalCreditor]), ', '),
                 dob: form.dob,
                 ssn: form.ssn,
                 address: form.address,

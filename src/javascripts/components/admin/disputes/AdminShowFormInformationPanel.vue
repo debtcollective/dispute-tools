@@ -1,8 +1,8 @@
 <template>
-  <div class="mx-auto">
+  <div class="-fw mx-auto">
     <alert :alerts="alerts"/>
     <div v-if="!(uploading || loading)">
-      <h3 v-if="!form" class="max-width-2 pb3">No saved form data.
+      <h3 v-if="!form" class="max-width-2 mx-auto">No saved form data.
         <br>
         Dispute Status: {{ status }}
       </h3>
@@ -58,13 +58,28 @@
             </form>
           </div>
 
-          <dl class="FormView">
+          <dl class="FormView mb1">
             <span v-for="(val, key) in personalInformation" v-if="val !== null" :key="key">
               <dt>{{ key }}</dt>
               <dd>{{ val || '-' }}</dd>
             </span>
           </dl>
+
+          <div class="FormView">
+            <h5>Debt Types</h5>
+            <table class="-fw text-left">
+              <tr>
+                <th>Type</th>
+                <th>Amount</th>
+              </tr>
+              <tr v-for="(debt, index) in debts" :key="index">
+                <td>{{ debt.type }}</td>
+                <td>{{ debt.amount }}</td>
+              </tr>
+            </table>
+          </div>
         </div>
+
         <div v-if="ffel !== null" class="max-width-2 mt3 mx-auto">
           <h3 class="pb1 center">FFEL Loan Information</h3>
           <dl class="FormView">
@@ -97,13 +112,13 @@
 </template>
 
 <script>
-import get from 'lodash/get';
-import every from 'lodash/every';
+import _ from 'lodash';
 import { uploadAttachment, getDispute } from '../../../lib/api';
 import { DebtTypes } from '../../../../../shared/enum/DebtTypes';
 import Modal from '../../Modal';
 import Alert from '../../../components/Alerts.vue';
 import Attachment from '../../../components/Attachment.vue';
+import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
 const getFormOrElse = ({
   id,
@@ -115,7 +130,7 @@ const getFormOrElse = ({
   if (data && (data.forms || data._forms)) {
     return {
       disputeId: id,
-      form: get(data._forms || data.forms, 'personal-information-form'),
+      form: _.get(data._forms || data.forms, 'personal-information-form'),
       status,
       user,
       pendingSubmission,
@@ -161,10 +176,34 @@ export default {
         Email: this.form.email || this.user.email,
         Phone: this.form.phone || this.user.phone,
         'Phone 2': this.form.phone2,
-        Creditor: this.form['agency-name'] || this.form['firm-name'],
-        'Debt type': DebtTypes[this.form['debt-type']] || null,
-        'Debt amount': this.form['debt-amount'],
+        Creditor: _.join(
+          _.filter([
+            this.form['agency-name'],
+            this.form['firm-name'],
+            this.form.originalCreditor,
+            this.form.currentCreditor,
+          ]),
+          ', ',
+        ),
       };
+    },
+    debts() {
+      let debtType = this.form['debt-type'];
+      const debtAmount = this.form['debt-amount'];
+      let debts = this.form.debts || [];
+
+      if (debtType || debtAmount) {
+        debtType || (debtType = 'other');
+
+        debts = [{ type: debtType, amount: debtAmount }];
+      }
+
+      _.forEach(debts, debt => {
+        debt.type = _.startCase(debt.type);
+        debt.amount = this.formatCurrency(debt.amount);
+      });
+
+      return debts;
     },
     ffel() {
       if (this.form['ffel-loan-radio-option'] === 'yes') {
@@ -227,7 +266,7 @@ export default {
 
       // validate size
       const MAX_FILE_SIZE = 6000000;
-      const allFilesUnderMaxSize = every(target.files, file => file.size < MAX_FILE_SIZE);
+      const allFilesUnderMaxSize = _.every(target.files, file => file.size < MAX_FILE_SIZE);
 
       if (!allFilesUnderMaxSize) {
         this.alerts = [
@@ -284,6 +323,9 @@ export default {
           },
         ];
       }
+    },
+    formatCurrency(string) {
+      return Number(string).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
     },
   },
 };

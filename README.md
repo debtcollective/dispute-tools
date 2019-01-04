@@ -7,7 +7,7 @@ Corporate elites control our government and by extension our lives. They cheat w
 You will need to install the following libraries/packages in order for
 the app to work correctly
 
--   [Node](https://nodejs.org/) 8.11.4 *(version 10.x.x is [incompatible](http://pdfhummus.com/post/173608369726/hummusjs-1087) with `hummus`)*
+-   [Node](https://nodejs.org/) 8.11.4 _(version 10.x.x is [incompatible](http://pdfhummus.com/post/173608369726/hummusjs-1087) with `hummus`)_
 -   [PostgreSQL](https://www.postgresql.org/) 10.x
 -   [Discourse](https://github.com/discourse/discourse) is our community hub and SSO provider (the latter of which is critical for the dispute tools)
 -   PDFtk (use this [Installer](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-mac_osx-10.11-setup.pkg))
@@ -22,7 +22,7 @@ This document is intended to describe in some way the happy path to have everyth
 # Installation
 
 1.  Clone this repository
-2.  Copy config files and edit them as needed by first running the `make config` command. 
+2.  Copy config files and edit them as needed by first running the `make config` command.
 
 In particular, you may need to edit `discourse.apiKey`.
 
@@ -30,9 +30,9 @@ In particular, you may need to edit `discourse.apiKey`.
 
 In order to add the right value to `discourse.apiKey`, you need to run your Discourse instance and then:
 
-1. Login with Admin user
-1. Go to [http://localhost:3000/admin/api/keys](http://localhost:3000/admin/api/keys) and create a new API key
-2. Add the new API key to the `discourse.apiKey` within config file
+1.  Login with Admin user
+1.  Go to [http://localhost:3000/admin/api/keys](http://localhost:3000/admin/api/keys) and create a new API key
+1.  Add the new API key to the `discourse.apiKey` within config file
 
 # Run server
 
@@ -52,13 +52,22 @@ If there is any issue with the command try running separately and review the [FA
 
 Once you have run the above commands successfully start the server using `yarn start`
 
-> *You can spin up the discourse server (the [best
-instructions](https://github.com/discourse/discourse/blob/master/docs/DEVELOPER-ADVANCED.md)).*
+> _You can spin up the discourse server (the [best
+> instructions](https://github.com/discourse/discourse/blob/master/docs/DEVELOPER-ADVANCED.md))._
 
-At this point if you have reviewed the [GETTING_STARTED](./GETTING_STARTED.md) guide and [added the admin user](./HOW_TO.md) you should be able to run Discourse alongside this project and see both apps running properly and with a synced header *(once you log into Discourse the Dispute tools app will update its header)*.
+At this point if you have reviewed the [GETTING_STARTED](./GETTING_STARTED.md) guide and [added the admin user](./HOW_TO.md) you should be able to run Discourse alongside this project and see both apps running properly and with a synced header _(once you log into Discourse the Dispute tools app will update its header)_.
 
-## BrowserStack
+## S3 uploads in development
+
+We use [Minio](https://github.com/minio/minio) as our S3 compatible object storage for dev environments. Follow the installation instructions in their repo.
+
+```sh
+mkdir -p ~/.minio/dispute-tools-development
+minio server ~/.minio
+```
+
+We use the default Minio configuration.
+
+## Powered by
 
 [<img src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" alt="BrowserStack" width="219"/>](http://browserstack.com/)
-
-We use [BrowserStack](http://browserstack.com/) to test this application in multiple browsers and devices

@@ -92,7 +92,7 @@ mixin _uploadCard(step, _completed)
       var _re = /\[{2}(.*)\]{2}/;
       var _replaceWith = '<a class="js-Dispute__more-modal-trigger" href="#">$1</a>';
       var _description = optionData.description.replace(_re, _replaceWith);
-    p.-ff-sec!= _description
+    p.mb1.-ff-sec!= _description
     .right-align
       form(
         action=routeMappings.Disputes.destroy.url(dispute.id)
