@@ -1,52 +1,94 @@
 <template>
   <div>
-    <div :class="`col col-${typeSelected === 'other' ? '4' : '8'} pt2 pr2`">
-      <label class="inline-block pb1 -fw-500" :for="typeSelected !== 'other' ? 'fieldValues[debt-type]' : 'debt-type[other]'" id="debt-type-l">Debt type</label>
-      <div>
-        <select class="-fw form-control" @change="handleTypeSelection" :value="typeSelected" :name="typeSelected !== 'other' ? 'fieldValues[debt-type]' : 'debt-type[other]'" aria-labelledby="debt-type-l" required="required">
-          <option value="" disabled hidden :selected="typeSelected == ''">Select debt type</option>
-          <option v-for="debtType in DebtTypes" :key="debtType.key" :value="debtType.key">{{debtType.value}}</option>
-        </select>
+    <div class="clearfix" v-for="(debt, index) in debts" :key="`debt-${index}`">
+      <div :class="`col col-${debt.typeSelected === 'other' ? '2' : '8'} pt2 pr2`">
+        <label
+          class="inline-block pb1 -fw-500"
+          :for="debt.typeSelected === 'other' ? `debt-type[other][${index}]` : `fieldValues[debts][${index}][type]`"
+          :id="`debt-type-${index}-l`"
+        >Debt type</label>
+        <div>
+          <select
+            class="-fw form-control"
+            v-model="debt.typeSelected"
+            :name="debt.typeSelected === 'other' ? `debt-type[other][${index}]` : `fieldValues[debts][${index}][type]`"
+            @change="debt.typeSelected === 'other' ? (debt.type = '') : (debt.type = debt.typeSelected)"
+            :aria-labelledby="`debt-type-${index}-l`"
+            required="required"
+          >
+            <option value disabled hidden :selected="debt.type === ''">Select debt type</option>
+            <option
+              v-for="debtType in DebtTypes"
+              :key="debtType.key"
+              :value="debtType.key"
+            >{{debtType.value}}</option>
+          </select>
+          <p class="-on-error -danger -caption -fw-500 mt1"></p>
+        </div>
+      </div>
+      <div v-if="debt.typeSelected === 'other'" class="col col-6 p2">
+        <label
+          class="inline-block pb1 -fw-500"
+          aria-hidden="true"
+          :for="`fieldValues[debts][${index}][type]`"
+          :id="`other-debt-type-${index}-l`"
+        >Value</label>
+        <input
+          type="text"
+          class="form-control -fw"
+          placeholder="Debt type"
+          :id="`fieldValues[debts][${index}][type]`"
+          :name="`fieldValues[debts][${index}][type]`"
+          :aria-labelledby="`other-debt-type-${index}-l`"
+          v-model="debt.type"
+          required="required"
+        >
+        <p class="-on-error -danger -caption -fw-500 mt1"></p>
+      </div>
+      <div class="col col-4 pt2 pl2">
+        <label
+          class="inline-block pb1 -fw-500"
+          :for="`masked-fieldValues-debt-amount-${index}`"
+        >Amount</label>
+        <masked-input
+          class="form-control -fw"
+          type="text"
+          placeholder="$0.00"
+          v-model="debt.amount"
+          required="required"
+          :id="`masked-fieldValues-debt-amount-${index}`"
+          name="masked-fieldValues[debt-amount]"
+          :mask="numberMask"
+        />
+        <input
+          type="hidden"
+          aria-hidden="true"
+          class="d-none"
+          :name="`fieldValues[debts][${index}][amount]`"
+          :value="debt.amount.replace(/[^0-9.]/g, '')"
+        >
         <p class="-on-error -danger -caption -fw-500 mt1"></p>
       </div>
     </div>
-    <div v-if="typeSelected === 'other'" class="col col-4 p2">
-      <label class="inline-block pb1 -fw-500" aria-hidden="true" for="fieldValues[debt-type]" id="other-debt-type-l">Value</label>
-      <input
-        type="text"
-        class="form-control -fw"
-        placeholder="Debt type"
-        name="fieldValues[debt-type]"
-        aria-labelledby="other-debt-type-l"
-        v-model="type"
-        required="required"
-      />
-      <p class="-on-error -danger -caption -fw-500 mt1"></p>
-    </div>
-    <div class="col col-4 pt2 pl2">
-      <label for="masked-fieldValues[debt-amount]" class="inline-block pb1 -fw-500">Amount</label>
-      <masked-input
-        class="form-control -fw"
-        type="text"
-        placeholder="$0.00"
-        v-model="amount"
-        required="required"
-        name="masked-fieldValues[debt-amount]"
-        :mask="numberMask"
-      />
-      <input
-        type="text"
-        aria-hidden="true"
-        class="d-none"
-        name="fieldValues[debt-amount]"
-        :value="cleanedValue"
-      />
-      <p class="-on-error -danger -caption -fw-500 mt1"></p>
+    <div class="col col-12">
+      <button
+        type="button"
+        class="-k-btn btn-sm btn-info-outline mt2"
+        v-if="multiple"
+        @click="addDebt"
+      >Add Debt</button>
+      <button
+        type="button"
+        class="-k-btn btn-sm btn-info-outline mt2"
+        v-if="multiple && debts.length > 1"
+        @click="removeDebt"
+      >Remove Debt</button>
     </div>
   </div>
 </template>
 
 <script>
+import _ from 'lodash';
 import MaskedInput from 'vue-text-mask';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import { DebtTypesCollection } from '../../../../shared/enum/DebtTypes';
@@ -56,41 +98,28 @@ const DebtTypeKeys = DebtTypesCollection.map(a => a.key);
 export default {
   components: { MaskedInput },
   props: {
-    originalDebt: {
-      type: Object,
+    multiple: {
+      type: Boolean,
       required: false,
-      default: () => ({ type: '', amount: '' }),
+      default: true,
+    },
+    intialDebts: {
+      type: Array,
+      required: false,
+      default: () => [{ type: '', amount: '', typeSelected: '' }],
     },
   },
-  data() {
-    let typeSelected = this.originalDebt.type;
-
-    if (typeSelected && !DebtTypeKeys.includes(this.originalDebt.type)) {
-      typeSelected = 'other';
-    }
-
+  data: function() {
     return {
-      typeSelected,
-      type: this.originalDebt.type,
-      amount: this.originalDebt.amount,
-      cachedOther: '',
+      debts: this.intialDebts,
     };
   },
-  computed: {
-    cleanedValue() {
-      return this.amount ? this.amount.replace(/[^0-9.]/g, '') : '';
-    },
-  },
   methods: {
-    handleTypeSelection({ target: { value } }) {
-      if (this.typeSelected === 'other' && value !== 'other') {
-        this.cachedOther = this.type;
-        this.type = value;
-      } else if (this.typeSelected !== 'other' && value === 'other') {
-        this.type = this.cachedOther;
-      }
-
-      this.typeSelected = value;
+    addDebt() {
+      this.debts.push({ type: '', amount: '', typeSelected: '' });
+    },
+    removeDebt() {
+      this.debts.pop();
     },
     numberMask: createNumberMask({
       prefix: '$',

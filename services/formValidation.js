@@ -159,5 +159,4 @@ module.exports = {
   filterDependentFields,
   makeErrorsReadable,
   getCustomSelector,
-  // cleanErrors,
 };

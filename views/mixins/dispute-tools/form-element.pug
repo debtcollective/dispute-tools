@@ -69,7 +69,7 @@ mixin toolsFormElementMixin(field, index)
             data-name= field.name
             data-hidden= field.hidden && field.hidden.toString()
           )&attributes(field.attributes)
-            option(value="") Choose an option
+            option(value="" disabled="disabled" hidden="hidden") Choose an option
             each option in field.options
               option(
                 value= option

@@ -1,12 +1,13 @@
 /* global Checkit */
 import Vue from 'vue';
 import Pisces from 'pisces';
-import get from 'lodash/get';
+import _ from 'lodash';
 import flatpickr from 'flatpickr';
 import Widget from '../../lib/widget';
 import Button from '../../components/Button';
 import ConfirmInline from '../../components/ConfirmInline';
 import DebtAmounts from './DebtAmounts.vue';
+import { DebtTypesCollection } from '../../../../shared/enum/DebtTypes';
 import CurrencyInput from './CurrencyInput.vue';
 import {
   getCustomSelector,
@@ -17,21 +18,41 @@ import {
 
 export const mountDebtAmounts = config => {
   if (document.getElementById('debt-amounts-mount-point')) {
-    const originalDebt = {
-      type: get(
-        config.dispute.data._forms || config.dispute.data.forms,
-        'personal-information-form.debt-type',
-      ),
-      amount: get(
-        config.dispute.data._forms || config.dispute.data.forms,
-        'personal-information-form.debt-amount',
-      ),
-    };
+    // make it backwards compatible
+    const oldDebtType = _.get(
+      config.dispute.data._forms || config.dispute.data.forms,
+      'personal-information-form.debt-type',
+    );
+
+    const oldDebtAmount = _.get(
+      config.dispute.data._forms || config.dispute.data.forms,
+      'personal-information-form.debt-amount',
+    );
+
+    let debts = _.get(
+      config.dispute.data._forms || config.dispute.data.forms,
+      'personal-information-form.debts',
+    );
+
+    if (_.isEmpty(debts) && (oldDebtAmount || oldDebtType)) {
+      debts = [{ type: oldDebtType, amount: oldDebtAmount }];
+    }
+
+    // set typeSelected to render the debt type dropdown correctly
+    const debtTypeKeys = DebtTypesCollection.map(a => a.key);
+    _.forEach(
+      debts,
+      debt => (debt.typeSelected = debtTypeKeys.includes(debt.type) ? debt.type : 'other'),
+    );
+
+    // enable multiple debt types for for credit-report-dispute only
+    // we will refactor this in the new version
+    const multiple = ['credit-report-dispute'].includes(config.dispute.disputeTool.slug);
 
     return new Vue({
       el: '#debt-amounts-mount-point',
       render() {
-        return <DebtAmounts originalDebt={originalDebt} />;
+        return <DebtAmounts multiple={multiple} intialDebts={debts} />;
       },
     }).$children[0];
   }
@@ -45,7 +66,7 @@ export const mountDebtAmount = config => {
         return (
           <CurrencyInput
             name="fieldValues[debt-amount]"
-            initialAmount={get(
+            initialAmount={_.get(
               config.dispute.data._forms || config.dispute.data.forms,
               'personal-information-form.debt-amount',
             )}

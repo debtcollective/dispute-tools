@@ -161,9 +161,13 @@ export default {
         Email: this.form.email || this.user.email,
         Phone: this.form.phone || this.user.phone,
         'Phone 2': this.form.phone2,
-        Creditor: this.form['agency-name'] || this.form['firm-name'],
-        'Debt type': DebtTypes[this.form['debt-type']] || null,
-        'Debt amount': this.form['debt-amount'],
+        Creditor:
+          this.form['agency-name'] ||
+          this.form['firm-name'] ||
+          _.join([this.form.originalCreditor, this.form.currentCreditor], ', '),
+        Debts: this.form.debts || [
+          { type: this.form['debt-type'], amount: this.form['debt-amount'] },
+        ],
       };
     },
     ffel() {

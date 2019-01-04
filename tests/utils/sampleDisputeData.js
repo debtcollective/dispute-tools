@@ -468,6 +468,7 @@ const assignDisputeToolIds = disputeToolId =>
 module.exports = {
   generalDebtDispute: {
     disputeToolId: ids.general,
+    createdAt: Date.now(),
     data: {
       forms: {
         'personal-information-form': {
@@ -492,6 +493,7 @@ module.exports = {
 
   privateStudentLoanDispute: {
     notDefaulted: {
+      createdAt: Date.now(),
       disputeToolId: ids.privateStudent,
       data: {
         forms: {
@@ -517,6 +519,7 @@ module.exports = {
       },
     },
     defaulted: {
+      createdAt: Date.now(),
       disputeToolId: ids.privateStudent,
       data: {
         forms: {
@@ -544,6 +547,7 @@ module.exports = {
   },
 
   creditReportDispute: {
+    createdAt: Date.now(),
     disputeToolId: ids.creditReport,
     data: {
       forms: {
