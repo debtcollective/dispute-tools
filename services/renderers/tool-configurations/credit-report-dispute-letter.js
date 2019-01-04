@@ -13,7 +13,7 @@ module.exports = {
             normalize({ createdAt, forms: { 'personal-information-form': form } }) {
               return {
                 createdAt,
-                creditors: _.join(_.filter([form.original_creditor, form.current_creditor]), ','),
+                creditors: _.join(_.filter([form.currentCreditor, form.originalCreditor]), ', '),
                 dob: form.dob,
                 ssn: form.ssn,
                 address: form.address,

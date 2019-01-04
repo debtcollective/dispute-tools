@@ -364,7 +364,7 @@ select.form-control:focus::-ms-value {
 .form-check {
   position: relative;
   display: block;
-  padding-left: 1.25rem;
+  padding-left: 10px;
 }
 
 .form-check-input {
