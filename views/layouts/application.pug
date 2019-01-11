@@ -24,7 +24,8 @@ html(lang='en')
     link(rel='stylesheet' href='/build/index.css')
     link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Space+Mono')
 
-    script(src=`https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.${NODE_ENV === 'production' ? 'min.' : ''}js`)
+    script(src='https://browser.sentry-cdn.com/4.5.0/bundle.min.js' crossorigin='anonymous')
+    script(src=`https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.${NODE_ENV === 'production' ? 'min.' : ''}js`)
     link(rel='stylesheet' href='https://s3.amazonaws.com/tds-static/css/dc-vue-header/0.0.1/index.min.css')
     script(src='https://s3.amazonaws.com/tds-static/js/dc-vue-header/0.0.1/index.min.js')
     script.
@@ -56,8 +57,15 @@ html(lang='en')
 
     block body
 
+    script.
+      Sentry.init({
+        dsn: '!{config.sentryEndpoint}',
+        environment: '!{config.environment}'
+      });
+
     script(src='/build/shared.js')
     script(src='/build/index.js')
+
     include ../mixins/utils.pug
 
     block scripts
