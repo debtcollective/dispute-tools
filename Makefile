@@ -7,6 +7,11 @@ build:
 push:
 	docker push debtcollective/dispute-tools:$(tag)
 
+backup:
+	docker pull debtcollective/dispute-tools:latest
+	docker tag debtcollective/dispute-tools:latest debtcollective/dispute-tools:previous
+	docker push debtcollective/dispute-tools:previous
+
 build-test:
 	mkdir -p ./tmp && cp Dockerfile.test tmp/Dockerfile
 	cd tmp; docker build -t debtcollective/dispute-tools-test:$(tag) .
