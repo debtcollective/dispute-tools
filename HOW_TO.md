@@ -8,9 +8,9 @@ Make sure to add a user admin to your Discourse instance by using:
 RAILS_ENV=development bundle exec rake admin:create
 ```
 
-> *If you need extra help with the Discourse installation go to the [FAQ](./FAQ.md)*.
+> _If you need extra help with the Discourse installation go to the [FAQ](./FAQ.md)_.
 
-Then, once you are logged into Discourse with your admin user add a custom group to this user. Go to User > Admin, under "groups" type "dispute_pro" and hit ENTER. 
+Then, once you are logged into Discourse with your admin user add a custom group to this user. Go to User > Admin, under "groups" type "dispute_pro" and hit ENTER.
 
 ## Create a new dispute tool template
 
@@ -107,15 +107,15 @@ CSS is used for for specific stylings or shortcuts for obvious stuff.
 
 ## Error handling
 
-We'll want to report errors into Sentry using [Raven](https://docs.sentry.io/clients/node/). This helps us keep track of recurring errors. Raven also wraps our application in a Raven context that allows it to trace the failure in better ways than a standard stack trace.
+We'll want to report errors using [Sentry](https://docs.sentry.io/clients/node/). This helps us keep track of recurring errors. Sentry also wraps our application in a context that allows it to trace the failure in better ways than a standard stack trace.
 
 ```javascript
-const { Raven, logger } = require('/lib');
+const { Sentry, logger } = require('/lib');
 
 try {
     // something that fails
 } catch (e) {
-    Raven.captureException(e);
+    Sentry.captureException(e);
     logger.error('Error occurred while trying to do something important', JSON.stringify(e));
 }
 ```

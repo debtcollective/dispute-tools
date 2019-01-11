@@ -1,11 +1,11 @@
 const middlewares = [
   {
-    name: 'HTTPS',
-    path: 'middlewares/https.js',
+    name: 'Sentry Request',
+    path: 'middlewares/SentryRequest.js',
   },
   {
-    name: 'Raven',
-    path: 'middlewares/raven-request.js',
+    name: 'HTTPS',
+    path: 'middlewares/https.js',
   },
   {
     name: 'CORS',
@@ -60,8 +60,8 @@ const middlewares = [
     path: 'middlewares/Router.js',
   },
   {
-    name: 'Raven',
-    path: 'middlewares/raven-error.js',
+    name: 'Sentry Error',
+    path: 'middlewares/SentryError.js',
   },
   {
     name: 'Error',

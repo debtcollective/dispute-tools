@@ -3,7 +3,7 @@
 const stripe = require('stripe');
 const { ContactUsEmail, RecurringDonationEmail } = require('$services/messages');
 const Router = require('$config/RouteMappings');
-const { Raven, logger } = require('$lib');
+const { Sentry, logger } = require('$lib');
 const config = require('$config/config');
 const request = require('request');
 
@@ -244,7 +244,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
             res.redirect(Router.mappings.root.url());
             next();
           } catch (e) {
-            Raven.captureException(e);
+            Sentry.captureException(e);
             logger.error('Unable to send contact us email', e.message, contactUsEmail.toString());
             req.flash(
               'error',

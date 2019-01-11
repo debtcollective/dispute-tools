@@ -67,6 +67,7 @@
   },
   "dependencies": {
     "@google/maps": "^0.4.5",
+    "@sentry/node": "^4.5.0",
     "archiver": "^1.1.0",
     "aws-sdk": "^2.130.0",
     "babel-core": "^6.26.0",
@@ -125,7 +126,6 @@
     "postcss-loader": "^2.0.10",
     "pug": "^2.0.0-beta4",
     "query-string": "^4.2.3",
-    "raven": "^2.4.2",
     "redis": "^2.8.0",
     "req-flash": "^0.0.3",
     "request": "^2.88.0",

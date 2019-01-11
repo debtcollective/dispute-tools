@@ -3,7 +3,7 @@ const { join } = require('path');
 const nodemailer = require('nodemailer');
 const { smtp } = require('$config/config');
 const { sesInstance: SES } = require('$lib/AWS');
-const { Raven, logger } = require('$lib');
+const { Sentry, logger } = require('$lib');
 
 const transport = nodemailer.createTransport(SES !== null ? { SES } : smtp);
 
@@ -52,7 +52,7 @@ class DebtCollectiveMessage {
         if (err) {
           // Always capture when emails are not sent.
           logger.error(`Unable to send ${this._name}`, this.toString(), err.message || err);
-          Raven.captureException(err);
+          Sentry.captureException(err);
           reject(err);
         } else {
           logger.info(`Successfully sent ${this._name}`, this.toString(), info);

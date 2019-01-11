@@ -1,5 +1,5 @@
 /* globals Class */
-const { Raven } = require('$lib');
+const { Sentry } = require('$lib');
 const passport = require('$lib/passport');
 const sso = require('$services/sso');
 const config = require('$config/config');
@@ -30,7 +30,7 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
             'Unable to login. Please try again or <a href="/contact">Contact us</a> if the error persists.',
           );
 
-          Raven.captureException(err);
+          Sentry.captureException(err);
           return res.redirect(config.router.helpers.root.url());
         }
 
@@ -52,12 +52,8 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
             // remove redirectTo
             req.session.redirectTo = '';
 
-            Raven.setContext({
-              user: {
-                email: user.email,
-                id: user.id,
-                externalId: user.externalId,
-              },
+            Sentry.configureScope(scope => {
+              scope.setUser({ email: user.email, id: user.id, externalId: user.externalId });
             });
 
             res.redirect(redirectTo);
