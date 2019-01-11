@@ -8,7 +8,7 @@ const DisputeTool = require('$models/DisputeTool');
 const DisputeStatus = require('$models/DisputeStatus');
 const DisputeRenderer = require('$models/DisputeRenderer');
 const User = require('$models/User');
-const { logger, discourse, Raven } = require('$lib');
+const { logger, discourse, Sentry } = require('$lib');
 const { getCheckitConfig, filterDependentFields } = require('$services/formValidation');
 const Checkit = require('$shared/Checkit');
 const { DisputeThreadOriginMessage } = require('$services/messages');
@@ -164,7 +164,7 @@ const Dispute = Class('Dispute')
       dispute.disputeThreadId = topicId;
       await dispute.save();
     } catch (e) {
-      Raven.captureException(e);
+      Sentry.captureException(e);
       logger.error(
         'Failure creating the %s for dispute with id %s and tool %s',
         DisputeThreadOriginMessage.name,
@@ -359,7 +359,7 @@ const Dispute = Class('Dispute')
           })
           .then(resolve)
           .catch(err => {
-            Raven.captureException(err);
+            Sentry.captureException(err);
             logger.error('Error while giving [dispute=%s] a completed status', dispute.id, err);
             reject(err);
           });
@@ -370,7 +370,7 @@ const Dispute = Class('Dispute')
 
         function fail(step) {
           return err => {
-            Raven.captureException(err);
+            Sentry.captureException(err);
             logger.error(
               'Error during [step=%s] while rendering [dispute=%s]',
               step,
@@ -566,7 +566,7 @@ const Dispute = Class('Dispute')
       return Promise.all([
         ...usernamesToInvite.map(user =>
           discourse.topics.invite(this.disputeThreadId, { user }).catch(e => {
-            Raven.captureException(e);
+            Sentry.captureException(e);
             logger.error(
               'Failed to invite [user=%s] to [thread=%s] for [dispute=%s]',
               user,
@@ -587,7 +587,7 @@ const Dispute = Class('Dispute')
               ),
             )
             .catch(e => {
-              Raven.captureException(e);
+              Sentry.captureException(e);
               logger.error(
                 'Failed to uninvite [user=%s] to [thread=%s] for [dispute=%s]',
                 user,

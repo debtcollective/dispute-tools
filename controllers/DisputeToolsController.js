@@ -29,7 +29,7 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulC
               next();
             } else {
               // We don't want this error get to Sentry, due bots and crawlers
-              // Raven ignores errors with status < 500
+              // Sentry ignores errors with status < 500
               const err = new NotFoundError();
               err.status = 404;
 

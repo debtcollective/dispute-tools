@@ -5,7 +5,7 @@ const _ = require('lodash');
 const { BadRequest, NotFoundError } = require('$lib/errors');
 const DisputeStatuses = require('$shared/enum/DisputeStatuses');
 const { CompletedDisputeMessage } = require('$services/messages');
-const { Raven, logger } = require('$lib');
+const { Sentry, logger } = require('$lib');
 const Dispute = require('$models/Dispute');
 const DisputeRenderer = require('$models/DisputeRenderer');
 const config = require('$config/config');
@@ -111,7 +111,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       try {
         await dispute.markAsCompleted(pendingSubmission);
       } catch (e) {
-        // `markAsCompleted` handles logging the exception and sending it to Raven
+        // `markAsCompleted` handles logging the exception and sending it to Sentry
         // so we just need to tell the user that something went wrong.
 
         req.flash(
@@ -124,7 +124,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       try {
         await new CompletedDisputeMessage(dispute).send();
       } catch (e) {
-        Raven.captureException(e);
+        Sentry.captureException(e);
         logger.error(e);
       }
 
@@ -146,7 +146,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           await res;
         }
       } catch (e) {
-        Raven.captureException(e);
+        Sentry.captureException(e);
         logger.error(
           `Error occurred while updating dispute data for dispute ${dispute.id}`,
           e.message || (e.toString && e.toString()) || e,

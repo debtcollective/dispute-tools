@@ -1,7 +1,7 @@
 const { uniq, flatten, isNil, identity } = require('lodash');
 const { join } = require('path');
 const DebtCollectiveMessage = require('./DebtCollectiveMessage');
-const { Raven, logger, discourse } = require('$lib');
+const { Sentry, logger, discourse } = require('$lib');
 
 /**
  * Proxies the normal email sending function to send messages
@@ -79,7 +79,7 @@ class DiscourseMessage extends DebtCollectiveMessage {
     try {
       await this.send(markdown);
     } catch (e) {
-      Raven.captureException(e);
+      Sentry.captureException(e);
       logger.error('Failed to send message %s with locals', this._name, { ...this.locals }, e);
     }
   }
