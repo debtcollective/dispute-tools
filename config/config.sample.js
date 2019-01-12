@@ -60,7 +60,7 @@ module.exports = {
     private: process.env.STRIPE_PRIVATE || '',
     publishable: process.env.STRIPE_PUBLISHABLE || false,
   },
-  googleAnalyticsUA: process.env.GOOGLE_ANALYTICS_UA || '',
+  googleAnalytics: process.env.GOOGLE_ANALYTICS_UA || '',
   recaptcha: {
     url: 'https://www.google.com/recaptcha/api/siteverify',
     siteKey: process.env.RECAPTCHA_SITE_KEY || '',
