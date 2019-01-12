@@ -12,6 +12,8 @@ html(lang="en")
       block title
         | The Debt Collective
 
+    include ../includes/analytics
+
     script(src='https://browser.sentry-cdn.com/4.5.0/bundle.min.js' crossorigin='anonymous')
     script(src=`https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.${NODE_ENV === 'production' ? 'min.' : ''}js`)
     link(rel='stylesheet' href='https://s3.amazonaws.com/tds-static/css/dc-vue-header/0.0.1/index.min.css')
@@ -48,10 +50,7 @@ html(lang="en")
     block body
 
     script.
-      Sentry.init({
-        dsn: '!{config.sentryEndpoint}',
-        environment: '!{config.environment}'
-      });
+      Sentry.init({dsn: '!{config.sentryEndpoint}', environment: '!{config.environment}'});
     script(src='/build/shared.js')
     script(src='/build/admin.js')
 
