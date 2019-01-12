@@ -1,0 +1,10 @@
+- var gaUA = config.googleAnalytics
+- var gaURL = `https://www.googletagmanager.com/gtag/js?id=${gaUA}`
+if gaUA
+  // Global Site Tag (gtag.js) - Google Analytics
+  script(async src=gaURL)
+  script.
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '!{gaUA}');
