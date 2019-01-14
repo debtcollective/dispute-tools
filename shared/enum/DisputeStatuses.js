@@ -9,4 +9,8 @@ module.exports = Object.freeze({
   contactAdmin: 'Contact Admin',
   userToMail: 'User to Mail',
   userUpdate: 'User Update',
+  coldCase: 'Cold Case',
+  resolved: 'Resolved',
+  researchNeeded: 'Research Needed',
+  activeLegal: 'Active Legal',
 });
