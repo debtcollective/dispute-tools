@@ -104,7 +104,7 @@
     "imagesize": "^1.0.0",
     "jsonwebtoken": "^8.4.0",
     "knex": "^0.11.9",
-    "krypton-orm": "git://github.com/sgarza/krypton.git#dev",
+    "krypton-orm": "git://github.com/debtcollective/krypton.git",
     "lodash": "^4.14.2",
     "lodash-inflection": "^1.4.0",
     "marked": "^0.3.6",

@@ -37,14 +37,14 @@ block content
               svg(width='18' height='18'): use(xlink:href='#svg-search')
               input.form-control.-clean.-fw-600(
                 name="disputesListValue[search]"
-                placeholder='Email, username or IP address'
+                placeholder='Query'
                 value= queryName
               )
           th
             .-input
               input.form-control.-clean.-fw-600(
                 name='disputesListValue[readableId]'
-                placeholder='Search ids...'
+                placeholder='ID'
                 value= queryFilters && queryFilters.readable_id
                 style="width: 8em"
               )

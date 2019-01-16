@@ -68,10 +68,6 @@
           <div class="FormView">
             <h5>Debt Types</h5>
             <table class="-fw text-left">
-              <tr>
-                <th>Type</th>
-                <th>Amount</th>
-              </tr>
               <tr v-for="(debt, index) in debts" :key="index">
                 <td>{{ debt.type }}</td>
                 <td>{{ debt.amount }}</td>

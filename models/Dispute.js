@@ -75,10 +75,15 @@ const Dispute = Class('Dispute')
 
     // Filter by user name
     if (qs.name) {
+      const ilike = `%${qs.name}%`;
+
       query
         .select(['Disputes.*', 'Users.name'])
         .join('Users', 'Disputes.user_id', 'Users.id')
-        .where('Users.name', 'ILIKE', `%${qs.name}%`);
+        .where('Users.name', 'ILIKE', ilike)
+        .orWhere('Users.email', 'ILIKE', ilike)
+        .orWhereRaw("data->'forms'->>'personal-information-form' ILIKE ?", [ilike])
+        .orWhereRaw("data->'_forms'->>'personal-information-form' ILIKE ?", [ilike]);
     }
 
     const records = await query;
