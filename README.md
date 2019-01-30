@@ -34,6 +34,19 @@ In order to add the right value to `discourse.apiKey`, you need to run your Disc
 1.  Go to [http://localhost:3000/admin/api/keys](http://localhost:3000/admin/api/keys) and create a new API key
 1.  Add the new API key to the `discourse.apiKey` within config file
 
+## Enable SSO
+
+You need to make sure your Discourse installation have the following settings propely set otherwise the CRUD of Disputes won't work as expected:
+
+- Enable sso ☑️
+- sso allows all return paths ️️☑️
+- enable sso provider ☑️
+- sso url _http://localhost:8080_
+_ sso secret _sso\_secret_
+_ sso provider secrets _create a new entry pair with: * and sso\_secret values_
+
+Make sure you can access to _"My Disputes"_ once you build and run this project.
+
 # Run server
 
 Ensure Postgres is running (e.g., with `ps aux | grep postgres`). And run:
@@ -50,7 +63,7 @@ If there is any issue with the command try running separately and review the [FA
 1.  Run seeds `yarn db:seed`
 1.  Build assets `yarn build`
 
-Once you have run the above commands successfully start the server using `yarn start`
+Once you have run the above commands successfully *start the server* using `yarn start`
 
 > _You can spin up the discourse server (the [best
 > instructions](https://github.com/discourse/discourse/blob/master/docs/DEVELOPER-ADVANCED.md))._
