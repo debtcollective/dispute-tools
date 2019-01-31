@@ -435,24 +435,34 @@ export default class DisputesInformationForm extends Widget {
        */
       // Select this each time to avoid dynamically added fields getting left out
       const element = this._getElementForKey(key);
+
+      if (!element) {
+        return;
+      }
+
       if (element.dataset.customSelector) {
         data[key] = getCustomSelector(this.dispute, key).DOM();
-      } else if (element) {
-        if (element.type === 'radio') {
-          val = document.querySelector(`[name="${element.name}"]:checked`).value;
-        } else if (element.type === 'checkbox') {
-          val = element.checked === true ? 'yes' : 'no';
-        } else {
-          val = element.value;
-        }
-        data[key] = val;
+        return;
       }
+
+      switch (element.type) {
+        case 'radio':
+          val = document.querySelector(`[name="${element.name}"]:checked`).value;
+          break;
+        case 'checkbox':
+          val = element.checked === true ? 'yes' : 'no';
+          break;
+        default:
+          val = element.value;
+      }
+
+      data[key] = val;
     });
 
     return data;
   }
 
   _getElementForKey(key) {
-    return this.element.querySelector(`[for="fieldValues[${key}]"]`);
+    return this.element.querySelector(`[name^="fieldValues[${key}]"]`);
   }
 }
