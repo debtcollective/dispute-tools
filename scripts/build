@@ -1,6 +1,11 @@
 #!/usr/bin/env sh
 
-export NODE_ENV=production
+ENV=${1:-production}
+
+echo 'Build running with' ${ENV} 'environment'
+echo 'Add one option value to this command to change environment'
+
+export NODE_ENV=ENV
 npx rimraf public/build
 
 yarn svg
