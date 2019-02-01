@@ -70,6 +70,18 @@ Once you have run the above commands successfully *start the server* using `yarn
 
 At this point if you have reviewed the [GETTING_STARTED](./GETTING_STARTED.md) guide and [added the admin user](./HOW_TO.md) you should be able to run Discourse alongside this project and see both apps running properly and with a synced header _(once you log into Discourse the Dispute tools app will update its header)_.
 
+## Development
+
+Once you've run the server, in order to being able to enable hot-reload you should open a new terminal tab _(while `yarn start` is running in parallel)_ and run
+
+```
+yarn watch
+```
+
+Once both task are running together you will be able to make changes and see the updaded code in the browser.
+
+> Tip: if your lint remove any `debugger;` word from the codebase due to our project rules you can use `//eslint-disable-next-line` in order to being able to set a break point with `debugger;` keyword.
+
 ## S3 uploads in development
 
 We use [Minio](https://github.com/minio/minio) as our S3 compatible object storage for dev environments. Follow the installation instructions in their repo.
@@ -81,6 +93,6 @@ minio server ~/.minio
 
 We use the default Minio configuration.
 
-## Powered by
+# Powered by
 
 [<img src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" alt="BrowserStack" width="219"/>](http://browserstack.com/)
