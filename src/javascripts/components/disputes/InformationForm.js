@@ -449,20 +449,25 @@ export default class DisputesInformationForm extends Widget {
 
         switch (element.type) {
           case 'radio':
-            val = document.querySelector(`[name="${element.name}"]:checked`).value;
+            val = element.checked ? element.value : null;
             break;
           case 'checkbox':
-            val = element.checked === true ? 'yes' : 'no';
+            val = element.checked ? 'yes' : 'no';
             break;
           default:
             val = element.value;
         }
 
+        if (!val) {
+          return;
+        }
+
         if (data[key]) {
           data[key] = _.castArray(data[key]).concat(val);
-        } else {
-          data[key] = val;
+          return;
         }
+
+        data[key] = val;
       });
 
       if (_.includes(this.constraints[key], 'array')) {
