@@ -380,20 +380,23 @@ export default class DisputesInformationForm extends Widget {
       if (!this.ui[key]) return;
 
       // Select this each time to avoid dynamically added fields getting left out
-      const parent = this._getElementForKey(key).parentNode;
-      let errorLabel = parent.querySelector('.-on-error');
+      this._getElementsForKey(key).forEach(element => {
+        const parent = element.parentNode;
 
-      parent.classList.add('error');
+        let errorLabel = parent.querySelector('.-on-error');
 
-      if (errorLabel) {
-        errorLabel.innerText = `▲ ${errors[key].message}`;
-        return;
-      }
+        parent.classList.add('error');
 
-      errorLabel = parent.nextSibling;
-      if (errorLabel && errorLabel.classList.contains('-on-error')) {
-        errorLabel.innerText = `▲ ${errors[key].message}`;
-      }
+        if (errorLabel) {
+          errorLabel.innerText = `▲ ${errors[key].message}`;
+          return;
+        }
+
+        errorLabel = parent.nextSibling;
+        if (errorLabel && errorLabel.classList.contains('-on-error')) {
+          errorLabel.innerText = `▲ ${errors[key].message}`;
+        }
+      });
     });
 
     const firstErrorKey = Object.keys(errors)[0];
@@ -434,35 +437,39 @@ export default class DisputesInformationForm extends Widget {
        * @type {HTMLInputElement}
        */
       // Select this each time to avoid dynamically added fields getting left out
-      const element = this._getElementForKey(key);
+      this._getElementsForKey(key).forEach(element => {
+        if (!element) {
+          return;
+        }
 
-      if (!element) {
-        return;
-      }
+        if (element.dataset.customSelector) {
+          data[key] = getCustomSelector(this.dispute, key).DOM();
+          return;
+        }
 
-      if (element.dataset.customSelector) {
-        data[key] = getCustomSelector(this.dispute, key).DOM();
-        return;
-      }
+        switch (element.type) {
+          case 'radio':
+            val = document.querySelector(`[name="${element.name}"]:checked`).value;
+            break;
+          case 'checkbox':
+            val = element.checked === true ? 'yes' : 'no';
+            break;
+          default:
+            val = element.value;
+        }
 
-      switch (element.type) {
-        case 'radio':
-          val = document.querySelector(`[name="${element.name}"]:checked`).value;
-          break;
-        case 'checkbox':
-          val = element.checked === true ? 'yes' : 'no';
-          break;
-        default:
-          val = element.value;
-      }
-
-      data[key] = val;
+        if (data[key]) {
+          data[key] = _.castArray(data[key]).concat(val);
+        } else {
+          data[key] = val;
+        }
+      });
     });
 
     return data;
   }
 
-  _getElementForKey(key) {
-    return this.element.querySelector(`[name^="fieldValues[${key}]"]`);
+  _getElementsForKey(key) {
+    return this.element.querySelectorAll(`[name^="fieldValues[${key}]"]:not([type="hidden"])`);
   }
 }
