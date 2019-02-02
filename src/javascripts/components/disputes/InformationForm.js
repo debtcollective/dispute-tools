@@ -464,6 +464,10 @@ export default class DisputesInformationForm extends Widget {
           data[key] = val;
         }
       });
+
+      if (_.includes(this.constraints[key], 'array')) {
+        data[key] = _.castArray(data[key]);
+      }
     });
 
     return data;
