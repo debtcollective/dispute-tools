@@ -36,14 +36,15 @@ In order to add the right value to `discourse.apiKey`, you need to run your Disc
 
 ## Enable SSO
 
-You need to make sure your Discourse installation have the following settings propely set otherwise the CRUD of Disputes won't work as expected:
+You need to make sure your Discourse installation have the following settings propely set otherwise you won't be able to login in this app. You can set these values in the Discourse admin (http://localhost:3000/admin/site_settings/category/all_results?filter=sso)
 
-- Enable sso ☑️
-- sso allows all return paths ️️☑️
-- enable sso provider ☑️
-- sso url _http://localhost:8080_
-_ sso secret _sso\_secret_
-_ sso provider secrets _create a new entry pair with: * and sso\_secret values_
+-   enable sso provider: ✅
+-   sso allows all return paths: ✅
+-   verbose sso logging: ✅
+-   sso provider secrets:
+-   create a new item and set:
+    -   url: \*
+    -   SSO secret: sso_secret (**sso_secret** is the default value in `config.sample.js`)
 
 Make sure you can access to _"My Disputes"_ once you build and run this project.
 
@@ -63,7 +64,7 @@ If there is any issue with the command try running separately and review the [FA
 1.  Run seeds `yarn db:seed`
 1.  Build assets `yarn build`
 
-Once you have run the above commands successfully *start the server* using `yarn start`
+Once you have run the above commands successfully _start the server_ using `yarn start`
 
 > _You can spin up the discourse server (the [best
 > instructions](https://github.com/discourse/discourse/blob/master/docs/DEVELOPER-ADVANCED.md))._
