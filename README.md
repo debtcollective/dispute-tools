@@ -34,6 +34,19 @@ In order to add the right value to `discourse.apiKey`, you need to run your Disc
 1.  Go to [http://localhost:3000/admin/api/keys](http://localhost:3000/admin/api/keys) and create a new API key
 1.  Add the new API key to the `discourse.apiKey` within config file
 
+## Enable SSO
+
+You need to make sure your Discourse installation have the following settings propely set otherwise the CRUD of Disputes won't work as expected:
+
+- Enable sso ☑️
+- sso allows all return paths ️️☑️
+- enable sso provider ☑️
+- sso url _http://localhost:8080_
+_ sso secret _sso\_secret_
+_ sso provider secrets _create a new entry pair with: * and sso\_secret values_
+
+Make sure you can access to _"My Disputes"_ once you build and run this project.
+
 # Run server
 
 Ensure Postgres is running (e.g., with `ps aux | grep postgres`). And run:
@@ -50,12 +63,24 @@ If there is any issue with the command try running separately and review the [FA
 1.  Run seeds `yarn db:seed`
 1.  Build assets `yarn build`
 
-Once you have run the above commands successfully start the server using `yarn start`
+Once you have run the above commands successfully *start the server* using `yarn start`
 
 > _You can spin up the discourse server (the [best
 > instructions](https://github.com/discourse/discourse/blob/master/docs/DEVELOPER-ADVANCED.md))._
 
 At this point if you have reviewed the [GETTING_STARTED](./GETTING_STARTED.md) guide and [added the admin user](./HOW_TO.md) you should be able to run Discourse alongside this project and see both apps running properly and with a synced header _(once you log into Discourse the Dispute tools app will update its header)_.
+
+## Development
+
+Once you've run the server, in order to being able to enable hot-reload you should open a new terminal tab _(while `yarn start` is running in parallel)_ and run
+
+```
+yarn watch
+```
+
+Once both task are running together you will be able to make changes and see the updaded code in the browser.
+
+> Tip: if your lint remove any `debugger;` word from the codebase due to our project rules you can use `//eslint-disable-next-line` in order to being able to set a break point with `debugger;` keyword.
 
 ## S3 uploads in development
 
@@ -68,6 +93,6 @@ minio server ~/.minio
 
 We use the default Minio configuration.
 
-## Powered by
+# Powered by
 
 [<img src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" alt="BrowserStack" width="219"/>](http://browserstack.com/)
