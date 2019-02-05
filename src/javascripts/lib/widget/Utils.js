@@ -12,8 +12,8 @@ export default function mix(...modules) {
 
   modules.map(module =>
     Object.getOwnPropertyNames(module.prototype).map(key => {
-      if (key !== 'constructor' && key !== 'name') {
-        desc = Object.getOwnPropertyDescriptor(module.prototype, key);
+      desc = Object.getOwnPropertyDescriptor(module.prototype, key);
+      if (key !== 'constructor' && key !== 'name' && desc) {
         Object.defineProperty(_Mix.prototype, key, desc);
       }
       return undefined;
