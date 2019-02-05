@@ -137,5 +137,10 @@ block scripts
         disputeIds: !{JSON.stringify(disputeIds)}
       };
 
-      new ViewDisputeToolsIndex(options);
+      //- If ViewDisputeToolsIndex is not available is very likely that something wrong happen when building the app
+      if (window.ViewDisputeToolsIndex) {
+        new ViewDisputeToolsIndex(options);
+      } else {
+        console.warn('ViewDisputeToolsIndex class is not available');
+      }
     }, true);
