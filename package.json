@@ -81,6 +81,7 @@
     "body-parser": "^1.15.2",
     "caniuse-db": "^1.0.30000784",
     "caniuse-lite": "^1.0.30000697",
+    "chai-spies": "^1.0.0",
     "checkit": "^0.7.0",
     "chokidar": "^2.0.0",
     "cli-table": "^0.3.1",
