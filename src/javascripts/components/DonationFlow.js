@@ -75,7 +75,15 @@ export default class DonationFlow extends Widget {
     // Continue button
     this.sectionDonateSubmitEl.addEventListener('click', () => {
       const { amount } = this.state;
-      if (amount) this.setState({ page: PAGE_PAYMENT });
+
+      if (amount) {
+        // Edit HTML for preview amount before final payment
+        this.sectionDonateValues.forEach(node => {
+          node.innerHTML = formatCurrency(amount / 100);
+        });
+
+        this.setState({ page: PAGE_PAYMENT });
+      }
     });
 
     // Toggle fund to donate to
@@ -144,10 +152,6 @@ export default class DonationFlow extends Widget {
   }
   render() {
     const { page, fund, amount, paymentMethod } = this.state;
-
-    this.sectionDonateValues.forEach(node => {
-      node.innerHTML = this.customDonationCustomInputEl.value;
-    });
 
     // Page
     this.sectionEls.forEach(el => {
