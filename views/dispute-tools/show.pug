@@ -57,5 +57,12 @@ block scripts
         options: !{JSON.stringify(disputeTool.data.options)},
       };
 
-      new ViewDisputeToolsShow(options);
+      //- If class is not available is likely that something wrong happen with build process
+      if (window.ViewDisputeToolsShow) {
+        new ViewDisputeToolsShow(options);
+      } else {
+        const message = 'ViewDisputeToolsShow class is not available';
+        console.warn(message);
+        window.Sentry && Sentry.captureMessage(message);
+      }
     }, true);

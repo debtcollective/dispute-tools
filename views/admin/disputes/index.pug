@@ -192,5 +192,12 @@ block scripts
         isAdmin: true,
       };
 
-      new ViewAdminDisputesIndex(options);
+      //- If class is not available is likely that something wrong happen with build process
+      if (window.ViewAdminDisputesIndex) {
+        new ViewAdminDisputesIndex(options);
+      } else {
+        const message = 'ViewAdminDisputesIndex class is not available';
+        console.warn(message);
+        window.Sentry && Sentry.captureMessage(message);
+      }
     }, true);
