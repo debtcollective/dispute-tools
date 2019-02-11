@@ -24,5 +24,12 @@ block scripts
         dispute: !{JSON.stringify(dispute)},
       };
 
-      new ViewAdminDisputesShow(options);
+      //- If class is not available is likely that something wrong happen with build process
+      if (window.ViewAdminDisputesShow) {
+        new ViewAdminDisputesShow(options);
+      } else {
+        const message = 'ViewAdminDisputesShow class is not available';
+        console.warn(message);
+        window.Sentry && Sentry.captureMessage(message);
+      }
     }, true);

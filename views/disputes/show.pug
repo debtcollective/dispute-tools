@@ -86,5 +86,12 @@ block scripts
         currentStep: !{JSON.stringify(currentStep)},
       };
 
-      new ViewDisputesShow(options);
+      //- If class is not available is likely that something wrong happen with build process
+      if (window.ViewDisputesShow) {
+        new ViewDisputesShow(options);
+      } else {
+        const message = 'ViewDisputesShow class is not available';
+        console.warn(message);
+        window.Sentry && Sentry.captureMessage(message);
+      }
     }, true);
