@@ -1,0 +1,16 @@
+dist: xenial
+language: node_js
+node_js:
+  - '8.12'
+addons:
+  postgresql: '10'
+services:
+  - redis-server
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y pdftk fontconfig ghostscript
+  - sudo apt-get install -y postgresql-client-10
+before_script:
+  - cp config/config.sample.js config/config.js
+  - cp config/knexfile.sample.js knexfile.js
+  - psql -c 'create database dispute_tools_test;' -U postgres
