@@ -23,5 +23,12 @@ block scripts
         currentURL: !{JSON.stringify(currentURL)},
       };
 
-      new ViewHomeIndex(options);
+      //- If class is not available is likely that something wrong happen with build process
+      if (window.ViewHomeIndex) {
+        new ViewHomeIndex(options);
+      } else {
+        const message = 'ViewHomeIndex class is not available';
+        console.warn(message);
+        window.Sentry && Sentry.captureMessage(message);
+      }
     }, true);

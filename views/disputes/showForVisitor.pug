@@ -33,5 +33,12 @@ block scripts
         currentURL: !{JSON.stringify(currentURL)},
       };
 
-      new ViewDisputesShowForVisitors(options);
+      //- If class is not available is likely that something wrong happen with build process
+      if (window.ViewDisputesShowForVisitors) {
+        new ViewDisputesShowForVisitors(options);
+      } else {
+        const message = 'ViewDisputesShowForVisitors class is not available';
+        console.warn(message);
+        window.Sentry && Sentry.captureMessage(message);
+      }
     }, true);

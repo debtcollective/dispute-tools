@@ -43,5 +43,13 @@ block scripts
         currentUser: !{JSON.stringify(UserRenderer(currentUser))},
         currentURL: !{JSON.stringify(currentURL)},
       };
-      new ViewHomeContact(options);
+
+      //- If class is not available is likely that something wrong happen with build process
+      if (window.ViewHomeContact) {
+        new ViewHomeContact(options);
+      } else {
+        const message = 'ViewHomeContact class is not available';
+        console.warn(message);
+        window.Sentry && Sentry.captureMessage(message);
+      }
     }, true);
