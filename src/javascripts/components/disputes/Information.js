@@ -125,11 +125,9 @@ export default class DisputesInformation extends Widget {
       return this.deactivateDisputeForm.submit();
     }
 
-    if (confirm('Are you sure you want to delete this dispute?')) {
-      this._confirmDeactivateDispute();
+    if (!confirm('Are you sure you want to delete this dispute?')) {
+      event.preventDefault();
     }
-
-    event.preventDefault();
   }
 
   _bindMoreInfoModal() {
