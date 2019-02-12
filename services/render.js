@@ -13,16 +13,23 @@ const render = async dispute => {
   const files = await Promise.all(
     values(
       mapValues(documents, (document, name) =>
-        Promise.all(
-          document.templates.reduce(
-            // eslint-disable-next-line no-confusing-arrow
-            (renders, template) =>
-              template.iff(data)
-                ? [...renders, getRenderer(template.type)(template, data, name)]
-                : renders,
-            [],
-          ),
-        ),
+        // reduce behaves different when using an async callback
+        // https://gyandeeps.com/array-reduce-async-await/
+        document.templates.reduce(async (previousPromise, template) => {
+          const renders = await previousPromise;
+          const shouldRender = template.iff(data);
+
+          if (shouldRender) {
+            // using await to execute getRenderer synchronously
+            // running phantom.js in parallel causes problems when the system is under load
+            // related to https://github.com/marcbachmann/node-html-pdf/issues/386
+            const renderedDoc = await getRenderer(template.type)(template, data, name);
+
+            renders.push(renderedDoc);
+          }
+
+          return renders;
+        }, Promise.resolve([])),
       ),
     ),
   );
