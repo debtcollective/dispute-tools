@@ -1,10 +1,5 @@
-const chai = require('chai');
-const spies = require('chai-spies');
+const { expect } = require('chai');
 const Field = require('$form-definitions/validations');
-
-chai.use(spies);
-
-const expect = chai.expect;
 
 describe('Field', () => {
   describe('constructor', () => {
@@ -100,42 +95,6 @@ describe('Field', () => {
           const f = new Field({ validations: fv, attributes: { hello: 'world' } });
           expect(f.attributes).include({ hello: 'world', ...fv.attributes });
         });
-      });
-    });
-  });
-
-  describe('getAttributesFromValidations', () => {
-    it('returns maxLength attribute', () => {
-      const validations = ['required', 'maxLength:256'];
-
-      expect(Field.getAttributesFromValidations(validations, {})).to.deep.equal({
-        maxlength: '256',
-      });
-    });
-
-    it('returns minLength attribute', () => {
-      const validations = ['required', 'minLength:256'];
-
-      expect(Field.getAttributesFromValidations(validations, {})).to.deep.equal({
-        minlength: '256',
-      });
-    });
-
-    describe('when no validations to add', () => {
-      it('returns empty object', () => {
-        const validations = [];
-
-        expect(Field.getAttributesFromValidations(validations, {})).to.deep.equal({});
-      });
-    });
-
-    describe('when unexpected validations format', () => {
-      it('returns empty object', () => {
-        const spy = chai.spy.on(console, 'warn', msg => msg);
-        const validations = [{ rule: 'foo' }];
-
-        expect(Field.getAttributesFromValidations(validations, {})).to.deep.equal({});
-        expect(spy).to.have.been.called();
       });
     });
   });
