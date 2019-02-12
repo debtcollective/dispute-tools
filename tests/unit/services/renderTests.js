@@ -1,8 +1,8 @@
 const pdftk = require('node-pdftk');
 const moment = require('moment');
 const { expect } = require('chai');
-const { render } = require('../../../services/render');
-const { getConfiguration } = require('../../../services/disputeToolConfigurations');
+const { render } = require('$services/render');
+const { getConfiguration } = require('$services/disputeToolConfigurations');
 const {
   generalDebtDispute,
   privateStudentLoanDispute: { notDefaulted: pslNotDefaulted, defaulted: pslDefaulted },
@@ -14,7 +14,7 @@ const { extractPdfText } = require('../../utils');
 const {
   formatDate,
   normalizeSsn,
-} = require('../../../services/renderers/tool-configurations/shared/utils');
+} = require('$services/renderers/tool-configurations/shared/utils');
 const { doeDisclosure } = require('../../../config/config');
 
 function basicRenderTest(sampleData, docTemplates = [1]) {
