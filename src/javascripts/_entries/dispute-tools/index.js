@@ -63,9 +63,22 @@ class ViewDisputeToolsIndex extends NodeSupport {
       this.DTRmodal.deactivate();
     });
 
-    this.DTRcontinueButton.addEventListener('click', () => this.DTRmodal.deactivate());
+    this.DTRcontinueButton.addEventListener('click', () => this._onDtrContinue());
 
     return this;
+  }
+
+  _onDtrContinue() {
+    this.DTRmodal.deactivate();
+
+    if (window.ga) {
+      window.ga('send', {
+        hitType: 'event',
+        eventCategory: 'DTR Continue',
+        eventAction: 'click',
+        eventLabel: 'Continue',
+      });
+    }
   }
 
   _bindScrollTo() {
