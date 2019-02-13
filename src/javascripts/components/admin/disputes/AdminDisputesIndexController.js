@@ -13,13 +13,13 @@ import ManageDisputeAdmins from './ManageDisputeAdmins.vue';
  * @param {string} disputeId The initial dispute id for which the component
  * will load assigned admins
  * @returns {ManageDisputeAdmins} the manage dispute admins instance
- * for calling setDisputeId on later whenever the edit dispute modal changes
+ * for calling setDispute on later whenever the edit dispute modal changes
  */
-const mountManageDisputeAdmins = disputeId =>
+const mountManageDisputeAdmins = () =>
   new Vue({
     el: '#manage-assigned-admin-vue',
     render() {
-      return <ManageDisputeAdmins initialDisputeId={disputeId} />;
+      return <ManageDisputeAdmins />;
     },
   }).$children[0];
 
@@ -100,6 +100,8 @@ export default class AdminDisputesIndexController extends Widget {
     this.pagination = document.querySelector('.Pagination .btn-group');
 
     this._bindEvents();
+
+    this.manageDisputeAdmins = mountManageDisputeAdmins();
   }
 
   _bindEvents() {
@@ -139,13 +141,7 @@ export default class AdminDisputesIndexController extends Widget {
 
     this.AdminDisputesIndexTable.bind('addStatus', data => {
       this.AdminDisputesAddStatusForm.updateData(data.dispute);
-
-      if (this.manageDisputeAdmins) {
-        this.manageDisputeAdmins.setDisputeId(data.dispute.id);
-      } else {
-        this.manageDisputeAdmins = mountManageDisputeAdmins(data.dispute.id);
-      }
-
+      this.manageDisputeAdmins.setDispute(data.dispute);
       this.addStatusModal.activate();
     });
 

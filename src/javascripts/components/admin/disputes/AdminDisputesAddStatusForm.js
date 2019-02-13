@@ -157,6 +157,12 @@ export default class AdminDisputesAddStatusForm extends Widget {
 
     this.statusesWrapper.appendChild(fragmentStatus);
 
-    this.disputeThreadLink.href = dispute.disputeThreadLink;
+    // hide button unless there's a dispute thread created
+    if (dispute.disputeThreadId) {
+      this.disputeThreadLink.href = dispute.disputeThreadLink;
+      this.disputeThreadLink.style.display = '';
+    } else {
+      this.disputeThreadLink.style.display = 'none';
+    }
   }
 }

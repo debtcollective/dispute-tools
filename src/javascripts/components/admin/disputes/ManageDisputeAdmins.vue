@@ -1,22 +1,22 @@
 <template>
   <div>
-    <alert :alerts="alerts" />
+    <alert :alerts="alerts"/>
     <form class="pb3" @submit="e => e.preventDefault()">
       <h3 class="pb3">Manage Admins</h3>
       <Multiselect
         v-model="assigned"
         :options="all"
         :multiple="true"
+        :disabled="!disputeThreadId"
         track-by="id"
         :custom-label="o => o.safeName"
       />
       <button
         class="-fw -k-btn btn-primary -fw-600 mt2 mb2"
         @click="save"
+        :disabled="!disputeThreadId"
         type="button"
-      >
-        Save
-      </button>
+      >Save</button>
     </form>
   </div>
 </template>
@@ -32,27 +32,29 @@ export default {
     Multiselect,
     Alert,
   },
-  props: {
-    initialDisputeId: {
-      type: String,
-      required: true,
-    },
-  },
   data() {
     return {
       assigned: [],
       originalAssigned: [],
       all: [],
-      disputeId: this.initialDisputeId,
+      dispute: {},
       alerts: [],
     };
   },
-  created() {
-    this.getAvailableAndAssignedAdmins();
+  computed: {
+    disputeThreadId: function() {
+      if (this.dispute) {
+        return this.dispute.disputeThreadId;
+      }
+    },
   },
   methods: {
     save() {
-      return updateAdmins(this.disputeId, this.assigned.map(a => a.id)).then(
+      if (!this.dispute) {
+        return;
+      }
+
+      return updateAdmins(this.dispute.id, this.assigned.map(a => a.id)).then(
         () =>
           (this.alerts = [
             {
@@ -65,13 +67,13 @@ export default {
     setAssigned(assigned) {
       this.assigned = [...assigned];
     },
-    setDisputeId(disputeId) {
-      this.disputeId = disputeId;
+    setDispute(dispute) {
+      this.dispute = dispute;
       this.alerts = [];
       this.getAvailableAndAssignedAdmins();
     },
     getAvailableAndAssignedAdmins() {
-      getAvailableAndAssignedAdmins(this.disputeId).then(({ assigned, available }) => {
+      getAvailableAndAssignedAdmins(this.dispute.id).then(({ assigned, available }) => {
         this.all = [...assigned, ...available];
         this.assigned = this.originalAssigned = [...assigned];
       });
