@@ -38,8 +38,8 @@ In order to add the right value to `discourse.apiKey`, you need to run your Disc
 
 You need to make sure your Discourse installation have the following settings propely set otherwise you won't be able to login in this app. You can set these values in the Discourse admin (http://localhost:3000/admin/site_settings/category/all_results?filter=sso)
 
--   enable sso provider: ✅
 -   sso allows all return paths: ✅
+-   enable sso provider: ✅
 -   verbose sso logging: ✅
 -   sso provider secrets:
 -   create a new item and set:
@@ -47,6 +47,24 @@ You need to make sure your Discourse installation have the following settings pr
     -   SSO secret: sso_secret (**sso_secret** is the default value in `config.sample.js`)
 
 Make sure you can access to _"My Disputes"_ once you build and run this project.
+
+> NOTICE: "enable sso" and "sso url" should be unmarked and empty respectively
+
+## Enable CORS
+
+On top of the need to run the Discourse server with
+
+```bash
+env DISCOURSE_ENABLE_CORS=true rails s
+```
+
+Make sure to go to Discourse admin (http://localhost:3000/admin/site_settings/category/all_results?filter=cors) and add a "cors origins" item:
+
+```
+http://localhost:8080
+```
+
+> If you access the app using 127.0.0.1 instead, just make sure to check the console and copy/paste the CORS rejected URL that is on the error message.
 
 # Run server
 
