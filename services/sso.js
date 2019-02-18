@@ -93,7 +93,7 @@ const sso = {
       return user;
     }
 
-    throw new AuthenticationFailure();
+    throw new AuthenticationFailure('Invalid sso');
   },
 };
 
