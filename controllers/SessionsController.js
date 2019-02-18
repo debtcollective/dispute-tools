@@ -23,7 +23,9 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
     },
 
     callback(req, res, next) {
-      return passport.authenticate('discourse', (err, user) => {
+      return passport.authenticate('discourse', (err, user, ...rest) => {
+        const [challenge, status] = rest;
+
         if (err) {
           req.flash(
             'error',
@@ -31,6 +33,11 @@ const SessionsController = Class('SessionsController').inherits(BaseController)(
           );
 
           Sentry.captureException(err);
+          return res.redirect(config.router.helpers.root.url());
+        }
+
+        if (!user) {
+          Sentry.captureMessage('Authentication has resolved without user', { challenge, status });
           return res.redirect(config.router.helpers.root.url());
         }
 
