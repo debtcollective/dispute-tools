@@ -133,11 +133,17 @@ logger.info('Caching form validation configurations');
 
 const isNegative = answer => ['no', 'off', false, undefined].includes(answer);
 
-const filterDependentFields = (form, config) =>
+const filterDependentFields = (form, config) => {
   _.reduce(
     config,
     (filtered, validations, fieldName) => {
-      const hasDependency = validations.find(e => e.startsWith('dependsOn'));
+      const hasDependency = validations.find(e => {
+        if (typeof e !== 'string') {
+          return false;
+        }
+
+        return e.startsWith('dependsOn');
+      });
 
       if (!hasDependency) return { ...filtered, [fieldName]: validations };
 
@@ -147,10 +153,20 @@ const filterDependentFields = (form, config) =>
         return filtered;
       }
 
-      return { ...filtered, [fieldName]: validations.filter(e => !e.startsWith('dependsOn')) };
+      return {
+        ...filtered,
+        [fieldName]: validations.filter(e => {
+          if (typeof e !== 'string') {
+            return false;
+          }
+
+          return !e.startsWith('dependsOn');
+        }),
+      };
     },
     {},
   );
+};
 
 module.exports = {
   extractToolFormValidations,
