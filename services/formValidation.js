@@ -137,7 +137,7 @@ const filterDependentFields = (form, config) =>
   _.reduce(
     config,
     (filtered, validations, fieldName) => {
-      const hasDependency = validations.find(e => e.startsWith('dependsOn'));
+      const hasDependency = validations.find(e => e.indexOf('dependsOn') === 0);
 
       if (!hasDependency) return { ...filtered, [fieldName]: validations };
 
@@ -147,7 +147,7 @@ const filterDependentFields = (form, config) =>
         return filtered;
       }
 
-      return { ...filtered, [fieldName]: validations.filter(e => !e.startsWith('dependsOn')) };
+      return { ...filtered, [fieldName]: validations.filter(e => !(e.indexOf('dependsOn') === 0)) };
     },
     {},
   );
