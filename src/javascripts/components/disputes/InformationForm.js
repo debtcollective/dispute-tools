@@ -380,7 +380,7 @@ export default class DisputesInformationForm extends Widget {
       if (!this.ui[key]) return;
 
       // Select this each time to avoid dynamically added fields getting left out
-      this._getElementsForKey(key).forEach(element => {
+      Array.prototype.forEach.call(this._getElementsForKey(key), element => {
         const parent = element.parentNode;
 
         let errorLabel = parent.querySelector('.-on-error');
@@ -437,7 +437,7 @@ export default class DisputesInformationForm extends Widget {
        * @type {HTMLInputElement}
        */
       // Select this each time to avoid dynamically added fields getting left out
-      this._getElementsForKey(key).forEach(element => {
+      Array.prototype.forEach.call(this._getElementsForKey(key), element => {
         if (!element) {
           return;
         }
