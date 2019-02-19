@@ -130,12 +130,10 @@ describe('Field', () => {
     });
 
     describe('when unexpected validations format', () => {
-      it('returns empty object', () => {
-        const spy = chai.spy.on(console, 'warn', msg => msg);
+      it('behaves as expected', () => {
         const validations = [{ rule: 'foo' }];
 
-        expect(Field.getAttributesFromValidations(validations, {})).to.deep.equal({});
-        expect(spy).to.have.been.called();
+        expect(() => Field.getAttributesFromValidations(validations, {})).to.throw();
       });
     });
   });
