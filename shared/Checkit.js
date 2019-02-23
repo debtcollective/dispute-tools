@@ -2,26 +2,41 @@ const _ = require('lodash');
 const Checkit = require('checkit');
 const moment = require('moment');
 
+const getOptions = (options, caseSensitive) => {
+  if (caseSensitive !== 'false') {
+    return options.split(',').map(_.trim);
+  }
+
+  return options
+    .toLowerCase()
+    .split(',')
+    .map(_.trim);
+};
+
+const isValidOption = (option, options, caseSensitive) => {
+  const optionToCompare = caseSensitive ? _.trim(option) : _.trim(option.toLowerCase());
+
+  return options.includes(optionToCompare);
+};
+
 Checkit.Validator.prototype.ssn = function ssn(val) {
   const matched = val.toString().match(/[0-9]/g);
   return matched !== null && matched.length === 9;
 };
 
-// eslint-disable-next-line no-confusing-arrow
-const getOptions = (options, caseSensitive) =>
-  caseSensitive !== 'false'
-    ? options.split(',').map(_.trim)
-    : options
-        .toLowerCase()
-        .split(',')
-        .map(_.trim);
+Checkit.Validator.prototype.oneOf = function oneOf(value, options, _caseSensitive) {
+  const caseSensitive = _caseSensitive !== 'false';
+  const normalizedOptions = getOptions(options);
 
-Checkit.Validator.prototype.oneOf = function oneOf(val, options, caseSensitive) {
-  return Array.isArray(val)
-    ? _.every(val, v => Checkit.Validator.prototype.oneOf(v, options, caseSensitive))
-    : getOptions(options, caseSensitive).includes(
-        _.trim(caseSensitive !== 'false' ? val : val.toLowerCase()),
-      );
+  if (_.isEmpty(value)) {
+    return true;
+  }
+
+  if (Array.isArray(value)) {
+    return _.every(value, option => isValidOption(option, normalizedOptions, caseSensitive));
+  }
+
+  return isValidOption(value, normalizedOptions, caseSensitive);
 };
 
 Checkit.Validator.prototype.parsableDate = function parsableDate(val) {
