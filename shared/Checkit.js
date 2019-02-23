@@ -3,7 +3,7 @@ const Checkit = require('checkit');
 const moment = require('moment');
 
 const getOptions = (options, caseSensitive) => {
-  if (caseSensitive !== 'false') {
+  if (caseSensitive) {
     return options.split(',').map(_.trim);
   }
 
@@ -24,9 +24,9 @@ Checkit.Validator.prototype.ssn = function ssn(val) {
   return matched !== null && matched.length === 9;
 };
 
-Checkit.Validator.prototype.oneOf = function oneOf(value, options, _caseSensitive) {
+Checkit.Validator.prototype.oneOf = function oneOf(value, options, _caseSensitive = 'false') {
   const caseSensitive = _caseSensitive !== 'false';
-  const normalizedOptions = getOptions(options);
+  const normalizedOptions = getOptions(options, caseSensitive);
 
   if (_.isEmpty(value)) {
     return true;
