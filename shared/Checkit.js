@@ -24,11 +24,16 @@ Checkit.Validator.prototype.ssn = function ssn(val) {
   return matched !== null && matched.length === 9;
 };
 
-Checkit.Validator.prototype.oneOf = function oneOf(value, options, _caseSensitive = 'false') {
-  const caseSensitive = _caseSensitive !== 'false';
+Checkit.Validator.prototype.oneOf = function oneOf(value, options, ...flags) {
+  const [_caseSensitive, _required] = flags;
+  const caseSensitive = _.isEmpty(_caseSensitive) ? true : _caseSensitive === 'true';
+  const required = _.isEmpty(_required) ? false : _required === 'required';
+
   const normalizedOptions = getOptions(options, caseSensitive);
 
   if (_.isEmpty(value)) {
+    if (required) return false;
+
     return true;
   }
 
