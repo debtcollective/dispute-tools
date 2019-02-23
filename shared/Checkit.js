@@ -32,9 +32,8 @@ Checkit.Validator.prototype.oneOf = function oneOf(value, options, ...flags) {
   const normalizedOptions = getOptions(options, caseSensitive);
 
   if (_.isEmpty(value)) {
-    if (required) return false;
-
-    return true;
+    // When value is empty the field will be valid only if it's not required
+    return !required;
   }
 
   if (Array.isArray(value)) {
