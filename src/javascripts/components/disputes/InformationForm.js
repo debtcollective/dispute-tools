@@ -362,7 +362,8 @@ export default class DisputesInformationForm extends Widget {
     this._clearFieldErrors();
 
     const form = this._getFieldsData();
-    const [err] = new Checkit(filterDependentFields(form, this.constraints)).validateSync(form);
+    const normalizedConstrains = filterDependentFields(form, this.constraints);
+    const [err] = new Checkit(normalizedConstrains).validateSync(form);
 
     if (err) {
       ev.preventDefault();
