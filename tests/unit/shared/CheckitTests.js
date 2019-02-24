@@ -92,6 +92,15 @@ describe('Debt Collective Checkit extensions', () => {
       expect(err).null;
       expect(res).exist;
     });
+
+    describe('when required option added', () => {
+      it('do not pass on empty array', () => {
+        const checkit = new Checkit({ enumed: ['oneOf:Hello, world, MONSTERS:false:required'] });
+        const [err, res] = checkit.validateSync({ enumed: [] });
+        expect(err).exist;
+        expect(res).null;
+      });
+    });
   });
 
   describe('parsableDate', () => {
