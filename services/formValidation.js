@@ -28,7 +28,8 @@ const flattenFieldSet = fieldSet =>
 
 const extractToolFormValidations = tool =>
   _.map(tool.options, (option, optionName) => {
-    const form = _.find(option.steps, s => s.type === 'form');
+    const steps = option.steps;
+    const form = _.find(steps, s => s.type === 'form');
 
     const { fields, nameLabels, customSelectors } = _.flattenDeep(
       form.fieldSets.map(flattenFieldSet),
