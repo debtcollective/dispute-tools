@@ -174,8 +174,11 @@ describe('render', () => {
 
     describe('credit report dispute letter', () => {
       let docs;
+
       it('should render the pdf', async () => {
         docs = await basicRenderTest(creditReportDispute, [2])('path');
+
+        return docs;
       });
 
       it('should render all the form data into the letter', () => {
@@ -261,6 +264,8 @@ describe('render', () => {
         let docs;
         it('should render the pdf', async () => {
           docs = await basicRenderTest(taxOffsetReviews.A, [1])();
+
+          return docs;
         });
 
         it(
@@ -278,6 +283,8 @@ describe('render', () => {
         let docs;
         it('should render the pdf', async () => {
           docs = await basicRenderTest(taxOffsetReviews.B, [1])();
+
+          return docs;
         });
 
         it(
@@ -571,35 +578,39 @@ describe('render', () => {
       });
 
       it('a: should render the pdf', async () => {
-        const [[fdf]] = await basicRenderTest(wageGarnishmentDisputes.A, [1])();
+        const docs = await basicRenderTest(wageGarnishmentDisputes.A, [1])();
+        const [[fdf]] = docs;
 
         expectCorrectForm(fdf, wageGarnishmentDisputes.A);
+
+        return docs;
       });
 
       it('b: should render the pdf', async () => {
-        const [[fdf]] = await basicRenderTest(wageGarnishmentDisputes.B, [1])();
+        const docs = await basicRenderTest(wageGarnishmentDisputes.B, [1])();
+        const [[fdf]] = docs;
 
         expectCorrectForm(fdf, wageGarnishmentDisputes.B);
 
         // because dispute option is INPERSON
         expectObjectionNum(fdf, '10');
         expect(fdf.includes('X'), 'disputeProcessCity is not selected').true;
+
+        return docs;
       });
 
       it('c: should render the pdf', async () => {
-        const [[wageGarnishentFdf]] = await basicRenderTest(wageGarnishmentDisputes.CasStudent, [
-          1,
-          1,
-        ])();
+        const docs = await basicRenderTest(wageGarnishmentDisputes.CasStudent, [1, 1])();
+        const [[wageGarnishentFdf]] = docs;
 
         expectCorrectForm(wageGarnishentFdf, wageGarnishmentDisputes.CasStudent);
+
+        return docs;
       });
 
       it('d: should render the pdf', async () => {
-        const [[wageGarnishentFdf]] = await basicRenderTest(wageGarnishmentDisputes.DasStudent, [
-          1,
-          1,
-        ])();
+        const docs = await basicRenderTest(wageGarnishmentDisputes.DasStudent, [1, 1])();
+        const [[wageGarnishentFdf]] = docs;
 
         expectCorrectForm(wageGarnishentFdf, wageGarnishmentDisputes.DasStudent);
         expectContains(wageGarnishentFdf, wageGarnishmentDisputes.DasStudent, ['schoolName']);
@@ -607,13 +618,13 @@ describe('render', () => {
         // because dispute option is BYPHONE
         expectContains(wageGarnishentFdf, wageGarnishmentDisputes.DasStudent, ['phone']);
         expectObjectionNum(wageGarnishentFdf, '12');
+
+        return docs;
       });
 
       it('e: should render the pdf', async () => {
-        const [[wageGarnishentFdf]] = await basicRenderTest(wageGarnishmentDisputes.EasParent, [
-          1,
-          1,
-        ])();
+        const docs = await basicRenderTest(wageGarnishmentDisputes.EasParent, [1, 1])();
+        const [[wageGarnishentFdf]] = docs;
 
         expectCorrectForm(wageGarnishentFdf, wageGarnishmentDisputes.EasParent);
         expectContains(wageGarnishentFdf, wageGarnishmentDisputes.EasParent, ['schoolName']);
@@ -621,6 +632,8 @@ describe('render', () => {
         // because dispute option is INPERSON
         expectObjectionNum(wageGarnishentFdf, '14');
         expect(wageGarnishentFdf.includes('X'), 'disputeProcessCity is not selected').true;
+
+        return docs;
       });
     });
   });
