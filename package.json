@@ -40,7 +40,6 @@
     "test:debug:integration": "node --inspect=9220 --inspect-brk tests/integration.js",
     "test:debug:unit": "node --inspect=9220 --inspect-brk tests/unit.js",
     "test:documents": "scripty",
-    "test:form-validations": "scripty",
     "test:integration": "scripty",
     "test:unit": "scripty",
     "test": "yarn test:unit && yarn test:integration",
