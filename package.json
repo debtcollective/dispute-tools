@@ -36,6 +36,7 @@
     "start:prod": "yarn db:migrate && node bin/server.js",
     "start": "node bin/server.js",
     "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
+    "test:all": "yarn test:unit && yarn test:integration && yarn test:documents",
     "test:debug:form-validations": "node --inspect=9220 --inspect-brk tests/form-validations.js",
     "test:debug:integration": "node --inspect=9220 --inspect-brk tests/integration.js",
     "test:debug:unit": "node --inspect=9220 --inspect-brk tests/unit.js",
