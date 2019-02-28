@@ -6,6 +6,8 @@ stages:
   - test
 
 test:
+  retry:
+    max: 2
   image: debtcollective/dispute-tools-test:latest
   stage: test
   services:
