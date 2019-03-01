@@ -94,7 +94,7 @@
     "express-session": "^1.15.6",
     "extract-text-webpack-plugin": "^3.0.2",
     "fill-pdf": "^1.1.0",
-    "flatpickr": "^4.2.3",
+    "flatpickr": "^4.5.4",
     "fs-extra": "^0.30.0",
     "glob": "^7.0.5",
     "gm": "^1.23.0",
