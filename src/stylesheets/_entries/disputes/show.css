@@ -82,9 +82,7 @@ fieldset {
 }
 
 .save-for-later {
-  position: fixed;
-  top: 2.3rem;
-  right: 5rem;
+  background: white;
 }
 
 /* process */
