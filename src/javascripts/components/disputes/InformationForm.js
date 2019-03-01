@@ -480,6 +480,17 @@ export default class DisputesInformationForm extends Widget {
   }
 
   _getElementsForKey(key) {
-    return this.element.querySelectorAll(`[name^="fieldValues[${key}]"]:not([type="hidden"])`);
+    let nodes = this.element.querySelectorAll(`[name^="fieldValues[${key}]"]:not([type="hidden"])`);
+
+    if (nodes.length) {
+      return nodes;
+    }
+
+    // Here we handle flatpickr behaviour on mobile
+    // It changes the type of the original input to hidden and creates a new one
+    // We still want to retrieve the value of the hidden input
+    nodes = this.element.querySelectorAll(`.date-form-control[name^="fieldValues[${key}]"]`);
+
+    return nodes;
   }
 }
