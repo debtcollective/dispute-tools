@@ -21,10 +21,16 @@
   }
 }
 
-.Modal__close {
+.Modal__header {
   position: fixed;
-  top: 2rem;
-  right: 2rem;
+  display: flex;
+  flex: 1;
+  top: 1rem;
+  right: 1rem;
+  z-index: 50;
+}
+
+.Modal__close {
   border: none;
   padding: 0.5rem;
   background-color: transparent;
@@ -49,4 +55,9 @@
   padding: 5rem 0;
   height: 100%;
   color: var(--text-0);
+
+  /* smartphones, touchscreens */
+  @media (hover: none) and (pointer: coarse) {
+    -webkit-overflow-scrolling: touch;
+  }
 }

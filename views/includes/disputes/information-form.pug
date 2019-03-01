@@ -4,6 +4,7 @@ include ../../mixins/dispute-tools/form-element
   form.dispute-tool.px2(
     action= (isAdmin ? routeMappings.Admin : routeMappings).Disputes.updateDisputeData.url(dispute.id)
     method="post"
+    novalidate
   )
     input(name="_method" type="hidden" value="PUT")
     input(type="hidden" name="command" value="setForm")

@@ -4641,10 +4641,15 @@ flat-cache@^1.2.1:
     graceful-fs "^4.1.2"
     write "^0.2.1"
 
-flatpickr@^4.2.3, flatpickr@^4.2.4:
+flatpickr@^4.2.4:
   version "4.4.4"
   resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-4.4.4.tgz#fdeb083ca3d580eecb822a4080f67b06f0294fc7"
   integrity sha512-blr5EirPWJBcJuVIUH6csBFYuFDmV+M2catCHiDGH4jotiFn/fSwRuvo5aUsQ/ZCCY8aggyOFZkUOAiZ4sVLog==
+
+flatpickr@^4.5.4:
+  version "4.5.4"
+  resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-4.5.4.tgz#7d46fc539d2a97daf80ac261994d4b45d5a4e5f6"
+  integrity sha512-AZOu3l6jUJtNofUKW4UGf9R5wKoLBb52VcQJhbL88G1sekJiXTPqqWJyZwGShjIMFjAIgnajEPglRd2fv/FaYg==
 
 flatten@^1.0.2:
   version "1.0.2"
