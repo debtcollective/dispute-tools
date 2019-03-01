@@ -39,5 +39,7 @@ describe('credit report dispute', () => {
     const documents = await render(dispute);
 
     console.error(documents);
+
+    return documents;
   });
 });

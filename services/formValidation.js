@@ -28,7 +28,8 @@ const flattenFieldSet = fieldSet =>
 
 const extractToolFormValidations = tool =>
   _.map(tool.options, (option, optionName) => {
-    const form = option.steps.find(s => s.type === 'form');
+    const steps = option.steps;
+    const form = _.find(steps, s => s.type === 'form');
 
     const { fields, nameLabels, customSelectors } = _.flattenDeep(
       form.fieldSets.map(flattenFieldSet),
@@ -137,7 +138,7 @@ const filterDependentFields = (form, constraints) => {
   const filteredFields = _.reduce(
     constraints,
     (filtered, validations, fieldName) => {
-      const hasDependency = validations.find(e => e.indexOf('dependsOn') === 0);
+      const hasDependency = _.find(validations, e => e.indexOf('dependsOn') === 0);
 
       if (!hasDependency) {
         return {
