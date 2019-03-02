@@ -1,6 +1,11 @@
 const Checkit = require('../../shared/Checkit');
 const assert = require('assert');
 const { expect } = require('chai');
+const spies = require('chai-spies');
+const chai = require('chai');
+const moment = require('moment');
+
+chai.use(spies);
 
 describe('Checkit', () => {
   describe('Validator', () => {
@@ -268,6 +273,52 @@ describe('Checkit', () => {
           expect(targetError).to.be.an('object');
           expect(targetError.message).to.equal(expectedErrorMessage);
         });
+      });
+    });
+
+    describe('handles parsableDate validation constrain', () => {
+      it('allow "MM/DD/YYYY" format', () => {
+        const checkit = new Checkit({
+          testInputValue: ['parsableDate'],
+        });
+
+        const [err, validated] = checkit.validateSync({
+          testInputValue: '12/28/2019',
+        });
+
+        expect(err).to.equal(null);
+        expect(validated.testInputValue).to.be.equal('12/28/2019');
+      });
+
+      it('allow "DD/MM/YYYY" format', () => {
+        const checkit = new Checkit({
+          testInputValue: ['parsableDate'],
+        });
+
+        const [err, validated] = checkit.validateSync({
+          testInputValue: '28/12/2019',
+        });
+
+        expect(err).to.equal(null);
+        expect(validated.testInputValue).to.be.equal('28/12/2019');
+      });
+
+      // TODO: Will be great to find a better way to make sure we only accept two types of formats
+      it('do not allow other formats', () => {
+        const spyIsValid = chai.spy.on(moment.prototype, 'isValid');
+        const val = Date.now();
+        const checkit = new Checkit({
+          testInputValue: ['parsableDate'],
+        });
+
+        const [err, validated] = checkit.validateSync({
+          testInputValue: val,
+        });
+
+        expect(validated).to.equal(null);
+        expect(err).not.to.equal(null);
+
+        expect(spyIsValid).to.have.been.called();
       });
     });
   });
