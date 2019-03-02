@@ -1,4 +1,5 @@
 const Checkit = require('../../shared/Checkit');
+const assert = require('assert');
 const { expect } = require('chai');
 
 describe('Checkit', () => {
@@ -110,6 +111,162 @@ describe('Checkit', () => {
 
           expect(validated).to.be.an('object');
           expect(validated.testInputValue).to.be.equal('1234-56-78-9');
+        });
+      });
+    });
+
+    describe('handles oneOf validation constrain', () => {
+      // NOTE: This may need to be challenge as "oneOf" doesn't seems to be correct to handle multiple values
+      it('allows array of values', () => {
+        const checkit = new Checkit({
+          testInputValue: ['oneOf:Foo, Bar'],
+        });
+
+        const [err, validated] = checkit.validateSync({
+          testInputValue: ['Foo', 'Bar'],
+        });
+
+        expect(err).to.equal(null);
+
+        expect(validated).to.be.an('object');
+        assert.deepEqual(validated.testInputValue, ['Foo', 'Bar']);
+      });
+
+      it('allows empty arrays values', () => {
+        const checkit = new Checkit({
+          testInputValue: ['oneOf:Foo, Bar'],
+        });
+
+        const [err, validated] = checkit.validateSync({
+          testInputValue: [],
+        });
+
+        expect(err).to.equal(null);
+
+        expect(validated).to.be.an('object');
+        assert.deepEqual(validated.testInputValue, []);
+      });
+
+      // NOTE: This may need to be challenge as if required undefined should not bypass the rule
+      it('allows undefined values', () => {
+        const checkit = new Checkit({
+          testInputValue: ['oneOf:Foo, Bar'],
+        });
+
+        const [err, validated] = checkit.validateSync({
+          testInputValue: undefined,
+        });
+
+        expect(err).to.equal(null);
+
+        expect(validated).to.be.an('object');
+        assert.deepEqual(validated.testInputValue, undefined);
+      });
+
+      describe('option "required" set', () => {
+        const checkit = new Checkit({
+          testInputValue: ['oneOf:Foo, Bar:false:required'],
+        });
+
+        it('does not allow empty arrays', () => {
+          const [err, validated] = checkit.validateSync({
+            testInputValue: [],
+          });
+
+          const { errors } = err;
+
+          expect(validated).to.equal(null);
+          expect(errors.testInputValue).to.be.an('object');
+
+          // Every input can have an array of errors related to the defined constrains
+          const { errors: inputErrors } = errors.testInputValue;
+          const targetError = inputErrors.find(({ rule }) => rule === 'oneOf');
+
+          // interpolate message as expected by the checkit library
+          const expectedErrorMessage = checkit.messages.oneOf
+            .replace('{{label}}', 'testInputValue')
+            .replace('{{var_1}}', 'Foo, Bar');
+
+          expect(targetError).to.be.an('object');
+          expect(targetError.message).to.equal(expectedErrorMessage);
+        });
+
+        it('allows undefined values', () => {
+          const checkit = new Checkit({
+            testInputValue: ['oneOf:Foo, Bar'],
+          });
+
+          const [err, validated] = checkit.validateSync({
+            testInputValue: undefined,
+          });
+
+          expect(err).to.equal(null);
+
+          expect(validated).to.be.an('object');
+          assert.deepEqual(validated.testInputValue, undefined);
+        });
+      });
+
+      describe('case insensitive', () => {
+        const checkit = new Checkit({
+          testInputValue: ['oneOf:Foo, Bar:false'],
+        });
+
+        it('validates for value equals to option lowercased', () => {
+          const [err, validated] = checkit.validateSync({
+            testInputValue: 'foo',
+          });
+
+          expect(err).to.equal(null);
+
+          expect(validated).to.be.an('object');
+          expect(validated.testInputValue).to.be.equal('foo');
+        });
+      });
+
+      describe('case sensitive', () => {
+        it('validates with option exact value', () => {
+          const checkit = new Checkit({
+            testInputValue: ['oneOf:Foo, Bar'],
+          });
+
+          it('validates for value equals to option lowercased', () => {
+            const [err, validated] = checkit.validateSync({
+              testInputValue: 'Foo',
+            });
+
+            expect(err).to.equal(null);
+
+            expect(validated).to.be.an('object');
+            expect(validated.testInputValue).to.be.equal('Foo');
+          });
+        });
+
+        it('return error for value equals to option lowercased', () => {
+          const checkit = new Checkit({
+            testInputValue: ['oneOf:Foo, Bar:true'],
+          });
+
+          const [err, validated] = checkit.validateSync({
+            testInputValue: 'foo',
+          });
+
+          const { errors } = err;
+
+          expect(validated).to.equal(null);
+          expect(errors.testInputValue).to.be.an('object');
+
+          // Every input can have an array of errors related to the defined constrains
+          const { errors: inputErrors } = errors.testInputValue;
+          const targetError = inputErrors.find(({ rule }) => rule === 'oneOf');
+
+          // interpolate message as expected by the checkit library
+          const expectedErrorMessage = checkit.messages.oneOf
+            .replace('{{label}}', 'testInputValue')
+            .replace('{{var_1}}', 'Foo, Bar');
+
+          expect(targetError).to.be.an('object');
+          expect(targetError.message).to.equal(expectedErrorMessage);
         });
       });
     });
