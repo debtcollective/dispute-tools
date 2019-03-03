@@ -96,6 +96,25 @@ describe('Checkit', () => {
     });
 
     describe('handles oneOf validation constrain', () => {
+      const prepareErrorCase = (checkitInstance, value) => {
+        const [err, validated] = checkitInstance.validateSync({
+          testInputValue: value,
+        });
+
+        const { errors } = err;
+
+        // Every input can have an array of errors related to the defined constrains
+        const { errors: inputErrors } = errors.testInputValue;
+        const targetError = inputErrors.find(({ rule }) => rule === 'oneOf');
+
+        // interpolate message as expected by the checkit library
+        const expectedErrorMessage = checkitInstance.messages.oneOf
+          .replace('{{label}}', 'testInputValue')
+          .replace('{{var_1}}', 'Foo, Bar');
+
+        return [validated, targetError, expectedErrorMessage];
+      };
+
       // NOTE: This may need to be challenge as "oneOf" doesn't seems to be correct to handle multiple values
       it('allows array of values', () => {
         const checkit = new Checkit({
@@ -143,23 +162,9 @@ describe('Checkit', () => {
         });
 
         it('does not allow empty arrays', () => {
-          const [err, validated] = checkit.validateSync({
-            testInputValue: [],
-          });
-
-          const { errors } = err;
-
-          // Every input can have an array of errors related to the defined constrains
-          const { errors: inputErrors } = errors.testInputValue;
-          const targetError = inputErrors.find(({ rule }) => rule === 'oneOf');
-
-          // interpolate message as expected by the checkit library
-          const expectedErrorMessage = checkit.messages.oneOf
-            .replace('{{label}}', 'testInputValue')
-            .replace('{{var_1}}', 'Foo, Bar');
+          const [validated, targetError, expectedErrorMessage] = prepareErrorCase(checkit, []);
 
           expect(validated).to.equal(null);
-          expect(targetError).to.be.an('object');
           expect(targetError.message).to.equal(expectedErrorMessage);
         });
 
@@ -214,20 +219,7 @@ describe('Checkit', () => {
             testInputValue: ['oneOf:Foo, Bar:true'],
           });
 
-          const [err, validated] = checkit.validateSync({
-            testInputValue: 'foo',
-          });
-
-          const { errors } = err;
-
-          // Every input can have an array of errors related to the defined constrains
-          const { errors: inputErrors } = errors.testInputValue;
-          const targetError = inputErrors.find(({ rule }) => rule === 'oneOf');
-
-          // interpolate message as expected by the checkit library
-          const expectedErrorMessage = checkit.messages.oneOf
-            .replace('{{label}}', 'testInputValue')
-            .replace('{{var_1}}', 'Foo, Bar');
+          const [validated, targetError, expectedErrorMessage] = prepareErrorCase(checkit, 'foo');
 
           expect(validated).to.equal(null);
           expect(targetError.message).to.equal(expectedErrorMessage);
