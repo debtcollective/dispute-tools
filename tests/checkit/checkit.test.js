@@ -29,44 +29,36 @@ describe('Checkit', () => {
       });
 
       describe('return error', () => {
-        it('for less than 9 characters', () => {
-          const [err, validated] = checkit.validateSync({
-            testInputValue: '12509340',
+        // runs the validations to return "validated" object and error for given rule ("ssn")
+        const prepareErrorCase = (checkitInstance, value) => {
+          const [err, validated] = checkitInstance.validateSync({
+            testInputValue: value,
           });
 
           const { errors } = err;
           // Every input can have an array of errors related to the defined constrains
           const { errors: inputErrors } = errors.testInputValue;
-          const ssnError = inputErrors.find(({ rule }) => rule === 'ssn');
+          const fieldError = inputErrors.find(({ rule }) => rule === 'ssn');
+
+          return [validated, fieldError];
+        };
+
+        it('for less than 9 characters', () => {
+          const [validated, ssnError] = prepareErrorCase(checkit, '12509340');
 
           expect(validated).to.equal(null);
           expect(ssnError.message).to.equal(checkit.messages.ssn);
         });
 
         it('for more than 9 characters', () => {
-          const [err, validated] = checkit.validateSync({
-            testInputValue: '1250934010',
-          });
-
-          const { errors } = err;
-          // Every input can have an array of errors related to the defined constrains
-          const { errors: inputErrors } = errors.testInputValue;
-          const ssnError = inputErrors.find(({ rule }) => rule === 'ssn');
+          const [validated, ssnError] = prepareErrorCase(checkit, '1250934010');
 
           expect(validated).to.equal(null);
           expect(ssnError.message).to.equal(checkit.messages.ssn);
         });
 
         it('for value with letters', () => {
-          const [err, validated] = checkit.validateSync({
-            testInputValue: '12509340A',
-          });
-
-          const { errors } = err;
-
-          // Every input can have an array of errors related to the defined constrains
-          const { errors: inputErrors } = errors.testInputValue;
-          const ssnError = inputErrors.find(({ rule }) => rule === 'ssn');
+          const [validated, ssnError] = prepareErrorCase(checkit, '12509340A');
 
           expect(validated).to.equal(null);
           expect(ssnError.message).to.equal(checkit.messages.ssn);
