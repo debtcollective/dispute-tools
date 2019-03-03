@@ -107,8 +107,6 @@ describe('Checkit', () => {
         });
 
         expect(err).to.equal(null);
-
-        expect(validated).to.be.an('object');
         assert.deepEqual(validated.testInputValue, ['Foo', 'Bar']);
       });
 
@@ -122,12 +120,10 @@ describe('Checkit', () => {
         });
 
         expect(err).to.equal(null);
-
-        expect(validated).to.be.an('object');
         assert.deepEqual(validated.testInputValue, []);
       });
 
-      // NOTE: This may need to be challenge as if required undefined should not bypass the rule
+      // NOTE: This may need to be challenge as "undefined" should not bypass the rule
       it('allows undefined values', () => {
         const checkit = new Checkit({
           testInputValue: ['oneOf:Foo, Bar'],
@@ -138,8 +134,6 @@ describe('Checkit', () => {
         });
 
         expect(err).to.equal(null);
-
-        expect(validated).to.be.an('object');
         assert.deepEqual(validated.testInputValue, undefined);
       });
 
@@ -155,9 +149,6 @@ describe('Checkit', () => {
 
           const { errors } = err;
 
-          expect(validated).to.equal(null);
-          expect(errors.testInputValue).to.be.an('object');
-
           // Every input can have an array of errors related to the defined constrains
           const { errors: inputErrors } = errors.testInputValue;
           const targetError = inputErrors.find(({ rule }) => rule === 'oneOf');
@@ -167,10 +158,12 @@ describe('Checkit', () => {
             .replace('{{label}}', 'testInputValue')
             .replace('{{var_1}}', 'Foo, Bar');
 
+          expect(validated).to.equal(null);
           expect(targetError).to.be.an('object');
           expect(targetError.message).to.equal(expectedErrorMessage);
         });
 
+        // NOTE: It's expected to combine with extra "required" constrain to prevent undefined
         it('allows undefined values', () => {
           const checkit = new Checkit({
             testInputValue: ['oneOf:Foo, Bar'],
@@ -181,8 +174,6 @@ describe('Checkit', () => {
           });
 
           expect(err).to.equal(null);
-
-          expect(validated).to.be.an('object');
           assert.deepEqual(validated.testInputValue, undefined);
         });
       });
@@ -198,8 +189,6 @@ describe('Checkit', () => {
           });
 
           expect(err).to.equal(null);
-
-          expect(validated).to.be.an('object');
           expect(validated.testInputValue).to.be.equal('foo');
         });
       });
@@ -216,8 +205,6 @@ describe('Checkit', () => {
             });
 
             expect(err).to.equal(null);
-
-            expect(validated).to.be.an('object');
             expect(validated.testInputValue).to.be.equal('Foo');
           });
         });
@@ -233,9 +220,6 @@ describe('Checkit', () => {
 
           const { errors } = err;
 
-          expect(validated).to.equal(null);
-          expect(errors.testInputValue).to.be.an('object');
-
           // Every input can have an array of errors related to the defined constrains
           const { errors: inputErrors } = errors.testInputValue;
           const targetError = inputErrors.find(({ rule }) => rule === 'oneOf');
@@ -245,7 +229,7 @@ describe('Checkit', () => {
             .replace('{{label}}', 'testInputValue')
             .replace('{{var_1}}', 'Foo, Bar');
 
-          expect(targetError).to.be.an('object');
+          expect(validated).to.equal(null);
           expect(targetError.message).to.equal(expectedErrorMessage);
         });
       });
