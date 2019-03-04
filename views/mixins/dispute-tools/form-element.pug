@@ -111,7 +111,7 @@ mixin toolsFormElementMixin(field, index)
             type="checkbox"
             name=`fieldValues[${field.name}]`
             id= field.name + field.attributes.value
-            checked= _formData[field.name].indexOf(field.attributes.value) >= 0
+            checked= Array.isArray(_formData[field.name]) ? _formData[field.name].indexOf(field.attributes.value) >= 0 : !!_formData[field.name]
             value='yes'
             aria-label= field.label
             data-name=field.name
