@@ -6,6 +6,8 @@ stages:
   - test
 
 test:
+  retry:
+    max: 2
   image: debtcollective/dispute-tools-test:latest
   stage: test
   services:
@@ -24,5 +26,5 @@ test:
     - yarn install
     - yarn build
   script:
-    - yarn test
+    - yarn test:all
     - yarn report
