@@ -166,12 +166,20 @@ describe('DisputesController', () => {
         let dispute = await createDispute(owner);
         let status = _.first(dispute.statuses);
         const url = urls.Disputes.updateDisputeData.url(dispute.id);
+        const body = {
+          command: 'setForm',
+          formName: 'personal-information-form',
+          fieldValues: {
+            name: 'Orlando Del Aguila',
+          },
+          _isDirty: true,
+        };
 
         // check dispute status is new
         expect(status.status).eql('New');
 
         // make a request to update the form
-        await testPutPage(url, setFormBody, owner);
+        await testPutPage(url, body, owner);
 
         // reload dispute
         dispute = await Dispute.findById(dispute.id);
@@ -189,6 +197,24 @@ describe('DisputesController', () => {
       it('should allow setForm', () => testOk(testPutPage(url, setFormBody, owner)));
       it('should require a valid command', () =>
         testBadRequest(testPutPage(url, { command: 'bogus' }, owner)));
+
+      it('should handle invalid data correctly', async () => {
+        const dispute = await createDispute(owner);
+        const url = urls.Disputes.updateDisputeData.url(dispute.id);
+        const body = {
+          command: 'setForm',
+          formName: 'personal-information-form',
+          fieldValues: {
+            name: null,
+          },
+        };
+
+        // make a request to update the form
+        const req = await testPutPage(url, body, owner, 'text/html');
+
+        expect(req.status).eql(200);
+        expect(req.text).to.have.string('Your form has 20 invalid values');
+      });
     });
   });
 
