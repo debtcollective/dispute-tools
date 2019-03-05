@@ -116,7 +116,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
 
         req.flash(
           'error',
-          'An error occurred while completing your dispute. Please try again. If the problem persists, contact a Debt Collective organizer for assistance.',
+          'An error occurred while completing your dispute. Please try again or contact us if the problem persists.',
         );
         return redirect();
       }
@@ -141,28 +141,28 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       }
 
       try {
-        const res = dispute[req.body.command](req.body);
-        if (typeof res.then === 'function') {
-          await res;
+        const command = dispute[req.body.command](req.body);
+
+        if (typeof command.then === 'function') {
+          await command;
         }
       } catch (e) {
-        Sentry.captureException(e);
-        logger.error(
-          `Error occurred while updating dispute data for dispute ${dispute.id}`,
-          e.message || (e.toString && e.toString()) || e,
-        );
         return res.format({
           html() {
-            req.flash(
-              'error',
-              e.errors
-                ? `An error ocurred while validating your form data: ${e.errors[0]}`
-                : 'An error occurred while updating the dispute data. Please try again or contact a dispute administrator if the problem persists.',
-            );
+            const message =
+              `Your form has ${e.message}` ||
+              "We couldn't update your dispute. Please try again or contact us if the problem persists.";
+
+            req.flash('error', message);
+
             return res.redirect(config.router.helpers.Disputes.show.url(dispute.id));
           },
           json() {
-            return res.json({ error: e.toString() });
+            const message =
+              e.message ||
+              "We couldn't update your dispute. Please try again or contact us if the problem persists";
+
+            return res.json({ errors: e.errors, message });
           },
         });
       }
@@ -222,7 +222,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       } catch (e) {
         req.flash(
           'error',
-          'A problem occurred while attempting to upload your attachments. Please try again, and if the problem persists, contact a Debt Collective organizer.',
+          'A problem occurred while attempting to upload your attachments. Please try again or contact us if the problem persists.',
         );
         logger.error('Unable to upload attachment', e.message);
         caught = e;
