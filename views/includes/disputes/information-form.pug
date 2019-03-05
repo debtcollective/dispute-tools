@@ -40,7 +40,7 @@ include ../../mixins/dispute-tools/form-element
           if sets.fields
             fieldset
               each row, j in sets.fields
-                .clearfix.mxn2
+                .clearfix
                   each field, k in row
                     +toolsFormElementMixin(field, i + j + k)
 
