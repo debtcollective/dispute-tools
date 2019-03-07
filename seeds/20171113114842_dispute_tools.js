@@ -88,14 +88,13 @@ Once you receive your report, you can use this tool to dispute errors. For a lis
     excerpt: 'Use this tool to dispute any private student loan.',
     about: `### Dispute an Unpaid Private Student Loan
 
-#### For any private student loan debt
+Private student loans are issued by a bank or lender for educational expenses, but they are NOT a federal student loan. Once you go into repayment on a private loan, these companies often contract with a servicer, collection agency or even law firms to collect the debt. All of these entities are known to break laws when trying to collect. What is more, because of sloppy paperwork, the owners of the debt can’t always prove they own it. They assume individuals do not know their rights and do not anticipate any push back. Demanding proof of ownership is the first step to getting debt collectors off our backs.
 
-Private student loans are those issued by a company not working on behalf of the government. These companies often contract with a servicer to collect the debt. Some of them break the law when trying to collect. What is more, because of sloppy paperwork, the owners of the debt often can’t prove they own it. Demanding proof of ownership is the first step to getting debt collectors off our backs.
+If you have a private student loan, this tool will assist you to generate a letter that needs to be sent to the creditor or to the debt collector asking them to prove that they have the right to collect on the debt they are bugging you about. You have a right to demand that they can provide this evidence. If the creditor or collector cannot prove that you owe them money, they will be less likely to sue you or to continue to collect.
 
-If you have a private student loan, this tool will assist you to generate a letter that will be automatically sent to the creditor or to the debt collector asking them to prove that they have the right to collect on the debt they have been bugging you about. You have a right to this evidence. If the creditor or collector cannot prove that you owe them money, they will be less likely to sue you or continue to collect.
+**Please note that this tool is experimental. Most people do not receive relief from filing this dispute the first time**. Because the private student loan industry is very powerful, they buy off politicians, and they make it hard for the laws to work in our favor. But we believe that it is still a good idea to dispute your private student loan. Everyone should flood these companies with disputes. We need to collect the information to show in mass numbers that we have been defrauded. Even if your dispute is not successful, there are other pathways you can take to try to get your loan cancelled, including joining with other people in your situation to put pressure on state and federal authorities to address this issue.
 
-This tool should not be used in response to a Complaint/Summons letter letting you know that the collector is actively seeking a judgment against you in court. If you are being sued, you should seek legal advice.
-Before you begin to use this tool, you should make sure you have the name and address of the collections agency that is attempting to collect from you.
+This tool should not be used in response to a Complaint/Summons letter letting you know that the collector is actively seeking a judgment against you in court. If you are being sued, you should seek legal advice. Before you begin to use this tool, you should make sure you have the name and address of the collections agency that is attempting to collect from you.
 
 If you don't have the name and address of the collection agency, you will not be able to file this dispute.`,
     completed: 0,
