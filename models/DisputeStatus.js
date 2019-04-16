@@ -28,7 +28,9 @@ const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
   },
 
   async createForDispute(dispute, { status, note = '' }) {
-    const repeatStatus = _.get(_.head(dispute.statuses), 'status', null) === status;
+    const lastStatus = _.head(dispute.statuses);
+    const pendingSubmission = _.get(lastStatus, 'pendingSubmission', null);
+    const repeatStatus = _.get(lastStatus, 'status', null) === status;
     const hasNote = !_.isEmpty(_.trim(note));
 
     if (repeatStatus && !hasNote) {
@@ -45,6 +47,7 @@ const DisputeStatus = Class('DisputeStatus').inherits(Krypton.Model)({
       status,
       note,
       disputeId: dispute.id,
+      pendingSubmission,
     });
 
     await disputeStatus.save();

@@ -43,6 +43,28 @@ describe('Dispute Status', () => {
       expect(newStatus.note).eq(note);
     });
 
+    it('should keep the same pendingSubmission value from last status', async () => {
+      let dispute = await createDispute(user);
+      const status = new DisputeStatus({
+        status: DisputeStatuses.completed,
+        disputeId: dispute.id,
+        pendingSubmission: true,
+      });
+
+      await status.save();
+
+      // reload dispute
+      dispute = await Dispute.findById(dispute.id);
+
+      const newStatus = await DisputeStatus.createForDispute(dispute, {
+        status: DisputeStatuses.completed,
+        note: 'test note',
+      });
+
+      expect(status.pendingSubmission).eq(true);
+      expect(newStatus.pendingSubmission).eq(status.pendingSubmission);
+    });
+
     describe('notification', () => {
       let sent;
       let safeSend;
