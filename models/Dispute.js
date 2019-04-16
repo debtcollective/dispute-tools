@@ -53,7 +53,8 @@ const Dispute = Class('Dispute')
 
     if (qs.filters) {
       // If we're passed a human readable id just search by that and ignore everything else
-      if (qs.filters.readable_id) {
+      // check we are receiving a number before doing the query
+      if (qs.filters.readable_id && !isNaN(qs.filters.readable_id)) {
         return query
           .where('readable_id', qs.filters.readable_id)
           .include(Dispute.defaultIncludes)
