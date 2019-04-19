@@ -47,11 +47,44 @@ Checkit.Validator.prototype.parsableDate = function parsableDate(val) {
   return moment(val, 'MM/DD/YYYY').isValid() || moment(val, 'YYYY/MM/DD').isValid();
 };
 
+Checkit.Validator.prototype.arrayOf = function arrayOf(items, ...options) {
+  let isValid = false;
+  // Function intend the first parameter to the rule is a string to represent desire shape
+  const stringifiedShape = `${options[0]}`;
+  // Checkit uses : to separate parameters which lead us to use . instead
+  const shape = JSON.parse(stringifiedShape.replace(/\./g, ':'));
+  const shapeKeys = _.sortBy(Object.keys(shape));
+
+  if (!_.isArray(items)) {
+    return false;
+  }
+
+  items.every(item => {
+    const itemKeys = _.sortBy(Object.keys(item));
+
+    if (!_.isEqual(itemKeys, shapeKeys)) {
+      isValid = false;
+      return false;
+    }
+
+    itemKeys.every(itemKey => {
+      isValid = typeof item[itemKey] === shape[itemKey];
+      return isValid;
+    });
+
+    return isValid;
+  });
+
+  return isValid;
+};
+
 module.exports = class extends Checkit {
   constructor(...args) {
     super(...args);
     this.messages.ssn = 'Invalid social security number';
     this.messages.oneOf = 'Invalid option. The value of {{label}} was not one of {{var_1}}';
     this.messages.parsableDate = 'Invalid date format. The typical date format is MM/DD/YYYY';
+    this.messages.arrayOf =
+      'One or more invalid values provided to {{label}}. You probably left out the debt type or add a wrong amount value';
   }
 };

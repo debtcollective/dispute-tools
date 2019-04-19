@@ -115,6 +115,17 @@ export default {
     };
   },
   methods: {
+    getValues() {
+      return this.debts.map(({ type, amount }) => {
+        // We use the same approach that template input with name="fieldValues[debts][${index}][amount]"
+        const unmaskedAmount = amount.replace(/[^0-9.]/g, '');
+        const parsedAmount = parseFloat(Number(unmaskedAmount).toFixed(3));
+        // While it lack of consistency avoid extra code to validate amount greater than 0 by returning null
+        const amountValue = !amount || parsedAmount <= 0 ? null : `${parsedAmount}`;
+
+        return { amount: amountValue, type };
+      });
+    },
     addDebt() {
       this.debts.push({ type: '', amount: '', typeSelected: '' });
     },

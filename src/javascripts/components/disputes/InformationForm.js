@@ -97,7 +97,7 @@ export default class DisputesInformationForm extends Widget {
 
     this.ui = {};
     Object.keys(this.constraints).forEach(key => {
-      const query = `[name="fieldValues[${key}]"]`;
+      const query = this._uiElementsQuery(key);
       this.ui[key] = this.element.querySelector(query);
     });
 
@@ -156,6 +156,10 @@ export default class DisputesInformationForm extends Widget {
     }
 
     this.pisces = new Pisces(this.element.parentElement);
+  }
+
+  _uiElementsQuery(key) {
+    return `[name^="fieldValues[${key}]"]`;
   }
 
   _setupDatePickers() {
@@ -443,6 +447,12 @@ export default class DisputesInformationForm extends Widget {
           return;
         }
 
+        // We asume all 'debts' constrains are mean to be used alongside DebtsAmount.vue
+        if (key === 'debts') {
+          data[key] = this.debtAmounts.getValues();
+          return;
+        }
+
         if (element.dataset.customSelector) {
           data[key] = getCustomSelector(this.dispute, key).DOM();
           return;
@@ -480,7 +490,8 @@ export default class DisputesInformationForm extends Widget {
   }
 
   _getElementsForKey(key) {
-    let nodes = this.element.querySelectorAll(`[name^="fieldValues[${key}]"]:not([type="hidden"])`);
+    const baseQuery = this._uiElementsQuery(key);
+    let nodes = this.element.querySelectorAll(`${baseQuery}:not([type="hidden"])`);
 
     if (nodes.length) {
       return nodes;
@@ -489,7 +500,7 @@ export default class DisputesInformationForm extends Widget {
     // Here we handle flatpickr behaviour on mobile
     // It changes the type of the original input to hidden and creates a new one
     // We still want to retrieve the value of the hidden input
-    nodes = this.element.querySelectorAll(`.date-form-control[name^="fieldValues[${key}]"]`);
+    nodes = this.element.querySelectorAll(`.date-form-control${baseQuery}`);
 
     return nodes;
   }

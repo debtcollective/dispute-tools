@@ -20,9 +20,67 @@ describe('Checkit', () => {
     it('responds to a custom parsableDate function', () => {
       expect(Checkit.Validator.prototype.parsableDate).to.be.a('function');
     });
+
+    it('responds to a custom arrayOf function', () => {
+      expect(Checkit.Validator.prototype.arrayOf).to.be.a('function');
+    });
   });
 
   describe('instance', () => {
+    describe('handles arraOf validation constrain', () => {
+      const checkit = new Checkit({
+        testInputValue: ['arrayOf:{"type"."string","amount"."number"}'],
+      });
+
+      it('fails if array is empty', () => {
+        const [err, validated] = checkit.validateSync({
+          testInputValue: [],
+        });
+
+        expect(validated).to.equal(null);
+        expect(err.errors).to.not.equal(null);
+      });
+
+      it('fails if at least one array item has different shape', () => {
+        const [err, validated] = checkit.validateSync({
+          testInputValue: [{ type: 'foo', amount: 1 }, { type: 'bar' }],
+        });
+
+        expect(validated).to.equal(null);
+        expect(err.errors).to.not.equal(null);
+      });
+
+      it('show a custom message when fails', () => {
+        const [err, validated] = checkit.validateSync({
+          testInputValue: [],
+        });
+        const errorMessage = err.errors.testInputValue.message;
+
+        expect(validated).to.equal(null);
+        expect(errorMessage).to.equal(
+          'One or more invalid values provided to testInputValue. You probably left out the debt type or add a wrong amount value',
+        );
+      });
+
+      it('succeed if all array items match given shape', () => {
+        const [err, validated] = checkit.validateSync({
+          testInputValue: [{ type: 'foo', amount: 1 }, { type: 'bar', amount: 10 }],
+        });
+
+        expect(err).to.equal(null);
+        expect(validated).to.not.equal(null);
+      });
+
+      it('succeed even if given values keys are not in the same position', () => {
+        const [err, validated] = checkit.validateSync({
+          testInputValue: [{ amount: 1, type: 'foo' }, { amount: 10, type: 'bar' }],
+        });
+
+        expect(err).to.equal(null);
+        expect(validated).to.not.equal(null);
+      });
+    });
+
     describe('handles ssn validation constrain', () => {
       const checkit = new Checkit({
         testInputValue: ['ssn'],
