@@ -115,6 +115,15 @@ export default {
     };
   },
   methods: {
+    getValues() {
+      return this.debts.map(({ type, amount }) => {
+        // We use the same approach that template input with name="fieldValues[debts][${index}][amount]"
+        const unmaskedAmount = amount.replace(/[^0-9.]/g, '');
+        const parsedAmount = parseFloat(Number(unmaskedAmount).toFixed(3));
+
+        return { amount: parsedAmount, type };
+      });
+    },
     addDebt() {
       this.debts.push({ type: '', amount: '', typeSelected: '' });
     },
