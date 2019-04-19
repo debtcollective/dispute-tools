@@ -57,7 +57,7 @@ describe('Checkit', () => {
         const errorMessage = err.errors.testInputValue.message;
 
         expect(validated).to.equal(null);
-        expect(errorMessage).to.equal('Invalid shape given for an item in collection');
+        expect(errorMessage).to.equal('One or more invalid values provided to testInputValue');
       });
 
       it('succeed if all array items match given shape', () => {

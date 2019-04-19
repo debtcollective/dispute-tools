@@ -84,6 +84,6 @@ module.exports = class extends Checkit {
     this.messages.ssn = 'Invalid social security number';
     this.messages.oneOf = 'Invalid option. The value of {{label}} was not one of {{var_1}}';
     this.messages.parsableDate = 'Invalid date format. The typical date format is MM/DD/YYYY';
-    this.messages.arrayOf = 'Invalid shape given for an item in collection';
+    this.messages.arrayOf = 'One or more invalid values provided to {{label}}';
   }
 };
