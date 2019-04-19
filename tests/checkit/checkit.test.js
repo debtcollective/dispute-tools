@@ -57,7 +57,9 @@ describe('Checkit', () => {
         const errorMessage = err.errors.testInputValue.message;
 
         expect(validated).to.equal(null);
-        expect(errorMessage).to.equal('One or more invalid values provided to testInputValue');
+        expect(errorMessage).to.equal(
+          'One or more invalid values provided to testInputValue. You probably left out the debt type or add a wrong amount value',
+        );
       });
 
       it('succeed if all array items match given shape', () => {
