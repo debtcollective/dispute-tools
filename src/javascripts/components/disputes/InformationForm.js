@@ -443,6 +443,12 @@ export default class DisputesInformationForm extends Widget {
           return;
         }
 
+        // We asume all 'debts' constrains are mean to be used alongside DebtsAmount.vue
+        if (key === 'debts') {
+          data[key] = this.debtAmounts.getValues();
+          return;
+        }
+
         if (element.dataset.customSelector) {
           data[key] = getCustomSelector(this.dispute, key).DOM();
           return;
