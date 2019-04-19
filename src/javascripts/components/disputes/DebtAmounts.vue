@@ -121,7 +121,7 @@ export default {
         const unmaskedAmount = amount.replace(/[^0-9.]/g, '');
         const parsedAmount = parseFloat(Number(unmaskedAmount).toFixed(3));
         // While it lack of consistency avoid extra code to validate amount greater than 0 by returning null
-        const amountValue = !amount || parsedAmount <= 0 ? null : parsedAmount;
+        const amountValue = !amount || parsedAmount <= 0 ? null : `${parsedAmount}`;
 
         return { amount: amountValue, type };
       });
