@@ -53,14 +53,14 @@ Checkit.Validator.prototype.arrayOf = function arrayOf(items, ...options) {
   const stringifiedShape = `${options[0]}`;
   // Checkit uses : to separate parameters which lead us to use . instead
   const shape = JSON.parse(stringifiedShape.replace(/\./g, ':'));
-  const shapeKeys = Object.keys(shape);
+  const shapeKeys = _.sortBy(Object.keys(shape));
 
   if (!_.isArray(items)) {
     return false;
   }
 
   items.every(item => {
-    const itemKeys = Object.keys(item);
+    const itemKeys = _.sortBy(Object.keys(item));
 
     if (!_.isEqual(itemKeys, shapeKeys)) {
       isValid = false;

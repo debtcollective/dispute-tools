@@ -68,6 +68,15 @@ describe('Checkit', () => {
         expect(err).to.equal(null);
         expect(validated).to.not.equal(null);
       });
+
+      it('succeed even if given values keys are not in the same position', () => {
+        const [err, validated] = checkit.validateSync({
+          testInputValue: [{ amount: 1, type: 'foo' }, { amount: 10, type: 'bar' }],
+        });
+
+        expect(err).to.equal(null);
+        expect(validated).to.not.equal(null);
+      });
     });
 
     describe('handles ssn validation constrain', () => {
