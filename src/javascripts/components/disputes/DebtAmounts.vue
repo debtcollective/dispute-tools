@@ -120,8 +120,10 @@ export default {
         // We use the same approach that template input with name="fieldValues[debts][${index}][amount]"
         const unmaskedAmount = amount.replace(/[^0-9.]/g, '');
         const parsedAmount = parseFloat(Number(unmaskedAmount).toFixed(3));
+        // While it lack of consistency avoid extra code to validate amount greater than 0 by returning null
+        const amountValue = !amount || parsedAmount <= 0 ? null : parsedAmount;
 
-        return { amount: parsedAmount, type };
+        return { amount: amountValue, type };
       });
     },
     addDebt() {
