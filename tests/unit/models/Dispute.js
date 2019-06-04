@@ -290,6 +290,93 @@ describe('Dispute', () => {
       });
     });
 
+    describe('creditor', () => {
+      describe('general-debt-dispute', () => {
+        it('returns creditor information available in the dispute', async () => {
+          const tool = await DisputeTool.findBySlug('general-debt-dispute');
+          const dispute = await createDispute(user, tool);
+          dispute.data = {
+            forms: {
+              'personal-information-form': {
+                'agency-name': 'Creditor name',
+                'agency-address': 'Creditor address',
+                'agency-city': 'Creditor city',
+                'agency-state': 'Creditor state',
+                'agency-zip-code': '94115',
+              },
+            },
+          };
+
+          const creditor = dispute.creditor();
+
+          expect(creditor).to.exist;
+          expect(creditor.name).to.eq('Creditor name');
+          expect(creditor.address).to.eq('Creditor address');
+          expect(creditor.city).to.eq('Creditor city');
+          expect(creditor.state).to.eq('Creditor state');
+          expect(creditor.zip).to.eq('94115');
+        });
+      });
+
+      describe('credit-report-dispute', () => {
+        it('returns creditor information available in the dispute', async () => {
+          const tool = await DisputeTool.findBySlug('credit-report-dispute');
+          const dispute = await createDispute(user, tool);
+          dispute.data = {
+            forms: {
+              'personal-information-form': {
+                currentCreditor: 'Creditor name',
+              },
+            },
+          };
+
+          const creditor = dispute.creditor();
+
+          expect(creditor).to.exist;
+          expect(creditor.name).to.eq('Creditor name');
+        });
+      });
+
+      describe('private-student-loan-dispute', () => {
+        it('returns creditor information available in the dispute', async () => {
+          const tool = await DisputeTool.findBySlug('private-student-loan-dispute');
+          const dispute = await createDispute(user, tool);
+          dispute.data = {
+            forms: {
+              'personal-information-form': {
+                'firm-name': 'Creditor name',
+                'firm-address': 'Creditor address',
+                'firm-city': 'Creditor city',
+                'firm-state': 'Creditor state',
+                'firm-zip-code': '94115',
+              },
+            },
+          };
+
+          const creditor = dispute.creditor();
+
+          expect(creditor).to.exist;
+          expect(creditor.name).to.eq('Creditor name');
+          expect(creditor.address).to.eq('Creditor address');
+          expect(creditor.city).to.eq('Creditor city');
+          expect(creditor.state).to.eq('Creditor state');
+          expect(creditor.zip).to.eq('94115');
+        });
+      });
+
+      describe('default', () => {
+        it('returns object with empty name attribute', async () => {
+          const tool = await DisputeTool.findBySlug('tax-offset-dispute');
+          const dispute = await createDispute(user, tool);
+
+          const creditor = dispute.creditor();
+
+          expect(creditor).to.exist;
+          expect(creditor.name).to.eq('');
+        });
+      });
+    });
+
     describe('search', () => {
       const containsDispute = ids => expect(ids).to.contain(dispute.id);
 

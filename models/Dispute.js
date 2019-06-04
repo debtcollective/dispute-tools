@@ -637,6 +637,47 @@ const Dispute = Class('Dispute')
 
       return this.save();
     },
+
+    /**
+     * Normalizes and returns creditor information
+     */
+    creditor() {
+      const defaultCreditor = { name: '' };
+      const {
+        data: { forms },
+      } = this;
+
+      if (!forms) {
+        return defaultCreditor;
+      }
+      const form = forms['personal-information-form'];
+      const tool = this.disputeTool;
+
+      switch (tool.slug) {
+        case 'general-debt-dispute':
+          return {
+            name: form['agency-name'],
+            address: form['agency-address'],
+            city: form['agency-city'],
+            state: form['agency-state'],
+            zip: form['agency-zip-code'],
+          };
+        case 'credit-report-dispute':
+          return {
+            name: form.currentCreditor,
+          };
+        case 'private-student-loan-dispute':
+          return {
+            name: form['firm-name'],
+            address: form['firm-address'],
+            city: form['firm-city'],
+            state: form['firm-state'],
+            zip: form['firm-zip-code'],
+          };
+        default:
+          return defaultCreditor;
+      }
+    },
   },
 });
 
