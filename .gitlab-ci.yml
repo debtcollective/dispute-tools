@@ -26,5 +26,5 @@ test:
     - yarn install
     - yarn build
   script:
-    - yarn test:all
+    - yarn test
     - yarn report
