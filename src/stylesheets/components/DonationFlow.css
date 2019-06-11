@@ -182,6 +182,11 @@ section.Payment .flex div:first-child .PaymentMethod {
   margin-right: 30px;
 }
 
+.donation-confirmation {
+  display: flex;
+  flex-direction: column;
+}
+
 .DonationForm {
   display: flex;
   align-items: center;

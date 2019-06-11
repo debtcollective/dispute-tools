@@ -29,8 +29,9 @@ block content
           .col.col-4.pt1.pl1
             .AmountOption(data-donation-amount="25000") $250
         .clearfix.my3
-          .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500 Amount
-          .col.sm-col-9.col-12.px1
+          .col.col-12
+            label.inline-block.-fw-600
+              | Amount
             input.form-control.-fw(type="text" name="custom-amount" value="10.00" data-donation-custom-input)
             p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Amount
         .clearfix
@@ -68,29 +69,28 @@ block content
                 input(type="hidden" name="cancel_return" value="")
                 input(type="hidden" name="bn" value="PP-DonationsBF:btn_donate_LG.gif:NonHosted")
       .clearfix.mb2
-        .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Email
-        .col.sm-col-8.col-12.px1
+        .col.col-12
+          label.inline-block.-fw-600
+            | Email
           input.form-control.-fw(type="email" name="email")
           p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid email
       .clearfix.mb2
-        .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Card #
-        .col.sm-col-8.col-12.px1
+          label.inline-block.-fw-600
+            | Card
           input.form-control.-fw(type="text" name="number" maxLength="16")
           p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Card Number
       .clearfix.mb2
-        .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 Expires on
-        .col.sm-col-8.col-12.px1
-          .col.col-7
-            input.form-control.-fw(type="text" name="exp" placeholder="MM/YY" maxLength="5")
-            p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Expiration
-      .clearfix.mb3
-        .col.sm-col-4.col-12.p1.right-align.xs-left-align.-fw-500 CVC
-        .col.sm-col-8.col-12.px1
-          .col.col-5
-            input.form-control.-fw(type="text" name="cvc" maxLength="5")
-            p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid CVC
+          label.inline-block.-fw-600
+            | Expires on
+          input.form-control.-fw(type="text" name="exp" placeholder="MM/YY" maxLength="5")
+          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Expiration
+      .clearfix.mb2
+          label.inline-block.-fw-600
+            | CVC
+          input.form-control.-fw(type="text" name="cvc" maxLength="5")
+          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid CVC
 
-      .clearfix.mb4
+      .clearfix.mt2.mb2
         h4.mb1 Want to support more than once?
 
         .-ff-sec.form-check.form-check-inline
@@ -101,13 +101,9 @@ block content
           label.block(for="donate_monthly_checkbox")
             span.ml1 Yes, I agree to donate $#[span.js-amount-value 10]/#[b month].
 
-      .flex
-        .flex-none.mr1
-          div.btn-back.btn-secondary.-k-btn.-fw-600
-            svg(width=14 height=14)
-              use(xlink:href="#svg-arrow-backward")
-        .flex-auto
-          button.-k-btn.btn-primary.-fw.-fw-600.js-donate-amount(type="submit") Donate $#[span.js-amount-value 10]
+      .donation-confirmation
+        button.-k-btn.btn-primary.-fw.-fw-600.js-donate-amount.mb1(type="submit") Donate $#[span.js-amount-value 10]
+        button.btn-back.btn-secondary.-k-btn.-fw-600.-fw(type="button") Change amount
     section.Success(style="display: none")
       .DonationResponse
         img(src="/svg/heart.svg")
