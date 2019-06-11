@@ -68,29 +68,41 @@ block content
                 input(type="hidden" name="return" value="")
                 input(type="hidden" name="cancel_return" value="")
                 input(type="hidden" name="bn" value="PP-DonationsBF:btn_donate_LG.gif:NonHosted")
-      .clearfix.mb2
+
+      //-
+        Personal information
+      .clearfix.mb1
         .col.col-12
-          label.inline-block.-fw-600
-            | Email
+          label.inline-block.-fw-600 Name
           input.form-control.-fw(type="email" name="email")
-          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid email
-      .clearfix.mb2
-          label.inline-block.-fw-600
-            | Card
+          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Name
+      .clearfix.mb1
+        .col.col-12
+          label.inline-block.-fw-600 Email
+          input.form-control.-fw(type="email" name="email")
+          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Email
+      .clearfix.mb1
+        .col.col-12
+          label.inline-block.-fw-600 Phone
+          input.form-control.-fw(type="text" name="phone")
+          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Phone
+
+      //-
+        Card information
+      .clearfix.mb1
+          label.inline-block.-fw-600 Card
           input.form-control.-fw(type="text" name="number" maxLength="16")
           p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Card Number
-      .clearfix.mb2
-          label.inline-block.-fw-600
-            | Expires on
+      .clearfix.mb1
+          label.inline-block.-fw-600 Expires on
           input.form-control.-fw(type="text" name="exp" placeholder="MM/YY" maxLength="5")
           p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Expiration
-      .clearfix.mb2
-          label.inline-block.-fw-600
-            | CVC
+      .clearfix.mb1
+          label.inline-block.-fw-600 CVC
           input.form-control.-fw(type="text" name="cvc" maxLength="5")
           p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid CVC
 
-      .clearfix.mt2.mb2
+      .clearfix.my3
         h4.mb1 Want to support more than once?
 
         .-ff-sec.form-check.form-check-inline
