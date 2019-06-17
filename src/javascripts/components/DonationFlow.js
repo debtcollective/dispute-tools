@@ -16,8 +16,6 @@ const PAGE_PAYMENT = 'PAGE_PAYMENT';
 const PAGE_SUCCESS = 'PAGE_SUCCESS';
 const PAGE_ERROR = 'PAGE_ERROR';
 
-const PAYMENT_METHOD_CREDIT_CARD = 'PAYMENT_METHOD_CREDIT_CARD';
-
 const formatCurrency = amount => `${amount.toFixed(2)}`;
 
 export default class DonationFlow extends Widget {
@@ -31,7 +29,6 @@ export default class DonationFlow extends Widget {
       amount: AMOUNT_PRESETS[0],
       page: PAGE_DONATE,
       fund: FUND_GENERAL,
-      paymentMethod: PAYMENT_METHOD_CREDIT_CARD,
       email: '',
       number: '',
       cvc: '',
@@ -64,6 +61,7 @@ export default class DonationFlow extends Widget {
     this.sectionPaymentInputNumberEl = this.donationFormEl.querySelector('[name="number"]');
     this.sectionPaymentInputExpEl = this.donationFormEl.querySelector('[name="exp"]');
     this.sectionPaymentInputCvcEl = this.donationFormEl.querySelector('[name="cvc"]');
+    this.sectionPaymentInputNameEl = this.donationFormEl.querySelector('[name="name"]');
     this.sectionPaymentSubmitEl = this.sectionPaymentEl.querySelector('button');
     this.sectionSuccessEl = this.donationFormEl.querySelector('section.Success');
     this.sectionDonateBtn = this.donationFormEl.querySelector('.js-donate-amount');
@@ -151,7 +149,7 @@ export default class DonationFlow extends Widget {
     this.render();
   }
   render() {
-    const { page, fund, amount, paymentMethod } = this.state;
+    const { page, fund, amount } = this.state;
 
     // Page
     this.sectionEls.forEach(el => {
@@ -168,23 +166,12 @@ export default class DonationFlow extends Widget {
         break;
       case PAGE_PAYMENT:
         this.sectionPaymentEl.style.display = 'block';
-        if (paymentMethod) {
-          if (paymentMethod === PAYMENT_METHOD_CREDIT_CARD) {
-            this.sectionPaymentSubmitEl.removeAttribute('disabled');
-            // this.sectionPaymentInputNameEl.removeAttribute('disabled');
-            this.sectionPaymentInputNumberEl.removeAttribute('disabled');
-            this.sectionPaymentInputExpEl.removeAttribute('disabled');
-            this.sectionPaymentInputCvcEl.removeAttribute('disabled');
-          } else {
-            this.sectionPaymentSubmitEl.setAttribute('disabled', 'disabled');
-          }
-        } else {
-          this.sectionPaymentSubmitEl.setAttribute('disabled', 'disabled');
-          // this.sectionPaymentInputNameEl.setAttribute('disabled', 'disabled');
-          this.sectionPaymentInputNumberEl.setAttribute('disabled', 'disabled');
-          this.sectionPaymentInputExpEl.setAttribute('disabled', 'disabled');
-          this.sectionPaymentInputCvcEl.setAttribute('disabled', 'disabled');
-        }
+        this.sectionPaymentSubmitEl.removeAttribute('disabled');
+        this.sectionPaymentInputNameEl.removeAttribute('disabled');
+        this.sectionPaymentInputNumberEl.removeAttribute('disabled');
+        this.sectionPaymentInputExpEl.removeAttribute('disabled');
+        this.sectionPaymentInputCvcEl.removeAttribute('disabled');
+
         break;
       case PAGE_SUCCESS:
         this.sectionSuccessEl.style.display = 'block';
@@ -213,19 +200,8 @@ export default class DonationFlow extends Widget {
     );
     if (matchingPreset) matchingPreset.classList.add('active');
 
-    // Data: Fund to donate to
-    if (paymentMethod) {
-      if (paymentMethod === PAYMENT_METHOD_CREDIT_CARD) {
-        this.sectionPaymentMethodCreditCardEl.classList.add('active');
-        this.sectionPaymentMethodPayPalEl.classList.remove('active');
-      } else {
-        this.sectionPaymentMethodPayPalEl.classList.add('active');
-        this.sectionPaymentMethodCreditCardEl.classList.remove('active');
-      }
-    } else {
-      this.sectionPaymentMethodPayPalEl.classList.remove('active');
-      this.sectionPaymentMethodCreditCardEl.classList.remove('active');
-    }
+    this.sectionPaymentMethodCreditCardEl.classList.add('active');
+    this.sectionPaymentMethodPayPalEl.classList.remove('active');
 
     // Data: Credit Card Inputs
     const emailIsValid = VALID_EMAIL_REGEX.test(this.sectionPaymentInputEmailEl.value);
