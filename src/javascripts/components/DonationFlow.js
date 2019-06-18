@@ -9,8 +9,6 @@ const AMOUNT_PRESETS = [1000, 2000, 3000, 5000, 10000, 25000];
 const FUND_GENERAL = 'FUND_GENERAL';
 const FUND_STRIKE = 'FUND_STRIKE';
 
-const VALID_EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
 const PAGE_DONATE = 'PAGE_DONATE';
 const PAGE_PAYMENT = 'PAGE_PAYMENT';
 const PAGE_SUCCESS = 'PAGE_SUCCESS';
@@ -22,6 +20,7 @@ export default class DonationFlow extends Widget {
   static get constraints() {
     return { email: ['required', 'email'] };
   }
+
   constructor(config) {
     super(config);
     this.state = {
@@ -29,6 +28,8 @@ export default class DonationFlow extends Widget {
       amount: AMOUNT_PRESETS[0],
       page: PAGE_DONATE,
       fund: FUND_GENERAL,
+      name: '',
+      phone: '',
       email: '',
       number: '',
       cvc: '',
@@ -141,13 +142,105 @@ export default class DonationFlow extends Widget {
       this.render();
     });
 
-    // tokens
-    Stripe.setPublishableKey(window.STRIPE_PUBLISHABLE_KEY);
+    // Init Stripe
+    this.initStripe();
+    this.initStripeElements();
   }
+
+  initStripe() {
+    this.stripe = window.Stripe(window.STRIPE_PUBLISHABLE_KEY);
+  }
+
+  initStripeElements() {
+    const elements = this.stripe.elements();
+
+    const style = {
+      base: {
+        color: '#32325d',
+        fontFamily:
+          "'Libre Franklin', 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', Segoe UI Emoji', 'Segoe UI Symbol'",
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+          color: '#aab7c4',
+        },
+      },
+      invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a',
+      },
+    };
+
+    // Create an instance of the card Element.
+    const card = elements.create('card', { style });
+
+    // Add an instance of the card Element into the `card-element` <div>.
+    card.mount('#card-element');
+
+    this.card = card;
+  }
+
   setState(newState) {
     this.state = Object.assign({}, this.state, newState);
     this.render();
   }
+
+  validate() {
+    return { valid: false };
+  }
+
+  createStripeToken(callback) {
+    Stripe.card.createToken(
+      {
+        number: this.sectionPaymentInputNumberEl.value,
+        cvc: this.sectionPaymentInputCvcEl.value,
+        exp: this.sectionPaymentInputExpEl.value,
+      },
+      (status, response) => {
+        if (status === 200 && response.type === 'card') {
+          const chargeObject = {
+            token: response.id,
+            email: this.sectionPaymentInputEmailEl.value.trim(),
+            amount: this.state.amount,
+            subscribe: this.sectionDonateMonthly.checked ? 1 : 0,
+          };
+
+          postStripePayment({ body: chargeObject }, (error, result) => {
+            this.setState({ busy: false });
+            this.sectionDonateBtn.disabled = false;
+            if (result && result.body && result.body.error) {
+              callback(new Error(result.body.error.message));
+            } else {
+              callback(error, result);
+            }
+          });
+        } else {
+          callback(new Error('Could not create Stripe token'));
+        }
+      },
+    );
+  }
+
+  donate(callback) {
+    if (this.state.busy) return;
+    this.setState({ busy: true });
+    this.sectionDonateBtn.disabled = true;
+
+    const validation = this.validate();
+
+    if (validation.valid === false) {
+      // handle errors
+
+      // reset state
+      this.setState({ busy: false });
+      this.sectionDonateBtn.disabled = false;
+
+      return;
+    }
+
+    this.createStripeToken(callback);
+  }
+
   render() {
     const { page, fund, amount } = this.state;
 
@@ -155,6 +248,7 @@ export default class DonationFlow extends Widget {
     this.sectionEls.forEach(el => {
       el.style.display = 'none';
     }); // hide all
+
     switch (page) {
       case PAGE_DONATE:
         this.sectionDonateEl.style.display = 'block';
@@ -168,9 +262,6 @@ export default class DonationFlow extends Widget {
         this.sectionPaymentEl.style.display = 'block';
         this.sectionPaymentSubmitEl.removeAttribute('disabled');
         this.sectionPaymentInputNameEl.removeAttribute('disabled');
-        this.sectionPaymentInputNumberEl.removeAttribute('disabled');
-        this.sectionPaymentInputExpEl.removeAttribute('disabled');
-        this.sectionPaymentInputCvcEl.removeAttribute('disabled');
 
         break;
       case PAGE_SUCCESS:
@@ -202,67 +293,8 @@ export default class DonationFlow extends Widget {
 
     this.sectionPaymentMethodCreditCardEl.classList.add('active');
     this.sectionPaymentMethodPayPalEl.classList.remove('active');
-
-    // Data: Credit Card Inputs
-    const emailIsValid = VALID_EMAIL_REGEX.test(this.sectionPaymentInputEmailEl.value);
-    const numberIsValid = Stripe.card.validateCardNumber(this.sectionPaymentInputNumberEl.value);
-    const expiryIsValid = Stripe.card.validateExpiry(this.sectionPaymentInputExpEl.value);
-    const cvcIsValid = Stripe.card.validateCVC(this.sectionPaymentInputCvcEl.value);
-
-    if (emailIsValid) {
-      this.sectionPaymentInputNumberEl.removeAttribute('disabled');
-    }
-
-    if (numberIsValid) {
-      this.sectionPaymentInputExpEl.removeAttribute('disabled');
-    }
-
-    if (expiryIsValid) {
-      this.sectionPaymentInputCvcEl.removeAttribute('disabled');
-    }
-
-    if (emailIsValid && numberIsValid && expiryIsValid && cvcIsValid) {
-      this.sectionPaymentSubmitEl.removeAttribute('disabled');
-    } else {
-      this.sectionPaymentSubmitEl.setAttribute('disabled', 'disabled');
-    }
   }
-  donate(callback) {
-    if (this.state.busy) return;
 
-    this.setState({ busy: true });
-    this.sectionDonateBtn.disabled = true;
-
-    Stripe.card.createToken(
-      {
-        number: this.sectionPaymentInputNumberEl.value,
-        cvc: this.sectionPaymentInputCvcEl.value,
-        exp: this.sectionPaymentInputExpEl.value,
-      },
-      (status, response) => {
-        if (status === 200 && response.type === 'card') {
-          const chargeObject = {
-            token: response.id,
-            email: this.sectionPaymentInputEmailEl.value.trim(),
-            amount: this.state.amount,
-            subscribe: this.sectionDonateMonthly.checked ? 1 : 0,
-          };
-
-          postStripePayment({ body: chargeObject }, (error, result) => {
-            this.setState({ busy: false });
-            this.sectionDonateBtn.disabled = false;
-            if (result && result.body && result.body.error) {
-              callback(new Error(result.body.error.message));
-            } else {
-              callback(error, result);
-            }
-          });
-        } else {
-          callback(new Error('Could not create Stripe token'));
-        }
-      },
-    );
-  }
   reset() {
     this.setState({
       page: PAGE_DONATE,

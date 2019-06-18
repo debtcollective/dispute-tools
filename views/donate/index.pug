@@ -90,17 +90,11 @@ block content
       //-
         Card information
       .clearfix.mb1
-          label.inline-block.-fw-600 Card
-          input.form-control.-fw(type="text" name="number" maxLength="16")
-          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Card Number
-      .clearfix.mb1
-          label.inline-block.-fw-600 Expires on
-          input.form-control.-fw(type="text" name="exp" placeholder="MM/YY" maxLength="5")
-          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Expiration
-      .clearfix.mb1
-          label.inline-block.-fw-600 CVC
-          input.form-control.-fw(type="text" name="cvc" maxLength="5")
-          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid CVC
+          label.inline-block.-fw-600 Credit or debit card
+          #card-element
+            //-
+              A Stripe Element will be inserted here.
+          #card-errors(role="alert")
 
       .clearfix.my3
         h4.mb1 Want to support more than once?
