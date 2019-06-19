@@ -75,17 +75,17 @@ block content
         .col.col-12
           label.inline-block.-fw-600 Name
           input.form-control.-fw(type="text" name="name")
-          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Name
+          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Name.
       .clearfix.mb1
         .col.col-12
           label.inline-block.-fw-600 Email
           input.form-control.-fw(type="email" name="email")
-          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Email
+          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Email.
       .clearfix.mb1
         .col.col-12
           label.inline-block.-fw-600 Phone
           input.form-control.-fw(type="text" name="phone")
-          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Phone
+          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Email.
 
       //-
         Card information
@@ -94,7 +94,7 @@ block content
           #card-element
             //-
               A Stripe Element will be inserted here.
-          #card-errors(role="alert")
+          p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Card information.
 
       .clearfix.my3
         h4.mb1 Want to support more than once?
@@ -119,7 +119,7 @@ block content
       .DonationResponse
         img(src="/svg/credit-card-cut.svg")
         h3 Got some bad news
-        p Your card has been declined. Get in touch with your bank or card issuer to solve the problem.
+        p Your card has been declined.
 
         .flex
           div.btn-back.btn-primary.-k-btn.-fw-600 Try again
