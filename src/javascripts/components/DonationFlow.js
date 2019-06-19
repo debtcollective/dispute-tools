@@ -24,7 +24,7 @@ export default class DonationFlow extends Widget {
     return {
       email: ['required', 'email'],
       name: ['required'],
-      phone: ['required'],
+      phone: ['required', 'minLength:5'],
     };
   }
 
@@ -216,9 +216,10 @@ export default class DonationFlow extends Widget {
     // Validate personal data
     const checkit = new Checkit(DonationFlow.constraints);
     const { name, email } = this.state;
+    const phone = this.state.phone.replace(/ /g, '');
     const errors = {};
 
-    const [err] = checkit.validateSync({ name, email });
+    const [err] = checkit.validateSync({ name, email, phone });
 
     if (err) {
       merge(errors, err.errors);
@@ -271,13 +272,11 @@ export default class DonationFlow extends Widget {
 
         break;
       }
-      case 'email':
-      case 'name': {
+      default: {
         const input = document.querySelector(`input[name="${key}"]`);
         input.classList.add('error');
         break;
       }
-      default:
     }
   }
 
@@ -288,13 +287,11 @@ export default class DonationFlow extends Widget {
         input.classList.remove('error');
         break;
       }
-      case 'email':
-      case 'name': {
+      default: {
         const input = document.querySelector(`input[name="${key}"]`);
         input.classList.remove('error');
         break;
       }
-      default:
     }
   }
 
