@@ -25,8 +25,6 @@ test:
   before_script:
     - cp config/config.sample.js config/config.js
     - cp config/knexfile.sample.js knexfile.js
-    - yarn install
-    - yarn build
   script:
     - yarn report
 
@@ -34,6 +32,8 @@ build:
   retry:
     max: 1
   image: docker:stable
+  services:
+    - docker:dind
   stage: build
   before_script:
     - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
@@ -46,8 +46,12 @@ build:
 deploy:
   retry:
     max: 1
-  image: docker:dind
+  image: docker:stable
+  services:
+    - docker:dind
   stage: deploy
+  services:
+    - docker:dind
   before_script:
     - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
   script:
