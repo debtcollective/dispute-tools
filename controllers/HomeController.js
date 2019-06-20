@@ -24,6 +24,8 @@ const HomeController = Class('HomeController').inherits(BaseController)({
       const token = req.body.token;
       const amount = Math.floor(Number(req.body.amount));
       const email = req.body.email;
+      const name = req.body.name;
+      const phone = req.body.phone;
 
       // recurrent donations requires customers and plans
       const planId = `monthly-${req.body.amount}c-plan`;
@@ -32,6 +34,8 @@ const HomeController = Class('HomeController').inherits(BaseController)({
         new Promise((resolve, reject) => {
           stripeClient.customers.create(
             {
+              name,
+              phone,
               email,
               source: token,
             },
