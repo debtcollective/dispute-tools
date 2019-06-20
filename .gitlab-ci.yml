@@ -28,7 +28,6 @@ test:
     - yarn install
     - yarn build
   script:
-    - yarn test
     - yarn report
 
 build:
