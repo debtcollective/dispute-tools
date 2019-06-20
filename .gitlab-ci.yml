@@ -25,7 +25,10 @@ test:
   before_script:
     - cp config/config.sample.js config/config.js
     - cp config/knexfile.sample.js knexfile.js
+    - yarn install
+    - yarn build
   script:
+    - yarn test
     - yarn report
 
 build:
@@ -35,13 +38,13 @@ build:
   services:
     - docker:dind
   stage: build
-  before_script:
-    - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
   script:
-    # build image with commit sha as tag
     - docker build -t debtcollective/dispute-tools:${CI_COMMIT_SHORT_SHA} .
-    # tag it as latest
-    - docker tag debtcollective/dispute-tools:${CI_COMMIT_SHORT_SHA} debtcollective/dispute-tools:latest
+    - mkdir -p image
+    - docker save debtcollective/dispute-tools:${CI_COMMIT_SHORT_SHA} > image/dispute-tools.tar
+  artifacts:
+    paths:
+      - image
 
 deploy:
   retry:
@@ -54,7 +57,9 @@ deploy:
     - docker:dind
   before_script:
     - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
+    - docker load -i image/dispute-tools.tar
   script:
+    - docker tag debtcollective/dispute-tools:${CI_COMMIT_SHORT_SHA} debtcollective/dispute-tools:latest
     - docker push debtcollective/dispute-tools:${CI_COMMIT_SHORT_SHA}
     - docker push debtcollective/dispute-tools:latest
   only:
