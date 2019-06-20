@@ -4,6 +4,8 @@ cache:
 
 stages:
   - test
+  - build
+  - deploy
 
 test:
   retry:
@@ -28,3 +30,27 @@ test:
   script:
     - yarn test
     - yarn report
+
+build:
+  retry:
+    max: 1
+  image: docker:stable
+  stage: build
+  variables:
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -u $CI_REGISTRY_PASSWORD
+  script:
+    - make build
+
+deploy:
+  retry:
+    max: 1
+  image: docker:dind
+  stage: deploy
+  variables:
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -u $CI_REGISTRY_PASSWORD
+  script:
+    - make push
+  only:
+    - master
