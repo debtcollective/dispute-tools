@@ -1,11 +1,10 @@
 /* eslint-disable max-len */
 /* global Stripe */
 
+import Checkit from 'checkit';
 import merge from 'lodash/merge';
 import Widget from '../lib/widget';
 import { postStripePayment } from '../lib/api';
-
-const Checkit = require('checkit');
 
 const AMOUNT_PRESETS = [1000, 2000, 3000, 5000, 10000, 25000];
 
