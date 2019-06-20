@@ -4,6 +4,8 @@ cache:
 
 stages:
   - test
+  - build
+  - deploy
 
 test:
   retry:
@@ -23,8 +25,37 @@ test:
   before_script:
     - cp config/config.sample.js config/config.js
     - cp config/knexfile.sample.js knexfile.js
-    - yarn install
-    - yarn build
   script:
-    - yarn test
     - yarn report
+
+build:
+  retry:
+    max: 1
+  image: docker:stable
+  services:
+    - docker:dind
+  stage: build
+  before_script:
+    - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
+  script:
+    # build image with commit sha as tag
+    - docker build -t debtcollective/dispute-tools:${CI_COMMIT_SHORT_SHA} .
+    # tag it as latest
+    - docker tag debtcollective/dispute-tools:${CI_COMMIT_SHORT_SHA} debtcollective/dispute-tools:latest
+
+deploy:
+  retry:
+    max: 1
+  image: docker:stable
+  services:
+    - docker:dind
+  stage: deploy
+  services:
+    - docker:dind
+  before_script:
+    - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
+  script:
+    - docker push debtcollective/dispute-tools:${CI_COMMIT_SHORT_SHA}
+    - docker push debtcollective/dispute-tools:latest
+  only:
+    - master

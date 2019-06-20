@@ -120,8 +120,10 @@ export default class DonationFlow extends Widget {
       this.donate(error => {
         if (error) {
           console.error(error); // eslint-disable-line
+          this.trackDonation(false);
           this.setState({ page: PAGE_ERROR, pageError: error.message });
         } else {
+          this.trackDonation();
           this.setState({ page: PAGE_SUCCESS });
         }
       });
@@ -411,6 +413,26 @@ export default class DonationFlow extends Widget {
 
     this.sectionPaymentMethodCreditCardEl.classList.add('active');
     this.sectionPaymentMethodPayPalEl.classList.remove('active');
+  }
+
+  trackDonation(success = true) {
+    const { amount } = this.state;
+    let eventAction = 'donated';
+
+    if (!window.ga) {
+      return;
+    }
+
+    if (!success) {
+      eventAction = 'error';
+    }
+
+    window.ga('send', {
+      eventAction,
+      eventCategory: 'Donations',
+      eventLabel: amount / 100,
+      hitType: 'event',
+    });
   }
 
   reset() {
