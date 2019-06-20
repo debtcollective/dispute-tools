@@ -38,7 +38,10 @@ build:
   before_script:
     - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
   script:
-    - make build
+    # build image with commit sha as tag
+    - docker build -t debtcollective/dispute-tools:${CI_COMMIT_SHORT_SHA} .
+    # tag it as latest
+    - docker tag debtcollective/dispute-tools:${CI_COMMIT_SHORT_SHA} debtcollective/dispute-tools:latest
 
 deploy:
   retry:
@@ -48,6 +51,7 @@ deploy:
   before_script:
     - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
   script:
-    - make push
+    - docker push debtcollective/dispute-tools:${CI_COMMIT_SHORT_SHA}
+    - docker push debtcollective/dispute-tools:latest
   only:
     - master
