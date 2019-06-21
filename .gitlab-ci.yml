@@ -56,7 +56,7 @@ deploy:
   services:
     - docker:dind
   before_script:
-    - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
+    - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
     - docker load -i image/dispute-tools.tar
   script:
     - docker tag debtcollective/dispute-tools:${CI_COMMIT_SHORT_SHA} debtcollective/dispute-tools:latest
