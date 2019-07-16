@@ -7,7 +7,7 @@ module.exports = ({
   dispute,
 }) => `Thank you for disputing your debt! You can download a copy of your dispute here:
 
-${makeDisputeDownloadUrl(dispute)}
+> ${makeDisputeDownloadUrl(dispute)}
 
 If you opted to mail the dispute yourself, it is a good idea to send it certified mail so you can be sure it was received. If you need help mailing it, we will send you the tracking info once it is sent.
 
