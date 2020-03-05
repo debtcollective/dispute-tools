@@ -180,6 +180,26 @@ const Dispute = Class('Dispute')
     }
   },
 
+  async closeDiscourseThread(dispute) {
+    if (!dispute.id || !dispute.disputeThreadId) {
+      return false;
+    }
+
+    const disputeTool = await DisputeTool.findById(dispute.disputeToolId);
+    const user = dispute.user;
+
+    try {
+      // close discourse thread
+    } catch (e) {
+      Sentry.captureException(e);
+      logger.error(
+        'Error closing Discourse PM. Dispute id %s',
+        DisputeThreadOriginMessage.name,
+        dispute.readableId,
+      );
+    }
+  },
+
   prototype: {
     data: null,
     deactivated: false,
@@ -562,7 +582,7 @@ const Dispute = Class('Dispute')
 
       const usernamesToUninvite = this.admins.reduce(
         (toUninvite, a) =>
-          (adminIdsToRemove.includes(a.id) ? [...toUninvite, a.username] : toUninvite),
+          adminIdsToRemove.includes(a.id) ? [...toUninvite, a.username] : toUninvite,
         [],
       );
 

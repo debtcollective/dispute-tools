@@ -11,6 +11,7 @@
     "$root": ".",
     "$config": "./config",
     "$models": "./models",
+    "$jobs": "./jobs",
     "$lib": "./lib",
     "$shared": "./shared",
     "$services": "./services",
