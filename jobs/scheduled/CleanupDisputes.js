@@ -2,12 +2,12 @@ const { Worker, Queue, QueueScheduler } = require('bullmq');
 const Dispute = require('$models/Dispute');
 const _ = require('lodash');
 const moment = require('moment');
-const { redis } = require('$config/config');
+const config = require('$config/config');
 const { Sentry, logger } = require('$lib');
 
 const connection = {
-  host: redis.host,
-  port: redis.port,
+  host: config.redis.host,
+  port: config.redis.port,
 };
 const queueName = 'CleanupDisputes';
 const queue = new Queue(queueName, { connection });
