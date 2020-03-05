@@ -1,21 +1,20 @@
 # Getting Started
 
-In order to start the development go ahead and check the discourse repository at: 
+In order to start the development go ahead and check the discourse repository at:
 
 [discourse/discourse](https://github.com/discourse/discourse)
 
 ## Database setup
 
-*In case the needed ruby version is not avaiable you need to install it and make sure it is within your ruby-build, you may use `brew update && brew upgrade ruby-build`*
+_In case the needed ruby version is not avaiable you need to install it and make sure it is within your ruby-build, you may use `brew update && brew upgrade ruby-build`_
 
 It is suggested to create the database using a preffix for the specific project, you can choose between run commands with explicit env variables like so:
 
     *DISCOURSE_DEV_DB=debtcollective_discourse_development bundle exec rake db:create db:migrate*
 
-
 **OR an EASIER WAY** to avoid to write the environment value on every command is to directly update the `config/database.yml` file on your discourse instance to use `debtcollective_discourse_development` instead `discourse_development`
 
-If you choose to use the env variable, in order to properly run the server afterwards you will run: 
+If you choose to use the env variable, in order to properly run the server afterwards you will run:
 
     *DISCOURSE_DEV_DB=debtcollective_discourse_development bundle exec rails s*
 
@@ -27,7 +26,7 @@ If everything goes as expected you should see at: [http://localhost:3000/](http:
 
 [](https://www.notion.so/fcd4899b4c784a799d55c6856140ddf2#a6921d6d9a2241ff8ef8739e84ae1026)
 
-*fig 1. Welcome message*
+_fig 1. Welcome message_
 
 ## Adding custom plugins
 
@@ -52,11 +51,11 @@ The above will clone all the plugins that we use to create the full instance of 
 
     rm -rf tmp; DISCOURSE_DEV_DB=debtcollective_discourse_development bundle exec rails s
 
-The plugins section within admin should display all plugins *(something similar to below)*
+The plugins section within admin should display all plugins _(something similar to below)_
 
 [](https://www.notion.so/fcd4899b4c784a799d55c6856140ddf2#9d3c26174b04439b8f004d3904f93ecf)
 
-*fig 2. Admin plugin panel*
+_fig 2. Admin plugin panel_
 
 ### Enable CORS
 
@@ -111,5 +110,5 @@ Now you are ready to contribute to the team.👌 🚀
 
 ## Related Links
 
-- [https://meta.discourse.org/t/beginners-guide-to-install-discourse-on-macos-for-development/15772](https://meta.discourse.org/t/beginners-guide-to-install-discourse-on-macos-for-development/15772)
-- [https://meta.discourse.org/t/beginners-guide-to-creating-discourse-plugins-part-1/30515](https://meta.discourse.org/t/beginners-guide-to-creating-discourse-plugins-part-1/30515)
+-   [https://meta.discourse.org/t/beginners-guide-to-install-discourse-on-macos-for-development/15772](https://meta.discourse.org/t/beginners-guide-to-install-discourse-on-macos-for-development/15772)
+-   [https://meta.discourse.org/t/beginners-guide-to-creating-discourse-plugins-part-1/30515](https://meta.discourse.org/t/beginners-guide-to-creating-discourse-plugins-part-1/30515)
