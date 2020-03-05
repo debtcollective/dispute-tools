@@ -3,6 +3,7 @@ const Dispute = require('$models/Dispute');
 const _ = require('lodash');
 const moment = require('moment');
 const { redis } = require('$config/config');
+const { Sentry, logger } = require('$lib');
 
 const connection = {
   host: redis.host,
@@ -16,8 +17,6 @@ const worker = new Worker(
   queueName,
   async () => {
     // get all disputes older than 30 days with New status
-    // eslint-disable-next-line
-    debugger;
     const knex = Dispute.knex();
     const removableDisputes = await Dispute.query()
       .select('Disputes.*')
@@ -30,6 +29,9 @@ const worker = new Worker(
       )
       .where('Disputes.created_at', '<=', moment().subtract(30, 'days'))
       .andWhere('DisputeStatuses.status', 'New');
+    const removableDisputesCount = removableDisputes.length;
+
+    logger.info(`CleanupDisputes job will remove ${removableDisputesCount} disputes`);
 
     // destroy disputes using forEach
     return await Promise.all(_.map(removableDisputes, async dispute => await dispute.destroy()));
@@ -41,9 +43,7 @@ worker.on('completed', async () => {
   // TODO: notify slack
 });
 
-worker.on('failed', async () => {
-  // TODO: notify sentry
-});
+worker.on('failed', async job => Sentry.captureMessage(job.failedReason));
 
 const start = () => {
   // Repeat job once every day at 3:15 (am)

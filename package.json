@@ -36,6 +36,7 @@
     "start:dev": "nodemon --inspect=9220 bin/server.js -i src/**/*",
     "start:prod": "yarn db:migrate && node bin/server.js",
     "start": "node bin/server.js",
+    "start:workers": "env HEADLESS=1 node bin/workers.js",
     "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
     "test:checkit": "yarn mocha tests/checkit/",
     "test:debug:form-validations": "node --inspect=9220 --inspect-brk tests/form-validations.js",
