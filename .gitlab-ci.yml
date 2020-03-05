@@ -18,9 +18,10 @@ test:
   variables:
     POSTGRES_DB: dispute_tools_test
     POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: ''
+    POSTGRES_PASSWORD: letmein
     DB_HOST: postgres
     DB_USER: postgres
+    DB_PASSWORD: letmein
     REDIS_HOST: redis
   before_script:
     - cp config/config.sample.js config/config.js
