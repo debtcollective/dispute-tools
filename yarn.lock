@@ -3649,7 +3649,7 @@ dir-glob@^2.0.0:
 
 "discourse-node-api@git://github.com/debtcollective/discourse-node-api.git#master":
   version "0.0.1"
-  resolved "git://github.com/debtcollective/discourse-node-api.git#89a88b5bd084a5bfa9477adffd8650fbecffed04"
+  resolved "git://github.com/debtcollective/discourse-node-api.git#85a81545ad92b2182c8695705edb95edcf6e2309"
   dependencies:
     "@types/superagent" "^3.5.7"
     chai "^4.1.2"

@@ -12,6 +12,7 @@ const { logger, discourse, Sentry } = require('$lib');
 const { getCheckitConfig, filterDependentFields } = require('$services/formValidation');
 const Checkit = require('$shared/Checkit');
 const { DisputeThreadOriginMessage } = require('$services/messages');
+const discourseApi = require('$lib/discourse');
 const {
   discourse: { baseUrl: discourseEndpoint },
 } = require('$config/config');
@@ -185,18 +186,12 @@ const Dispute = Class('Dispute')
       return false;
     }
 
-    const disputeTool = await DisputeTool.findById(dispute.disputeToolId);
-    const user = dispute.user;
-
     try {
-      // close discourse thread
+      await discourseApi.topics.updateStatus(dispute.disputeThreadId, 'closed');
+      logger.info(`Dispute Thread ${dispute.disputeThreadId} closed`);
     } catch (e) {
       Sentry.captureException(e);
-      logger.error(
-        'Error closing Discourse PM. Dispute id %s',
-        DisputeThreadOriginMessage.name,
-        dispute.readableId,
-      );
+      logger.error('Error closing Discourse PM. Dispute id %s', dispute.readableId);
     }
   },
 
@@ -582,7 +577,7 @@ const Dispute = Class('Dispute')
 
       const usernamesToUninvite = this.admins.reduce(
         (toUninvite, a) =>
-          adminIdsToRemove.includes(a.id) ? [...toUninvite, a.username] : toUninvite,
+          (adminIdsToRemove.includes(a.id) ? [...toUninvite, a.username] : toUninvite),
         [],
       );
 
@@ -655,7 +650,7 @@ const Dispute = Class('Dispute')
     destroy() {
       this.deactivated = true;
 
-      return this.save();
+      return Promise.all([this.save(), Dispute.closeDiscourseThread(this)]);
     },
 
     /**
