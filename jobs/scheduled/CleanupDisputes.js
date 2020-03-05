@@ -14,36 +14,35 @@ const queueScheduler = new QueueScheduler(queueName, { connection });
 
 const worker = new Worker(
   queueName,
-  async job => {
-    // get all disputes older than 30 days in New status
-    const removableDisputes = await Dispute.query().where(
-      'createdAt',
-      '>=',
-      moment().subtract(30, 'days'),
-    );
+  async () => {
+    // get all disputes older than 30 days with New status
+    // eslint-disable-next-line
+    debugger;
+    const knex = Dispute.knex();
+    const removableDisputes = await Dispute.query()
+      .select('Disputes.*')
+      .join(
+        'DisputeStatuses',
+        'DisputeStatuses.id',
+        knex.raw(
+          '(SELECT id FROM "DisputeStatuses" WHERE dispute_id = "Disputes".id ORDER by updated_at desc limit 1)',
+        ),
+      )
+      .where('Disputes.created_at', '<=', moment().subtract(30, 'days'))
+      .andWhere('DisputeStatuses.status', 'New');
 
-    // for each dispute
-    _.forEach(removableDisputes, async dispute => {
-      // destroy
-      await dispute.destroy();
-
-      // close discourse private message
-      await Dispute.closeDiscourseThread(dispute);
-    });
-
-    console.log(job);
+    // destroy disputes using forEach
+    return await Promise.all(_.map(removableDisputes, async dispute => await dispute.destroy()));
   },
   { connection },
 );
 
-worker.on('completed', async job => {
-  // notify slack
-  console.log(job);
+worker.on('completed', async () => {
+  // TODO: notify slack
 });
 
-worker.on('failed', async job => {
-  // notify sentry
-  console.log(job);
+worker.on('failed', async () => {
+  // TODO: notify sentry
 });
 
 const start = () => {
