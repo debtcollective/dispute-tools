@@ -40,6 +40,8 @@ const worker = new Worker(
 );
 
 worker.on('completed', async () => {
+  logger.info('CleanupDisputes job completed');
+
   // TODO: notify slack
 });
 
