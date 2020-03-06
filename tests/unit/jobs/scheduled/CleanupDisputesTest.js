@@ -75,18 +75,13 @@ describe('CleanupDisputes', () => {
     expect(parseInt(results[0].count, 10)).eq(6);
 
     // add job to CleanupDisputes queue
-    await queue.add('test', { name: 'testJob' });
+    queue.add('test', { name: 'testJob' });
 
-    return new Promise(resolve => {
-      worker.on('completed', async () => {
-        console.log('completed');
-        const results = await Dispute.query().count('*');
+    worker.on('completed', async () => {
+      const results = await Dispute.query().count('*');
 
-        // we should have deleted only 2 disputes
-        expect(parseInt(results[0].count, 10)).eq(4);
-
-        resolve();
-      });
+      // we should have deleted only 2 disputes from 6 total
+      expect(parseInt(results[0].count, 10)).eq(4);
     });
   });
 });
