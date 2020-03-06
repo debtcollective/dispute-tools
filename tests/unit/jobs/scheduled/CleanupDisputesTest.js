@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const _ = require('lodash');
 const moment = require('moment');
-const { createUser } = require('$tests/utils');
+const { createUser, truncate } = require('$tests/utils');
 const CleanupDisputes = require('$jobs/scheduled/CleanupDisputes');
 const Dispute = require('$models/Dispute');
 const DisputeStatus = require('$models/DisputeStatus');
@@ -16,7 +16,7 @@ describe('CleanupDisputes', () => {
     user = await createUser();
   });
 
-  beforeEach(async () => {});
+  beforeEach(() => truncate(Dispute));
 
   after(async () => {
     await worker.close();
@@ -50,7 +50,7 @@ describe('CleanupDisputes', () => {
           option: tool.data.options.A ? 'A' : 'none',
         });
 
-        dispute.createdAt = moment().subtract(30, 'days');
+        dispute.createdAt = moment().subtract(31, 'days');
 
         await DisputeStatus.createForDispute(dispute, { status: 'Completed' });
 
@@ -74,15 +74,12 @@ describe('CleanupDisputes', () => {
     const results = await Dispute.query().count('*');
     expect(parseInt(results[0].count, 10)).eq(6);
 
-    // add a job to the queue to delete these disputes
-    await queue.waitUntilReady();
-    await worker.waitUntilReady();
-
     // add job to CleanupDisputes queue
     await queue.add('test', { name: 'testJob' });
 
     return new Promise(resolve => {
-      worker.on('drained', async () => {
+      worker.on('completed', async () => {
+        console.log('completed');
         const results = await Dispute.query().count('*');
 
         // we should have deleted only 2 disputes
