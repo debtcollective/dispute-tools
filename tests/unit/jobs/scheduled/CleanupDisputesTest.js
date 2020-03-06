@@ -74,8 +74,11 @@ describe('CleanupDisputes', () => {
     const results = await Dispute.query().count('*');
     expect(parseInt(results[0].count, 10)).eq(6);
 
+    // wait for queue and worker to be ready
+    await Promise.all([queue.waitUntilReady(), worker.waitUntilReady()]);
+
     // add job to CleanupDisputes queue
-    queue.add('test', { name: 'testJob' });
+    await queue.add('test', { name: 'testJob' });
 
     worker.on('completed', async () => {
       const results = await Dispute.query().count('*');
