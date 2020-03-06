@@ -78,7 +78,10 @@ describe('CleanupDisputes', () => {
     await queue.waitUntilReady();
     await worker.waitUntilReady();
 
-    const promise = new Promise(resolve => {
+    // add job to CleanupDisputes queue
+    await queue.add('test', { name: 'testJob' });
+
+    return new Promise(resolve => {
       worker.on('drained', async () => {
         const results = await Dispute.query().count('*');
 
@@ -88,10 +91,5 @@ describe('CleanupDisputes', () => {
         resolve();
       });
     });
-
-    // add job to CleanupDisputes queue
-    await queue.add('test', { name: 'testJob' });
-
-    return promise;
   });
 });
