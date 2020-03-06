@@ -12,6 +12,7 @@ const { logger, discourse, Sentry } = require('$lib');
 const { getCheckitConfig, filterDependentFields } = require('$services/formValidation');
 const Checkit = require('$shared/Checkit');
 const { DisputeThreadOriginMessage } = require('$services/messages');
+const discourseApi = require('$lib/discourse');
 const {
   discourse: { baseUrl: discourseEndpoint },
 } = require('$config/config');
@@ -177,6 +178,20 @@ const Dispute = Class('Dispute')
         dispute.readableId,
         disputeTool.name,
       );
+    }
+  },
+
+  async closeDiscourseThread(dispute) {
+    if (!dispute.id || !dispute.disputeThreadId) {
+      return false;
+    }
+
+    try {
+      await discourseApi.topics.updateStatus(dispute.disputeThreadId, 'closed');
+      logger.info(`Dispute Thread ${dispute.disputeThreadId} closed`);
+    } catch (e) {
+      Sentry.captureException(e);
+      logger.error('Error closing Discourse PM. Dispute id %s', dispute.readableId);
     }
   },
 
@@ -635,7 +650,7 @@ const Dispute = Class('Dispute')
     destroy() {
       this.deactivated = true;
 
-      return this.save();
+      return Promise.all([this.save(), Dispute.closeDiscourseThread(this)]);
     },
 
     /**

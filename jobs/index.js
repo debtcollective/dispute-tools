@@ -1,0 +1,1 @@
+require('./scheduled/CleanupDisputes').start();

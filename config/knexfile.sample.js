@@ -4,7 +4,9 @@ module.exports = {
   connection: process.env.DB_CONNECTION_STRING || {
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'postgres',
+    password: process.env.DB_PASSWORD || '',
     database: process.env.DB_SCHEMA || `dispute_tools_${process.env.NODE_ENV || 'development'}`,
+    port: process.env.DB_PORT || 5432,
   },
   pool: {
     min: process.env.DB_POOL_MIN || 2,
