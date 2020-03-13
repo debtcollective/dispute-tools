@@ -22,7 +22,10 @@ block content
                     - const latestStatusType = lodash.get(latestStatus, 'status', 'incomplete');
                     .col.col-9
                       a.inline-block.w-100(href=routeMappings.Disputes.show.url(dispute.id))
-                        p.-fw-600 #{dispute.readableId} - #{dispute.user.name} - #{dispute.disputeTool.readableName}
+                        p.-fw-600 #{dispute.readableId} - #{dispute.disputeTool.readableName}
+                        p.-caption.-ttu.-fw-600.-dark
+                          svg.align-top.mr1(width='16' height='16'): use(xlink:href='#svg-phone')
+                          =dispute.creditor().name || 'N/A'
                         p.-caption.-ttu.-fw-600(
                           class=`-status-${slugify(latestStatusType)}`
                         )= latestStatusType
@@ -32,7 +35,7 @@ block content
                           target="_blank"
                           href=dispute.disputeThreadLink
                           title="View messages"
-                        ): svg.block.align-top(width='14' height='17'): use(xlink:href='#svg-email')
+                      ): svg.block.align-top(width='14' height='17'): use(xlink:href='#svg-email')
                       if dispute.data.signature
                         a.btn-clear.-primary.p1.align-top.inline-block(
                           href=routeMappings.Disputes.download.url(dispute.id)
