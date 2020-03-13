@@ -39,6 +39,7 @@ module.exports = {
   },
   landingPageURL: process.env.LANDING_PAGE_URL || `http://localhost:${port}`,
   siteURL: process.env.SITE_URL || `http://localhost:${port}`,
+  donateURL: process.env.DONATE_URL || 'https://membership.debtcollective.org',
   mailers: {
     contactEmail: process.env.EMAIL_CONTACT || 'contact@example.com',
     senderEmail: process.env.EMAIL_NO_REPLY || 'no-reply@example.com',
@@ -55,10 +56,6 @@ module.exports = {
   },
   loggly: {
     apiKey: process.env.LOGGLY_KEY || '',
-  },
-  stripe: {
-    private: process.env.STRIPE_PRIVATE || '',
-    publishable: process.env.STRIPE_PUBLISHABLE || false,
   },
   googleAnalytics: process.env.GOOGLE_ANALYTICS_UA || '',
   recaptcha: {

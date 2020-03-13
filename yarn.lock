@@ -1706,7 +1706,7 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-bluebird@^2.10.2, bluebird@^2.6.2, bluebird@^2.9.14:
+bluebird@^2.6.2, bluebird@^2.9.14:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.11.0.tgz#534b9033c022c9579c56ba3b3e5a5caafbb650e1"
   integrity sha1-U0uQM8AiyVecVro7Plpcqvu2UOE=
@@ -10679,11 +10679,6 @@ qs@^6.5.1, qs@^6.5.2:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.1.tgz#20082c65cb78223635ab1a9eaca8875a29bf8ec9"
   integrity sha512-Cxm7/SS/y/Z3MHWSxXb8lIFqgqBowP5JMlTUFyJN88y0SGQhVmZnqFK/PeuMX9LzUyWsqqhNxIyg0jlzq946yA==
 
-qs@~6.0.4:
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.0.4.tgz#51019d84720c939b82737e84556a782338ecea7b"
-  integrity sha1-UQGdhHIMk5uCc36EVWp4Izjs6ns=
-
 qs@~6.5.1, qs@~6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
@@ -12381,16 +12376,6 @@ strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
-
-stripe@^4.14.0:
-  version "4.25.0"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-4.25.0.tgz#16af99c255e4fe22adbaf629f392af0715370760"
-  integrity sha512-sSRPSQ4BTSbdcevVSrtIJzlOCTIAXm8T38DE4zPL6ysYpIWGfIBdo2XnhouLK12/6cuLvaEInlfCZQgoEVzXpQ==
-  dependencies:
-    bluebird "^2.10.2"
-    lodash.isplainobject "^4.0.6"
-    object-assign "^4.1.0"
-    qs "~6.0.4"
 
 style-loader@^0.19.0:
   version "0.19.1"

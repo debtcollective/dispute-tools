@@ -7,7 +7,6 @@ const {
   sso: { logout },
   discourse: { baseUrl: discourseEndpoint, adminRole, basicRole },
   environment,
-  stripe: { publishable },
 } = config;
 
 const marked = require('marked');
@@ -33,9 +32,6 @@ module.exports = function locals(req, res, next) {
   res.locals.moment = moment;
   res.locals.adminRole = adminRole;
   res.locals.basicRole = basicRole;
-
-  // DonationFlow
-  res.locals.STRIPE_PUBLISHABLE_KEY = publishable;
 
   res.locals.logo = {
     primary:
