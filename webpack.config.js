@@ -10,7 +10,6 @@ module.exports = {
   entry: {
     index: './src/javascripts/index.js',
     admin: './src/javascripts/admin.js',
-    donate: './src/javascripts/donate.js',
   },
   externals: {
     vue: 'Vue',

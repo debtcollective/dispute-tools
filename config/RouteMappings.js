@@ -43,11 +43,6 @@ const routeMappings = RouteMappings()
     as: 'donate',
   })
 
-  .post('/donate', {
-    to: 'Home#donation',
-    as: 'donation',
-  })
-
   /*
    * Admin
    */
