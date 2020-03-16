@@ -234,25 +234,34 @@ h4.-h-sec > span {
   }
 }
 
+.-status-label {
+  color: white;
+  padding: 4px 8px;
+}
+
 .-status-bg {
   &-incomplete {
-    background-color: #f5a623;
+    background-color: var(--orange);
   }
 
   &-completed {
-    background-color: #f04c34;
+    background-color: var(--yellow);
   }
 
   &-in-review {
-    background-color: #267de2;
+    background-color: var(--blue);
   }
 
   &-documents-sent {
-    background-color: #d0021b;
+    background-color: var(--purple);
   }
 
   &-update {
-    background-color: #4d9900;
+    background-color: var(--green);
+  }
+
+  &-new {
+    background-color: var(--blue);
   }
 }
 

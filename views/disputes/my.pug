@@ -22,13 +22,13 @@ block content
                     - const latestStatusType = lodash.get(latestStatus, 'status', 'incomplete');
                     .col.col-9
                       a.inline-block.w-100(href=routeMappings.Disputes.show.url(dispute.id))
-                        p.-fw-600 #{dispute.readableId} - #{dispute.disputeTool.readableName}
+                        p.-fw-600
+                          = `${dispute.readableId} - ${dispute.disputeTool.readableName}`
+                          span.ml2.-caption.-ttu.-fw-600(
+                            class=`-status-label -status-bg-${slugify(latestStatusType)}`
+                          )= latestStatusType
                         p.-caption.-ttu.-fw-600.-dark
-                          svg.align-top.mr1(width='16' height='16'): use(xlink:href='#svg-phone')
-                          =dispute.creditor().name || 'N/A'
-                        p.-caption.-ttu.-fw-600(
-                          class=`-status-${slugify(latestStatusType)}`
-                        )= latestStatusType
+                          =dispute.creditor().name || 'No creditor information'
                     .col.col-3.right-align
                       if dispute.disputeThreadId
                         a.btn-clear.-primary.p1.align-top.inline-block(
