@@ -16,7 +16,7 @@ describe('CleanupDisputes', () => {
     user = await createUser();
   });
 
-  beforeEach(() => truncate(Dispute));
+  beforeEach(async () => await truncate(Dispute));
 
   after(async () => {
     await worker.close();
