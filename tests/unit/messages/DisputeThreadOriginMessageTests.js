@@ -2,9 +2,6 @@ const { expect } = require('chai');
 const { createUser, createDispute } = require('$tests/utils');
 const { DisputeThreadOriginMessage } = require('$services/messages');
 const DisputeTool = require('$models/DisputeTool');
-const {
-  discourse: { coordinatorRole },
-} = require('$config/config');
 
 describe('DisputeThreadOriginMessage', () => {
   let dispute;
@@ -38,10 +35,6 @@ describe('DisputeThreadOriginMessage', () => {
 
     before(async () => {
       ({ sent } = await message.send());
-    });
-
-    it('should send to the coordinators', () => {
-      expect(sent.target_usernames).eq(`${member.username},${coordinatorRole}`);
     });
 
     it('should not send a topic id', () => {

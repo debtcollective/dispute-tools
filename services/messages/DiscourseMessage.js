@@ -56,12 +56,14 @@ class DiscourseMessage extends DebtCollectiveMessage {
    *                           Promise representing the completion of
    *                           the message send operation
    */
-  send(markdown = this.render()) {
-    return discourse.admin.messages.create({
+  async send(markdown = this.render()) {
+    const response = await discourse.admin.messages.create({
       raw: markdown,
       archetype: 'private_message',
       ...this.topicIdOrUsernames,
     });
+
+    return response.body;
   }
 
   /**
