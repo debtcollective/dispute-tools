@@ -39,31 +39,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     },
     {
       before(req, res, next) {
-        const query = Dispute.query();
-
-        Promise.coroutine(function* restfulAPI() {
-          const disputeIds = yield Dispute.search(req.query);
-
-          query.whereIn('id', disputeIds);
-        })().then(() => {
-          RESTfulAPI.createMiddleware({
-            queryBuilder: query
-              .where('deactivated', false)
-              .include('[user, attachments, disputeTool, admins]'),
-            order: {
-              default: '-updated_at',
-              allowedFields: ['created_at', 'updated_at'],
-            },
-            paginate: {
-              pageSize: 25,
-            },
-          })(req, res, next);
-        });
-      },
-      actions: ['index'],
-    },
-    {
-      before(req, res, next) {
+        // Load Dispute Tools
         DisputeTool.query()
           .orderBy('created_at', 'ASC')
           .then(disputeTools => {
@@ -79,21 +55,26 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     },
     {
       before(req, res, next) {
-        Promise.mapSeries(res.locals.results, result =>
-          DisputeStatus.query()
-            .where({
-              dispute_id: result.id,
-            })
-            .orderBy('created_at', 'DESC')
-            .then(statuses => {
-              result.statuses = statuses;
-              return Promise.resolve();
-            }),
-        )
-          .then(() => {
-            next();
-          })
-          .catch(next);
+        const query = Dispute.query();
+
+        Promise.coroutine(function* restfulAPI() {
+          const disputeIds = yield Dispute.search(req.query);
+
+          query.whereIn('id', disputeIds);
+        })().then(() => {
+          RESTfulAPI.createMiddleware({
+            queryBuilder: query
+              .where('deactivated', false)
+              .include('[user, attachments, statuses, disputeTool, admins]'),
+            order: {
+              default: '-updated_at',
+              allowedFields: ['created_at', 'updated_at'],
+            },
+            paginate: {
+              pageSize: 50,
+            },
+          })(req, res, next);
+        });
       },
       actions: ['index'],
     },
@@ -102,7 +83,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     _loadDispute(req, res, next) {
       Dispute.query()
         .where({ id: req.params.id })
-        .include('[user, statuses, attachments, disputeTool, admins]')
+        .include('[user, statuses, attachments, statuses, disputeTool, admins]')
         .then(([dispute]) => {
           res.locals.dispute = dispute;
           req.dispute = dispute;
