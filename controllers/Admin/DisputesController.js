@@ -1,19 +1,18 @@
 /* globals Class, Admin */
-const Promise = require('bluebird');
+const User = require('$models/User');
 const Dispute = require('$models/Dispute');
 const { NotFoundError } = require('$lib/errors');
 const DisputeTool = require('$models/DisputeTool');
 const DisputeStatus = require('$models/DisputeStatus');
 const config = require('$config/config');
 const RestfulController = require('$lib/core/controllers/RestfulController');
+const _ = require('lodash');
 
 const {
   authenticate,
   authorize,
   tests: { isDisputeAdmin },
 } = require('$services/auth');
-
-const RESTfulAPI = require('$lib/RESTfulAPI');
 
 global.Admin = global.Admin || {};
 
@@ -53,37 +52,12 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       },
       actions: ['index'],
     },
-    {
-      before(req, res, next) {
-        const query = Dispute.query();
-
-        Promise.coroutine(function* restfulAPI() {
-          const disputeIds = yield Dispute.search(req.query);
-
-          query.whereIn('id', disputeIds);
-        })().then(() => {
-          RESTfulAPI.createMiddleware({
-            queryBuilder: query
-              .where('deactivated', false)
-              .include('[user, attachments, statuses, disputeTool, admins]'),
-            order: {
-              default: '-updated_at',
-              allowedFields: ['created_at', 'updated_at'],
-            },
-            paginate: {
-              pageSize: 50,
-            },
-          })(req, res, next);
-        });
-      },
-      actions: ['index'],
-    },
   ],
   prototype: {
     _loadDispute(req, res, next) {
       Dispute.query()
         .where({ id: req.params.id })
-        .include('[user, statuses, attachments, statuses, disputeTool, admins]')
+        .include('[user, statuses, attachments, disputeTool]')
         .then(([dispute]) => {
           res.locals.dispute = dispute;
           req.dispute = dispute;
@@ -93,12 +67,30 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     },
 
     async index(req, res) {
-      res.locals.disputes = res.locals.results;
+      const [disputes, pagination] = await Dispute.search(req.query);
+
+      // We are not using Krypton `include` feature
+      // Here we add DisputeTool and User to each Dispute in results
+      const disputeTools = res.locals.disputeTools;
+      const userIdSet = new Set();
+
+      _.forEach(disputes, dispute => {
+        dispute.disputeTool = _.find(disputeTools, { id: dispute.disputeToolId });
+        userIdSet.add(dispute.userId);
+      });
+
+      const userIds = Array.from(userIdSet);
+      const users = await User.query().whereIn('id', userIds);
+
+      _.forEach(disputes, dispute => {
+        dispute.user = _.find(users, { id: dispute.userId });
+      });
+
+      res.locals.disputes = disputes;
       res.locals.statuses = DisputeStatus.statuses;
 
       res.locals.headers = {
-        total_count: ~~res._headers.total_count,
-        total_pages: ~~res._headers.total_pages,
+        total_pages: ~~pagination.totalPages,
         current_page: ~~req.query.page || 1,
         query: req.query,
       };

@@ -121,10 +121,10 @@ block content
               if _dispute.data.option !== 'none'
                 |  / #{_dispute.data.option}
             td.-fw-600(
-              class=`-status-${_dispute.statuses[0].status.toLowerCase().replace(/\W/g, '-')}`
+              class=`-status-${_dispute.status.toLowerCase().replace(/\W/g, '-')}`
             )
-              span=_dispute.statuses[0].status
-              small(class=`${_dispute.statuses[0].pendingSubmission ? 'Tag': ''} ml2` title=`${_dispute.statuses[0].pendingSubmission ? 'TDC mailed' : ''}`)=`${(_dispute.statuses[0].pendingSubmission ? 'attention':  '')}`
+              span=_dispute.status
+              small(class=`${_dispute.pendingSubmission ? 'Tag': ''} ml2` title=`${_dispute.pendingSubmission ? 'TDC mailed' : ''}`)=`${(_dispute.pendingSubmission ? 'attention':  '')}`
             td.-fw-500.-wsnw= new Date(_dispute.createdAt).toDateString()
             td.center.flex.pt2
               button.mr2.btn-clear.p1.align-top(data-show title="View")
@@ -158,7 +158,7 @@ block content
           tr
             td(colspan=6 class="text-center")
               | No Results
-                
+
 
 
 

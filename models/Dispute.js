@@ -47,10 +47,37 @@ const Dispute = Class('Dispute')
 
   defaultIncludes: '[user, statuses]',
 
+  /**
+   * `includes` doesn't work correctly when you need to write raw queries
+   * I'm using Knex joins to handle this instead
+   */
+  _defaultKnexJoins(query) {
+    const knex = this.knex();
+
+    return query
+      .select([
+        'Disputes.*',
+        'Users.name',
+        'Users.username',
+        'Users.email',
+        'DisputeStatuses.status',
+        'DisputeStatuses.pending_submission',
+      ])
+      .join('Users', 'Disputes.user_id', 'Users.id')
+      .join('DisputeStatuses', function on() {
+        this.on('Disputes.id', '=', 'DisputeStatuses.dispute_id').andOn(
+          'DisputeStatuses.created_at',
+          '=',
+          knex.raw(
+            '(select max("DisputeStatuses".created_at) from "DisputeStatuses" where "DisputeStatuses".dispute_id = "Disputes".id)',
+          ),
+        );
+      });
+  },
+
   async search(qs) {
     // back-end search
-    const query = this.query();
-    query.include(Dispute.defaultIncludes);
+    const query = this._defaultKnexJoins(this.query());
 
     if (qs.filters) {
       // If we're passed a human readable id just search by that and ignore everything else
@@ -58,7 +85,6 @@ const Dispute = Class('Dispute')
       if (qs.filters.readable_id && !isNaN(qs.filters.readable_id)) {
         return query
           .where('readable_id', qs.filters.readable_id)
-          .include(Dispute.defaultIncludes)
           .then(records => records.map(r => r.id));
       }
 
@@ -80,32 +106,35 @@ const Dispute = Class('Dispute')
       const ilike = `%${qs.name}%`;
 
       query
-        .select(['Disputes.*', 'Users.name'])
-        .join('Users', 'Disputes.user_id', 'Users.id')
-        .where('Users.name', 'ILIKE', ilike)
+        .andWhere('Users.name', 'ILIKE', ilike)
         .orWhere('Users.email', 'ILIKE', ilike)
         .orWhereRaw("data->'forms'->>'personal-information-form' ILIKE ?", [ilike])
         .orWhereRaw("data->'_forms'->>'personal-information-form' ILIKE ?", [ilike]);
     }
 
-    const records = await query;
+    // Filter by status
+    if (qs.status) {
+      // grab query and filter by status using a join against the latest status record
+      // for each dispute
+      query.andWhere('DisputeStatuses.status', qs.status);
+    }
 
-    return records.reduce((acc, record) => {
-      const statusFound =
-        // If no status passed in
-        !qs.status ||
-        (record.statuses.length > 0 &&
-          // model-relations/Dispute.js already configures the statuses
-          // to be pulled in descending order by their created_at date
-          // so we know the first one will be the most recent, no need to order
-          record.statuses[0].status === qs.status);
+    // pagination
+    const perPage = 50;
+    const page = qs.page || 1;
 
-      if (statusFound) {
-        return [...acc, record.id];
-      }
+    // TODO: This query will not retrieve the total count of filtered queries
+    // instead if retrieves the count of non deleted disputes.
+    // We don't have a way to use the same query filters at this point to make it work
+    const [{ count: totalCount }] = await this.query().count('*');
+    const totalPages = Math.round(~~totalCount / perPage);
 
-      return acc;
-    }, []);
+    query.limit(perPage).offset((page - 1) * perPage);
+
+    const results = await query;
+
+    // Return the queryBuilder
+    return [results, { totalPages, currentPage: page }];
   },
 
   async findById(id, include = Dispute.defaultIncludes) {
