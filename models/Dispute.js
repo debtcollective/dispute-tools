@@ -1,6 +1,7 @@
 /* globals Class, Krypton */
 /* eslint arrow-body-style: 0 */
 
+const Promise = require('bluebird');
 const _ = require('lodash');
 const { basePath } = require('$lib/AWS');
 const DisputeAttachment = require('$models/DisputeAttachment');
@@ -145,6 +146,21 @@ const Dispute = Class('Dispute')
         this.orWhereRaw("data->'_forms'->>'personal-information-form' ILIKE ?", [ilike]);
       });
     }
+
+    // order records
+    const orderBy = qs.order;
+    let order = 'DESC';
+
+    // Front-end send either 'created_at` or '-created_at'
+    // Where '-created_at' means DESC
+    if (orderBy && ['created_at', '-created_at'].includes(orderBy)) {
+      if (orderBy.indexOf('-') !== 0) {
+        order = 'ASC';
+      }
+
+      query.orderBy('Disputes.created_at', order);
+    }
+
     // Get the count of records with filters
     // I couldn't find a better way to do this, since we can't reuse the same
     // Krypton query to just find the count.
@@ -153,14 +169,24 @@ const Dispute = Class('Dispute')
     // doing N+1 queries and just 2.
     //
     // TODO: Find a cleaner way to do this
-    [{ count: totalCount }] = await countQuery;
+    try {
+      [{ count: totalCount }] = await countQuery;
+    } catch (e) {
+      console.log(e);
+    }
     const totalPages = Math.ceil(~~totalCount / perPage);
 
     // paginate query using limit and offset
     query.limit(perPage).offset((page - 1) * perPage);
 
     // get results
-    const results = await query;
+    let results = [];
+    try {
+      results = await query;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
 
     // Return the results along pagination stats
     return [results, { totalPages, currentPage: page }];
