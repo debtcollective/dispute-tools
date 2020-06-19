@@ -167,7 +167,7 @@ block content
     +mixinPagination(headers.current_page, headers.total_pages)(class='pt3')
 
 block body
-  .Modal(data-component-modal="show-dispute" aria-hidden="true" role="dialog" aria-labelledby="modalSignupTitle")
+  .Modal(data-component-modal="show-dispute" aria-hidden="true" role="dialog" aria-labelledby="modalDisputeTitle")
     button(class="Modal__close" aria-label="close")
       svg(class="-s18"): use(xlink:href="#svg-close")
     .Modal__body(role="document")
@@ -176,7 +176,7 @@ block body
         div(data-dispute-wrapper)
         div(data-attachment-list)
 
-  .Modal(data-component-modal="add-status" aria-hidden="true" role="dialog" aria-labelledby="modalSignupTitle")
+  .Modal(data-component-modal="add-status" aria-hidden="true" role="dialog" aria-labelledby="modalDisputeTitle")
     button(class="Modal__close" aria-label="close")
       svg(class="-s18"): use(xlink:href="#svg-close")
     .Modal__body(role="document")

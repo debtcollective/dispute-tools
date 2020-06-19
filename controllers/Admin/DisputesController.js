@@ -4,6 +4,7 @@ const Dispute = require('$models/Dispute');
 const { NotFoundError } = require('$lib/errors');
 const DisputeTool = require('$models/DisputeTool');
 const DisputeStatus = require('$models/DisputeStatus');
+const DisputeAttachment = require('$models/DisputeAttachment');
 const config = require('$config/config');
 const RestfulController = require('$lib/core/controllers/RestfulController');
 const _ = require('lodash');
@@ -69,21 +70,32 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     async index(req, res) {
       const [disputes, pagination] = await Dispute.search(req.query);
 
-      // We are not using Krypton `include` feature
+      // We are not using Krypton `include`
       // Here we add DisputeTool and User to each Dispute in results
       const disputeTools = res.locals.disputeTools;
       const userIdSet = new Set();
+      const disputeIdSet = new Set();
 
       _.forEach(disputes, dispute => {
-        dispute.disputeTool = _.find(disputeTools, { id: dispute.disputeToolId });
+        disputeIdSet.add(dispute.id);
         userIdSet.add(dispute.userId);
       });
 
+      // fetch Users
       const userIds = Array.from(userIdSet);
       const users = await User.query().whereIn('id', userIds);
 
+      // fetch attachments and statuses
+      const disputeIds = Array.from(disputeIdSet);
+      const attachments = await DisputeAttachment.query().whereIn('foreign_key', disputeIds);
+      const statuses = await DisputeStatus.query().whereIn('dispute_id', disputeIds);
+
+      // Add joins data to each Dispute
       _.forEach(disputes, dispute => {
+        dispute.disputeTool = _.find(disputeTools, { id: dispute.disputeToolId });
         dispute.user = _.find(users, { id: dispute.userId });
+        dispute.attachments = _.filter(attachments, { foreignKey: dispute.id });
+        dispute.statuses = _.filter(statuses, { disputeId: dispute.id });
       });
 
       res.locals.disputes = disputes;
