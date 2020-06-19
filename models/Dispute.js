@@ -55,14 +55,6 @@ const Dispute = Class('Dispute')
     const knex = this.knex();
 
     return query
-      .select([
-        'Disputes.*',
-        'Users.name',
-        'Users.username',
-        'Users.email',
-        'DisputeStatuses.status',
-        'DisputeStatuses.pending_submission',
-      ])
       .join('Users', 'Disputes.user_id', 'Users.id')
       .join('DisputeStatuses', function on() {
         this.on('Disputes.id', '=', 'DisputeStatuses.dispute_id').andOn(
@@ -75,17 +67,41 @@ const Dispute = Class('Dispute')
       });
   },
 
+  /**
+   * Returns Disputes filtered with the provided querystring
+   * @return {Array<Disputes, Object>} [results, pagination]
+   * */
   async search(qs) {
     // back-end search
+    const countQuery = this._defaultKnexJoins(this.query());
     const query = this._defaultKnexJoins(this.query());
+
+    // count distint
+    countQuery.countDistinct('Disputes.id');
+
+    // select fields we want to retrieve
+    query.select([
+      'Disputes.*',
+      'Users.name',
+      'Users.username',
+      'Users.email',
+      'DisputeStatuses.status',
+      'DisputeStatuses.pending_submission',
+    ]);
+
+    // pagination
+    const perPage = 30;
+    const page = qs.page || 1;
+    let totalCount = 0;
 
     if (qs.filters) {
       // If we're passed a human readable id just search by that and ignore everything else
       // check we are receiving a number before doing the query
       if (qs.filters.readable_id && !isNaN(qs.filters.readable_id)) {
-        return query
-          .where('readable_id', qs.filters.readable_id)
-          .then(records => records.map(r => r.id));
+        const results = await query.where('readable_id', qs.filters.readable_id);
+        const totalPages = 1;
+
+        return [results, { totalPages, currentPage: page }];
       }
 
       if (qs.filters.admin_id) {
@@ -94,22 +110,13 @@ const Dispute = Class('Dispute')
           .where('admin_id', qs.filters.admin_id);
 
         query.whereIn('id', disputeIds.map(d => d.dispute_id));
+        countQuery.whereIn('id', disputeIds.map(d => d.dispute_id));
       }
 
       if (qs.filters.dispute_tool_id) {
         query.andWhere('dispute_tool_id', qs.filters.dispute_tool_id);
+        countQuery.andWhere('dispute_tool_id', qs.filters.dispute_tool_id);
       }
-    }
-
-    // Filter by user name
-    if (qs.name) {
-      const ilike = `%${qs.name}%`;
-
-      query
-        .andWhere('Users.name', 'ILIKE', ilike)
-        .orWhere('Users.email', 'ILIKE', ilike)
-        .orWhereRaw("data->'forms'->>'personal-information-form' ILIKE ?", [ilike])
-        .orWhereRaw("data->'_forms'->>'personal-information-form' ILIKE ?", [ilike]);
     }
 
     // Filter by status
@@ -117,23 +124,45 @@ const Dispute = Class('Dispute')
       // grab query and filter by status using a join against the latest status record
       // for each dispute
       query.andWhere('DisputeStatuses.status', qs.status);
+      countQuery.andWhere('DisputeStatuses.status', qs.status);
     }
 
-    // pagination
-    const perPage = 50;
-    const page = qs.page || 1;
+    // Filter by user name
+    if (qs.name) {
+      const ilike = `%${qs.name}%`;
 
-    // TODO: This query will not retrieve the total count of filtered queries
-    // instead if retrieves the count of non deleted disputes.
-    // We don't have a way to use the same query filters at this point to make it work
-    const [{ count: totalCount }] = await this.query().count('*');
-    const totalPages = Math.round(~~totalCount / perPage);
+      query.andWhere(function andWhere() {
+        this.where('Users.name', 'ILIKE', ilike);
+        this.orWhere('Users.email', 'ILIKE', ilike);
+        this.orWhereRaw("data->'forms'->>'personal-information-form' ILIKE ?", [ilike]);
+        this.orWhereRaw("data->'_forms'->>'personal-information-form' ILIKE ?", [ilike]);
+      });
 
+      countQuery.andWhere(function andWhere() {
+        this.where('Users.name', 'ILIKE', ilike);
+        this.orWhere('Users.email', 'ILIKE', ilike);
+        this.orWhereRaw("data->'forms'->>'personal-information-form' ILIKE ?", [ilike]);
+        this.orWhereRaw("data->'_forms'->>'personal-information-form' ILIKE ?", [ilike]);
+      });
+    }
+    // Get the count of records with filters
+    // I couldn't find a better way to do this, since we can't reuse the same
+    // Krypton query to just find the count.
+    //
+    // Even when we are doing this, it's much better to what we had before since we are not
+    // doing N+1 queries and just 2.
+    //
+    // TODO: Find a cleaner way to do this
+    [{ count: totalCount }] = await countQuery;
+    const totalPages = Math.ceil(~~totalCount / perPage);
+
+    // paginate query using limit and offset
     query.limit(perPage).offset((page - 1) * perPage);
 
+    // get results
     const results = await query;
 
-    // Return the queryBuilder
+    // Return the results along pagination stats
     return [results, { totalPages, currentPage: page }];
   },
 
