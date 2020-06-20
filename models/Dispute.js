@@ -72,7 +72,7 @@ const Dispute = Class('Dispute')
    * Returns Disputes filtered with the provided querystring
    * @return {Array<Disputes, Object>} [results, pagination]
    * */
-  async search(qs) {
+  async search(options) {
     // back-end search
     const countQuery = this._defaultKnexJoins(this.query());
     const query = this._defaultKnexJoins(this.query());
@@ -91,46 +91,46 @@ const Dispute = Class('Dispute')
     ]);
 
     // pagination
-    const perPage = 30;
-    const page = qs.page || 1;
+    const perPage = process.env.DISPUTES_PER_PAGE || options.perPage || 30;
+    const page = options.page || 1;
     let totalCount = 0;
 
-    if (qs.filters) {
+    if (options.filters) {
       // If we're passed a human readable id just search by that and ignore everything else
       // check we are receiving a number before doing the query
-      if (qs.filters.readable_id && !isNaN(qs.filters.readable_id)) {
-        const results = await query.where('readable_id', qs.filters.readable_id);
+      if (options.filters.readable_id && !isNaN(options.filters.readable_id)) {
+        const results = await query.where('readable_id', options.filters.readable_id);
         const totalPages = 1;
 
         return [results, { totalPages, currentPage: page }];
       }
 
-      if (qs.filters.admin_id) {
+      if (options.filters.admin_id) {
         const disputeIds = await Dispute.knex()('AdminsDisputes')
           .select('dispute_id')
-          .where('admin_id', qs.filters.admin_id);
+          .where('admin_id', options.filters.admin_id);
 
         query.whereIn('id', disputeIds.map(d => d.dispute_id));
         countQuery.whereIn('id', disputeIds.map(d => d.dispute_id));
       }
 
-      if (qs.filters.dispute_tool_id) {
-        query.andWhere('dispute_tool_id', qs.filters.dispute_tool_id);
-        countQuery.andWhere('dispute_tool_id', qs.filters.dispute_tool_id);
+      if (options.filters.dispute_tool_id) {
+        query.andWhere('dispute_tool_id', options.filters.dispute_tool_id);
+        countQuery.andWhere('dispute_tool_id', options.filters.dispute_tool_id);
       }
     }
 
     // Filter by status
-    if (qs.status) {
+    if (options.status) {
       // grab query and filter by status using a join against the latest status record
       // for each dispute
-      query.andWhere('DisputeStatuses.status', qs.status);
-      countQuery.andWhere('DisputeStatuses.status', qs.status);
+      query.andWhere('DisputeStatuses.status', options.status);
+      countQuery.andWhere('DisputeStatuses.status', options.status);
     }
 
     // Filter by user name
-    if (qs.name) {
-      const ilike = `%${qs.name}%`;
+    if (options.name) {
+      const ilike = `%${options.name}%`;
 
       query.andWhere(function andWhere() {
         this.where('Users.name', 'ILIKE', ilike);
@@ -148,7 +148,7 @@ const Dispute = Class('Dispute')
     }
 
     // order records
-    const orderBy = qs.order;
+    const orderBy = options.order;
     let order = 'DESC';
 
     // Front-end send either 'created_at` or '-created_at'
@@ -173,6 +173,7 @@ const Dispute = Class('Dispute')
       [{ count: totalCount }] = await countQuery;
     } catch (e) {
       console.log(e);
+      throw e;
     }
     const totalPages = Math.ceil(~~totalCount / perPage);
 
