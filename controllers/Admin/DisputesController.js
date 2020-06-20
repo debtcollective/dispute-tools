@@ -56,9 +56,9 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
   ],
   prototype: {
     _loadDispute(req, res, next) {
-      Dispute.query()
+      return Dispute.query()
         .where({ id: req.params.id })
-        .include('[user, statuses, attachments, disputeTool]')
+        .include('[user, statuses, attachments, disputeTool, admins]')
         .then(([dispute]) => {
           res.locals.dispute = dispute;
           req.dispute = dispute;
@@ -138,7 +138,10 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       req.dispute
         .getAssignedAndAvailableAdmins()
         .then(r => res.status(200).send(r))
-        .catch(next);
+        .catch(e => {
+          console.log('error: ', e);
+          next(e);
+        });
     },
 
     updateAdmins(req, res, next) {
@@ -148,7 +151,10 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
           req.flash('success', 'The list of administrators assigned as been updated.');
           res.status(200).send({});
         })
-        .catch(next);
+        .catch(e => {
+          console.log('error: ', e);
+          next(e);
+        });
     },
 
     async updateDisputeData(req, res, next) {
