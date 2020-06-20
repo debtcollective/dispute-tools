@@ -148,7 +148,7 @@ const Dispute = Class('Dispute')
     }
 
     // order records
-    const orderBy = options.order;
+    const orderBy = options.order || '-created_at';
     let order = 'DESC';
 
     // Front-end send either 'created_at` or '-created_at'
