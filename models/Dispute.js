@@ -1,6 +1,7 @@
 /* globals Class, Krypton */
 /* eslint arrow-body-style: 0 */
 
+const Promise = require('bluebird');
 const _ = require('lodash');
 const { basePath } = require('$lib/AWS');
 const DisputeAttachment = require('$models/DisputeAttachment');
@@ -47,65 +48,149 @@ const Dispute = Class('Dispute')
 
   defaultIncludes: '[user, statuses]',
 
-  async search(qs) {
-    // back-end search
-    const query = this.query();
-    query.include(Dispute.defaultIncludes);
+  /**
+   * `includes` doesn't work correctly when you need to write raw queries
+   * I'm using Knex joins to handle this instead
+   */
+  _defaultKnexJoins(query) {
+    const knex = this.knex();
 
-    if (qs.filters) {
+    return query
+      .join('Users', 'Disputes.user_id', 'Users.id')
+      .join('DisputeStatuses', function on() {
+        this.on('Disputes.id', '=', 'DisputeStatuses.dispute_id').andOn(
+          'DisputeStatuses.created_at',
+          '=',
+          knex.raw(
+            '(select max("DisputeStatuses".created_at) from "DisputeStatuses" where "DisputeStatuses".dispute_id = "Disputes".id)',
+          ),
+        );
+      });
+  },
+
+  /**
+   * Returns Disputes filtered with the provided querystring
+   * @return {Array<Disputes, Object>} [results, pagination]
+   * */
+  async search(options) {
+    // back-end search
+    const countQuery = this._defaultKnexJoins(this.query());
+    const query = this._defaultKnexJoins(this.query());
+
+    // count distint
+    countQuery.countDistinct('Disputes.id');
+
+    // select fields we want to retrieve
+    query.select([
+      'Disputes.*',
+      'Users.name',
+      'Users.username',
+      'Users.email',
+      'DisputeStatuses.status',
+      'DisputeStatuses.pending_submission',
+    ]);
+
+    // pagination
+    const perPage = process.env.DISPUTES_PER_PAGE || options.perPage || 30;
+    const page = options.page || 1;
+    let totalCount = 0;
+
+    if (options.filters) {
       // If we're passed a human readable id just search by that and ignore everything else
       // check we are receiving a number before doing the query
-      if (qs.filters.readable_id && !isNaN(qs.filters.readable_id)) {
-        return query
-          .where('readable_id', qs.filters.readable_id)
-          .include(Dispute.defaultIncludes)
-          .then(records => records.map(r => r.id));
+      if (options.filters.readable_id && !isNaN(options.filters.readable_id)) {
+        const results = await query.where('readable_id', options.filters.readable_id);
+        const totalPages = 1;
+
+        return [results, { totalPages, currentPage: page }];
       }
 
-      if (qs.filters.admin_id) {
+      if (options.filters.admin_id) {
         const disputeIds = await Dispute.knex()('AdminsDisputes')
           .select('dispute_id')
-          .where('admin_id', qs.filters.admin_id);
+          .where('admin_id', options.filters.admin_id);
 
         query.whereIn('id', disputeIds.map(d => d.dispute_id));
+        countQuery.whereIn('id', disputeIds.map(d => d.dispute_id));
       }
 
-      if (qs.filters.dispute_tool_id) {
-        query.andWhere('dispute_tool_id', qs.filters.dispute_tool_id);
+      if (options.filters.dispute_tool_id) {
+        query.andWhere('dispute_tool_id', options.filters.dispute_tool_id);
+        countQuery.andWhere('dispute_tool_id', options.filters.dispute_tool_id);
       }
+    }
+
+    // Filter by status
+    if (options.status) {
+      // grab query and filter by status using a join against the latest status record
+      // for each dispute
+      query.andWhere('DisputeStatuses.status', options.status);
+      countQuery.andWhere('DisputeStatuses.status', options.status);
     }
 
     // Filter by user name
-    if (qs.name) {
-      const ilike = `%${qs.name}%`;
+    if (options.name) {
+      const ilike = `%${options.name}%`;
 
-      query
-        .select(['Disputes.*', 'Users.name'])
-        .join('Users', 'Disputes.user_id', 'Users.id')
-        .where('Users.name', 'ILIKE', ilike)
-        .orWhere('Users.email', 'ILIKE', ilike)
-        .orWhereRaw("data->'forms'->>'personal-information-form' ILIKE ?", [ilike])
-        .orWhereRaw("data->'_forms'->>'personal-information-form' ILIKE ?", [ilike]);
+      query.andWhere(function andWhere() {
+        this.where('Users.name', 'ILIKE', ilike);
+        this.orWhere('Users.email', 'ILIKE', ilike);
+        this.orWhereRaw("data->'forms'->>'personal-information-form' ILIKE ?", [ilike]);
+        this.orWhereRaw("data->'_forms'->>'personal-information-form' ILIKE ?", [ilike]);
+      });
+
+      countQuery.andWhere(function andWhere() {
+        this.where('Users.name', 'ILIKE', ilike);
+        this.orWhere('Users.email', 'ILIKE', ilike);
+        this.orWhereRaw("data->'forms'->>'personal-information-form' ILIKE ?", [ilike]);
+        this.orWhereRaw("data->'_forms'->>'personal-information-form' ILIKE ?", [ilike]);
+      });
     }
 
-    const records = await query;
+    // order records
+    const orderBy = options.order || '-created_at';
+    let order = 'DESC';
 
-    return records.reduce((acc, record) => {
-      const statusFound =
-        // If no status passed in
-        !qs.status ||
-        (record.statuses.length > 0 &&
-          // model-relations/Dispute.js already configures the statuses
-          // to be pulled in descending order by their created_at date
-          // so we know the first one will be the most recent, no need to order
-          record.statuses[0].status === qs.status);
-
-      if (statusFound) {
-        return [...acc, record.id];
+    // Front-end send either 'created_at` or '-created_at'
+    // Where '-created_at' means DESC
+    if (orderBy && ['created_at', '-created_at'].includes(orderBy)) {
+      if (orderBy.indexOf('-') !== 0) {
+        order = 'ASC';
       }
 
-      return acc;
-    }, []);
+      query.orderBy('Disputes.created_at', order);
+    }
+
+    // Get the count of records with filters
+    // I couldn't find a better way to do this, since we can't reuse the same
+    // Krypton query to just find the count.
+    //
+    // Even when we are doing this, it's much better to what we had before since we are not
+    // doing N+1 queries and just 2.
+    //
+    // TODO: Find a cleaner way to do this
+    try {
+      [{ count: totalCount }] = await countQuery;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+    const totalPages = Math.ceil(~~totalCount / perPage);
+
+    // paginate query using limit and offset
+    query.limit(perPage).offset((page - 1) * perPage);
+
+    // get results
+    let results = [];
+    try {
+      results = await query;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+
+    // Return the results along pagination stats
+    return [results, { totalPages, currentPage: page }];
   },
 
   async findById(id, include = Dispute.defaultIncludes) {

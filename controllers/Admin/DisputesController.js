@@ -1,19 +1,19 @@
 /* globals Class, Admin */
-const Promise = require('bluebird');
+const User = require('$models/User');
 const Dispute = require('$models/Dispute');
 const { NotFoundError } = require('$lib/errors');
 const DisputeTool = require('$models/DisputeTool');
 const DisputeStatus = require('$models/DisputeStatus');
+const DisputeAttachment = require('$models/DisputeAttachment');
 const config = require('$config/config');
 const RestfulController = require('$lib/core/controllers/RestfulController');
+const _ = require('lodash');
 
 const {
   authenticate,
   authorize,
   tests: { isDisputeAdmin },
 } = require('$services/auth');
-
-const RESTfulAPI = require('$lib/RESTfulAPI');
 
 global.Admin = global.Admin || {};
 
@@ -39,31 +39,7 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     },
     {
       before(req, res, next) {
-        const query = Dispute.query();
-
-        Promise.coroutine(function* restfulAPI() {
-          const disputeIds = yield Dispute.search(req.query);
-
-          query.whereIn('id', disputeIds);
-        })().then(() => {
-          RESTfulAPI.createMiddleware({
-            queryBuilder: query
-              .where('deactivated', false)
-              .include('[user, attachments, disputeTool, admins]'),
-            order: {
-              default: '-updated_at',
-              allowedFields: ['created_at', 'updated_at'],
-            },
-            paginate: {
-              pageSize: 25,
-            },
-          })(req, res, next);
-        });
-      },
-      actions: ['index'],
-    },
-    {
-      before(req, res, next) {
+        // Load Dispute Tools
         DisputeTool.query()
           .orderBy('created_at', 'ASC')
           .then(disputeTools => {
@@ -77,30 +53,10 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       },
       actions: ['index'],
     },
-    {
-      before(req, res, next) {
-        Promise.mapSeries(res.locals.results, result =>
-          DisputeStatus.query()
-            .where({
-              dispute_id: result.id,
-            })
-            .orderBy('created_at', 'DESC')
-            .then(statuses => {
-              result.statuses = statuses;
-              return Promise.resolve();
-            }),
-        )
-          .then(() => {
-            next();
-          })
-          .catch(next);
-      },
-      actions: ['index'],
-    },
   ],
   prototype: {
     _loadDispute(req, res, next) {
-      Dispute.query()
+      return Dispute.query()
         .where({ id: req.params.id })
         .include('[user, statuses, attachments, disputeTool, admins]')
         .then(([dispute]) => {
@@ -112,12 +68,41 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
     },
 
     async index(req, res) {
-      res.locals.disputes = res.locals.results;
+      const [disputes, pagination] = await Dispute.search(req.query);
+
+      // We are not using Krypton `include`
+      // Here we add DisputeTool and User to each Dispute in results
+      const disputeTools = res.locals.disputeTools;
+      const userIdSet = new Set();
+      const disputeIdSet = new Set();
+
+      _.forEach(disputes, dispute => {
+        disputeIdSet.add(dispute.id);
+        userIdSet.add(dispute.userId);
+      });
+
+      // fetch Users
+      const userIds = Array.from(userIdSet);
+      const users = await User.query().whereIn('id', userIds);
+
+      // fetch attachments and statuses
+      const disputeIds = Array.from(disputeIdSet);
+      const attachments = await DisputeAttachment.query().whereIn('foreign_key', disputeIds);
+      const statuses = await DisputeStatus.query().whereIn('dispute_id', disputeIds);
+
+      // Add joins data to each Dispute
+      _.forEach(disputes, dispute => {
+        dispute.disputeTool = _.find(disputeTools, { id: dispute.disputeToolId });
+        dispute.user = _.find(users, { id: dispute.userId });
+        dispute.attachments = _.filter(attachments, { foreignKey: dispute.id });
+        dispute.statuses = _.filter(statuses, { disputeId: dispute.id });
+      });
+
+      res.locals.disputes = disputes;
       res.locals.statuses = DisputeStatus.statuses;
 
       res.locals.headers = {
-        total_count: ~~res._headers.total_count,
-        total_pages: ~~res._headers.total_pages,
+        total_pages: ~~pagination.totalPages,
         current_page: ~~req.query.page || 1,
         query: req.query,
       };
@@ -153,7 +138,10 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
       req.dispute
         .getAssignedAndAvailableAdmins()
         .then(r => res.status(200).send(r))
-        .catch(next);
+        .catch(e => {
+          console.log('error: ', e);
+          next(e);
+        });
     },
 
     updateAdmins(req, res, next) {
@@ -163,7 +151,10 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
           req.flash('success', 'The list of administrators assigned as been updated.');
           res.status(200).send({});
         })
-        .catch(next);
+        .catch(e => {
+          console.log('error: ', e);
+          next(e);
+        });
     },
 
     async updateDisputeData(req, res, next) {

@@ -5,6 +5,7 @@ const path = require('path');
 const PrivateAttachmentStorage = require('$models/PrivateAttachmentStorage');
 const DisputeStatuses = require('$shared/enum/DisputeStatuses');
 const DisputeStatus = require('$models/DisputeStatus');
+const Attachment = require('$models/Attachment');
 const Dispute = require('$models/Dispute');
 const DisputeTool = require('$models/DisputeTool');
 const { discourse } = require('$lib');
@@ -20,6 +21,8 @@ describe('Dispute', () => {
     tool = await DisputeTool.first();
   });
 
+  afterEach(async () => await truncate(Attachment, Dispute));
+
   describe('findById', () => {
     let dispute;
     beforeEach(async () => {
@@ -30,8 +33,6 @@ describe('Dispute', () => {
         throw e;
       }
     });
-
-    afterEach(() => truncate(Dispute));
 
     it('should return the dispute by its id', async () => {
       const found = await Dispute.findById(dispute.id);
@@ -212,36 +213,12 @@ describe('Dispute', () => {
   });
 
   describe('Instance Methods', () => {
-    let dispute;
-
-    beforeEach(() => {
-      dispute = new Dispute({
-        userId: user.id,
-        disputeToolId: tool.id,
-      });
-
-      return dispute.save().then(([id]) =>
-        Dispute.query()
-          .where({ id })
-          .include('admins')
-          .then(([d]) => {
-            dispute = d;
-            dispute.disputeTool = tool;
-          }),
-      );
-    });
-
     describe('attachments', () => {
-      let disputeId = '';
+      it('should be added', async () => {
+        const dispute = await createDispute(user, tool);
 
-      it('should be added', () => {
-        disputeId = dispute.id;
-        dispute.userId = user.id;
-        dispute.disputeToolId = tool.id;
-
+        // Add attachment
         const filePath = path.join(process.cwd(), 'tests', 'assets', 'hubble.jpg');
-
-        // Prevent uploading files to S3
         sinon.stub(PrivateAttachmentStorage.prototype, 'saveStream').returns(
           new Promise(resolve => {
             const response = {
@@ -259,34 +236,51 @@ describe('Dispute', () => {
           }),
         );
 
-        return dispute.save().then(() =>
-          dispute.addAttachment('single-uploader', filePath).then(() => {
-            expect(dispute.data.attachments.length).to.be.equal(1);
-            expect(dispute.data.attachments[0].id).to.exists;
-            expect(dispute.data.attachments[0].path).to.exists;
-            expect(dispute.data.attachments[0].thumb).to.exists;
-            expect(dispute.data.attachments[0].name).to.be.equal('single-uploader');
+        await dispute.addAttachment('single-uploader', filePath);
 
-            PrivateAttachmentStorage.prototype.saveStream.restore();
-          }),
-        );
+        expect(dispute.data.attachments.length).to.be.equal(1);
+        expect(dispute.data.attachments[0].id).to.exists;
+        expect(dispute.data.attachments[0].path).to.exists;
+        expect(dispute.data.attachments[0].thumb).to.exists;
+        expect(dispute.data.attachments[0].name).to.be.equal('single-uploader');
+
+        PrivateAttachmentStorage.prototype.saveStream.restore();
       });
 
-      it('should be removed', () => {
-        dispute.userId = user.id;
-        dispute.disputeToolId = tool.id;
+      it('should be removed', async () => {
+        const dispute = await createDispute(user, tool);
 
-        return Dispute.query()
-          .where('id', disputeId)
-          .include('attachments')
-          .then(disputes => {
-            dispute = disputes[0];
-            const attachmentId = dispute.data.attachments[0].id;
+        // Add attachment
+        const filePath = path.join(process.cwd(), 'tests', 'assets', 'hubble.jpg');
+        sinon.stub(PrivateAttachmentStorage.prototype, 'saveStream').returns(
+          new Promise(resolve => {
+            const response = {
+              original: {
+                ext: 'jpeg',
+                mimeType: 'image/jpeg',
+                width: 1280,
+                height: 1335,
+                key:
+                  'test/DisputeAttachment/6595579a-b170-4ffd-87b3-2439f3d032fc/file/original.jpeg',
+              },
+            };
 
-            return dispute.removeAttachment(attachmentId).then(() => {
-              expect(dispute.data.attachments.length).to.be.equal(0);
-            });
-          });
+            resolve(response);
+          }),
+        );
+
+        await dispute.addAttachment('single-uploader', filePath);
+        PrivateAttachmentStorage.prototype.saveStream.restore();
+
+        // Reload dispute to check attachments
+        const [reloadedDispute] = await Dispute.query()
+          .where('id', dispute.id)
+          .include('attachments');
+
+        expect(reloadedDispute.data.attachments.length).to.be.equal(1);
+        await reloadedDispute.removeAttachment(reloadedDispute.data.attachments[0].id);
+
+        expect(reloadedDispute.data.attachments.length).to.be.equal(0);
       });
     });
 
@@ -378,56 +372,87 @@ describe('Dispute', () => {
     });
 
     describe('search', () => {
-      const containsDispute = ids => expect(ids).to.contain(dispute.id);
+      it('returns pagination stats correctly', async () => {
+        await createDispute(user);
+        await createDispute(user);
 
-      it("should search by the user's name", () =>
-        Dispute.search({ name: user.name }).then(containsDispute));
+        const [disputes, pagination] = await Dispute.search({ name: user.name, perPage: 1 });
 
-      it('should search by the dispute human readable id', () =>
-        Dispute.search({ filters: { readable_id: dispute.readableId } }).then(containsDispute));
+        expect(disputes.length).to.eq(1);
+        expect(pagination.totalPages).to.eq(2);
+        expect(pagination.currentPage).to.eq(1);
+      });
+
+      it("should search by the user's name", async () => {
+        const dispute = await createDispute(user);
+
+        const [disputes] = await Dispute.search({ name: user.name });
+        const disputeIds = disputes.map(dispute => dispute.id);
+
+        expect(disputeIds).to.include(dispute.id);
+      });
+
+      it('should search by the dispute human readable id', async () => {
+        const dispute = await createDispute(user);
+
+        const [disputes] = await Dispute.search({
+          filters: { readable_id: dispute.readableId },
+        });
+        const disputeIds = disputes.map(dispute => dispute.id);
+
+        expect(disputeIds.length).to.eq(1);
+        expect(disputeIds).to.include(dispute.id);
+      });
 
       describe('by dispute status', () => {
-        it('should search by the dispute status', () =>
-          Dispute.search({ status: dispute.status }).then(containsDispute));
+        it('should search by the dispute status', async () => {
+          const dispute = await createDispute(user);
 
-        describe('should ignore', () => {
-          let status;
-          let disputeId;
-          before(async () => {
-            disputeId = dispute.id;
-            status = new DisputeStatus({
-              status: 'In Review',
-              notify: false,
-              comment: 'asdfasdf',
-              disputeId,
-            });
-            await status.save();
-          });
+          const [disputes] = await Dispute.search({ status: dispute.status });
+          const disputeIds = disputes.map(dispute => dispute.id);
 
-          it('the notify flag', () =>
-            Dispute.search({ status: status.status }).then(res => {
-              expect(res).to.contain(disputeId);
-            }));
+          expect(disputeIds.length).to.eq(1);
+          expect(disputeIds).to.include(dispute.id);
         });
       });
 
-      it('should search by the dispute tool', () =>
-        Dispute.search({
+      it('should search by the dispute tool', async () => {
+        const dispute = await createDispute(user);
+
+        const [disputes] = await Dispute.search({
           filters: { dispute_tool_id: dispute.disputeToolId },
-        }).then(containsDispute));
+        });
+        const disputeIds = disputes.map(dispute => dispute.id);
 
-      describe('when given a readable id should ignore', () => {
-        const withreadableId = q =>
-          Object.assign({ filters: { readable_id: dispute.readableId } }, q);
-        it('the name', () =>
-          Dispute.search(withreadableId({ name: 'bogus bogus' })).then(containsDispute));
+        expect(disputeIds).to.include(dispute.id);
+      });
 
-        it('the status', () =>
-          Dispute.search(withreadableId({ status: 'not a real status beep boop beeeeeeep' })).then(
-            containsDispute,
-          ));
+      it('should return search given the order filter', async () => {
+        const dispute1 = await createDispute(user);
+        const dispute2 = await createDispute(user);
+
+        // DESC
+        let [disputes] = await Dispute.search({
+          filters: { name: user.name },
+          order: '-created_at',
+        });
+        let disputeIds = disputes.map(dispute => dispute.id);
+
+        expect(disputeIds[0]).to.eq(dispute2.id);
+        expect(disputeIds[1]).to.eq(dispute1.id);
+
+        // ASC
+        [disputes] = await Dispute.search({
+          filters: { name: user.name },
+          order: 'created_at',
+        });
+        disputeIds = disputes.map(dispute => dispute.id);
+
+        expect(disputeIds[0]).to.eq(dispute1.id);
+        expect(disputeIds[1]).to.eq(dispute2.id);
       });
     });
+
     describe('updateAdmins', () => {
       let dispute;
       let admin;

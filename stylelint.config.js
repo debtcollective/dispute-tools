@@ -5,4 +5,5 @@ module.exports = {
     'declaration-colon-newline-after': null,
     'value-list-comma-newline-after': null,
   },
+  ignoreFiles: ['**/*.js'],
 };

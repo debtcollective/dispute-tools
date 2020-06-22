@@ -6890,9 +6890,9 @@ known-css-properties@^0.5.0:
   resolved "https://registry.yarnpkg.com/known-css-properties/-/known-css-properties-0.5.0.tgz#6ff66943ed4a5b55657ee095779a91f4536f8084"
   integrity sha512-LOS0CoS8zcZnB1EjLw4LLqDXw8nvt3AGH5dXLQP3D9O1nLLA+9GC5GnPl5mmF+JiQAtSX4VyZC7KvEtcA4kUtA==
 
-"krypton-orm@git://github.com/debtcollective/krypton.git":
+"krypton-orm@git://github.com/debtcollective/krypton.git#4da05af9af508b2898b8c93f2aa335d99bd880f3":
   version "0.1.0"
-  resolved "git://github.com/debtcollective/krypton.git#fdf82f8b4c98cdd419457d46885f634237e9043d"
+  resolved "git://github.com/debtcollective/krypton.git#4da05af9af508b2898b8c93f2aa335d99bd880f3"
   dependencies:
     async "^1.5.0"
     bluebird "^3.3.3"
