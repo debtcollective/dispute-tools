@@ -97,7 +97,7 @@
     "csurf": "^1.9.0",
     "datasets-us-states-names": "^1.0.0",
     "dc-vue-header": "git://github.com/debtcollective/dc-vue-header.git#master",
-    "discourse-node-api": "1.0.0",
+    "discourse-node-api": "1.0.1",
     "express": "^4.14.0",
     "express-session": "^1.15.6",
     "extract-text-webpack-plugin": "^3.0.2",
