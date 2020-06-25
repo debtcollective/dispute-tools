@@ -39,14 +39,14 @@ class DiscourseMessage extends DebtCollectiveMessage {
    * the comma delimited list that discourse expects.
    * @return {string} a comma delimited list of usernames and groups
    */
-  get targetUsernames() {
+  get targetRecipients() {
     return uniq(flatten([this.to, this.from]).filter(identity)).join(',');
   }
 
-  get topicIdOrUsernames() {
+  get topicIdOrRecipients() {
     return this.isThreaded
       ? { topic_id: this.topicId }
-      : { target_usernames: this.targetUsernames, title: this.subject };
+      : { target_recipients: this.targetRecipients, title: this.subject };
   }
 
   /**
@@ -60,7 +60,7 @@ class DiscourseMessage extends DebtCollectiveMessage {
     const response = await discourse.admin.messages.create({
       raw: markdown,
       archetype: 'private_message',
-      ...this.topicIdOrUsernames,
+      ...this.topicIdOrRecipients,
     });
 
     return response.body;

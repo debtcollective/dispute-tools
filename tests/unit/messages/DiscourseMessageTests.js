@@ -30,8 +30,8 @@ describe('DiscourseMessage', () => {
 
         m.send('');
 
-        expect(created.target_usernames).match(/foo/g);
-        expect(created.target_usernames).match(/bar/g);
+        expect(created.target_recipients).match(/foo/g);
+        expect(created.target_recipients).match(/bar/g);
       });
 
       it('should accept an array', () => {
@@ -42,10 +42,10 @@ describe('DiscourseMessage', () => {
 
         m.send('');
 
-        expect(created.target_usernames).match(/foo/g);
-        expect(created.target_usernames).match(/bar/g);
-        expect(created.target_usernames).match(/bang/g);
-        expect(created.target_usernames).match(/baz/g);
+        expect(created.target_recipients).match(/foo/g);
+        expect(created.target_recipients).match(/bar/g);
+        expect(created.target_recipients).match(/bang/g);
+        expect(created.target_recipients).match(/baz/g);
       });
 
       it('should filter duplicate usernames', () => {
@@ -56,7 +56,7 @@ describe('DiscourseMessage', () => {
 
         m.send('');
 
-        expect(created.target_usernames.match(/fooBar/g)).lengthOf(1);
+        expect(created.target_recipients.match(/fooBar/g)).lengthOf(1);
       });
 
       it('should filter undefined usernames', () => {
@@ -67,19 +67,19 @@ describe('DiscourseMessage', () => {
 
         m.send('');
 
-        expect(created.target_usernames).match(/fooBar/);
-        expect(created.target_usernames).match(/twist/);
-        expect(created.target_usernames).not.match(/undefined/);
+        expect(created.target_recipients).match(/fooBar/);
+        expect(created.target_recipients).match(/twist/);
+        expect(created.target_recipients).not.match(/undefined/);
       });
     });
 
     describe('send', () => {
-      it('should send target_usernames when no topicId was passed in', () => {
+      it('should send target_recipients when no topicId was passed in', () => {
         const m = new DiscourseMessage('Test', null, { from: ['test'] });
 
         m.send('');
 
-        expect(created.target_usernames).eq('test');
+        expect(created.target_recipients).eq('test');
         expect(created.topic_id).undefined;
       });
 
@@ -89,7 +89,7 @@ describe('DiscourseMessage', () => {
         m.send('');
 
         expect(created.topic_id).eq(40);
-        expect(created.target_usernames).undefined;
+        expect(created.target_recipients).undefined;
       });
     });
   });
