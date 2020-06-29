@@ -125,7 +125,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
         await new CompletedDisputeMessage(dispute).send();
       } catch (e) {
         Sentry.captureException(e);
-        logger.error(e);
+        logger.error(e.message);
       }
 
       return redirect();
@@ -225,6 +225,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
           'A problem occurred while attempting to upload your attachments. Please try again or contact us if the problem persists.',
         );
         logger.error('Unable to upload attachment', e.message);
+        Sentry.captureException(e);
         caught = e;
       }
 
