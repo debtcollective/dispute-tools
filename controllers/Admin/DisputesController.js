@@ -8,6 +8,7 @@ const DisputeAttachment = require('$models/DisputeAttachment');
 const config = require('$config/config');
 const RestfulController = require('$lib/core/controllers/RestfulController');
 const _ = require('lodash');
+const { Sentry, logger } = require('$lib');
 
 const {
   authenticate,
@@ -139,7 +140,8 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
         .getAssignedAndAvailableAdmins()
         .then(r => res.status(200).send(r))
         .catch(e => {
-          console.log('error: ', e);
+          Sentry.captureException(e);
+          logger.error(e.message);
           next(e);
         });
     },
@@ -152,7 +154,8 @@ Admin.DisputesController = Class(Admin, 'DisputesController').inherits(RestfulCo
           res.status(200).send({});
         })
         .catch(e => {
-          console.log('error: ', e);
+          Sentry.captureException(e);
+          logger.error(e.message);
           next(e);
         });
     },
