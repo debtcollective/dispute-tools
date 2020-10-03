@@ -34,19 +34,19 @@ module.exports = {
   appName: process.env.APP_NAME || 'TDC Dispute Tools',
   notifyStatuses: (process.env.NOTIFY_STATUSES || 'Documents Sent').split(','),
   sso: {
-    endpoint: process.env.SSO_ENDPOINT || 'http://localhost:3000/session/sso_provider',
+    endpoint: process.env.SSO_ENDPOINT || 'http://lvh.me:3000/session/sso_provider',
     secret: process.env.SSO_SECRET || 'sso_secret',
   },
-  landingPageURL: process.env.LANDING_PAGE_URL || `http://localhost:${port}`,
-  siteURL: process.env.SITE_URL || `http://localhost:${port}`,
-  donateURL: process.env.DONATE_URL || 'https://membership.debtcollective.org',
+  landingPageURL: process.env.LANDING_PAGE_URL || 'http://lvh.me:8000',
+  siteURL: process.env.SITE_URL || `http://lvh.me:${port}`,
+  donateURL: process.env.DONATE_URL || 'https://debtcollective.org/donate',
   mailers: {
     contactEmail: process.env.EMAIL_CONTACT || 'contact@example.com',
     senderEmail: process.env.EMAIL_NO_REPLY || 'no-reply@example.com',
     disputesBCCAddress: process.env.EMAIL_DISPUTES_BCC || 'disputes@example.com',
   },
   smtp: {
-    host: process.env.EMAIL_HOST || 'localhost',
+    host: process.env.EMAIL_HOST || 'lvh.me',
     port: process.env.EMAIL_PORT || 1025,
     secure: process.env.EMAIL_SECURE || false,
     auth: {
@@ -74,7 +74,7 @@ module.exports = {
     basicRole: process.env.DISCOURSE_BASIC_ROLE || 'trust_level_0',
     apiKey: process.env.DISCOURSE_API_KEY || '',
     apiUsername: process.env.DISCOURSE_API_USERNAME || 'system',
-    baseUrl: process.env.DISCOURSE_API_BASE_URL || 'http://localhost:3000',
+    baseUrl: process.env.DISCOURSE_API_BASE_URL || 'http://lvh.me:3000',
   },
   doeDisclosure: {
     representatives:

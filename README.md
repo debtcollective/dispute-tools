@@ -71,7 +71,8 @@ http://localhost:8080
 Ensure Postgres is running (e.g., with `ps aux | grep postgres`). And run:
 
 ```
-make project
+make config-files
+make setup
 ```
 
 If there is any issue with the command try running separately and review the [FAQ](./FAQ.md) file.
