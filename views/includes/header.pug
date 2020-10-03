@@ -1,41 +1,45 @@
 #debt-collective-header
-
-script.
-  /**
-   * Do this here so that the header mounts as soon as the mount point is available.
-   * This prevents the page from waiting for the whole JS bundle to load before
-   * beginning to render the header. Otherwise we end up with a hole in where the
-   * header goes until the bundle is done loading & has begun execution
-   */
-  (function() {
+  -
+    var siteUrl = config.siteURL;
+    var discourseUrl = config.discourse.baseUrl;
+    var landingUrl = config.landingPageURL
+    var memberHubUrl = config.landingPageURL + "/hub"
+    var donateUrl = config.landingPageURL + "/donate"
+    var logoUrl = "https://cdn.jsdelivr.net/npm/@debtcollective/dc-header-component/dist/header/assets/logo.png"
+    var logoSmallUrl = "https://cdn.jsdelivr.net/npm/@debtcollective/dc-header-component/dist/header/assets/logo-small"
     var headerLinks = [
-      { text: 'Admin', href: '/admin/disputes', roles: [!{JSON.stringify(adminRole)}] },
-      { text: 'My Disputes', href: '/disputes/my' },
-      { text: 'Dispute Your Debt', href: '/' },
-      { text: 'Community', href: 'https://community.debtcollective.org' },
-      { text: 'Events', href: 'https://community.debtcollective.org/calendar' },
-      { text: 'The Power Report', href: 'https://powerreport.debtcollective.org' },
-      { text: "Donate", href: "https://membership.debtcollective.org" }
+      {
+        href: '/disputes/my',
+        text: 'My Disputes'
+      },
+      {
+        href: '/debt-union',
+        text: 'Join the Union'
+      },
+      {
+        href: 'https://community.debtcollective.org/',
+        text: 'Community'
+      },
+      {
+        href: 'https://teespring.com/stores/debt-collective',
+        text: 'Store'
+      },
     ];
 
-    var dropdownLinks = [
-      { text: 'About the Debt Collective', href: 'https://debtcollective.org#about' }
-    ];
+    if (isAdmin) {
+      headerLinks.unshift({
+        href: '/admin/disputes',
+        text: 'Admin'
+      })
+    }
 
-    new Vue({
-      el: '#debt-collective-header',
-      render: function(h) {
-        return h('debt-collective-header', {
-          attrs: {
-            'id': 'main-header',
-            'header-links': headerLinks,
-            'dropdown-links': dropdownLinks,
-            'discourse-endpoint': !{JSON.stringify(discourseEndpoint)},
-            'login-endpoint': '/login',
-            // This should be blank so as to send the logout to just `/logout`
-            'tools-endpoint': ''
-          },
-        });
-      }
-    });
-  })();
+  dc-header(
+    id="dc-header"
+    logo=logoUrl
+    logosmall=logoUrl
+    host=siteUrl
+    memberhuburl=memberHubUrl
+    community=discourseUrl
+    donateurl=donateUrl
+    links=headerLinks
+  )
