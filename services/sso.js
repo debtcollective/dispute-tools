@@ -1,64 +1,24 @@
-const crypto = require('crypto');
 const User = require('$models/User');
 const {
   errors: { AuthenticationFailure },
 } = require('$lib');
 const {
-  siteURL,
-  sso: { endpoint, secret },
+  sso: { jwtSecret, cookieName },
 } = require('$config/config');
 
-const nonces = {};
-
-const generateNonce = () => ({
-  n: crypto.randomBytes(10).readUInt32LE(),
-  t: Date.now(),
-});
-
-const generateSignature = urlEncoded =>
-  crypto
-    .createHmac('sha256', secret)
-    .update(urlEncoded)
-    .digest('hex');
-
-const generateToken = url => {
-  const { n, t } = generateNonce();
-  nonces[n] = t;
-  const payload = `nonce=${n}&return_sso_url=${url}`;
-  const b64payload = Buffer.from(payload).toString('base64');
-  const urlEncoded = encodeURIComponent(b64payload);
-  return `sso=${urlEncoded}&sig=${generateSignature(b64payload)}`;
-};
-
 const sso = {
-  validNonce: nonce => nonces[nonce] !== undefined,
-
-  buildRedirect(url) {
-    return `${endpoint}?${generateToken(`${siteURL}${url}`)}`;
+  // Returns the SSO cookie content or null
+  ssoCookie(cookies) {
+    return cookies[cookieName];
   },
 
-  extractPayload({ sso, sig }) {
-    if (generateSignature(decodeURIComponent(sso)) === sig) {
-      return Buffer.from(sso, 'base64')
-        .toString('utf8')
-        .split('&')
-        .map(q => q.split('='))
-        .reduce((acc, [key, value]) => {
-          value = decodeURIComponent(value);
-          if (acc[key] !== undefined) {
-            if (Array.isArray(acc[key])) {
-              acc[key].push(value);
-            } else {
-              acc[key] = [acc[key], value];
-            }
-          } else {
-            acc[key] = value;
-          }
-          return acc;
-        }, {});
-    }
+  extractPayload(ssoCookieContent) {
+    // read JWT and decode
+    console.log(ssoCookieContent);
 
-    throw new AuthenticationFailure();
+    // if JWT invalid throw new AuthenticationFailure();
+
+    return;
   },
 
   async findOrCreateUser(payload) {
@@ -84,10 +44,17 @@ const sso = {
       });
   },
 
-  async handlePayload(payload) {
-    if (sso.validNonce(payload.nonce)) {
-      delete nonces[payload.nonce];
+  async currentUser(cookies) {
+    const ssoCookieContent = this.ssoCookie(cookies);
 
+    // Early return if there's no session cookie
+    if (!ssoCookieContent) {
+      return null;
+    }
+
+    const payload = this.extractPayload(ssoCookieContent);
+
+    if (payload) {
       const user = await this.findOrCreateUser(payload);
 
       return user;
