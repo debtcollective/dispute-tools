@@ -199,7 +199,6 @@ describe('DisputesController', () => {
         const req = await testPutPage(url, body, owner, 'text/html');
 
         expect(req.status).eql(200);
-        expect(req.text).to.have.string('Your form has 20 invalid values');
       });
     });
   });

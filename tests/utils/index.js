@@ -115,10 +115,11 @@ const helpers = {
 
     // create jwt cookie
     const payload = {
-      external_id: user.externalId,
-      name: user.name,
+      admin: user.admin,
       email: user.email,
+      external_id: user.externalId,
       groups: [],
+      name: user.name,
     };
     const token = JWT.sign(payload, secret);
     const cookie = `${cookieName}=${token}`;
