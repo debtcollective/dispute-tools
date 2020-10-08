@@ -26,6 +26,33 @@ const User = Class('User').inherits(Krypton.Model)({
     return User.query().where({ admin: true });
   },
 
+  async findOrCreateUser(payload) {
+    const externalId = payload.external_id;
+
+    if (!externalId) {
+      return null;
+    }
+
+    return User.query()
+      .where('external_id', externalId)
+      .then(async result => {
+        let user = result[0];
+
+        // if user is missing, create a new record
+        if (!user) {
+          user = new User({
+            externalId,
+          });
+        }
+
+        // update user profile
+        user.setInfo(payload);
+        await user.save();
+
+        return user;
+      });
+  },
+
   prototype: {
     init(config) {
       Krypton.Model.prototype.init.call(this, config);
@@ -33,13 +60,10 @@ const User = Class('User').inherits(Krypton.Model)({
 
     setInfo(info) {
       const hasAdminRole = info.groups.includes(config.discourse.adminRole);
-      const isDiscourseAdmin = info.admin === 'true';
+      const isDiscourseAdmin = info.admin === true;
       const admin = hasAdminRole || isDiscourseAdmin;
-      const externalId = info.external_id || this.externalId;
+      const externalId = this.externalId || info.external_id;
       const avatarUrl = info.avatar_url || '';
-      const zip = info['custom.user_zip'];
-      const state = info['custom.user_state'];
-      const phoneNumber = info['custom.user_phone_number'];
 
       // Discourse returns + instead of spaces for names
       const name = (info.name || '').replace(/\+/g, ' ');
@@ -51,9 +75,6 @@ const User = Class('User').inherits(Krypton.Model)({
         externalId,
         admin,
         avatarUrl,
-        zip,
-        state,
-        phoneNumber,
       });
 
       return this;

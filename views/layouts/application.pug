@@ -26,16 +26,16 @@ html(lang='en')
 
     include ../includes/analytics
 
+    // header
+    link(rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons')
+    script(src='https://cdn.jsdelivr.net/npm/@debtcollective/dc-header-component/dist/header.js')
+
     script(
       src="https://browser.sentry-cdn.com/5.24.2/bundle.min.js"
       integrity="sha384-8x1Z8KjWCA4KJ7mh5cTEtm1Jngg4yEZDYTAU3A4HfHdtaiCYba4cCuJDHQ3zc2Qe"
       crossorigin="anonymous"
     )
     script(src=`https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.${NODE_ENV === 'production' ? 'min.' : ''}js`)
-
-    // header
-    link(rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons')
-    script(src='https://cdn.jsdelivr.net/npm/@debtcollective/dc-header-component/dist/header.js')
 
   body
     include ../includes/svg/sprite.svg
