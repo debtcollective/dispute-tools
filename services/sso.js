@@ -1,8 +1,9 @@
 const JWT = require('jsonwebtoken');
+const querystring = require('querystring');
 const User = require('$models/User');
 const { Sentry, logger } = require('$lib');
 const {
-  sso: { jwtSecret, cookieName },
+  sso: { loginEndpoint, jwtSecret, cookieName },
 } = require('$config/config');
 
 const SSO = {
@@ -14,7 +15,7 @@ const SSO = {
   extractPayload(ssoCookieContent) {
     try {
       // read JWT and decode
-      return JWT.verify(ssoCookieContent, jwtSecret, {});
+      return JWT.verify(ssoCookieContent, jwtSecret, { algorithms: ['HS256'] });
     } catch (e) {
       // handle error
       // TODO: should we remove the cookie?
@@ -37,6 +38,11 @@ const SSO = {
     }
 
     return await User.findOrCreateUser(payload);
+  },
+
+  buildRedirect(url) {
+    const query = { redirect_url: url };
+    return `${loginEndpoint}?${querystring.encode(query)}`;
   },
 };
 

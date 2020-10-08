@@ -1,14 +1,14 @@
 /* globals Class */
 const { Sentry } = require('$lib');
 const passport = require('$lib/passport');
-const sso = require('$services/sso');
+const SSO = require('$services/sso');
 const config = require('$config/config');
 const BaseController = require('$lib/core/controllers/BaseController');
 
 const SessionsController = Class('SessionsController').inherits(BaseController)({
   prototype: {
     create(req, res) {
-      return res.redirect(sso.buildRedirect(config.router.helpers.callback.url()));
+      return res.redirect(SSO.buildRedirect(config.router.helpers.callback.url()));
     },
 
     destroy(req, res, next) {

@@ -59,7 +59,7 @@ const User = Class('User').inherits(Krypton.Model)({
     },
 
     setInfo(info) {
-      const hasAdminRole = info.groups.includes(config.discourse.adminRole);
+      const hasAdminRole = (info.groups || []).includes(config.discourse.adminRole);
       const isDiscourseAdmin = info.admin === true;
       const admin = hasAdminRole || isDiscourseAdmin;
       const externalId = this.externalId || info.external_id;
