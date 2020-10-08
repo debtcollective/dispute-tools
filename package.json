@@ -94,6 +94,7 @@
     "chokidar": "^2.0.0",
     "cli-table": "^0.3.1",
     "connect-redis": "^3.3.3",
+    "cookie-parser": "1.4.5",
     "csurf": "^1.9.0",
     "datasets-us-states-names": "^1.0.0",
     "dc-vue-header": "git://github.com/debtcollective/dc-vue-header.git#master",
