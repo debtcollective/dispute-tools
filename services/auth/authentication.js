@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
     res.format({
       html() {
         // save redirectTo
-        req.session.redirectTo = req.url;
+        req.session.redirectTo = `${req.protocol}://${req.headers.host}${req.url}`;
 
         return res.redirect(config.router.mappings.login.url());
       },

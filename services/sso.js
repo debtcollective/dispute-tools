@@ -3,7 +3,7 @@ const querystring = require('querystring');
 const User = require('$models/User');
 const { Sentry, logger } = require('$lib');
 const {
-  sso: { loginEndpoint, jwtSecret, cookieName },
+  sso: { loginURL, jwtSecret, cookieName },
 } = require('$config/config');
 
 const SSO = {
@@ -44,8 +44,8 @@ const SSO = {
   },
 
   buildRedirect(url) {
-    const query = { redirect_url: url };
-    return `${loginEndpoint}?${querystring.encode(query)}`;
+    const query = { return_url: url };
+    return `${loginURL}?${querystring.encode(query)}`;
   },
 };
 
