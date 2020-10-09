@@ -17,8 +17,7 @@ const SSO = {
       // read JWT and decode
       return JWT.verify(ssoCookieContent, jwtSecret, { algorithms: ['HS256'] });
     } catch (e) {
-      // handle error
-      // TODO: should we remove the cookie?
+      // report error to Sentry, this means we assigned a cookie with an invalid jwt secret
       Sentry.captureException(e);
       logger.error('Invalid JWT token', e);
 
@@ -37,7 +36,11 @@ const SSO = {
       return null;
     }
 
-    return await User.findOrCreateUser(payload);
+    // JWT adds iat to the payload
+    // eslint-disable-next-line no-unused-vars
+    const { iat, ...userPayload } = payload;
+
+    return User.findOrCreateUser(userPayload);
   },
 
   buildRedirect(url) {
