@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
   && rm -rf /var/lib/apt/lists/*
 
 ADD ./package.json package.json
+ADD ./yarn.lock yarn.lock
 RUN yarn install
 
 COPY . .
