@@ -35,7 +35,6 @@ module.exports = {
   notifyStatuses: (process.env.NOTIFY_STATUSES || 'Documents Sent').split(','),
   sso: {
     loginURL: process.env.SSO_ENDPOINT || 'http://lvh.me:3000/session/sso_cookies',
-    secret: process.env.SSO_SECRET || 'sso_secret',
     jwtSecret: process.env.SSO_JWT_SECRET || 'jwt-secret',
     cookieName: process.env.SSO_COOKIE_NAME || 'tdc_auth_token',
   },
