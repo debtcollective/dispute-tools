@@ -12,7 +12,7 @@ describe('SessionsController', () => {
         // check redirection to sso
         return req.redirects(0).catch(({ status, response: { headers } }) => {
           expect(status).eq(302);
-          expect(headers.location.startsWith(config.sso.endpoint)).true;
+          expect(headers.location.startsWith(config.sso.loginURL)).true;
         });
       });
     });
@@ -25,21 +25,21 @@ describe('SessionsController', () => {
 
         return req.redirects(0).catch(({ status, response: { headers } }) => {
           expect(status).eq(302);
-          expect(headers.location.startsWith(config.sso.endpoint)).true;
+          expect(headers.location.startsWith(config.sso.loginURL)).true;
         });
       });
     });
-  });
 
-  describe('destroy', () => {
-    it('should logout user and redirect to root', async () => {
-      const user = await createUser();
-      const url = config.router.helpers.logout.url();
-      const req = testGetPage(url, user);
+    describe('destroy', () => {
+      it('should logout user and redirect to root', async () => {
+        const user = await createUser();
+        const url = config.router.helpers.logout.url();
+        const req = testGetPage(url, user);
 
-      return req.redirects(0).catch(({ status, response: { headers } }) => {
-        expect(status).eq(302);
-        expect(headers.location).eq(config.router.helpers.root.url());
+        return req.redirects(0).catch(({ status, response: { headers } }) => {
+          expect(status).eq(302);
+          expect(headers.location).eq(config.router.helpers.root.url());
+        });
       });
     });
   });

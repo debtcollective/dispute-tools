@@ -149,10 +149,7 @@ const DisputesController = Class('DisputesController').inherits(RestfulControlle
       } catch (e) {
         return res.format({
           html() {
-            const message =
-              `Your form has ${e.message}` ||
-              "We couldn't update your dispute. Please try again or contact us if the problem persists.";
-
+            const message = `Your form has ${e.message}`;
             req.flash('error', message);
 
             return res.redirect(config.router.helpers.Disputes.show.url(dispute.id));

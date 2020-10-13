@@ -20,6 +20,10 @@ const middlewares = [
     path: 'middlewares/bodyParserJSON.js',
   },
   {
+    name: 'Cookie parser',
+    path: 'middlewares/cookies.js',
+  },
+  {
     name: 'Multipart Body Parser',
     path: 'middlewares/multer.js',
   },
@@ -32,20 +36,16 @@ const middlewares = [
     path: 'middlewares/sessions.js',
   },
   {
+    name: 'Current User',
+    path: 'middlewares/currentUser.js',
+  },
+  {
     name: 'Locals',
     path: 'middlewares/locals.js',
   },
   {
     name: 'Flash Messages',
     path: 'middlewares/flashMessages.js',
-  },
-  {
-    name: 'Passport Initialize',
-    path: 'middlewares/PassportInit.js',
-  },
-  {
-    name: 'Passport Session',
-    path: 'middlewares/PassportSession.js',
   },
   {
     name: 'SafeLocals',

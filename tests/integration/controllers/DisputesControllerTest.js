@@ -27,12 +27,10 @@ const {
 describe('DisputesController', () => {
   let user;
   let admin;
-  let moderator;
 
   before(async () => {
     user = await createUser();
     admin = await createUser({ admin: true });
-    moderator = await createUser({ moderator: true });
   });
 
   describe('show', () => {
@@ -60,10 +58,6 @@ describe('DisputesController', () => {
 
       describe('when admin', () => {
         it('should allow', () => testAllowed(testGetPage(url, admin)));
-      });
-
-      describe('when moderator', () => {
-        it('should reject', () => testForbidden(testGetPage(url, moderator)));
       });
     });
   });
@@ -99,10 +93,6 @@ describe('DisputesController', () => {
 
       describe('when admin', () => {
         it('should allow', () => testAllowed(testPostPage(url, validBody, admin)));
-      });
-
-      describe('when moderator', () => {
-        it('should allow', () => testAllowed(testPostPage(url, validBody, moderator)));
       });
     });
 
@@ -152,10 +142,6 @@ describe('DisputesController', () => {
 
       describe('when admin', () => {
         it('should allow', () => testAllowed(testPutPage(url, body, admin)));
-      });
-
-      describe('when moderator', () => {
-        it('should reject', () => testForbidden(testPutPage(url, body, moderator)));
       });
     });
 
@@ -213,7 +199,6 @@ describe('DisputesController', () => {
         const req = await testPutPage(url, body, owner, 'text/html');
 
         expect(req.status).eql(200);
-        expect(req.text).to.have.string('Your form has 20 invalid values');
       });
     });
   });
@@ -263,10 +248,6 @@ describe('DisputesController', () => {
       describe('when admin', () => {
         it('should allow', () => testAllowed(attach(testPostPage(url, null, admin))));
       });
-
-      describe('when moderator', () => {
-        it('should reject', () => testForbidden(attach(testPostPage(url, null, moderator))));
-      });
     });
 
     describe('model validation', () => {
@@ -311,10 +292,6 @@ describe('DisputesController', () => {
       describe('when admin', () => {
         it('should allow', () => testAllowed(testDeletePage(url, admin)));
       });
-
-      describe('when moderator', () => {
-        it('should reject', () => testForbidden(testDeletePage(url, moderator)));
-      });
     });
 
     it('should deactivate the dispute', async () => {
@@ -352,10 +329,6 @@ describe('DisputesController', () => {
 
       describe('when admin', () => {
         it('should allow', () => testAllowed(testPutPage(url, body, admin)));
-      });
-
-      describe('when moderator', () => {
-        it('should reject', () => testForbidden(testPutPage(url, body, moderator)));
       });
     });
 

@@ -1,6 +1,6 @@
 /* globals User, Dispute, DisputeTool */
 
-const uuid = require('uuid');
+const JWT = require('jsonwebtoken');
 const sa = require('superagent');
 const { expect } = require('chai');
 const nock = require('nock');
@@ -10,10 +10,10 @@ const qs = require('querystring');
 const faker = require('faker');
 
 const {
-  sessions,
   router,
   siteURL,
   discourse: { baseUrl },
+  sso,
 } = require('$config/config');
 
 const ids = {
@@ -52,20 +52,6 @@ Object.keys(testGroups).forEach(groupName =>
       owners: testGroups[groupName].owners.map((username, id) => ({ username, id })),
     }),
 );
-
-// mocking sessions
-const expressSession = require('express-session');
-const RedisStore = require('connect-redis')(expressSession);
-const cookieSignature = require('cookie-signature');
-const redis = require('redis');
-
-const redisClient = redis.createClient({
-  host: process.env.REDIS_HOST || 'localhost',
-});
-
-const redisStoreInstance = new RedisStore({
-  client: redisClient,
-});
 
 const agent = sa.agent();
 
@@ -121,29 +107,24 @@ const helpers = {
     return dispute;
   },
 
-  // Generate a session for user
-  // express-session just stores a session id in the cookie
-  // so we need to create both a session and a cookie
+  // Generate a sso cookie for user
+  // we set it to cookies to be parsed by the currentUser middleware
   generateSessionFor(user) {
-    const sessionID = uuid.v4();
-    const name = sessions.key;
-    const secret = sessions.secret;
-    const cookie = new expressSession.Cookie();
-    const session = {
-      passport: {
-        user: user.id,
-      },
-      cookie,
+    const secret = sso.jwtSecret;
+    const cookieName = sso.cookieName;
+
+    // create jwt cookie
+    const payload = {
+      admin: user.admin,
+      email: user.email,
+      external_id: user.externalId,
+      groups: [],
+      name: user.name,
     };
+    const token = JWT.sign(payload, secret);
+    const cookie = `${cookieName}=${token}`;
 
-    // create session
-    redisStoreInstance.set(sessionID, session, _.noop);
-
-    // create cookie
-    const signed = `s:${cookieSignature.sign(sessionID, secret)}`;
-    const cookieData = cookie.serialize(name, signed, cookie.options);
-
-    return cookieData;
+    return cookie;
   },
 
   // Creates a session for the user
