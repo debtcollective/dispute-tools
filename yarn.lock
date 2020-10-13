@@ -13796,7 +13796,7 @@ window-size@0.1.0:
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
   integrity sha1-VDjNLqk7IC76Ohn+iIeu58lPnJ0=
 
-winston-loggly-bulk@^2.0.0:
+winston-loggly-bulk@2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/winston-loggly-bulk/-/winston-loggly-bulk-2.0.3.tgz#1d09314bac282cf2df914f9d52aea990c870a0ec"
   integrity sha512-OdpOo+nwVD6TAKv5z+FnvtG2mPhJAfLYgL2Vou+mAF5LaKRloo6I3plx4333pY9XHVI1RsSDYwbSabGcYiMIvQ==
@@ -13804,10 +13804,10 @@ winston-loggly-bulk@^2.0.0:
     node-loggly-bulk "^2.0.1"
     winston "^2.3.1"
 
-winston@^2.2.0, winston@^2.4.1:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/winston/-/winston-2.4.2.tgz#3ca01f763116fc48db61053b7544e750431f8db0"
-  integrity sha512-4S/Ad4ZfSNl8OccCLxnJmNISWcm2joa6Q0YGDxlxMzH0fgSwWsjMt+SmlNwCqdpaPg3ev1HKkMBsIiXeSUwpbA==
+winston@2.4.4, winston@^2.3.1:
+  version "2.4.4"
+  resolved "https://registry.yarnpkg.com/winston/-/winston-2.4.4.tgz#a01e4d1d0a103cf4eada6fc1f886b3110d71c34b"
+  integrity sha512-NBo2Pepn4hK4V01UfcWcDlmiVTs7VTB1h7bgnB0rgP146bYhMxX0ypCz3lBOfNxCO4Zuek7yeT+y/zM1OfMw4Q==
   dependencies:
     async "~1.0.0"
     colors "1.0.x"
@@ -13816,10 +13816,10 @@ winston@^2.2.0, winston@^2.4.1:
     isstream "0.1.x"
     stack-trace "0.0.x"
 
-winston@^2.3.1:
-  version "2.4.4"
-  resolved "https://registry.yarnpkg.com/winston/-/winston-2.4.4.tgz#a01e4d1d0a103cf4eada6fc1f886b3110d71c34b"
-  integrity sha512-NBo2Pepn4hK4V01UfcWcDlmiVTs7VTB1h7bgnB0rgP146bYhMxX0ypCz3lBOfNxCO4Zuek7yeT+y/zM1OfMw4Q==
+winston@^2.4.1:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/winston/-/winston-2.4.2.tgz#3ca01f763116fc48db61053b7544e750431f8db0"
+  integrity sha512-4S/Ad4ZfSNl8OccCLxnJmNISWcm2joa6Q0YGDxlxMzH0fgSwWsjMt+SmlNwCqdpaPg3ev1HKkMBsIiXeSUwpbA==
   dependencies:
     async "~1.0.0"
     colors "1.0.x"
