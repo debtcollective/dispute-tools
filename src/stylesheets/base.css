@@ -243,7 +243,9 @@ select {
 main {
   padding-top: var(--header-height);
   background: linear-gradient(var(--k-bg-blue), rgba(245, 245, 245, 0) 1000px);
-  min-height: 98vh;
+  min-height: 100vh;
+  display: -ms-grid;
+  display: grid;
 }
 
 .wrapper {
