@@ -28,7 +28,14 @@ html(lang='en')
 
     // header
     link(rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons')
-    script(src='https://cdn.jsdelivr.net/npm/@debtcollective/dc-header-component/dist/header.js')
+    script(
+      src='https://cdn.jsdelivr.net/npm/@debtcollective/dc-header-component@2.1.4/dist/header/header.esm.js'
+      type='module'
+    )
+    script(
+      src='https://cdn.jsdelivr.net/npm/@debtcollective/dc-header-component@2.1.4/dist/header/header.esm.js'
+      type='nomodule'
+    )
 
     script(
       src="https://browser.sentry-cdn.com/5.24.2/bundle.min.js"
