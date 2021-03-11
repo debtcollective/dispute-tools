@@ -28,13 +28,13 @@ The doc-comments on the `Email` and `DiscourseMessage` classes are essential rea
 
 # Emails in Development
 
-We are using [mailcatcher](https://mailcatcher.me/) to visualize emails
+We are using [MailHog](https://github.com/mailhog/MailHog) to visualize emails
 in development, to install:
 
--   `gem install mailcatcher`
--   Run `mailcatcher`
+-   `brew update && brew install mailhog`
+-   Run `mailhog`
 -   Send mail through `smtp://localhost:1025` (If you copied `config.sample.js` this is already configured for you)
--   Go to `http://localhost:1080/` to see emails
+-   Go to `http://localhost:8025/` to see emails
 
 # S3 in Development
 
