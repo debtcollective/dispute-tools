@@ -12,19 +12,28 @@ block content
         .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500
           b Your name
         .col.sm-col-9.col-12.px1
-          input.form-control.-fw(type="text" name="name" maxLength="200" value=name)
+          input.form-control.-fw(type="text" name="name" maxLength="200" value=name required)
           p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid Name
       .clearfix.mb3
         .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500
           b Your email
         .col.sm-col-9.col-12.px1
-          input.form-control.-fw(type="email" name="email", value=email)
+          input.form-control.-fw(type="email" name="email", value=email required)
           p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid email
+      .clearfix.mb3
+        .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500
+          b Subject
+        .col.sm-col-9.col-12.px1
+          select.select.form-control.input-lg(name='subject' required)
+            - var _subjects = ['Login issues', 'Technical Support', 'Debt Questions', 'Press', 'Others'];
+            option(value='') -- Select a subject --
+            each subject in _subjects
+              option(value=subject)= subject
       .clearfix.mb2
         .col.sm-col-3.col-12.p1.right-align.xs-left-align.-fw-500
           b Your message
         .col.sm-col-9.col-12.px1
-          textarea.form-control.-fw(type="text" name="message" maxLength="32768")
+          textarea.form-control.-fw(type="text" name="message" maxLength="32768" required)
             = message
           p.-on-error.-danger.-caption.-fw-500.mt1 ▲ Invalid message
       .clearfix.mb2

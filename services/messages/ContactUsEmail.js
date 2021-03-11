@@ -11,17 +11,19 @@ class ForAdmin extends DebtCollectiveMessage {
    * @param {string} message Message for the Debt Collective organizers
    * @param {string} email The email address of the visitor contacting the Debt Collective
    * @param {string} name The name of the visitor contact the Debt Collective
+   * @param {string} subject The subject of the visitor contacting the Debt Collective
    */
-  constructor(message, email, name) {
+  constructor(message, email, name, subject) {
     super('ContactUsEmail.ForAdmin', {
       to: ForAdmin.to,
       from: `${name} <${email}>`,
-      subject: `${name} has sent a message using the Contact Us form`,
+      subject: `${subject} | ${name} has sent a message using the Contact Us form`,
     });
 
     this.locals = {
       message,
       name,
+      subject,
     };
   }
 }
@@ -36,9 +38,10 @@ class ContactUsEmail {
    * @param {string} message Message for the Debt Collective organizers
    * @param {string} email The email address of the visitor contacting the Debt Collective
    * @param {string} name The name of the visitor contact the Debt Collective
+   * @param {string} subject The subject of the visitor contacting the Debt Collective
    */
-  constructor(message, email, name) {
-    this.forAdmin = new ForAdmin(message, email, name);
+  constructor(message, email, name, subject) {
+    this.forAdmin = new ForAdmin(message, email, name, subject);
   }
 
   send() {
