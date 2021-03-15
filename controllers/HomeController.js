@@ -46,10 +46,10 @@ const HomeController = Class('HomeController').inherits(BaseController)({
     },
 
     sendContact(req, res, next) {
-      const { name, email, message, 'g-recaptcha-response': recaptchaResponse } = req.body;
+      const { name, email, message, subject, 'g-recaptcha-response': recaptchaResponse } = req.body;
       const recaptcha = config.recaptcha;
 
-      const contactUsEmail = new ContactUsEmail(message, email, name);
+      const contactUsEmail = new ContactUsEmail(message, email, name, subject);
 
       request.post(
         {
