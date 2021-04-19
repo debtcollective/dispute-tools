@@ -98,7 +98,7 @@ Once you've run the server, in order to being able to enable hot-reload you shou
 yarn watch
 ```
 
-Once both task are running together you will be able to make changes and see the updaded code in the browser.
+Once both task are running together you will be able to make changes and see the updaded code in the browser. http://localhost:8080/
 
 > Tip: if your lint remove any `debugger;` word from the codebase due to our project rules you can use `//eslint-disable-next-line` in order to being able to set a break point with `debugger;` keyword.
 
