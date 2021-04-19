@@ -3,7 +3,6 @@
   var date = moment().format('MMMM Do YYYY');
   var letterDate = moment(collectionNotice.date, 'MM-DD-YYYY')
   var letterDateFormated = letterDate.isValid() ? letterDate.format('MMMM Do YYYY') : date
-  var state = user.address1
 
 #letter
   header
@@ -32,7 +31,7 @@
         li If you are not the original creditor, the name and address of the original creditor;
         li Proof that the debt was actually incurred by me with respect to the original creditor; and
         li A copy of any judgment pertaining to this debt, if applicable; and
-        li Proof that you are licensed to collect debts in #{state}. 
+        li Proof that you are licensed to collect debts in #{user.state}. 
     p If you cannot product the above-referenced materials, please send written confirmation that you will no longer be collecting the referenced debt. Please also send written confirmation that you have removed any negative tradelines from my credit report.
     p Reporting information that you know to be inaccurate or failing to report information correctly violates the FDCPA and the Fair Credit Reporting Act. I will report any violations to the Consumer Financial Protection Bureau, the Federal Trade Commission, and state authorities. 
     p Aside from verifying this debt or advising me that debt collection efforts are being terminated
