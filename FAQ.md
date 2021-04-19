@@ -11,3 +11,5 @@
 **III.** _psql: FATAL:  database <User> does not exist_.  Run: `createdb <User> -U <User>` prior to intend to run yarn utils:resetdb.
 
 **IV.** _"discourse\_development" db not found_. You should update the database document directly on the Discourse project under `config/database.yml` file to use `debtcollective_discourse_development` instead `discourse_development` or use the env variable before the rails command `DISCOURSE_DEV_DB=debtcollective_discourse_development`.
+
+**V.** _"error: role 'postgres' does not exist"_. create a user like `createuser postgres --interactive` and give superuser permissions
