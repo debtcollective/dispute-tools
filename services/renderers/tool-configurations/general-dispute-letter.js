@@ -15,6 +15,7 @@ module.exports = {
                   name: form.name,
                   address1: form.address,
                   address2: getAddress2({ form }),
+                  state: form.state,
                 },
                 agency: {
                   name: form['agency-name'],

@@ -20,19 +20,25 @@
 
   section#body
     p Dear #{agency.name},
-    p I am writing in response to your letter dated #{letterDateFormated}, (copy enclosed) because I am disputing the alleged debt.
-    p If you are the original creditor, please send a copy of the contract or promissory note that I signed to initiate this debt.
-    p.mb0 If you are not the original creditor, please send the following documentation as required by the FDCPA 15 U.S.C. §1692g:
+    p I am writing in response to your notice dated #{letterDateFormated} regarding the collection of an alleged debt. A copy of the notice is enclosed. This letter is to inform you that I am disputing this debt and to request certain information pertaining to the alleged debt
+    p The Fair Debt Collections Practices Act (FDCPA), 15 U.S.C. § 1692 et seq., establishes guidelines dictating how debt collectors such as #{agency.name} may conduct business and defines rights of consumers involved with debt collectors. In accordance with the rights accorded to me under the FDCPA, I am making the following requests:
+    p.mb0 Please send the following documentation:
       ul
-        li name of original creditor or entity from whom you purchased this debt;
-        li proof that you own the debt or are authorized to collect this debt on behalf of the current owner;
-        li proof of the amount owed;
-        li proof that the debt was actually incurred by me with respect to the original creditor;
-        li a copy of any judgment (if applicable);
-        li proof that you are licensed to collect debts in my state.
-    p If you cannot produce the above materials, please send confirmation that you will no longer be collecting on the above debt as well as confirmation that you have removed any negative the tradeline from my credit report.
-    p Reporting information that you know to be inaccurate, or failing to report information correctly, violates the FDCPA and the Fair Credit Reporting Act. I will report any violations to the CFPB as well as to state authorities and the FTC.
-    p Aside from verifying the debt, #[u do not contact me about this debt]. The FDCPA requires that you honor this request.
+        li The name and address of the creditor to whom the alleged debt is currently owed; 
+        li Proof of the amount owed;
+        li Verification of the debt, including proof that you own the debt or are authorized to collect this debt on behalf of the current owner;
+        li If you are the original creditor, a copy of the contract or promissory note that I signed to initiate this debt; 
+        li If you are not the original creditor, the name and address of the original creditor;
+        li Proof that the debt was actually incurred by me with respect to the original creditor; and
+        li A copy of any judgment pertaining to this debt, if applicable; and
+        li Proof that you are licensed to collect debts in #{user.state}. 
+    p If you cannot product the above-referenced materials, please send written confirmation that you will no longer be collecting the referenced debt. Please also send written confirmation that you have removed any negative tradelines from my credit report.
+    p Reporting information that you know to be inaccurate or failing to report information correctly violates the FDCPA and the Fair Credit Reporting Act. I will report any violations to the Consumer Financial Protection Bureau, the Federal Trade Commission, and state authorities. 
+    p Aside from verifying this debt or advising me that debt collection efforts are being terminated
+      bold do not contact me about this debt. 
+      | The FDCPA requires that you honor this request. 
+    p Finally, as stated above, I am disputing this debt. If you forward or return this debt to another company, please inform them that the debt is disputed. Likewise, if you report this debt to a credit bureau, please also report that the debt is disputed.
+    p Thank you for your time and attention to this matter. 
     p
       | Sincerely,
       br
