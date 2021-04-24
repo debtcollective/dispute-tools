@@ -1,5 +1,8 @@
+@import '../base.css';
+
 .Modal {
   position: fixed;
+  padding-top: var(--header-height);
   z-index: 3;
   top: 0;
   left: 0;
