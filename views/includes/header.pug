@@ -2,46 +2,13 @@
   -
     var siteUrl = config.siteURL;
     var discourseUrl = config.discourse.baseUrl;
-    var landingUrl = config.landingPageURL
-    var memberHubUrl = config.landingPageURL + "/hub"
-    var donateUrl = config.landingPageURL + "/donate"
-    var logoUrl = "https://cdn.jsdelivr.net/npm/@debtcollective/dc-header-component@2.4.0/dist/header/assets/logo.png"
-    var logoSmallUrl = "https://cdn.jsdelivr.net/npm/@debtcollective/dc-header-component@2.4.0/dist/header/assets/logo-small.png"
-    var headerLinks = [
-      {
-        href: '/disputes/my',
-        text: 'My Disputes'
-      },
-      {
-        href: 'https://debtcollective.org/debt-union',
-        text: 'Join the Union'
-      },
-      {
-        href: 'https://community.debtcollective.org/',
-        text: 'Community',
-        target: '_blank'
-      },
-      {
-        href: 'https://teespring.com/stores/debt-collective',
-        text: 'Store',
-        target: '_blank'
-      },
-    ];
-
-    if (isAdmin) {
-      headerLinks.unshift({
-        href: '/admin/disputes',
-        text: 'Admin'
-      })
-    }
+    var logoUrl = "https://cdn.jsdelivr.net/npm/@debtcollective/dc-header-component@latest/dist/header/assets/logo.png"
+    var logoSmallUrl = "https://cdn.jsdelivr.net/npm/@debtcollective/dc-header-component@latest/dist/header/assets/logo-small.png"
 
   dc-header(
     id="dc-header"
     logo=logoUrl
     logosmall=logoSmallUrl
-    host=siteUrl
-    memberhuburl=memberHubUrl
+    returnurl=siteUrl
     community=discourseUrl
-    donateurl=donateUrl
-    links=headerLinks
   )
