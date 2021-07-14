@@ -48,10 +48,16 @@ const DisputeToolsController = Class('DisputeToolsController').inherits(RestfulC
       DisputeTool.query()
         .orderBy('id', 'ASC')
         .then(disputeTools => {
-          res.locals.disputeTools = new Array(1).fill(null);
+          res.locals.disputeTools = new Array(5).fill(null);
 
           disputeTools.forEach(disputeTool => {
-            const slugOrder = ['general-debt-dispute'];
+            const slugOrder = [
+              'general-debt-dispute',
+              'credit-report-dispute',
+              'wage-garnishment-dispute',
+              'tax-offset-dispute',
+              'private-student-loan-dispute',
+            ];
 
             const index = slugOrder.indexOf(disputeTool.slug);
 

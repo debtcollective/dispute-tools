@@ -1,26 +1,28 @@
 mixin toolCardMixin(tool)
-  .ToolCard.flex.flex-column.-fh
-    .flex-auto.pb3
-      h3.ToolCard__name.pb1= tool.name
-      p.pb1.-fw-500= tool.excerpt
-      p.py1
-        a.ToolCard__about-trigger.-k-btn.btn-link-nb.-fw-600(
-          id=`tool-modal-toggler-${tool.id}`
-          href='#'
-        ) › About This Dispute
+  case tool.id
+    when '11111111-1111-3333-1111-111111111111'
+      .ToolCard.flex.flex-column.-fh
+        .flex-auto.pb3
+          h3.ToolCard__name.pb1= tool.name
+          p.pb1.-fw-500= tool.excerpt
+          p.py1
+            a.ToolCard__about-trigger.-k-btn.btn-link-nb.-fw-600(
+              id=`tool-modal-toggler-${tool.id}`
+              href='#'
+            ) › About This Dispute
 
-      - var _label = '';
-      case tool.id
-        when '11111111-1111-1111-1111-111111111111'
-        when '11111111-1111-2222-1111-111111111111'
-          - _label = 'Federal student loans only'
-        when '11111111-1111-3333-1111-111111111111'
-          - _label = 'All debt types except private student loans'
-      if _label
-        .ToolCard__caption.-caption.-fw-500 (#{_label})
-    hr.mb2
-    a.-k-btn.btn-primary.-fw.-fw-600(
-      href=routeMappings.tool.url(tool.slug)
-      class= !user && 'js-login-link'
-    ) Get started
-    p.ToolCard__stats.pt2.-caption.-ttu.-fw-500 #[b= tool.completed] People filled
+          - var _label = '';
+          case tool.id
+            when '11111111-1111-1111-1111-111111111111'
+            when '11111111-1111-2222-1111-111111111111'
+              - _label = 'Federal student loans only'
+            when '11111111-1111-3333-1111-111111111111'
+              - _label = 'All debt types except private student loans'
+          if _label
+            .ToolCard__caption.-caption.-fw-500 (#{_label})
+        hr.mb2
+        a.-k-btn.btn-primary.-fw.-fw-600(
+          href=routeMappings.tool.url(tool.slug)
+          class= !user && 'js-login-link'
+        ) Get started
+        p.ToolCard__stats.pt2.-caption.-ttu.-fw-500 #[b= tool.completed] People filled
