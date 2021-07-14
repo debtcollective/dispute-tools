@@ -28,23 +28,6 @@ block content
         each tool in disputeTools
           .col.md-col-4.sm-col-6.col-12.px2.py4
             +toolCardMixin(tool)
-
-        .col.md-col-4.sm-col-6.col-12.px2.py4
-          .ToolCard.flex.flex-column.-fh
-            .flex-auto.pb3
-              h3.ToolCard__name.mb2 Defense to Repayment for Federal Student Loans
-              p.pb1.-fw-500 A federal law that says the government must cancel your debt if you were defrauded by your school.
-              p.py1
-                a.ToolCard__about-trigger.-k-btn.btn-link-nb.-fw-600(href='/defense-to-repayment') › About This Dispute
-              .ToolCard__caption.-caption.-fw-500 (Federal student loans only)
-            hr.mb2
-            a.-k-btn.btn-primary.-fw.-fw-600(
-              id='defense-to-repayment-link'
-              href='https://studentaid.gov/borrower-defense/' rel='noopener noreferrer'
-              target='_blank'
-              class= !user && 'js-login-link'
-            ) More information
-            p.ToolCard__stats.pt2.-caption.-ttu.-fw-500 &nbsp;
   section#disclaimer.max-width-4.mx-auto.p2
     small(style="color: #FF442C") The information available at this web site is for informational purposes only. It is not legal advice. You should contact your attorney to obtain advice with respect to any particular issue or problem.
   .px2.pt3.-bg-primary
