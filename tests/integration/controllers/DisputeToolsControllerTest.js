@@ -60,8 +60,8 @@ describe('DisputeToolsController', () => {
     it('should return the tool page when using a slug', async () => {
       const byId = await testGetPage(url, user);
       const bySlug = await testGetPage(slugUrl, user);
-      expect(byId.text).include('href="/11111111-1111-3333-1111-111111111111/start?option=A"');
-      expect(bySlug.text).include('href="/11111111-1111-3333-1111-111111111111/start?option=A"');
+      expect(byId.text).include('href="/11111111-1111-1111-1111-111111111111/start?option=A"');
+      expect(bySlug.text).include('href="/11111111-1111-1111-1111-111111111111/start?option=A"');
     });
   });
 
