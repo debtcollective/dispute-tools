@@ -14,9 +14,9 @@ const routeMappings = RouteMappings()
     as: 'contact',
   })
 
-  .post('/contact', {
-    to: 'Home#sendContact',
-  })
+  // .post('/contact', {
+  //   to: 'Home#sendContact',
+  // })
 
   .get('/login', {
     to: 'Sessions#create',

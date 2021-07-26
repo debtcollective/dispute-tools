@@ -26,7 +26,7 @@ const HomeController = Class('HomeController').inherits(BaseController)({
     },
 
     contact(req, res) {
-      res.render('home/contact');
+      res.redirect('https://debtcollective.org/contact-us/');
     },
 
     dtr(req, res) {
