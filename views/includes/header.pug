@@ -4,12 +4,13 @@
     var discourseUrl = config.discourse.baseUrl;
     var logoUrl = "https://cdn.jsdelivr.net/npm/@debtcollective/dc-header-component@latest/dist/header/assets/logo.png"
     var logoSmallUrl = "https://cdn.jsdelivr.net/npm/@debtcollective/dc-header-component@latest/dist/header/assets/logo-small.png"
+    var wordpressUrl = "https://debtcollective.org/wp-json/menus/v1/menus/2"
 
   dc-header(
     id="dc-header"
     logo=logoUrl
     logosmall=logoSmallUrl
-    wordpress="https://debtcollective.org/wp-json/menus/v1/menus/2." 
+    wordpress=wordpressUrl
     returnurl=siteUrl
     community=discourseUrl
   )
