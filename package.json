@@ -120,7 +120,7 @@
     "method-override": "^2.3.6",
     "mime": "^2.2.0",
     "module-alias": "^2.1.0",
-    "moment": "^2.20.1",
+    "moment": "^2.29.2",
     "morgan": "^1.9.1",
     "multer": "^1.2.0",
     "neon": "^2.0.0",
