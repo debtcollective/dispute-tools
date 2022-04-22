@@ -116,7 +116,7 @@
     "krypton-orm": "https://github.com/debtcollective/krypton.git#4da05af9af508b2898b8c93f2aa335d99bd880f3",
     "lodash": "^4.14.2",
     "lodash-inflection": "^1.4.0",
-    "marked": "^0.3.6",
+    "marked": "^4.0.10",
     "method-override": "^2.3.6",
     "mime": "^2.2.0",
     "module-alias": "^2.1.0",
