@@ -256,12 +256,12 @@ const Dispute = Class('Dispute')
       dispute.disputeThreadId = topicId;
       await dispute.save();
     } catch (e) {
-      Sentry.captureException(e);
       logger.error(
-        'Failure creating the %s for dispute with id %s and tool %s',
+        'Failure creating the %s for dispute with id %s and tool %s error: %s',
         DisputeThreadOriginMessage.name,
         dispute.readableId,
         disputeTool.name,
+        e,
       );
     }
   },
