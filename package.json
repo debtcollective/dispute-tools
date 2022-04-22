@@ -124,7 +124,7 @@
     "morgan": "^1.9.1",
     "multer": "^1.2.0",
     "neon": "^2.0.0",
-    "node-sass": "^4.9.1",
+    "node-sass": "^7.0.0",
     "nodemailer": "^2.5.0",
     "nodemailer-mailgun-transport": "^1.4.0",
     "passport": "^0.4.0",
