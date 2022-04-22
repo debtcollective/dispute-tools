@@ -34,7 +34,7 @@
     "report": "yarn istanbul-combine -d coverage -p summary -r lcov coverage/{unit,integration,form-validations}/coverage.raw.json",
     "resend_activation_links": "./scripts/tasks/resend-activation-links",
     "start:dev": "nodemon --inspect=9220 bin/server.js -i src/**/*",
-    "start:prod": "yarn db:migrate && node bin/server.js",
+    "start:prod": "yarn db:migrate && node --use-openssl-ca bin/server.js",
     "start": "node bin/server.js",
     "start:workers": "env HEADLESS=1 node bin/workers.js",
     "svg": "svg-sprite -s --symbol-dest=svg --symbol-prefix=.svg- --ss=sprite.svg --si --sx --shape-id-generator=svg-%s --dest=views/includes public/svg/*.svg",
